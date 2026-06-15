@@ -21,9 +21,9 @@ export default function Hero() {
         </p>
 
         <h1 className="display max-w-4xl text-5xl text-ink sm:text-6xl md:text-7xl">
-          Stop renting your <br className="hidden sm:block" />
-          workflow.{" "}
-          <span className="text-signal">Own your systems.</span>
+          Own the systems <br className="hidden sm:block" />
+          your business{" "}
+          <span className="text-signal">runs on.</span>
         </h1>
 
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">

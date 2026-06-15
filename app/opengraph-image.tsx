@@ -18,7 +18,7 @@ export default function OpengraphImage() {
           background: "#0a0a0b",
           padding: "80px",
           backgroundImage:
-            "radial-gradient(circle at 75% 15%, rgba(45,226,196,0.16), transparent 55%)",
+            "radial-gradient(circle at 75% 15%, rgba(59,140,255,0.16), transparent 55%)",
         }}
       >
         <div
@@ -26,14 +26,14 @@ export default function OpengraphImage() {
             display: "flex",
             alignItems: "center",
             gap: 16,
-            color: "#2de2c4",
+            color: "#3b8cff",
             fontSize: 26,
             letterSpacing: 4,
             textTransform: "uppercase",
             fontFamily: "monospace",
           }}
         >
-          <div style={{ width: 40, height: 2, background: "#2de2c4" }} />
+          <div style={{ width: 40, height: 2, background: "#3b8cff" }} />
           Systems &amp; Automation Studio
         </div>
 
@@ -48,8 +48,8 @@ export default function OpengraphImage() {
             letterSpacing: -2,
           }}
         >
-          <span>Stop renting your workflow.</span>
-          <span style={{ color: "#2de2c4" }}>Own your systems.</span>
+          <span>Own the systems</span>
+          <span style={{ color: "#3b8cff" }}>your business runs on.</span>
         </div>
 
         <div

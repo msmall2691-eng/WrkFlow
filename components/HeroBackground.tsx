@@ -11,7 +11,7 @@ import { useEffect, useRef } from "react";
 
 type Node = { x: number; y: number; vx: number; vy: number };
 
-const SIGNAL = "45, 226, 196"; // matches --color-signal
+const SIGNAL = "59, 140, 255"; // matches --color-signal (Ion Blue)
 
 export default function HeroBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

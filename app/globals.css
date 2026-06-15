@@ -18,10 +18,10 @@
   --color-muted: #a1a1aa;
   --color-faint: #71717a;
 
-  /* Signal accent (default: electric cyan) */
-  --color-signal: #2de2c4;
-  --color-signal-dim: #1aa890;
-  --color-signal-glow: rgba(45, 226, 196, 0.14);
+  /* Signal accent (Ion Blue) */
+  --color-signal: #3b8cff;
+  --color-signal-dim: #2f74d9;
+  --color-signal-glow: rgba(59, 140, 255, 0.14);
 
   /* Type */
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;

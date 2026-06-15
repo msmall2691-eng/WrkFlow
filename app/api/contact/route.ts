@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 export const runtime = "nodejs";
 
@@ -83,16 +83,21 @@ export async function POST(request: Request) {
     }
   }
 
-  // --- Email notification via Resend (if configured) ---
-  const resendKey = process.env.RESEND_API_KEY;
-  const notifyTo = process.env.CONTACT_NOTIFY_TO;
-  const notifyFrom =
-    process.env.CONTACT_NOTIFY_FROM ?? "onboarding@resend.dev";
-  if (resendKey && notifyTo) {
+  // --- Email notification via Gmail (if configured) ---
+  // Sends through the studio's Gmail account over SMTP using a Google
+  // App Password (requires 2-Step Verification on the account). The
+  // notification lands in CONTACT_NOTIFY_TO, defaulting to the Gmail inbox.
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD;
+  const notifyTo = process.env.CONTACT_NOTIFY_TO ?? gmailUser;
+  if (gmailUser && gmailPass && notifyTo) {
     try {
-      const resend = new Resend(resendKey);
-      const { error } = await resend.emails.send({
-        from: `Workflow Studio <${notifyFrom}>`,
+      const transport = nodemailer.createTransport({
+        service: "gmail",
+        auth: { user: gmailUser, pass: gmailPass },
+      });
+      await transport.sendMail({
+        from: `Workflow Studio <${gmailUser}>`,
         to: notifyTo,
         replyTo: email,
         subject: `New inquiry — ${name}${company ? ` (${company})` : ""}`,
@@ -105,10 +110,9 @@ export async function POST(request: Request) {
           message,
         ].join("\n"),
       });
-      if (error) throw error;
       notified = true;
     } catch (err) {
-      console.error("[contact] Resend send failed:", err);
+      console.error("[contact] Gmail send failed:", err);
     }
   }
 

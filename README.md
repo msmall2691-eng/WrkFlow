@@ -11,7 +11,7 @@ goes deep on each service area, with a dark, futuristic identity.
 
 - **Next.js** (App Router) + **TypeScript**
 - **Tailwind CSS v4**
-- **Supabase** and/or **Resend** for the contact form backend
+- **Supabase** and/or **Gmail** for the contact form backend
 - Deployed on **Vercel**
 
 ## Getting started
@@ -45,7 +45,7 @@ supabase/schema.sql     contact_submissions table
 
 The `/api/contact` route validates input (with a honeypot for bots) and then,
 **if configured**, stores the submission in Supabase and/or emails a
-notification via Resend. If neither is configured it logs the submission, so
+notification via Gmail. If neither is configured it logs the submission, so
 the form always succeeds in development.
 
 Copy `.env.example` to `.env.local` and fill in what you want to use:
@@ -53,19 +53,21 @@ Copy `.env.example` to `.env.local` and fill in what you want to use:
 - **Supabase** — run `supabase/schema.sql`, then set `SUPABASE_URL` and
   `SUPABASE_ANON_KEY` (the publishable key — safe to expose; the table's RLS
   policy grants it INSERT-only).
-- **Resend** — set `RESEND_API_KEY`, `CONTACT_NOTIFY_TO`, and a verified
-  `CONTACT_NOTIFY_FROM`.
+- **Gmail** — enable 2-Step Verification on the account, create a Google
+  [App Password](https://myaccount.google.com/apppasswords), then set
+  `GMAIL_USER` and `GMAIL_APP_PASSWORD`. Notifications go to `CONTACT_NOTIFY_TO`
+  (defaults to `GMAIL_USER`).
 
 ## Design tokens
 
 All theming lives in `app/globals.css` under `@theme`. The signal accent is a
-single variable (`--color-signal`, currently electric cyan) so it can be
+single variable (`--color-signal`, currently Ion Blue `#3b8cff`) so it can be
 re-tuned in one place during iteration.
 
 ## Iteration backlog
 
-- Final accent color (cyan vs. signal green vs. …)
-- Hero headline (options to choose from)
+- ~~Final accent color~~ — Ion Blue `#3b8cff`
+- ~~Hero headline~~ — "Own the systems your business runs on."
 - Logo / wordmark treatment
 - Whether to fold **Operational Dashboards** into the CRM/data pillar (7 → 6)
 - Real Facebook page link in the footer
