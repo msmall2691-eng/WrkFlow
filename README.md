@@ -1,6 +1,6 @@
-# Workflow Studio
+# WRKFLOW
 
-Marketing site for **Workflow Studio** — a systems and automation agency that
+Marketing site for **WRKFLOW** — a systems and automation studio that
 builds custom operations software (CRMs, databases, dashboards, automations,
 and AI agents) so businesses own their systems instead of renting them.
 
@@ -66,8 +66,12 @@ re-tuned in one place during iteration.
 
 ## Iteration backlog
 
-- ~~Final accent color~~ — Ion Blue `#3b8cff`
 - ~~Hero headline~~ — "Own the systems your business runs on."
-- Logo / wordmark treatment
+- ~~Logo / wordmark treatment~~ — `WRKFLOW` monospace wordmark
+- **Accent color** — Ion Blue `#3b8cff` is live; revisiting per v2 (cyan / lime / amber options)
+- **Hero motion** — confirm line-field vs. grid vs. subtler
+- **Domain** — `wrkflow.studio` recommended; canonical/OG URLs use the Vercel URL until purchased
+- **Founder reveal** — currently names The Maine Cleaning Company (Option A); toggle via `provingGroundCompany` in `lib/content.ts`
+- **Work repos** — confirm `autopilot`, `elite-service-suite`, `align`; decide if `BrightBase` is the flagship card
 - Whether to fold **Operational Dashboards** into the CRM/data pillar (7 → 6)
 - Real Facebook page link in the footer

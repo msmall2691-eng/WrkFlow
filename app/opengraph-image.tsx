@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Workflow Studio — Own your operations";
+export const alt = "WRKFLOW — Own your operations";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -61,10 +61,17 @@ export default function OpengraphImage() {
             fontSize: 28,
           }}
         >
-          <span style={{ color: "#f4f4f5", fontWeight: 600 }}>
-            Workflow Studio
+          <span
+            style={{
+              color: "#f4f4f5",
+              fontWeight: 700,
+              fontFamily: "monospace",
+              letterSpacing: 8,
+            }}
+          >
+            WRKFLOW
           </span>
-          <span>workflow-studio.com</span>
+          <span>wrk-flow.vercel.app</span>
         </div>
       </div>
     ),

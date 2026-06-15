@@ -20,15 +20,17 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const SITE_URL = "https://workflow-studio.com";
+// Canonical/OG base. Using the live Vercel URL until the brand domain
+// (e.g. wrkflow.studio) is purchased — then swap this single constant.
+const SITE_URL = "https://wrk-flow.vercel.app";
 const DESCRIPTION =
-  "Workflow Studio builds custom operations software—CRMs, databases, dashboards, automations, and AI agents—so businesses own their systems instead of renting them.";
+  "WRKFLOW builds custom operations software—CRMs, databases, dashboards, automations, and AI agents—so businesses own their systems instead of renting them.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Workflow Studio — Own your operations",
-    template: "%s · Workflow Studio",
+    default: "WRKFLOW — Own your operations",
+    template: "%s · WRKFLOW",
   },
   description: DESCRIPTION,
   keywords: [
@@ -40,25 +42,25 @@ export const metadata: Metadata = {
     "business systems",
     "operational dashboards",
   ],
-  authors: [{ name: "Workflow Studio" }],
+  authors: [{ name: "WRKFLOW" }],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Workflow Studio",
-    title: "Workflow Studio — Own your operations",
+    siteName: "WRKFLOW",
+    title: "WRKFLOW — Own your operations",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Workflow Studio",
+        alt: "WRKFLOW",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Workflow Studio — Own your operations",
+    title: "WRKFLOW — Own your operations",
     description: DESCRIPTION,
   },
   robots: {

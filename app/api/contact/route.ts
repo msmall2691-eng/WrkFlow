@@ -97,7 +97,7 @@ export async function POST(request: Request) {
         auth: { user: gmailUser, pass: gmailPass },
       });
       await transport.sendMail({
-        from: `Workflow Studio <${gmailUser}>`,
+        from: `WRKFLOW <${gmailUser}>`,
         to: notifyTo,
         replyTo: email,
         subject: `New inquiry — ${name}${company ? ` (${company})` : ""}`,
