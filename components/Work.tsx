@@ -1,4 +1,4 @@
-import { projects } from "@/lib/content";
+import { projects, workIntro } from "@/lib/content";
 import Reveal from "./Reveal";
 
 export default function Work() {
@@ -12,16 +12,13 @@ export default function Work() {
             </Reveal>
             <Reveal delay={60}>
               <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-                Built and deployed for a real operating business.
+                We built it for ourselves first.
               </h2>
             </Reveal>
           </div>
           <div className="md:col-span-4">
             <Reveal delay={120}>
-              <p className="text-sm leading-relaxed text-muted">
-                A sense of range, not a résumé. These are real systems, shown in
-                concept—the details stay with the businesses that own them.
-              </p>
+              <p className="text-sm leading-relaxed text-muted">{workIntro}</p>
             </Reveal>
           </div>
         </div>

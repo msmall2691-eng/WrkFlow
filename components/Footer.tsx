@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <Logo />
+            <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
               Custom operations software for businesses that would rather own
               their systems than rent them.
@@ -46,7 +46,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <a
-                    href="mailto:hello@workflow-studio.com"
+                    href="mailto:hello@wrkflow.studio"
                     className="text-muted transition-colors hover:text-ink"
                   >
                     Email
@@ -72,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
-          <span>© {year} Workflow Studio</span>
+          <span>© {year} WRKFLOW</span>
           <span>Own your operations.</span>
         </div>
       </div>

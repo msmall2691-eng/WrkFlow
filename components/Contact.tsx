@@ -58,18 +58,24 @@ export default function Contact() {
             <Reveal delay={120}>
               <p className="mt-6 text-base leading-relaxed text-muted">
                 No pitch deck required. A few sentences about where your
-                operations hurt is enough to start. We&apos;ll read it and reply
-                with a real point of view—not a sales sequence.
+                operations hurt is enough to start. We read every one and reply
+                within a day—with a real point of view, not a sales sequence.
               </p>
             </Reveal>
-            <Reveal delay={180}>
+            <Reveal delay={160}>
+              <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-signal/30 bg-signal/[0.06] px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-signal">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
+                Currently taking on our first outside projects
+              </p>
+            </Reveal>
+            <Reveal delay={200}>
               <p className="mt-8 font-mono text-xs uppercase tracking-widest text-faint">
                 Direct ·{" "}
                 <a
-                  href="mailto:hello@workflow-studio.com"
+                  href="mailto:hello@wrkflow.studio"
                   className="text-muted transition-colors hover:text-signal"
                 >
-                  hello@workflow-studio.com
+                  hello@wrkflow.studio
                 </a>
               </p>
             </Reveal>
