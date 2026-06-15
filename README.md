@@ -51,7 +51,8 @@ the form always succeeds in development.
 Copy `.env.example` to `.env.local` and fill in what you want to use:
 
 - **Supabase** — run `supabase/schema.sql`, then set `SUPABASE_URL` and
-  `SUPABASE_SERVICE_ROLE_KEY` (server-side only).
+  `SUPABASE_ANON_KEY` (the publishable key — safe to expose; the table's RLS
+  policy grants it INSERT-only).
 - **Resend** — set `RESEND_API_KEY`, `CONTACT_NOTIFY_TO`, and a verified
   `CONTACT_NOTIFY_FROM`.
 
