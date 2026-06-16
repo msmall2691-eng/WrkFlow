@@ -230,10 +230,10 @@ export const deployments: Deployment[] = [
     shot: "/shots/serving-map.png",
   },
   {
-    title: "BrightBase",
+    title: "BrightBase — operations command center",
     url: "https://brightbase-production.up.railway.app",
     domain: "brightbase-production.up.railway.app",
-    shot: "/shots/brightbase.png",
+    shot: "/shots/brightbase-dashboard.png",
   },
   {
     title: "Remote Admin",
