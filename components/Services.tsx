@@ -25,7 +25,7 @@ export default function Services() {
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-              Seven ways to own your operations.
+              Eight ways to own your operations.
             </h2>
           </Reveal>
           <Reveal delay={120}>

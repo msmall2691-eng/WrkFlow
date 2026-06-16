@@ -48,8 +48,20 @@ export const services: Service[] = [
       "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no recurring per-seat tax on growth.",
   },
   {
-    id: "ai-agents",
+    id: "web",
     index: "02",
+    title: "Websites & Web Apps",
+    tagline: "A site or app that's actually yours—built, connected, and live.",
+    what:
+      "Custom websites and web applications designed and built from scratch—marketing sites, client portals, booking and scheduling apps—with everything around them handled too: hosting, domain, analytics, and the deploy pipeline.",
+    pain:
+      "Drag-and-drop builders look like everyone else and box you in the moment you need something specific. Agencies hand back a site you can't edit and don't really own. And almost nobody wires up the hosting, domain, and integrations so the thing just runs.",
+    outcome:
+      "A fast, custom site or app you own outright—fully set up, connected to the rest of your systems, and live. No monthly hostage situation, no logging a ticket to change a word.",
+  },
+  {
+    id: "ai-agents",
+    index: "03",
     title: "AI Agent Implementation",
     tagline: "AI does the busywork. You keep the decisions.",
     what:
@@ -61,7 +73,7 @@ export const services: Service[] = [
   },
   {
     id: "automation",
-    index: "03",
+    index: "04",
     title: "Workflow Automation & Integration",
     tagline: "Data moves itself. Nobody re-types anything.",
     what:
@@ -73,7 +85,7 @@ export const services: Service[] = [
   },
   {
     id: "migration",
-    index: "04",
+    index: "05",
     title: "Legacy Software Migration",
     tagline: "Leave the platform. Keep the history.",
     what:
@@ -85,7 +97,7 @@ export const services: Service[] = [
   },
   {
     id: "audit",
-    index: "05",
+    index: "06",
     title: "Systems Auditing & Security Review",
     tagline: "A clear-eyed look at how it's all actually wired.",
     what:
@@ -97,7 +109,7 @@ export const services: Service[] = [
   },
   {
     id: "data-cleanup",
-    index: "06",
+    index: "07",
     title: "Data Cleanup & Consolidation",
     tagline: "One trustworthy source instead of five conflicting ones.",
     what:
@@ -109,7 +121,7 @@ export const services: Service[] = [
   },
   {
     id: "dashboards",
-    index: "07",
+    index: "08",
     title: "Operational Dashboards",
     tagline: "The numbers that matter, finally in one view.",
     what:
