@@ -198,38 +198,35 @@ export const projects: Project[] = [
 ];
 
 export type Deployment = {
+  /** For alt text / aria only — not shown on the card. */
   title: string;
-  blurb: string;
   url: string; // live link
   domain: string; // shown in the browser-chrome bar
-  host: "Vercel" | "Railway";
-  stack: string[]; // framework / tech badges
-  shot?: string; // /shots/*.png screenshot, if available
+  shot: string; // /shots/*.png screenshot
 };
 
 /*
-  Live, deployed projects — real URLs, real stacks. Screenshots captured from
-  the public deployments. Railway entries to be added once provided.
+  Live, deployed projects shown as a sliding strip of preview cards — visual
+  only, no names or detail. Real URLs, screenshots captured from the public
+  deployments.
 */
 export const deployments: Deployment[] = [
   {
     title: "The Maine Cleaning Co.",
-    blurb:
-      "Public marketing site for the cleaning company—fast, booking-driven, and fully owned. The front door to the same operation WRKFLOW was built inside.",
-    url: "https://elite-service-suite.vercel.app",
-    domain: "elite-service-suite.vercel.app",
-    host: "Vercel",
-    stack: ["React", "Vite"],
-    shot: "/shots/maine-cleaning.png",
+    url: "https://maineclean.co",
+    domain: "maineclean.co",
+    shot: "/shots/maineclean.png",
+  },
+  {
+    title: "Remote Admin",
+    url: "https://remote-admin-eight.vercel.app",
+    domain: "remote-admin-eight.vercel.app",
+    shot: "/shots/remote-admin.png",
   },
   {
     title: "Autopilot",
-    blurb:
-      "An all-in-one CRM and field-service platform for home-service businesses—jobs, revenue, and scheduling in one place, with Airbnb/VRBO turnover sync.",
     url: "https://autopilot-sooty.vercel.app",
     domain: "autopilot-sooty.vercel.app",
-    host: "Vercel",
-    stack: ["Next.js", "React"],
     shot: "/shots/autopilot.png",
   },
 ];
