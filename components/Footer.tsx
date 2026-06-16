@@ -32,7 +32,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="#work" className="text-muted transition-colors hover:text-ink">
+                  <a href="#live" className="text-muted transition-colors hover:text-ink">
                     Work
                   </a>
                 </li>
@@ -50,15 +50,6 @@ export default function Footer() {
                     className="text-muted transition-colors hover:text-ink"
                   >
                     Email
-                  </a>
-                </li>
-                <li>
-                  {/* Placeholder — Facebook page link to be added. */}
-                  <a
-                    href="#"
-                    className="text-muted transition-colors hover:text-ink"
-                  >
-                    Facebook
                   </a>
                 </li>
                 <li>
