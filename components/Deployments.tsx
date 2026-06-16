@@ -32,7 +32,7 @@ export default function Deployments() {
       <div className="group/marquee relative overflow-hidden">
         <div className="flex w-max gap-6 px-6 animate-[marquee_46s_linear_infinite] group-hover/marquee:[animation-play-state:paused] motion-reduce:animate-none">
           {strip.map((d, i) => (
-            <DeploymentCard key={`${d.url}-${i}`} d={d} />
+            <DeploymentCard key={`${d.shot}-${i}`} d={d} />
           ))}
         </div>
 
@@ -46,38 +46,28 @@ export default function Deployments() {
 
 function DeploymentCard({ d }: { d: Deployment }) {
   return (
-    <a
-      href={d.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`${d.title} — open live site`}
-      className="group/card w-[300px] shrink-0 overflow-hidden rounded-xl border border-line bg-base transition-colors hover:border-signal/50 sm:w-[440px]"
+    <div
+      role="img"
+      aria-label={`${d.title} — preview`}
+      className="group/card w-[300px] shrink-0 overflow-hidden rounded-xl border border-line bg-base sm:w-[440px]"
     >
-      {/* Browser chrome */}
-      <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
-        <span className="flex gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-line" />
-          <span className="h-2.5 w-2.5 rounded-full bg-line" />
-          <span className="h-2.5 w-2.5 rounded-full bg-line" />
-        </span>
-        <span className="ml-2 truncate font-mono text-[11px] text-faint">
-          {d.domain}
-        </span>
-        <span className="ml-auto font-mono text-[11px] uppercase tracking-widest text-faint opacity-0 transition-opacity group-hover/card:text-signal group-hover/card:opacity-100">
-          ↗
-        </span>
+      {/* Browser chrome (decorative — no URL, no link) */}
+      <div className="flex items-center gap-1.5 border-b border-line px-4 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-line" />
+        <span className="h-2.5 w-2.5 rounded-full bg-line" />
+        <span className="h-2.5 w-2.5 rounded-full bg-line" />
       </div>
 
       {/* Preview */}
       <div className="relative aspect-[16/10] overflow-hidden bg-surface">
         <Image
           src={d.shot}
-          alt={`${d.title} — live preview`}
+          alt={`${d.title} — preview`}
           fill
           sizes="(min-width: 640px) 440px, 300px"
-          className="object-cover object-top transition-transform duration-700 ease-out group-hover/card:scale-[1.03]"
+          className="object-cover object-top"
         />
       </div>
-    </a>
+    </div>
   );
 }

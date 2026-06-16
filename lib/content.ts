@@ -163,63 +163,19 @@ export const approachSteps: ApproachStep[] = [
 export type Deployment = {
   /** For alt text / aria only — not shown on the card. */
   title: string;
-  url: string; // live link
-  domain: string; // shown in the browser-chrome bar
   shot: string; // /shots/*.png screenshot
 };
 
 /*
   Live, deployed projects shown as a sliding strip of preview cards — visual
-  only, no names or detail. Real URLs, screenshots captured from the public
-  deployments.
+  only. No URLs or outbound links (intentional). Screenshots captured from the
+  real deployments / portfolio replicas.
 */
 export const deployments: Deployment[] = [
-  {
-    title: "The Maine Cleaning Co.",
-    url: "https://maineclean.co",
-    domain: "maineclean.co",
-    shot: "/shots/maineclean.png",
-  },
-  {
-    title: "Instant Estimate — live quoting tool",
-    url: "https://maineclean.co",
-    domain: "maineclean.co",
-    shot: "/shots/instant-estimate.png",
-  },
-  {
-    title: "Serving Southern Maine — coverage map",
-    url: "https://maineclean.co",
-    domain: "maineclean.co",
-    shot: "/shots/serving-map.png",
-  },
-  {
-    title: "BrightBase — operations command center",
-    url: "https://brightbase-production.up.railway.app",
-    domain: "brightbase-production.up.railway.app",
-    shot: "/shots/brightbase-dashboard.png",
-  },
-  {
-    title: "BrightBase — automated turnover scheduling",
-    url: "https://brightbase-production.up.railway.app",
-    domain: "brightbase-production.up.railway.app",
-    shot: "/shots/brightbase-turnovers.png",
-  },
-  {
-    title: "BrightBase — internal comms hub",
-    url: "https://brightbase-production.up.railway.app",
-    domain: "brightbase-production.up.railway.app",
-    shot: "/shots/brightbase-comms.png",
-  },
-  {
-    title: "Remote Admin",
-    url: "https://remote-admin-eight.vercel.app",
-    domain: "remote-admin-eight.vercel.app",
-    shot: "/shots/remote-admin.png",
-  },
-  {
-    title: "Autopilot",
-    url: "https://autopilot-sooty.vercel.app",
-    domain: "autopilot-sooty.vercel.app",
-    shot: "/shots/autopilot.png",
-  },
+  { title: "The Maine Cleaning Co.", shot: "/shots/maineclean.png" },
+  { title: "Instant Estimate — live quoting tool", shot: "/shots/instant-estimate.png" },
+  { title: "BrightBase — operations command center", shot: "/shots/brightbase-dashboard.png" },
+  { title: "BrightBase — automated turnover scheduling", shot: "/shots/brightbase-turnovers.png" },
+  { title: "Remote Admin", shot: "/shots/remote-admin.png" },
+  { title: "Autopilot", shot: "/shots/autopilot.png" },
 ];
