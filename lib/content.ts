@@ -17,8 +17,6 @@ export const whoIsItFor =
 /** Founder note. Owner to edit voice/details. */
 export const founderNote = `WRKFLOW started inside a real service business. I spent years running ${provingGroundCompany} on rented software that never quite fit—then got out by building my own systems from the ground up: the database, the automations, the AI layer, the migration off the platforms that had us locked in. WRKFLOW is that same work, offered to the businesses who need it and would rather own their operations than rent them.`;
 
-/** Intro for the Selected Work section. */
-export const workIntro = `We didn't start with theory. We built every one of these for a real operating service business—${provingGroundCompany}, our own—before offering it to anyone else. These are real systems in production, not mockups.`;
 
 export type Service = {
   id: string;
@@ -162,41 +160,6 @@ export const approachSteps: ApproachStep[] = [
   },
 ];
 
-export type Project = {
-  label: string;
-  title: string;
-  body: string;
-};
-
-/*
-  Real, in-production systems — built for our own operating company first.
-  Only confirmed projects are listed; unconfirmed repos (autopilot,
-  elite-service-suite, align, BrightBase) are held back until described
-  accurately. Keep this to the 4–6 strongest.
-*/
-export const projects: Project[] = [
-  {
-    label: "Custom CRM · Dashboards",
-    title: "Operations Command Center",
-    body: "A full custom admin platform that replaced rented SaaS—Inbox, Clients, Properties, Pipeline, and Schedule unified into one editorial-styled interface. Multi-tenant from the ground up, with workspace-scoped row-level security across the entire database.",
-  },
-  {
-    label: "Legacy Migration",
-    title: "Legacy Migration & Sync Bridge",
-    body: "The literal get-off-Jobber story: a clean bridge and migration path that moved client, job, and scheduling data off a locked-in platform into an owned system—history intact, nothing left behind.",
-  },
-  {
-    label: "Automation · Security",
-    title: "Integration Proxy & Security Audit",
-    body: "A custom OAuth proxy wiring a third-party workforce tool into the owned stack, paired with an end-to-end security audit that surfaced and closed critical exposure—unauthenticated endpoints, secret rotation, access scoping—delivered as a prioritized plan.",
-  },
-  {
-    label: "AI Agents",
-    title: "Multi-Agent Operations Assistant",
-    body: "A draft-first system of cooperating AI agents handling intake, organization, drafting, and follow-ups. Every output is routed for human approval—no autonomous actions, the owner stays in control.",
-  },
-];
-
 export type Deployment = {
   /** For alt text / aria only — not shown on the card. */
   title: string;
@@ -234,6 +197,18 @@ export const deployments: Deployment[] = [
     url: "https://brightbase-production.up.railway.app",
     domain: "brightbase-production.up.railway.app",
     shot: "/shots/brightbase-dashboard.png",
+  },
+  {
+    title: "BrightBase — automated turnover scheduling",
+    url: "https://brightbase-production.up.railway.app",
+    domain: "brightbase-production.up.railway.app",
+    shot: "/shots/brightbase-turnovers.png",
+  },
+  {
+    title: "BrightBase — internal comms hub",
+    url: "https://brightbase-production.up.railway.app",
+    domain: "brightbase-production.up.railway.app",
+    shot: "/shots/brightbase-comms.png",
   },
   {
     title: "Remote Admin",
