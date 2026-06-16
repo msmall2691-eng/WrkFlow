@@ -218,6 +218,18 @@ export const deployments: Deployment[] = [
     shot: "/shots/maineclean.png",
   },
   {
+    title: "Instant Estimate — live quoting tool",
+    url: "https://maineclean.co",
+    domain: "maineclean.co",
+    shot: "/shots/instant-estimate.png",
+  },
+  {
+    title: "Serving Southern Maine — coverage map",
+    url: "https://maineclean.co",
+    domain: "maineclean.co",
+    shot: "/shots/serving-map.png",
+  },
+  {
     title: "BrightBase",
     url: "https://brightbase-production.up.railway.app",
     domain: "brightbase-production.up.railway.app",
