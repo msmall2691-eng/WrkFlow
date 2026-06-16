@@ -15,13 +15,14 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-              Deployed and in the wild.
+              We built it for ourselves first.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-6 text-lg leading-relaxed text-muted">
-              A few things we&apos;ve designed, built, and shipped—live and
-              running.
+              No theory. Every one of these was designed, built, and shipped for
+              a real operating company—ours—before anyone else. Real systems,
+              live and running.
             </p>
           </Reveal>
         </div>
