@@ -218,6 +218,12 @@ export const deployments: Deployment[] = [
     shot: "/shots/maineclean.png",
   },
   {
+    title: "BrightBase",
+    url: "https://brightbase-production.up.railway.app",
+    domain: "brightbase-production.up.railway.app",
+    shot: "/shots/brightbase.png",
+  },
+  {
     title: "Remote Admin",
     url: "https://remote-admin-eight.vercel.app",
     domain: "remote-admin-eight.vercel.app",
