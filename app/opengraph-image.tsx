@@ -15,10 +15,10 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#0a0a0b",
+          background: "#ffffff",
           padding: "80px",
           backgroundImage:
-            "radial-gradient(circle at 75% 15%, rgba(59,140,255,0.16), transparent 55%)",
+            "radial-gradient(circle at 75% 15%, rgba(37,99,235,0.12), transparent 55%)",
         }}
       >
         <div
@@ -26,14 +26,14 @@ export default function OpengraphImage() {
             display: "flex",
             alignItems: "center",
             gap: 16,
-            color: "#3b8cff",
+            color: "#2563eb",
             fontSize: 26,
             letterSpacing: 4,
             textTransform: "uppercase",
             fontFamily: "monospace",
           }}
         >
-          <div style={{ width: 40, height: 2, background: "#3b8cff" }} />
+          <div style={{ width: 40, height: 2, background: "#2563eb" }} />
           Systems &amp; Automation Studio
         </div>
 
@@ -41,7 +41,7 @@ export default function OpengraphImage() {
           style={{
             display: "flex",
             flexDirection: "column",
-            color: "#f4f4f5",
+            color: "#18181b",
             fontSize: 84,
             fontWeight: 700,
             lineHeight: 1.05,
@@ -49,7 +49,7 @@ export default function OpengraphImage() {
           }}
         >
           <span>Own the systems</span>
-          <span style={{ color: "#3b8cff" }}>your business runs on.</span>
+          <span style={{ color: "#2563eb" }}>your business runs on.</span>
         </div>
 
         <div
@@ -57,13 +57,13 @@ export default function OpengraphImage() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            color: "#a1a1aa",
+            color: "#71717a",
             fontSize: 28,
           }}
         >
           <span
             style={{
-              color: "#f4f4f5",
+              color: "#18181b",
               fontWeight: 700,
               fontFamily: "monospace",
               letterSpacing: 8,

@@ -89,7 +89,7 @@ export default function HeroBackground() {
     };
 
     const drawGrid = () => {
-      ctx.strokeStyle = "rgba(255,255,255,0.035)";
+      ctx.strokeStyle = "rgba(24,24,27,0.05)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       for (let x = 0; x <= cols; x++) {

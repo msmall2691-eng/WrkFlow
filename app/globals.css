@@ -2,26 +2,26 @@
 
 /*
   Workflow Studio — design tokens
-  Dark, futuristic identity. One sharp signal accent used sparingly.
+  Clean, modern light identity. One sharp signal accent used sparingly.
   The accent is a CSS variable so it can be re-tuned in a single place
   during iteration (cyan / signal green / etc).
 */
 @theme {
-  /* Base surfaces — near-black, not pure black, for subtle depth */
-  --color-base: #0a0a0b;
-  --color-surface: #101012;
-  --color-elevated: #16161a;
-  --color-line: #232328;
+  /* Base surfaces — white page, soft panels, hairline borders for depth */
+  --color-base: #ffffff;
+  --color-surface: #fafafa;
+  --color-elevated: #ffffff;
+  --color-line: #e4e4e7;
 
-  /* Text */
-  --color-ink: #f4f4f5;
-  --color-muted: #a1a1aa;
+  /* Text — zinc scale on white */
+  --color-ink: #18181b;
+  --color-muted: #52525b;
   --color-faint: #71717a;
 
   /* Signal accent (Ion Blue) */
-  --color-signal: #3b8cff;
-  --color-signal-dim: #2f74d9;
-  --color-signal-glow: rgba(59, 140, 255, 0.14);
+  --color-signal: #2563eb;
+  --color-signal-dim: #1d4ed8;
+  --color-signal-glow: rgba(37, 99, 235, 0.1);
 
   /* Type */
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
@@ -69,6 +69,13 @@ body {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.02;
+}
+
+/* Soft elevation for cards on the light surface — hairline + faint lift */
+.elevate {
+  box-shadow:
+    0 1px 2px rgba(24, 24, 27, 0.04),
+    0 8px 24px -12px rgba(24, 24, 27, 0.12);
 }
 
 /* Subtle hairline grid background, used behind some sections */

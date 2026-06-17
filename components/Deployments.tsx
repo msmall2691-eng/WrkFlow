@@ -49,7 +49,7 @@ function DeploymentCard({ d }: { d: Deployment }) {
     <div
       role="img"
       aria-label={`${d.title} — preview`}
-      className="group/card w-[300px] shrink-0 overflow-hidden rounded-xl border border-line bg-base sm:w-[440px]"
+      className="elevate group/card w-[300px] shrink-0 overflow-hidden rounded-xl border border-line bg-elevated sm:w-[440px]"
     >
       {/* Browser chrome (decorative — no URL, no link) */}
       <div className="flex items-center gap-1.5 border-b border-line px-4 py-2.5">

@@ -64,7 +64,7 @@ export default function AccentSwitcher() {
             title={a.name}
             aria-label={`Set accent to ${a.name}`}
             className={`h-6 w-6 rounded-full transition-transform hover:scale-110 ${
-              active === i ? "ring-2 ring-white ring-offset-2 ring-offset-surface" : ""
+              active === i ? "ring-2 ring-ink ring-offset-2 ring-offset-surface" : ""
             }`}
             style={{ backgroundColor: a.signal }}
           />
