@@ -25,15 +25,15 @@ export default function Services() {
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-              Eight ways to own your operations.
+              Eight ways we build and optimize how you run.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-6 text-lg leading-relaxed text-muted">
               Each of these is a real discipline, not a feature checkbox. They
-              compound: a clean database makes automation trustworthy,
-              automation makes AI useful, and a dashboard makes all of it
-              visible.
+              compound: a great website needs clean data behind it, clean data
+              makes automation trustworthy, automation makes AI useful, and a
+              dashboard makes all of it visible.
             </p>
           </Reveal>
         </div>

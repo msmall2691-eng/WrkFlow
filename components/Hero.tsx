@@ -17,19 +17,19 @@ export default function Hero() {
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
         <p className="marker mb-6 flex items-center gap-3">
           <span className="inline-block h-px w-8 bg-signal/60" />
-          Systems &amp; Automation Studio
+          Web · Automation · Systems Studio
         </p>
 
         <h1 className="display max-w-4xl text-5xl text-ink sm:text-6xl md:text-7xl">
-          Own the systems <br className="hidden sm:block" />
-          your business{" "}
-          <span className="text-signal">runs on.</span>
+          Websites and automations <br className="hidden sm:block" />
+          that make your business{" "}
+          <span className="text-signal">run better.</span>
         </h1>
 
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
-          We build the custom software your business actually runs on—CRMs,
-          databases, dashboards, automations, and AI agents—so you own your
-          operations instead of renting them from someone else.
+          We design and build custom websites, wire up the automations and
+          integrations behind them, and tighten the workflows and processes you
+          already run—so the whole operation moves faster, with less manual work.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">

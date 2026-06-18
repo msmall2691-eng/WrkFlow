@@ -72,10 +72,10 @@ export default function Contact() {
               <p className="mt-8 font-mono text-xs uppercase tracking-widest text-faint">
                 Direct ·{" "}
                 <a
-                  href="mailto:hello@wrkflow.studio"
+                  href="mailto:hello@connectivestudio.co"
                   className="text-muted transition-colors hover:text-signal"
                 >
-                  hello@wrkflow.studio
+                  hello@connectivestudio.co
                 </a>
               </p>
             </Reveal>

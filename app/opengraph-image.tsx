@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "WRKFLOW — Own your operations";
+export const alt = "Connective Studio — Websites, automations & systems that run better";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           }}
         >
           <div style={{ width: 40, height: 2, background: "#2563eb" }} />
-          Systems &amp; Automation Studio
+          Web · Automation · Systems Studio
         </div>
 
         <div
@@ -48,8 +48,8 @@ export default function OpengraphImage() {
             letterSpacing: -2,
           }}
         >
-          <span>Own the systems</span>
-          <span style={{ color: "#2563eb" }}>your business runs on.</span>
+          <span>Websites &amp; automations</span>
+          <span style={{ color: "#2563eb" }}>that make it run better.</span>
         </div>
 
         <div
@@ -69,9 +69,9 @@ export default function OpengraphImage() {
               letterSpacing: 8,
             }}
           >
-            WRKFLOW
+            CONNECTIVE
           </span>
-          <span>wrk-flow.vercel.app</span>
+          <span>connectivestudio.co</span>
         </div>
       </div>
     ),

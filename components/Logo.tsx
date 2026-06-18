@@ -1,8 +1,8 @@
 /*
-  Wordmark for WRKFLOW (disemvoweled "workflow"). Set in the monospace face,
-  all-caps with deliberate letter-spacing, so it reads as a systems/engineering
-  brand. A compact glyph (two offset strokes suggesting a branching flow) sits
-  ahead of it. Pass `tag` to append a smaller "/ STUDIO" lockup.
+  Wordmark for Connective Studio. Set in the monospace face, all-caps with
+  deliberate letter-spacing, so it reads as a systems/engineering brand. A
+  compact glyph (two offset strokes suggesting connected systems / a branching
+  flow) sits ahead of it. Pass `tag` to append a smaller "/ Studio" lockup.
 */
 export default function Logo({
   className = "",
@@ -36,7 +36,7 @@ export default function Logo({
         />
       </svg>
       <span className="font-mono text-[15px] font-semibold uppercase tracking-[0.22em] text-ink">
-        WRKFLOW
+        CONNECTIVE
       </span>
       {tag && (
         <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-faint">

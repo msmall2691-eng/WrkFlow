@@ -10,8 +10,8 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Custom operations software for businesses that would rather own
-              their systems than rent them.
+              We design and build websites, automations, and the systems behind
+              them—so your business runs faster, cleaner, and with less busywork.
             </p>
           </div>
 
@@ -46,7 +46,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <a
-                    href="mailto:hello@wrkflow.studio"
+                    href="mailto:hello@connectivestudio.co"
                     className="text-muted transition-colors hover:text-ink"
                   >
                     Email
@@ -63,8 +63,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
-          <span>© {year} WRKFLOW</span>
-          <span>Own your operations.</span>
+          <span>© {year} Connective Studio</span>
+          <span>Build it better.</span>
         </div>
       </div>
     </footer>

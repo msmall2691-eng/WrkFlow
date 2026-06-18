@@ -1,6 +1,6 @@
 /*
-  Central content for WRKFLOW. Keeping copy here makes the
-  "six-vs-seven services" and headline iterations a one-file change.
+  Central content for Connective Studio. Keeping copy here makes the
+  service list and headline iterations a one-file change.
 */
 
 /*
@@ -12,10 +12,10 @@ export const provingGroundCompany = "The Maine Cleaning Company";
 
 /** "Who this is for" — names the buyer plainly. */
 export const whoIsItFor =
-  "Built for service businesses—cleaning companies, trades, property managers, short-term rental operators—who've outgrown rented software like Jobber or Housecall Pro and want to own what they run on.";
+  "Built for small and growing businesses—service companies, trades, property managers, short-term rental operators, and the teams behind them—who want a website that actually works, automations that save real hours, and systems shaped around how they operate.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `WRKFLOW started inside a real service business. I spent years running ${provingGroundCompany} on rented software that never quite fit—then got out by building my own systems from the ground up: the database, the automations, the AI layer, the migration off the platforms that had us locked in. WRKFLOW is that same work, offered to the businesses who need it and would rather own their operations than rent them.`;
+export const founderNote = `Connective Studio started inside a real service business. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. Connective Studio is that same work—websites, automations, and systems built to fit—offered to the businesses that would rather operate on something made for them.`;
 
 
 export type Service = {
@@ -34,20 +34,8 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    id: "crm",
-    index: "01",
-    title: "Custom CRM & Database Design",
-    tagline: "A system shaped to your business, not the other way around.",
-    what:
-      "Purpose-built customer and operations databases with a clean schema and exactly the fields your work actually uses—built around how your business really runs.",
-    pain:
-      "Off-the-shelf tools force you to bend your process to fit their forms, then charge a monthly per-seat ransom for the privilege. The data you need lives in the gaps their software never anticipated.",
-    outcome:
-      "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no recurring per-seat tax on growth.",
-  },
-  {
     id: "web",
-    index: "02",
+    index: "01",
     title: "Websites & Web Apps",
     tagline: "A site or app that's actually yours—built, connected, and live.",
     what:
@@ -58,20 +46,8 @@ export const services: Service[] = [
       "A fast, custom site or app you own outright—fully set up, connected to the rest of your systems, and live. No monthly hostage situation, no logging a ticket to change a word.",
   },
   {
-    id: "ai-agents",
-    index: "03",
-    title: "AI Agent Implementation",
-    tagline: "AI does the busywork. You keep the decisions.",
-    what:
-      "Practical AI wired directly into operations—intake, follow-ups, drafting, summarizing, and triage—designed draft-first and owner-approved so nothing goes out without a human's sign-off.",
-    pain:
-      "Generic AI tools either do too little to matter or too much to trust. The repetitive thinking work—reading, sorting, drafting the same replies—still eats hours every week.",
-    outcome:
-      "The routine handled in the background and surfaced for approval. Faster responses, less manual drafting, and a human firmly in control of every decision that counts.",
-  },
-  {
     id: "automation",
-    index: "04",
+    index: "02",
     title: "Workflow Automation & Integration",
     tagline: "Data moves itself. Nobody re-types anything.",
     what:
@@ -82,8 +58,56 @@ export const services: Service[] = [
       "Records flow automatically from one system to the next. The double-entry disappears, the errors that came with it disappear, and your team gets the hours back.",
   },
   {
-    id: "migration",
+    id: "crm",
+    index: "03",
+    title: "Custom CRM & Database Design",
+    tagline: "A system shaped to your business, not the other way around.",
+    what:
+      "Purpose-built customer and operations databases with a clean schema and exactly the fields your work actually uses—built around how your business really runs.",
+    pain:
+      "Off-the-shelf tools force you to bend your process to fit their forms, then charge a monthly per-seat ransom for the privilege. The data you need lives in the gaps their software never anticipated.",
+    outcome:
+      "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no recurring per-seat tax on growth.",
+  },
+  {
+    id: "ai-agents",
+    index: "04",
+    title: "AI Agent Implementation",
+    tagline: "AI does the busywork. You keep the decisions.",
+    what:
+      "Practical AI wired directly into operations—intake, follow-ups, drafting, summarizing, and triage—designed draft-first and owner-approved so nothing goes out without a human's sign-off.",
+    pain:
+      "Generic AI tools either do too little to matter or too much to trust. The repetitive thinking work—reading, sorting, drafting the same replies—still eats hours every week.",
+    outcome:
+      "The routine handled in the background and surfaced for approval. Faster responses, less manual drafting, and a human firmly in control of every decision that counts.",
+  },
+  {
+    id: "dashboards",
     index: "05",
+    title: "Operational Dashboards",
+    tagline: "The numbers that matter, finally in one view.",
+    what:
+      "Real-time insight pulled from scattered sources into a single view—jobs, revenue, pipeline, and team—so the metrics that run the business stop hiding in separate tabs.",
+    pain:
+      "Answering a simple question—how's this month tracking?—means opening five tools, exporting three spreadsheets, and reconciling them by hand. By the time you know, it's old news.",
+    outcome:
+      "A live picture of the business at a glance. The right numbers, current, in one place—so decisions get made on what's happening now, not last month's export.",
+  },
+  {
+    id: "audit",
+    index: "06",
+    title: "Systems & Process Optimization",
+    tagline: "Find what's slow, broken, or costing you—and fix it in order.",
+    what:
+      "A thorough review of how your tools and processes actually run—where data is exposed, where things break silently, and where manual steps quietly cost time and money—delivered as a prioritized, plain-English plan to streamline it.",
+    pain:
+      "Most operations grow by accretion: tools bolted on over years, steps nobody remembers adding, integrations that fail without anyone noticing. The drag is invisible until it isn't.",
+    outcome:
+      "A precise map of your systems and processes, and a ranked list of what to fix first. No jargon, no fear-mongering—just the facts and a sensible order of operations.",
+  },
+  {
+    id: "migration",
+    index: "07",
     title: "Legacy Software Migration",
     tagline: "Leave the platform. Keep the history.",
     what:
@@ -94,20 +118,8 @@ export const services: Service[] = [
       "A clean cutover to a system built around your real process, with your customers, jobs, and records carried over faithfully. The lock-in is gone for good.",
   },
   {
-    id: "audit",
-    index: "06",
-    title: "Systems Auditing & Security Review",
-    tagline: "A clear-eyed look at how it's all actually wired.",
-    what:
-      "A thorough review of your current stack—where data is exposed, where things break silently, and what's quietly costing you money or risk—delivered as a prioritized, plain-English action plan.",
-    pain:
-      "Most operations grow by accretion: tools bolted on over years, permissions nobody remembers granting, integrations that fail without anyone noticing. The risk is invisible until it isn't.",
-    outcome:
-      "A precise map of your systems and a ranked list of what to fix first. No jargon, no fear-mongering—just the facts and a sensible order of operations.",
-  },
-  {
     id: "data-cleanup",
-    index: "07",
+    index: "08",
     title: "Data Cleanup & Consolidation",
     tagline: "One trustworthy source instead of five conflicting ones.",
     what:
@@ -116,18 +128,6 @@ export const services: Service[] = [
       "The same customer exists three times with three spellings. Reports contradict each other. Every automation built on this foundation inherits the mess and quietly compounds it.",
     outcome:
       "Clean, consistent, deduplicated data in one place. Reports you can trust and automations that finally run on a foundation that's actually solid.",
-  },
-  {
-    id: "dashboards",
-    index: "08",
-    title: "Operational Dashboards",
-    tagline: "The numbers that matter, finally in one view.",
-    what:
-      "Real-time insight pulled from scattered sources into a single view—jobs, revenue, pipeline, and team—so the metrics that run the business stop hiding in separate tabs.",
-    pain:
-      "Answering a simple question—how's this month tracking?—means opening five tools, exporting three spreadsheets, and reconciling them by hand. By the time you know, it's old news.",
-    outcome:
-      "A live picture of the business at a glance. The right numbers, current, in one place—so decisions get made on what's happening now, not last month's export.",
   },
 ];
 

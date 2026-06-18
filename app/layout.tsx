@@ -21,46 +21,46 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 // Canonical/OG base. Using the live Vercel URL until the brand domain
-// (e.g. wrkflow.studio) is purchased — then swap this single constant.
+// (connectivestudio.co) is wired up — then swap this single constant.
 const SITE_URL = "https://wrk-flow.vercel.app";
 const DESCRIPTION =
-  "WRKFLOW builds custom operations software—CRMs, databases, dashboards, automations, and AI agents—so businesses own their systems instead of renting them.";
+  "Connective Studio designs and builds custom websites, workflow automations, and the systems behind them—and optimizes the processes you already run—so your business operates faster, cleaner, and with less manual work.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "WRKFLOW — Own your operations",
-    template: "%s · WRKFLOW",
+    default: "Connective Studio — Websites, automation & systems",
+    template: "%s · Connective Studio",
   },
   description: DESCRIPTION,
   keywords: [
-    "custom CRM",
-    "operations software",
+    "web design and development",
     "workflow automation",
+    "process optimization",
+    "systems integration",
+    "custom software",
     "AI agents",
-    "legacy software migration",
     "business systems",
-    "operational dashboards",
   ],
-  authors: [{ name: "WRKFLOW" }],
+  authors: [{ name: "Connective Studio" }],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "WRKFLOW",
-    title: "WRKFLOW — Own your operations",
+    siteName: "Connective Studio",
+    title: "Connective Studio — Websites, automation & systems",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "WRKFLOW",
+        alt: "Connective Studio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WRKFLOW — Own your operations",
+    title: "Connective Studio — Websites, automation & systems",
     description: DESCRIPTION,
   },
   robots: {

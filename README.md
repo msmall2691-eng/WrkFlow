@@ -1,11 +1,12 @@
-# WRKFLOW
+# Connective Studio
 
-Marketing site for **WRKFLOW** — a systems and automation studio that
-builds custom operations software (CRMs, databases, dashboards, automations,
-and AI agents) so businesses own their systems instead of renting them.
+Marketing site for **Connective Studio** — a web, automation & systems studio
+that designs and builds custom websites, workflow automations, and the systems
+behind them (CRMs, databases, dashboards, AI agents), and optimizes the processes
+a business already runs on, so the whole operation runs faster and cleaner.
 
 Positioned as a guide, not a portfolio: the site teaches what's possible and
-goes deep on each service area, with a dark, futuristic identity.
+goes deep on each service area, with a clean, modern light identity.
 
 ## Stack
 
@@ -61,16 +62,16 @@ Copy `.env.example` to `.env.local` and fill in what you want to use:
 ## Design tokens
 
 All theming lives in `app/globals.css` under `@theme`. The signal accent is a
-single variable (`--color-signal`, currently Ion Blue `#3b8cff`) so it can be
+single variable (`--color-signal`, currently Ion Blue `#2563eb`) so it can be
 re-tuned in one place during iteration.
 
 ## Iteration backlog
 
 - ~~Hero headline~~ — "Own the systems your business runs on."
-- ~~Logo / wordmark treatment~~ — `WRKFLOW` monospace wordmark
-- **Accent color** — Ion Blue `#3b8cff` is live; revisiting per v2 (cyan / lime / amber options)
+- ~~Logo / wordmark treatment~~ — `CONNECTIVE / Studio` monospace wordmark
+- **Accent color** — Ion Blue `#2563eb` is live; revisiting per v2 (cyan / lime / amber options)
 - **Hero motion** — confirm line-field vs. grid vs. subtler
-- **Domain** — `wrkflow.studio` recommended; canonical/OG URLs use the Vercel URL until purchased
+- **Domain** — `connectivestudio.co` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up
 - **Founder reveal** — currently names The Maine Cleaning Company (Option A); toggle via `provingGroundCompany` in `lib/content.ts`
 - **Work repos** — confirm `autopilot`, `elite-service-suite`, `align`; decide if `BrightBase` is the flagship card
 - Whether to fold **Operational Dashboards** into the CRM/data pillar (7 → 6)

@@ -29,8 +29,8 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#top" aria-label="WRKFLOW — home">
-          <Logo />
+        <a href="#top" aria-label="Connective Studio — home">
+          <Logo tag />
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
