@@ -6,16 +6,17 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#05070d]"
     >
-      {/* Interactive Liquid Chrome shader — Ion Blue palette to stay on-brand */}
+      {/* Interactive Liquid Chrome shader — Ion Blue palette to stay on-brand.
+          intensity/speed kept low so the hero reads calm, not busy. */}
       <div className="absolute inset-0">
-        <LiquidChrome palette="ion" intensity={1} />
+        <LiquidChrome palette="ion" intensity={0.6} speed={0.55} />
       </div>
 
       {/* Overall veil — calms the bright chrome so text reads easily while the
           metal still shows through. Tune opacity here for more/less effect. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-black/40"
+        className="pointer-events-none absolute inset-0 bg-black/50"
       />
       {/* Left-side darkening so the headline keeps extra contrast */}
       <div

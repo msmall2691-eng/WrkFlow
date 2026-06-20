@@ -39,6 +39,7 @@ uniform float u_time;
 uniform vec2  u_mouse;       // pixels, gl_FragCoord space (origin bottom-left)
 uniform float u_palette;
 uniform float u_intensity;
+uniform float u_speed;
 uniform vec3  u_ripples[${MAX_RIPPLES}]; // xy = pixels, z = age in seconds
 uniform int   u_rippleCount;
 
@@ -96,7 +97,7 @@ void main() {
   vec2 p = (gl_FragCoord.xy * 2.0 - u_res) / u_res.y;
   vec2 m = (u_mouse * 2.0 - u_res) / u_res.y;
 
-  float t = u_time * 0.16;
+  float t = u_time * 0.16 * u_speed;
   float amp = u_intensity;
 
   vec2 q = p;
@@ -169,18 +170,23 @@ function compile(gl: WebGLRenderingContext, type: number, src: string) {
 export default function LiquidChrome({
   palette = "chrome",
   intensity = 1,
+  speed = 1,
   className = "",
 }: {
   palette?: ChromePalette;
   intensity?: number;
+  /** Flow speed multiplier — lower is calmer/less fluid. */
+  speed?: number;
   className?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // Latest props read by the render loop without re-initializing WebGL.
   const paletteRef = useRef(palette);
   const intensityRef = useRef(intensity);
+  const speedRef = useRef(speed);
   paletteRef.current = palette;
   intensityRef.current = intensity;
+  speedRef.current = speed;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -233,6 +239,7 @@ export default function LiquidChrome({
     const uMouse = gl.getUniformLocation(prog, "u_mouse");
     const uPalette = gl.getUniformLocation(prog, "u_palette");
     const uIntensity = gl.getUniformLocation(prog, "u_intensity");
+    const uSpeed = gl.getUniformLocation(prog, "u_speed");
     const uRipples = gl.getUniformLocation(prog, "u_ripples");
     const uRippleCount = gl.getUniformLocation(prog, "u_rippleCount");
 
@@ -304,6 +311,7 @@ export default function LiquidChrome({
       gl.uniform2f(uMouse, mouse.x, mouse.y);
       gl.uniform1f(uPalette, PALETTE_ID[paletteRef.current]);
       gl.uniform1f(uIntensity, intensityRef.current);
+      gl.uniform1f(uSpeed, speedRef.current);
 
       const data = new Float32Array(MAX_RIPPLES * 3);
       ripples.forEach((r, i) => {
