@@ -1,27 +1,27 @@
-import LiquidChrome from "./LiquidChrome";
+import SystemsField from "./SystemsField";
 
 export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#05070d]"
+      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#04060c]"
     >
-      {/* Interactive Liquid Chrome shader — Ion Blue palette to stay on-brand.
-          intensity/speed kept low so the hero reads calm, not busy. */}
+      {/* Connected-systems network — calm nodes + signal pulses flowing edge to
+          edge, like jobs moving through an automation. Reads as systems, stays
+          dark for readability. */}
       <div className="absolute inset-0">
-        <LiquidChrome palette="ion" intensity={0.5} speed={0.38} />
+        <SystemsField density={1} />
       </div>
 
-      {/* Overall veil — calms the bright chrome so text reads easily while the
-          metal still shows through. Tune opacity here for more/less effect. */}
+      {/* Soft radial lift behind the headline so the copy sits forward */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-black/50"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_30%_45%,rgba(0,0,0,0.55)_0%,transparent_70%)]"
       />
-      {/* Left-side darkening so the headline keeps extra contrast */}
+      {/* Left scrim for extra headline contrast */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent"
       />
       {/* Bottom fade — dissolves the dark hero into the light page below */}
       <div
