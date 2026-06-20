@@ -46,7 +46,8 @@ export default function CommandPalette() {
       { id: "shift", label: "The shift", group: "Navigate", keywords: "why now", run: go("shift") },
       { id: "who", label: "Who it's for", group: "Navigate", keywords: "audience fit", run: go("whofor") },
       { id: "work", label: "Shipped & live", group: "Navigate", keywords: "work showcase portfolio", run: go("live") },
-      { id: "kit", label: "Calculator playground", group: "Navigate", keywords: "calculator kit playground demo tweaks build", run: go("kit") },
+      { id: "kit", label: "Playground (mini tools)", group: "Navigate", keywords: "calculator kit playground quote rate signature password tip tools", run: go("kit") },
+      { id: "flow", label: "Automation demo", group: "Navigate", keywords: "automation workflow lead intake demo run flow", run: go("flow") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
       {

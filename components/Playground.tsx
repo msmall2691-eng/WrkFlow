@@ -5,6 +5,9 @@ import Reveal from "./Reveal";
 import CalculatorKit from "./CalculatorKit";
 import TipSplit from "./TipSplit";
 import PasswordForge from "./PasswordForge";
+import QuoteCalc from "./QuoteCalc";
+import RateCalc from "./RateCalc";
+import SignatureMaker from "./SignatureMaker";
 
 /*
   Playground — a small shelf of genuinely-useful, fully-built mini tools.
@@ -14,16 +17,19 @@ import PasswordForge from "./PasswordForge";
   shows the same care we put into real product UI.
 */
 
-type Tab = "calc" | "tip" | "pw";
+type Tab = "quote" | "rate" | "sig" | "calc" | "tip" | "pw";
 
 const TABS: { id: Tab; label: string; blurb: string }[] = [
+  { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool." },
+  { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need." },
+  { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard." },
   { id: "calc", label: "Calculator kit", blurb: "A working calculator with a wall of live tweaks." },
   { id: "tip", label: "Tip & Split", blurb: "Split the bill—tip, total, and per-person, instantly." },
   { id: "pw", label: "Password Forge", blurb: "Strong passwords with a live strength meter." },
 ];
 
 export default function Playground() {
-  const [tab, setTab] = useState<Tab>("calc");
+  const [tab, setTab] = useState<Tab>("quote");
   const active = TABS.find((t) => t.id === tab)!;
 
   return (
@@ -72,6 +78,9 @@ export default function Playground() {
         </Reveal>
 
         <div className="mt-8">
+          {tab === "quote" && <QuoteCalc />}
+          {tab === "rate" && <RateCalc />}
+          {tab === "sig" && <SignatureMaker />}
           {tab === "calc" && <CalculatorKit />}
           {tab === "tip" && <TipSplit />}
           {tab === "pw" && <PasswordForge />}

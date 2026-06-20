@@ -4,6 +4,7 @@ import Shift from "@/components/Shift";
 import WhoFor from "@/components/WhoFor";
 import Deployments from "@/components/Deployments";
 import Playground from "@/components/Playground";
+import WorkflowSim from "@/components/WorkflowSim";
 import Services from "@/components/Services";
 import Approach from "@/components/Approach";
 import FounderNote from "@/components/FounderNote";
@@ -22,6 +23,7 @@ export default function Home() {
         <WhoFor />
         <Deployments />
         <Playground />
+        <WorkflowSim />
         <Services />
         <Approach />
         <FounderNote />
