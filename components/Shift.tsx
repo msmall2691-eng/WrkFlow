@@ -43,7 +43,7 @@ export default function Shift() {
             <Reveal delay={240}>
               <p className="text-ink">
                 The companies that move first stop wrestling their tools and
-                start compounding the advantage of systems—and processes—no
+                start compounding an advantage in systems and processes that no
                 competitor can buy off a shelf.
               </p>
             </Reveal>

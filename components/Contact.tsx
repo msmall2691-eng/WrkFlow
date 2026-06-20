@@ -77,8 +77,8 @@ export default function Contact() {
             <Reveal delay={120}>
               <p className="mt-6 text-base leading-relaxed text-white/75">
                 No pitch deck required. A few sentences about where your
-                operations hurt is enough to start. We read every one and reply
-                within a day—with a real point of view, not a sales sequence.
+                operations hurt is enough to start. I read every one myself and
+                reply within a day—a real point of view, not a sales sequence.
               </p>
             </Reveal>
             <Reveal delay={160}>

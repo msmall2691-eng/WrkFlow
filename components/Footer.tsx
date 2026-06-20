@@ -1,18 +1,21 @@
 import Logo from "./Logo";
+import DepthContours from "./DepthContours";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-line py-14">
-      <div className="mx-auto max-w-6xl px-6">
+    <footer className="relative overflow-hidden border-t border-line py-14">
+      {/* Faint depth-chart bookend (matches the hero) */}
+      <DepthContours intensity={0.5} />
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
             <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
               We design and build websites, automations, and the systems behind
               them—so your business runs faster and cleaner, with less busywork.
-              New England roots, modern tech.
+              New England roots, modern tech. Everything, linked.
             </p>
           </div>
 
