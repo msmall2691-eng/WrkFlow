@@ -32,12 +32,12 @@ const jetbrainsMono = JetBrains_Mono({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "M Studio builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. Maine-built, working with clients anywhere.";
+  "M Studio builds custom websites, web apps, and tools, then links your systems together and smooths the workflows behind them—so everything just runs. Built on the coast of Maine, working with clients anywhere.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "M Studio — Websites, automation & systems",
+    default: "M Studio — Websites, tools & linked systems",
     template: "%s · M Studio",
   },
   description: DESCRIPTION,
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "M Studio",
-    title: "M Studio — Websites, automation & systems",
+    title: "M Studio — Websites, tools & linked systems",
     description: DESCRIPTION,
     images: [
       {
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "M Studio — Websites, automation & systems",
+    title: "M Studio — Websites, tools & linked systems",
     description: DESCRIPTION,
   },
   robots: {

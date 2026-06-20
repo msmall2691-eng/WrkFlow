@@ -28,20 +28,21 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
           </span>
-          Maine-built · linked anywhere
+          Built on the Maine coast · linked anywhere
         </p>
 
         <h1 className="display max-w-3xl text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Websites, automations, and systems <br className="hidden sm:block" />
-          that make your business{" "}
-          <span className="shimmer-text">run better.</span>
+          Websites, tools, and workflows,{" "}
+          <br className="hidden sm:block" />
+          <span className="shimmer-text">linked</span> into one system that runs
+          itself.
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          M Studio designs and builds custom websites, links up the automations and
-          integrations behind them, and tightens the workflows you already run—so
-          everything&apos;s linked and the whole operation moves faster, with
-          less manual work.
+          M Studio designs and builds custom websites, web apps, and tools—then
+          links your systems together and smooths the workflows behind them, so the
+          whole thing just runs. Whatever you dream up for how your business should
+          work, we&apos;ll build it—made on the coast of Maine, for clients anywhere.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
