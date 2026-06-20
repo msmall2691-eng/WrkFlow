@@ -11,10 +11,16 @@ export default function Hero() {
         <LiquidChrome palette="ion" intensity={1} />
       </div>
 
-      {/* Left-side darkening so the headline keeps contrast over the metal */}
+      {/* Overall veil — calms the bright chrome so text reads easily while the
+          metal still shows through. Tune opacity here for more/less effect. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-black/40"
+      />
+      {/* Left-side darkening so the headline keeps extra contrast */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/50 via-black/15 to-transparent"
       />
       {/* Bottom fade — dissolves the dark hero into the light page below */}
       <div
@@ -28,13 +34,13 @@ export default function Hero() {
           Web · Automation · Systems Studio
         </p>
 
-        <h1 className="display max-w-4xl text-5xl text-white sm:text-6xl md:text-7xl">
+        <h1 className="display max-w-4xl text-5xl text-white sm:text-6xl md:text-7xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Websites and automations <br className="hidden sm:block" />
           that make your business{" "}
-          <span className="text-[#8aa9ff]">run better.</span>
+          <span className="text-[#a9c2ff]">run better.</span>
         </h1>
 
-        <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
+        <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
           We design and build custom websites, wire up the automations and
           integrations behind them, and tighten the workflows and processes you
           already run—so the whole operation moves faster, with less manual work.
