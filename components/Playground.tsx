@@ -93,7 +93,7 @@ export default function Playground() {
                       key={t.id}
                       type="button"
                       onClick={() => setTool(t.id)}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                      className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
                         tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
                       }`}
                     >

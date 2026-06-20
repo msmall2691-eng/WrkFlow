@@ -27,7 +27,7 @@ export default function Hero() {
           Maine-built · linked anywhere
         </p>
 
-        <h1 className="display max-w-4xl text-5xl text-white sm:text-6xl md:text-7xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+        <h1 className="display max-w-4xl text-4xl text-white sm:text-6xl md:text-7xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Websites, automations, and systems <br className="hidden sm:block" />
           that make your business{" "}
           <span className="text-[#e6b964]">run better.</span>

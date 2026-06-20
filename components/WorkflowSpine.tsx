@@ -48,7 +48,7 @@ export default function WorkflowSpine() {
   return (
     <nav
       aria-label="Page progress"
-      className="fixed left-6 top-1/2 z-40 hidden -translate-y-1/2 xl:block 2xl:left-10"
+      className="fixed left-2 top-1/2 z-40 hidden -translate-y-1/2 lg:block xl:left-6 2xl:left-10"
     >
       <ol className="relative flex flex-col gap-7">
         <span aria-hidden="true" className="absolute left-[5px] bottom-1 top-1 w-px bg-line" />
@@ -63,6 +63,7 @@ export default function WorkflowSpine() {
               type="button"
               onClick={() => go(s.id)}
               aria-current={i === active ? "step" : undefined}
+              title={`${String(i + 1).padStart(2, "0")} · ${s.label}`}
               className="group flex items-center gap-3"
             >
               <span
@@ -71,7 +72,7 @@ export default function WorkflowSpine() {
                 }`}
               />
               <span
-                className={`whitespace-nowrap font-mono text-[10px] uppercase tracking-widest transition-opacity duration-300 ${
+                className={`hidden whitespace-nowrap font-mono text-[10px] uppercase tracking-widest transition-opacity duration-300 xl:inline-block ${
                   i === active ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                 }`}
               >

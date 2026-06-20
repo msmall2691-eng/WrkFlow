@@ -102,7 +102,11 @@ export default function AuroraSwell({
     const onMove = (e: PointerEvent) => { const r = cv.getBoundingClientRect(); m.tx = (e.clientX - r.left) / r.width; m.ty = 1 - (e.clientY - r.top) / r.height; m.on = 1; };
     const onLeave = () => { m.on = 0; };
     const host = cv.parentElement!;
-    host.addEventListener("pointermove", onMove); host.addEventListener("pointerleave", onLeave);
+    const isTouch = matchMedia("(hover: none)").matches;
+    if (!isTouch) {
+      host.addEventListener("pointermove", onMove);
+      host.addEventListener("pointerleave", onLeave);
+    }
 
     let vis = true; const io = new IntersectionObserver(([e]) => { vis = e.isIntersecting; }, { threshold: 0 }); io.observe(cv);
 
