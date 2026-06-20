@@ -1,28 +1,35 @@
 import { founderNote } from "@/lib/content";
 import Reveal from "./Reveal";
 
+/*
+  FounderNote — the one LIGHT section ("fog slate") that breaks the dark run.
+  Cool, not warm: fog-slate field, deep-slate ink, Meg signed + photo-ready.
+*/
 export default function FounderNote() {
   return (
-    <section className="relative border-t border-line py-24 md:py-32">
+    <section className="relative border-y border-black/10 bg-[#c7d5dd] py-20 text-[#16384a] md:py-28">
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             <Reveal>
-              <p className="marker mb-6">// From the founder</p>
+              <p className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[#3a5a6b]">
+                // From the founder
+              </p>
             </Reveal>
             <Reveal delay={120}>
               {/* Swap the monogram for a real photo when ready:
-                  <img src="/meg.jpg" alt="Meg, founder of M Studio" className="h-16 w-16 rounded-full object-cover" /> */}
+                  <img src="/meg.jpg" alt="Meg, founder of M Studio"
+                       className="h-16 w-16 rounded-full object-cover" /> */}
               <div className="flex items-center gap-4">
                 <span
                   aria-hidden="true"
-                  className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-signal/40 bg-signal/10 font-display text-2xl text-signal"
+                  className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#16384a] font-display text-2xl text-white"
                 >
                   M
                 </span>
                 <div>
-                  <p className="font-display text-lg text-ink">Meg</p>
-                  <p className="font-mono text-[11px] uppercase tracking-widest text-faint">
+                  <p className="font-display text-lg text-[#16384a]">Meg</p>
+                  <p className="font-mono text-[11px] uppercase tracking-widest text-[#5b7480]">
                     Founder · M Studio
                   </p>
                 </div>
@@ -31,13 +38,13 @@ export default function FounderNote() {
           </div>
           <div className="md:col-span-8">
             <Reveal delay={80}>
-              <p className="text-xl leading-relaxed text-ink md:text-2xl">
+              <p className="text-xl leading-relaxed text-[#16384a] md:text-2xl">
                 {founderNote}
               </p>
             </Reveal>
             <Reveal delay={160}>
-              <p className="mt-8 font-mono text-sm text-muted">
-                — Meg <span className="text-faint">· Founder, M Studio</span>
+              <p className="mt-8 font-mono text-sm text-[#16384a]">
+                — Meg <span className="text-[#5b7480]">· Founder, M Studio</span>
               </p>
             </Reveal>
           </div>

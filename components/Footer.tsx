@@ -1,13 +1,13 @@
 import Logo from "./Logo";
-import DepthContours from "./DepthContours";
+import FooterWordmark from "./FooterWordmark";
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-line py-14">
-      {/* Faint depth-chart bookend (matches the hero) */}
-      <DepthContours intensity={0.5} />
+    <footer className="relative overflow-hidden border-t border-line py-16 md:py-20">
+      {/* Giant M STUDIO the swell reveals through — fills the dead middle */}
+      <FooterWordmark />
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">

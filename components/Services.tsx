@@ -10,7 +10,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative border-t border-line py-28 md:py-36"
+      className="relative border-t border-line py-20 md:py-28"
     >
       {/* Hairline grid behind the section header */}
       <div
@@ -49,7 +49,11 @@ export default function Services() {
                     onClick={() => setOpen(isOpen ? null : service.id)}
                     aria-expanded={isOpen}
                     aria-controls={`service-panel-${service.id}`}
-                    className="group flex w-full items-center gap-5 py-6 text-left md:gap-8"
+                    className={`group flex w-full items-center gap-5 rounded-lg border-l-2 px-3 py-5 text-left transition-colors md:gap-8 ${
+                      isOpen
+                        ? "border-signal bg-white/[0.03]"
+                        : "border-transparent hover:border-signal/60 hover:bg-white/[0.03]"
+                    }`}
                   >
                     <span className="font-mono text-xs text-faint transition-colors group-hover:text-signal">
                       {service.index}

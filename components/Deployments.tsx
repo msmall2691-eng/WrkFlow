@@ -7,7 +7,7 @@ export default function Deployments() {
   const strip = [...deployments, ...deployments];
 
   return (
-    <section id="live" className="relative border-t border-line py-28 md:py-36">
+    <section id="live" className="relative border-t border-line py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-14 max-w-3xl">
           <Reveal>

@@ -30,7 +30,7 @@ export default function Playground() {
   const activeTool = TOOLS.find((t) => t.id === tool)!;
 
   return (
-    <section id="kit" className="relative pb-28 pt-12 md:pb-36 md:pt-16">
+    <section id="kit" className="relative pb-20 pt-10 md:pb-28 md:pt-12">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <p className="marker mb-6">// Try it live</p>

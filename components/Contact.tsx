@@ -44,7 +44,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-28 md:py-36"
+      className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-20 md:py-28"
     >
       {/* Unified aurora closer — same backdrop as the hero, bookending the page */}
       <Aurora intensity={0.8} />

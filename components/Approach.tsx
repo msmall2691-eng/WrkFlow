@@ -5,7 +5,7 @@ export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative border-t border-line py-28 md:py-36"
+      className="relative border-t border-line py-20 md:py-28"
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-16 max-w-3xl">

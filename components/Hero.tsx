@@ -1,29 +1,24 @@
-import DepthContours from "./DepthContours";
+import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
 
 export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#08131d]"
+      className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#08131d]"
     >
-      {/* Nautical depth-chart backdrop — warps + brightens toward the cursor */}
-      <DepthContours intensity={1} />
+      {/* Aurora Swell — undulating wave-band shader; warps + brightens at cursor */}
+      <AuroraSwell intensity={1} speed={0.9} />
 
-      {/* Soft radial lift behind the headline so the copy sits forward */}
+      {/* Diagonal scrim — keeps the bright swell on the text-free side */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_75%_at_28%_45%,rgba(4,6,12,0.78)_0%,rgba(4,6,12,0.25)_55%,transparent_78%)]"
-      />
-      {/* Left scrim for extra headline contrast */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-black/10 to-transparent"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,12,22,0.86)_0%,rgba(6,12,22,0.55)_40%,rgba(6,12,22,0)_72%)]"
       />
       {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-[#08131d]/80 to-[var(--color-base)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[#08131d]/80 to-[var(--color-base)]"
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
