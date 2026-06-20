@@ -1,5 +1,6 @@
 import { founderNote } from "@/lib/content";
 import Reveal from "./Reveal";
+import FounderAvatar from "./FounderAvatar";
 
 /*
   FounderNote — the one LIGHT section ("fog slate") that breaks the dark run.
@@ -17,16 +18,9 @@ export default function FounderNote() {
               </p>
             </Reveal>
             <Reveal delay={120}>
-              {/* Swap the monogram for a real photo when ready:
-                  <img src="/meg.jpg" alt="Meg, founder of M Studio"
-                       className="h-16 w-16 rounded-full object-cover" /> */}
+              {/* Drop a square photo at public/meg.jpg and it replaces the monogram. */}
               <div className="flex items-center gap-4">
-                <span
-                  aria-hidden="true"
-                  className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#16384a] font-display text-2xl text-white"
-                >
-                  M
-                </span>
+                <FounderAvatar />
                 <div>
                   <p className="font-display text-lg text-[#16384a]">Meg</p>
                   <p className="font-mono text-[11px] uppercase tracking-widest text-[#5b7480]">
