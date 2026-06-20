@@ -31,7 +31,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#top" aria-label="Tide & True Studios — home">
+        <a href="#top" aria-label="MSTUDIO — home">
           <Logo tag tone={scrolled ? "dark" : "light"} />
         </a>
 

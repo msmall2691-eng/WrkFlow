@@ -1,6 +1,6 @@
-# Tide & True Studios
+# MSTUDIO
 
-Marketing site for **Tide & True Studios** — a web, automation & systems studio
+Marketing site for **MSTUDIO** — a web, automation & systems studio
 that designs and builds custom websites, workflow automations, and the systems
 behind them (CRMs, databases, dashboards, AI agents), and optimizes the processes
 a business already runs on, so the whole operation runs faster and cleaner.
@@ -68,10 +68,10 @@ re-tuned in one place during iteration.
 ## Iteration backlog
 
 - ~~Hero headline~~ — "Own the systems your business runs on."
-- ~~Logo / wordmark treatment~~ — `TIDE&True / Studios` monospace wordmark
+- ~~Logo / wordmark treatment~~ — `MSTUDIO / Studios` monospace wordmark
 - **Accent color** — Ion Blue `#2563eb` is live; revisiting per v2 (cyan / lime / amber options)
 - **Hero motion** — confirm line-field vs. grid vs. subtler
-- **Domain** — `tideandtrue.co` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up
+- **Domain** — `mstudio.co` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up
 - **Founder reveal** — currently names The Maine Cleaning Company (Option A); toggle via `provingGroundCompany` in `lib/content.ts`
 - **Work repos** — confirm `autopilot`, `elite-service-suite`, `align`; decide if `BrightBase` is the flagship card
 - Whether to fold **Operational Dashboards** into the CRM/data pillar (7 → 6)

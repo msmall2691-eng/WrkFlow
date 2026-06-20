@@ -21,16 +21,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 // Canonical/OG base. Using the live Vercel URL until the brand domain
-// (tideandtrue.co) is wired up — then swap this single constant.
+// (mstudio.co) is wired up — then swap this single constant.
 const SITE_URL = "https://wrk-flow.vercel.app";
 const DESCRIPTION =
-  "Tide & True Studios builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. New England roots, modern tech.";
+  "MSTUDIO builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. New England roots, modern tech.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Tide & True Studios — Websites, automation & systems",
-    template: "%s · Tide & True Studios",
+    default: "MSTUDIO — Websites, automation & systems",
+    template: "%s · MSTUDIO",
   },
   description: DESCRIPTION,
   keywords: [
@@ -43,25 +43,25 @@ export const metadata: Metadata = {
     "business systems",
     "Maine web design",
   ],
-  authors: [{ name: "Tide & True Studios" }],
+  authors: [{ name: "MSTUDIO" }],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Tide & True Studios",
-    title: "Tide & True Studios — Websites, automation & systems",
+    siteName: "MSTUDIO",
+    title: "MSTUDIO — Websites, automation & systems",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Tide & True Studios",
+        alt: "MSTUDIO",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tide & True Studios — Websites, automation & systems",
+    title: "MSTUDIO — Websites, automation & systems",
     description: DESCRIPTION,
   },
   robots: {

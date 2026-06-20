@@ -90,10 +90,10 @@ export default function Contact() {
               <p className="mt-8 font-mono text-xs uppercase tracking-widest text-white/50">
                 Direct ·{" "}
                 <a
-                  href="mailto:hello@tideandtrue.co"
+                  href="mailto:hello@mstudio.co"
                   className="text-white/75 transition-colors hover:text-[#a9c2ff]"
                 >
-                  hello@tideandtrue.co
+                  hello@mstudio.co
                 </a>
               </p>
             </Reveal>

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Tide & True Studios — Websites, automations & systems that run better";
+export const alt = "MSTUDIO — Websites, automations & systems that run better";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -69,9 +69,9 @@ export default function OpengraphImage() {
               letterSpacing: 4,
             }}
           >
-            TIDE&True Studios
+            MSTUDIO
           </span>
-          <span>tideandtrue.co</span>
+          <span>mstudio.co</span>
         </div>
       </div>
     ),
