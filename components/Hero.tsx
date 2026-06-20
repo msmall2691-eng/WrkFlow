@@ -16,12 +16,12 @@ export default function Hero() {
       {/* Soft radial lift behind the headline so the copy sits forward */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_70%_at_30%_45%,rgba(0,0,0,0.55)_0%,transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(65%_75%_at_28%_45%,rgba(4,6,12,0.78)_0%,rgba(4,6,12,0.25)_55%,transparent_78%)]"
       />
       {/* Left scrim for extra headline contrast */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-black/10 to-transparent"
       />
       {/* Bottom fade — dissolves the dark hero into the light page below */}
       <div
