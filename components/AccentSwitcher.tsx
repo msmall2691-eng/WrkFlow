@@ -3,22 +3,24 @@
 import { useEffect, useState } from "react";
 
 /*
-  Preview-only accent comparison tool. Lets us evaluate accent colors on the
-  real site, in context. Hidden on the production domain (hostname-gated), so
-  it only appears on Vercel previews and local dev. Setting an accent updates
-  the CSS variables and fires "accentchange" so the canvas grid re-reads it.
+  AccentSwitcher — a public "make it yours" accent picker.
+
+  Lets any visitor recolor the site's accent live (updates the --color-signal
+  CSS variables that drive buttons, links, markers, toggles, sliders, etc.).
+  The choice is saved to localStorage so it sticks on return visits.
 */
 
 type Accent = { name: string; signal: string; dim: string };
 
 const ACCENTS: Accent[] = [
-  { name: "Ion Blue", signal: "#3b8cff", dim: "#2f74d9" },
-  { name: "Signal Cyan", signal: "#2de2c4", dim: "#1aa890" },
-  { name: "Electric Lime", signal: "#9ef01a", dim: "#7bc70f" },
-  { name: "Warm Amber", signal: "#ffb020", dim: "#d98b0a" },
+  { name: "Sea Glass", signal: "#16a394", dim: "#0e8f86" },
+  { name: "Harbor", signal: "#2f6df0", dim: "#1f54c9" },
+  { name: "Brass", signal: "#d9a441", dim: "#b9842b" },
+  { name: "Coral", signal: "#f4623a", dim: "#d94f2b" },
+  { name: "Orchid", signal: "#8b5cf6", dim: "#7c3aed" },
+  { name: "Rose", signal: "#f43f5e", dim: "#e11d48" },
 ];
-
-const PRODUCTION_HOSTS = ["mlinx.studio", "www.mlinx.studio", "wrk-flow.vercel.app"];
+const KEY = "mstudio-accent";
 
 function hexToRgb(hex: string) {
   const h = hex.replace("#", "");
@@ -30,47 +32,87 @@ function hexToRgb(hex: string) {
 }
 
 export default function AccentSwitcher() {
-  const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    setShow(!PRODUCTION_HOSTS.includes(window.location.hostname));
-  }, []);
-
-  if (!show) return null;
-
-  const apply = (i: number) => {
+  const apply = (i: number, persist = true) => {
     const a = ACCENTS[i];
     const root = document.documentElement.style;
     root.setProperty("--color-signal", a.signal);
     root.setProperty("--color-signal-dim", a.dim);
     const { r, g, b } = hexToRgb(a.signal);
-    root.setProperty("--color-signal-glow", `rgba(${r}, ${g}, ${b}, 0.14)`);
+    root.setProperty("--color-signal-glow", `rgba(${r}, ${g}, ${b}, 0.16)`);
     setActive(i);
+    if (persist) {
+      try {
+        localStorage.setItem(KEY, String(i));
+      } catch {
+        /* ignore */
+      }
+    }
     window.dispatchEvent(new Event("accentchange"));
   };
 
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (raw != null) {
+        const i = Number(raw);
+        if (ACCENTS[i]) apply(i, false);
+      }
+    } catch {
+      /* ignore */
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="fixed bottom-4 left-4 z-[100] rounded-xl border border-line bg-surface/90 p-3 backdrop-blur-md">
-      <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
-        Preview · accent
-      </p>
-      <div className="flex items-center gap-2">
-        {ACCENTS.map((a, i) => (
-          <button
-            key={a.name}
-            type="button"
-            onClick={() => apply(i)}
-            title={a.name}
-            aria-label={`Set accent to ${a.name}`}
-            className={`h-6 w-6 rounded-full transition-transform hover:scale-110 ${
-              active === i ? "ring-2 ring-ink ring-offset-2 ring-offset-surface" : ""
-            }`}
-            style={{ backgroundColor: a.signal }}
-          />
-        ))}
-      </div>
-      <p className="mt-2 font-mono text-[10px] text-muted">{ACCENTS[active].name}</p>
+    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end">
+      {open && (
+        <div className="mb-3 w-56 rounded-2xl border border-line bg-surface/95 p-4 shadow-2xl backdrop-blur-md">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-faint">
+            Make it yours · accent
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {ACCENTS.map((a, i) => (
+              <button
+                key={a.name}
+                type="button"
+                onClick={() => apply(i)}
+                title={a.name}
+                className={`flex flex-col items-center gap-1.5 rounded-lg p-2 transition-colors hover:bg-white/5 ${
+                  active === i ? "bg-white/5" : ""
+                }`}
+              >
+                <span
+                  className={`h-7 w-7 rounded-full ring-2 ring-offset-2 ring-offset-surface transition ${
+                    active === i ? "ring-ink" : "ring-transparent"
+                  }`}
+                  style={{ backgroundColor: a.signal }}
+                />
+                <span className="text-[10px] text-muted">{a.name}</span>
+              </button>
+            ))}
+          </div>
+          <p className="mt-3 text-[10px] leading-relaxed text-faint">
+            Saved on this device. (Yep—we build little touches like this.)
+          </p>
+        </div>
+      )}
+
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-label="Change accent color"
+        aria-expanded={open}
+        className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/90 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-muted shadow-lg backdrop-blur-md transition-colors hover:text-ink"
+      >
+        <span
+          className="h-3.5 w-3.5 rounded-full ring-2 ring-offset-1 ring-offset-surface"
+          style={{ backgroundColor: ACCENTS[active].signal, color: ACCENTS[active].signal }}
+        />
+        Theme
+      </button>
     </div>
   );
 }
