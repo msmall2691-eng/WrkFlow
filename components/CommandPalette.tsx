@@ -46,26 +46,8 @@ export default function CommandPalette() {
       { id: "shift", label: "The shift", group: "Navigate", keywords: "why now", run: go("shift") },
       { id: "who", label: "Who it's for", group: "Navigate", keywords: "audience fit", run: go("whofor") },
       { id: "work", label: "Shipped & live", group: "Navigate", keywords: "work showcase portfolio", run: go("live") },
-      { id: "how", label: "How we wire it up", group: "Navigate", keywords: "automation flow pipeline diagram", run: go("how") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
-      {
-        id: "run-demo",
-        label: "Run the automation demo",
-        hint: "▸",
-        group: "Actions",
-        keywords: "pipeline flow play",
-        run: () => {
-          close();
-          scrollToId("how");
-          setTimeout(() => {
-            const btn = Array.from(document.querySelectorAll<HTMLButtonElement>("#how button")).find(
-              (b) => /run it/i.test(b.textContent ?? ""),
-            );
-            btn?.click();
-          }, 700);
-        },
-      },
       {
         id: "contact",
         label: "Start a conversation",

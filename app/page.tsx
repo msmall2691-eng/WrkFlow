@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import Shift from "@/components/Shift";
 import WhoFor from "@/components/WhoFor";
 import Deployments from "@/components/Deployments";
-import FlowDiagram from "@/components/FlowDiagram";
 import Services from "@/components/Services";
 import Approach from "@/components/Approach";
 import FounderNote from "@/components/FounderNote";
@@ -21,7 +20,6 @@ export default function Home() {
         <Shift />
         <WhoFor />
         <Deployments />
-        <FlowDiagram />
         <Services />
         <Approach />
         <FounderNote />
