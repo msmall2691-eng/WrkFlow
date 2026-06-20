@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import Reveal from "./Reveal";
-import SystemsField from "./SystemsField";
 import Aurora from "./Aurora";
 
 /*
@@ -105,11 +104,8 @@ export default function Dashboard() {
 
   return (
     <section id="dash" className="relative overflow-hidden bg-[#04060c] py-28 md:py-36">
-      {/* Chromatic aurora + systems-network background (matches the hero) */}
-      <Aurora intensity={0.7} />
-      <div className="absolute inset-0 opacity-50">
-        <SystemsField density={0.55} />
-      </div>
+      {/* Unified chromatic aurora (matches the hero), with a veil so cards pop */}
+      <Aurora intensity={0.85} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/55" />
       <div
         aria-hidden="true"

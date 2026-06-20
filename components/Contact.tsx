@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
-import LiquidChrome from "./LiquidChrome";
+import Aurora from "./Aurora";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -45,10 +45,8 @@ export default function Contact() {
       id="contact"
       className="relative overflow-hidden border-t border-white/10 bg-[#05070d] py-28 md:py-36"
     >
-      {/* Liquid Chrome closer — bookends the page with the hero's effect */}
-      <div className="absolute inset-0">
-        <LiquidChrome palette="ion" intensity={0.5} speed={0.38} />
-      </div>
+      {/* Unified aurora closer — same backdrop as the hero, bookending the page */}
+      <Aurora intensity={0.9} />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-black/55"

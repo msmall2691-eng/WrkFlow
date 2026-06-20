@@ -1,17 +1,18 @@
 /*
-  Aurora — a slow chromatic gradient backdrop for dark sections.
+  Aurora — the unified chromatic backdrop for every dark section.
 
-  Drifting blurred blobs in the brand spectrum (ion blue → indigo → cyan →
-  coastal teal), blended additively over a dark background. Gives the hero and
-  dashboard a living, premium glow that ties the whole dark theme together.
-  Decorative only; honors reduced-motion via the .aurora-blob CSS.
+  Drifting blurred blobs in a "sunset over the harbor" palette (harbor blue +
+  dusk indigo anchoring the lower field, warm amber/orange/rose glowing above),
+  blended additively over a deep-navy base. One calm, premium, readable look
+  shared by the hero, dashboard, and contact closer. Honors reduced-motion.
 */
 
 const BLOBS = [
-  { c: "#2563eb", size: "46vw", top: "-12%", left: "-6%", anim: "auroraA 24s ease-in-out infinite", op: 0.5 },
-  { c: "#6366f1", size: "40vw", top: "18%", left: "52%", anim: "auroraB 30s ease-in-out infinite", op: 0.42 },
-  { c: "#22d3ee", size: "34vw", top: "52%", left: "8%", anim: "auroraC 28s ease-in-out infinite", op: 0.34 },
-  { c: "#14b8a6", size: "30vw", top: "40%", left: "68%", anim: "auroraA 26s ease-in-out infinite reverse", op: 0.3 },
+  { c: "#2563eb", size: "50vw", top: "-16%", left: "-10%", anim: "auroraA 26s ease-in-out infinite", op: 0.5 },
+  { c: "#4338ca", size: "44vw", top: "38%", left: "-12%", anim: "auroraC 32s ease-in-out infinite", op: 0.4 },
+  { c: "#f59e0b", size: "40vw", top: "-12%", left: "54%", anim: "auroraB 28s ease-in-out infinite", op: 0.34 },
+  { c: "#f97316", size: "34vw", top: "46%", left: "60%", anim: "auroraA 24s ease-in-out infinite reverse", op: 0.3 },
+  { c: "#fb7185", size: "28vw", top: "60%", left: "30%", anim: "auroraB 34s ease-in-out infinite", op: 0.22 },
 ];
 
 export default function Aurora({

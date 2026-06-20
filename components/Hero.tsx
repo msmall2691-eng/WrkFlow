@@ -1,4 +1,3 @@
-import SystemsField from "./SystemsField";
 import Aurora from "./Aurora";
 
 export default function Hero() {
@@ -7,15 +6,8 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#04060c]"
     >
-      {/* Chromatic aurora glow — the living, on-theme backdrop */}
+      {/* Unified chromatic aurora — calm sunset-over-the-harbor backdrop */}
       <Aurora />
-
-      {/* Connected-systems network — calm nodes + signal pulses flowing edge to
-          edge, like jobs moving through an automation. Reads as systems, stays
-          dark for readability. */}
-      <div className="absolute inset-0">
-        <SystemsField density={1} />
-      </div>
 
       {/* Soft radial lift behind the headline so the copy sits forward */}
       <div
