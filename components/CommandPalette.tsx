@@ -49,6 +49,17 @@ export default function CommandPalette() {
       { id: "kit", label: "Try it live (tools + automations)", group: "Navigate", keywords: "demos try tools calculator quote rate signature automation workflow lead intake", run: go("kit") },
       { id: "dash", label: "Rental dashboard", group: "Navigate", keywords: "dashboard analytics airbnb vrbo command center calendar sync revenue", run: go("dash") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
+      {
+        id: "marketplace",
+        label: "Marketplace",
+        hint: "↗",
+        group: "Navigate",
+        keywords: "buy templates tools premade store shop products embed",
+        run: () => {
+          close();
+          window.location.href = "/marketplace";
+        },
+      },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
       {
         id: "contact",

@@ -5,12 +5,12 @@ import Logo from "./Logo";
 import Magnetic from "./Magnetic";
 
 const links = [
-  { href: "#shift", label: "Why now" },
-  { href: "#kit", label: "Demos" },
-  { href: "#dash", label: "Dashboard" },
-  { href: "#live", label: "Work" },
-  { href: "#services", label: "Services" },
-  { href: "#approach", label: "Approach" },
+  { href: "/#shift", label: "Why now" },
+  { href: "/#kit", label: "Demos" },
+  { href: "/#live", label: "Work" },
+  { href: "/#services", label: "Services" },
+  { href: "/marketplace", label: "Marketplace" },
+  { href: "/#approach", label: "Approach" },
 ];
 
 export default function Nav() {
@@ -34,7 +34,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#top" aria-label="M Studio — home" onClick={() => setMenuOpen(false)}>
+        <a href="/" aria-label="M Studio — home" onClick={() => setMenuOpen(false)}>
           <Logo tag tone={solid ? "dark" : "light"} />
         </a>
 
@@ -55,7 +55,7 @@ export default function Nav() {
         <div className="flex items-center gap-3">
           <Magnetic strength={0.4} className="hidden sm:inline-block">
             <a
-              href="#contact"
+              href="/#contact"
               className={`inline-block rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
                 scrolled
                   ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
@@ -101,7 +101,7 @@ export default function Nav() {
                 </a>
               ))}
               <a
-                href="#contact"
+                href="/#contact"
                 onClick={() => setMenuOpen(false)}
                 className="mt-4 inline-flex items-center justify-center rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white"
               >

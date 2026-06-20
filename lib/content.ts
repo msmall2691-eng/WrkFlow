@@ -18,6 +18,17 @@ export const whoIsItFor =
 export const founderNote = `M Studio started inside a real service business on the coast of Maine. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. M Studio is that same work—custom websites, automations, and the systems behind them, built to fit—offered to the businesses that would rather run on something made for them.`;
 
 
+export type ServiceExample = {
+  /** Short client/project label shown on the example card. */
+  client: string;
+  /** One-line description of what was built for this service. */
+  built: string;
+  /** A concrete, numeric-where-possible result. */
+  result: string;
+  /** Optional screenshot in /shots. When absent, a "case note" card renders. */
+  shot?: string;
+};
+
 export type Service = {
   id: string;
   index: string;
@@ -30,6 +41,8 @@ export type Service = {
   pain: string;
   /** What changes after. */
   outcome: string;
+  /** A real example of this service in the wild. */
+  example: ServiceExample;
 };
 
 export const services: Service[] = [
@@ -44,6 +57,12 @@ export const services: Service[] = [
       "Drag-and-drop builders look like everyone else and box you in the moment you need something specific. Agencies hand back a site you can't edit and don't really own. And almost nobody wires up the hosting, domain, and integrations so the thing just runs.",
     outcome:
       "A fast, custom site or app you own outright—fully set up, connected to the rest of your systems, and live. No monthly hostage situation, no logging a ticket to change a word.",
+    example: {
+      client: "The Maine Cleaning Co.",
+      built: "Custom marketing site with instant online quoting and booking, wired to the back-office system.",
+      result: "Quote-to-booking handled on the site itself—no phone tag.",
+      shot: "/shots/maineclean.png",
+    },
   },
   {
     id: "automation",
@@ -56,6 +75,12 @@ export const services: Service[] = [
       "Information gets copy-pasted between apps, re-keyed into spreadsheets, and dropped in the cracks between systems that were never meant to talk to each other.",
     outcome:
       "Records flow automatically from one system to the next. The double-entry disappears, the errors that came with it disappear, and your team gets the hours back.",
+    example: {
+      client: "Autopilot",
+      built: "New booking fires a chain: customer confirmation, calendar hold, crew assignment, and a follow-up review request—untouched by hand.",
+      result: "Hours of weekly admin handed off to automation.",
+      shot: "/shots/autopilot.png",
+    },
   },
   {
     id: "crm",
@@ -68,6 +93,12 @@ export const services: Service[] = [
       "Off-the-shelf tools force you to bend your process to fit their forms, then charge a monthly per-seat ransom for the privilege. The data you need lives in the gaps their software never anticipated.",
     outcome:
       "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no recurring per-seat tax on growth.",
+    example: {
+      client: "Remote Admin",
+      built: "A custom customer + job database with exactly the fields the work uses—accessible from anywhere, owned outright.",
+      result: "One source of truth replacing scattered spreadsheets.",
+      shot: "/shots/remote-admin.png",
+    },
   },
   {
     id: "ai-agents",
@@ -80,6 +111,12 @@ export const services: Service[] = [
       "Generic AI tools either do too little to matter or too much to trust. The repetitive thinking work—reading, sorting, drafting the same replies—still eats hours every week.",
     outcome:
       "The routine handled in the background and surfaced for approval. Faster responses, less manual drafting, and a human firmly in control of every decision that counts.",
+    example: {
+      client: "Instant Estimate",
+      built: "An AI intake layer that reads inbound requests, drafts a quote and a reply, and queues both for one-click owner approval.",
+      result: "Same-day replies, drafted automatically, approved by a human.",
+      shot: "/shots/instant-estimate.png",
+    },
   },
   {
     id: "dashboards",
@@ -92,6 +129,12 @@ export const services: Service[] = [
       "Answering a simple question—how's this month tracking?—means opening five tools, exporting three spreadsheets, and reconciling them by hand. By the time you know, it's old news.",
     outcome:
       "A live picture of the business at a glance. The right numbers, current, in one place—so decisions get made on what's happening now, not last month's export.",
+    example: {
+      client: "BrightBase",
+      built: "An operations command center pulling jobs, revenue, occupancy, and crew into one live view—the same kind of dashboard demoed on this site.",
+      result: "The whole operation visible at a glance, in real time.",
+      shot: "/shots/brightbase-dashboard.png",
+    },
   },
   {
     id: "audit",
@@ -104,6 +147,11 @@ export const services: Service[] = [
       "Most operations grow by accretion: tools bolted on over years, steps nobody remembers adding, integrations that fail without anyone noticing. The drag is invisible until it isn't.",
     outcome:
       "A precise map of your systems and processes, and a ranked list of what to fix first. No jargon, no fear-mongering—just the facts and a sensible order of operations.",
+    example: {
+      client: "Operations review",
+      built: "A full walk-through of an operator's tools and handoffs—mapping where data leaked, where steps doubled up, and where time quietly vanished.",
+      result: "A ranked, plain-English fix-it plan—biggest wins first.",
+    },
   },
   {
     id: "migration",
@@ -116,6 +164,12 @@ export const services: Service[] = [
       "You're locked in by years of accumulated data and the fear of losing it. Every month you stay, the subscription climbs and the software still doesn't fit.",
     outcome:
       "A clean cutover to a system built around your real process, with your customers, jobs, and records carried over faithfully. The lock-in is gone for good.",
+    example: {
+      client: "BrightBase turnovers",
+      built: "Moved scheduling and turnover tracking off a rigid SaaS platform onto an owned system—full history migrated intact.",
+      result: "Off the monthly subscription, history kept in full.",
+      shot: "/shots/brightbase-turnovers.png",
+    },
   },
   {
     id: "data-cleanup",
@@ -128,6 +182,11 @@ export const services: Service[] = [
       "The same customer exists three times with three spellings. Reports contradict each other. Every automation built on this foundation inherits the mess and quietly compounds it.",
     outcome:
       "Clean, consistent, deduplicated data in one place. Reports you can trust and automations that finally run on a foundation that's actually solid.",
+    example: {
+      client: "Customer list cleanup",
+      built: "Merged duplicate customer records across systems, normalized formats, and validated contact data into one reliable list.",
+      result: "Thousands of records de-duplicated into one clean source.",
+    },
   },
 ];
 
@@ -161,21 +220,172 @@ export const approachSteps: ApproachStep[] = [
 ];
 
 export type Deployment = {
-  /** For alt text / aria only — not shown on the card. */
   title: string;
+  /** Short kind/category tag. */
+  kind: string;
+  /** One-line outcome shown under the title. */
+  blurb: string;
   shot: string; // /shots/*.png screenshot
 };
 
 /*
-  Live, deployed projects shown as a sliding strip of preview cards — visual
-  only. No URLs or outbound links (intentional). Screenshots captured from the
-  real deployments / portfolio replicas.
+  Selected work — a readable, captioned grid of real, shipped projects (no
+  outbound links by intent). Screenshots captured from the live deployments.
 */
 export const deployments: Deployment[] = [
-  { title: "The Maine Cleaning Co.", shot: "/shots/maineclean.png" },
-  { title: "Instant Estimate — live quoting tool", shot: "/shots/instant-estimate.png" },
-  { title: "BrightBase — operations command center", shot: "/shots/brightbase-dashboard.png" },
-  { title: "BrightBase — automated turnover scheduling", shot: "/shots/brightbase-turnovers.png" },
-  { title: "Remote Admin", shot: "/shots/remote-admin.png" },
-  { title: "Autopilot", shot: "/shots/autopilot.png" },
+  {
+    title: "The Maine Cleaning Co.",
+    kind: "Website & web app",
+    blurb: "Custom marketing site with instant online quoting and booking, wired straight into the back office.",
+    shot: "/shots/maineclean.png",
+  },
+  {
+    title: "BrightBase",
+    kind: "Operational dashboard",
+    blurb: "An operations command center—jobs, revenue, occupancy, and crew in one live view.",
+    shot: "/shots/brightbase-dashboard.png",
+  },
+  {
+    title: "Instant Estimate",
+    kind: "Web app + AI intake",
+    blurb: "A live quoting tool that reads requests, drafts the estimate, and queues a reply for approval.",
+    shot: "/shots/instant-estimate.png",
+  },
+  {
+    title: "Remote Admin",
+    kind: "Custom CRM & database",
+    blurb: "A purpose-built customer and job database, owned outright and reachable from anywhere.",
+    shot: "/shots/remote-admin.png",
+  },
+  {
+    title: "Autopilot",
+    kind: "Workflow automation",
+    blurb: "Booking-to-follow-up flows that run themselves—confirmations, scheduling, and review requests.",
+    shot: "/shots/autopilot.png",
+  },
+  {
+    title: "BrightBase Turnovers",
+    kind: "Migration & scheduling",
+    blurb: "Turnover scheduling moved off a rigid SaaS platform onto an owned system, history intact.",
+    shot: "/shots/brightbase-turnovers.png",
+  },
+];
+
+/*
+  Marketplace — premade tools and starter sites a visitor can buy or embed.
+  Models:
+    • "template"  — a starter site/app you buy once and own (done-for-you setup).
+    • "embed"     — a hosted widget you drop into an existing site (small monthly).
+    • "open"      — free / open-source starter, kept as a lead-in.
+  Pricing here is indicative; CTAs route to contact rather than live checkout.
+*/
+export type MarketItemModel = "template" | "embed" | "open";
+
+export type MarketItem = {
+  id: string;
+  name: string;
+  model: MarketItemModel;
+  /** Short category, e.g. "Website" / "Tool" / "Automation". */
+  category: string;
+  tagline: string;
+  /** 3–4 bullets of what's included. */
+  includes: string[];
+  /** Indicative price label, e.g. "$1,200 one-time" or "$19/mo". */
+  price: string;
+  /** True for the highlighted / recommended card. */
+  featured?: boolean;
+};
+
+export const marketModelLabels: Record<MarketItemModel, string> = {
+  template: "Buy & own",
+  embed: "Embed / hosted",
+  open: "Free / open-source",
+};
+
+export const marketItems: MarketItem[] = [
+  {
+    id: "service-site",
+    name: "Service Business Site",
+    model: "template",
+    category: "Website",
+    tagline: "A fast, custom marketing site for trades and service companies—yours to own.",
+    includes: [
+      "Custom design + copy structure",
+      "Instant-quote + contact forms wired up",
+      "Hosting, domain & analytics set up",
+      "You own the code outright",
+    ],
+    price: "from $1,800 one-time",
+    featured: true,
+  },
+  {
+    id: "booking-app",
+    name: "Booking & Scheduling App",
+    model: "template",
+    category: "Web app",
+    tagline: "A client-facing booking flow with an owner calendar and confirmations.",
+    includes: [
+      "Online booking + availability",
+      "Automated email/text confirmations",
+      "Owner calendar + admin view",
+      "Connects to your existing tools",
+    ],
+    price: "from $2,400 one-time",
+  },
+  {
+    id: "quote-widget",
+    name: "Instant Quote Widget",
+    model: "embed",
+    category: "Tool",
+    tagline: "Drop the live quoting tool from this site straight into your own.",
+    includes: [
+      "Embeddable estimate calculator",
+      "Your pricing + branding",
+      "Leads emailed to you on submit",
+      "One line of code to install",
+    ],
+    price: "$29/mo",
+  },
+  {
+    id: "dashboard-starter",
+    name: "Ops Dashboard Starter",
+    model: "template",
+    category: "Dashboard",
+    tagline: "The command-center dashboard, set up around your numbers.",
+    includes: [
+      "Live KPIs, jobs & revenue views",
+      "Connected to your data sources",
+      "Hosted or self-hosted—your call",
+      "Built to extend later",
+    ],
+    price: "from $2,000 one-time",
+  },
+  {
+    id: "automation-pack",
+    name: "Automation Starter Pack",
+    model: "embed",
+    category: "Automation",
+    tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
+    includes: [
+      "Confirmation + reminder flows",
+      "Review-request follow-ups",
+      "Lead-to-CRM sync",
+      "Tuned to your tools",
+    ],
+    price: "from $39/mo",
+  },
+  {
+    id: "calc-kit",
+    name: "Calculator & Tools Kit",
+    model: "open",
+    category: "Tool",
+    tagline: "The free calculators on this site—use them, or take the source.",
+    includes: [
+      "Quote, rate & signature tools",
+      "Free to use, right now",
+      "Open-source starter on request",
+      "A friendly way to say hello",
+    ],
+    price: "Free",
+  },
 ];

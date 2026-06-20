@@ -26,17 +26,22 @@ export default function Footer() {
               </p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <a href="#services" className="text-muted transition-colors hover:text-ink">
+                  <a href="/#services" className="text-muted transition-colors hover:text-ink">
                     Services
                   </a>
                 </li>
                 <li>
-                  <a href="#approach" className="text-muted transition-colors hover:text-ink">
+                  <a href="/marketplace" className="text-muted transition-colors hover:text-ink">
+                    Marketplace
+                  </a>
+                </li>
+                <li>
+                  <a href="/#approach" className="text-muted transition-colors hover:text-ink">
                     Approach
                   </a>
                 </li>
                 <li>
-                  <a href="#live" className="text-muted transition-colors hover:text-ink">
+                  <a href="/#live" className="text-muted transition-colors hover:text-ink">
                     Work
                   </a>
                 </li>
@@ -65,7 +70,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="text-signal transition-opacity hover:opacity-80">
+                  <a href="/#contact" className="text-signal transition-opacity hover:opacity-80">
                     Start a conversation
                   </a>
                 </li>

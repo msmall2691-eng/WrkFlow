@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Reveal from "./Reveal";
 import { Label, Slider, Seg, Toggle } from "./KitUI";
+import SaveResult from "./SaveResult";
+import { useLocalStorage } from "@/lib/useLocalStorage";
 
 /*
   QuoteCalc — an instant service-quote estimator (Playground tool).
@@ -36,17 +37,31 @@ type Addons = { fridge: boolean; oven: boolean; windows: boolean; laundry: boole
 const money = (n: number) => `$${Math.round(n)}`;
 
 export default function QuoteCalc() {
-  const [service, setService] = useState<Service>("standard");
-  const [beds, setBeds] = useState(3);
-  const [baths, setBaths] = useState(2);
-  const [freq, setFreq] = useState<Freq>("biweekly");
-  const [addons, setAddons] = useState<Addons>({ fridge: false, oven: false, windows: false, laundry: false });
+  const [service, setService] = useLocalStorage<Service>("tool-quote-service", "standard");
+  const [beds, setBeds] = useLocalStorage("tool-quote-beds", 3);
+  const [baths, setBaths] = useLocalStorage("tool-quote-baths", 2);
+  const [freq, setFreq] = useLocalStorage<Freq>("tool-quote-freq", "biweekly");
+  const [addons, setAddons] = useLocalStorage<Addons>("tool-quote-addons", { fridge: false, oven: false, windows: false, laundry: false });
 
   const addonTotal = ADDONS.reduce((s, a) => (addons[a.key] ? s + a.price : s), 0);
   const subtotal = SERVICE[service].base + beds * 18 + baths * 22 + addonTotal;
   const total = subtotal * (1 - FREQ[freq].off);
   const low = total * 0.92;
   const high = total * 1.08;
+
+  const chosenAddons = ADDONS.filter((a) => addons[a.key]).map((a) => a.label);
+  const summary = [
+    "M Studio — Instant Quote",
+    "",
+    `Service:    ${SERVICE[service].label}`,
+    `Home:       ${beds} bed · ${baths} bath`,
+    `Frequency:  ${FREQ[freq].label}${FREQ[freq].off > 0 ? ` (${Math.round(FREQ[freq].off * 100)}% recurring discount)` : ""}`,
+    `Add-ons:    ${chosenAddons.length ? chosenAddons.join(", ") : "none"}`,
+    "",
+    `Estimated:  ${money(low)}–${money(high)}`,
+    "",
+    "Estimate generated at mlinx.studio",
+  ].join("\n");
 
   return (
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
@@ -79,6 +94,8 @@ export default function QuoteCalc() {
             >
               Request this quote →
             </a>
+
+            <SaveResult summary={summary} filename="mstudio-quote" />
           </div>
         </div>
       </Reveal>

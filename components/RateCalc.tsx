@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Reveal from "./Reveal";
 import { Label, Slider } from "./KitUI";
+import SaveResult from "./SaveResult";
+import { useLocalStorage } from "@/lib/useLocalStorage";
 
 /*
   RateCalc — a "what should I charge?" calculator (Playground tool).
@@ -15,11 +16,11 @@ const money = (n: number) =>
   isFinite(n) ? `$${Math.round(n).toLocaleString()}` : "—";
 
 export default function RateCalc() {
-  const [takeHome, setTakeHome] = useState(75000);
-  const [expenses, setExpenses] = useState(12000);
-  const [hoursPerWeek, setHoursPerWeek] = useState(25);
-  const [weeksOff, setWeeksOff] = useState(4);
-  const [buffer, setBuffer] = useState(25);
+  const [takeHome, setTakeHome] = useLocalStorage("tool-rate-takehome", 75000);
+  const [expenses, setExpenses] = useLocalStorage("tool-rate-expenses", 12000);
+  const [hoursPerWeek, setHoursPerWeek] = useLocalStorage("tool-rate-hours", 25);
+  const [weeksOff, setWeeksOff] = useLocalStorage("tool-rate-weeksoff", 4);
+  const [buffer, setBuffer] = useLocalStorage("tool-rate-buffer", 25);
 
   const weeksWorked = Math.max(1, 52 - weeksOff);
   const billableHours = hoursPerWeek * weeksWorked;
@@ -27,6 +28,21 @@ export default function RateCalc() {
   const hourly = gross / billableHours;
   const day = hourly * 8;
   const weekly = gross / weeksWorked;
+
+  const summary = [
+    "M Studio — What Should I Charge?",
+    "",
+    `Hourly rate:        ${money(hourly)}/hr`,
+    `Day rate (8h):      ${money(day)}`,
+    `Bill per week:      ${money(weekly)}`,
+    `Billable hrs/yr:    ${Math.round(billableHours).toLocaleString()}`,
+    `Revenue target/yr:  ${money(gross)}`,
+    "",
+    `Based on: ${money(takeHome)} take-home, ${money(expenses)} expenses,`,
+    `${hoursPerWeek} billable hrs/wk, ${weeksOff} weeks off, ${buffer}% tax/buffer.`,
+    "",
+    "Calculated at mlinx.studio",
+  ].join("\n");
 
   return (
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
@@ -51,6 +67,8 @@ export default function RateCalc() {
               To take home {money(takeHome)} after {money(expenses)} expenses and a{" "}
               {buffer}% tax/buffer.
             </p>
+
+            <SaveResult summary={summary} filename="mstudio-rate" />
           </div>
         </div>
       </Reveal>

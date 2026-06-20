@@ -1,12 +1,21 @@
 import type { MetadataRoute } from "next";
 
+const SITE_URL = "https://mlinx.studio";
+
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
   return [
     {
-      url: "https://wrk-flow.vercel.app",
-      lastModified: new Date(),
+      url: SITE_URL,
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 1,
+    },
+    {
+      url: `${SITE_URL}/marketplace`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
   ];
 }
