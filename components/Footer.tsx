@@ -1,5 +1,6 @@
 import Logo from "./Logo";
 import FooterWordmark from "./FooterWordmark";
+import CopyLink from "./CopyLink";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -54,20 +55,10 @@ export default function Footer() {
               </p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <a
-                    href="mailto:contact@mlinx.studio"
-                    className="text-muted transition-colors hover:text-ink"
-                  >
-                    contact@mlinx.studio
-                  </a>
+                  <CopyLink href="mailto:contact@mlinx.studio" value="contact@mlinx.studio" label="email" />
                 </li>
                 <li>
-                  <a
-                    href="tel:+12074329492"
-                    className="text-muted transition-colors hover:text-ink"
-                  >
-                    (207) 432-9492
-                  </a>
+                  <CopyLink href="tel:+12074329492" value="(207) 432-9492" label="phone number" />
                 </li>
                 <li>
                   <a href="/#contact" className="text-signal transition-opacity hover:opacity-80">

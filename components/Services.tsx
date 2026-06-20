@@ -11,7 +11,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative border-t border-line py-20 md:py-28"
+      className="relative border-t border-line py-16 md:py-24"
     >
       {/* Hairline grid behind the section header */}
       <div
@@ -20,7 +20,7 @@ export default function Services() {
       />
 
       <div className="relative mx-auto max-w-6xl px-6">
-        <div className="mb-16 max-w-3xl">
+        <div className="mb-12 max-w-3xl">
           <Reveal>
             <p className="marker mb-6">// What we build</p>
           </Reveal>

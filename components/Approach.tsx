@@ -5,10 +5,10 @@ export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative border-t border-line py-20 md:py-28"
+      className="relative border-t border-line py-16 md:py-24"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-16 max-w-3xl">
+        <div className="mb-12 max-w-3xl">
           <Reveal>
             <p className="marker mb-6">// How we work</p>
           </Reveal>

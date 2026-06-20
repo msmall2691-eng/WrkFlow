@@ -8,7 +8,7 @@ import FounderAvatar from "./FounderAvatar";
 */
 export default function FounderNote() {
   return (
-    <section className="relative border-y border-black/10 bg-[#c7d5dd] py-20 text-[#16384a] md:py-28">
+    <section className="relative border-y border-black/10 bg-[#c7d5dd] py-16 text-[#16384a] md:py-24">
       <div className="mx-auto max-w-5xl px-6">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">

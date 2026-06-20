@@ -4,9 +4,9 @@ import Reveal from "./Reveal";
 
 export default function Deployments() {
   return (
-    <section id="live" className="relative border-t border-line py-20 md:py-28">
+    <section id="live" className="relative border-t border-line py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-14 max-w-3xl">
+        <div className="mb-12 max-w-3xl">
           <Reveal>
             <p className="marker mb-6">// Selected work</p>
           </Reveal>

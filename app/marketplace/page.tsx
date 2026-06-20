@@ -18,7 +18,7 @@ export default function MarketplacePage() {
       <Nav />
       <main className="pt-16">
         {/* Header */}
-        <section className="relative overflow-hidden border-b border-line py-20 md:py-28">
+        <section className="relative overflow-hidden border-b border-line py-16 md:py-24">
           <div
             aria-hidden="true"
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
@@ -71,7 +71,7 @@ export default function MarketplacePage() {
         </section>
 
         {/* CTA */}
-        <section className="border-t border-line py-20">
+        <section className="border-t border-line py-16">
           <div className="mx-auto max-w-3xl px-6 text-center">
             <Reveal>
               <h2 className="display text-xl text-ink sm:text-2xl">

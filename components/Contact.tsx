@@ -44,7 +44,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-20 md:py-28"
+      className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-16 md:py-24"
     >
       {/* Aurora Swell closer — same swell as the hero, bookending the page */}
       <AuroraSwell intensity={0.85} speed={0.85} />

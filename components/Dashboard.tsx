@@ -177,7 +177,7 @@ export default function Dashboard() {
   const startPad = today.getDay(); // align first cell to weekday
 
   return (
-    <section id="dash" className="relative overflow-hidden bg-[#08131d] py-20 md:py-28">
+    <section id="dash" className="relative overflow-hidden bg-[#08131d] py-16 md:py-24">
       <Aurora intensity={0.7} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[#08131d]/70" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-base)] to-transparent" />

@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
-import CalculatorKit from "./CalculatorKit";
 import QuoteCalc from "./QuoteCalc";
-import RateCalc from "./RateCalc";
-import SignatureMaker from "./SignatureMaker";
 import AutomationCost from "./AutomationCost";
 import InvoiceMaker from "./InvoiceMaker";
 import SiteCheck from "./SiteCheck";
@@ -14,28 +11,20 @@ import BookingDemo from "./BookingDemo";
 import WorkflowSim from "./WorkflowSim";
 
 /*
-  Playground — one "try it live" hub with two clearly-separated modes:
-    • Tools       — free, fully-working utilities a visitor can use right now.
-    • Automations — watch the kind of automation we'd wire up behind their site.
-  A single top-level toggle keeps the two from feeling redundant.
+  Playground — one tidy "try it live" hub. A curated set of working tools, plus
+  a separate mode to watch a real automation run. Kept deliberately small.
 */
 
-type Tool = "sitecheck" | "map" | "booking" | "cost" | "quote" | "rate" | "invoice" | "sig" | "calc";
-type Group = "Website & systems" | "Business math" | "Extras";
+type Tool = "sitecheck" | "map" | "booking" | "cost" | "quote" | "invoice";
 
-const TOOLS: { id: Tool; label: string; blurb: string; group: Group }[] = [
-  { id: "sitecheck", label: "Website health check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores.", group: "Website & systems" },
-  { id: "map", label: "Integration map", blurb: "Pick the tools you use → see how they link and what gets automated.", group: "Website & systems" },
-  { id: "booking", label: "Booking demo", blurb: "A real scheduling flow → pick a slot, get a downloadable calendar invite.", group: "Website & systems" },
-  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → the yearly cost, and how fast automation pays for itself.", group: "Business math" },
-  { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool.", group: "Business math" },
-  { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need.", group: "Business math" },
-  { id: "invoice", label: "Invoice maker", blurb: "Build an invoice or proposal → print to a clean PDF in one click.", group: "Business math" },
-  { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard.", group: "Extras" },
-  { id: "calc", label: "Calculator kit", blurb: "A working calculator with a wall of live tweaks.", group: "Extras" },
+const TOOLS: { id: Tool; label: string; blurb: string }[] = [
+  { id: "sitecheck", label: "Website check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores." },
+  { id: "map", label: "Integration map", blurb: "Pick the tools you use → see how they link and what gets automated." },
+  { id: "booking", label: "Booking demo", blurb: "A real scheduling flow → pick a slot, get a calendar invite." },
+  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → the yearly cost, and how fast automation pays for itself." },
+  { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool." },
+  { id: "invoice", label: "Invoice maker", blurb: "Build an invoice or proposal → print to a clean PDF in one click." },
 ];
-
-const GROUPS: Group[] = ["Website & systems", "Business math", "Extras"];
 
 export default function Playground() {
   const [mode, setMode] = useState<"tools" | "auto">("tools");
@@ -43,40 +32,33 @@ export default function Playground() {
   const activeTool = TOOLS.find((t) => t.id === tool)!;
 
   return (
-    <section id="kit" className="relative pb-20 pt-10 md:pb-28 md:pt-12">
+    <section id="kit" className="relative py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-6">// Try it live</p>
+          <p className="marker mb-4">// Try it live</p>
         </Reveal>
-        <div className="grid gap-8 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
-            <Reveal>
-              <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-                See the work for yourself.
-              </h2>
-            </Reveal>
-          </div>
-          <div className="md:col-span-4">
-            <Reveal delay={80}>
-              <p className="text-base leading-relaxed text-muted">
-                Free <span className="text-ink">tools</span> you can use right now,
-                and live <span className="text-ink">automations</span> you can watch
-                run—the kind we build behind your website.
-              </p>
-            </Reveal>
-          </div>
-        </div>
+        <Reveal>
+          <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+            See the work for yourself.
+          </h2>
+        </Reveal>
+        <Reveal delay={80}>
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+            A handful of real, working tools—and a live automation you can watch
+            run, the kind we wire up behind your website.
+          </p>
+        </Reveal>
 
-        {/* Mode toggle — Tools vs Automations */}
+        {/* Mode toggle */}
         <Reveal delay={120}>
-          <div className="mt-10 inline-flex gap-1 rounded-full border border-line bg-surface p-1">
-            {([["tools", "Free tools"], ["auto", "Live automations"]] as [typeof mode, string][]).map(
+          <div className="mt-8 inline-flex gap-1 rounded-full border border-line bg-surface p-1">
+            {([["tools", "Free tools"], ["auto", "Live automation"]] as [typeof mode, string][]).map(
               ([m, label]) => (
                 <button
                   key={m}
                   type="button"
                   onClick={() => setMode(m)}
-                  className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
+                  className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
                     mode === m ? "bg-signal text-white" : "text-muted hover:text-ink"
                   }`}
                 >
@@ -87,43 +69,26 @@ export default function Playground() {
           </div>
         </Reveal>
 
-        <Reveal delay={140}>
-          <p className="mt-4 text-sm leading-relaxed text-muted">
-            {mode === "tools"
-              ? "Free, working tools you can use right now—pick one below."
-              : "Watch a real automation run end to end—pick a scenario, hit go."}
-          </p>
-        </Reveal>
-
         {mode === "tools" ? (
           <>
-            {/* Tool tabs — grouped so the set stays scannable as it grows */}
-            <Reveal delay={160}>
-              <div className="mt-6 flex flex-col gap-4">
-                <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:gap-6">
-                  {GROUPS.map((g) => (
-                    <div key={g} className="flex flex-col gap-1.5">
-                      <span className="px-1 font-mono text-[10px] uppercase tracking-widest text-faint">
-                        {g}
-                      </span>
-                      <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
-                        {TOOLS.filter((t) => t.group === g).map((t) => (
-                          <button
-                            key={t.id}
-                            type="button"
-                            onClick={() => setTool(t.id)}
-                            className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
-                              tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
-                            }`}
-                          >
-                            {t.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+            {/* Single clean tab row */}
+            <Reveal delay={140}>
+              <div className="mt-6">
+                <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
+                  {TOOLS.map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setTool(t.id)}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
+                      }`}
+                    >
+                      {t.label}
+                    </button>
                   ))}
                 </div>
-                <p className="font-mono text-xs text-faint">{activeTool.blurb}</p>
+                <p className="mt-3 font-mono text-xs text-faint">{activeTool.blurb}</p>
               </div>
             </Reveal>
 
@@ -133,15 +98,12 @@ export default function Playground() {
               {tool === "booking" && <BookingDemo />}
               {tool === "cost" && <AutomationCost />}
               {tool === "quote" && <QuoteCalc />}
-              {tool === "rate" && <RateCalc />}
               {tool === "invoice" && <InvoiceMaker />}
-              {tool === "sig" && <SignatureMaker />}
-              {tool === "calc" && <CalculatorKit />}
             </div>
           </>
         ) : (
           <div className="mt-8">
-            <Reveal delay={160}>
+            <Reveal delay={140}>
               <p className="mb-6 max-w-2xl text-sm leading-relaxed text-muted">
                 Pick a scenario, hit go, and watch a real automation handle it—live.
                 Same engine we wire up behind your forms and inbox.

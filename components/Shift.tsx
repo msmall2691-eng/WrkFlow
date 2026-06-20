@@ -8,7 +8,7 @@ import RentedVsBuilt from "./RentedVsBuilt";
 */
 export default function Shift() {
   return (
-    <section id="shift" className="relative overflow-hidden pb-20 pt-24 md:pb-28 md:pt-32">
+    <section id="shift" className="relative overflow-hidden pb-16 pt-20 md:pb-24 md:pt-28">
       {/* Soft landing from the dark hero — a faint shade easing into the page */}
       <div
         aria-hidden="true"
@@ -70,7 +70,7 @@ export default function Shift() {
 
         {/* Who it's for — folded in so the intro is one lean beat */}
         <Reveal delay={120}>
-          <div className="mt-16 border-t border-line pt-10">
+          <div className="mt-12 border-t border-line pt-8">
             <p className="marker mb-4">// Who it&apos;s for</p>
             <p className="display max-w-3xl text-xl leading-snug text-ink sm:text-2xl">
               {whoIsItFor}
