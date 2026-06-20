@@ -64,7 +64,7 @@ export default function SystemsField({
 
     // Smoothed pointer for a weighted, chrome-like feel.
     const mouse = { x: -9999, y: -9999, active: false };
-    const sm = { x: -9999, y: -9999 };
+    const sm = { x: -9999, y: -9999, active: false };
 
     const build = () => {
       const target = Math.round(
@@ -162,7 +162,7 @@ export default function SystemsField({
         sm.x += (mouse.x - sm.x) * 0.12;
         sm.y += (mouse.y - sm.y) * 0.12;
       }
-      (sm as { active: boolean }).active = mouse.active;
+      sm.active = mouse.active;
 
       ripples = ripples.filter((r) => now - r.t0 < 3.2);
 
