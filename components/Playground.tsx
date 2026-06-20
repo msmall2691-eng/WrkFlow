@@ -13,10 +13,30 @@ import IntegrationMapper from "./IntegrationMapper";
 
 type Tool = "sitecheck" | "map" | "cost";
 
-const TOOLS: { id: Tool; label: string; blurb: string }[] = [
-  { id: "sitecheck", label: "Website check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores." },
-  { id: "map", label: "Integration map", blurb: "Pick the tools you use → see how they link and what gets automated." },
-  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → the yearly cost, and how fast automation pays for itself." },
+const TOOLS: {
+  id: Tool;
+  label: string;
+  blurb: string;
+  nudge: { line: string; product: string };
+}[] = [
+  {
+    id: "sitecheck",
+    label: "Website check",
+    blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores.",
+    nudge: { line: "Want a site that scores green out of the box?", product: "Linx Site" },
+  },
+  {
+    id: "map",
+    label: "Integration map",
+    blurb: "Pick the tools you use → see how they link and what gets automated.",
+    nudge: { line: "Ready to wire these tools together for real?", product: "Linx Flows" },
+  },
+  {
+    id: "cost",
+    label: "Cost of manual work",
+    blurb: "Hours + people → the yearly cost, and how fast automation pays for itself.",
+    nudge: { line: "Ready to hand this busywork to automation?", product: "Linx Flows" },
+  },
 ];
 
 export default function Playground() {
@@ -70,6 +90,19 @@ export default function Playground() {
           {tool === "map" && <IntegrationMapper />}
           {tool === "cost" && <AutomationCost />}
         </div>
+
+        {/* Soft funnel — free demo → matching Linx product */}
+        <Reveal>
+          <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm">
+            <span className="text-muted">{activeTool.nudge.line}</span>
+            <a
+              href="/marketplace"
+              className="font-semibold text-signal transition-opacity hover:opacity-80"
+            >
+              {activeTool.nudge.product} →
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
