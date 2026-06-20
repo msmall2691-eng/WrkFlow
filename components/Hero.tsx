@@ -63,24 +63,17 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* What we build — small strip that fills the space and says it plainly */}
+        {/* What we build — websites lead, the rest support */}
         <div className="mt-14 max-w-2xl border-t border-white/10 pt-6">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
             What we build
           </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2.5">
-            {["Websites", "Automations", "Dashboards", "AI & integrations"].map(
-              (item) => (
-                <span
-                  key={item}
-                  className="flex items-center gap-2 text-sm text-white/75"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-signal" />
-                  {item}
-                </span>
-              ),
-            )}
-          </div>
+          <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 leading-relaxed">
+            <span className="text-lg font-semibold text-white">Websites &amp; web apps</span>
+            <span className="text-base text-white/65">
+              —plus the automations, dashboards, and systems behind them.
+            </span>
+          </p>
         </div>
       </div>
 

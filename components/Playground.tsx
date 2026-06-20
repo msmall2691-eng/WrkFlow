@@ -39,16 +39,16 @@ export default function Playground() {
           <div className="md:col-span-8">
             <Reveal>
               <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-                Don&apos;t take our word for it—play with it.
+                See the work for yourself.
               </h2>
             </Reveal>
           </div>
           <div className="md:col-span-4">
             <Reveal delay={80}>
               <p className="text-base leading-relaxed text-muted">
-                Two things, side by side: free <span className="text-ink">tools</span>{" "}
-                you can use right now, and live <span className="text-ink">automations</span>{" "}
-                you can watch run—the kind we build behind your site.
+                Free <span className="text-ink">tools</span> you can use right now,
+                and live <span className="text-ink">automations</span> you can watch
+                run—the kind we build behind your website.
               </p>
             </Reveal>
           </div>

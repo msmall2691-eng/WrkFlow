@@ -20,9 +20,10 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-6 text-lg leading-relaxed text-muted">
-              No theory. Every one of these was designed, built, and shipped for
-              a real operating company—ours—before anyone else. Real systems,
-              live and running.
+              No theory. Every one of these—websites, web apps, dashboards, and
+              automations—was designed, built, and shipped for a real operating
+              company before anyone else. Real systems, live and running.{" "}
+              <span className="text-ink">This website is one of them.</span>
             </p>
           </Reveal>
         </div>
