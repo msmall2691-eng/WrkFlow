@@ -9,6 +9,7 @@ import SignatureMaker from "./SignatureMaker";
 import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
 import IntegrationMapper from "./IntegrationMapper";
+import BookingDemo from "./BookingDemo";
 import WorkflowSim from "./WorkflowSim";
 
 /*
@@ -18,12 +19,13 @@ import WorkflowSim from "./WorkflowSim";
   A single top-level toggle keeps the two from feeling redundant.
 */
 
-type Tool = "sitecheck" | "map" | "cost" | "quote" | "rate" | "sig" | "calc";
+type Tool = "sitecheck" | "map" | "booking" | "cost" | "quote" | "rate" | "sig" | "calc";
 type Group = "Website & systems" | "Business math" | "Extras";
 
 const TOOLS: { id: Tool; label: string; blurb: string; group: Group }[] = [
   { id: "sitecheck", label: "Website health check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores.", group: "Website & systems" },
   { id: "map", label: "Integration map", blurb: "Pick the tools you use → see how they link and what gets automated.", group: "Website & systems" },
+  { id: "booking", label: "Booking demo", blurb: "A real scheduling flow → pick a slot, get a downloadable calendar invite.", group: "Website & systems" },
   { id: "cost", label: "Cost of manual work", blurb: "Hours + people → what doing it by hand costs you every year.", group: "Business math" },
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool.", group: "Business math" },
   { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need.", group: "Business math" },
@@ -126,6 +128,7 @@ export default function Playground() {
             <div className="mt-8">
               {tool === "sitecheck" && <SiteCheck />}
               {tool === "map" && <IntegrationMapper />}
+              {tool === "booking" && <BookingDemo />}
               {tool === "cost" && <AutomationCost />}
               {tool === "quote" && <QuoteCalc />}
               {tool === "rate" && <RateCalc />}
