@@ -7,6 +7,7 @@ export const runtime = "nodejs";
 type Payload = {
   name?: string;
   email?: string;
+  phone?: string;
   company?: string;
   message?: string;
   /** Honeypot. Real users never fill this. */
@@ -34,6 +35,7 @@ export async function POST(request: Request) {
 
   const name = clean(body.name, 200);
   const email = clean(body.email, 320);
+  const phone = clean(body.phone, 40);
   const company = clean(body.company, 200);
   const message = clean(body.message, 5000);
 
@@ -104,6 +106,7 @@ export async function POST(request: Request) {
         text: [
           `Name:    ${name}`,
           `Email:   ${email}`,
+          `Phone:   ${phone || "—"}`,
           `Company: ${company || "—"}`,
           "",
           "Message:",

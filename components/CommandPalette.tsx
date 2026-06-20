@@ -63,10 +63,21 @@ export default function CommandPalette() {
         label: "Email the studio",
         hint: "↗",
         group: "Actions",
-        keywords: "mail hello",
+        keywords: "mail email contact gmail",
         run: () => {
           close();
-          window.location.href = "mailto:hello@mlinx.studio";
+          window.location.href = "mailto:contact.mlinxstudio@gmail.com";
+        },
+      },
+      {
+        id: "call",
+        label: "Call or text",
+        hint: "↗",
+        group: "Actions",
+        keywords: "phone call text sms number",
+        run: () => {
+          close();
+          window.location.href = "tel:+12074329492";
         },
       },
     ];

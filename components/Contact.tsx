@@ -46,10 +46,10 @@ export default function Contact() {
       className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-28 md:py-36"
     >
       {/* Unified aurora closer — same backdrop as the hero, bookending the page */}
-      <Aurora intensity={0.9} />
+      <Aurora intensity={0.8} />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-black/55"
+        className="pointer-events-none absolute inset-0 bg-[#08131d]/75"
       />
       {/* Top fade — eases in from the light section above */}
       <div
@@ -87,15 +87,26 @@ export default function Contact() {
               </p>
             </Reveal>
             <Reveal delay={200}>
-              <p className="mt-8 font-mono text-xs uppercase tracking-widest text-white/50">
-                Direct ·{" "}
-                <a
-                  href="mailto:hello@mlinx.studio"
-                  className="text-white/75 transition-colors hover:text-[#e6b964]"
-                >
-                  hello@mlinx.studio
-                </a>
-              </p>
+              <div className="mt-8 space-y-2.5 font-mono text-xs uppercase tracking-widest text-white/55">
+                <p>
+                  Email ·{" "}
+                  <a
+                    href="mailto:contact.mlinxstudio@gmail.com"
+                    className="text-white/85 transition-colors hover:text-[#e6b964]"
+                  >
+                    contact.mlinxstudio@gmail.com
+                  </a>
+                </p>
+                <p>
+                  Call or text ·{" "}
+                  <a
+                    href="tel:+12074329492"
+                    className="text-white/85 transition-colors hover:text-[#e6b964]"
+                  >
+                    (207) 432-9492
+                  </a>
+                </p>
+              </div>
             </Reveal>
           </div>
 
@@ -140,13 +151,22 @@ export default function Contact() {
                     />
                   </div>
 
-                  <Field
-                    label="Company"
-                    name="company"
-                    type="text"
-                    autoComplete="organization"
-                    optional
-                  />
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    <Field
+                      label="Company"
+                      name="company"
+                      type="text"
+                      autoComplete="organization"
+                      optional
+                    />
+                    <Field
+                      label="Phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      optional
+                    />
+                  </div>
 
                   <div>
                     <FieldLabel htmlFor="message" label="What are you trying to solve?" />
