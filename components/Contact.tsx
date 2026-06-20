@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
-import Aurora from "./Aurora";
+import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -46,11 +46,11 @@ export default function Contact() {
       id="contact"
       className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-20 md:py-28"
     >
-      {/* Unified aurora closer — same backdrop as the hero, bookending the page */}
-      <Aurora intensity={0.8} />
+      {/* Aurora Swell closer — same swell as the hero, bookending the page */}
+      <AuroraSwell intensity={0.85} speed={0.85} />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[#08131d]/75"
+        className="pointer-events-none absolute inset-0 bg-[#08131d]/72"
       />
       {/* Top fade — eases in from the light section above */}
       <div

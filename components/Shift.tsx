@@ -1,12 +1,22 @@
 import Reveal from "./Reveal";
+import RentedVsBuilt from "./RentedVsBuilt";
 
 export default function Shift() {
   return (
-    <section id="shift" className="relative overflow-hidden pb-28 pt-24 md:pb-36 md:pt-32">
+    <section id="shift" className="relative overflow-hidden pb-20 pt-24 md:pb-28 md:pt-32">
       {/* Soft landing from the dark hero — a faint shade easing into the page */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[var(--color-surface)] to-transparent"
+      />
+      {/* Soft accent glow — brightness + life (recolors with the accent) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-24 top-16 h-80 w-80 rounded-full bg-signal/10 blur-[110px]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-16 top-1/3 h-72 w-72 rounded-full bg-gold/10 blur-[120px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
@@ -49,6 +59,8 @@ export default function Shift() {
             </Reveal>
           </div>
         </div>
+
+        <RentedVsBuilt />
       </div>
     </section>
   );

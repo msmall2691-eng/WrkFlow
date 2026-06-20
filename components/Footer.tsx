@@ -15,7 +15,7 @@ export default function Footer() {
             <p className="mt-4 text-sm leading-relaxed text-muted">
               We design and build websites, automations, and the systems behind
               them—so your business runs faster and cleaner, with less busywork.
-              New England roots, modern tech. Everything, linked.
+              Maine-built, working with clients anywhere. Everything, linked.
             </p>
           </div>
 

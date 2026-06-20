@@ -2,7 +2,7 @@
   Wordmark for M Studio. "M Studio" set in the monospace face. A compact glyph
   (two offset strokes suggesting linked systems / a branching flow) sits ahead
   of it. ("Linx" lives on quietly in the mlinx.studio domain.) Pass `tag` to
-  append a smaller "/ New England" lockup.
+  append a smaller "/ Maine" lockup.
 */
 export default function Logo({
   className = "",
@@ -45,7 +45,7 @@ export default function Logo({
       </span>
       {tag && (
         <span className={`font-mono text-[11px] uppercase tracking-[0.22em] ${tagColor}`}>
-          / New England
+          / Maine
         </span>
       )}
     </span>

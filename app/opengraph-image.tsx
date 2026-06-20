@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           }}
         >
           <div style={{ width: 40, height: 2, background: "#16a394" }} />
-          New England · Web · Automation · Systems
+          Maine-built · Linked · Anywhere
         </div>
 
         <div
