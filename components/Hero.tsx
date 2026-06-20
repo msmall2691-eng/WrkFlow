@@ -22,8 +22,11 @@ export default function Hero() {
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
-        <p className="marker mb-6 flex items-center gap-3">
-          <span className="inline-block h-px w-8 bg-signal/60" />
+        <p className="marker mb-6 flex items-center gap-2.5">
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+          </span>
           Maine-built · linked anywhere
         </p>
 
@@ -63,17 +66,22 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* What we build — websites lead, the rest support */}
-        <div className="mt-12 max-w-2xl border-t border-white/10 pt-6">
+        {/* What we build — a quiet, interactive capability line (websites lead) */}
+        <div className="mt-12 max-w-xl">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
             What we build
           </p>
-          <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 leading-relaxed">
-            <span className="text-base font-semibold text-white">Websites &amp; web apps</span>
-            <span className="text-sm text-white/65">
-              —plus the automations, dashboards, and systems behind them.
-            </span>
-          </p>
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-2 text-sm">
+            <span className="font-medium text-white">Websites &amp; web apps</span>
+            {["Automation", "Dashboards", "AI agents", "Systems"].map((t) => (
+              <span
+                key={t}
+                className="text-white/45 transition-colors duration-200 before:mr-1 before:text-white/20 before:content-['·'] hover:text-white"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

@@ -17,11 +17,7 @@ export default function Shift() {
       {/* Soft accent glow — brightness + life (recolors with the accent) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-16 h-80 w-80 rounded-full bg-signal/10 blur-[110px]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-16 top-1/3 h-72 w-72 rounded-full bg-gold/10 blur-[120px]"
+        className="pointer-events-none absolute -left-24 top-16 h-72 w-72 rounded-full bg-signal/[0.07] blur-[120px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
@@ -72,7 +68,7 @@ export default function Shift() {
         <Reveal delay={120}>
           <div className="mt-12 border-t border-line pt-8">
             <p className="marker mb-4">// Who it&apos;s for</p>
-            <p className="display max-w-3xl text-xl leading-snug text-ink sm:text-2xl">
+            <p className="display-serif max-w-3xl text-xl leading-snug text-ink sm:text-2xl">
               {whoIsItFor}
             </p>
           </div>
