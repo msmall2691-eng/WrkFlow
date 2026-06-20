@@ -134,7 +134,7 @@ const SCENARIOS: Scenario[] = [
           <Artifact label="Crew · scheduled">
             <p className="text-sm leading-relaxed text-white/85">
               🧹 Turnover booked for <b>{v.property}</b> — crew assigned with a hard finish before{" "}
-              <span className="text-[#8aa9ff]">{v.checkin}</span>.
+              <span className="text-[#6fd3c6]">{v.checkin}</span>.
             </p>
           </Artifact>
         ),
@@ -513,8 +513,8 @@ function Spinner() {
 
 function Artifact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="animate-[fadeUp_.4s_ease] space-y-1.5 rounded-2xl bg-[#0b0e16] p-5 text-white shadow-[0_14px_40px_-16px_rgba(0,0,0,0.4)]">
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#8aa9ff]">{label}</p>
+    <div className="animate-[fadeUp_.4s_ease] space-y-1.5 rounded-2xl bg-[#0e1c28] p-5 text-white shadow-[0_14px_40px_-16px_rgba(0,0,0,0.4)]">
+      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#6fd3c6]">{label}</p>
       {children}
     </div>
   );
@@ -524,7 +524,7 @@ function Row({ k, v, accent = false }: { k: string; v: string; accent?: boolean 
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-white/45">{k}</span>
-      <span className={accent ? "font-semibold text-[#8aa9ff]" : "text-white/85"}>{v}</span>
+      <span className={accent ? "font-semibold text-[#6fd3c6]" : "text-white/85"}>{v}</span>
     </div>
   );
 }

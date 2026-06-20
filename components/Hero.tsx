@@ -4,7 +4,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#04060c]"
+      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#08131d]"
     >
       {/* Unified chromatic aurora — calm sunset-over-the-harbor backdrop */}
       <Aurora />
@@ -22,7 +22,7 @@ export default function Hero() {
       {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-[#04060c]/80 to-[var(--color-base)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-[#08131d]/80 to-[var(--color-base)]"
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
@@ -34,7 +34,7 @@ export default function Hero() {
         <h1 className="display max-w-4xl text-5xl text-white sm:text-6xl md:text-7xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Websites, automations, and systems <br className="hidden sm:block" />
           that make your business{" "}
-          <span className="text-[#a9c2ff]">run better.</span>
+          <span className="text-[#e6b964]">run better.</span>
         </h1>
 
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">

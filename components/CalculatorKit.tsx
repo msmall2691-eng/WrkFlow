@@ -129,7 +129,7 @@ function hexToRgb(hex: string): [number, number, number] {
 function contrastOn(hex: string): string {
   const [r, g, b] = hexToRgb(hex);
   const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return lum > 0.62 ? "#0b0e16" : "#ffffff";
+  return lum > 0.62 ? "#0e1c28" : "#ffffff";
 }
 
 const FONTS: Record<Tweaks["font"], string> = {
@@ -217,7 +217,7 @@ export default function CalculatorKit() {
     const [r, g, b] = hexToRgb(t.accent);
     const base =
       t.mode === "dark"
-        ? { bg: "#0b0e16", surface: "#1b2130", fn: "#272f42", text: "#f4f5f8", border: "rgba(255,255,255,0.08)" }
+        ? { bg: "#0e1c28", surface: "#1b2130", fn: "#272f42", text: "#f4f5f8", border: "rgba(255,255,255,0.08)" }
         : { bg: "#ffffff", surface: "#eef0f4", fn: "#e2e5ec", text: "#18181b", border: "rgba(0,0,0,0.08)" };
     const accentText = contrastOn(t.accent);
     const opBg = t.opStyle === "solid" ? t.accent : `rgba(${r},${g},${b},0.16)`;

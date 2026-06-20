@@ -2,26 +2,30 @@
 
 /*
   MSTUDIO — design tokens
-  Clean, modern light identity. One sharp signal accent used sparingly.
-  The accent is a CSS variable so it can be re-tuned in a single place
-  during iteration (cyan / signal green / etc).
+  "Deep Harbor": a dark, luxe coastal-New-England identity. Harbor-navy
+  surfaces, off-white text, a sea-glass teal signal accent + a warm brass
+  (gold) accent. Accents are CSS variables so they re-tune in one place.
 */
 @theme {
-  /* Base surfaces — white page, soft panels, hairline borders for depth */
-  --color-base: #ffffff;
-  --color-surface: #fafafa;
-  --color-elevated: #ffffff;
-  --color-line: #e4e4e7;
+  /* Base surfaces — harbor navy page, lifted panels, hairline borders */
+  --color-base: #0b1722;
+  --color-surface: #122231;
+  --color-elevated: #16293a;
+  --color-line: rgba(238, 242, 244, 0.1);
 
-  /* Text — zinc scale on white */
-  --color-ink: #18181b;
-  --color-muted: #52525b;
-  --color-faint: #71717a;
+  /* Text — off-white on navy */
+  --color-ink: #eef2f4;
+  --color-muted: #a7b8c4;
+  --color-faint: #70859a;
 
-  /* Signal accent (Ion Blue) */
-  --color-signal: #2563eb;
-  --color-signal-dim: #1d4ed8;
-  --color-signal-glow: rgba(37, 99, 235, 0.1);
+  /* Signal accent (sea-glass teal) */
+  --color-signal: #16a394;
+  --color-signal-dim: #0e8f86;
+  --color-signal-glow: rgba(22, 163, 148, 0.16);
+
+  /* Warm accent (brass / amber) — for highlights and focal pops */
+  --color-gold: #d9a441;
+  --color-gold-dim: #b9842b;
 
   /* Type */
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;

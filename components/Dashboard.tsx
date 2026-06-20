@@ -103,7 +103,7 @@ export default function Dashboard() {
   const maxBar = Math.max(...bars);
 
   return (
-    <section id="dash" className="relative overflow-hidden bg-[#04060c] py-28 md:py-36">
+    <section id="dash" className="relative overflow-hidden bg-[#08131d] py-28 md:py-36">
       {/* Unified chromatic aurora (matches the hero), with a veil so cards pop */}
       <Aurora intensity={0.85} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/55" />
@@ -274,7 +274,7 @@ export default function Dashboard() {
         <Reveal delay={320}>
           <p className="mt-6 text-center text-sm text-white/55">
             This is the kind of system we build for short-term-rental hosts.{" "}
-            <a href="#contact" className="text-[#8aa9ff] hover:underline">
+            <a href="#contact" className="text-[#6fd3c6] hover:underline">
               Want one for your properties?
             </a>
           </p>

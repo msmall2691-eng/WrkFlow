@@ -35,7 +35,7 @@ export default function TipSplit() {
       {/* Receipt stage */}
       <Reveal>
         <div className="order-1 flex justify-center rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
-          <div className="w-full max-w-[340px] rounded-2xl bg-[#0b0e16] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
+          <div className="w-full max-w-[340px] rounded-2xl bg-[#0e1c28] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
               Receipt
             </p>
@@ -46,7 +46,7 @@ export default function TipSplit() {
               <Row k="People" v={`${people}`} />
             </div>
             <div className="mt-5">
-              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#8aa9ff]">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#6fd3c6]">
                 Each person pays
               </p>
               <p className="mt-1 font-display text-5xl tracking-tight">

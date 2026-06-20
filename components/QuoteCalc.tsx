@@ -53,7 +53,7 @@ export default function QuoteCalc() {
       {/* Estimate card */}
       <Reveal>
         <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
-          <div className="rounded-2xl bg-[#0b0e16] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
+          <div className="rounded-2xl bg-[#0e1c28] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
               Estimated price
             </p>
@@ -63,7 +63,7 @@ export default function QuoteCalc() {
             <p className="mt-1 text-sm text-white/55">
               {SERVICE[service].label} · {FREQ[freq].label.toLowerCase()}
               {FREQ[freq].off > 0 && (
-                <span className="text-[#8aa9ff]"> · {Math.round(FREQ[freq].off * 100)}% recurring discount</span>
+                <span className="text-[#6fd3c6]"> · {Math.round(FREQ[freq].off * 100)}% recurring discount</span>
               )}
             </p>
 

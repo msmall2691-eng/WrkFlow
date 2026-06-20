@@ -15,10 +15,10 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#ffffff",
+          background: "#0b1722",
           padding: "80px",
           backgroundImage:
-            "radial-gradient(circle at 75% 15%, rgba(37,99,235,0.12), transparent 55%)",
+            "radial-gradient(circle at 78% 18%, rgba(217,164,65,0.20), transparent 52%), radial-gradient(circle at 12% 88%, rgba(22,163,148,0.20), transparent 55%)",
         }}
       >
         <div
@@ -26,30 +26,30 @@ export default function OpengraphImage() {
             display: "flex",
             alignItems: "center",
             gap: 16,
-            color: "#2563eb",
+            color: "#16a394",
             fontSize: 26,
             letterSpacing: 4,
             textTransform: "uppercase",
             fontFamily: "monospace",
           }}
         >
-          <div style={{ width: 40, height: 2, background: "#2563eb" }} />
-          Web · Automation · Systems Studio
+          <div style={{ width: 40, height: 2, background: "#16a394" }} />
+          New England · Web · Automation · Systems
         </div>
 
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            color: "#18181b",
-            fontSize: 84,
+            color: "#eef2f4",
+            fontSize: 80,
             fontWeight: 700,
             lineHeight: 1.05,
             letterSpacing: -2,
           }}
         >
-          <span>Websites &amp; automations</span>
-          <span style={{ color: "#2563eb" }}>that make it run better.</span>
+          <span>Websites, automations & systems</span>
+          <span style={{ color: "#d9a441" }}>that make it run better.</span>
         </div>
 
         <div
@@ -57,13 +57,13 @@ export default function OpengraphImage() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            color: "#71717a",
+            color: "#70859a",
             fontSize: 28,
           }}
         >
           <span
             style={{
-              color: "#18181b",
+              color: "#eef2f4",
               fontWeight: 700,
               fontFamily: "monospace",
               letterSpacing: 4,

@@ -29,7 +29,7 @@ export default function Approach() {
         <div className="grid gap-px overflow-hidden rounded-xl border border-line bg-line md:grid-cols-4">
           {approachSteps.map((step, i) => (
             <Reveal key={step.index} delay={i * 80}>
-              <div className="flex h-full flex-col bg-base p-7">
+              <div className="flex h-full flex-col bg-surface p-7">
                 <span className="font-mono text-xs text-signal">
                   {step.index}
                 </span>
