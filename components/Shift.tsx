@@ -1,6 +1,11 @@
+import { whoIsItFor } from "@/lib/content";
 import Reveal from "./Reveal";
 import RentedVsBuilt from "./RentedVsBuilt";
 
+/*
+  The Shift — the "why now" intro, with the "who it's for" folded in and an
+  interactive rent-vs-build flip. Studio voice ("we").
+*/
 export default function Shift() {
   return (
     <section id="shift" className="relative overflow-hidden pb-20 pt-24 md:pb-28 md:pt-32">
@@ -27,8 +32,9 @@ export default function Shift() {
           <div className="md:col-span-7">
             <Reveal>
               <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-                For the first time, small companies can have websites and systems
-                built for exactly how they work.
+                For the first time, you can <span className="text-signal">own</span>{" "}
+                the website, automations, and systems built for exactly how your
+                business runs.
               </h2>
             </Reveal>
           </div>
@@ -36,31 +42,41 @@ export default function Shift() {
           <div className="space-y-6 text-base leading-relaxed text-muted md:col-span-5 md:pt-2">
             <Reveal delay={80}>
               <p>
-                For years the deal was lopsided: rent your tools from a big
-                platform, mold your business to their forms, and pay per seat
-                forever. Anything custom—your own site, your own automations—meant
-                hiring a dev team you couldn&apos;t justify.
+                For years the deal was lopsided: rent your software from a big
+                platform, bend your business to its forms, and pay per seat
+                forever. Anything custom—your own site, your own automations, your
+                own database—meant hiring a dev team you couldn&apos;t justify.
               </p>
             </Reveal>
             <Reveal delay={160}>
               <p>
-                That math has changed. The tools to design clean websites, wire
-                systems together, and put automation and AI to work are finally
-                within reach of a single sharp operator—so custom, fitted software
-                is realistic for businesses your size, today.
+                That math has changed. The tools to design clean websites, link
+                your systems together, and put automation and AI to work are
+                finally within reach of a small, sharp studio—so custom, fitted
+                software is realistic for a business your size, today.
               </p>
             </Reveal>
             <Reveal delay={240}>
               <p className="text-ink">
-                The companies that move first stop wrestling their tools and
-                start compounding an advantage in systems and processes that no
-                competitor can buy off a shelf.
+                We know, because we built it for our own company first. Move now
+                and you stop wrestling rented tools—and start compounding an
+                advantage in systems no competitor can buy off a shelf.
               </p>
             </Reveal>
           </div>
         </div>
 
         <RentedVsBuilt />
+
+        {/* Who it's for — folded in so the intro is one lean beat */}
+        <Reveal delay={120}>
+          <div className="mt-16 border-t border-line pt-10">
+            <p className="marker mb-4">// Who it&apos;s for</p>
+            <p className="display max-w-4xl text-2xl leading-snug text-ink sm:text-3xl">
+              {whoIsItFor}
+            </p>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

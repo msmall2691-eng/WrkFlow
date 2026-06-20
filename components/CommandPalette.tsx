@@ -44,7 +44,7 @@ export default function CommandPalette() {
     return [
       { id: "top", label: "Home", group: "Navigate", keywords: "hero start top", run: go("top") },
       { id: "shift", label: "The shift", group: "Navigate", keywords: "why now", run: go("shift") },
-      { id: "who", label: "Who it's for", group: "Navigate", keywords: "audience fit", run: go("whofor") },
+      { id: "who", label: "Who it's for", group: "Navigate", keywords: "audience fit", run: go("shift") },
       { id: "work", label: "Shipped & live", group: "Navigate", keywords: "work showcase portfolio", run: go("live") },
       { id: "kit", label: "Try it live (tools + automations)", group: "Navigate", keywords: "demos try tools calculator quote rate signature automation workflow lead intake", run: go("kit") },
       { id: "dash", label: "Rental dashboard", group: "Navigate", keywords: "dashboard analytics airbnb vrbo command center calendar sync revenue", run: go("dash") },
