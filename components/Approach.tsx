@@ -1,13 +1,15 @@
 import { approachSteps } from "@/lib/content";
 import Reveal from "./Reveal";
+import Watermark from "./Watermark";
 
 export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative border-t border-line py-16 md:py-24"
+      className="relative overflow-hidden border-t border-line py-16 md:py-24"
     >
-      <div className="mx-auto max-w-6xl px-6">
+      <Watermark text="LINKED" />
+      <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
             <p className="marker mb-4">// How we work</p>

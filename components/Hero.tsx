@@ -13,7 +13,7 @@ export default function Hero() {
       {/* Diagonal scrim — keeps the bright swell on the text-free side */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,12,22,0.86)_0%,rgba(6,12,22,0.55)_40%,rgba(6,12,22,0)_72%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,12,22,0.82)_0%,rgba(6,12,22,0.45)_42%,rgba(6,12,22,0)_78%)]"
       />
       {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
       <div
@@ -33,7 +33,7 @@ export default function Hero() {
         <h1 className="display max-w-3xl text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Websites, automations, and systems <br className="hidden sm:block" />
           that make your business{" "}
-          <span className="text-[#e6b964]">run better.</span>
+          <span className="shimmer-text">run better.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">

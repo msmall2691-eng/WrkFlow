@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { services, type Service, type ServiceExample } from "@/lib/content";
 import Reveal from "./Reveal";
+import ProjectVisual from "./ProjectVisual";
 
 /*
   Services — a calm "service explorer". A numbered index on the left (hover or
@@ -132,6 +133,10 @@ function ExampleCard({ example }: { example: ServiceExample }) {
             className="object-cover object-top"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
+      ) : example.visual ? (
+        <div className="aspect-[16/10]">
+          <ProjectVisual type={example.visual} />
         </div>
       ) : (
         <div className="flex aspect-[16/10] items-center justify-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_75%)] p-5 text-center">

@@ -18,6 +18,9 @@ export const whoIsItFor =
 export const founderNote = `M Studio started inside a real service business on the coast of Maine. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. M Studio is that same work—custom websites, automations, and the systems behind them, built to fit—offered to the businesses that would rather run on something made for them.`;
 
 
+/** On-brand animated illustration types (used when no true screenshot fits). */
+export type VisualType = "database" | "automation" | "audit" | "cleanup";
+
 export type ServiceExample = {
   /** Short client/project label shown on the example card. */
   client: string;
@@ -25,8 +28,10 @@ export type ServiceExample = {
   built: string;
   /** A concrete, numeric-where-possible result. */
   result: string;
-  /** Optional screenshot in /shots. When absent, a "case note" card renders. */
+  /** Real screenshot in /shots, when one genuinely matches. */
   shot?: string;
+  /** Branded animated visual, used when a screenshot would mislead. */
+  visual?: VisualType;
 };
 
 export type Service = {
@@ -76,10 +81,10 @@ export const services: Service[] = [
     outcome:
       "Records flow automatically from one system to the next. The double-entry disappears, the errors that came with it disappear, and your team gets the hours back.",
     example: {
-      client: "Autopilot",
+      client: "Booking → follow-up",
       built: "New booking fires a chain: customer confirmation, calendar hold, crew assignment, and a follow-up review request—untouched by hand.",
       result: "Hours of weekly admin handed off to automation.",
-      shot: "/shots/autopilot.png",
+      visual: "automation",
     },
   },
   {
@@ -94,10 +99,10 @@ export const services: Service[] = [
     outcome:
       "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no recurring per-seat tax on growth.",
     example: {
-      client: "Remote Admin",
+      client: "Owned CRM",
       built: "A custom customer + job database with exactly the fields the work uses—accessible from anywhere, owned outright.",
       result: "One source of truth replacing scattered spreadsheets.",
-      shot: "/shots/remote-admin.png",
+      visual: "database",
     },
   },
   {
@@ -151,6 +156,7 @@ export const services: Service[] = [
       client: "Operations review",
       built: "A full walk-through of an operator's tools and handoffs—mapping where data leaked, where steps doubled up, and where time quietly vanished.",
       result: "A ranked, plain-English fix-it plan—biggest wins first.",
+      visual: "audit",
     },
   },
   {
@@ -186,6 +192,7 @@ export const services: Service[] = [
       client: "Customer list cleanup",
       built: "Merged duplicate customer records across systems, normalized formats, and validated contact data into one reliable list.",
       result: "Thousands of records de-duplicated into one clean source.",
+      visual: "cleanup",
     },
   },
 ];
@@ -225,7 +232,10 @@ export type Deployment = {
   kind: string;
   /** One-line outcome shown under the title. */
   blurb: string;
-  shot: string; // /shots/*.png screenshot
+  /** Real screenshot in /shots, when one genuinely matches. */
+  shot?: string;
+  /** Branded animated visual, used when a screenshot would mislead. */
+  visual?: VisualType;
 };
 
 /*
@@ -252,16 +262,16 @@ export const deployments: Deployment[] = [
     shot: "/shots/instant-estimate.png",
   },
   {
-    title: "Remote Admin",
+    title: "Owned CRM & Database",
     kind: "Custom CRM & database",
     blurb: "A purpose-built customer and job database, owned outright and reachable from anywhere.",
-    shot: "/shots/remote-admin.png",
+    visual: "database",
   },
   {
-    title: "Autopilot",
-    kind: "Workflow automation",
+    title: "Workflow Automation",
+    kind: "Automation & integration",
     blurb: "Booking-to-follow-up flows that run themselves—confirmations, scheduling, and review requests.",
-    shot: "/shots/autopilot.png",
+    visual: "automation",
   },
   {
     title: "BrightBase Turnovers",

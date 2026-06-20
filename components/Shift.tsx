@@ -17,7 +17,7 @@ export default function Shift() {
       {/* Soft accent glow — brightness + life (recolors with the accent) */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-16 h-72 w-72 rounded-full bg-signal/[0.07] blur-[120px]"
+        className="floaty pointer-events-none absolute -left-24 top-16 h-72 w-72 rounded-full bg-signal/[0.07] blur-[120px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>

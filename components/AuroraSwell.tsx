@@ -26,11 +26,11 @@ void main(){
   vec2 q=vec2(fbm(p*2.0+t),fbm(p*2.0+vec2(5.2,1.3)-t));
   float f=fbm(p*3.0+q*1.6+t);
   float bands=sin(uv.y*6.0+f*3.2+sin(uv.x*2.0+t)*0.7);
-  float a=smoothstep(0.05,1.0,f)*(0.5+0.5*bands); a*=a;
-  a+=uM*0.5*exp(-r*4.0);
-  a=clamp(a*uIntensity,0.0,1.0);
+  float a=smoothstep(0.02,1.0,f)*(0.55+0.45*bands); a*=a;
+  a+=uM*0.55*exp(-r*4.0);
+  a=clamp(a*uIntensity*1.18,0.0,1.0);
   vec3 col=mix(uDeep,uMid,a);
-  col=mix(col,uHi,clamp(a-0.62,0.0,1.0)*0.9);
+  col=mix(col,uHi,clamp(a-0.48,0.0,1.0));
   gl_FragColor=vec4(col,1.0);
 }`;
 
@@ -68,8 +68,8 @@ export default function AuroraSwell({
         cv.width = r.width * DPR;
         cv.height = r.height * DPR;
         const g = c.createLinearGradient(0, 0, cv.width, cv.height);
-        g.addColorStop(0, "#06101c");
-        g.addColorStop(1, "#16407f");
+        g.addColorStop(0, "#07182a");
+        g.addColorStop(1, "#1d5aa8");
         c.fillStyle = g;
         c.fillRect(0, 0, cv.width, cv.height);
       };
@@ -88,9 +88,9 @@ export default function AuroraSwell({
     const U = (n: string) => gl.getUniformLocation(pr, n);
     const uRes = U("uRes"), uTime = U("uTime"), uMouse = U("uMouse"), uM = U("uM"), uInt = U("uIntensity"), uDeep = U("uDeep"), uMid = U("uMid"), uHi = U("uHi");
 
-    let mid: [number, number, number] = [0.14, 0.38, 0.85], hi = lighten(mid, 0.55);
-    const deep: [number, number, number] = [0.02, 0.05, 0.11];
-    const readAccent = () => { mid = hexToRgb(getComputedStyle(cv).getPropertyValue(accentVar), [0.14, 0.38, 0.85]); hi = lighten(mid, 0.55); };
+    let mid: [number, number, number] = [0.14, 0.38, 0.85], hi = lighten(mid, 0.72);
+    const deep: [number, number, number] = [0.03, 0.08, 0.16];
+    const readAccent = () => { mid = hexToRgb(getComputedStyle(cv).getPropertyValue(accentVar), [0.14, 0.38, 0.85]); hi = lighten(mid, 0.72); };
     readAccent();
     window.addEventListener("accentchange", readAccent);
     const at = setInterval(readAccent, 1500);
