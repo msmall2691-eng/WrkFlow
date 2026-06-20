@@ -4,12 +4,13 @@ import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import Reveal from "@/components/Reveal";
 import MarketCatalog from "@/components/MarketCatalog";
+import HeroWordmark from "@/components/HeroWordmark";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Marketplace — premade tools & sites",
+  title: "Linx — premade tools & sites",
   description:
-    "Premade websites, web apps, tools, and automations from M Studio—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
+    "Linx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
 };
 
 export default function MarketplacePage() {
@@ -23,19 +24,20 @@ export default function MarketplacePage() {
             aria-hidden="true"
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
           />
-          <div className="relative mx-auto max-w-6xl px-6">
+          <HeroWordmark text="LINX" />
+          <div className="relative z-10 mx-auto max-w-6xl px-6">
             <Reveal>
-              <p className="marker mb-6">// Marketplace</p>
+              <p className="marker mb-6">// Linx · the marketplace</p>
             </Reveal>
             <Reveal delay={60}>
               <h1 className="display-serif max-w-3xl text-3xl text-ink sm:text-4xl md:text-5xl">
-                Premade tools and sites you can put to work today.
+                Linx—premade tools and sites you can put to work today.
               </h1>
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
-                Not everything needs a from-scratch build. These are the things we
-                make most often—packaged so you can{" "}
+                Linx is our line of ready-to-run builds—the things we make most
+                often, packaged so you can{" "}
                 <span className="text-ink">buy and own</span> them outright,{" "}
                 <span className="text-ink">embed</span> a hosted widget in minutes,
                 or <span className="text-ink">start free</span>. Either way, the

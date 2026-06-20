@@ -13,7 +13,7 @@ export default function Hero() {
       <AuroraSwell intensity={0.6} speed={0.7} />
 
       {/* Hidden brand wordmark — lights up where the cursor moves */}
-      <HeroWordmark text="LINX" />
+      <HeroWordmark text="M STUDIO" />
 
       {/* Diagonal scrim — keeps the bright swell on the text-free side */}
       <div

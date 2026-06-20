@@ -8,7 +8,7 @@ export default function Approach() {
       id="approach"
       className="relative overflow-hidden border-t border-line py-16 md:py-24"
     >
-      <Watermark text="LINKED" />
+      <Watermark text="LINX" />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>

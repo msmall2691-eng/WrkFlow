@@ -63,27 +63,27 @@ export default function HeroWordmark({ text = "M STUDIO" }: { text?: string }) {
     >
       {/* Faint base — the word always sits in the fog */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="whitespace-nowrap font-display text-[22vw] font-bold leading-none tracking-tighter text-white/[0.035] [-webkit-text-stroke:1px_rgba(255,255,255,0.04)]">
+        <span className="whitespace-nowrap font-display text-[13vw] font-bold leading-none tracking-tighter text-white/[0.022] [-webkit-text-stroke:1px_rgba(255,255,255,0.03)]">
           {text}
         </span>
       </div>
 
-      {/* Revealed — bright sea-glass letters, masked to a spotlight at the cursor */}
+      {/* Revealed — soft sea-glass letters, masked to a spotlight at the cursor */}
       <div
         ref={reveal}
-        className="absolute inset-0 flex items-center justify-center"
+        className="absolute inset-0 flex items-center justify-center opacity-70"
         style={{
           WebkitMaskImage:
-            "radial-gradient(circle 240px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.35) 45%, transparent 72%)",
+            "radial-gradient(circle 200px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.3) 45%, transparent 72%)",
           maskImage:
-            "radial-gradient(circle 240px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.35) 45%, transparent 72%)",
+            "radial-gradient(circle 200px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.3) 45%, transparent 72%)",
         }}
       >
         <span
-          className="whitespace-nowrap font-display text-[22vw] font-bold leading-none tracking-tighter text-transparent"
+          className="whitespace-nowrap font-display text-[13vw] font-bold leading-none tracking-tighter text-transparent"
           style={{
             backgroundImage:
-              "linear-gradient(120deg, var(--color-signal), #cdeee7 45%, var(--color-signal))",
+              "linear-gradient(120deg, var(--color-signal), #7fd8cd 50%, var(--color-signal))",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             WebkitTextFillColor: "transparent",
