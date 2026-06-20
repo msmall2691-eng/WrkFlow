@@ -47,7 +47,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <a
-                    href="mailto:hello@mstudio.co"
+                    href="mailto:hello@mlinx.studio"
                     className="text-muted transition-colors hover:text-ink"
                   >
                     Email
@@ -64,7 +64,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
-          <span>© {year} MSTUDIO</span>
+          <span>© {year} mLinx Studio</span>
           <span>Built true.</span>
         </div>
       </div>

@@ -1,5 +1,5 @@
 /*
-  Central content for MSTUDIO. Keeping copy here makes the
+  Central content for mLinx Studio. Keeping copy here makes the
   service list and headline iterations a one-file change.
 */
 
@@ -15,7 +15,7 @@ export const whoIsItFor =
   "Built for small and growing businesses—service companies, trades, property managers, short-term rental operators, and the teams behind them—who want a website that actually works, automations that save real hours, and systems shaped around how they operate.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `MSTUDIO started inside a real service business on the coast of Maine. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. MSTUDIO is that same work—custom websites, automations, and the systems behind them, built to fit—offered to the businesses that would rather run on something made for them.`;
+export const founderNote = `mLinx Studio started inside a real service business on the coast of Maine. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. mLinx Studio is that same work—custom websites, automations, and the systems behind them, built to fit—offered to the businesses that would rather run on something made for them.`;
 
 
 export type Service = {

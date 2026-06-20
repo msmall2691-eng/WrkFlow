@@ -1,8 +1,8 @@
 /*
-  Wordmark for MSTUDIO — set in the monospace face, all-caps with deliberate
-  letter-spacing so it reads modern + engineered. A compact glyph (two offset
-  strokes suggesting connected systems / a branching flow) sits ahead of it.
-  Pass `tag` to append a smaller "/ Maine" lockup (the coastal New England nod).
+  Wordmark for mLinx Studio. "mLinx" set in the monospace face — the capital L
+  doubles as a mark. A compact glyph (two offset strokes suggesting linked
+  systems / a branching flow — the "linx") sits ahead of it. Pass `tag` to
+  append a smaller "/ Studio" lockup.
 */
 export default function Logo({
   className = "",
@@ -40,12 +40,12 @@ export default function Logo({
           strokeLinecap="round"
         />
       </svg>
-      <span className={`font-mono text-[15px] font-semibold uppercase tracking-[0.28em] ${wordColor}`}>
-        MSTUDIO
+      <span className={`font-mono text-[17px] font-semibold tracking-[0.02em] ${wordColor}`}>
+        mLinx
       </span>
       {tag && (
         <span className={`font-mono text-[11px] uppercase tracking-[0.22em] ${tagColor}`}>
-          / New England
+          / Studio
         </span>
       )}
     </span>

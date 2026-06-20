@@ -66,7 +66,7 @@ export default function CommandPalette() {
         keywords: "mail hello",
         run: () => {
           close();
-          window.location.href = "mailto:hello@mstudio.co";
+          window.location.href = "mailto:hello@mlinx.studio";
         },
       },
     ];

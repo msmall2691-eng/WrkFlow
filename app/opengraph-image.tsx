@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "MSTUDIO — Websites, automations & systems that run better";
+export const alt = "mLinx Studio — Websites, automations & systems that run better";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -66,12 +66,12 @@ export default function OpengraphImage() {
               color: "#eef2f4",
               fontWeight: 700,
               fontFamily: "monospace",
-              letterSpacing: 4,
+              letterSpacing: 1,
             }}
           >
-            MSTUDIO
+            mLinx Studio
           </span>
-          <span>mstudio.co</span>
+          <span>mlinx.studio</span>
         </div>
       </div>
     ),

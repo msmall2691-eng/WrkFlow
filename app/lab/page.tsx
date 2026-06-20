@@ -27,7 +27,7 @@ export default function Lab() {
         <div className="flex items-start justify-between gap-4">
           <div className="rounded-2xl border border-white/15 bg-black/30 px-5 py-4 backdrop-blur-md">
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/60">
-              MSTUDIO · Lab
+              mLinx Studio · Lab
             </p>
             <h1 className="mt-2 font-mono text-lg font-semibold uppercase tracking-[0.22em]">
               Liquid Chrome
