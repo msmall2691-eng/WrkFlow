@@ -21,7 +21,7 @@ export default function Shift() {
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-6">// The shift</p>
+          <p className="marker mb-4">// The shift</p>
         </Reveal>
 
         <div className="grid gap-12 md:grid-cols-12">

@@ -185,7 +185,7 @@ export default function Dashboard() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-6">// Command center</p>
+          <p className="marker mb-4">// Command center</p>
         </Reveal>
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">

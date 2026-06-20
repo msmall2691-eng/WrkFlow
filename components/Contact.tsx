@@ -67,7 +67,7 @@ export default function Contact() {
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-5">
             <Reveal>
-              <p className="marker mb-6">// Start a conversation</p>
+              <p className="marker mb-4">// Start a conversation</p>
             </Reveal>
             <Reveal delay={60}>
               <h2 className="display text-2xl text-white sm:text-3xl md:text-4xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">

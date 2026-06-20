@@ -32,12 +32,14 @@ export default function FounderNote() {
           </div>
           <div className="md:col-span-8">
             <Reveal delay={80}>
-              <p className="text-xl leading-relaxed text-[#16384a] md:text-2xl">
-                {founderNote}
-              </p>
+              <blockquote className="border-l-2 border-[#16a394]/50 pl-6 md:pl-8">
+                <p className="[font-family:var(--font-serif)] text-xl leading-relaxed text-[#16384a] md:text-2xl">
+                  {founderNote}
+                </p>
+              </blockquote>
             </Reveal>
             <Reveal delay={160}>
-              <p className="mt-8 font-mono text-sm text-[#16384a]">
+              <p className="mt-8 pl-6 font-mono text-sm text-[#16384a] md:pl-8">
                 — Meg <span className="text-[#5b7480]">· Founder, M Studio</span>
               </p>
             </Reveal>
