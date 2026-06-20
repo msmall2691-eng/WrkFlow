@@ -48,6 +48,7 @@ export default function CommandPalette() {
       { id: "work", label: "Shipped & live", group: "Navigate", keywords: "work showcase portfolio", run: go("live") },
       { id: "kit", label: "Playground (mini tools)", group: "Navigate", keywords: "calculator kit playground quote rate signature password tip tools", run: go("kit") },
       { id: "flow", label: "Automation demo", group: "Navigate", keywords: "automation workflow lead intake demo run flow", run: go("flow") },
+      { id: "dash", label: "Rental dashboard", group: "Navigate", keywords: "dashboard analytics airbnb vrbo command center calendar sync revenue", run: go("dash") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
       {

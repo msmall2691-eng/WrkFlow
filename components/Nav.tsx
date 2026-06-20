@@ -7,6 +7,7 @@ const links = [
   { href: "#shift", label: "Why now" },
   { href: "#live", label: "Work" },
   { href: "#kit", label: "Tools" },
+  { href: "#dash", label: "Dashboard" },
   { href: "#services", label: "Services" },
   { href: "#approach", label: "Approach" },
 ];
