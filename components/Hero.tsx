@@ -27,13 +27,13 @@ export default function Hero() {
           Maine-built · linked anywhere
         </p>
 
-        <h1 className="display max-w-4xl text-4xl text-white sm:text-6xl md:text-7xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+        <h1 className="display max-w-3xl text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Websites, automations, and systems <br className="hidden sm:block" />
           that make your business{" "}
           <span className="text-[#e6b964]">run better.</span>
         </h1>
 
-        <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+        <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
           M Studio designs and builds custom websites, links up the automations and
           integrations behind them, and tightens the workflows you already run—so
           everything&apos;s linked and the whole operation moves faster, with
@@ -64,13 +64,13 @@ export default function Hero() {
         </div>
 
         {/* What we build — websites lead, the rest support */}
-        <div className="mt-14 max-w-2xl border-t border-white/10 pt-6">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
+        <div className="mt-12 max-w-2xl border-t border-white/10 pt-6">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
             What we build
           </p>
           <p className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1 leading-relaxed">
-            <span className="text-lg font-semibold text-white">Websites &amp; web apps</span>
-            <span className="text-base text-white/65">
+            <span className="text-base font-semibold text-white">Websites &amp; web apps</span>
+            <span className="text-sm text-white/65">
               —plus the automations, dashboards, and systems behind them.
             </span>
           </p>

@@ -27,7 +27,7 @@ const TOOLS: { id: Tool; label: string; blurb: string; group: Group }[] = [
   { id: "sitecheck", label: "Website health check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores.", group: "Website & systems" },
   { id: "map", label: "Integration map", blurb: "Pick the tools you use → see how they link and what gets automated.", group: "Website & systems" },
   { id: "booking", label: "Booking demo", blurb: "A real scheduling flow → pick a slot, get a downloadable calendar invite.", group: "Website & systems" },
-  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → what doing it by hand costs you every year.", group: "Business math" },
+  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → the yearly cost, and how fast automation pays for itself.", group: "Business math" },
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool.", group: "Business math" },
   { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need.", group: "Business math" },
   { id: "invoice", label: "Invoice maker", blurb: "Build an invoice or proposal → print to a clean PDF in one click.", group: "Business math" },
@@ -51,7 +51,7 @@ export default function Playground() {
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <Reveal>
-              <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
+              <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
                 See the work for yourself.
               </h2>
             </Reveal>

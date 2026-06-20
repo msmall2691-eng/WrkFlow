@@ -28,12 +28,12 @@ export default function MarketplacePage() {
               <p className="marker mb-6">// Marketplace</p>
             </Reveal>
             <Reveal delay={60}>
-              <h1 className="display-serif max-w-4xl text-[2.25rem] text-ink sm:text-5xl md:text-6xl">
+              <h1 className="display-serif max-w-3xl text-3xl text-ink sm:text-4xl md:text-5xl">
                 Premade tools and sites you can put to work today.
               </h1>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+              <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
                 Not everything needs a from-scratch build. These are the things we
                 make most often—packaged so you can{" "}
                 <span className="text-ink">buy and own</span> them outright,{" "}
@@ -74,7 +74,7 @@ export default function MarketplacePage() {
         <section className="border-t border-line py-20">
           <div className="mx-auto max-w-3xl px-6 text-center">
             <Reveal>
-              <h2 className="display text-2xl text-ink sm:text-3xl">
+              <h2 className="display text-xl text-ink sm:text-2xl">
                 Don&apos;t see your exact fit?
               </h2>
             </Reveal>

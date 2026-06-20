@@ -72,7 +72,7 @@ export default function QuoteCalc() {
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
               Estimated price
             </p>
-            <p className="mt-2 font-display text-5xl tracking-tight">
+            <p className="mt-2 font-display text-4xl tracking-tight">
               {money(low)}<span className="text-white/40">–</span>{money(high)}
             </p>
             <p className="mt-1 text-sm text-white/55">

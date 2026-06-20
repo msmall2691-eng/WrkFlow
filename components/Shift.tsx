@@ -31,7 +31,7 @@ export default function Shift() {
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-7">
             <Reveal>
-              <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
+              <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
                 For the first time, you can <span className="text-signal">own</span>{" "}
                 the website, automations, and systems built for exactly how your
                 business runs.
@@ -72,7 +72,7 @@ export default function Shift() {
         <Reveal delay={120}>
           <div className="mt-16 border-t border-line pt-10">
             <p className="marker mb-4">// Who it&apos;s for</p>
-            <p className="display max-w-4xl text-2xl leading-snug text-ink sm:text-3xl">
+            <p className="display max-w-3xl text-xl leading-snug text-ink sm:text-2xl">
               {whoIsItFor}
             </p>
           </div>

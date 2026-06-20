@@ -16,7 +16,7 @@ export default function NotFound() {
         </Link>
 
         <p className="marker mt-12">// 404</p>
-        <h1 className="display-serif mt-4 text-4xl text-ink sm:text-6xl">
+        <h1 className="display-serif mt-4 text-3xl text-ink sm:text-5xl">
           This link came loose.
         </h1>
         <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-muted">

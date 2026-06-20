@@ -70,7 +70,7 @@ export default function Contact() {
               <p className="marker mb-6">// Start a conversation</p>
             </Reveal>
             <Reveal delay={60}>
-              <h2 className="display text-3xl text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+              <h2 className="display text-2xl text-white sm:text-3xl md:text-4xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
                 Tell us what you&apos;re trying to solve.
               </h2>
             </Reveal>

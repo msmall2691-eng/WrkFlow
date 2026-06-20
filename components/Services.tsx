@@ -25,12 +25,12 @@ export default function Services() {
             <p className="marker mb-6">// What we build</p>
           </Reveal>
           <Reveal delay={60}>
-            <h2 className="display-serif text-[2rem] text-ink sm:text-5xl md:text-[3.25rem]">
+            <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
               Eight ways we build and optimize how you run.
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-6 text-lg leading-relaxed text-muted">
+            <p className="mt-6 text-base leading-relaxed text-muted">
               Each of these is a real discipline, not a feature checkbox—and each
               comes with a real example. They compound: a great website needs clean
               data behind it, clean data makes automation trustworthy, automation
@@ -60,7 +60,7 @@ export default function Services() {
                       {service.index}
                     </span>
                     <span className="flex-1">
-                      <span className="display-serif block text-xl text-ink transition-colors group-hover:text-signal md:text-[1.6rem]">
+                      <span className="display-serif block text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
                         {service.title}
                       </span>
                       <span className="mt-1 block text-sm text-muted">

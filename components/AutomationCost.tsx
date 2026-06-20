@@ -21,12 +21,24 @@ export default function AutomationCost() {
   const [hours, setHours] = useLocalStorage("tool-cost-hours", 8);
   const [rate, setRate] = useLocalStorage("tool-cost-rate", 35);
   const [automatable, setAutomatable] = useLocalStorage("tool-cost-automatable", 60);
+  const [invest, setInvest] = useLocalStorage("tool-cost-invest", 3000);
 
   const weeklyHours = people * hours;
   const annualHours = weeklyHours * 52;
   const annualCost = annualHours * rate;
   const recoverableHours = annualHours * (automatable / 100);
   const recoverable = recoverableHours * rate;
+
+  const monthlyRecoverable = recoverable / 12;
+  const breakEvenMonths =
+    invest > 0 && monthlyRecoverable > 0 ? invest / monthlyRecoverable : null;
+  const breakEvenLabel =
+    breakEvenMonths == null
+      ? "—"
+      : breakEvenMonths < 1
+        ? "under a month"
+        : `${Math.ceil(breakEvenMonths)} ${Math.ceil(breakEvenMonths) === 1 ? "month" : "months"}`;
+  const firstYearNet = recoverable - invest;
 
   const summary = [
     "M Studio — What's manual work costing you?",
@@ -35,10 +47,13 @@ export default function AutomationCost() {
     `Hours/week each:       ${hours}`,
     `Loaded hourly cost:    ${money(rate)}/hr`,
     `Share automatable:     ${automatable}%`,
+    `Automation setup:      ${money(invest)} (one-time)`,
     "",
     `Manual hours/year:     ${Math.round(annualHours).toLocaleString()}`,
     `Annual cost of manual: ${money(annualCost)}`,
     `Recoverable/year:      ${money(recoverable)} (${Math.round(recoverableHours).toLocaleString()} hrs)`,
+    `Pays for itself in:    ${breakEvenLabel}`,
+    `Net in year one:       ${money(firstYearNet)}`,
     "",
     "Estimated at mlinx.studio",
   ].join("\n");
@@ -52,8 +67,8 @@ export default function AutomationCost() {
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
               Manual work is costing you
             </p>
-            <p className="mt-2 font-display text-5xl tracking-tight">
-              {money(annualCost)}<span className="text-2xl text-white/40">/yr</span>
+            <p className="mt-2 font-display text-4xl tracking-tight">
+              {money(annualCost)}<span className="text-xl text-white/40">/yr</span>
             </p>
             <p className="mt-1 text-sm text-white/55">
               ≈ {Math.round(annualHours).toLocaleString()} hours a year, by hand
@@ -64,7 +79,19 @@ export default function AutomationCost() {
               <Line k="Hours you'd get back / yr" v={Math.round(recoverableHours).toLocaleString()} />
               <Line k="Hours lost / week" v={Math.round(weeklyHours).toLocaleString()} />
             </div>
-            <p className="mt-5 text-xs leading-relaxed text-white/45">
+
+            {/* Break-even / ROI */}
+            {breakEvenMonths != null && (
+              <div className="mt-5 rounded-xl border border-signal/30 bg-signal/10 p-4">
+                <p className="text-xs text-white/55">A {money(invest)} automation pays for itself in</p>
+                <p className="mt-0.5 font-display text-2xl text-[#6fd3c6]">{breakEvenLabel}</p>
+                <p className="mt-1 text-xs text-white/45">
+                  then nets {money(firstYearNet)} back in the first year.
+                </p>
+              </div>
+            )}
+
+            <p className="mt-4 text-xs leading-relaxed text-white/45">
               Based on {people} {people === 1 ? "person" : "people"} spending {hours} hrs/week each at{" "}
               {money(rate)}/hr, with {automatable}% of it automatable.
             </p>
@@ -90,6 +117,7 @@ export default function AutomationCost() {
             <Slider label="Hours/week each (repetitive work)" value={hours} min={1} max={40} suffix=" hrs" onChange={setHours} />
             <MoneyInput label="Loaded hourly cost (wage + overhead)" value={rate} onChange={setRate} />
             <Slider label="Share that's automatable" value={automatable} min={10} max={95} suffix="%" onChange={setAutomatable} />
+            <MoneyInput label="Automation setup (one-time)" value={invest} step={500} suffix="" onChange={setInvest} />
           </div>
         </div>
       </Reveal>
@@ -97,7 +125,19 @@ export default function AutomationCost() {
   );
 }
 
-function MoneyInput({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
+function MoneyInput({
+  label,
+  value,
+  onChange,
+  step = 5,
+  suffix = "/hr",
+}: {
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+  step?: number;
+  suffix?: string;
+}) {
   return (
     <div>
       <Label>{label}</Label>
@@ -107,12 +147,12 @@ function MoneyInput({ label, value, onChange }: { label: string; value: number; 
           type="number"
           inputMode="numeric"
           min={0}
-          step={5}
+          step={step}
           value={value}
           onChange={(e) => onChange(Math.max(0, Number(e.target.value)))}
           className="w-full bg-transparent text-sm text-ink focus:outline-none"
         />
-        <span className="text-faint text-sm">/hr</span>
+        {suffix && <span className="text-faint text-sm">{suffix}</span>}
       </div>
     </div>
   );

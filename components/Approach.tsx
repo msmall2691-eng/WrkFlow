@@ -13,7 +13,7 @@ export default function Approach() {
             <p className="marker mb-6">// How we work</p>
           </Reveal>
           <Reveal delay={60}>
-            <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
+            <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               Draft-first. You stay in control the whole way.
             </h2>
           </Reveal>

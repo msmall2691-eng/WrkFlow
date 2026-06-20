@@ -53,7 +53,7 @@ export default function RateCalc() {
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
               You should charge
             </p>
-            <p className="mt-2 font-display text-5xl tracking-tight">
+            <p className="mt-2 font-display text-4xl tracking-tight">
               {money(hourly)}<span className="text-2xl text-white/40">/hr</span>
             </p>
             <p className="mt-1 text-sm text-white/55">≈ {money(day)} / day (8h)</p>
