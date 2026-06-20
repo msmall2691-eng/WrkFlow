@@ -40,6 +40,14 @@ export default function Services() {
               a dashboard makes all of it visible.
             </p>
           </Reveal>
+          <Reveal delay={160}>
+            <p className="mt-4 text-sm text-faint">
+              Custom-built around you—or grab a head start from{" "}
+              <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
+                Linx, our premade line →
+              </a>
+            </p>
+          </Reveal>
         </div>
 
         <div className="grid gap-x-12 gap-y-2 md:grid-cols-12">
