@@ -2,8 +2,13 @@ import Reveal from "./Reveal";
 
 export default function Shift() {
   return (
-    <section id="shift" className="relative border-t border-line py-28 md:py-36">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="shift" className="relative overflow-hidden pb-28 pt-24 md:pb-36 md:pt-32">
+      {/* Soft landing from the dark hero — a faint shade easing into the page */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[var(--color-surface)] to-transparent"
+      />
+      <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
           <p className="marker mb-6">// The shift</p>
         </Reveal>

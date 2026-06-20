@@ -23,10 +23,10 @@ export default function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/55 via-black/10 to-transparent"
       />
-      {/* Bottom fade — dissolves the dark hero into the light page below */}
+      {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-[var(--color-base)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-b from-transparent via-[#04060c]/80 to-[var(--color-base)]"
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
