@@ -92,10 +92,10 @@ export default function Contact() {
                 <p>
                   Email ·{" "}
                   <a
-                    href="mailto:contact.mlinxstudio@gmail.com"
+                    href="mailto:contact@mlinx.studio"
                     className="text-white/85 transition-colors hover:text-[#e6b964]"
                   >
-                    contact.mlinxstudio@gmail.com
+                    contact@mlinx.studio
                   </a>
                 </p>
                 <p>

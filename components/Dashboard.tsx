@@ -412,19 +412,20 @@ function Kpi({ label, value, format, delta, unit = "%", hint }: { label: string;
 
 function CountUp({ value, format }: { value: number; format: (n: number) => string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const [display, setDisplay] = useState(0);
+  // Seed with the REAL value so the card is never $0, even if the count-up
+  // animation never fires. The animation is enhancement, not the source of truth.
+  const [display, setDisplay] = useState(value);
   const started = useRef(false);
-  const cur = useRef(0);
+  const cur = useRef(value);
   const raf = useRef(0);
 
-  const animate = (to: number) => {
+  const animate = (from: number, to: number) => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       cur.current = to;
       setDisplay(to);
       return;
     }
     cancelAnimationFrame(raf.current);
-    const from = cur.current;
     const t0 = performance.now();
     const dur = 650;
     const tick = (now: number) => {
@@ -445,10 +446,10 @@ function CountUp({ value, format }: { value: number; format: (n: number) => stri
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
-          animate(value);
+          animate(0, value); // one-time count-up from zero
         }
       },
-      { threshold: 0.3 },
+      { threshold: 0.2 },
     );
     io.observe(el);
     return () => {
@@ -459,7 +460,11 @@ function CountUp({ value, format }: { value: number; format: (n: number) => stri
   }, []);
 
   useEffect(() => {
-    if (started.current) animate(value);
+    if (started.current) animate(cur.current, value);
+    else {
+      cur.current = value;
+      setDisplay(value);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 

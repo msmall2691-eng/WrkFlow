@@ -66,7 +66,7 @@ export default function CommandPalette() {
         keywords: "mail email contact gmail",
         run: () => {
           close();
-          window.location.href = "mailto:contact.mlinxstudio@gmail.com";
+          window.location.href = "mailto:contact@mlinx.studio";
         },
       },
       {

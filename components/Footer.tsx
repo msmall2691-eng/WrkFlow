@@ -47,10 +47,10 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <a
-                    href="mailto:contact.mlinxstudio@gmail.com"
+                    href="mailto:contact@mlinx.studio"
                     className="text-muted transition-colors hover:text-ink"
                   >
-                    contact.mlinxstudio@gmail.com
+                    contact@mlinx.studio
                   </a>
                 </li>
                 <li>

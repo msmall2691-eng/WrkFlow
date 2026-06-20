@@ -125,7 +125,7 @@ export default function AccentSwitcher() {
           className="h-3.5 w-3.5 rounded-full ring-2 ring-offset-1 ring-offset-surface"
           style={{ backgroundColor: ACCENTS[active].signal, color: ACCENTS[active].signal }}
         />
-        Theme
+        Accent
       </button>
     </div>
   );
