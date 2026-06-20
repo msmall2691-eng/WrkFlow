@@ -3,22 +3,13 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import Reveal from "@/components/Reveal";
-import {
-  marketItems,
-  marketModelLabels,
-  type MarketItem,
-} from "@/lib/content";
+import MarketCatalog from "@/components/MarketCatalog";
+import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Marketplace — premade tools & sites",
   description:
     "Premade websites, web apps, tools, and automations from M Studio—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
-};
-
-const modelBadge: Record<MarketItem["model"], string> = {
-  template: "text-signal border-signal/40 bg-signal/10",
-  embed: "text-gold border-gold/40 bg-gold/10",
-  open: "text-muted border-line bg-white/[0.04]",
 };
 
 export default function MarketplacePage() {
@@ -75,21 +66,7 @@ export default function MarketplacePage() {
         {/* Catalog */}
         <section className="py-16 md:py-24">
           <div className="mx-auto max-w-6xl px-6">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {marketItems.map((item, i) => (
-                <Reveal key={item.id} delay={i * 50}>
-                  <ProductCard item={item} />
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal>
-              <p className="mt-10 text-sm leading-relaxed text-faint">
-                Pricing is indicative—every setup is tuned to your business, so the
-                final number depends on scope. Tell us what you run and we&apos;ll
-                send a fixed quote.
-              </p>
-            </Reveal>
+            <MarketCatalog />
           </div>
         </section>
 
@@ -133,55 +110,5 @@ function ModelCard({ tag, body }: { tag: string; body: string }) {
       </p>
       <p className="mt-3 text-sm leading-relaxed text-muted">{body}</p>
     </div>
-  );
-}
-
-function ProductCard({ item }: { item: MarketItem }) {
-  const href = `/#contact`;
-  return (
-    <article
-      className={`elevate group flex h-full flex-col rounded-2xl border bg-elevated p-6 transition-colors hover:border-signal/50 ${
-        item.featured ? "border-signal/40" : "border-line"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-faint">
-          {item.category}
-        </span>
-        <span
-          className={`rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest ${modelBadge[item.model]}`}
-        >
-          {marketModelLabels[item.model]}
-        </span>
-      </div>
-
-      <h3 className="display-serif mt-4 text-xl text-ink">{item.name}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-muted">{item.tagline}</p>
-
-      <ul className="mt-5 space-y-2 border-t border-line pt-5">
-        {item.includes.map((inc) => (
-          <li key={inc} className="flex items-start gap-2.5 text-sm text-muted">
-            <span
-              aria-hidden="true"
-              className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal"
-            />
-            <span>{inc}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-5">
-        <span className="font-display text-sm font-medium text-ink">
-          {item.price}
-        </span>
-        <a
-          href={href}
-          className="inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-signal/10 px-4 py-2 text-xs font-semibold text-signal transition-colors hover:bg-signal/20"
-        >
-          {item.model === "open" ? "Get it" : "Get started"}
-          <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
-        </a>
-      </div>
-    </article>
   );
 }

@@ -292,6 +292,8 @@ export type MarketItem = {
   includes: string[];
   /** Indicative price label, e.g. "$1,200 one-time" or "$19/mo". */
   price: string;
+  /** Preview screenshot in /shots. Optional — a gradient renders without one. */
+  shot?: string;
   /** True for the highlighted / recommended card. */
   featured?: boolean;
 };
@@ -316,6 +318,7 @@ export const marketItems: MarketItem[] = [
       "You own the code outright",
     ],
     price: "from $1,800 one-time",
+    shot: "/shots/maineclean.png",
     featured: true,
   },
   {
@@ -331,6 +334,7 @@ export const marketItems: MarketItem[] = [
       "Connects to your existing tools",
     ],
     price: "from $2,400 one-time",
+    shot: "/shots/brightbase-turnovers.png",
   },
   {
     id: "quote-widget",
@@ -345,6 +349,7 @@ export const marketItems: MarketItem[] = [
       "One line of code to install",
     ],
     price: "$29/mo",
+    shot: "/shots/instant-estimate.png",
   },
   {
     id: "dashboard-starter",
@@ -359,6 +364,7 @@ export const marketItems: MarketItem[] = [
       "Built to extend later",
     ],
     price: "from $2,000 one-time",
+    shot: "/shots/brightbase-dashboard.png",
   },
   {
     id: "automation-pack",
@@ -373,6 +379,7 @@ export const marketItems: MarketItem[] = [
       "Tuned to your tools",
     ],
     price: "from $39/mo",
+    shot: "/shots/autopilot.png",
   },
   {
     id: "calc-kit",
