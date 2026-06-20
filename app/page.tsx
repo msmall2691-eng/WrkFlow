@@ -19,13 +19,13 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Tighter journey: intro → prove it (try it + dashboard) → work → how */}
+        {/* Journey: intro → why now → what we do (w/ examples) → prove it → work → how */}
         <Hero />
         <Shift />
+        <Services />
         <Playground />
         <Dashboard />
         <Deployments />
-        <Services />
         <Approach />
         <FounderNote />
         <Contact />

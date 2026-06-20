@@ -6,6 +6,8 @@ import CalculatorKit from "./CalculatorKit";
 import QuoteCalc from "./QuoteCalc";
 import RateCalc from "./RateCalc";
 import SignatureMaker from "./SignatureMaker";
+import AutomationCost from "./AutomationCost";
+import SiteCheck from "./SiteCheck";
 import WorkflowSim from "./WorkflowSim";
 
 /*
@@ -15,9 +17,11 @@ import WorkflowSim from "./WorkflowSim";
   A single top-level toggle keeps the two from feeling redundant.
 */
 
-type Tool = "quote" | "rate" | "sig" | "calc";
+type Tool = "sitecheck" | "cost" | "quote" | "rate" | "sig" | "calc";
 
 const TOOLS: { id: Tool; label: string; blurb: string }[] = [
+  { id: "sitecheck", label: "Website health check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores." },
+  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → what doing it by hand costs you every year." },
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool." },
   { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need." },
   { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard." },
@@ -26,7 +30,7 @@ const TOOLS: { id: Tool; label: string; blurb: string }[] = [
 
 export default function Playground() {
   const [mode, setMode] = useState<"tools" | "auto">("tools");
-  const [tool, setTool] = useState<Tool>("quote");
+  const [tool, setTool] = useState<Tool>("sitecheck");
   const activeTool = TOOLS.find((t) => t.id === tool)!;
 
   return (
@@ -106,6 +110,8 @@ export default function Playground() {
             </Reveal>
 
             <div className="mt-8">
+              {tool === "sitecheck" && <SiteCheck />}
+              {tool === "cost" && <AutomationCost />}
               {tool === "quote" && <QuoteCalc />}
               {tool === "rate" && <RateCalc />}
               {tool === "sig" && <SignatureMaker />}
