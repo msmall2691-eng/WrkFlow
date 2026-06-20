@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Logo from "./Logo";
+import Magnetic from "./Magnetic";
 
 const links = [
   { href: "#shift", label: "Why now" },
@@ -51,16 +52,18 @@ export default function Nav() {
           ))}
         </div>
 
-        <a
-          href="#contact"
-          className={`rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
-            scrolled
-              ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
-              : "border-white/30 text-white hover:bg-white/10"
-          }`}
-        >
-          Start
-        </a>
+        <Magnetic strength={0.4}>
+          <a
+            href="#contact"
+            className={`inline-block rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+              scrolled
+                ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
+                : "border-white/30 text-white hover:bg-white/10"
+            }`}
+          >
+            Start
+          </a>
+        </Magnetic>
       </nav>
     </header>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "./Reveal";
 import Aurora from "./Aurora";
 
@@ -156,6 +156,16 @@ export default function Dashboard() {
   const bars = SHAPE.map((s) => (data.rev * s) / SHAPE_SUM);
   const maxBar = Math.max(...bars);
 
+  const nextOffset = upcoming[0]?.start;
+  const nextLabel =
+    nextOffset === undefined
+      ? "—"
+      : nextOffset === 0
+        ? "Today"
+        : nextOffset === 1
+          ? "Tomorrow"
+          : `in ${nextOffset} days`;
+
   const dateFor = (offset: number) => {
     const d = new Date(today);
     d.setDate(d.getDate() + offset);
@@ -220,10 +230,10 @@ export default function Dashboard() {
         {/* KPIs */}
         <Reveal delay={160}>
           <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <Kpi label="Revenue" value={money(data.rev)} delta={data.tr.rev} />
-            <Kpi label="Occupancy" value={`${data.occ}%`} delta={data.tr.occ} unit="pts" />
-            <Kpi label="Avg nightly rate" value={money(data.adr)} delta={data.tr.adr} />
-            <Kpi label="RevPAR" value={money(data.revpar)} delta={data.tr.revpar} hint="rev / available night" />
+            <Kpi label="Revenue" value={data.rev} format={money} delta={data.tr.rev} />
+            <Kpi label="Occupancy" value={data.occ} format={(n) => `${Math.round(n)}%`} delta={data.tr.occ} unit="pts" />
+            <Kpi label="Avg nightly rate" value={data.adr} format={money} delta={data.tr.adr} />
+            <Kpi label="RevPAR" value={data.revpar} format={money} delta={data.tr.revpar} hint="rev / available night" />
           </div>
         </Reveal>
 
@@ -319,7 +329,12 @@ export default function Dashboard() {
         <div className="mt-4 grid gap-4 lg:grid-cols-5">
           <Reveal delay={280} className="lg:col-span-3">
             <div className="h-full rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-md">
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-white/50">Upcoming check-ins</p>
+              <div className="mb-4 flex items-center justify-between">
+                <p className="font-mono text-[11px] uppercase tracking-widest text-white/50">Upcoming check-ins</p>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6fd3c6]/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-[#6fd3c6]">
+                  Next · {nextLabel}
+                </span>
+              </div>
               <ul className="divide-y divide-white/5">
                 {upcoming.length === 0 && (
                   <li className="py-3 text-sm text-white/40">No check-ins in the next two weeks.</li>
@@ -380,17 +395,75 @@ export default function Dashboard() {
   );
 }
 
-function Kpi({ label, value, delta, unit = "%", hint }: { label: string; value: string; delta: number; unit?: string; hint?: string }) {
+function Kpi({ label, value, format, delta, unit = "%", hint }: { label: string; value: number; format: (n: number) => string; delta: number; unit?: string; hint?: string }) {
   const up = delta >= 0;
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-md transition-colors hover:border-white/20">
       <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">{label}</p>
-      <p className="mt-2 font-display text-2xl text-white sm:text-3xl">{value}</p>
+      <p className="mt-2 font-display text-2xl text-white sm:text-3xl">
+        <CountUp value={value} format={format} />
+      </p>
       <p className={`mt-1 text-xs ${up ? "text-emerald-300" : "text-rose-300"}`}>
         {up ? "▲" : "▼"} {Math.abs(delta)}{unit} <span className="text-white/35">{hint ?? "vs prior"}</span>
       </p>
     </div>
   );
+}
+
+function CountUp({ value, format }: { value: number; format: (n: number) => string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [display, setDisplay] = useState(0);
+  const started = useRef(false);
+  const cur = useRef(0);
+  const raf = useRef(0);
+
+  const animate = (to: number) => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      cur.current = to;
+      setDisplay(to);
+      return;
+    }
+    cancelAnimationFrame(raf.current);
+    const from = cur.current;
+    const t0 = performance.now();
+    const dur = 650;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      const v = from + (to - from) * e;
+      cur.current = v;
+      setDisplay(v);
+      if (p < 1) raf.current = requestAnimationFrame(tick);
+    };
+    raf.current = requestAnimationFrame(tick);
+  };
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          animate(value);
+        }
+      },
+      { threshold: 0.3 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(raf.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (started.current) animate(value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  return <span ref={ref}>{format(display)}</span>;
 }
 
 function AttnRow({ label, cta, tone }: { label: string; cta: string; tone: "gold" | "teal" | "rose" }) {

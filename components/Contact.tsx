@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
 import Aurora from "./Aurora";
+import Magnetic from "./Magnetic";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -189,16 +190,18 @@ export default function Contact() {
                     </p>
                   )}
 
-                  <button
-                    type="submit"
-                    disabled={status === "submitting"}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
-                  >
-                    {status === "submitting" ? "Sending…" : "Send it over"}
-                    {status !== "submitting" && (
-                      <span aria-hidden="true">→</span>
-                    )}
-                  </button>
+                  <Magnetic strength={0.3}>
+                    <button
+                      type="submit"
+                      disabled={status === "submitting"}
+                      className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                    >
+                      {status === "submitting" ? "Sending…" : "Send it over"}
+                      {status !== "submitting" && (
+                        <span aria-hidden="true">→</span>
+                      )}
+                    </button>
+                  </Magnetic>
                 </form>
               )}
             </Reveal>
