@@ -7,12 +7,17 @@
 export default function Logo({
   className = "",
   tag = false,
+  tone = "dark",
 }: {
   className?: string;
   tag?: boolean;
+  /** "dark" = ink wordmark on light bg; "light" = white wordmark on dark bg. */
+  tone?: "dark" | "light";
 }) {
+  const wordColor = tone === "light" ? "text-white" : "text-ink";
+  const tagColor = tone === "light" ? "text-white/55" : "text-faint";
   return (
-    <span className={`inline-flex items-baseline gap-2.5 ${className}`}>
+    <span className={`inline-flex items-baseline gap-2.5 ${wordColor} ${className}`}>
       <svg
         width="20"
         height="20"
@@ -35,11 +40,11 @@ export default function Logo({
           strokeLinecap="round"
         />
       </svg>
-      <span className="font-mono text-[15px] font-semibold uppercase tracking-[0.22em] text-ink">
+      <span className={`font-mono text-[15px] font-semibold uppercase tracking-[0.22em] ${wordColor}`}>
         CONNECTIVE
       </span>
       {tag && (
-        <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-faint">
+        <span className={`font-mono text-[11px] uppercase tracking-[0.22em] ${tagColor}`}>
           / Studio
         </span>
       )}

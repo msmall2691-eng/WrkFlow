@@ -30,7 +30,7 @@ export default function Nav() {
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#top" aria-label="Connective Studio — home">
-          <Logo tag />
+          <Logo tag tone={scrolled ? "dark" : "light"} />
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -38,7 +38,11 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className="font-mono text-xs uppercase tracking-widest text-muted transition-colors hover:text-ink"
+              className={`font-mono text-xs uppercase tracking-widest transition-colors ${
+                scrolled
+                  ? "text-muted hover:text-ink"
+                  : "text-white/70 hover:text-white"
+              }`}
             >
               {link.label}
             </a>
@@ -47,7 +51,11 @@ export default function Nav() {
 
         <a
           href="#contact"
-          className="rounded-full border border-signal/40 bg-signal/10 px-4 py-2 font-mono text-xs uppercase tracking-widest text-signal transition-colors hover:bg-signal/20"
+          className={`rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+            scrolled
+              ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
+              : "border-white/30 text-white hover:bg-white/10"
+          }`}
         >
           Start
         </a>
