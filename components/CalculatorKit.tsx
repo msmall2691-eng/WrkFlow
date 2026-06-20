@@ -313,49 +313,55 @@ export default function CalculatorKit() {
           </div>
 
           <div className="space-y-5">
-            <Seg label="Theme" value={t.mode} onChange={(v) => set("mode", v)} options={[["dark", "Dark"], ["light", "Light"]]} />
+            {/* Pickers — two columns so the whole panel stays compact */}
+            <div className="grid gap-5 sm:grid-cols-2">
+              <Seg label="Theme" value={t.mode} onChange={(v) => set("mode", v)} options={[["dark", "Dark"], ["light", "Light"]]} />
 
-            <div>
-              <Label>Accent</Label>
-              <div className="flex flex-wrap items-center gap-2">
-                {SWATCHES.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    aria-label={`accent ${c}`}
-                    onClick={() => set("accent", c)}
-                    className={`h-7 w-7 rounded-full ring-2 ring-offset-2 ring-offset-surface transition ${
-                      t.accent === c ? "ring-ink" : "ring-transparent"
-                    }`}
-                    style={{ backgroundColor: c }}
-                  />
-                ))}
-                <label className="relative h-7 w-7 cursor-pointer overflow-hidden rounded-full border border-line">
-                  <input
-                    type="color"
-                    value={t.accent}
-                    onChange={(e) => set("accent", e.target.value)}
-                    className="absolute -left-2 -top-2 h-11 w-11 cursor-pointer border-0 bg-transparent p-0"
-                    aria-label="custom accent color"
-                  />
-                </label>
+              <div>
+                <Label>Accent</Label>
+                <div className="flex flex-wrap items-center gap-2">
+                  {SWATCHES.map((c) => (
+                    <button
+                      key={c}
+                      type="button"
+                      aria-label={`accent ${c}`}
+                      onClick={() => set("accent", c)}
+                      className={`h-7 w-7 rounded-full ring-2 ring-offset-2 ring-offset-surface transition ${
+                        t.accent === c ? "ring-ink" : "ring-transparent"
+                      }`}
+                      style={{ backgroundColor: c }}
+                    />
+                  ))}
+                  <label className="relative h-7 w-7 cursor-pointer overflow-hidden rounded-full border border-line">
+                    <input
+                      type="color"
+                      value={t.accent}
+                      onChange={(e) => set("accent", e.target.value)}
+                      className="absolute -left-2 -top-2 h-11 w-11 cursor-pointer border-0 bg-transparent p-0"
+                      aria-label="custom accent color"
+                    />
+                  </label>
+                </div>
               </div>
+
+              <Seg label="Operator style" value={t.opStyle} onChange={(v) => set("opStyle", v)} options={[["tint", "Tinted"], ["solid", "Solid"]]} />
+              <Seg label="Font" value={t.font} onChange={(v) => set("font", v)} options={[["sans", "Sans"], ["mono", "Mono"], ["serif", "Serif"]]} />
+              <Seg label="Display align" value={t.align} onChange={(v) => set("align", v)} options={[["left", "Left"], ["center", "Center"], ["right", "Right"]]} />
+              <Seg label="Press effect" value={t.press} onChange={(v) => set("press", v)} options={[["scale", "Scale"], ["push", "Push"], ["none", "None"]]} />
             </div>
 
-            <Seg label="Operator style" value={t.opStyle} onChange={(v) => set("opStyle", v)} options={[["tint", "Tinted"], ["solid", "Solid"]]} />
-            <Seg label="Font" value={t.font} onChange={(v) => set("font", v)} options={[["sans", "Sans"], ["mono", "Mono"], ["serif", "Serif"]]} />
-            <Seg label="Display align" value={t.align} onChange={(v) => set("align", v)} options={[["left", "Left"], ["center", "Center"], ["right", "Right"]]} />
-            <Seg label="Press effect" value={t.press} onChange={(v) => set("press", v)} options={[["scale", "Scale"], ["push", "Push"], ["none", "None"]]} />
+            {/* Sliders — two columns */}
+            <div className="grid gap-x-6 gap-y-4 border-t border-line pt-5 sm:grid-cols-2">
+              <Slider label="Display size" value={t.displaySize} min={30} max={68} suffix="px" onChange={(v) => set("displaySize", v)} />
+              <Slider label="Button radius" value={t.radius} min={0} max={30} suffix="px" onChange={(v) => set("radius", v)} />
+              <Slider label="Button height" value={t.btnH} min={44} max={78} suffix="px" onChange={(v) => set("btnH", v)} />
+              <Slider label="Gap" value={t.gap} min={2} max={18} suffix="px" onChange={(v) => set("gap", v)} />
+              <Slider label="Padding" value={t.pad} min={10} max={36} suffix="px" onChange={(v) => set("pad", v)} />
+              <Slider label="Outer radius" value={t.calcRadius} min={0} max={44} suffix="px" onChange={(v) => set("calcRadius", v)} />
+              <Slider label="Shadow" value={t.shadow} min={0} max={3} onChange={(v) => set("shadow", v)} />
+            </div>
 
-            <Slider label="Display size" value={t.displaySize} min={30} max={68} suffix="px" onChange={(v) => set("displaySize", v)} />
-            <Slider label="Button radius" value={t.radius} min={0} max={30} suffix="px" onChange={(v) => set("radius", v)} />
-            <Slider label="Button height" value={t.btnH} min={44} max={78} suffix="px" onChange={(v) => set("btnH", v)} />
-            <Slider label="Gap" value={t.gap} min={2} max={18} suffix="px" onChange={(v) => set("gap", v)} />
-            <Slider label="Padding" value={t.pad} min={10} max={36} suffix="px" onChange={(v) => set("pad", v)} />
-            <Slider label="Outer radius" value={t.calcRadius} min={0} max={44} suffix="px" onChange={(v) => set("calcRadius", v)} />
-            <Slider label="Shadow" value={t.shadow} min={0} max={3} onChange={(v) => set("shadow", v)} />
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-1">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3 border-t border-line pt-5">
               <Toggle label="Accent glow" checked={t.glow} onChange={(v) => set("glow", v)} />
               <Toggle label="BG gradient" checked={t.gradient} onChange={(v) => set("gradient", v)} />
               <Toggle label="Hairlines" checked={t.hairline} onChange={(v) => set("hairline", v)} />
