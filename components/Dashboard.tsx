@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Reveal from "./Reveal";
 import SystemsField from "./SystemsField";
+import Aurora from "./Aurora";
 
 /*
   Dashboard — a short-term-rental "Command Center".
@@ -104,7 +105,8 @@ export default function Dashboard() {
 
   return (
     <section id="dash" className="relative overflow-hidden bg-[#04060c] py-28 md:py-36">
-      {/* Systems-network background (matches the hero), heavily dimmed */}
+      {/* Chromatic aurora + systems-network background (matches the hero) */}
+      <Aurora intensity={0.7} />
       <div className="absolute inset-0 opacity-50">
         <SystemsField density={0.55} />
       </div>

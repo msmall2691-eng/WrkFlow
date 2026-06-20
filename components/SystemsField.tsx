@@ -236,6 +236,17 @@ export default function SystemsField({
           if (md < 175) glow += (1 - md / 175) * 0.6;
         }
         const h = hueAt(nodes[i].x, nodes[i].y, now);
+        // Soft halo around the larger "hub" nodes for depth.
+        if (nodes[i].r > 2.0) {
+          const hr = nodes[i].r * 5;
+          const halo = ctx.createRadialGradient(dxs[i], dys[i], 0, dxs[i], dys[i], hr);
+          halo.addColorStop(0, `hsla(${h}, 90%, 70%, ${0.16 + glow * 0.12})`);
+          halo.addColorStop(1, `hsla(${h}, 90%, 70%, 0)`);
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(dxs[i], dys[i], hr, 0, Math.PI * 2);
+          ctx.fill();
+        }
         ctx.fillStyle = `hsla(${h}, 90%, 74%, ${0.4 + glow * 0.35})`;
         ctx.beginPath();
         ctx.arc(dxs[i], dys[i], nodes[i].r, 0, Math.PI * 2);

@@ -139,3 +139,29 @@ body {
     transform: none;
   }
 }
+
+/* Chromatic aurora drift — shared backdrop for dark sections */
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+@keyframes auroraA {
+  0%, 100% { transform: translate3d(-12%, -8%, 0) scale(1); }
+  50% { transform: translate3d(8%, 6%, 0) scale(1.25); }
+}
+@keyframes auroraB {
+  0%, 100% { transform: translate3d(10%, -6%, 0) scale(1.1); }
+  50% { transform: translate3d(-8%, 8%, 0) scale(0.9); }
+}
+@keyframes auroraC {
+  0%, 100% { transform: translate3d(-6%, 10%, 0) scale(1); }
+  50% { transform: translate3d(6%, -8%, 0) scale(1.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob {
+    animation: none !important;
+  }
+}
