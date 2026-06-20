@@ -8,6 +8,7 @@ import RateCalc from "./RateCalc";
 import SignatureMaker from "./SignatureMaker";
 import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
+import IntegrationMapper from "./IntegrationMapper";
 import WorkflowSim from "./WorkflowSim";
 
 /*
@@ -17,16 +18,20 @@ import WorkflowSim from "./WorkflowSim";
   A single top-level toggle keeps the two from feeling redundant.
 */
 
-type Tool = "sitecheck" | "cost" | "quote" | "rate" | "sig" | "calc";
+type Tool = "sitecheck" | "map" | "cost" | "quote" | "rate" | "sig" | "calc";
+type Group = "Website & systems" | "Business math" | "Extras";
 
-const TOOLS: { id: Tool; label: string; blurb: string }[] = [
-  { id: "sitecheck", label: "Website health check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores." },
-  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → what doing it by hand costs you every year." },
-  { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool." },
-  { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need." },
-  { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard." },
-  { id: "calc", label: "Calculator kit", blurb: "A working calculator with a wall of live tweaks." },
+const TOOLS: { id: Tool; label: string; blurb: string; group: Group }[] = [
+  { id: "sitecheck", label: "Website health check", blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores.", group: "Website & systems" },
+  { id: "map", label: "Integration map", blurb: "Pick the tools you use → see how they link and what gets automated.", group: "Website & systems" },
+  { id: "cost", label: "Cost of manual work", blurb: "Hours + people → what doing it by hand costs you every year.", group: "Business math" },
+  { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool.", group: "Business math" },
+  { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need.", group: "Business math" },
+  { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard.", group: "Extras" },
+  { id: "calc", label: "Calculator kit", blurb: "A working calculator with a wall of live tweaks.", group: "Extras" },
 ];
+
+const GROUPS: Group[] = ["Website & systems", "Business math", "Extras"];
 
 export default function Playground() {
   const [mode, setMode] = useState<"tools" | "auto">("tools");
@@ -88,21 +93,30 @@ export default function Playground() {
 
         {mode === "tools" ? (
           <>
-            {/* Tool tabs */}
+            {/* Tool tabs — grouped so the set stays scannable as it grows */}
             <Reveal delay={160}>
-              <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
-                  {TOOLS.map((t) => (
-                    <button
-                      key={t.id}
-                      type="button"
-                      onClick={() => setTool(t.id)}
-                      className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
-                        tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
-                      }`}
-                    >
-                      {t.label}
-                    </button>
+              <div className="mt-6 flex flex-col gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:gap-6">
+                  {GROUPS.map((g) => (
+                    <div key={g} className="flex flex-col gap-1.5">
+                      <span className="px-1 font-mono text-[10px] uppercase tracking-widest text-faint">
+                        {g}
+                      </span>
+                      <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
+                        {TOOLS.filter((t) => t.group === g).map((t) => (
+                          <button
+                            key={t.id}
+                            type="button"
+                            onClick={() => setTool(t.id)}
+                            className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
+                              tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
+                            }`}
+                          >
+                            {t.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   ))}
                 </div>
                 <p className="font-mono text-xs text-faint">{activeTool.blurb}</p>
@@ -111,6 +125,7 @@ export default function Playground() {
 
             <div className="mt-8">
               {tool === "sitecheck" && <SiteCheck />}
+              {tool === "map" && <IntegrationMapper />}
               {tool === "cost" && <AutomationCost />}
               {tool === "quote" && <QuoteCalc />}
               {tool === "rate" && <RateCalc />}

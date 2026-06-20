@@ -154,6 +154,22 @@ body {
   }
 }
 
+/* Flowing dashes along the Integration Mapper connector lines */
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.flow-line {
+  stroke-dasharray: 4 8;
+  animation: dashFlow 1s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-line {
+    animation: none;
+  }
+}
+
 /* Chromatic aurora drift — shared backdrop for dark sections */
 .aurora-blob {
   position: absolute;
