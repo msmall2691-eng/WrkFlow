@@ -2,13 +2,14 @@
 
 import { useMemo, useReducer, useState } from "react";
 import Reveal from "./Reveal";
+import { Label, Slider, Seg, Toggle } from "./KitUI";
 
 /*
-  CalculatorKit — a "calculator construction kit".
+  CalculatorKit — a "calculator construction kit" Playground tool.
 
   A fully working calculator on one side, a wall of always-on tweaks on the
   other. Theme, accent, button shape, spacing, typography, effects, layout —
-  all live. A playful proof of how much control we bring to a UI. Frontend-only.
+  all live. Returned as a body (no <section>) so the Playground can host it.
 */
 
 // ---------- calculator engine ----------
@@ -228,229 +229,126 @@ export default function CalculatorKit() {
   }, [t]);
 
   return (
-    <section id="kit" className="relative border-t border-line py-28 md:py-36">
+    <div className="grid gap-8 md:grid-cols-2 md:items-start">
       <style>{KIT_CSS}</style>
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <p className="marker mb-6">// Build it your way</p>
-        </Reveal>
-        <div className="grid gap-8 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
-            <Reveal>
-              <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-                A calculator construction kit.
-              </h2>
-            </Reveal>
-          </div>
-          <div className="md:col-span-4">
-            <Reveal delay={80}>
-              <p className="text-base leading-relaxed text-muted">
-                Tweak everything—live. It&apos;s a toy, but it&apos;s the same
-                obsessive control over type, spacing, and feel we bring to the
-                real thing.
-              </p>
-            </Reveal>
+
+      {/* Calculator stage */}
+      <Reveal>
+        <div className="order-1 flex justify-center rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
+          <div className="cck" style={vars}>
+            <div className="cck-disp">{calc.value}</div>
+            <div className="cck-grid">
+              <Btn cls="fn" onClick={() => dispatch({ type: "clear" })}>AC</Btn>
+              <Btn cls="fn" onClick={() => dispatch({ type: "sign" })}>±</Btn>
+              <Btn cls="fn" onClick={() => dispatch({ type: "percent" })}>%</Btn>
+              <Btn cls={`op${calc.op === "÷" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "÷" })}>÷</Btn>
+
+              {["7", "8", "9"].map((d) => (
+                <Btn key={d} onClick={() => dispatch({ type: "digit", d })}>{d}</Btn>
+              ))}
+              <Btn cls={`op${calc.op === "×" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "×" })}>×</Btn>
+
+              {["4", "5", "6"].map((d) => (
+                <Btn key={d} onClick={() => dispatch({ type: "digit", d })}>{d}</Btn>
+              ))}
+              <Btn cls={`op${calc.op === "−" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "−" })}>−</Btn>
+
+              {["1", "2", "3"].map((d) => (
+                <Btn key={d} onClick={() => dispatch({ type: "digit", d })}>{d}</Btn>
+              ))}
+              <Btn cls={`op${calc.op === "+" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "+" })}>+</Btn>
+
+              <Btn cls={t.zeroWide ? "wide" : ""} onClick={() => dispatch({ type: "digit", d: "0" })}>0</Btn>
+              <Btn onClick={() => dispatch({ type: "dot" })}>.</Btn>
+              <Btn cls={t.zeroWide ? "eq" : "eq wide"} onClick={() => dispatch({ type: "equals" })}>=</Btn>
+            </div>
           </div>
         </div>
+      </Reveal>
 
-        <div className="mt-12 grid gap-8 md:grid-cols-2 md:items-start">
-          {/* Calculator stage */}
-          <Reveal delay={120}>
-            <div className="order-1 flex justify-center rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
-              <div className="cck" style={vars}>
-                <div className="cck-disp">{calc.value}</div>
-                <div className="cck-grid">
-                  <Btn cls="fn" onClick={() => dispatch({ type: "clear" })}>AC</Btn>
-                  <Btn cls="fn" onClick={() => dispatch({ type: "sign" })}>±</Btn>
-                  <Btn cls="fn" onClick={() => dispatch({ type: "percent" })}>%</Btn>
-                  <Btn cls={`op${calc.op === "÷" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "÷" })}>÷</Btn>
+      {/* Controls — always on screen */}
+      <Reveal delay={80}>
+        <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
+          <div className="mb-5 flex items-center justify-between">
+            <p className="font-mono text-[11px] uppercase tracking-widest text-faint">Controls</p>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={randomize}
+                className="rounded-full bg-signal px-3.5 py-1.5 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5"
+              >
+                Randomize ✦
+              </button>
+              <button
+                type="button"
+                onClick={() => setT(DEFAULTS)}
+                className="rounded-full border border-line px-3.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-ink"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
 
-                  {["7", "8", "9"].map((d) => (
-                    <Btn key={d} onClick={() => dispatch({ type: "digit", d })}>{d}</Btn>
-                  ))}
-                  <Btn cls={`op${calc.op === "×" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "×" })}>×</Btn>
+          <div className="space-y-5">
+            <Seg label="Theme" value={t.mode} onChange={(v) => set("mode", v)} options={[["dark", "Dark"], ["light", "Light"]]} />
 
-                  {["4", "5", "6"].map((d) => (
-                    <Btn key={d} onClick={() => dispatch({ type: "digit", d })}>{d}</Btn>
-                  ))}
-                  <Btn cls={`op${calc.op === "−" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "−" })}>−</Btn>
-
-                  {["1", "2", "3"].map((d) => (
-                    <Btn key={d} onClick={() => dispatch({ type: "digit", d })}>{d}</Btn>
-                  ))}
-                  <Btn cls={`op${calc.op === "+" ? " sel" : ""}`} onClick={() => dispatch({ type: "op", op: "+" })}>+</Btn>
-
-                  <Btn cls={t.zeroWide ? "wide" : ""} onClick={() => dispatch({ type: "digit", d: "0" })}>0</Btn>
-                  <Btn onClick={() => dispatch({ type: "dot" })}>.</Btn>
-                  <Btn cls={t.zeroWide ? "eq" : "eq wide"} onClick={() => dispatch({ type: "equals" })}>=</Btn>
-                </div>
+            <div>
+              <Label>Accent</Label>
+              <div className="flex flex-wrap items-center gap-2">
+                {SWATCHES.map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    aria-label={`accent ${c}`}
+                    onClick={() => set("accent", c)}
+                    className={`h-7 w-7 rounded-full ring-2 ring-offset-2 ring-offset-surface transition ${
+                      t.accent === c ? "ring-ink" : "ring-transparent"
+                    }`}
+                    style={{ backgroundColor: c }}
+                  />
+                ))}
+                <label className="relative h-7 w-7 cursor-pointer overflow-hidden rounded-full border border-line">
+                  <input
+                    type="color"
+                    value={t.accent}
+                    onChange={(e) => set("accent", e.target.value)}
+                    className="absolute -left-2 -top-2 h-11 w-11 cursor-pointer border-0 bg-transparent p-0"
+                    aria-label="custom accent color"
+                  />
+                </label>
               </div>
             </div>
-          </Reveal>
 
-          {/* Controls — always on screen */}
-          <Reveal delay={160}>
-            <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
-              <div className="mb-5 flex items-center justify-between">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-faint">
-                  Controls
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={randomize}
-                    className="rounded-full bg-signal px-3.5 py-1.5 text-xs font-semibold text-white transition-transform hover:-translate-y-0.5"
-                  >
-                    Randomize ✦
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setT(DEFAULTS)}
-                    className="rounded-full border border-line px-3.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-ink"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
+            <Seg label="Operator style" value={t.opStyle} onChange={(v) => set("opStyle", v)} options={[["tint", "Tinted"], ["solid", "Solid"]]} />
+            <Seg label="Font" value={t.font} onChange={(v) => set("font", v)} options={[["sans", "Sans"], ["mono", "Mono"], ["serif", "Serif"]]} />
+            <Seg label="Display align" value={t.align} onChange={(v) => set("align", v)} options={[["left", "Left"], ["center", "Center"], ["right", "Right"]]} />
+            <Seg label="Press effect" value={t.press} onChange={(v) => set("press", v)} options={[["scale", "Scale"], ["push", "Push"], ["none", "None"]]} />
 
-              <div className="space-y-5">
-                <Seg label="Theme" value={t.mode} onChange={(v) => set("mode", v)} options={[["dark", "Dark"], ["light", "Light"]]} />
+            <Slider label="Display size" value={t.displaySize} min={30} max={68} suffix="px" onChange={(v) => set("displaySize", v)} />
+            <Slider label="Button radius" value={t.radius} min={0} max={30} suffix="px" onChange={(v) => set("radius", v)} />
+            <Slider label="Button height" value={t.btnH} min={44} max={78} suffix="px" onChange={(v) => set("btnH", v)} />
+            <Slider label="Gap" value={t.gap} min={2} max={18} suffix="px" onChange={(v) => set("gap", v)} />
+            <Slider label="Padding" value={t.pad} min={10} max={36} suffix="px" onChange={(v) => set("pad", v)} />
+            <Slider label="Outer radius" value={t.calcRadius} min={0} max={44} suffix="px" onChange={(v) => set("calcRadius", v)} />
+            <Slider label="Shadow" value={t.shadow} min={0} max={3} onChange={(v) => set("shadow", v)} />
 
-                <div>
-                  <Label>Accent</Label>
-                  <div className="flex flex-wrap items-center gap-2">
-                    {SWATCHES.map((c) => (
-                      <button
-                        key={c}
-                        type="button"
-                        aria-label={`accent ${c}`}
-                        onClick={() => set("accent", c)}
-                        className={`h-7 w-7 rounded-full ring-2 ring-offset-2 ring-offset-surface transition ${
-                          t.accent === c ? "ring-ink" : "ring-transparent"
-                        }`}
-                        style={{ backgroundColor: c }}
-                      />
-                    ))}
-                    <label className="relative h-7 w-7 cursor-pointer overflow-hidden rounded-full border border-line">
-                      <input
-                        type="color"
-                        value={t.accent}
-                        onChange={(e) => set("accent", e.target.value)}
-                        className="absolute -left-2 -top-2 h-11 w-11 cursor-pointer border-0 bg-transparent p-0"
-                        aria-label="custom accent color"
-                      />
-                    </label>
-                  </div>
-                </div>
-
-                <Seg label="Operator style" value={t.opStyle} onChange={(v) => set("opStyle", v)} options={[["tint", "Tinted"], ["solid", "Solid"]]} />
-                <Seg label="Font" value={t.font} onChange={(v) => set("font", v)} options={[["sans", "Sans"], ["mono", "Mono"], ["serif", "Serif"]]} />
-                <Seg label="Display align" value={t.align} onChange={(v) => set("align", v)} options={[["left", "Left"], ["center", "Center"], ["right", "Right"]]} />
-                <Seg label="Press effect" value={t.press} onChange={(v) => set("press", v)} options={[["scale", "Scale"], ["push", "Push"], ["none", "None"]]} />
-
-                <Slider label="Display size" value={t.displaySize} min={30} max={68} suffix="px" onChange={(v) => set("displaySize", v)} />
-                <Slider label="Button radius" value={t.radius} min={0} max={30} suffix="px" onChange={(v) => set("radius", v)} />
-                <Slider label="Button height" value={t.btnH} min={44} max={78} suffix="px" onChange={(v) => set("btnH", v)} />
-                <Slider label="Gap" value={t.gap} min={2} max={18} suffix="px" onChange={(v) => set("gap", v)} />
-                <Slider label="Padding" value={t.pad} min={10} max={36} suffix="px" onChange={(v) => set("pad", v)} />
-                <Slider label="Outer radius" value={t.calcRadius} min={0} max={44} suffix="px" onChange={(v) => set("calcRadius", v)} />
-                <Slider label="Shadow" value={t.shadow} min={0} max={3} onChange={(v) => set("shadow", v)} />
-
-                <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-1">
-                  <Toggle label="Accent glow" checked={t.glow} onChange={(v) => set("glow", v)} />
-                  <Toggle label="BG gradient" checked={t.gradient} onChange={(v) => set("gradient", v)} />
-                  <Toggle label="Hairlines" checked={t.hairline} onChange={(v) => set("hairline", v)} />
-                  <Toggle label="Wide zero" checked={t.zeroWide} onChange={(v) => set("zeroWide", v)} />
-                </div>
-              </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-1">
+              <Toggle label="Accent glow" checked={t.glow} onChange={(v) => set("glow", v)} />
+              <Toggle label="BG gradient" checked={t.gradient} onChange={(v) => set("gradient", v)} />
+              <Toggle label="Hairlines" checked={t.hairline} onChange={(v) => set("hairline", v)} />
+              <Toggle label="Wide zero" checked={t.zeroWide} onChange={(v) => set("zeroWide", v)} />
             </div>
-          </Reveal>
+          </div>
         </div>
-      </div>
-    </section>
+      </Reveal>
+    </div>
   );
 }
 
-// ---------- UI primitives ----------
 function Btn({ children, cls = "", onClick }: { children: React.ReactNode; cls?: string; onClick: () => void }) {
   return (
     <button type="button" onClick={onClick} className={`cck-btn ${cls}`}>
       {children}
-    </button>
-  );
-}
-
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">{children}</p>;
-}
-
-function Slider({
-  label, value, min, max, suffix = "", onChange,
-}: {
-  label: string; value: number; min: number; max: number; suffix?: string; onChange: (v: number) => void;
-}) {
-  return (
-    <div>
-      <div className="mb-1.5 flex items-center justify-between">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-faint">{label}</span>
-        <span className="font-mono text-[11px] text-muted">{value}{suffix}</span>
-      </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-line"
-        style={{ accentColor: "var(--color-signal)" }}
-      />
-    </div>
-  );
-}
-
-function Seg<T extends string>({
-  label, value, options, onChange,
-}: {
-  label: string; value: T; options: [T, string][]; onChange: (v: T) => void;
-}) {
-  return (
-    <div>
-      <Label>{label}</Label>
-      <div className="inline-flex rounded-lg border border-line bg-base p-0.5">
-        {options.map(([val, lbl]) => (
-          <button
-            key={val}
-            type="button"
-            onClick={() => onChange(val)}
-            className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
-              value === val ? "bg-signal text-white" : "text-muted hover:text-ink"
-            }`}
-          >
-            {lbl}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Toggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onChange(!checked)}
-      className="flex items-center justify-between gap-3 text-left"
-    >
-      <span className="text-sm text-muted">{label}</span>
-      <span
-        className={`relative h-5 w-9 shrink-0 rounded-full transition-colors ${checked ? "bg-signal" : "bg-line"}`}
-      >
-        <span
-          className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
-            checked ? "translate-x-4" : "translate-x-0.5"
-          }`}
-        />
-      </span>
     </button>
   );
 }
