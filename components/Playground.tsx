@@ -33,7 +33,7 @@ export default function Playground() {
   const active = TABS.find((t) => t.id === tab)!;
 
   return (
-    <section id="kit" className="relative border-t border-line py-28 md:py-36">
+    <section id="kit" className="relative pb-28 pt-12 md:pb-36 md:pt-16">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <p className="marker mb-6">// Playground</p>

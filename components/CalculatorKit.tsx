@@ -1,8 +1,10 @@
 "use client";
 
-import { useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import Reveal from "./Reveal";
 import { Label, Slider, Seg, Toggle } from "./KitUI";
+
+const STORAGE_KEY = "cck-tweaks";
 
 /*
   CalculatorKit — a "calculator construction kit" Playground tool.
@@ -168,6 +170,27 @@ export default function CalculatorKit() {
   const [calc, dispatch] = useReducer(reducer, INITIAL);
   const [t, setT] = useState<Tweaks>(DEFAULTS);
   const set = <K extends keyof Tweaks>(k: K, v: Tweaks[K]) => setT((p) => ({ ...p, [k]: v }));
+
+  // Persist the visitor's look. Read after mount (avoids hydration mismatch),
+  // then write on every change.
+  const loaded = useRef(false);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) setT({ ...DEFAULTS, ...JSON.parse(raw) });
+    } catch {
+      /* ignore */
+    }
+    loaded.current = true;
+  }, []);
+  useEffect(() => {
+    if (!loaded.current) return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(t));
+    } catch {
+      /* ignore */
+    }
+  }, [t]);
 
   const randomize = () =>
     setT({

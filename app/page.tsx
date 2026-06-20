@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import Shift from "@/components/Shift";
 import WhoFor from "@/components/WhoFor";
 import Deployments from "@/components/Deployments";
+import WaveDivider from "@/components/WaveDivider";
 import Playground from "@/components/Playground";
 import WorkflowSim from "@/components/WorkflowSim";
 import Services from "@/components/Services";
@@ -22,6 +23,7 @@ export default function Home() {
         <Shift />
         <WhoFor />
         <Deployments />
+        <WaveDivider className="mx-auto max-w-6xl px-6" />
         <Playground />
         <WorkflowSim />
         <Services />
