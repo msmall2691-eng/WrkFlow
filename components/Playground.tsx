@@ -7,6 +7,7 @@ import QuoteCalc from "./QuoteCalc";
 import RateCalc from "./RateCalc";
 import SignatureMaker from "./SignatureMaker";
 import AutomationCost from "./AutomationCost";
+import InvoiceMaker from "./InvoiceMaker";
 import SiteCheck from "./SiteCheck";
 import IntegrationMapper from "./IntegrationMapper";
 import BookingDemo from "./BookingDemo";
@@ -19,7 +20,7 @@ import WorkflowSim from "./WorkflowSim";
   A single top-level toggle keeps the two from feeling redundant.
 */
 
-type Tool = "sitecheck" | "map" | "booking" | "cost" | "quote" | "rate" | "sig" | "calc";
+type Tool = "sitecheck" | "map" | "booking" | "cost" | "quote" | "rate" | "invoice" | "sig" | "calc";
 type Group = "Website & systems" | "Business math" | "Extras";
 
 const TOOLS: { id: Tool; label: string; blurb: string; group: Group }[] = [
@@ -29,6 +30,7 @@ const TOOLS: { id: Tool; label: string; blurb: string; group: Group }[] = [
   { id: "cost", label: "Cost of manual work", blurb: "Hours + people → what doing it by hand costs you every year.", group: "Business math" },
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool.", group: "Business math" },
   { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need.", group: "Business math" },
+  { id: "invoice", label: "Invoice maker", blurb: "Build an invoice or proposal → print to a clean PDF in one click.", group: "Business math" },
   { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard.", group: "Extras" },
   { id: "calc", label: "Calculator kit", blurb: "A working calculator with a wall of live tweaks.", group: "Extras" },
 ];
@@ -132,6 +134,7 @@ export default function Playground() {
               {tool === "cost" && <AutomationCost />}
               {tool === "quote" && <QuoteCalc />}
               {tool === "rate" && <RateCalc />}
+              {tool === "invoice" && <InvoiceMaker />}
               {tool === "sig" && <SignatureMaker />}
               {tool === "calc" && <CalculatorKit />}
             </div>
