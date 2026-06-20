@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.105.0",
     "@supabase/supabase-js": "^2.58.0",
     "next": "15.5.19",
     "nodemailer": "^9.0.0",

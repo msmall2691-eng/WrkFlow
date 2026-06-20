@@ -46,23 +46,9 @@ export default function CommandPalette() {
       { id: "shift", label: "The shift", group: "Navigate", keywords: "why now", run: go("shift") },
       { id: "who", label: "Who it's for", group: "Navigate", keywords: "audience fit", run: go("whofor") },
       { id: "work", label: "Shipped & live", group: "Navigate", keywords: "work showcase portfolio", run: go("live") },
-      { id: "blueprint", label: "AI automation demo", group: "Navigate", keywords: "ai claude blueprint automation demo busywork", run: go("blueprint") },
+      { id: "kit", label: "Calculator playground", group: "Navigate", keywords: "calculator kit playground demo tweaks build", run: go("kit") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
-      {
-        id: "try-ai",
-        label: "Generate an automation blueprint",
-        hint: "✦",
-        group: "Actions",
-        keywords: "ai claude demo busywork blueprint try",
-        run: () => {
-          close();
-          scrollToId("blueprint");
-          setTimeout(() => {
-            document.getElementById("busywork")?.focus();
-          }, 700);
-        },
-      },
       {
         id: "contact",
         label: "Start a conversation",

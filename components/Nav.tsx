@@ -6,7 +6,7 @@ import Logo from "./Logo";
 const links = [
   { href: "#shift", label: "Why now" },
   { href: "#live", label: "Work" },
-  { href: "#blueprint", label: "AI Demo" },
+  { href: "#kit", label: "Playground" },
   { href: "#services", label: "Services" },
   { href: "#approach", label: "Approach" },
 ];
