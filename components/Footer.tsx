@@ -33,7 +33,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a href="/marketplace" className="text-muted transition-colors hover:text-ink">
-                    Marketplace
+                    Linx marketplace
                   </a>
                 </li>
                 <li>

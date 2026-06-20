@@ -51,10 +51,10 @@ export default function CommandPalette() {
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
       {
         id: "marketplace",
-        label: "Marketplace",
+        label: "Linx marketplace",
         hint: "↗",
         group: "Navigate",
-        keywords: "buy templates tools premade store shop products embed",
+        keywords: "linx buy templates tools premade store shop products embed marketplace",
         run: () => {
           close();
           window.location.href = "/marketplace";

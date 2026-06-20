@@ -27,7 +27,7 @@ export default function Playground() {
     <section id="kit" className="relative py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-4">// Try it live</p>
+          <p className="marker mb-4">// Linx · free tools</p>
         </Reveal>
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
@@ -36,8 +36,11 @@ export default function Playground() {
         </Reveal>
         <Reveal delay={80}>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
-            Free and fully working—the same kind of thing we build into the systems
-            behind your website.
+            Free, working tools by <span className="text-ink">Linx</span>—the same
+            kind we build into the systems behind your website.{" "}
+            <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
+              See the full lineup →
+            </a>
           </p>
         </Reveal>
 
