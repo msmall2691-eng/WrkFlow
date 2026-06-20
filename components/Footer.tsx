@@ -11,7 +11,8 @@ export default function Footer() {
             <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
               We design and build websites, automations, and the systems behind
-              them—so your business runs faster, cleaner, and with less busywork.
+              them—so your business runs faster and cleaner, with less busywork.
+              New England roots, modern tech.
             </p>
           </div>
 
@@ -46,7 +47,7 @@ export default function Footer() {
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <a
-                    href="mailto:hello@connectivestudio.co"
+                    href="mailto:hello@tideandtrue.co"
                     className="text-muted transition-colors hover:text-ink"
                   >
                     Email
@@ -63,8 +64,8 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
-          <span>© {year} Connective Studio</span>
-          <span>Build it better.</span>
+          <span>© {year} Tide & True Studios</span>
+          <span>Built true.</span>
         </div>
       </div>
     </footer>

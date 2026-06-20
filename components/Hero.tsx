@@ -28,18 +28,18 @@ export default function Hero() {
       <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
         <p className="marker mb-6 flex items-center gap-3">
           <span className="inline-block h-px w-8 bg-signal/60" />
-          Web · Automation · Systems Studio
+          New England · Web · Automation · Systems
         </p>
 
         <h1 className="display max-w-4xl text-5xl text-white sm:text-6xl md:text-7xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Websites and automations <br className="hidden sm:block" />
+          Websites, automations, and systems <br className="hidden sm:block" />
           that make your business{" "}
           <span className="text-[#a9c2ff]">run better.</span>
         </h1>
 
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          We design and build custom websites, wire up the automations and
-          integrations behind them, and tighten the workflows and processes you
+          Tide &amp; True Studios designs and builds custom websites, wires up the
+          automations and integrations behind them, and tightens the workflows you
           already run—so the whole operation moves faster, with less manual work.
         </p>
 

@@ -67,7 +67,7 @@ export default function CommandPalette() {
         keywords: "mail hello",
         run: () => {
           close();
-          window.location.href = "mailto:hello@connectivestudio.co";
+          window.location.href = "mailto:hello@tideandtrue.co";
         },
       },
     ];

@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Connective Studio — Websites, automations & systems that run better";
+export const alt = "Tide & True Studios — Websites, automations & systems that run better";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -66,12 +66,12 @@ export default function OpengraphImage() {
               color: "#18181b",
               fontWeight: 700,
               fontFamily: "monospace",
-              letterSpacing: 8,
+              letterSpacing: 4,
             }}
           >
-            CONNECTIVE
+            TIDE&True Studios
           </span>
-          <span>connectivestudio.co</span>
+          <span>tideandtrue.co</span>
         </div>
       </div>
     ),

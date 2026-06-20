@@ -1,8 +1,8 @@
 /*
-  Wordmark for Connective Studio. Set in the monospace face, all-caps with
-  deliberate letter-spacing, so it reads as a systems/engineering brand. A
-  compact glyph (two offset strokes suggesting connected systems / a branching
-  flow) sits ahead of it. Pass `tag` to append a smaller "/ Studio" lockup.
+  Wordmark for Tide & True Studios. "TIDE&True" set in the monospace face — TIDE
+  in caps, True in mixed case — so it reads coastal but engineered. A compact
+  glyph (two offset strokes suggesting connected systems / a branching flow)
+  sits ahead of it. Pass `tag` to append a smaller "/ Studios" lockup.
 */
 export default function Logo({
   className = "",
@@ -40,12 +40,12 @@ export default function Logo({
           strokeLinecap="round"
         />
       </svg>
-      <span className={`font-mono text-[15px] font-semibold uppercase tracking-[0.22em] ${wordColor}`}>
-        CONNECTIVE
+      <span className={`font-mono text-[15px] font-semibold tracking-[0.06em] ${wordColor}`}>
+        {"TIDE&True"}
       </span>
       {tag && (
         <span className={`font-mono text-[11px] uppercase tracking-[0.22em] ${tagColor}`}>
-          / Studio
+          / Studios
         </span>
       )}
     </span>

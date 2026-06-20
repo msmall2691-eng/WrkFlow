@@ -20,7 +20,7 @@ export default function FounderNote() {
             <Reveal delay={160}>
               {/* Owner: add a name + one-line title here when ready. */}
               <p className="mt-8 font-mono text-xs uppercase tracking-widest text-faint">
-                Founder, Connective Studio
+                Founder, Tide & True Studios
               </p>
             </Reveal>
           </div>

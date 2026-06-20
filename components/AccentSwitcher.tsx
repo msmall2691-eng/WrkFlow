@@ -18,7 +18,7 @@ const ACCENTS: Accent[] = [
   { name: "Warm Amber", signal: "#ffb020", dim: "#d98b0a" },
 ];
 
-const PRODUCTION_HOSTS = ["connectivestudio.co", "www.connectivestudio.co", "wrk-flow.vercel.app"];
+const PRODUCTION_HOSTS = ["tideandtrue.co", "www.tideandtrue.co", "wrk-flow.vercel.app"];
 
 function hexToRgb(hex: string) {
   const h = hex.replace("#", "");

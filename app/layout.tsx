@@ -21,16 +21,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 // Canonical/OG base. Using the live Vercel URL until the brand domain
-// (connectivestudio.co) is wired up — then swap this single constant.
+// (tideandtrue.co) is wired up — then swap this single constant.
 const SITE_URL = "https://wrk-flow.vercel.app";
 const DESCRIPTION =
-  "Connective Studio designs and builds custom websites, workflow automations, and the systems behind them—and optimizes the processes you already run—so your business operates faster, cleaner, and with less manual work.";
+  "Tide & True Studios builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. New England roots, modern tech.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Connective Studio — Websites, automation & systems",
-    template: "%s · Connective Studio",
+    default: "Tide & True Studios — Websites, automation & systems",
+    template: "%s · Tide & True Studios",
   },
   description: DESCRIPTION,
   keywords: [
@@ -41,26 +41,27 @@ export const metadata: Metadata = {
     "custom software",
     "AI agents",
     "business systems",
+    "Maine web design",
   ],
-  authors: [{ name: "Connective Studio" }],
+  authors: [{ name: "Tide & True Studios" }],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Connective Studio",
-    title: "Connective Studio — Websites, automation & systems",
+    siteName: "Tide & True Studios",
+    title: "Tide & True Studios — Websites, automation & systems",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Connective Studio",
+        alt: "Tide & True Studios",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Connective Studio — Websites, automation & systems",
+    title: "Tide & True Studios — Websites, automation & systems",
     description: DESCRIPTION,
   },
   robots: {
