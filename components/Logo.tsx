@@ -45,7 +45,7 @@ export default function Logo({
       </span>
       {tag && (
         <span className={`font-mono text-[11px] uppercase tracking-[0.22em] ${tagColor}`}>
-          / Maine
+          / New England
         </span>
       )}
     </span>

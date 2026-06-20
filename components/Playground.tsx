@@ -3,88 +3,118 @@
 import { useState } from "react";
 import Reveal from "./Reveal";
 import CalculatorKit from "./CalculatorKit";
-import TipSplit from "./TipSplit";
-import PasswordForge from "./PasswordForge";
 import QuoteCalc from "./QuoteCalc";
 import RateCalc from "./RateCalc";
 import SignatureMaker from "./SignatureMaker";
+import WorkflowSim from "./WorkflowSim";
 
 /*
-  Playground — a small shelf of genuinely-useful, fully-built mini tools.
-
-  A tab bar swaps between the Calculator construction kit, a Tip & Split
-  receipt tool, and a Password Forge. Each is interactive, frontend-only, and
-  shows the same care we put into real product UI.
+  Playground — one "try it live" hub with two clearly-separated modes:
+    • Tools       — free, fully-working utilities a visitor can use right now.
+    • Automations — watch the kind of automation we'd wire up behind their site.
+  A single top-level toggle keeps the two from feeling redundant.
 */
 
-type Tab = "quote" | "rate" | "sig" | "calc" | "tip" | "pw";
+type Tool = "quote" | "rate" | "sig" | "calc";
 
-const TABS: { id: Tab; label: string; blurb: string }[] = [
+const TOOLS: { id: Tool; label: string; blurb: string }[] = [
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range, like a real estimate tool." },
   { id: "rate", label: "What to charge", blurb: "Target income → the hourly rate you actually need." },
   { id: "sig", label: "Email signature", blurb: "Fill it in, copy a styled signature to your clipboard." },
   { id: "calc", label: "Calculator kit", blurb: "A working calculator with a wall of live tweaks." },
-  { id: "tip", label: "Tip & Split", blurb: "Split the bill—tip, total, and per-person, instantly." },
-  { id: "pw", label: "Password Forge", blurb: "Strong passwords with a live strength meter." },
 ];
 
 export default function Playground() {
-  const [tab, setTab] = useState<Tab>("quote");
-  const active = TABS.find((t) => t.id === tab)!;
+  const [mode, setMode] = useState<"tools" | "auto">("tools");
+  const [tool, setTool] = useState<Tool>("quote");
+  const activeTool = TOOLS.find((t) => t.id === tool)!;
 
   return (
     <section id="kit" className="relative pb-28 pt-12 md:pb-36 md:pt-16">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-6">// Playground</p>
+          <p className="marker mb-6">// Try it live</p>
         </Reveal>
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">
             <Reveal>
               <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-                Little tools, built properly.
+                Don&apos;t take our word for it—play with it.
               </h2>
             </Reveal>
           </div>
           <div className="md:col-span-4">
             <Reveal delay={80}>
               <p className="text-base leading-relaxed text-muted">
-                A few things everyone needs—each fully working and obsessively
-                detailed. The same care goes into the real thing we build for you.
+                Two things, side by side: free <span className="text-ink">tools</span>{" "}
+                you can use right now, and live <span className="text-ink">automations</span>{" "}
+                you can watch run—the kind we build behind your site.
               </p>
             </Reveal>
           </div>
         </div>
 
-        {/* Tab bar */}
+        {/* Mode toggle — Tools vs Automations */}
         <Reveal delay={120}>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
-              {TABS.map((t) => (
+          <div className="mt-10 inline-flex gap-1 rounded-full border border-line bg-surface p-1">
+            {([["tools", "Free tools"], ["auto", "Live automations"]] as [typeof mode, string][]).map(
+              ([m, label]) => (
                 <button
-                  key={t.id}
+                  key={m}
                   type="button"
-                  onClick={() => setTab(t.id)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                    tab === t.id ? "bg-signal text-white" : "text-muted hover:text-ink"
+                  onClick={() => setMode(m)}
+                  className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
+                    mode === m ? "bg-signal text-white" : "text-muted hover:text-ink"
                   }`}
                 >
-                  {t.label}
+                  {label}
                 </button>
-              ))}
-            </div>
-            <p className="font-mono text-xs text-faint">{active.blurb}</p>
+              ),
+            )}
           </div>
         </Reveal>
 
-        <div className="mt-8">
-          {tab === "quote" && <QuoteCalc />}
-          {tab === "rate" && <RateCalc />}
-          {tab === "sig" && <SignatureMaker />}
-          {tab === "calc" && <CalculatorKit />}
-          {tab === "tip" && <TipSplit />}
-          {tab === "pw" && <PasswordForge />}
-        </div>
+        {mode === "tools" ? (
+          <>
+            {/* Tool tabs */}
+            <Reveal delay={160}>
+              <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
+                  {TOOLS.map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setTool(t.id)}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
+                      }`}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="font-mono text-xs text-faint">{activeTool.blurb}</p>
+              </div>
+            </Reveal>
+
+            <div className="mt-8">
+              {tool === "quote" && <QuoteCalc />}
+              {tool === "rate" && <RateCalc />}
+              {tool === "sig" && <SignatureMaker />}
+              {tool === "calc" && <CalculatorKit />}
+            </div>
+          </>
+        ) : (
+          <div className="mt-8">
+            <Reveal delay={160}>
+              <p className="mb-6 max-w-2xl text-sm leading-relaxed text-muted">
+                Pick a scenario, hit go, and watch a real automation handle it—live.
+                Same engine we wire up behind your forms and inbox.
+              </p>
+            </Reveal>
+            <WorkflowSim />
+          </div>
+        )}
       </div>
     </section>
   );

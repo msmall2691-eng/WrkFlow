@@ -353,29 +353,7 @@ export default function WorkflowSim() {
   const allDone = statuses.length > 0 && statuses.every((s) => s === "done");
 
   return (
-    <section id="flow" className="relative border-t border-line py-28 md:py-36">
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <p className="marker mb-6">// See it run</p>
-        </Reveal>
-        <div className="grid gap-8 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-8">
-            <Reveal>
-              <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
-                Watch the busywork run itself.
-              </h2>
-            </Reveal>
-          </div>
-          <div className="md:col-span-4">
-            <Reveal delay={80}>
-              <p className="text-base leading-relaxed text-muted">
-                Pick a scenario, hit go, and watch a real automation handle it—
-                live. This is the kind of flow we wire up behind your site.
-              </p>
-            </Reveal>
-          </div>
-        </div>
-
+    <div>
         {/* Scenario picker */}
         <Reveal delay={120}>
           <div className="mt-10 inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
@@ -502,8 +480,7 @@ export default function WorkflowSim() {
             </div>
           </div>
         )}
-      </div>
-    </section>
+    </div>
   );
 }
 
