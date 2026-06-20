@@ -94,9 +94,23 @@ export default function AccentSwitcher() {
               </button>
             ))}
           </div>
-          <p className="mt-3 text-[10px] leading-relaxed text-faint">
-            Saved on this device. (Yep—we build little touches like this.)
-          </p>
+          <div className="mt-3 flex items-center justify-between">
+            <span className="text-[10px] text-faint">Saved on this device</span>
+            <button
+              type="button"
+              onClick={() => {
+                apply(0, false);
+                try {
+                  localStorage.removeItem(KEY);
+                } catch {
+                  /* ignore */
+                }
+              }}
+              className="font-mono text-[10px] uppercase tracking-widest text-faint transition-colors hover:text-ink"
+            >
+              Reset
+            </button>
+          </div>
         </div>
       )}
 

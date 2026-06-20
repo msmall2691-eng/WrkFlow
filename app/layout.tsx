@@ -20,9 +20,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// Canonical/OG base. Using the live Vercel URL until the brand domain
-// (mlinx.studio) is wired up — then swap this single constant.
-const SITE_URL = "https://wrk-flow.vercel.app";
+// Canonical/OG base — the live brand domain.
+const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
   "M Studio builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. New England roots, modern tech.";
 

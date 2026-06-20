@@ -11,12 +11,14 @@ import { useEffect, useRef } from "react";
   theme feels alive. Honors reduced-motion (no drift, no parallax).
 */
 
+// Two blobs follow the live accent (--color-signal) so the background tints with
+// the visitor's chosen color; harbor-blue + brass stay fixed to keep the mood.
 const BLOBS = [
   { c: "#16506b", size: "52vw", top: "-18%", left: "-12%", anim: "auroraA 26s ease-in-out infinite", op: 0.55, depth: 26 },
-  { c: "#0e8f86", size: "44vw", top: "40%", left: "-12%", anim: "auroraC 32s ease-in-out infinite", op: 0.4, depth: 16 },
+  { c: "var(--color-signal-dim)", size: "44vw", top: "40%", left: "-12%", anim: "auroraC 32s ease-in-out infinite", op: 0.4, depth: 16 },
   { c: "#d9a441", size: "40vw", top: "-12%", left: "54%", anim: "auroraB 28s ease-in-out infinite", op: 0.3, depth: 34 },
   { c: "#e0833c", size: "34vw", top: "46%", left: "60%", anim: "auroraA 24s ease-in-out infinite reverse", op: 0.26, depth: 22 },
-  { c: "#2bb3a3", size: "28vw", top: "60%", left: "30%", anim: "auroraB 34s ease-in-out infinite", op: 0.22, depth: 12 },
+  { c: "var(--color-signal)", size: "28vw", top: "60%", left: "30%", anim: "auroraB 34s ease-in-out infinite", op: 0.26, depth: 12 },
 ];
 
 export default function Aurora({
