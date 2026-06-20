@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "./Reveal";
+import LiquidChrome from "./LiquidChrome";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -42,21 +43,40 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative border-t border-line py-28 md:py-36"
+      className="relative overflow-hidden border-t border-white/10 bg-[#05070d] py-28 md:py-36"
     >
-      <div className="mx-auto max-w-6xl px-6">
+      {/* Liquid Chrome closer — bookends the page with the hero's effect */}
+      <div className="absolute inset-0">
+        <LiquidChrome palette="ion" intensity={0.5} speed={0.38} />
+      </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-black/55"
+      />
+      {/* Top fade — eases in from the light section above */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-base)] to-transparent"
+      />
+      {/* Bottom fade — eases back out into the light footer below */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[var(--color-base)]"
+      />
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-5">
             <Reveal>
               <p className="marker mb-6">// Start a conversation</p>
             </Reveal>
             <Reveal delay={60}>
-              <h2 className="display text-3xl text-ink sm:text-4xl md:text-5xl">
+              <h2 className="display text-3xl text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
                 Tell us what you&apos;re trying to solve.
               </h2>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 text-base leading-relaxed text-muted">
+              <p className="mt-6 text-base leading-relaxed text-white/75">
                 No pitch deck required. A few sentences about where your
                 operations hurt is enough to start. We read every one and reply
                 within a day—with a real point of view, not a sales sequence.
@@ -69,11 +89,11 @@ export default function Contact() {
               </p>
             </Reveal>
             <Reveal delay={200}>
-              <p className="mt-8 font-mono text-xs uppercase tracking-widest text-faint">
+              <p className="mt-8 font-mono text-xs uppercase tracking-widest text-white/50">
                 Direct ·{" "}
                 <a
                   href="mailto:hello@connectivestudio.co"
-                  className="text-muted transition-colors hover:text-signal"
+                  className="text-white/75 transition-colors hover:text-[#a9c2ff]"
                 >
                   hello@connectivestudio.co
                 </a>
@@ -88,7 +108,7 @@ export default function Contact() {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="space-y-6 rounded-2xl border border-line bg-surface p-8 md:p-10"
+                  className="space-y-6 rounded-2xl border border-white/15 bg-white/[0.06] p-8 backdrop-blur-md md:p-10"
                   noValidate
                 >
                   {/* Honeypot — hidden from humans, catches bots. */}
@@ -138,7 +158,7 @@ export default function Contact() {
                       required
                       rows={5}
                       placeholder="The platform we're stuck on, the data that's a mess, the busywork eating our week…"
-                      className="w-full resize-y rounded-lg border border-line bg-base px-4 py-3 text-sm text-ink placeholder:text-faint focus:border-signal/60 focus:outline-none"
+                      className="w-full resize-y rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-signal/70 focus:outline-none"
                     />
                   </div>
 
@@ -154,7 +174,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={status === "submitting"}
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-base transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                   >
                     {status === "submitting" ? "Sending…" : "Send it over"}
                     {status !== "submitting" && (
@@ -177,8 +197,8 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
       <div className="flex h-10 w-10 items-center justify-center rounded-full border border-signal/40 text-signal">
         ✓
       </div>
-      <h3 className="mt-5 font-display text-2xl text-ink">Message received.</h3>
-      <p className="mt-3 text-base leading-relaxed text-muted">
+      <h3 className="mt-5 font-display text-2xl text-white">Message received.</h3>
+      <p className="mt-3 text-base leading-relaxed text-white/75">
         Thanks for reaching out. We&apos;ll read what you sent and get back to
         you personally—usually within a business day.
       </p>
@@ -197,7 +217,7 @@ function FieldLabel({ htmlFor, label, optional }: { htmlFor: string; label: stri
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-faint"
+      className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-white/55"
     >
       {label}
       {optional && <span className="text-faint/60"> · optional</span>}
@@ -229,7 +249,7 @@ function Field({
         type={type}
         required={required}
         autoComplete={autoComplete}
-        className="w-full rounded-lg border border-line bg-base px-4 py-3 text-sm text-ink placeholder:text-faint focus:border-signal/60 focus:outline-none"
+        className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-signal/70 focus:outline-none"
       />
     </div>
   );

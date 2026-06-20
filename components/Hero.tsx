@@ -9,7 +9,7 @@ export default function Hero() {
       {/* Interactive Liquid Chrome shader — Ion Blue palette to stay on-brand.
           intensity/speed kept low so the hero reads calm, not busy. */}
       <div className="absolute inset-0">
-        <LiquidChrome palette="ion" intensity={0.6} speed={0.55} />
+        <LiquidChrome palette="ion" intensity={0.5} speed={0.38} />
       </div>
 
       {/* Overall veil — calms the bright chrome so text reads easily while the
