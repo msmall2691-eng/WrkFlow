@@ -1,6 +1,7 @@
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
 import HeroCapabilities from "./HeroCapabilities";
+import HeroWordmark from "./HeroWordmark";
 
 export default function Hero() {
   return (
@@ -8,8 +9,11 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#08131d]"
     >
-      {/* Aurora Swell — undulating wave-band shader; warps + brightens at cursor */}
-      <AuroraSwell intensity={1} speed={0.9} />
+      {/* Aurora Swell — calm ocean backdrop (dialed back so the wordmark leads) */}
+      <AuroraSwell intensity={0.6} speed={0.7} />
+
+      {/* Hidden brand wordmark — lights up where the cursor moves */}
+      <HeroWordmark text="M STUDIO" />
 
       {/* Diagonal scrim — keeps the bright swell on the text-free side */}
       <div
@@ -22,7 +26,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[#08131d]/80 to-[var(--color-base)]"
       />
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 pt-24">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-24">
         <p className="marker mb-6 flex items-center gap-2.5">
           <span className="relative flex h-2 w-2" aria-hidden="true">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
