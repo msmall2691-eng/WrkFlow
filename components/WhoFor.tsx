@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 
 export default function WhoFor() {
   return (
-    <section className="relative border-t border-line py-20 md:py-24">
+    <section id="whofor" className="relative border-t border-line py-20 md:py-24">
       <div className="mx-auto max-w-5xl px-6">
         <Reveal>
           <p className="marker mb-6">// Who this is for</p>
