@@ -74,6 +74,14 @@ export default function Playground() {
           </div>
         </Reveal>
 
+        <Reveal delay={140}>
+          <p className="mt-4 text-sm leading-relaxed text-muted">
+            {mode === "tools"
+              ? "Free, working tools you can use right now—pick one below."
+              : "Watch a real automation run end to end—pick a scenario, hit go."}
+          </p>
+        </Reveal>
+
         {mode === "tools" ? (
           <>
             {/* Tool tabs */}

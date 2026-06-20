@@ -24,13 +24,13 @@ const jetbrainsMono = JetBrains_Mono({
 // (mlinx.studio) is wired up — then swap this single constant.
 const SITE_URL = "https://wrk-flow.vercel.app";
 const DESCRIPTION =
-  "mLinx Studio builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. New England roots, modern tech.";
+  "M Studio builds custom websites, workflow automations, and the systems behind them—and tightens the processes you already run—so your business runs faster and cleaner, with less manual work. New England roots, modern tech.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "mLinx Studio — Websites, automation & systems",
-    template: "%s · mLinx Studio",
+    default: "M Studio — Websites, automation & systems",
+    template: "%s · M Studio",
   },
   description: DESCRIPTION,
   keywords: [
@@ -43,25 +43,25 @@ export const metadata: Metadata = {
     "business systems",
     "Maine web design",
   ],
-  authors: [{ name: "mLinx Studio" }],
+  authors: [{ name: "M Studio" }],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "mLinx Studio",
-    title: "mLinx Studio — Websites, automation & systems",
+    siteName: "M Studio",
+    title: "M Studio — Websites, automation & systems",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "mLinx Studio",
+        alt: "M Studio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "mLinx Studio — Websites, automation & systems",
+    title: "M Studio — Websites, automation & systems",
     description: DESCRIPTION,
   },
   robots: {

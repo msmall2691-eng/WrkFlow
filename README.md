@@ -1,6 +1,6 @@
-# mLinx Studio
+# M Studio
 
-Marketing site for **mLinx Studio** — a web, automation & systems studio
+Marketing site for **M Studio** — a web, automation & systems studio
 that designs and builds custom websites, workflow automations, and the systems
 behind them (CRMs, databases, dashboards, AI agents), and optimizes the processes
 a business already runs on, so the whole operation runs faster and cleaner.
@@ -68,7 +68,7 @@ re-tuned in one place during iteration.
 ## Iteration backlog
 
 - ~~Hero headline~~ — "Own the systems your business runs on."
-- ~~Logo / wordmark treatment~~ — `mLinx Studio / Studios` monospace wordmark
+- ~~Logo / wordmark treatment~~ — `M Studio / Studios` monospace wordmark
 - **Accent color** — Ion Blue `#2563eb` is live; revisiting per v2 (cyan / lime / amber options)
 - **Hero motion** — confirm line-field vs. grid vs. subtler
 - **Domain** — `mlinx.studio` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up

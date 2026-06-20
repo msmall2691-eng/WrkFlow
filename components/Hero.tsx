@@ -38,7 +38,7 @@ export default function Hero() {
         </h1>
 
         <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          mLinx Studio designs and builds custom websites, wires up the
+          M Studio designs and builds custom websites, wires up the
           automations and integrations behind them, and tightens the workflows you
           already run—so the whole operation moves faster, with less manual work.
         </p>

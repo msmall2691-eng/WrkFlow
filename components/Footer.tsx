@@ -72,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
-          <span>© {year} mLinx Studio</span>
+          <span>© {year} M Studio</span>
           <span>Built true.</span>
         </div>
       </div>

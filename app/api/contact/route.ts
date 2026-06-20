@@ -99,7 +99,7 @@ export async function POST(request: Request) {
         auth: { user: gmailUser, pass: gmailPass },
       });
       await transport.sendMail({
-        from: `mLinx Studio <${gmailUser}>`,
+        from: `M Studio <${gmailUser}>`,
         to: notifyTo,
         replyTo: email,
         subject: `New inquiry — ${name}${company ? ` (${company})` : ""}`,
