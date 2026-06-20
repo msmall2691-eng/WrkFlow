@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
+import ScrollProgress from "@/components/ScrollProgress";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -91,7 +92,10 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <ScrollProgress />
+        {children}
+      </body>
     </html>
   );
 }

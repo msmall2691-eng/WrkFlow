@@ -142,7 +142,7 @@ body {
   outline-offset: 2px;
 }
 
-/* Artifact entrance (WorkflowSim) */
+/* Soft content entrance (detail panels, etc.) */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -219,8 +219,15 @@ body {
 }
 .travel-dot { animation: travelX 2.8s ease-in-out infinite; }
 
+/* Drifting ocean wave divider */
+@keyframes waveX {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.wave-x { animation: waveX 16s linear infinite; }
+
 @media (prefers-reduced-motion: reduce) {
-  .shimmer-text, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot {
+  .shimmer-text, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x {
     animation: none !important;
   }
   .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }

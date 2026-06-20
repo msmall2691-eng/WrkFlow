@@ -2,6 +2,7 @@ import Image from "next/image";
 import { deployments, type Deployment } from "@/lib/content";
 import Reveal from "./Reveal";
 import ProjectVisual from "./ProjectVisual";
+import Tilt from "./Tilt";
 
 export default function Deployments() {
   return (
@@ -29,7 +30,9 @@ export default function Deployments() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {deployments.map((d, i) => (
             <Reveal key={d.title} delay={i * 60}>
-              <DeploymentCard d={d} n={i + 1} />
+              <Tilt>
+                <DeploymentCard d={d} n={i + 1} />
+              </Tilt>
             </Reveal>
           ))}
         </div>

@@ -1,6 +1,7 @@
 import { founderNote } from "@/lib/content";
 import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
+import WaveDivider from "./WaveDivider";
 
 /*
   FounderNote — the one LIGHT section ("fog slate") that breaks the dark run.
@@ -8,8 +9,11 @@ import FounderAvatar from "./FounderAvatar";
 */
 export default function FounderNote() {
   return (
-    <section className="relative border-y border-black/10 bg-[#c7d5dd] py-16 text-[#16384a] md:py-24">
-      <div className="mx-auto max-w-5xl px-6">
+    <section className="relative overflow-hidden border-y border-black/10 bg-[#c7d5dd] py-20 text-[#16384a] md:py-28">
+      {/* Ocean waves lapping the light band, top (from Approach) and bottom (into Contact) */}
+      <WaveDivider position="top" fill="#0b1722" />
+      <WaveDivider position="bottom" fill="#08131d" />
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-4">
             <Reveal>

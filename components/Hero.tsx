@@ -1,5 +1,6 @@
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
+import HeroCapabilities from "./HeroCapabilities";
 
 export default function Hero() {
   return (
@@ -71,17 +72,7 @@ export default function Hero() {
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
             What we build
           </p>
-          <div className="flex flex-wrap items-center gap-x-1 gap-y-2 text-sm">
-            <span className="font-medium text-white">Websites &amp; web apps</span>
-            {["Automation", "Dashboards", "AI agents", "Systems"].map((t) => (
-              <span
-                key={t}
-                className="text-white/45 transition-colors duration-200 before:mr-1 before:text-white/20 before:content-['·'] hover:text-white"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
+          <HeroCapabilities />
         </div>
       </div>
 

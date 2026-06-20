@@ -107,7 +107,6 @@ function aggregate(ids: string[]) {
   };
 }
 
-const SOURCES = ["Airbnb", "VRBO", "Google Calendar", "Stripe", "Twilio SMS"];
 const WEEKDAYS = ["S", "M", "T", "W", "T", "F", "S"];
 
 export default function Dashboard() {
@@ -136,35 +135,17 @@ export default function Dashboard() {
     };
   }, [prop, range]);
 
-  // Build a day-offset → booking map for the next two weeks + upcoming list.
-  const { dayMap, upcoming, turnovers } = useMemo(() => {
+  // Build a day-offset → booking map for the next two weeks.
+  const dayMap = useMemo(() => {
     const map = new Map<number, Booking>();
     for (const b of data.bookings) {
       for (let n = 0; n < b.nights; n++) map.set(b.start + n, b);
     }
-    const upcoming = data.bookings
-      .filter((b) => b.start >= 0 && b.start <= 16)
-      .sort((a, b) => a.start - b.start)
-      .slice(0, 5);
-    const turnovers = data.bookings.filter((b) => {
-      const out = b.start + b.nights;
-      return out >= 0 && out <= 7;
-    }).length;
-    return { dayMap: map, upcoming, turnovers };
+    return map;
   }, [data]);
 
   const bars = SHAPE.map((s) => (data.rev * s) / SHAPE_SUM);
   const maxBar = Math.max(...bars);
-
-  const nextOffset = upcoming[0]?.start;
-  const nextLabel =
-    nextOffset === undefined
-      ? "—"
-      : nextOffset === 0
-        ? "Today"
-        : nextOffset === 1
-          ? "Tomorrow"
-          : `in ${nextOffset} days`;
 
   const dateFor = (offset: number) => {
     const d = new Date(today);
@@ -325,69 +306,19 @@ export default function Dashboard() {
           </Reveal>
         </div>
 
-        {/* Operational row: upcoming check-ins + needs attention */}
-        <div className="mt-4 grid gap-4 lg:grid-cols-5">
-          <Reveal delay={280} className="lg:col-span-3">
-            <div className="h-full rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-md">
-              <div className="mb-4 flex items-center justify-between">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-white/50">Upcoming check-ins</p>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#6fd3c6]/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-[#6fd3c6]">
-                  Next · {nextLabel}
-                </span>
-              </div>
-              <ul className="divide-y divide-white/5">
-                {upcoming.length === 0 && (
-                  <li className="py-3 text-sm text-white/40">No check-ins in the next two weeks.</li>
-                )}
-                {upcoming.map((b, i) => (
-                  <li key={i} className="flex items-center justify-between gap-3 py-2.5 transition-colors hover:bg-white/[0.03]">
-                    <div className="flex items-center gap-3">
-                      <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: CH_COLOR[b.pf] }} />
-                      <div>
-                        <p className="text-sm text-white">{b.guest}</p>
-                        <p className="text-xs text-white/45">
-                          {b.start === 0 ? "Today" : fmt(dateFor(b.start))} · {b.nights} {b.nights === 1 ? "night" : "nights"} · {CH_LABEL[b.pf]}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="font-mono text-sm text-white/85">{money(b.nights * b.rate)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-
-          <Reveal delay={320} className="lg:col-span-2">
-            <div className="h-full rounded-2xl border border-white/10 bg-white/[0.05] p-6 backdrop-blur-md">
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-widest text-white/50">Needs attention</p>
-              <div className="space-y-3 text-sm">
-                <AttnRow tone="gold" label={`${turnovers} cleaning ${turnovers === 1 ? "turnover" : "turnovers"} this week`} cta="Auto-scheduled" />
-                <AttnRow tone="teal" label="Confirm Friday early check-in" cta="2 guests asked" />
-                <AttnRow tone="rose" label="1 payout pending from Stripe" cta="Clears in 2 days" />
-              </div>
-              <a
-                href="#contact"
-                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#6fd3c6] transition-colors hover:text-white"
-              >
-                Build my command center →
-              </a>
-            </div>
-          </Reveal>
-        </div>
-
-        {/* Connected sources */}
-        <Reveal delay={360}>
-          <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-md">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
-              <span className="font-mono text-[11px] uppercase tracking-widest text-white/50">Connected</span>
-              {SOURCES.map((s) => (
-                <span key={s} className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/75">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                  {s}
-                </span>
-              ))}
-              <span className="ml-auto text-xs text-white/40">+ any API we can reach</span>
-            </div>
+        {/* Compact connected-sources + CTA */}
+        <Reveal delay={280}>
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur-md">
+            <p className="text-sm text-white/65">
+              Airbnb, VRBO, Stripe, Google Calendar &amp; Twilio—pulled into one live
+              view, double-bookings blocked automatically.
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-[#6fd3c6] transition-colors hover:text-white"
+            >
+              Build my command center →
+            </a>
           </div>
         </Reveal>
       </div>
@@ -469,19 +400,6 @@ function CountUp({ value, format }: { value: number; format: (n: number) => stri
   }, [value]);
 
   return <span ref={ref}>{format(display)}</span>;
-}
-
-function AttnRow({ label, cta, tone }: { label: string; cta: string; tone: "gold" | "teal" | "rose" }) {
-  const dot = tone === "gold" ? "#d9a441" : tone === "teal" ? "#2bb3a3" : "#fb7185";
-  return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2.5">
-      <span className="flex items-center gap-2.5 text-white/85">
-        <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: dot }} />
-        {label}
-      </span>
-      <span className="shrink-0 font-mono text-[10px] uppercase tracking-widest text-white/40">{cta}</span>
-    </div>
-  );
 }
 
 function DarkSeg({ value, options, onChange }: { value: string; options: [string, string][]; onChange: (v: string) => void }) {

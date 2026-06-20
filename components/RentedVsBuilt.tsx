@@ -23,7 +23,7 @@ export default function RentedVsBuilt() {
   return (
     <Reveal delay={120}>
       <div
-        className={`mt-14 overflow-hidden rounded-2xl border p-6 transition-all duration-500 md:p-8 ${
+        className={`mt-10 overflow-hidden rounded-2xl border p-6 transition-all duration-500 md:p-8 ${
           own
             ? "border-signal/40 bg-signal/[0.05] shadow-[0_0_70px_-18px_var(--color-signal-glow)]"
             : "border-line bg-surface"
