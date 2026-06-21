@@ -1,129 +1,127 @@
+// app/api/contact/route.ts
+// M Studio — contact form handler. Emails submissions to your inbox via Gmail SMTP.
+//
+// SETUP (see contact-form-SETUP.md for the full walkthrough):
+//   1. npm install nodemailer        (and: npm install -D @types/nodemailer)
+//   2. Add these env vars locally (.env.local) AND in Vercel → Project → Settings → Environment Variables:
+//        GMAIL_USER          = contact@mlinx.studio  (the Gmail/Workspace account that SENDS the mail)
+//        GMAIL_APP_PASSWORD  = xxxx xxxx xxxx xxxx     (16-char Google App Password, NOT your login password)
+//        CONTACT_TO          = contact@mlinx.studio    (where you want to RECEIVE leads; can equal GMAIL_USER)
+//   3. Point your form's submit at  POST /api/contact  with a JSON body of the fields below.
+
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 import nodemailer from "nodemailer";
 
+// Force the Node.js runtime — Nodemailer (SMTP) does not run on the Edge runtime.
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
-type Payload = {
+type ContactPayload = {
   name?: string;
   email?: string;
-  phone?: string;
   company?: string;
+  phone?: string;
   message?: string;
-  /** Honeypot. Real users never fill this. */
-  company_website?: string;
+  // Honeypot: real users never see/fill this. Bots do. If present, we silently drop.
+  botField?: string;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function clean(value: unknown, max = 5000): string {
-  return typeof value === "string" ? value.trim().slice(0, max) : "";
-}
-
-export async function POST(request: Request) {
-  let body: Payload;
+export async function POST(req: Request) {
+  let body: ContactPayload;
   try {
-    body = await request.json();
+    body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  // Bot caught by honeypot — accept silently so it gets no signal.
-  if (clean(body.company_website)) {
+  const name = (body.name || "").trim();
+  const email = (body.email || "").trim();
+  const company = (body.company || "").trim();
+  const phone = (body.phone || "").trim();
+  const message = (body.message || "").trim();
+
+  // Honeypot tripped → pretend success so bots don't learn anything.
+  if (body.botField && body.botField.trim() !== "") {
     return NextResponse.json({ ok: true });
   }
 
-  const name = clean(body.name, 200);
-  const email = clean(body.email, 320);
-  const phone = clean(body.phone, 40);
-  const company = clean(body.company, 200);
-  const message = clean(body.message, 5000);
-
+  // Validation
   if (!name || !email || !message) {
     return NextResponse.json(
-      { error: "Name, email, and a message are required." },
-      { status: 400 },
+      { ok: false, error: "Name, email, and a short note are required." },
+      { status: 422 }
     );
   }
-
   if (!EMAIL_RE.test(email)) {
-    return NextResponse.json(
-      { error: "That email doesn't look right." },
-      { status: 400 },
-    );
+    return NextResponse.json({ ok: false, error: "That email doesn't look right." }, { status: 422 });
+  }
+  if (message.length > 5000) {
+    return NextResponse.json({ ok: false, error: "Message is too long." }, { status: 422 });
   }
 
-  const submission = {
-    name,
-    email,
-    company: company || null,
+  const { GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO } = process.env;
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+    console.error("Contact form: missing GMAIL_USER or GMAIL_APP_PASSWORD env vars.");
+    return NextResponse.json({ ok: false, error: "Server email is not configured." }, { status: 500 });
+  }
+
+  const transporter = nodemailer.createTransport({
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
+  });
+
+  const to = CONTACT_TO || GMAIL_USER;
+  const subject = `New M Studio inquiry — ${name}${company ? ` (${company})` : ""}`;
+
+  const text = [
+    `New inquiry from mlinx.studio`,
+    `--------------------------------`,
+    `Name:    ${name}`,
+    `Email:   ${email}`,
+    company ? `Company: ${company}` : null,
+    phone ? `Phone:   ${phone}` : null,
+    ``,
+    `What they're trying to solve:`,
     message,
-  };
+  ]
+    .filter(Boolean)
+    .join("\n");
 
-  let stored = false;
-  let notified = false;
+  const html = `
+    <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.5;">
+      <p style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#0d9488;margin:0 0 4px;">New inquiry · mlinx.studio</p>
+      <h2 style="margin:0 0 16px;font-size:18px;">${escapeHtml(name)}${company ? ` <span style="color:#64748b;font-weight:400;">· ${escapeHtml(company)}</span>` : ""}</h2>
+      <table style="border-collapse:collapse;font-size:14px;margin-bottom:16px;">
+        <tr><td style="padding:2px 12px 2px 0;color:#64748b;">Email</td><td><a href="mailto:${escapeAttr(email)}">${escapeHtml(email)}</a></td></tr>
+        ${phone ? `<tr><td style="padding:2px 12px 2px 0;color:#64748b;">Phone</td><td><a href="tel:${escapeAttr(phone)}">${escapeHtml(phone)}</a></td></tr>` : ""}
+      </table>
+      <p style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin:0 0 6px;">What they're trying to solve</p>
+      <div style="white-space:pre-wrap;font-size:15px;background:#f1f5f9;border-radius:10px;padding:14px 16px;">${escapeHtml(message)}</div>
+    </div>`;
 
-  // --- Store in Supabase (if configured) ---
-  // Uses the publishable (anon) key. The contact_submissions table has an
-  // RLS policy granting anon INSERT-only on well-formed rows, so this key is
-  // safe to expose and can never read submissions back.
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey =
-    process.env.SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (supabaseUrl && supabaseKey) {
-    try {
-      const supabase = createClient(supabaseUrl, supabaseKey, {
-        auth: { persistSession: false },
-      });
-      const { error } = await supabase
-        .from("contact_submissions")
-        .insert(submission);
-      if (error) throw error;
-      stored = true;
-    } catch (err) {
-      console.error("[contact] Supabase insert failed:", err);
-    }
+  try {
+    await transporter.sendMail({
+      from: `"M Studio Website" <${GMAIL_USER}>`,
+      to,
+      replyTo: email, // hit "Reply" and it goes straight to the lead
+      subject,
+      text,
+      html,
+    });
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Contact form: sendMail failed", err);
+    return NextResponse.json({ ok: false, error: "Couldn't send right now. Please try again." }, { status: 502 });
   }
+}
 
-  // --- Email notification via Gmail (if configured) ---
-  // Sends through the studio's Gmail account over SMTP using a Google
-  // App Password (requires 2-Step Verification on the account). The
-  // notification lands in CONTACT_TO (or CONTACT_NOTIFY_TO), defaulting to
-  // the Gmail inbox.
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailPass = process.env.GMAIL_APP_PASSWORD;
-  const notifyTo = process.env.CONTACT_TO ?? process.env.CONTACT_NOTIFY_TO ?? gmailUser;
-  if (gmailUser && gmailPass && notifyTo) {
-    try {
-      const transport = nodemailer.createTransport({
-        service: "gmail",
-        auth: { user: gmailUser, pass: gmailPass },
-      });
-      await transport.sendMail({
-        from: `M Studio <${gmailUser}>`,
-        to: notifyTo,
-        replyTo: email,
-        subject: `New inquiry — ${name}${company ? ` (${company})` : ""}`,
-        text: [
-          `Name:    ${name}`,
-          `Email:   ${email}`,
-          `Phone:   ${phone || "—"}`,
-          `Company: ${company || "—"}`,
-          "",
-          "Message:",
-          message,
-        ].join("\n"),
-      });
-      notified = true;
-    } catch (err) {
-      console.error("[contact] Gmail send failed:", err);
-    }
-  }
-
-  // If neither backend is configured, log so submissions aren't lost in dev.
-  if (!stored && !notified) {
-    console.info("[contact] New submission (no backend configured):", submission);
-  }
-
-  return NextResponse.json({ ok: true });
+function escapeHtml(s: string) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] as string));
+}
+function escapeAttr(s: string) {
+  return escapeHtml(s).replace(/`/g, "&#96;");
 }

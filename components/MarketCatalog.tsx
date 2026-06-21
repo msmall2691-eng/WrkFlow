@@ -148,7 +148,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
         body: JSON.stringify({
           name,
           email,
-          company_website: hp,
+          botField: hp,
           message:
             `Marketplace interest: ${item.name} (${item.price}, ${marketModelLabels[item.model]}).` +
             (note ? `\n\nNote: ${note}` : ""),

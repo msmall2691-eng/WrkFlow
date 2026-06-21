@@ -123,12 +123,12 @@ export default function Contact() {
                 >
                   {/* Honeypot — hidden from humans, catches bots. */}
                   <div className="hidden" aria-hidden="true">
-                    <label htmlFor="company_website">
+                    <label htmlFor="botField">
                       Do not fill this field
                     </label>
                     <input
-                      id="company_website"
-                      name="company_website"
+                      id="botField"
+                      name="botField"
                       type="text"
                       tabIndex={-1}
                       autoComplete="off"
