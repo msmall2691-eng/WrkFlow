@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /*
-  FounderAvatar — shows Meg's photo (/meg.png), falling back to the "M" monogram
+  FounderAvatar — shows Meg's photo (/meg.jpg), falling back to the "M" monogram
   if the file is ever missing. Pass `className` to control size/shape.
 */
 export default function FounderAvatar({
@@ -27,7 +27,7 @@ export default function FounderAvatar({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/meg.png"
+      src="/meg.jpg"
       alt="Meg, founder of M Studio"
       onError={() => setFailed(true)}
       className={`shrink-0 object-cover ${className}`}
