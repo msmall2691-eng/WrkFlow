@@ -18,7 +18,7 @@ export default function FounderNote() {
           {/* Photo — the focal element */}
           <div className="md:col-span-5">
             <Reveal>
-              <FounderAvatar className="aspect-[4/5] w-full max-w-[300px] rounded-2xl shadow-[0_24px_60px_-24px_rgba(11,23,34,0.45)] ring-1 ring-black/10" />
+              <FounderAvatar className="mx-auto aspect-[4/5] w-full max-w-[300px] rounded-2xl shadow-[0_24px_60px_-24px_rgba(11,23,34,0.45)] ring-1 ring-black/10 md:mx-0" />
             </Reveal>
           </div>
 
