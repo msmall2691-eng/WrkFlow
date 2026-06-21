@@ -8,12 +8,7 @@ import RentedVsBuilt from "./RentedVsBuilt";
 */
 export default function Shift() {
   return (
-    <section id="why" className="relative overflow-hidden pb-16 pt-20 md:pb-24 md:pt-28">
-      {/* Soft landing from the dark hero */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[var(--color-surface)] to-transparent"
-      />
+    <section id="why" className="relative overflow-hidden border-t border-line py-16 md:py-24">
       {/* Soft accent glow — drifts gently */}
       <div
         aria-hidden="true"
