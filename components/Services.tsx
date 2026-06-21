@@ -30,7 +30,7 @@ export default function Services() {
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              Eight ways we build and optimize how you run.
+              Eight ways we build and optimize how you work.
             </h2>
           </Reveal>
           <Reveal delay={120}>

@@ -76,9 +76,10 @@ export default function Contact() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 text-base leading-relaxed text-white/75">
-                No pitch deck required. A few sentences about where your
-                operations hurt is enough to start. I read every one myself and
-                reply within a day—a real point of view, not a sales sequence.
+                No pitch deck required. A few sentences about what you want to
+                build—or what&apos;s slowing you down—is enough to start. I read
+                every one myself and reply within a day: a real point of view, not
+                a sales sequence.
               </p>
             </Reveal>
             <Reveal delay={160}>
@@ -176,7 +177,7 @@ export default function Contact() {
                       name="message"
                       required
                       rows={5}
-                      placeholder="The platform we're stuck on, the data that's a mess, the busywork eating our week…"
+                      placeholder="The site you want, the plugin you need, the busywork eating your week…"
                       className="w-full resize-y rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-signal/70 focus:outline-none"
                     />
                   </div>
