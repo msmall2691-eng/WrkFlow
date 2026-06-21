@@ -106,7 +106,19 @@ function ServiceDetail({ service }: { service: Service }) {
   return (
     <div className="rounded-2xl border border-line bg-surface/60 p-6 md:p-8">
       <div className="grid items-center gap-6 md:grid-cols-2">
-        <p className="display-serif text-xl text-ink md:text-2xl">{service.tagline}</p>
+        <div>
+          <p className="display-serif text-xl text-ink md:text-2xl">{service.tagline}</p>
+          <ul className="mt-5 flex flex-wrap gap-2">
+            {service.kinds.map((k) => (
+              <li
+                key={k}
+                className="rounded-full border border-line bg-base px-3 py-1 font-mono text-[10px] uppercase tracking-wide text-muted"
+              >
+                {k}
+              </li>
+            ))}
+          </ul>
+        </div>
         <ExampleCard example={service.example} />
       </div>
     </div>

@@ -40,6 +40,8 @@ export type Service = {
   title: string;
   /** One-line essence shown under the title. */
   tagline: string;
+  /** Concrete kinds we build in this discipline — shown as chips. */
+  kinds: string[];
   /** What it is. */
   what: string;
   /** The business pain it solves. */
@@ -56,6 +58,7 @@ export const services: Service[] = [
     index: "01",
     title: "Websites & Web Apps",
     tagline: "A site or app that's actually yours—built, connected, and live.",
+    kinds: ["Marketing sites", "Booking & scheduling", "Client portals", "Marketplaces", "Internal tools"],
     what:
       "Custom websites and web applications designed and built from scratch—marketing sites, client portals, booking and scheduling apps—with everything around them handled too: hosting, domain, analytics, and the deploy pipeline.",
     pain:
@@ -74,6 +77,7 @@ export const services: Service[] = [
     index: "02",
     title: "Workflow Automation & Integration",
     tagline: "Data moves itself. Nobody re-types anything.",
+    kinds: ["Lead intake", "Follow-ups", "Scheduling", "Invoicing sync", "Notifications"],
     what:
       "Connecting the tools you already run and automating the repetitive handoffs between them with APIs, webhooks, and custom connectors built for your stack.",
     pain:
@@ -92,6 +96,7 @@ export const services: Service[] = [
     index: "03",
     title: "Custom CRM & Database Design",
     tagline: "A system shaped to your business, not the other way around.",
+    kinds: ["Customer records", "Job tracking", "Pipelines", "Owner reporting"],
     what:
       "Purpose-built customer and operations databases with a clean schema and exactly the fields your work actually uses—built around how your business really runs.",
     pain:
@@ -110,6 +115,7 @@ export const services: Service[] = [
     index: "04",
     title: "AI Agent Implementation",
     tagline: "AI does the busywork. You keep the decisions.",
+    kinds: ["Inbox triage", "Draft replies", "Summaries", "Smart intake"],
     what:
       "Practical AI wired directly into operations—intake, follow-ups, drafting, summarizing, and triage—designed draft-first and owner-approved so nothing goes out without a human's sign-off.",
     pain:
@@ -128,6 +134,7 @@ export const services: Service[] = [
     index: "05",
     title: "Operational Dashboards",
     tagline: "The numbers that matter, finally in one view.",
+    kinds: ["Revenue & KPIs", "Occupancy", "Team & jobs", "Live pipeline"],
     what:
       "Real-time insight pulled from scattered sources into a single view—jobs, revenue, pipeline, and team—so the metrics that run the business stop hiding in separate tabs.",
     pain:
@@ -146,6 +153,7 @@ export const services: Service[] = [
     index: "06",
     title: "Systems & Process Optimization",
     tagline: "Find what's slow, broken, or costing you—and fix it in order.",
+    kinds: ["Tool audit", "Process mapping", "Fix-it roadmap"],
     what:
       "A thorough review of how your tools and processes actually run—where data is exposed, where things break silently, and where manual steps quietly cost time and money—delivered as a prioritized, plain-English plan to streamline it.",
     pain:
@@ -164,6 +172,7 @@ export const services: Service[] = [
     index: "07",
     title: "Legacy Software Migration",
     tagline: "Leave the platform. Keep the history.",
+    kinds: ["Jobber / Housecall exit", "Data export", "Clean cutover"],
     what:
       "Getting you off rigid, expensive platforms—Jobber, Housecall Pro, and the like—and onto a system you own, with your full history migrated cleanly and intact.",
     pain:
@@ -182,6 +191,7 @@ export const services: Service[] = [
     index: "08",
     title: "Data Cleanup & Consolidation",
     tagline: "One trustworthy source instead of five conflicting ones.",
+    kinds: ["Dedupe", "Normalize", "Merge sources", "Validate"],
     what:
       "Messy, duplicated customer data scattered across systems—deduplicated, normalized, validated, and merged into a single record you can rely on.",
     pain:
