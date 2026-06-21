@@ -43,12 +43,10 @@ export default function CommandPalette() {
     };
     return [
       { id: "top", label: "Home", group: "Navigate", keywords: "hero start top", run: go("top") },
-      { id: "shift", label: "The shift", group: "Navigate", keywords: "why now", run: go("shift") },
-      { id: "who", label: "Who it's for", group: "Navigate", keywords: "audience fit", run: go("shift") },
-      { id: "work", label: "Shipped & live", group: "Navigate", keywords: "work showcase portfolio", run: go("live") },
-      { id: "kit", label: "Try it live (free tools)", group: "Navigate", keywords: "demos try tools website health speed lighthouse seo integration map cost manual work automation", run: go("kit") },
-      { id: "dash", label: "Rental dashboard", group: "Navigate", keywords: "dashboard analytics airbnb vrbo command center calendar sync revenue", run: go("dash") },
-      { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings", run: go("services") },
+      { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings websites tools plugins", run: go("services") },
+      { id: "why", label: "Why M Studio", group: "Navigate", keywords: "why now rent build own who it's for", run: go("why") },
+      { id: "work", label: "Work & live demo", group: "Navigate", keywords: "work showcase portfolio dashboard analytics airbnb vrbo command center revenue", run: go("work") },
+      { id: "kit", label: "Linx · free tools", group: "Navigate", keywords: "demos try tools website health speed lighthouse seo integration map cost automation linx", run: go("kit") },
       {
         id: "marketplace",
         label: "Linx marketplace",

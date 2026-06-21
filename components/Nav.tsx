@@ -5,10 +5,9 @@ import Logo from "./Logo";
 import Magnetic from "./Magnetic";
 
 const links = [
-  { href: "/#shift", label: "Why now" },
-  { href: "/#kit", label: "Demos" },
-  { href: "/#live", label: "Work" },
   { href: "/#services", label: "Services" },
+  { href: "/#why", label: "Why M Studio" },
+  { href: "/#work", label: "Work" },
   { href: "/marketplace", label: "Linx" },
   { href: "/#approach", label: "Approach" },
 ];

@@ -158,7 +158,7 @@ export default function Dashboard() {
   const startPad = today.getDay(); // align first cell to weekday
 
   return (
-    <section id="dash" className="relative overflow-hidden bg-[#08131d] py-16 md:py-24">
+    <section id="work" className="relative overflow-hidden bg-[#08131d] py-16 md:py-24">
       <Aurora intensity={0.7} />
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-[#08131d]/70" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-base)] to-transparent" />
@@ -166,7 +166,7 @@ export default function Dashboard() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-4">// Command center</p>
+          <p className="marker mb-4">// Live demo</p>
         </Reveal>
         <div className="grid gap-8 md:grid-cols-12 md:items-end">
           <div className="md:col-span-8">

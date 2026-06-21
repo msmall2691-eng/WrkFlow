@@ -48,7 +48,7 @@ export default function Playground() {
     <section id="kit" className="relative py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-4">// Linx · free tools</p>
+          <p className="marker mb-4">// Linx · try one free</p>
         </Reveal>
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">

@@ -19,13 +19,13 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Journey: intro → why now → what we do (w/ examples) → prove it → work → how */}
+        {/* Hero → what I do → why → proof (demo + work) → Linx teaser → how → founder → contact */}
         <Hero />
-        <Shift />
         <Services />
-        <Playground />
+        <Shift />
         <Dashboard />
         <Deployments />
+        <Playground />
         <Approach />
         <FounderNote />
         <Contact />

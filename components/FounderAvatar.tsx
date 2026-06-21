@@ -13,7 +13,7 @@ export default function FounderAvatar() {
     return (
       <span
         aria-hidden="true"
-        className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#16384a] font-display text-2xl text-white"
+        className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-[#16384a] font-display text-2xl text-white"
       >
         M
       </span>
@@ -26,7 +26,7 @@ export default function FounderAvatar() {
       src="/meg.png"
       alt="Meg, founder of M Studio"
       onError={() => setFailed(true)}
-      className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-[#16384a]/15"
+      className="h-24 w-24 shrink-0 rounded-full object-cover ring-2 ring-[#16384a]/15"
     />
   );
 }

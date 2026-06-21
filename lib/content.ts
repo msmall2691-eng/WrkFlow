@@ -15,7 +15,7 @@ export const whoIsItFor =
   "For small businesses and independent makers alike: service companies, trades, property managers, short-term-rental operators, founders, and anyone who needs a website, a tool, or a plugin that actually works. Bring a whole business to streamline or a single project to build—both are welcome.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `M Studio started inside a real service business on the coast of Maine. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. M Studio is that same work—custom websites, automations, and the systems behind them, built to fit—offered to the businesses that would rather run on something made for them.`;
+export const founderNote = `M Studio started inside my own business. I ran ${provingGroundCompany} for years on software I was renting—and constantly fighting. So I built our own instead: the website, the database, the automations, all of it, made to fit how we actually worked. It worked so well I started doing it for other people. That's M Studio—the same work I did for us, for anyone who'd rather run on something built for them than something they're stuck renting.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
@@ -217,22 +217,22 @@ export const approachSteps: ApproachStep[] = [
   {
     index: "01",
     title: "Discovery",
-    body: "We map how you actually work—where the time goes, where the data lives, where it breaks. The real process, not the org chart.",
+    body: "First we figure out how you actually work—where your time goes, where the data lives, what keeps breaking.",
   },
   {
     index: "02",
     title: "Design",
-    body: "We shape the system around that: schema, flows, and screens drafted for your work—reviewed with you before we build.",
+    body: "Then we sketch the system around that: the data, the flow, the screens—and run it past you before building anything.",
   },
   {
     index: "03",
     title: "Build",
-    body: "We build in working increments you can see and react to. Draft-first the whole way, so you steer.",
+    body: "We build in small, working pieces you can poke at and react to. You steer the whole way.",
   },
   {
     index: "04",
     title: "Iterate",
-    body: "We refine against real use, hand you a system you own, and stay on to extend it. No lock-in by design.",
+    body: "We tune it against real use, hand it over yours to keep, and stick around to add to it. No lock-in.",
   },
 ];
 

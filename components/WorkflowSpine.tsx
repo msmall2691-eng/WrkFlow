@@ -10,11 +10,10 @@ import { useEffect, useState } from "react";
 */
 
 const STEPS = [
-  { id: "shift", label: "The shift" },
-  { id: "kit", label: "Try it" },
-  { id: "dash", label: "Dashboard" },
-  { id: "live", label: "Work" },
   { id: "services", label: "Services" },
+  { id: "why", label: "Why M Studio" },
+  { id: "work", label: "Work" },
+  { id: "kit", label: "Linx" },
   { id: "approach", label: "Approach" },
   { id: "contact", label: "Contact" },
 ];

@@ -8,7 +8,7 @@ import RentedVsBuilt from "./RentedVsBuilt";
 */
 export default function Shift() {
   return (
-    <section id="shift" className="relative overflow-hidden pb-16 pt-20 md:pb-24 md:pt-28">
+    <section id="why" className="relative overflow-hidden pb-16 pt-20 md:pb-24 md:pt-28">
       {/* Soft landing from the dark hero */}
       <div
         aria-hidden="true"
