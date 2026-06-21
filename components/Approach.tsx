@@ -6,7 +6,7 @@ export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative overflow-hidden border-t border-line py-16 md:py-24"
+      className="relative overflow-hidden border-t border-line py-14 md:py-20"
     >
       <Watermark text="LINX" />
       <div className="relative mx-auto max-w-6xl px-6">

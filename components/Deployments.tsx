@@ -6,19 +6,15 @@ import Tilt from "./Tilt";
 
 export default function Deployments() {
   return (
-    <section id="live" className="relative overflow-hidden border-t border-line py-16 md:py-24">
+    <section id="work" className="relative overflow-hidden border-t border-line py-14 md:py-20">
       <div
         aria-hidden="true"
-        className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
-      />
-      <div
-        aria-hidden="true"
-        className="floaty pointer-events-none absolute -left-24 bottom-8 h-80 w-80 rounded-full bg-gold/[0.08] blur-[130px]"
+        className="floaty pointer-events-none absolute -left-24 bottom-8 h-72 w-72 rounded-full bg-gold/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
-            <p className="marker mb-4">// Shipped &amp; live</p>
+            <p className="marker mb-4">// Selected work</p>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">

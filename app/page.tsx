@@ -2,7 +2,6 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Shift from "@/components/Shift";
 import Playground from "@/components/Playground";
-import Dashboard from "@/components/Dashboard";
 import Deployments from "@/components/Deployments";
 import Services from "@/components/Services";
 import Approach from "@/components/Approach";
@@ -19,12 +18,11 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → meet the founder → what I do → why → proof → Linx teaser → how → contact */}
+        {/* Hero → meet the founder → what I do → why → work → free tools → how → contact */}
         <Hero />
         <FounderNote />
         <Services />
         <Shift />
-        <Dashboard />
         <Deployments />
         <Playground />
         <Approach />

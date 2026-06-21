@@ -8,15 +8,11 @@ import RentedVsBuilt from "./RentedVsBuilt";
 */
 export default function Shift() {
   return (
-    <section id="why" className="relative overflow-hidden border-t border-line py-16 md:py-24">
-      <div
-        aria-hidden="true"
-        className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
-      />
+    <section id="why" className="relative overflow-hidden border-t border-line py-14 md:py-20">
       {/* Soft accent glow — drifts gently */}
       <div
         aria-hidden="true"
-        className="floaty pointer-events-none absolute -left-24 top-16 h-80 w-80 rounded-full bg-signal/[0.10] blur-[120px]"
+        className="floaty pointer-events-none absolute -left-24 top-16 h-72 w-72 rounded-full bg-signal/[0.05] blur-[120px]"
       />
 
       <div className="relative mx-auto max-w-6xl px-6">
