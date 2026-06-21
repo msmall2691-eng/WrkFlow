@@ -36,15 +36,15 @@ export default function Hero() {
         </p>
 
         <h1 className="display max-w-3xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Custom websites, tools, and workflows—
-          <span className="shimmer-text">linked</span> around your business.
+          Custom websites, tools, and workflows, built around{" "}
+          <span className="shimmer-text">how you work.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          M Studio designs and builds custom websites, web apps, and tools—then
-          links your systems together and smooths the workflows behind them, so the
-          whole thing just runs. Whatever you dream up for how your business should
-          work, we&apos;ll build it—made on the coast of Maine, for clients anywhere.
+          M Studio designs and builds custom websites, web apps, and tools—and
+          helps connect the ones you already use—so less of your week is busywork.
+          Whatever you dream up for how your business should work, we&apos;ll build
+          it: made on the coast of Maine, for clients anywhere.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">

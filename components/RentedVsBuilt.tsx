@@ -15,7 +15,7 @@ const ROWS: { rent: string; own: string }[] = [
   { rent: "You bend to their forms", own: "Shaped to how you work" },
   { rent: "Locked in; can't leave", own: "No lock-in—you own it" },
   { rent: "Generic, like everyone", own: "Custom, only yours" },
-  { rent: "Tools that don't talk", own: "Everything, linked" },
+  { rent: "Tools that don't talk", own: "Your tools, connected" },
 ];
 
 export default function RentedVsBuilt() {

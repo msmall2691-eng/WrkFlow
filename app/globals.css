@@ -45,6 +45,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Clear the fixed nav (h-16 / 64px) when jumping to a section anchor */
+:where(section[id], [id].scroll-target) {
+  scroll-margin-top: 5rem;
+}
+
 body {
   background-color: var(--color-base);
   color: var(--color-ink);
@@ -126,6 +131,14 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Blanket safety: near-instant motion, never hide content behind animation */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
   html {
     scroll-behavior: auto;
   }

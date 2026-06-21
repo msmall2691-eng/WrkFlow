@@ -218,10 +218,9 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
       <div className="flex h-10 w-10 items-center justify-center rounded-full border border-signal/40 text-signal">
         ✓
       </div>
-      <h3 className="mt-5 font-display text-2xl text-white">Message received.</h3>
+      <h3 className="mt-5 font-display text-2xl text-white">Got it.</h3>
       <p className="mt-3 text-base leading-relaxed text-white/75">
-        Thanks for reaching out. We&apos;ll read what you sent and get back to
-        you personally—usually within a business day.
+        I read every one myself and reply within a day.
       </p>
       <button
         type="button"

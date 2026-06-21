@@ -6,7 +6,7 @@ import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 
 /*
-  IntegrationMapper — the "everything linked" thesis, made interactive.
+  IntegrationMapper — shows how the tools you already use can connect.
 
   Pick the tools you already run; the map wires them into one hub and lists the
   automations that become possible. A live picture of what M Studio connects.

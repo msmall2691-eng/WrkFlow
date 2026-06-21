@@ -14,9 +14,9 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              We design and build websites, automations, and the systems behind
-              them—so your business runs faster and cleaner, with less busywork.
-              Maine-built, working with clients anywhere. Everything, linked.
+              We design and build custom websites, tools, and the systems behind
+              them—and help connect the ones you already use—so less of your week is
+              busywork. Built on the coast of Maine, working with clients anywhere.
             </p>
           </div>
 

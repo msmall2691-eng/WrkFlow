@@ -23,20 +23,19 @@ export default function Shift() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="max-w-3xl">
           <Reveal>
-            <p className="marker mb-4">// What we love</p>
+            <p className="marker mb-4">// Why now</p>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              We <span className="text-signal">link things together</span>—your
-              websites, tools, and the workflows between them—into one system you
-              own.
+              What we love: building custom websites, tools, and systems you
+              actually <span className="text-signal">own</span>.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              That&apos;s the work M Studio loves: designing the site, building the
-              tools and web apps, automating the busywork, and tuning the systems so
-              your day gets easier instead of busier. For years that meant renting
+              Designing the site, building the tools and web apps, automating the
+              busywork, and tuning the systems so your day gets easier instead of
+              busier—that&apos;s the work we love. For years that meant renting
               rigid software or hiring a dev team you couldn&apos;t justify—now a small
               studio on the coast of Maine can build exactly what you dream up, and
               hand you the keys. We know it works; we built it for our own company first.
