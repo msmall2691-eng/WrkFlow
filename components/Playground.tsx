@@ -4,15 +4,16 @@ import { useState } from "react";
 import Reveal from "./Reveal";
 import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
-import IntegrationMapper from "./IntegrationMapper";
+import SignatureMaker from "./SignatureMaker";
+import QRMaker from "./QRCode";
 import LinxMark from "./LinxMark";
 
 /*
-  Playground — a small, focused "try it live" hub. Three working tools, no
-  filler. Deliberately concise.
+  Playground — a small set of genuinely useful, free tools. Each one gives the
+  visitor something to take with them (a report, a signature, a QR, an answer).
 */
 
-type Tool = "sitecheck" | "map" | "cost";
+type Tool = "sitecheck" | "sig" | "qr" | "cost";
 
 const TOOLS: {
   id: Tool;
@@ -23,14 +24,20 @@ const TOOLS: {
   {
     id: "sitecheck",
     label: "Website check",
-    blurb: "Paste any URL → real Lighthouse speed, SEO & accessibility scores.",
+    blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report.",
     nudge: { line: "Want a site that scores green out of the box?", product: "Linx Site" },
   },
   {
-    id: "map",
-    label: "Integration map",
-    blurb: "Pick the tools you use → see how they link and what gets automated.",
-    nudge: { line: "Ready to wire these tools together for real?", product: "Linx Flows" },
+    id: "sig",
+    label: "Email signature",
+    blurb: "Fill in your details → a styled signature, ready to paste into Gmail or Outlook.",
+    nudge: { line: "Need a site to match your new signature?", product: "Linx Site" },
+  },
+  {
+    id: "qr",
+    label: "QR code",
+    blurb: "Type any link → a real QR code you can download and print.",
+    nudge: { line: "Point that QR at a landing page that converts?", product: "Linx Site" },
   },
   {
     id: "cost",
@@ -56,7 +63,7 @@ export default function Playground() {
         </Reveal>
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Three tools you can use right now.
+            Free tools you can actually use.
           </h2>
         </Reveal>
         <Reveal delay={80}>
@@ -94,7 +101,8 @@ export default function Playground() {
 
         <div className="mt-8">
           {tool === "sitecheck" && <SiteCheck />}
-          {tool === "map" && <IntegrationMapper />}
+          {tool === "sig" && <SignatureMaker />}
+          {tool === "qr" && <QRMaker />}
           {tool === "cost" && <AutomationCost />}
         </div>
 
