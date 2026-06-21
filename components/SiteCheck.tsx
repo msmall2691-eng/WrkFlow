@@ -34,12 +34,21 @@ type Result = {
 const scoreColor = (s: number | null) =>
   s == null ? "#8497a8" : s >= 90 ? "#2fbf9e" : s >= 50 ? "#d9a441" : "#e5645a";
 
+const SAMPLE: Result = {
+  finalUrl: "example.com",
+  strategy: "mobile",
+  scores: { performance: 98, accessibility: 100, bestPractices: 100, seo: 100 },
+  metrics: { fcp: "1.0 s", lcp: "1.3 s", cls: "0.00", tbt: "20 ms", speedIndex: "1.2 s" },
+};
+
 export default function SiteCheck() {
   const [url, setUrl] = useLocalStorage("tool-sitecheck-url", "");
   const [strategy, setStrategy] = useState<"mobile" | "desktop">("mobile");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<Result | null>(null);
+  // Start with a sample result so visitors see the payoff before they type.
+  const [result, setResult] = useState<Result | null>(SAMPLE);
+  const [isSample, setIsSample] = useState(true);
 
   async function run(e: React.FormEvent) {
     e.preventDefault();
@@ -56,6 +65,7 @@ export default function SiteCheck() {
         setError(data?.error ?? "The check failed. Try again.");
       } else {
         setResult(data as Result);
+        setIsSample(false);
       }
     } catch {
       setError("Couldn't run the check—check your connection and try again.");
@@ -159,7 +169,12 @@ export default function SiteCheck() {
 
       {result && (
         <div className="mt-7">
-          <p className="font-mono text-[11px] uppercase tracking-widest text-faint">
+          <p className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-faint">
+            {isSample && (
+              <span className="rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-gold">
+                Example
+              </span>
+            )}
             {result.finalUrl} · {result.strategy}
           </p>
 
@@ -194,12 +209,18 @@ export default function SiteCheck() {
             ))}
           </div>
 
-          <SaveResult summary={summary} filename="mstudio-site-check" />
+          {!isSample && <SaveResult summary={summary} filename="mstudio-site-check" />}
 
           <p className="mt-4 text-xs leading-relaxed text-faint">
-            Scores from Google Lighthouse (0–100). Want these all green? That&apos;s
-            exactly the kind of website ops we handle—{" "}
-            <a href="#contact" className="text-signal hover:opacity-80">let&apos;s talk</a>.
+            {isSample ? (
+              "An example of what you get—run your own site above for a real Google Lighthouse audit."
+            ) : (
+              <>
+                Scores from Google Lighthouse (0–100). Want these all green?
+                That&apos;s exactly the kind of website ops we handle—{" "}
+                <a href="#contact" className="text-signal hover:opacity-80">let&apos;s talk</a>.
+              </>
+            )}
           </p>
         </div>
       )}

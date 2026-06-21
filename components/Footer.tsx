@@ -5,6 +5,13 @@ import LinxMark from "./LinxMark";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const sha = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7);
+  const ref = process.env.VERCEL_GIT_COMMIT_REF || "main";
+  const built = new Date().toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
     <footer className="relative overflow-hidden border-t border-line py-16 md:py-20">
@@ -74,6 +81,9 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© {year} M Studio</span>
+          <span className="tracking-normal text-faint/80 [text-transform:none]">
+            {sha ? `deployed ${built} · ${ref}@${sha}` : `built ${built} · live on Vercel`}
+          </span>
           <span>Built true.</span>
         </div>
       </div>
