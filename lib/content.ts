@@ -12,7 +12,7 @@ export const provingGroundCompany = "The Maine Cleaning Company";
 
 /** "Who this is for" — names the buyer plainly. */
 export const whoIsItFor =
-  "Built for small and growing businesses: service companies, trades, property managers, short-term-rental operators, and the teams behind them. You want a website that actually works, automations that save real hours, and systems shaped around how you operate.";
+  "For small businesses and independent makers alike: service companies, trades, property managers, short-term-rental operators, founders, and anyone who needs a website, a tool, or a plugin that actually works. Bring a whole business to streamline or a single project to build—both are welcome.";
 
 /** Founder note. Owner to edit voice/details. */
 export const founderNote = `M Studio started inside a real service business on the coast of Maine. I spent years running ${provingGroundCompany} on rented software that never quite fit—then built our own from the ground up: the website, the database, the automations, the AI layer, and the processes that finally matched how we actually worked. M Studio is that same work—custom websites, automations, and the systems behind them, built to fit—offered to the businesses that would rather run on something made for them.`;

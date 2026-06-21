@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
   cycle a highlight so there's life on mobile (where hover doesn't exist).
   Hover still brightens individually on desktop.
 */
-const CAPS = ["Automation", "Workflows", "Dashboards", "Custom tools"];
+const CAPS = ["Plugins", "Workflows", "Dashboards", "Custom tools"];
 
 export default function HeroCapabilities() {
   const [active, setActive] = useState(0);

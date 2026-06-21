@@ -32,7 +32,7 @@ const jetbrainsMono = JetBrains_Mono({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "M Studio builds custom websites, web apps, and tools, then links your systems together and smooths the workflows behind them—so everything just runs. Built on the coast of Maine, working with clients anywhere.";
+  "M Studio designs and builds custom websites, web apps, tools, and plugins—and helps connect the ones you already use. For businesses and one-off projects alike. Built on the coast of Maine, working with clients anywhere.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
