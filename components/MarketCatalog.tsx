@@ -30,7 +30,7 @@ export default function MarketCatalog() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {marketItems.map((item, i) => (
           <Reveal key={item.id} delay={i * 50}>
-            <ProductCard item={item} onReserve={() => setActive(item)} />
+            <ProductCard item={item} n={i + 1} onReserve={() => setActive(item)} />
           </Reveal>
         ))}
       </div>
@@ -50,15 +50,17 @@ export default function MarketCatalog() {
 
 function ProductCard({
   item,
+  n,
   onReserve,
 }: {
   item: MarketItem;
+  n: number;
   onReserve: () => void;
 }) {
   const isOpen = item.model === "open";
   return (
     <article
-      className={`elevate group flex h-full flex-col overflow-hidden rounded-2xl border bg-elevated transition-colors hover:border-signal/50 ${
+      className={`elevate group flex h-full flex-col overflow-hidden rounded-2xl border bg-elevated transition-all duration-500 hover:-translate-y-1 hover:border-signal/50 ${
         item.featured ? "border-signal/40" : "border-line"
       }`}
     >
@@ -77,6 +79,9 @@ function ProductCard({
             <span className="display-serif text-2xl text-muted">{item.category}</span>
           </div>
         )}
+        <span className="absolute left-3 top-3 z-10 font-mono text-[11px] text-white/70">
+          {String(n).padStart(2, "0")}
+        </span>
         <span
           className={`absolute right-3 top-3 rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest backdrop-blur ${modelBadge[item.model]}`}
         >

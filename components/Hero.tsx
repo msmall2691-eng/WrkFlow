@@ -13,8 +13,8 @@ export default function Hero() {
       <AuroraSwell intensity={0.6} speed={0.7} />
 
       {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
-      <div className="absolute inset-y-0 right-0 hidden w-[48%] overflow-hidden lg:block">
-        <HeroWordmark text="M STUDIO" size="text-[7.5vw]" />
+      <div className="absolute inset-y-0 right-0 hidden w-[50%] overflow-hidden lg:block">
+        <HeroWordmark text="M STUDIO" size="text-[8.5vw]" />
       </div>
 
       {/* Diagonal scrim — keeps the bright swell on the text-free side */}

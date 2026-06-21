@@ -69,7 +69,7 @@ export default function HeroWordmark({
     >
       {/* Faint base — the word always sits in the fog */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter text-white/[0.04] [-webkit-text-stroke:1px_rgba(255,255,255,0.05)]`}>
+        <span className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter text-white/[0.08] [-webkit-text-stroke:1px_rgba(255,255,255,0.09)]`}>
           {text}
         </span>
       </div>
@@ -77,7 +77,7 @@ export default function HeroWordmark({
       {/* Revealed — soft sea-glass letters, masked to a spotlight at the cursor */}
       <div
         ref={reveal}
-        className="absolute inset-0 flex items-center justify-center opacity-70"
+        className="absolute inset-0 flex items-center justify-center opacity-90"
         style={{
           WebkitMaskImage:
             "radial-gradient(circle 200px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.3) 45%, transparent 72%)",

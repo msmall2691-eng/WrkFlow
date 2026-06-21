@@ -1,8 +1,7 @@
 /*
-  Wordmark for M Studio. "M Studio" set in the monospace face. A compact glyph
-  (two offset strokes suggesting linked systems / a branching flow) sits ahead
-  of it. ("Linx" lives on quietly in the mlinx.studio domain.) Pass `tag` to
-  append a smaller "/ Maine" lockup.
+  Wordmark for M Studio. A glowing sea-glass "M" monogram (the brand letter,
+  same as the favicon) leads the "Studio" wordmark in the monospace face.
+  Pass `tag` to append a smaller "/ Maine" lockup.
 */
 export default function Logo({
   className = "",
@@ -17,38 +16,16 @@ export default function Logo({
   const wordColor = tone === "light" ? "text-white" : "text-ink";
   const tagColor = tone === "light" ? "text-white/55" : "text-faint";
   return (
-    <span className={`inline-flex items-baseline gap-2.5 ${wordColor} ${className}`}>
-      {/* Two interlocking links — the "linx" undertone in the M Studio mark */}
-      <svg
-        width="27"
-        height="16"
-        viewBox="0 0 32 18"
-        fill="none"
+    <span className={`inline-flex items-baseline gap-2 ${wordColor} ${className}`}>
+      {/* Glowing "M" monogram — the brand letter, accent-aware */}
+      <span
         aria-hidden="true"
-        className="shrink-0 translate-y-[2px]"
+        className="font-display text-[20px] font-bold leading-none text-signal [text-shadow:0_0_15px_rgba(45,212,191,0.5),0_0_6px_rgba(45,212,191,0.35)]"
       >
-        <rect
-          x="1.4"
-          y="3.4"
-          width="15"
-          height="11.2"
-          rx="5.6"
-          stroke="currentColor"
-          strokeOpacity="0.5"
-          strokeWidth="2"
-        />
-        <rect
-          x="15.6"
-          y="3.4"
-          width="15"
-          height="11.2"
-          rx="5.6"
-          stroke="var(--color-signal)"
-          strokeWidth="2"
-        />
-      </svg>
+        M
+      </span>
       <span className={`font-mono text-[16px] font-semibold tracking-[0.04em] ${wordColor}`}>
-        M&nbsp;Studio
+        Studio
       </span>
       {tag && (
         <span className={`font-mono text-[11px] uppercase tracking-[0.22em] ${tagColor}`}>

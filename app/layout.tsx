@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -99,6 +100,7 @@ export default function RootLayout({
         </noscript>
         <ScrollProgress />
         {children}
+        <BackToTop />
       </body>
     </html>
   );
