@@ -15,7 +15,7 @@ export const whoIsItFor =
   "For small businesses and independent makers alike: service companies, trades, property managers, short-term-rental operators, founders, and anyone who needs a website, a tool, or a plugin that actually works. Bring a whole business to streamline or a single project to build—both are welcome.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I never planned to build software. I just ran ${provingGroundCompany} on tools that never quite fit—so I built our own. It worked so well that other owners started asking for theirs. That's how M Studio began.`;
+export const founderNote = `I never set out to build software—I just ran ${provingGroundCompany} on tools that never quite fit, so I started stitching together our own. Somewhere in the back ends, data models, and integrations, I fell in love with the craft. I'm now studying Business Analytics & AI at the University of Southern Maine, minoring in Computer Science, and I get to spend my days building these tools from scratch for other owners. Still learning, every day.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
