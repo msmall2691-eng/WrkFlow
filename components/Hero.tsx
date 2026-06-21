@@ -34,7 +34,7 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
           </span>
-          Built on the Maine coast · linked anywhere
+          Maine-built, clients everywhere
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
@@ -43,11 +43,10 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          M Studio designs and builds custom websites, web apps, tools, and
-          plugins—and helps connect the ones you already use. Bring a whole
-          business to streamline or a single project to build; either way,
-          whatever you dream up, we&apos;ll make it—on the coast of Maine, for
-          clients anywhere.
+          M Studio builds custom websites, web apps, tools, and plugins, and gets
+          the ones you already use working together. Whether you&apos;ve got a whole
+          business to tidy up or just one project in mind, we&apos;ll build it
+          right. Based in Maine, working with clients anywhere.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
