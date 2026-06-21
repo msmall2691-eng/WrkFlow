@@ -299,8 +299,8 @@ export const work: WorkItem[] = [
   {
     tier: "private",
     tag: "Private system",
-    title: "Workflow HQ",
-    blurb: "Internal operations hub.",
+    title: "Turnover scheduling",
+    blurb: "Internal board for STR turnovers—who, where, and when, at a glance.",
     shot: "/shots/brightbase-turnovers.png",
   },
   {
