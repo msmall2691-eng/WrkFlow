@@ -6,14 +6,16 @@ import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
 import SignatureMaker from "./SignatureMaker";
 import QRMaker from "./QRCode";
+import QuoteCalc from "./QuoteCalc";
+import InvoiceMaker from "./InvoiceMaker";
 import LinxMark from "./LinxMark";
 
 /*
   Playground — a small set of genuinely useful, free tools. Each one gives the
-  visitor something to take with them (a report, a signature, a QR, an answer).
+  visitor something to take with them (a report, a signature, a QR, a quote, an invoice).
 */
 
-type Tool = "sitecheck" | "sig" | "qr" | "cost";
+type Tool = "sitecheck" | "quote" | "invoice" | "sig" | "qr" | "cost";
 
 const TOOLS: {
   id: Tool;
@@ -26,6 +28,18 @@ const TOOLS: {
     label: "Website check",
     blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report.",
     nudge: { line: "Want a site that scores green out of the box?", product: "Linx Site" },
+  },
+  {
+    id: "quote",
+    label: "Instant quote",
+    blurb: "Service + size → a live price range you can send a customer.",
+    nudge: { line: "Want this estimator on your own site?", product: "Linx Quote" },
+  },
+  {
+    id: "invoice",
+    label: "Invoice maker",
+    blurb: "Build an invoice or proposal → print to a clean PDF in one click.",
+    nudge: { line: "Want invoicing wired into your booking flow?", product: "Linx Booking" },
   },
   {
     id: "sig",
@@ -63,7 +77,7 @@ export default function Playground() {
         </Reveal>
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Free tools you can actually use.
+            Free tools you can actually use—built for trades.
           </h2>
         </Reveal>
         <Reveal delay={80}>
@@ -101,6 +115,8 @@ export default function Playground() {
 
         <div className="mt-8">
           {tool === "sitecheck" && <SiteCheck />}
+          {tool === "quote" && <QuoteCalc />}
+          {tool === "invoice" && <InvoiceMaker />}
           {tool === "sig" && <SignatureMaker />}
           {tool === "qr" && <QRMaker />}
           {tool === "cost" && <AutomationCost />}
