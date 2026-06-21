@@ -26,7 +26,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[#08131d]/80 to-[var(--color-base)]"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pt-24">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-20 pt-24 sm:pb-0">
         <p className="marker mb-6 flex items-center gap-2.5">
           <span className="relative flex h-2 w-2" aria-hidden="true">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
@@ -36,10 +36,10 @@ export default function Hero() {
         </p>
 
         <h1 className="display max-w-3xl text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Websites, tools, and workflows,{" "}
+          Custom websites, tools, and workflows,{" "}
           <br className="hidden sm:block" />
-          <span className="shimmer-text">linked</span> into one system that runs
-          itself.
+          designed, built, and <span className="shimmer-text">linked</span>{" "}
+          around your business.
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
@@ -81,8 +81,8 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue — sits in the bottom fade, so it reads dark */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
+      {/* Scroll cue — sits in the bottom fade, so it reads dark (desktop only) */}
+      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 sm:block">
         <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-faint">
           Scroll
         </span>

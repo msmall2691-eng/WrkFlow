@@ -169,13 +169,13 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
 
   return (
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center px-4"
+      className="fixed inset-0 z-[70] flex items-center justify-center overflow-y-auto px-4 py-6"
       role="dialog"
       aria-modal="true"
       aria-label={`Reserve ${item.name}`}
     >
       <div className="absolute inset-0 bg-ink/50 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
-      <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-line bg-base shadow-2xl">
+      <div className="relative my-auto max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-line bg-base shadow-2xl">
         <div className="flex items-start justify-between gap-4 border-b border-line p-6">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
