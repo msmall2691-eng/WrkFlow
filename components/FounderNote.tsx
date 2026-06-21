@@ -18,7 +18,7 @@ export default function FounderNote() {
           {/* Photo */}
           <div className="md:col-span-4">
             <Reveal>
-              <FounderAvatar className="mx-auto aspect-[4/5] w-full max-w-[172px] rounded-2xl shadow-[0_20px_50px_-24px_rgba(11,23,34,0.45)] ring-1 ring-black/10 md:mx-0" />
+              <FounderAvatar className="mx-auto aspect-[4/5] w-full max-w-[132px] rounded-2xl shadow-[0_20px_50px_-24px_rgba(11,23,34,0.45)] ring-1 ring-black/10 grayscale transition-[filter] duration-700 hover:grayscale-0 md:mx-0" />
             </Reveal>
           </div>
 
