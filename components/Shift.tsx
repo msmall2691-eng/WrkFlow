@@ -27,8 +27,9 @@ export default function Shift() {
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              What we love: building custom websites, tools, and systems you
-              actually <span className="text-signal">own</span>.
+              What we love: helping you{" "}
+              <span className="text-signal">build</span> the custom websites, tools,
+              and systems that fit exactly how you work.
             </h2>
           </Reveal>
           <Reveal delay={120}>
