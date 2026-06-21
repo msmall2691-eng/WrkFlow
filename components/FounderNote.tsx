@@ -18,7 +18,7 @@ export default function FounderNote() {
           {/* Photo */}
           <div className="md:col-span-4">
             <Reveal>
-              <FounderAvatar className="mx-auto aspect-[4/5] w-full max-w-[200px] rounded-2xl shadow-[0_20px_50px_-24px_rgba(11,23,34,0.45)] ring-1 ring-black/10 md:mx-0" />
+              <FounderAvatar className="mx-auto aspect-[4/5] w-full max-w-[172px] rounded-2xl shadow-[0_20px_50px_-24px_rgba(11,23,34,0.45)] ring-1 ring-black/10 md:mx-0" />
             </Reveal>
           </div>
 
@@ -30,7 +30,7 @@ export default function FounderNote() {
               </p>
             </Reveal>
             <Reveal delay={80}>
-              <blockquote className="[font-family:var(--font-serif)] text-lg leading-relaxed text-[#16384a] md:text-xl">
+              <blockquote className="[font-family:var(--font-serif)] text-base leading-relaxed text-[#16384a] md:text-lg">
                 {founderNote}
               </blockquote>
             </Reveal>

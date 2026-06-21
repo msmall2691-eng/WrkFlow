@@ -73,15 +73,27 @@ export default function MarketplacePage() {
         </section>
 
         {/* Catalog */}
-        <section className="py-16 md:py-24">
-          <div className="mx-auto max-w-6xl px-6">
+        <section className="relative overflow-hidden py-16 md:py-24">
+          <div
+            aria-hidden="true"
+            className="floaty-slow pointer-events-none absolute -left-24 top-24 h-80 w-80 rounded-full bg-signal/[0.09] blur-[130px]"
+          />
+          <div
+            aria-hidden="true"
+            className="floaty pointer-events-none absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-gold/[0.07] blur-[130px]"
+          />
+          <div className="relative mx-auto max-w-6xl px-6">
             <MarketCatalog />
           </div>
         </section>
 
         {/* CTA */}
-        <section className="border-t border-line py-16">
-          <div className="mx-auto max-w-3xl px-6 text-center">
+        <section className="relative overflow-hidden border-t border-line py-16">
+          <div
+            aria-hidden="true"
+            className="floaty pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.08] blur-[130px]"
+          />
+          <div className="relative mx-auto max-w-3xl px-6 text-center">
             <Reveal>
               <h2 className="display text-xl text-ink sm:text-2xl">
                 Don&apos;t see your exact fit?

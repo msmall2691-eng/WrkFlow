@@ -13,7 +13,7 @@ export default function Deployments() {
       />
       <div
         aria-hidden="true"
-        className="floaty pointer-events-none absolute -left-24 bottom-8 h-72 w-72 rounded-full bg-gold/[0.05] blur-[130px]"
+        className="floaty pointer-events-none absolute -left-24 bottom-8 h-80 w-80 rounded-full bg-gold/[0.08] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">

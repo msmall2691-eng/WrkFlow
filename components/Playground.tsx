@@ -48,7 +48,7 @@ export default function Playground() {
     <section id="kit" className="relative overflow-hidden border-t border-line py-16 md:py-24">
       <div
         aria-hidden="true"
-        className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
+        className="floaty-slow pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-signal/[0.09] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
