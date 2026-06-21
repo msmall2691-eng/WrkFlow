@@ -8,6 +8,8 @@ import SignatureMaker from "./SignatureMaker";
 import QRMaker from "./QRCode";
 import QuoteCalc from "./QuoteCalc";
 import InvoiceMaker from "./InvoiceMaker";
+import VCard from "./VCard";
+import UTMBuilder from "./UTMBuilder";
 import LinxMark from "./LinxMark";
 
 /*
@@ -15,54 +17,78 @@ import LinxMark from "./LinxMark";
   visitor something to take with them (a report, a signature, a QR, a quote, an invoice).
 */
 
-type Tool = "sitecheck" | "quote" | "invoice" | "sig" | "qr" | "cost";
+type Tool = "sitecheck" | "quote" | "invoice" | "sig" | "vcard" | "qr" | "utm" | "cost";
+type Group = "Win & bill" | "Brand & share" | "Site & ops";
 
 const TOOLS: {
   id: Tool;
   label: string;
   blurb: string;
+  group: Group;
   nudge: { line: string; product: string };
 }[] = [
-  {
-    id: "sitecheck",
-    label: "Website check",
-    blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report.",
-    nudge: { line: "Want a site that scores green out of the box?", product: "Linx Site" },
-  },
   {
     id: "quote",
     label: "Instant quote",
     blurb: "Service + size → a live price range you can send a customer.",
+    group: "Win & bill",
     nudge: { line: "Want this estimator on your own site?", product: "Linx Quote" },
   },
   {
     id: "invoice",
     label: "Invoice maker",
     blurb: "Build an invoice or proposal → print to a clean PDF in one click.",
+    group: "Win & bill",
     nudge: { line: "Want invoicing wired into your booking flow?", product: "Linx Booking" },
   },
   {
     id: "sig",
     label: "Email signature",
     blurb: "Fill in your details → a styled signature, ready to paste into Gmail or Outlook.",
+    group: "Brand & share",
     nudge: { line: "Need a site to match your new signature?", product: "Linx Site" },
+  },
+  {
+    id: "vcard",
+    label: "Digital card",
+    blurb: "Your details → a .vcf and a scan-to-save QR for cards, emails & signatures.",
+    group: "Brand & share",
+    nudge: { line: "Want a real one-page site behind that card?", product: "Linx Site" },
   },
   {
     id: "qr",
     label: "QR code",
     blurb: "Any link—or your WiFi—into a real QR code to download & print.",
+    group: "Brand & share",
     nudge: { line: "Point that QR at a landing page that converts?", product: "Linx Site" },
+  },
+  {
+    id: "utm",
+    label: "Tracked link",
+    blurb: "Add campaign tags to any link → a tracked URL for emails, ads & bios.",
+    group: "Brand & share",
+    nudge: { line: "Want these tracked and reported automatically?", product: "Linx Flows" },
+  },
+  {
+    id: "sitecheck",
+    label: "Website check",
+    blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report.",
+    group: "Site & ops",
+    nudge: { line: "Want a site that scores green out of the box?", product: "Linx Site" },
   },
   {
     id: "cost",
     label: "Cost of manual work",
     blurb: "Hours + people → the yearly cost, and how fast automation pays for itself.",
+    group: "Site & ops",
     nudge: { line: "Ready to hand this busywork to automation?", product: "Linx Flows" },
   },
 ];
 
+const GROUPS: Group[] = ["Win & bill", "Brand & share", "Site & ops"];
+
 export default function Playground() {
-  const [tool, setTool] = useState<Tool>("sitecheck");
+  const [tool, setTool] = useState<Tool>("quote");
   const activeTool = TOOLS.find((t) => t.id === tool)!;
 
   return (
@@ -92,24 +118,31 @@ export default function Playground() {
           </p>
         </Reveal>
 
-        {/* Tabs */}
+        {/* Tabs — grouped so the set stays scannable */}
         <Reveal delay={120}>
-          <div className="mt-8">
-            <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
-              {TOOLS.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  onClick={() => setTool(t.id)}
-                  className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
-                    tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
-                  }`}
-                >
-                  {t.label}
-                </button>
+          <div className="mt-8 flex flex-col gap-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:gap-6">
+              {GROUPS.map((g) => (
+                <div key={g} className="flex flex-col gap-1.5">
+                  <span className="px-1 font-mono text-[10px] uppercase tracking-widest text-faint">{g}</span>
+                  <div className="inline-flex flex-wrap gap-1 rounded-full border border-line bg-surface p-1">
+                    {TOOLS.filter((t) => t.group === g).map((t) => (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => setTool(t.id)}
+                        className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
+                          tool === t.id ? "bg-gold/20 text-gold" : "text-muted hover:text-ink"
+                        }`}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
-            <p className="mt-3 font-mono text-xs text-faint">{activeTool.blurb}</p>
+            <p className="font-mono text-xs text-faint">{activeTool.blurb}</p>
           </div>
         </Reveal>
 
@@ -118,7 +151,9 @@ export default function Playground() {
           {tool === "quote" && <QuoteCalc />}
           {tool === "invoice" && <InvoiceMaker />}
           {tool === "sig" && <SignatureMaker />}
+          {tool === "vcard" && <VCard />}
           {tool === "qr" && <QRMaker />}
+          {tool === "utm" && <UTMBuilder />}
           {tool === "cost" && <AutomationCost />}
         </div>
 
