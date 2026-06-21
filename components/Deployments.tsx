@@ -1,10 +1,15 @@
 import Image from "next/image";
-import { deployments, type Deployment } from "@/lib/content";
+import { work, type WorkItem } from "@/lib/content";
 import Reveal from "./Reveal";
-import ProjectVisual from "./ProjectVisual";
 import Tilt from "./Tilt";
 
+const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
 export default function Deployments() {
+  const sites = work.filter((w) => w.tier === "site");
+  const products = work.filter((w) => w.tier === "product");
+  const privates = work.filter((w) => w.tier === "private");
+
   return (
     <section id="work" className="relative overflow-hidden border-t border-line py-14 md:py-20">
       <div
@@ -23,66 +28,138 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              No theory. Every build here shipped for a real, operating company
-              before anyone else saw it—{" "}
-              <span className="text-ink">this site included.</span>
+              Live client sites, a full SaaS platform, and the systems running
+              behind them.
             </p>
           </Reveal>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {deployments.map((d, i) => (
-            <Reveal key={d.title} delay={i * 60}>
+        {/* Tier 1 — live websites (big, linked) */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {sites.map((w, i) => (
+            <Reveal key={w.title} delay={i * 60}>
               <Tilt>
-                <DeploymentCard d={d} n={i + 1} />
+                <BigCard w={w} />
               </Tilt>
             </Reveal>
           ))}
+        </div>
+
+        {/* Tier 2 — product (medium, linked) */}
+        {products.map((w) => (
+          <Reveal key={w.title} delay={80}>
+            <div className="mt-6 lg:max-w-[calc(50%-0.75rem)]">
+              <Tilt>
+                <BigCard w={w} />
+              </Tilt>
+            </div>
+          </Reveal>
+        ))}
+
+        {/* Tier 3 — private systems (small tiles, no links) */}
+        <div className="mt-10">
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-faint">
+            Behind the scenes — private, login-gated systems
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {privates.map((w, i) => (
+              <Reveal key={w.title} delay={i * 60}>
+                <PrivateTile w={w} />
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function DeploymentCard({ d, n }: { d: Deployment; n: number }) {
+function BigCard({ w }: { w: WorkItem }) {
+  const cta = w.tier === "product" ? "View the demo" : "Visit site";
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-elevated transition-all duration-500 hover:-translate-y-1 hover:border-signal/40 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)]">
-      {/* Preview */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-surface">
-        {d.shot ? (
-          <>
-            <Image
-              src={d.shot}
-              alt={`${d.title} — preview`}
-              fill
-              sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-              className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
-            />
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-          </>
-        ) : (
-          d.visual && <ProjectVisual type={d.visual} />
-        )}
-        <span className="absolute left-4 top-3 z-10 font-mono text-[11px] text-white/60">
-          {String(n).padStart(2, "0")}
-        </span>
+    <article
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-elevated transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] ${
+        w.client ? "border-gold/40 hover:border-gold/60" : "border-line hover:border-signal/50"
+      }`}
+    >
+      {/* Browser frame */}
+      <div className="bg-surface">
+        <div className="flex items-center gap-1.5 border-b border-line bg-base/60 px-3 py-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-line" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line" />
+          <span className="h-2.5 w-2.5 rounded-full bg-line" />
+          {w.url && (
+            <span className="ml-2 truncate rounded bg-surface px-2 py-0.5 font-mono text-[10px] text-faint">
+              {domain(w.url)}
+            </span>
+          )}
+        </div>
+        <div className="relative aspect-[16/10] overflow-hidden">
+          <Image
+            src={w.shot}
+            alt={`${w.title} — preview`}
+            fill
+            sizes="(min-width: 1024px) 560px, 100vw"
+            className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+          />
+        </div>
       </div>
 
       {/* Caption */}
-      <div className="flex flex-1 flex-col p-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
-          {d.kind}
+      <div className="flex flex-1 flex-col p-6">
+        <p className={`font-mono text-[10px] uppercase tracking-widest ${w.client ? "text-gold" : "text-signal"}`}>
+          {w.tag}
         </p>
-        <h3 className="display-serif mt-2 text-lg text-ink">{d.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{d.blurb}</p>
-        {d.outcome && (
-          <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-gold">
-            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-gold" />
-            {d.outcome}
-          </span>
+        <h3 className="display-serif mt-2 text-xl text-ink">{w.title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{w.blurb}</p>
+
+        {w.stack && (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {w.stack.map((s) => (
+              <span key={s} className="rounded-full border border-line bg-base px-2.5 py-1 font-mono text-[10px] text-muted">
+                {s}
+              </span>
+            ))}
+          </div>
         )}
-        {/* Accent rule that draws in on hover */}
-        <span className="mt-4 block h-px w-8 bg-signal/50 transition-all duration-500 group-hover:w-16" />
+
+        {w.url && (
+          <a
+            href={w.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
+          >
+            {cta}
+            <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+          </a>
+        )}
+      </div>
+    </article>
+  );
+}
+
+function PrivateTile({ w }: { w: WorkItem }) {
+  return (
+    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-elevated">
+      <div className="relative aspect-[16/10] overflow-hidden bg-surface">
+        <Image
+          src={w.shot}
+          alt={`${w.title} — preview`}
+          fill
+          sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+          className="object-cover object-top"
+        />
+        {/* Locked overlay — signals login-gated, no link */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <span className="absolute right-3 top-3 rounded-full border border-line bg-base/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-faint backdrop-blur">
+          🔒 Private
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col p-5">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-faint">{w.tag}</p>
+        <h3 className="display-serif mt-2 text-base text-ink">{w.title}</h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted">{w.blurb}</p>
       </div>
     </article>
   );

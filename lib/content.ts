@@ -236,66 +236,79 @@ export const approachSteps: ApproachStep[] = [
   },
 ];
 
-export type Deployment = {
+export type WorkTier = "site" | "product" | "private";
+
+export type WorkItem = {
+  tier: WorkTier;
+  /** Eyebrow tag, e.g. "Client work" / "Website + system" / "Product" / "Private system". */
+  tag: string;
   title: string;
-  /** Short kind/category tag. */
-  kind: string;
-  /** One-line outcome shown under the title. */
   blurb: string;
-  /** A short result chip (verify/replace with your real numbers). */
-  outcome?: string;
-  /** Real screenshot in /shots, when one genuinely matches. */
-  shot?: string;
-  /** Branded animated visual, used when a screenshot would mislead. */
-  visual?: VisualType;
+  /** Tech chips (replaces a repo link — repos are private). */
+  stack?: string[];
+  /** Live URL — Tier 1 & 2 only; Tier 3 has no link. */
+  url?: string;
+  shot: string; // /shots/*.png
+  /** Set for outside-client work so it gets a distinct accent. */
+  client?: boolean;
 };
 
 /*
-  Selected work — a readable, captioned grid of real, shipped projects (no
-  outbound links by intent). Screenshots captured from the live deployments.
+  Selected work — three tiers: live websites (linked), a product demo (linked),
+  and private internal systems (screenshot only, never linked).
 */
-export const deployments: Deployment[] = [
+export const work: WorkItem[] = [
+  // Tier 1 — live websites (lead with the outside-client one)
   {
-    title: "The Maine Cleaning Co.",
-    kind: "Website & web app",
-    blurb: "Custom marketing site with instant online quoting and booking, wired straight into the back office.",
-    outcome: "Quote → booking on the site",
-    shot: "/shots/maineclean.png",
+    tier: "site",
+    tag: "Client work",
+    title: "The Remote Admin",
+    blurb: "Full marketing site for a Southern-NH admin-services business—designed, built, and shipped end to end.",
+    stack: ["Next.js", "Vercel"],
+    url: "https://the-remote-admin.com",
+    shot: "/shots/remote-admin.png",
+    client: true,
   },
   {
-    title: "BrightBase",
-    kind: "Operational dashboard",
-    blurb: "An operations command center—jobs, revenue, occupancy, and crew in one live view.",
-    outcome: "Every channel, one screen",
+    tier: "site",
+    tag: "Website + system · our own company",
+    title: "The Maine Cleaning Co.",
+    blurb: "Marketing + booking site, wired straight into the back-office system we run the company on.",
+    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
+    url: "https://maineclean.co",
+    shot: "/shots/maineclean.png",
+  },
+  // Tier 2 — product we built
+  {
+    tier: "product",
+    tag: "Product · designed & built by M Studio",
+    title: "Autopilot",
+    blurb: "A complete CRM + field-service platform—scheduling, invoicing, and STR turnover automation—designed and built from scratch.",
+    stack: ["Next.js", "Supabase", "Vercel"],
+    url: "https://autopilot-sooty.vercel.app",
+    shot: "/shots/autopilot.png",
+  },
+  // Tier 3 — private internal/client systems (no links)
+  {
+    tier: "private",
+    tag: "Private system",
+    title: "BrightBase — Command Center",
+    blurb: "Jobs, revenue, occupancy & crew in one live view.",
     shot: "/shots/brightbase-dashboard.png",
   },
   {
-    title: "Instant Estimate",
-    kind: "Web app + AI intake",
-    blurb: "A live quoting tool that reads requests, drafts the estimate, and queues a reply for approval.",
-    outcome: "Same-day quotes, drafted",
-    shot: "/shots/instant-estimate.png",
-  },
-  {
-    title: "Owned CRM & Database",
-    kind: "Custom CRM & database",
-    blurb: "A purpose-built customer and job database, owned outright and reachable from anywhere.",
-    outcome: "Spreadsheets retired",
-    visual: "database",
-  },
-  {
-    title: "Workflow Automation",
-    kind: "Automation & integration",
-    blurb: "Booking-to-follow-up flows that run themselves—confirmations, scheduling, and review requests.",
-    outcome: "~6 hrs/wk back",
-    visual: "automation",
-  },
-  {
-    title: "BrightBase Turnovers",
-    kind: "Migration & scheduling",
-    blurb: "Turnover scheduling moved off a rigid SaaS platform onto an owned system, history intact.",
-    outcome: "0 double-bookings",
+    tier: "private",
+    tag: "Private system",
+    title: "Workflow HQ",
+    blurb: "Internal operations hub.",
     shot: "/shots/brightbase-turnovers.png",
+  },
+  {
+    tier: "private",
+    tag: "Private system",
+    title: "Instant Estimate",
+    blurb: "Reads requests, drafts a quote, and queues a reply for approval.",
+    shot: "/shots/instant-estimate.png",
   },
 ];
 
