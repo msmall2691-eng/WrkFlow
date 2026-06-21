@@ -5,6 +5,7 @@ import Reveal from "./Reveal";
 import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
 import IntegrationMapper from "./IntegrationMapper";
+import LinxMark from "./LinxMark";
 
 /*
   Playground — a small, focused "try it live" hub. Three working tools, no
@@ -56,8 +57,10 @@ export default function Playground() {
         </Reveal>
         <Reveal delay={80}>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
-            Free, working tools by <span className="text-ink">Linx</span>—the same
-            kind we build into the systems behind your website.{" "}
+            Free, working tools by{" "}
+            <span className="inline-flex items-center gap-1.5 align-middle text-ink">
+              <LinxMark className="h-3 w-auto" />Linx
+            </span>—the same kind we build into the systems behind your website.{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
               See the full lineup →
             </a>

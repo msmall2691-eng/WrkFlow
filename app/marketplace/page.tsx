@@ -5,6 +5,7 @@ import AccentSwitcher from "@/components/AccentSwitcher";
 import Reveal from "@/components/Reveal";
 import MarketCatalog from "@/components/MarketCatalog";
 import HeroWordmark from "@/components/HeroWordmark";
+import LinxMark from "@/components/LinxMark";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -27,7 +28,13 @@ export default function MarketplacePage() {
           <HeroWordmark text="LINX" />
           <div className="relative z-10 mx-auto max-w-6xl px-6">
             <Reveal>
-              <p className="marker mb-6">// Linx · the marketplace</p>
+              <div className="mb-5 flex items-center gap-2.5 text-ink">
+                <LinxMark className="h-4 w-auto" />
+                <span className="font-mono text-sm font-semibold tracking-wide">Linx</span>
+                <span className="font-mono text-xs uppercase tracking-widest text-faint">
+                  · the marketplace
+                </span>
+              </div>
             </Reveal>
             <Reveal delay={60}>
               <h1 className="display-serif max-w-3xl text-3xl text-ink sm:text-4xl md:text-5xl">
