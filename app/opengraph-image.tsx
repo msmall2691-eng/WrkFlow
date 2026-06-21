@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "M Studio — Websites, automations & systems that run better";
+export const alt = "M Studio — custom websites, tools & plugins";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           }}
         >
           <div style={{ width: 40, height: 2, background: "#16a394" }} />
-          Maine-built · Linked · Anywhere
+          A small studio on the Maine coast
         </div>
 
         <div
@@ -42,14 +42,14 @@ export default function OpengraphImage() {
             display: "flex",
             flexDirection: "column",
             color: "#eef2f4",
-            fontSize: 80,
+            fontSize: 72,
             fontWeight: 700,
             lineHeight: 1.05,
             letterSpacing: -2,
           }}
         >
-          <span>Websites, automations & systems</span>
-          <span style={{ color: "#d9a441" }}>that make it run better.</span>
+          <span>Custom websites, tools &amp; plugins,</span>
+          <span style={{ color: "#d9a441" }}>built for the way you work.</span>
         </div>
 
         <div

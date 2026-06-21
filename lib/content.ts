@@ -335,7 +335,7 @@ export const marketModelLabels: Record<MarketItemModel, string> = {
 export const marketItems: MarketItem[] = [
   {
     id: "service-site",
-    name: "Linx Site",
+    name: "MLinx Site",
     model: "template",
     category: "Website",
     tagline: "A fast, custom marketing site for trades and service companies—yours to own.",
@@ -351,7 +351,7 @@ export const marketItems: MarketItem[] = [
   },
   {
     id: "booking-app",
-    name: "Linx Booking",
+    name: "MLinx Booking",
     model: "template",
     category: "Web app",
     tagline: "A client-facing booking flow with an owner calendar and confirmations.",
@@ -366,7 +366,7 @@ export const marketItems: MarketItem[] = [
   },
   {
     id: "quote-widget",
-    name: "Linx Quote",
+    name: "MLinx Quote",
     model: "embed",
     category: "Tool",
     tagline: "Drop the live quoting tool from this site straight into your own.",
@@ -381,7 +381,7 @@ export const marketItems: MarketItem[] = [
   },
   {
     id: "dashboard-starter",
-    name: "Linx Dashboard",
+    name: "MLinx Dashboard",
     model: "template",
     category: "Dashboard",
     tagline: "The command-center dashboard, set up around your numbers.",
@@ -396,7 +396,7 @@ export const marketItems: MarketItem[] = [
   },
   {
     id: "automation-pack",
-    name: "Linx Flows",
+    name: "MLinx Flows",
     model: "embed",
     category: "Automation",
     tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
@@ -411,7 +411,7 @@ export const marketItems: MarketItem[] = [
   },
   {
     id: "calc-kit",
-    name: "Linx Tools",
+    name: "MLinx Tools",
     model: "open",
     category: "Tool",
     tagline: "The free calculators on this site—use them, or take the source.",

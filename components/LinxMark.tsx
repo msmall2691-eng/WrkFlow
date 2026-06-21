@@ -1,5 +1,5 @@
 /*
-  LinxMark — a small two-link glyph for the Linx product line. Two interlocking
+  LinxMark — a small two-link glyph for the MLinx product line. Two interlocking
   links: one inherits the text color, one in the sea-glass signal accent. Subtle,
   scalable, distinct from the M Studio wordmark.
 */

@@ -8,7 +8,7 @@ const links = [
   { href: "/#services", label: "Services" },
   { href: "/#why", label: "Why M Studio" },
   { href: "/#work", label: "Work" },
-  { href: "/marketplace", label: "Linx" },
+  { href: "/marketplace", label: "MLinx" },
   { href: "/#approach", label: "Approach" },
 ];
 

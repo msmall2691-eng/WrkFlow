@@ -9,9 +9,9 @@ import LinxMark from "@/components/LinxMark";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "Linx — premade tools & sites",
+  title: "MLinx — premade tools & sites",
   description:
-    "Linx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
+    "MLinx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
 };
 
 export default function MarketplacePage() {
@@ -25,12 +25,12 @@ export default function MarketplacePage() {
             aria-hidden="true"
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
           />
-          <HeroWordmark text="LINX" />
+          <HeroWordmark text="MLINX" />
           <div className="relative z-10 mx-auto max-w-6xl px-6">
             <Reveal>
               <div className="mb-5 flex items-center gap-2.5 text-ink">
                 <LinxMark className="h-4 w-auto" />
-                <span className="font-mono text-sm font-semibold tracking-wide">Linx</span>
+                <span className="font-mono text-sm font-semibold tracking-wide">MLinx</span>
                 <span className="font-mono text-xs uppercase tracking-widest text-faint">
                   · the marketplace
                 </span>
@@ -38,12 +38,12 @@ export default function MarketplacePage() {
             </Reveal>
             <Reveal delay={60}>
               <h1 className="display-serif max-w-3xl text-3xl text-ink sm:text-4xl md:text-5xl">
-                Linx—premade tools and sites you can put to work today.
+                MLinx—premade tools and sites you can put to work today.
               </h1>
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
-                Linx is our line of ready-to-run builds—the things we make most
+                MLinx is our line of ready-to-run builds—the things we make most
                 often, packaged so you can{" "}
                 <span className="text-ink">buy and own</span> them outright,{" "}
                 <span className="text-ink">embed</span> a hosted widget in minutes,

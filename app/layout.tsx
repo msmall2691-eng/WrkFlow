@@ -40,7 +40,7 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "M Studio — Websites, tools & linked systems",
+    default: "M Studio — Custom websites, tools & plugins",
     template: "%s · M Studio",
   },
   description: DESCRIPTION,
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "M Studio",
-    title: "M Studio — Websites, tools & linked systems",
+    title: "M Studio — Custom websites, tools & plugins",
     description: DESCRIPTION,
     images: [
       {
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "M Studio — Websites, tools & linked systems",
+    title: "M Studio — Custom websites, tools & plugins",
     description: DESCRIPTION,
   },
   robots: {
