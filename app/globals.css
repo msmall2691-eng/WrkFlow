@@ -239,6 +239,15 @@ body {
 }
 .wave-x { animation: waveX 16s linear infinite; }
 
+/* Konami "lighthouse beam" — a slow sweep across the screen */
+@keyframes beamSweep {
+  0% { transform: translate(-50%, -50%) rotate(-40deg); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(400deg); opacity: 0; }
+}
+.beam { animation: beamSweep 4.5s ease-in-out forwards; }
+
 @media (prefers-reduced-motion: reduce) {
   .shimmer-text, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x {
     animation: none !important;

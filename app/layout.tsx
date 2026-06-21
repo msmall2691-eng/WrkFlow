@@ -4,6 +4,7 @@ import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
+import KonamiEgg from "@/components/KonamiEgg";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -103,6 +104,7 @@ export default function RootLayout({
         {children}
         <BackToTop />
         <ConsoleGreeting />
+        <KonamiEgg />
       </body>
     </html>
   );

@@ -59,6 +59,7 @@ export default function CommandPalette() {
         },
       },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
+      { id: "meg", label: "Meet Meg", hint: "☕", group: "Navigate", keywords: "founder meg about story who", run: go("founder") },
       {
         id: "contact",
         label: "Start a conversation",

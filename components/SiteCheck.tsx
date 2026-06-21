@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
@@ -181,19 +181,8 @@ export default function SiteCheck() {
           {/* Scores */}
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {scores.map(([label, value]) => (
-              <div key={label} className="rounded-xl border border-line bg-base p-4 text-center">
-                <p
-                  className="font-display text-4xl tracking-tight"
-                  style={{ color: scoreColor(value) }}
-                >
-                  {value ?? "—"}
-                </p>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-line">
-                  <div
-                    className="h-full rounded-full transition-all"
-                    style={{ width: `${value ?? 0}%`, background: scoreColor(value) }}
-                  />
-                </div>
+              <div key={`${label}-${result.finalUrl}-${isSample}`} className="flex flex-col items-center rounded-xl border border-line bg-base p-4 text-center">
+                <ScoreRing value={value} />
                 <p className="mt-2 text-xs text-muted">{label}</p>
               </div>
             ))}
@@ -232,6 +221,58 @@ export default function SiteCheck() {
           and SEO scores.
         </p>
       )}
+    </div>
+  );
+}
+
+function ScoreRing({ value }: { value: number | null }) {
+  const target = value ?? 0;
+  const [shown, setShown] = useState(0);
+  const r = 26;
+  const circ = 2 * Math.PI * r;
+  const color = scoreColor(value);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(target);
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now();
+    const dur = 900;
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      setShown(Math.round(target * e));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target]);
+
+  const offset = circ * (1 - shown / 100);
+  return (
+    <div className="relative h-[68px] w-[68px]">
+      <svg viewBox="0 0 64 64" className="h-full w-full -rotate-90">
+        <circle cx="32" cy="32" r={r} fill="none" stroke="var(--color-line)" strokeWidth="5" />
+        <circle
+          cx="32"
+          cy="32"
+          r={r}
+          fill="none"
+          stroke={color}
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeDasharray={circ}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <span
+        className="absolute inset-0 flex items-center justify-center font-display text-xl"
+        style={{ color }}
+      >
+        {value == null ? "—" : shown}
+      </span>
     </div>
   );
 }

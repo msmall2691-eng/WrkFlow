@@ -242,6 +242,8 @@ export type Deployment = {
   kind: string;
   /** One-line outcome shown under the title. */
   blurb: string;
+  /** A short result chip (verify/replace with your real numbers). */
+  outcome?: string;
   /** Real screenshot in /shots, when one genuinely matches. */
   shot?: string;
   /** Branded animated visual, used when a screenshot would mislead. */
@@ -257,36 +259,42 @@ export const deployments: Deployment[] = [
     title: "The Maine Cleaning Co.",
     kind: "Website & web app",
     blurb: "Custom marketing site with instant online quoting and booking, wired straight into the back office.",
+    outcome: "Quote → booking on the site",
     shot: "/shots/maineclean.png",
   },
   {
     title: "BrightBase",
     kind: "Operational dashboard",
     blurb: "An operations command center—jobs, revenue, occupancy, and crew in one live view.",
+    outcome: "Every channel, one screen",
     shot: "/shots/brightbase-dashboard.png",
   },
   {
     title: "Instant Estimate",
     kind: "Web app + AI intake",
     blurb: "A live quoting tool that reads requests, drafts the estimate, and queues a reply for approval.",
+    outcome: "Same-day quotes, drafted",
     shot: "/shots/instant-estimate.png",
   },
   {
     title: "Owned CRM & Database",
     kind: "Custom CRM & database",
     blurb: "A purpose-built customer and job database, owned outright and reachable from anywhere.",
+    outcome: "Spreadsheets retired",
     visual: "database",
   },
   {
     title: "Workflow Automation",
     kind: "Automation & integration",
     blurb: "Booking-to-follow-up flows that run themselves—confirmations, scheduling, and review requests.",
+    outcome: "~6 hrs/wk back",
     visual: "automation",
   },
   {
     title: "BrightBase Turnovers",
     kind: "Migration & scheduling",
     blurb: "Turnover scheduling moved off a rigid SaaS platform onto an owned system, history intact.",
+    outcome: "0 double-bookings",
     shot: "/shots/brightbase-turnovers.png",
   },
 ];

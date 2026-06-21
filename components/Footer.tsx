@@ -2,6 +2,7 @@ import Logo from "./Logo";
 import FooterWordmark from "./FooterWordmark";
 import CopyLink from "./CopyLink";
 import LinxMark from "./LinxMark";
+import SelfScore from "./SelfScore";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -26,6 +27,7 @@ export default function Footer() {
               them—and help connect the ones you already use—so less of your week is
               busywork. Built on the coast of Maine, working with clients anywhere.
             </p>
+            <SelfScore />
           </div>
 
           <div className="flex gap-10 sm:gap-16">

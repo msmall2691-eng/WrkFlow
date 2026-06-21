@@ -79,6 +79,12 @@ function DeploymentCard({ d, n }: { d: Deployment; n: number }) {
         </p>
         <h3 className="display-serif mt-2 text-lg text-ink">{d.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted">{d.blurb}</p>
+        {d.outcome && (
+          <span className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full border border-gold/30 bg-gold/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-gold">
+            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-gold" />
+            {d.outcome}
+          </span>
+        )}
         {/* Accent rule that draws in on hover */}
         <span className="mt-4 block h-px w-8 bg-signal/50 transition-all duration-500 group-hover:w-16" />
       </div>

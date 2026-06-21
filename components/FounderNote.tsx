@@ -9,7 +9,7 @@ import WaveDivider from "./WaveDivider";
 */
 export default function FounderNote() {
   return (
-    <section className="relative overflow-hidden border-y border-black/10 bg-[#c7d5dd] py-16 text-[#16384a] md:py-24">
+    <section id="founder" className="relative overflow-hidden border-y border-black/10 bg-[#c7d5dd] py-16 text-[#16384a] md:py-24">
       {/* Ocean waves lapping the light band — matched to the dark sections above/below */}
       <WaveDivider position="top" fill="#08131d" />
       <WaveDivider position="bottom" fill="#0b1722" />
