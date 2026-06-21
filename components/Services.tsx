@@ -26,23 +26,16 @@ export default function Services() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
-            <p className="marker mb-4">// What we build</p>
+            <p className="marker mb-4">// What we do</p>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              Eight ways we build and optimize how you work.
+              Eight things we build, connect, and optimize.
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 text-base leading-relaxed text-muted">
-              Each is a real discipline, with a real example. They compound—a clean
-              website needs clean data, clean data makes automation trustworthy, and
-              a dashboard makes all of it visible.
-            </p>
-          </Reveal>
-          <Reveal delay={160}>
             <p className="mt-4 text-sm text-faint">
-              Custom-built around you—or grab a head start from{" "}
+              Pick one to see it—or grab a head start from{" "}
               <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
                 Linx, our premade line →
               </a>
@@ -112,17 +105,9 @@ export default function Services() {
 function ServiceDetail({ service }: { service: Service }) {
   return (
     <div className="rounded-2xl border border-line bg-surface/60 p-6 md:p-8">
-      <p className="display-serif text-xl text-ink md:text-2xl">{service.tagline}</p>
-
-      <div className="mt-6 grid gap-6 lg:grid-cols-5">
-        <div className="space-y-5 lg:col-span-3">
-          <Facet label="What it is" body={service.what} />
-          <Facet label="The pain it solves" body={service.pain} />
-          <Facet label="What changes" body={service.outcome} signal />
-        </div>
-        <div className="lg:col-span-2">
-          <ExampleCard example={service.example} />
-        </div>
+      <div className="grid items-center gap-6 md:grid-cols-2">
+        <p className="display-serif text-xl text-ink md:text-2xl">{service.tagline}</p>
+        <ExampleCard example={service.example} />
       </div>
     </div>
   );
@@ -137,7 +122,7 @@ function ExampleCard({ example }: { example: ServiceExample }) {
             src={example.shot}
             alt={`${example.client} — preview`}
             fill
-            sizes="(min-width: 1024px) 280px, (min-width: 768px) 40vw, 100vw"
+            sizes="(min-width: 1024px) 320px, (min-width: 768px) 40vw, 100vw"
             className="object-cover object-top"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
@@ -147,43 +132,13 @@ function ExampleCard({ example }: { example: ServiceExample }) {
           <ProjectVisual type={example.visual} />
         </div>
       ) : (
-        <div className="flex aspect-[16/10] items-center justify-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_75%)] p-5 text-center">
-          <p className="display-serif text-base text-muted">{example.result}</p>
-        </div>
+        <div className="flex aspect-[16/10] items-center justify-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_75%)]" />
       )}
-      <figcaption className="border-t border-line p-4">
+      <figcaption className="border-t border-line px-4 py-2.5">
         <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
           Example · {example.client}
         </p>
-        <p className="mt-2 text-sm leading-relaxed text-ink">{example.built}</p>
-        <p className="mt-2.5 flex items-start gap-2 text-sm text-muted">
-          <span aria-hidden="true" className="mt-1.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-          <span>{example.result}</span>
-        </p>
       </figcaption>
     </figure>
-  );
-}
-
-function Facet({
-  label,
-  body,
-  signal = false,
-}: {
-  label: string;
-  body: string;
-  signal?: boolean;
-}) {
-  return (
-    <div>
-      <p
-        className={`mb-2 font-mono text-[11px] uppercase tracking-widest ${
-          signal ? "text-signal" : "text-faint"
-        }`}
-      >
-        {label}
-      </p>
-      <p className="text-sm leading-relaxed text-muted">{body}</p>
-    </div>
   );
 }
