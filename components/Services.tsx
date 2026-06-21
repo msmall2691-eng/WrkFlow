@@ -43,7 +43,10 @@ export default function Services() {
           {MENU.map((m, i) => (
             <Reveal key={m.title} delay={i * 60}>
               <div className="group h-full rounded-xl border border-line bg-surface/60 p-6 transition-colors hover:border-signal/50">
-                <h3 className="display-serif text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
+                <span className="font-mono text-xs text-faint transition-colors group-hover:text-signal">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="display-serif mt-3 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
                   {m.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{m.line}</p>
