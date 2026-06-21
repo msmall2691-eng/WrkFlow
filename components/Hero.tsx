@@ -34,7 +34,7 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
           </span>
-          A small studio on the coast of Maine
+          Independent web &amp; software studio
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">

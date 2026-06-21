@@ -34,7 +34,7 @@ export default function OpengraphImage() {
           }}
         >
           <div style={{ width: 40, height: 2, background: "#16a394" }} />
-          A small studio on the Maine coast
+          Independent web &amp; software studio
         </div>
 
         <div
