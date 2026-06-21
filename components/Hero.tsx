@@ -34,7 +34,7 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
           </span>
-          Maine-built &middot; owner-run &middot; no fluff
+          Maine &amp; New England &middot; working anywhere
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
@@ -43,10 +43,8 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Custom websites, web apps, and the wiring that makes the tools you
-          already pay for actually work together. One small fix or a whole
-          operation, it gets built to fit you, not crammed into a template.
-          Made in Maine, working with people anywhere.
+          Websites, web apps, and the tools that tie everything together. Local
+          to Maine and New England, always within reach wherever you are.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
