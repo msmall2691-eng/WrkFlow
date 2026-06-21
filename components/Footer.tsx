@@ -1,6 +1,7 @@
 import Logo from "./Logo";
 import FooterWordmark from "./FooterWordmark";
 import CopyLink from "./CopyLink";
+import LinxMark from "./LinxMark";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -32,7 +33,8 @@ export default function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="/marketplace" className="text-muted transition-colors hover:text-ink">
+                  <a href="/marketplace" className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink">
+                    <LinxMark className="h-2.5 w-auto" />
                     Linx marketplace
                   </a>
                 </li>

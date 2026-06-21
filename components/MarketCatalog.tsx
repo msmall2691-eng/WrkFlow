@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
+import LinxMark from "./LinxMark";
 import {
   marketItems,
   marketModelLabels,
@@ -87,7 +88,10 @@ function ProductCard({
         <span className="font-mono text-[10px] uppercase tracking-widest text-faint">
           {item.category}
         </span>
-        <h3 className="display-serif mt-2 text-xl text-ink">{item.name}</h3>
+        <h3 className="display-serif mt-2 flex items-center gap-2 text-xl text-ink">
+          <LinxMark className="h-3 w-auto shrink-0" />
+          {item.name}
+        </h3>
         <p className="mt-2 text-sm leading-relaxed text-muted">{item.tagline}</p>
 
         <ul className="mt-5 space-y-2 border-t border-line pt-5">
