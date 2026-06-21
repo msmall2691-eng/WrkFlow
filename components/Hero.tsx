@@ -12,8 +12,10 @@ export default function Hero() {
       {/* Aurora Swell — calm ocean backdrop (dialed back so the wordmark leads) */}
       <AuroraSwell intensity={0.6} speed={0.7} />
 
-      {/* Hidden brand wordmark — lights up where the cursor moves */}
-      <HeroWordmark text="M STUDIO" />
+      {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
+      <div className="absolute inset-y-0 right-0 hidden w-[48%] overflow-hidden lg:block">
+        <HeroWordmark text="M STUDIO" size="text-[7.5vw]" />
+      </div>
 
       {/* Diagonal scrim — keeps the bright swell on the text-free side */}
       <div
@@ -35,7 +37,7 @@ export default function Hero() {
           Built on the Maine coast · linked anywhere
         </p>
 
-        <h1 className="display max-w-3xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+        <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Custom websites, tools, and plugins, built for{" "}
           <span className="shimmer-text">the way you work.</span>
         </h1>

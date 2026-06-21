@@ -34,12 +34,12 @@ export default function Shift() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Designing the site, building the tools and web apps, automating the
-              busywork, and tuning the systems so your day gets easier instead of
-              busier—that&apos;s the work we love. For years that meant renting
-              rigid software or hiring a dev team you couldn&apos;t justify—now a small
-              studio on the coast of Maine can build exactly what you dream up, and
-              hand you the keys. We know it works; we built it for our own company first.
+              Designing the site, building the tools, automating the busywork,
+              tuning the systems—that&apos;s the work we love, and it makes your day
+              easier, not busier. It used to mean renting rigid software or hiring a
+              dev team you couldn&apos;t justify. Now a small studio on the Maine
+              coast builds exactly what you need—and hands you the keys. We know it
+              works; we built ours first.
             </p>
           </Reveal>
         </div>

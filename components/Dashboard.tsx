@@ -179,9 +179,9 @@ export default function Dashboard() {
           <div className="md:col-span-4">
             <Reveal delay={80}>
               <p className="text-base leading-relaxed text-white/70">
-                A real operations view for short-term rentals: Airbnb, VRBO, and
-                direct bookings, calendars, and payouts—pulled into one live
-                dashboard. Switch a property or range and it all updates.
+                A live ops view for short-term rentals—bookings, calendars, and
+                payouts from Airbnb, VRBO, and direct, in one place. Switch a
+                property or range; it all updates.
               </p>
             </Reveal>
           </div>

@@ -217,22 +217,22 @@ export const approachSteps: ApproachStep[] = [
   {
     index: "01",
     title: "Discovery",
-    body: "We map how your business actually runs today—the real process, not the org chart. Where the time goes, where the data lives, where it breaks.",
+    body: "We map how you actually work—where the time goes, where the data lives, where it breaks. The real process, not the org chart.",
   },
   {
     index: "02",
     title: "Design",
-    body: "We shape the system around that reality. Schema, flows, and interfaces drafted for your work—reviewed with you before a line of it is built.",
+    body: "We shape the system around that: schema, flows, and screens drafted for your work—reviewed with you before we build.",
   },
   {
     index: "03",
     title: "Build",
-    body: "We build it for real, in working increments you can see and react to. Draft-first throughout, so you steer the direction the whole way.",
+    body: "We build in working increments you can see and react to. Draft-first the whole way, so you steer.",
   },
   {
     index: "04",
     title: "Iterate",
-    body: "We refine against real use, hand over a system you fully own, and stay available to extend it. No lock-in, no dependency by design.",
+    body: "We refine against real use, hand you a system you own, and stay on to extend it. No lock-in by design.",
   },
 ];
 

@@ -7,7 +7,13 @@ import { useEffect, useRef } from "react";
   "spotlight" (wipe-the-fog-off-glass). Follows the pointer on hover; gently
   auto-sweeps when idle / on touch so mobile sees it too. Decorative.
 */
-export default function HeroWordmark({ text = "M STUDIO" }: { text?: string }) {
+export default function HeroWordmark({
+  text = "M STUDIO",
+  size = "text-[13vw]",
+}: {
+  text?: string;
+  size?: string;
+}) {
   const wrap = useRef<HTMLDivElement>(null);
   const reveal = useRef<HTMLDivElement>(null);
 
@@ -63,7 +69,7 @@ export default function HeroWordmark({ text = "M STUDIO" }: { text?: string }) {
     >
       {/* Faint base — the word always sits in the fog */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="whitespace-nowrap font-display text-[13vw] font-bold leading-none tracking-tighter text-white/[0.022] [-webkit-text-stroke:1px_rgba(255,255,255,0.03)]">
+        <span className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter text-white/[0.04] [-webkit-text-stroke:1px_rgba(255,255,255,0.05)]`}>
           {text}
         </span>
       </div>
@@ -80,7 +86,7 @@ export default function HeroWordmark({ text = "M STUDIO" }: { text?: string }) {
         }}
       >
         <span
-          className="whitespace-nowrap font-display text-[13vw] font-bold leading-none tracking-tighter text-transparent"
+          className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter text-transparent`}
           style={{
             backgroundImage:
               "linear-gradient(120deg, var(--color-signal), #7fd8cd 50%, var(--color-signal))",
