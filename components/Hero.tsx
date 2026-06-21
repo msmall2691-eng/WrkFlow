@@ -43,8 +43,7 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Websites, web apps, and custom tools. Based in New England, working
-          with people anywhere.
+          Custom websites, apps, and tools. Working anywhere.
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
