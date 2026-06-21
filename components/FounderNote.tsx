@@ -10,9 +10,9 @@ import WaveDivider from "./WaveDivider";
 export default function FounderNote() {
   return (
     <section className="relative overflow-hidden border-y border-black/10 bg-[#c7d5dd] py-20 text-[#16384a] md:py-28">
-      {/* Ocean waves lapping the light band, top (from Approach) and bottom (into Contact) */}
-      <WaveDivider position="top" fill="#0b1722" />
-      <WaveDivider position="bottom" fill="#08131d" />
+      {/* Ocean waves lapping the light band — matched to the dark sections above/below */}
+      <WaveDivider position="top" fill="#08131d" />
+      <WaveDivider position="bottom" fill="#0b1722" />
       <div className="relative mx-auto max-w-5xl px-6">
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
           {/* Photo — the focal element */}
