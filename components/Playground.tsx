@@ -50,7 +50,7 @@ const TOOLS: {
   {
     id: "qr",
     label: "QR code",
-    blurb: "Type any link → a real QR code you can download and print.",
+    blurb: "Any link—or your WiFi—into a real QR code to download & print.",
     nudge: { line: "Point that QR at a landing page that converts?", product: "Linx Site" },
   },
   {
