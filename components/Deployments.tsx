@@ -10,7 +10,7 @@ export default function Deployments() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
-            <p className="marker mb-4">// Selected work</p>
+            <p className="marker mb-4">// Shipped &amp; live</p>
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">

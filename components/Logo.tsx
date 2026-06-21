@@ -18,26 +18,33 @@ export default function Logo({
   const tagColor = tone === "light" ? "text-white/55" : "text-faint";
   return (
     <span className={`inline-flex items-baseline gap-2.5 ${wordColor} ${className}`}>
+      {/* Two interlocking links — the "linx" undertone in the M Studio mark */}
       <svg
-        width="20"
-        height="20"
-        viewBox="0 0 22 22"
+        width="27"
+        height="16"
+        viewBox="0 0 32 18"
         fill="none"
         aria-hidden="true"
-        className="shrink-0 translate-y-[3px]"
+        className="shrink-0 translate-y-[2px]"
       >
-        <path
-          d="M3 4.5h6.5a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3H19"
-          stroke="var(--color-signal)"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-        <path
-          d="M3 11.5h6.5a3 3 0 0 1 3 3v0a3 3 0 0 0 3 3H19"
+        <rect
+          x="1.4"
+          y="3.4"
+          width="15"
+          height="11.2"
+          rx="5.6"
           stroke="currentColor"
           strokeOpacity="0.5"
-          strokeWidth="1.6"
-          strokeLinecap="round"
+          strokeWidth="2"
+        />
+        <rect
+          x="15.6"
+          y="3.4"
+          width="15"
+          height="11.2"
+          rx="5.6"
+          stroke="var(--color-signal)"
+          strokeWidth="2"
         />
       </svg>
       <span className={`font-mono text-[16px] font-semibold tracking-[0.04em] ${wordColor}`}>
