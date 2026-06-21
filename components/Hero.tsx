@@ -37,7 +37,7 @@ export default function Hero() {
 
         <h1 className="display max-w-3xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Custom websites, tools, and plugins, built for{" "}
-          <span className="shimmer-text">whatever you&apos;re making.</span>
+          <span className="shimmer-text">the way you work.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
