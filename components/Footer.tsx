@@ -20,7 +20,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex gap-16">
+          <div className="flex gap-10 sm:gap-16">
             <div>
               <p className="font-mono text-[11px] uppercase tracking-widest text-faint">
                 Studio

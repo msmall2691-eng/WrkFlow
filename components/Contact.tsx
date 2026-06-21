@@ -64,7 +64,7 @@ export default function Contact() {
       />
 
       <div className="relative z-10 mx-auto max-w-6xl px-6">
-        <div className="grid gap-14 md:grid-cols-12">
+        <div className="grid gap-10 md:grid-cols-12 md:gap-14">
           <div className="md:col-span-5">
             <Reveal>
               <p className="marker mb-4">// Start a conversation</p>

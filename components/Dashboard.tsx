@@ -410,7 +410,7 @@ function DarkSeg({ value, options, onChange }: { value: string; options: [string
           key={val}
           type="button"
           onClick={() => onChange(val)}
-          className={`rounded-full px-3.5 py-2 text-xs font-medium transition-colors ${
+          className={`rounded-full px-3.5 py-2.5 text-xs font-medium transition-colors ${
             value === val ? "bg-signal text-white" : "text-white/60 hover:text-white"
           }`}
         >

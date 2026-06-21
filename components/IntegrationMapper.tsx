@@ -111,7 +111,7 @@ export default function IntegrationMapper() {
                 type="button"
                 onClick={() => toggle(t.id)}
                 aria-pressed={on}
-                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm transition-colors ${
+                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2.5 text-sm transition-colors ${
                   on
                     ? "border-signal/50 bg-signal/15 text-ink"
                     : "border-line bg-base text-muted hover:text-ink"
