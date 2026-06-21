@@ -6,8 +6,16 @@ import Tilt from "./Tilt";
 
 export default function Deployments() {
   return (
-    <section id="live" className="relative border-t border-line py-16 md:py-24">
-      <div className="mx-auto max-w-6xl px-6">
+    <section id="live" className="relative overflow-hidden border-t border-line py-16 md:py-24">
+      <div
+        aria-hidden="true"
+        className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
+      />
+      <div
+        aria-hidden="true"
+        className="floaty pointer-events-none absolute -left-24 bottom-8 h-72 w-72 rounded-full bg-gold/[0.05] blur-[130px]"
+      />
+      <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
             <p className="marker mb-4">// Shipped &amp; live</p>
