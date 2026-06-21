@@ -88,10 +88,11 @@ export async function POST(request: Request) {
   // --- Email notification via Gmail (if configured) ---
   // Sends through the studio's Gmail account over SMTP using a Google
   // App Password (requires 2-Step Verification on the account). The
-  // notification lands in CONTACT_NOTIFY_TO, defaulting to the Gmail inbox.
+  // notification lands in CONTACT_TO (or CONTACT_NOTIFY_TO), defaulting to
+  // the Gmail inbox.
   const gmailUser = process.env.GMAIL_USER;
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
-  const notifyTo = process.env.CONTACT_NOTIFY_TO ?? gmailUser;
+  const notifyTo = process.env.CONTACT_TO ?? process.env.CONTACT_NOTIFY_TO ?? gmailUser;
   if (gmailUser && gmailPass && notifyTo) {
     try {
       const transport = nodemailer.createTransport({

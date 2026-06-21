@@ -27,6 +27,12 @@ export default function Reveal({
     const node = ref.current;
     if (!node) return;
 
+    // Robustness: if IO is unavailable, never leave content hidden.
+    if (typeof IntersectionObserver === "undefined") {
+      setVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
