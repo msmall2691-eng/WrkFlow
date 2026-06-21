@@ -15,7 +15,7 @@ export const whoIsItFor =
   "For small businesses and independent makers alike: service companies, trades, property managers, short-term-rental operators, founders, and anyone who needs a website, a tool, or a plugin that actually works. Bring a whole business to streamline or a single project to build—both are welcome.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I never set out to build software—I just ran ${provingGroundCompany} on tools that never quite fit, so I started stitching together our own. Somewhere in the back ends, data models, and integrations, I fell in love with the craft. I'm now studying Business Analytics & AI at the University of Southern Maine (USM), minoring in Computer Science, and I get to spend my days building these tools from scratch for other owners. Still learning, every day.`;
+export const founderNote = `I started building software because the tools I used to run ${provingGroundCompany} kept getting in my way, so I made my own. Turns out I really like the unglamorous parts: backends, data models, wiring different tools together so they actually talk to each other. I'm studying Business Analytics & AI at USM and minoring in Computer Science, and these days I build these systems from scratch for other small business owners. I'm still figuring a lot of it out, honestly, but that's the part I like.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
