@@ -44,16 +44,14 @@ export default function LivePreview() {
     if (!load) return;
     const el = railRef.current;
     if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let dir = 1;
     let raf = 0;
     const step = () => {
       raf = requestAnimationFrame(step);
       if (pausedRef.current) return;
       const max = el.scrollWidth - el.clientWidth;
       if (max <= 2) return;
-      el.scrollLeft += dir * 0.5;
-      if (el.scrollLeft >= max - 1) dir = -1;
-      else if (el.scrollLeft <= 0) dir = 1;
+      // Continuous, gentle one-way drift — loops at the end (no bouncing).
+      el.scrollLeft = el.scrollLeft >= max - 1 ? 0 : el.scrollLeft + 0.4;
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);

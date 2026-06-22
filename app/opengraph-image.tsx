@@ -83,8 +83,8 @@ export default async function OpengraphImage() {
         {/* Foreground — the hero, faithfully */}
         <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", gap: 24, padding: 70, width: "66%" }}>
           {/* eyebrow */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, color: "#6fdccf", fontSize: 20, letterSpacing: 4, textTransform: "uppercase", fontFamily: "JetBrains Mono" }}>
-            <div style={{ width: 10, height: 10, borderRadius: 9999, background: "#16a394", display: "flex" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 12, color: "#9db8f5", fontSize: 20, letterSpacing: 4, textTransform: "uppercase", fontFamily: "JetBrains Mono" }}>
+            <div style={{ width: 10, height: 10, borderRadius: 9999, background: "#2f6df0", display: "flex" }} />
             Available for new projects
           </div>
 
@@ -102,19 +102,19 @@ export default async function OpengraphImage() {
           </div>
 
           {/* buttons */}
-          <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 4 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "#16a394", color: "#ffffff", fontSize: 20, fontWeight: 700, padding: "12px 24px", borderRadius: 9999 }}>
-              Start a conversation →
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", background: "#2f6df0", color: "#ffffff", fontSize: 19, fontWeight: 600, padding: "11px 22px", borderRadius: 9999 }}>
+              Start a conversation&nbsp;→
             </div>
-            <div style={{ display: "flex", alignItems: "center", color: "#eef2f4", fontSize: 20, fontWeight: 500, padding: "12px 24px", borderRadius: 9999, border: "1px solid rgba(238,242,244,0.28)" }}>
+            <div style={{ display: "flex", alignItems: "center", color: "#dbe4ee", fontSize: 19, fontWeight: 500, padding: "11px 22px", borderRadius: 9999, border: "1px solid rgba(219,228,238,0.25)" }}>
               See the work
             </div>
           </div>
 
           {/* live chip */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 6, padding: "8px 14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(8,19,29,0.55)", fontFamily: "JetBrains Mono", fontSize: 16, color: "#aebecb" }}>
-            <div style={{ width: 8, height: 8, borderRadius: 9999, background: "#16a394", display: "flex" }} />
-            <span style={{ color: "#6fdccf" }}>LIVE</span>
+            <div style={{ width: 8, height: 8, borderRadius: 9999, background: "#2f6df0", display: "flex" }} />
+            <span style={{ color: "#9db8f5" }}>LIVE</span>
             <span>Portland, ME · weather · tide · Maine daylight</span>
           </div>
         </div>

@@ -12,8 +12,19 @@ const ITEMS: { k: string; v: string }[] = [
   { k: "Glow", v: "the hero glow tracks the weather — brighter on clear days, moodier when it's grey" },
   { k: "Waves", v: "the waves by the founder note speed up as the tide comes in, slow as it goes out" },
   { k: "Sky", v: "golden hour and the moon phase show up live in the line above" },
-  { k: "Theme", v: "set the accent to follow Maine's daylight — dawn → midday → dusk (Theme picker, bottom-right)" },
+  { k: "Theme", v: "recolor the whole site below — or set it to follow Maine's daylight (dawn → midday → dusk)" },
 ];
+
+// Tiny inline accent "remote" — drives the AccentSwitcher via an event.
+const SWATCHES: { label: string; color: string; detail: number | "auto" }[] = [
+  { label: "Harbor", color: "#2f6df0", detail: 1 },
+  { label: "Rose", color: "#f43f5e", detail: 5 },
+  { label: "Sea Glass", color: "#16a394", detail: 0 },
+  { label: "Brass", color: "#d9a441", detail: 2 },
+];
+
+const setAccent = (detail: number | "auto") =>
+  window.dispatchEvent(new CustomEvent("accent:set", { detail }));
 
 export default function LiveReadout() {
   const [open, setOpen] = useState(false);
@@ -46,6 +57,31 @@ export default function LiveReadout() {
           <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
+
+      {/* Inline theme remote — try it, watch the whole site recolor */}
+      <div className="mt-2.5 flex flex-wrap items-center gap-2">
+        <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">Theme</span>
+        {SWATCHES.map((s) => (
+          <button
+            key={s.label}
+            type="button"
+            onClick={() => setAccent(s.detail)}
+            title={s.label}
+            aria-label={`Set accent: ${s.label}`}
+            className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125"
+            style={{ backgroundColor: s.color }}
+          />
+        ))}
+        <button
+          type="button"
+          onClick={() => setAccent("auto")}
+          title="Maine daylight (auto)"
+          aria-label="Set accent: Maine daylight (auto)"
+          className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125"
+          style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#16a394 55%,#6f7fd6)" }}
+        />
+        <span className="font-mono text-[9px] text-white/30">← try it</span>
+      </div>
 
       <div className={`grid transition-all duration-500 ease-out ${open ? "mt-3 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
         <div className="overflow-hidden">

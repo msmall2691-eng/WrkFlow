@@ -131,6 +131,18 @@ export default function AccentSwitcher() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Hero "remote" — inline swatches set the accent here (single source of truth).
+  useEffect(() => {
+    const onSet = (e: Event) => {
+      const d = (e as CustomEvent).detail;
+      if (d === "auto") enableAuto();
+      else if (typeof d === "number" && ACCENTS[d]) selectManual(d);
+    };
+    window.addEventListener("accent:set", onSet);
+    return () => window.removeEventListener("accent:set", onSet);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const swatch = auto ? phase : ACCENTS[active] ?? PHASES.day;
 
   return (
