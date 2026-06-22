@@ -15,7 +15,7 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I'm Megan, and I started M Studio. After years of building and reshaping my own software to run ${provingGroundCompany}, I fell for making tools that fit exactly how you work. I've since gone back to school for a Business Analytics & AI degree at USM, and now I design and build websites, apps, and tools for people who are tired of cookie-cutter, plug-in sites you can't really change or connect to anything. Whatever you dream up, we can build it, integrate it, and turn it into real workflows—instant quotes, marketing, automations, AI that handles the busywork. The creative part is my favorite: dreaming up something one-of-a-kind and building it with you, right here on the Maine coast.`;
+export const founderNote = `Off-the-shelf software never fit how I needed to work — so I built my own, to run ${provingGroundCompany}. That's how M Studio started. I'm finishing a Business Analytics & AI degree at the University of Southern Maine, with a minor in Computer Science, and now I build websites, web apps, and workflows for people who are done with cookie-cutter, plug-in sites. Whatever you dream up, we can build it, connect it, automate it, and make it actually work the way you do. What I love is the creative part — dreaming something up, connecting all the pieces, and making it real, right here on the Maine coast.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
