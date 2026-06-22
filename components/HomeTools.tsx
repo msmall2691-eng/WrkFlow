@@ -4,19 +4,19 @@ import { useState } from "react";
 import Reveal from "./Reveal";
 import QuoteCalc from "./QuoteCalc";
 import SignatureMaker from "./SignatureMaker";
-import SiteCheck from "./SiteCheck";
+import QRMaker from "./QRCode";
 
 /*
   HomeTools — a small, hands-on beat. A curated handful of the free M Linx
   tools, live and inline, so a visitor gets to actually use the kind of
   software M Studio builds. The full lineup lives on /marketplace.
 */
-type Tool = "quote" | "sig" | "sitecheck";
+type Tool = "quote" | "sig" | "qr";
 
 const TABS: { id: Tool; label: string; blurb: string }[] = [
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range you can send a customer." },
   { id: "sig", label: "Email signature", blurb: "Your details → a styled signature, ready to paste into Gmail or Outlook." },
-  { id: "sitecheck", label: "Website check", blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report." },
+  { id: "qr", label: "QR code", blurb: "Any link — or your WiFi — into a real QR code to download & print." },
 ];
 
 export default function HomeTools() {
@@ -24,7 +24,7 @@ export default function HomeTools() {
   const active = TABS.find((t) => t.id === tool)!;
 
   return (
-    <section id="tools" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-14 md:py-20">
+    <section id="tools" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-12 md:py-16">
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
@@ -66,10 +66,10 @@ export default function HomeTools() {
           <p className="mt-3 font-mono text-xs text-faint">{active.blurb}</p>
         </Reveal>
 
-        <div className="mt-8">
+        <div className="mt-6">
           {tool === "quote" && <QuoteCalc />}
           {tool === "sig" && <SignatureMaker />}
-          {tool === "sitecheck" && <SiteCheck />}
+          {tool === "qr" && <QRMaker />}
         </div>
       </div>
     </section>

@@ -18,14 +18,14 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → founder → services → work → approach → pricing → free tools → contact */}
+        {/* Hero → founder → services → free tools → work → approach → pricing → contact */}
         <Hero />
         <FounderNote />
         <Services />
+        <HomeTools />
         <Deployments />
         <Approach />
         <Pricing />
-        <HomeTools />
         <Contact />
       </main>
       <Footer />

@@ -2,17 +2,19 @@ import Image from "next/image";
 import { work, type WorkItem } from "@/lib/content";
 import Reveal from "./Reveal";
 import Tilt from "./Tilt";
+import LivePreview from "./LivePreview";
 
 const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 /*
-  Deployments — "Work". Browser-framed previews of the linked sites/products,
-  then the private internal systems as small tiles. Static screenshots (kept
-  current) — reliable, since several of these sites forbid being embedded live.
+  Deployments — "Work". A featured LIVE preview of the sites that allow framing
+  (Maine Cleaning, Autopilot), then static browser-framed cards for the rest
+  (the Remote Admin forbids embedding) and the private internal systems.
 */
 export default function Deployments() {
-  const linked = work.filter((w) => !!w.url); // live sites + product
-  const privates = work.filter((w) => w.tier === "private");
+  const hasLive = work.some((w) => w.url && w.live);
+  // Static cards: linked sites that can't go live + private systems.
+  const staticCards = work.filter((w) => (w.url && !w.live) || w.tier === "private");
 
   return (
     <section id="work" className="relative overflow-hidden border-t border-line py-14 md:py-20">
@@ -20,45 +22,42 @@ export default function Deployments() {
         aria-hidden="true"
         className="floaty pointer-events-none absolute -left-24 bottom-8 h-72 w-72 rounded-full bg-gold/[0.05] blur-[130px]"
       />
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="mb-10 max-w-3xl">
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Built for our own company first.
+              Built and shipped.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Live client sites, a SaaS platform, and the systems running behind
-              them.
+              Client sites, our own company&apos;s, a product platform, and the
+              internal systems behind them — a couple embedded live below.
             </p>
           </Reveal>
         </div>
 
-        {/* Linked work — browser-framed, clickable */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {linked.map((w, i) => (
-            <Reveal key={w.title} delay={i * 70}>
-              <Tilt>
-                <BigCard w={w} />
-              </Tilt>
-            </Reveal>
-          ))}
-        </div>
+        {/* Featured live preview */}
+        {hasLive && (
+          <Reveal>
+            <LivePreview />
+          </Reveal>
+        )}
 
-        {/* Private internal systems */}
-        {privates.length > 0 && (
-          <div className="mt-12">
-            <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-faint">
-              Behind the scenes — internal ops software
-            </p>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {privates.map((w, i) => (
-                <Reveal key={w.title} delay={i * 60}>
+        {/* The rest — static browser-framed cards + private tiles */}
+        {staticCards.length > 0 && (
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {staticCards.map((w, i) => (
+              <Reveal key={w.title} delay={i * 60}>
+                {w.url ? (
+                  <Tilt>
+                    <BigCard w={w} />
+                  </Tilt>
+                ) : (
                   <PrivateTile w={w} />
-                </Reveal>
-              ))}
-            </div>
+                )}
+              </Reveal>
+            ))}
           </div>
         )}
       </div>

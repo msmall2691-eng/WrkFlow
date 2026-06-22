@@ -15,7 +15,7 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I'm Megan, and I'm the owner of M Studio. I started it after years of building and reshaping my own software to run ${provingGroundCompany}—that's where I fell for making tools that fit exactly how you work. I've since gone back to school for a Business Analytics & AI degree at USM, and now I design and build websites, apps, and tools for people who are tired of cookie-cutter, plug-in sites you can't really change or connect to anything. Whatever you dream up, we can build it, integrate it, and turn it into real workflows—instant quotes, marketing, automations, AI that handles the busywork. The creative part is my favorite: dreaming up something one-of-a-kind and building it with you, right here on the Maine coast.`;
+export const founderNote = `I'm Megan, and I started M Studio. After years of building and reshaping my own software to run ${provingGroundCompany}, I fell for making tools that fit exactly how you work. I've since gone back to school for a Business Analytics & AI degree at USM, and now I design and build websites, apps, and tools for people who are tired of cookie-cutter, plug-in sites you can't really change or connect to anything. Whatever you dream up, we can build it, integrate it, and turn it into real workflows—instant quotes, marketing, automations, AI that handles the busywork. The creative part is my favorite: dreaming up something one-of-a-kind and building it with you, right here on the Maine coast.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
@@ -248,6 +248,8 @@ export type WorkItem = {
   stack?: string[];
   /** Live URL — Tier 1 & 2 only; Tier 3 has no link. */
   url?: string;
+  /** True if the site allows embedding (show a live iframe preview, not a shot). */
+  live?: boolean;
   shot: string; // /shots/*.png
   /** Set for outside-client work so it gets a distinct accent. */
   client?: boolean;
@@ -279,6 +281,7 @@ export const work: WorkItem[] = [
     blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
     stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
     url: "https://maineclean.co",
+    live: true,
     shot: "/shots/maineclean.png",
     // TODO: real metric — e.g. metric: "0 double-bookings since launch" or "~N hrs/week back" (confirm with Meg)
   },
@@ -290,6 +293,7 @@ export const work: WorkItem[] = [
     blurb: "A complete CRM + field-service platform—scheduling, invoicing, and STR turnover automation—designed and built from scratch.",
     stack: ["Next.js", "Supabase", "Vercel"],
     url: "https://autopilot-sooty.vercel.app",
+    live: true,
     shot: "/shots/autopilot.png",
   },
   // Tier 3 — private internal/client systems (no links)

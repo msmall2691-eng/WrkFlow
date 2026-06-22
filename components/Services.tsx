@@ -38,7 +38,16 @@ const MENU: Item[] = [
     ),
   },
   {
-    title: "Connecting your systems",
+    title: "Automation & AI agents",
+    line: "Automations and AI agents that handle the busywork — intake, follow-ups, drafting, and triage — with you in control.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
+        <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "Integrations",
     line: "Make the tools you already use talk to each other, so the data moves itself and nothing gets double-entered.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
@@ -76,7 +85,7 @@ export default function Services() {
           </Reveal>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           {MENU.map((m, i) => (
             <Reveal key={m.title} delay={i * 60}>
               <div className="group h-full rounded-xl border border-line bg-surface/60 p-6 transition-colors hover:border-signal/50">
