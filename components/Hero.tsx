@@ -34,17 +34,18 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
           </span>
-          Now taking on new projects
+          Available for new projects
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Let&apos;s create something{" "}
-          <span className="shimmer-text">built to fit.</span>
+          Let&apos;s build what your work{" "}
+          <span className="shimmer-text">runs on.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
           From a single website to the tools and workflows that run your whole
           operation. Custom-built for any business or project, and yours to keep.
+          Made on the Maine coast.
         </p>
 
 
