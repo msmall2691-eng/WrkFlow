@@ -28,7 +28,7 @@ export default function TideLevel() {
     };
   }, []);
 
-  const h = 14 + level * 20; // 14% (low) → 34% (high)
+  const h = 10 + level * 15; // 10% (low) → 25% (high) — stays clear of the text
 
   return (
     <div

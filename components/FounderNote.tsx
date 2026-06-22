@@ -19,7 +19,7 @@ const rest = founderNote.slice(splitAt).trim();
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative overflow-hidden border-t border-line bg-[#112a3a] py-16 md:py-24">
+    <section id="founder" className="relative overflow-hidden border-t border-line bg-[#112a3a] pt-16 pb-28 md:pt-24 md:pb-36">
       {/* Tide-driven accent wave at the top (symmetry with the water below) */}
       <TideWave />
       {/* Live "harbor water" — fills to the real Portland tide level */}
