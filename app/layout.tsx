@@ -40,8 +40,8 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "M Studio — Custom websites, tools & plugins",
-    template: "%s · M Studio",
+    default: "M Studio | MLinx Studio — Custom websites, tools & plugins",
+    template: "%s · M Studio | MLinx Studio",
   },
   description: DESCRIPTION,
   keywords: [
@@ -58,21 +58,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "M Studio",
-    title: "M Studio — Custom websites, tools & plugins",
+    siteName: "M Studio | MLinx Studio",
+    title: "M Studio | MLinx Studio — Custom websites, tools & plugins",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "M Studio",
+        alt: "M Studio | MLinx Studio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "M Studio — Custom websites, tools & plugins",
+    title: "M Studio | MLinx Studio — Custom websites, tools & plugins",
     description: DESCRIPTION,
   },
   robots: {
