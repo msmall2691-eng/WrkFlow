@@ -56,8 +56,8 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Plus the dashboards, automations, and AI quietly running everything
-          behind the scenes.
+          Built by someone who ran the business first — then built the software
+          it needed.
         </p>
 
 
