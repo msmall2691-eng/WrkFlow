@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Chakra_Petch, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
 import KonamiEgg from "@/components/KonamiEgg";
 
-const sora = Sora({
+const chakraPetch = Chakra_Petch({
   subsets: ["latin"],
-  variable: "--font-sora",
+  weight: ["500", "600", "700"],
+  variable: "--font-chakra",
   display: "swap",
 });
 
@@ -165,7 +166,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
+      className={`${chakraPetch.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
         <script

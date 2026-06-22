@@ -55,7 +55,7 @@ export default function Hero() {
           <span className="shimmer-text">custom-made for your projects.</span>
         </h1>
 
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+        <p className="metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
           Built by someone who ran the business first — then built the software
           it needed.
         </p>

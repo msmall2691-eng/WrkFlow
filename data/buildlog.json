@@ -1,5 +1,11 @@
 [
   {
+    "sha": "818c040",
+    "subject": "Hero sub: lead with the edge (operator who ran the business first)",
+    "date": "2026-06-22T14:55:22+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "4df3792",
     "subject": "Hero sub: replace the dry service list with a 'behind the scenes' line",
     "date": "2026-06-22T14:50:39+00:00",
@@ -39,12 +45,6 @@
     "sha": "906a8ae",
     "subject": "Social card refresh, live work previews, plainer hero",
     "date": "2026-06-22T14:10:42+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "bdbc35a",
-    "subject": "Place-based signatures: Maine daylight theming, live readout, /playground",
-    "date": "2026-06-22T14:00:22+00:00",
     "label": "Jun 22"
   }
 ]
