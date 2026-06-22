@@ -96,21 +96,33 @@ export async function GET() {
     /* fail soft */
   }
 
-  // Tide state — NOAA CO-OPS hi/lo, GMT for absolute compare
+  // Tide state + live level — NOAA CO-OPS hi/lo, GMT for absolute compare.
+  // tideLevel ∈ 0..1 (low→high), cosine-interpolated between surrounding extremes.
   let tide: "rising" | "falling" | null = null;
   let nextTide: { type: string; time: string } | null = null;
+  let tideLevel: number | null = null;
   try {
     const url =
       "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions" +
       "&application=mlinx.studio&datum=MLLW&station=8418150&time_zone=gmt&units=english&interval=hilo&format=json" +
-      `&begin_date=${ymd(now)}&end_date=${ymd(new Date(t + 2 * 86400000))}`;
+      `&begin_date=${ymd(new Date(t - 86400000))}&end_date=${ymd(new Date(t + 2 * 86400000))}`;
     const r = await fetch(url, { next: { revalidate: 600 } });
     if (r.ok) {
-      const preds: { t: string; type: string }[] = (await r.json())?.predictions ?? [];
-      const next = preds.find((p) => new Date(p.t.replace(" ", "T") + "Z") > now);
+      const preds = ((await r.json())?.predictions ?? []).map((p: { t: string; type: string }) => ({
+        time: new Date(p.t.replace(" ", "T") + "Z").getTime(),
+        type: p.type,
+      }));
+      const ni = preds.findIndex((p: { time: number }) => p.time > t);
+      const next = ni >= 0 ? preds[ni] : null;
+      const prev = ni > 0 ? preds[ni - 1] : null;
       if (next) {
         tide = next.type === "H" ? "rising" : "falling";
-        nextTide = { type: next.type === "H" ? "high" : "low", time: fmtTime(new Date(next.t.replace(" ", "T") + "Z")) };
+        nextTide = { type: next.type === "H" ? "high" : "low", time: fmtTime(new Date(next.time)) };
+      }
+      if (next && prev) {
+        const frac = (t - prev.time) / (next.time - prev.time); // 0..1 between extremes
+        const rising = next.type === "H";
+        tideLevel = rising ? (1 - Math.cos(Math.PI * frac)) / 2 : (1 + Math.cos(Math.PI * frac)) / 2;
       }
     }
   } catch {
@@ -126,6 +138,7 @@ export async function GET() {
       conditions,
       tide,
       nextTide,
+      tideLevel,
       sun: nextSun,
       light,
       moon: moonPhase(now),
