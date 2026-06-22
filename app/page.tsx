@@ -7,7 +7,6 @@ import Approach from "@/components/Approach";
 import Pricing from "@/components/Pricing";
 import FounderNote from "@/components/FounderNote";
 import Contact from "@/components/Contact";
-import BuildLog from "@/components/BuildLog";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import CommandPalette from "@/components/CommandPalette";
@@ -19,16 +18,15 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → founder → what M Studio does → free tools → work → approach → contact */}
+        {/* Hero → founder → services → work → approach → pricing → free tools → contact */}
         <Hero />
         <FounderNote />
         <Services />
-        <HomeTools />
         <Deployments />
         <Approach />
         <Pricing />
+        <HomeTools />
         <Contact />
-        <BuildLog />
       </main>
       <Footer />
       <AccentSwitcher />

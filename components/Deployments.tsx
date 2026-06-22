@@ -26,8 +26,8 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Live client sites, a SaaS platform, and the internal systems
-              running behind them — these are running right now.
+              Live client sites, a SaaS platform, and the systems running behind
+              them.
             </p>
           </Reveal>
         </div>

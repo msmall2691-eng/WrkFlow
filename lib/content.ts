@@ -296,13 +296,6 @@ export const work: WorkItem[] = [
   {
     tier: "private",
     tag: "Private system",
-    title: "BrightBase — Command Center",
-    blurb: "Jobs, revenue, occupancy & crew in one live view.",
-    shot: "/shots/brightbase-dashboard.png",
-  },
-  {
-    tier: "private",
-    tag: "Private system",
     title: "Turnover scheduling",
     blurb: "Internal board for STR turnovers—who, where, and when, at a glance.",
     shot: "/shots/brightbase-turnovers.png",

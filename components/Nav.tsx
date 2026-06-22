@@ -6,11 +6,9 @@ import Magnetic from "./Magnetic";
 
 const links = [
   { href: "/#services", label: "Services" },
-  { href: "/#tools", label: "Free tools" },
   { href: "/#work", label: "Work" },
-  { href: "/marketplace", label: "M Linx" },
-  { href: "/#approach", label: "Approach" },
   { href: "/#pricing", label: "Pricing" },
+  { href: "/marketplace", label: "M Linx" },
 ];
 
 export default function Nav() {

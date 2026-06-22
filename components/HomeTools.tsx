@@ -4,7 +4,6 @@ import { useState } from "react";
 import Reveal from "./Reveal";
 import QuoteCalc from "./QuoteCalc";
 import SignatureMaker from "./SignatureMaker";
-import QRMaker from "./QRCode";
 import SiteCheck from "./SiteCheck";
 
 /*
@@ -12,12 +11,11 @@ import SiteCheck from "./SiteCheck";
   tools, live and inline, so a visitor gets to actually use the kind of
   software M Studio builds. The full lineup lives on /marketplace.
 */
-type Tool = "quote" | "sig" | "qr" | "sitecheck";
+type Tool = "quote" | "sig" | "sitecheck";
 
 const TABS: { id: Tool; label: string; blurb: string }[] = [
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range you can send a customer." },
   { id: "sig", label: "Email signature", blurb: "Your details → a styled signature, ready to paste into Gmail or Outlook." },
-  { id: "qr", label: "QR code", blurb: "Any link — or your WiFi — into a real QR code to download & print." },
   { id: "sitecheck", label: "Website check", blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report." },
 ];
 
@@ -39,8 +37,8 @@ export default function HomeTools() {
         </Reveal>
         <Reveal delay={80}>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
-            Real tools we&apos;ve built — free to use, no signup. Set one up for
-            your business and we tune it to your pricing, branding, and workflow.{" "}
+            Real tools we&apos;ve built — free, no signup. Set one up for your
+            business and we tune it to your pricing and branding.{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
               See the full lineup on M Linx →
             </a>
@@ -71,7 +69,6 @@ export default function HomeTools() {
         <div className="mt-8">
           {tool === "quote" && <QuoteCalc />}
           {tool === "sig" && <SignatureMaker />}
-          {tool === "qr" && <QRMaker />}
           {tool === "sitecheck" && <SiteCheck />}
         </div>
       </div>
