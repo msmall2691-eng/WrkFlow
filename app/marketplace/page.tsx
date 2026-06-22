@@ -44,29 +44,34 @@ export default function MarketplacePage() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
-                M Linx is our line of ready-to-run builds—the things we make
-                most often, packaged so you can{" "}
-                <span className="text-ink">buy and own</span> them outright,{" "}
-                <span className="text-ink">embed</span> a hosted widget in minutes,
-                or <span className="text-ink">start free</span>. Either way, we
-                set them up around your business.
+                M Linx is our line of ready-to-run builds — the things we make
+                most often. Pick whatever fits where you&apos;re at:{" "}
+                <span className="text-ink">own one outright</span>,{" "}
+                <span className="text-ink">grab a tool for a few dollars a
+                month</span>, <span className="text-ink">start with the free
+                ones</span>, or <span className="text-ink">work together</span>{" "}
+                on something custom. Either way, we set it up around your business.
               </p>
             </Reveal>
 
-            {/* How it works — three models */}
+            {/* How it works — four flexible ways in */}
             <Reveal delay={160}>
-              <div className="mt-12 grid gap-4 sm:grid-cols-3">
+              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <ModelCard
                   tag={marketModelLabels.template}
-                  body="A starter site or app, configured for you and handed over. You own the code—no monthly lock-in."
+                  body="A starter site or app, set up for you and handed over. You own the code outright — no monthly, no lock-in."
                 />
                 <ModelCard
                   tag={marketModelLabels.embed}
-                  body="A hosted widget you drop into your existing site with one line. We run and update it; small monthly."
+                  body="A hosted tool you drop into your site in one line. We run and update it — just a few dollars a month."
                 />
                 <ModelCard
                   tag={marketModelLabels.open}
                   body="Free to use right now, with open-source starters on request. A no-pressure way to try the work."
+                />
+                <ModelCard
+                  tag="Work together"
+                  body="Want it tailored, or a hybrid of the above? We'll build something custom — one-time or a simple monthly."
                 />
               </div>
             </Reveal>

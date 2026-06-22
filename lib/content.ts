@@ -362,7 +362,7 @@ export const marketItems: MarketItem[] = [
       "Hosting, domain & analytics set up",
       "You own the code outright",
     ],
-    price: "from $1,800 one-time",
+    price: "from $900 one-time",
     shot: "/shots/maineclean.png",
     featured: true,
   },
@@ -378,7 +378,7 @@ export const marketItems: MarketItem[] = [
       "Owner calendar + admin view",
       "Connects to your existing tools",
     ],
-    price: "from $2,400 one-time",
+    price: "from $1,200 one-time",
     shot: "/shots/brightbase-turnovers.png",
   },
   {
@@ -393,7 +393,7 @@ export const marketItems: MarketItem[] = [
       "Leads emailed to you on submit",
       "One line of code to install",
     ],
-    price: "$29/mo",
+    price: "$15/mo",
     shot: "/shots/instant-estimate.png",
   },
   {
@@ -408,7 +408,7 @@ export const marketItems: MarketItem[] = [
       "Hosted or self-hosted—your call",
       "Built to extend later",
     ],
-    price: "from $2,000 one-time",
+    price: "from $1,000 one-time",
     shot: "/shots/brightbase-dashboard.png",
   },
   {
@@ -423,7 +423,7 @@ export const marketItems: MarketItem[] = [
       "Lead-to-CRM sync",
       "Tuned to your tools",
     ],
-    price: "from $39/mo",
+    price: "from $19/mo",
     shot: "/shots/autopilot.png",
   },
   {

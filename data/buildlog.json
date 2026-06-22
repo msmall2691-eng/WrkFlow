@@ -1,5 +1,11 @@
 [
   {
+    "sha": "677630e",
+    "subject": "Voice: collaborative 'you + we' across the site; restore the full founder note",
+    "date": "2026-06-22T13:25:03+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "f44e290",
     "subject": "Founder note: tighten to 3 sentences, keep the personal vibe",
     "date": "2026-06-22T13:20:00+00:00",
@@ -39,12 +45,6 @@
     "sha": "5b124da",
     "subject": "Copy: site-wide voice pass — brand-led 'M Studio' tone, fewer first-person 'I' openers",
     "date": "2026-06-22T12:25:15+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "5c369d4",
-    "subject": "Services: surface full write-ups in expandable cards",
-    "date": "2026-06-22T12:14:55+00:00",
     "label": "Jun 22"
   }
 ]
