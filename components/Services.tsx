@@ -9,6 +9,14 @@ type Item = { title: string; line: string; icon: React.ReactNode };
 
 const I = "h-5 w-5 text-signal";
 
+const AUDIENCES = [
+  "Service companies",
+  "Trades",
+  "Property managers",
+  "STR operators",
+  "Founders",
+];
+
 const MENU: Item[] = [
   {
     title: "Websites",
@@ -83,7 +91,26 @@ export default function Services() {
           ))}
         </div>
 
+        {/* Who it's for — compact chip row */}
         <Reveal delay={200}>
+          <div className="mt-10 border-t border-line pt-8">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+              Who it&apos;s for
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {AUDIENCES.map((a) => (
+                <span
+                  key={a}
+                  className="rounded-full border border-line bg-base px-3 py-1.5 text-sm text-muted"
+                >
+                  {a}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal delay={240}>
           <p className="mt-8 text-sm text-muted">
             Or start from{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">

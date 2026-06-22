@@ -11,9 +11,8 @@ import { useEffect, useState } from "react";
 
 const STEPS = [
   { id: "services", label: "Services" },
-  { id: "why", label: "Why M Studio" },
+  { id: "tools", label: "Free tools" },
   { id: "work", label: "Work" },
-  { id: "kit", label: "M Linx" },
   { id: "approach", label: "Approach" },
   { id: "contact", label: "Contact" },
 ];

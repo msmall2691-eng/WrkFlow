@@ -1,5 +1,11 @@
 [
   {
+    "sha": "27f9c10",
+    "subject": "Atmosphere pass: nautical chart-contour texture, living hero, tonal rhythm",
+    "date": "2026-06-22T12:53:02+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "c2b5499",
     "subject": "Showcase features (brief #7): drivable dashboard demo, palette actions, build log",
     "date": "2026-06-22T12:48:16+00:00",
@@ -39,12 +45,6 @@
     "sha": "8c8093c",
     "subject": "Hero: bolder H1 ('what your work runs on'), 'Available for new projects' eyebrow, subtle Maine coast line back",
     "date": "2026-06-22T08:37:34+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "649901b",
-    "subject": "Hero: drop 'Maine-built', availability hook on the dot, stronger range-driven subhead",
-    "date": "2026-06-22T05:10:27+00:00",
     "label": "Jun 22"
   }
 ]

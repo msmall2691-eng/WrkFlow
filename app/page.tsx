@@ -1,7 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Shift from "@/components/Shift";
-import MLinxTeaser from "@/components/MLinxTeaser";
+import HomeTools from "@/components/HomeTools";
 import Deployments from "@/components/Deployments";
 import Services from "@/components/Services";
 import Approach from "@/components/Approach";
@@ -19,13 +18,12 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → founder → what M Studio does → why → work → M Linx teaser → approach → contact */}
+        {/* Hero → founder → what M Studio does → free tools → work → approach → contact */}
         <Hero />
         <FounderNote />
         <Services />
-        <Shift />
+        <HomeTools />
         <Deployments />
-        <MLinxTeaser />
         <Approach />
         <Contact />
         <BuildLog />

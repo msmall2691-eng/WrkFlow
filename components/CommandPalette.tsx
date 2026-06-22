@@ -44,9 +44,8 @@ export default function CommandPalette() {
     return [
       { id: "top", label: "Home", group: "Navigate", keywords: "hero start top", run: go("top") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings websites tools plugins", run: go("services") },
-      { id: "why", label: "Why M Studio", group: "Navigate", keywords: "why now rent build own who it's for", run: go("why") },
+      { id: "tools", label: "Free tools · have a play", group: "Navigate", keywords: "tools quote estimator email signature qr code website check lighthouse speed seo free play try", run: go("tools") },
       { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
-      { id: "kit", label: "M Linx · free tools", group: "Navigate", keywords: "tools website health speed lighthouse seo email signature qr code generator cost automation linx", run: go("kit") },
       {
         id: "marketplace",
         label: "M Linx marketplace",
