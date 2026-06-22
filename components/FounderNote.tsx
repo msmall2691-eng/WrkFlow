@@ -18,7 +18,7 @@ const rest = founderNote.slice(splitAt).trim();
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative overflow-hidden border-t border-line bg-[#10243a] pt-16 pb-28 md:pt-24 md:pb-36">
+    <section id="founder" className="relative overflow-hidden border-t border-line bg-base pt-16 pb-28 md:pt-24 md:pb-36">
       {/* Live "harbor water" — fills to the real Portland tide level (accent → re-tunes with theme) */}
       <TideLevel />
       <div
