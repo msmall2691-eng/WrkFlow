@@ -15,7 +15,7 @@ export const whoIsItFor =
   "For small businesses and independent makers alike: service companies, trades, property managers, short-term-rental operators, founders, and anyone who needs a website, a tool, or a plugin that actually works. Bring a whole business to streamline or a single project to build—both are welcome.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `${provingGroundCompany} came first. Running it on software that never quite fit got old fast, so I started building our own instead. Turns out the unglamorous stuff is the good stuff: backends, data models, and getting tools that were never meant to talk to each other to finally cooperate. These days you'll find me at USM studying Business Analytics & AI, minoring in Computer Science, and building systems from scratch for other small businesses. The kind of software you only really get from someone who's run the thing herself. All of it from a small spot on the coast of Maine.`;
+export const founderNote = `Designing and building websites, web apps, and the custom tools and workflows that keep a small business running—that's the work. My background is hands-on: I built the software for my own company when nothing on the market fit, from the customer-facing site to the systems running scheduling and daily operations. That experience became the foundation for everything I do now. Today I build for other small businesses across Maine and beyond, while completing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
