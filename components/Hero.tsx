@@ -38,8 +38,8 @@ export default function Hero() {
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Software built to fit{" "}
-          <span className="shimmer-text">how you work.</span>
+          Let&apos;s build something that{" "}
+          <span className="shimmer-text">fits how you work.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
