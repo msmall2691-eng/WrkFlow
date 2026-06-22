@@ -47,14 +47,13 @@ export default function Hero() {
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Let&apos;s build your website — and{" "}
-          <span className="shimmer-text">the software behind it.</span>
+          Websites and workflows,{" "}
+          <span className="shimmer-text">custom-made for your projects.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Whatever you dream up, we&apos;ll build it — websites, custom tools,
-          automations, AI. No cookie-cutter templates, all yours to keep. Made on
-          the Maine coast, working with small businesses anywhere.
+          Designed, built, and wired together to run how you do — yours to keep,
+          made on the Maine coast, with clients anywhere.
         </p>
 
 

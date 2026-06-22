@@ -1,5 +1,11 @@
 [
   {
+    "sha": "bdbc35a",
+    "subject": "Place-based signatures: Maine daylight theming, live readout, /playground",
+    "date": "2026-06-22T14:00:22+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "8a3af27",
     "subject": "Add pricing section + founding offer; wire Care Plan and quote-demo nudge",
     "date": "2026-06-22T13:47:52+00:00",
@@ -39,12 +45,6 @@
     "sha": "3bbec6d",
     "subject": "Quote tool layout swap, personal founder note, drop 'play'",
     "date": "2026-06-22T13:15:06+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "6ca1987",
-    "subject": "Homepage: replace rent/build section with a fun, playable free-tools beat",
-    "date": "2026-06-22T13:05:19+00:00",
     "label": "Jun 22"
   }
 ]
