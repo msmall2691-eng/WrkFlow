@@ -389,11 +389,11 @@ export const marketItems: MarketItem[] = [
     tagline: "Drop the live quoting tool from this site straight into your own.",
     includes: [
       "Embeddable estimate calculator",
-      "Your pricing + branding",
-      "Leads emailed to you on submit",
-      "One line of code to install",
+      "Configured to your pricing + branding",
+      "Leads emailed straight to you on submit",
+      "One line of code to install — we set it up, you go live",
     ],
-    price: "$15/mo",
+    price: "$150 setup + $15/mo",
     shot: "/shots/instant-estimate.png",
   },
   {
@@ -423,7 +423,7 @@ export const marketItems: MarketItem[] = [
       "Lead-to-CRM sync",
       "Tuned to your tools",
     ],
-    price: "from $19/mo",
+    price: "from $150 setup + $19/mo",
     shot: "/shots/autopilot.png",
   },
   {
@@ -435,7 +435,7 @@ export const marketItems: MarketItem[] = [
     includes: [
       "Quote, rate & signature tools",
       "Free to use, right now",
-      "Open-source starter on request",
+      "Open-source starter on request — calculators only; hosted tools (Quote, Flows) stay set-up-by-us",
       "A friendly way to say hello",
     ],
     price: "Free",
