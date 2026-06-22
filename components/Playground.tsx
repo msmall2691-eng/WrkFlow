@@ -32,56 +32,56 @@ const TOOLS: {
     label: "Instant quote",
     blurb: "Service + size → a live price range you can send a customer.",
     group: "Win & bill",
-    nudge: { line: "Want this estimator on your own site?", product: "MLinx Quote" },
+    nudge: { line: "Want this estimator on your own site?", product: "M Linx Quote" },
   },
   {
     id: "invoice",
     label: "Invoice maker",
     blurb: "Build an invoice or proposal → print to a clean PDF in one click.",
     group: "Win & bill",
-    nudge: { line: "Want invoicing wired into your booking flow?", product: "MLinx Booking" },
+    nudge: { line: "Want invoicing wired into your booking flow?", product: "M Linx Booking" },
   },
   {
     id: "sig",
     label: "Email signature",
     blurb: "Fill in your details → a styled signature, ready to paste into Gmail or Outlook.",
     group: "Brand & share",
-    nudge: { line: "Need a site to match your new signature?", product: "MLinx Site" },
+    nudge: { line: "Need a site to match your new signature?", product: "M Linx Site" },
   },
   {
     id: "vcard",
     label: "Digital card",
     blurb: "Your details → a .vcf and a scan-to-save QR for cards, emails & signatures.",
     group: "Brand & share",
-    nudge: { line: "Want a real one-page site behind that card?", product: "MLinx Site" },
+    nudge: { line: "Want a real one-page site behind that card?", product: "M Linx Site" },
   },
   {
     id: "qr",
     label: "QR code",
     blurb: "Any link—or your WiFi—into a real QR code to download & print.",
     group: "Brand & share",
-    nudge: { line: "Point that QR at a landing page that converts?", product: "MLinx Site" },
+    nudge: { line: "Point that QR at a landing page that converts?", product: "M Linx Site" },
   },
   {
     id: "utm",
     label: "Tracked link",
     blurb: "Add campaign tags to any link → a tracked URL for emails, ads & bios.",
     group: "Brand & share",
-    nudge: { line: "Want these tracked and reported automatically?", product: "MLinx Flows" },
+    nudge: { line: "Want these tracked and reported automatically?", product: "M Linx Flows" },
   },
   {
     id: "sitecheck",
     label: "Website check",
     blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report.",
     group: "Site & ops",
-    nudge: { line: "Want a site that scores green out of the box?", product: "MLinx Site" },
+    nudge: { line: "Want a site that scores green out of the box?", product: "M Linx Site" },
   },
   {
     id: "cost",
     label: "Cost of manual work",
     blurb: "Hours + people → the yearly cost, and how fast automation pays for itself.",
     group: "Site & ops",
-    nudge: { line: "Ready to hand this busywork to automation?", product: "MLinx Flows" },
+    nudge: { line: "Ready to hand this busywork to automation?", product: "M Linx Flows" },
   },
 ];
 
@@ -99,7 +99,7 @@ export default function Playground() {
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-4">// MLinx · try one free</p>
+          <p className="marker mb-4">// M Linx · try one free</p>
         </Reveal>
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
@@ -110,7 +110,7 @@ export default function Playground() {
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
             Free, working tools by{" "}
             <span className="inline-flex items-center gap-1.5 align-middle text-ink">
-              <LinxMark className="h-3 w-auto" />MLinx
+              <LinxMark className="h-3 w-auto" />M Linx
             </span>—the same kind we build into the systems behind your website.{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
               See the full lineup →
@@ -159,7 +159,7 @@ export default function Playground() {
           {tool === "cost" && <AutomationCost />}
         </div>
 
-        {/* Soft funnel — free demo → matching MLinx product */}
+        {/* Soft funnel — free demo → matching M Linx product */}
         <Reveal>
           <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm">
             <span className="text-muted">{activeTool.nudge.line}</span>

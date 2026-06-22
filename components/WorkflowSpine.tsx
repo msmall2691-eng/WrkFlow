@@ -13,7 +13,7 @@ const STEPS = [
   { id: "services", label: "Services" },
   { id: "why", label: "Why M Studio" },
   { id: "work", label: "Work" },
-  { id: "kit", label: "MLinx" },
+  { id: "kit", label: "M Linx" },
   { id: "approach", label: "Approach" },
   { id: "contact", label: "Contact" },
 ];

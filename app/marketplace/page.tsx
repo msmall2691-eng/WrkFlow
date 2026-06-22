@@ -9,9 +9,9 @@ import LinxMark from "@/components/LinxMark";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "MLinx — premade tools & sites",
+  title: "M Linx — premade tools & sites",
   description:
-    "MLinx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
+    "M Linx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
 };
 
 export default function MarketplacePage() {
@@ -30,7 +30,7 @@ export default function MarketplacePage() {
             <Reveal>
               <div className="mb-5 flex items-center gap-2.5 text-ink">
                 <LinxMark className="h-4 w-auto" />
-                <span className="font-mono text-sm font-semibold tracking-wide">MLinx</span>
+                <span className="font-mono text-sm font-semibold tracking-wide">M Linx</span>
                 <span className="font-mono text-xs uppercase tracking-widest text-faint">
                   · the marketplace
                 </span>
@@ -38,12 +38,12 @@ export default function MarketplacePage() {
             </Reveal>
             <Reveal delay={60}>
               <h1 className="display-serif max-w-3xl text-3xl text-ink sm:text-4xl md:text-5xl">
-                MLinx—premade tools and sites you can put to work today.
+                M Linx—premade tools and sites you can put to work today.
               </h1>
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
-                MLinx is our line of ready-to-run builds—the things we make most
+                M Linx is our line of ready-to-run builds—the things we make most
                 often, packaged so you can{" "}
                 <span className="text-ink">buy and own</span> them outright,{" "}
                 <span className="text-ink">embed</span> a hosted widget in minutes,

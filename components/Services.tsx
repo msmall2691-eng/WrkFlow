@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 
 /*
   Services — a tight "what we do" menu. Five short items with line icons;
-  detail and proof live in Work below. Custom (M Studio) here; premade (MLinx) a tap away.
+  detail and proof live in Work below. Custom (M Studio) here; premade (M Linx) a tap away.
 */
 type Item = { title: string; line: string; icon: React.ReactNode };
 
@@ -87,7 +87,7 @@ export default function Services() {
             <p className="mt-4 text-base leading-relaxed text-muted">
               Custom-built around how you work—or grab a head start from{" "}
               <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
-                MLinx, our premade line →
+                M Linx, our premade line →
               </a>
             </p>
           </Reveal>
