@@ -14,6 +14,7 @@ const STEPS = [
   { id: "tools", label: "Free tools" },
   { id: "work", label: "Work" },
   { id: "approach", label: "Approach" },
+  { id: "pricing", label: "Pricing" },
   { id: "contact", label: "Contact" },
 ];
 

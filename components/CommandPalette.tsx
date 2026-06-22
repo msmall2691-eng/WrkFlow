@@ -58,6 +58,7 @@ export default function CommandPalette() {
         },
       },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
+      { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan starter site founding offer monthly", run: go("pricing") },
       { id: "meg", label: "Meet Meg", hint: "☕", group: "Navigate", keywords: "founder meg about story who", run: go("founder") },
       {
         id: "contact",

@@ -4,6 +4,7 @@ import HomeTools from "@/components/HomeTools";
 import Deployments from "@/components/Deployments";
 import Services from "@/components/Services";
 import Approach from "@/components/Approach";
+import Pricing from "@/components/Pricing";
 import FounderNote from "@/components/FounderNote";
 import Contact from "@/components/Contact";
 import BuildLog from "@/components/BuildLog";
@@ -25,6 +26,7 @@ export default function Home() {
         <HomeTools />
         <Deployments />
         <Approach />
+        <Pricing />
         <Contact />
         <BuildLog />
       </main>

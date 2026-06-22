@@ -114,6 +114,13 @@ export default function QuoteCalc() {
               Request this quote →
             </a>
             <SaveResult summary={summary} filename="instant-quote" />
+            <a
+              href="/#pricing"
+              className="mt-4 block text-center text-xs leading-relaxed text-white/55 transition-colors hover:text-white/80"
+            >
+              Just getting started? First 10 businesses get a full Starter site for{" "}
+              <span className="text-[#6fd3c6]">$399</span> →
+            </a>
           </div>
         </div>
       </Reveal>

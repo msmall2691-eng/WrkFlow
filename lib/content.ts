@@ -362,7 +362,7 @@ export const marketItems: MarketItem[] = [
       "Hosting, domain & analytics set up",
       "You own the code outright",
     ],
-    price: "from $900 one-time",
+    price: "from $750 one-time",
     shot: "/shots/maineclean.png",
     featured: true,
   },
