@@ -3,6 +3,7 @@ import FooterWordmark from "./FooterWordmark";
 import CopyLink from "./CopyLink";
 import LinxMark from "./LinxMark";
 import SelfScore from "./SelfScore";
+import MaineReadout from "./MaineReadout";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -32,6 +33,7 @@ export default function Footer() {
               Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere
             </p>
             <SelfScore />
+            <MaineReadout className="mt-4 flex" />
           </div>
 
           <div className="flex gap-10 sm:gap-16">
@@ -59,6 +61,11 @@ export default function Footer() {
                 <li>
                   <a href="/#work" className="text-muted transition-colors hover:text-ink">
                     Work
+                  </a>
+                </li>
+                <li>
+                  <a href="/playground" className="text-muted transition-colors hover:text-ink">
+                    Playground
                   </a>
                 </li>
               </ul>

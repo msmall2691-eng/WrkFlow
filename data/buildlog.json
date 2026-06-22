@@ -1,5 +1,11 @@
 [
   {
+    "sha": "8a3af27",
+    "subject": "Add pricing section + founding offer; wire Care Plan and quote-demo nudge",
+    "date": "2026-06-22T13:47:52+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "d768035",
     "subject": "Pricing: add setup fees to hosted M Linx tools; protect open-source offer",
     "date": "2026-06-22T13:41:18+00:00",
@@ -39,12 +45,6 @@
     "sha": "6ca1987",
     "subject": "Homepage: replace rent/build section with a fun, playable free-tools beat",
     "date": "2026-06-22T13:05:19+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "27f9c10",
-    "subject": "Atmosphere pass: nautical chart-contour texture, living hero, tonal rhythm",
-    "date": "2026-06-22T12:53:02+00:00",
     "label": "Jun 22"
   }
 ]
