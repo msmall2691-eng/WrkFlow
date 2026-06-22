@@ -87,6 +87,67 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+/*
+  Structured data — feeds rich results + AI answer engines. The legal entity is
+  M Studio (M Linx is the product line, not a co-equal brand), founded by Meg.
+*/
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": `${SITE_URL}/#studio`,
+      name: "M Studio",
+      url: SITE_URL,
+      description:
+        "Custom websites, web apps, and tools for small businesses—built to own, not rent. Founded by an operator who ran the business first.",
+      slogan: "Everything, linked.",
+      knowsAbout: [
+        "Custom software development",
+        "Web design and development",
+        "Web applications",
+        "Systems integration",
+        "Data modeling",
+        "Workflow automation",
+        "Business analytics",
+        "Artificial intelligence",
+      ],
+      areaServed: [
+        { "@type": "State", name: "Maine" },
+        { "@type": "Place", name: "New England" },
+        { "@type": "Place", name: "Worldwide (remote)" },
+      ],
+      founder: { "@id": `${SITE_URL}/#meg` },
+      address: {
+        "@type": "PostalAddress",
+        addressRegion: "ME",
+        addressCountry: "US",
+      },
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#meg`,
+      name: "Meg",
+      jobTitle: "Founder & Software Developer",
+      worksFor: { "@id": `${SITE_URL}/#studio` },
+      description:
+        "Operator-turned-builder. Ran The Maine Cleaning Company, then learned to build the software it needed—now building owned systems from scratch for other small businesses.",
+      alumniOf: {
+        "@type": "CollegeOrUniversity",
+        name: "University of Southern Maine",
+      },
+      knowsAbout: [
+        "Business Analytics",
+        "Artificial Intelligence",
+        "Computer Science",
+        "Backend development",
+        "Data modeling",
+        "Systems integration",
+      ],
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -96,6 +157,10 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
         {/* No-JS safety: never leave scroll-reveal content hidden. */}
         <noscript>
           <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
