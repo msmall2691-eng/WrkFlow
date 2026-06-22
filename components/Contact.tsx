@@ -4,6 +4,7 @@ import { useState } from "react";
 import Reveal from "./Reveal";
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
+import ChartContours from "./ChartContours";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
@@ -52,6 +53,13 @@ export default function Contact() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[#08131d]/72"
       />
+      {/* Faint nautical contours — the one coastal texture, echoed at the closer */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[55%] md:block"
+      >
+        <ChartContours className="h-full w-full opacity-[0.06]" />
+      </div>
       {/* Top fade — eases in from the light section above */}
       <div
         aria-hidden="true"

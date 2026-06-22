@@ -9,7 +9,7 @@ import LinxMark from "./LinxMark";
 */
 export default function MLinxTeaser() {
   return (
-    <section id="kit" className="relative overflow-hidden border-t border-line py-14 md:py-20">
+    <section id="kit" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-14 md:py-20">
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
           <a

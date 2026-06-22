@@ -14,7 +14,7 @@ const AUDIENCES = [
 ];
 export default function Shift() {
   return (
-    <section id="why" className="relative overflow-hidden border-t border-line py-14 md:py-20">
+    <section id="why" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-14 md:py-20">
       {/* Soft accent glow — drifts gently */}
       <div
         aria-hidden="true"

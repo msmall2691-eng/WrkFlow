@@ -1,6 +1,7 @@
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
 import HeroWordmark from "./HeroWordmark";
+import ChartContours from "./ChartContours";
 
 export default function Hero() {
   return (
@@ -10,6 +11,15 @@ export default function Hero() {
     >
       {/* Aurora Swell — calm ocean backdrop (dialed back so the wordmark leads) */}
       <AuroraSwell intensity={0.6} speed={0.7} />
+
+      {/* Nautical depth-contour soundings — faint, slowly drifting on the right.
+          The signature coastal texture that brings the right side to life. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] overflow-hidden md:block"
+      >
+        <ChartContours animate className="h-full w-full opacity-[0.14]" />
+      </div>
 
       {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
       <div className="absolute inset-y-0 right-0 hidden w-[50%] overflow-hidden lg:block">

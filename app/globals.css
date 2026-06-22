@@ -232,6 +232,17 @@ body {
 }
 .travel-dot { animation: travelX 2.8s ease-in-out infinite; }
 
+/* Nautical depth-contour soundings — very slow drift + breathe */
+@keyframes contourDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(1.5%, -2%, 0) scale(1.06); }
+}
+.contour-drift {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: contourDrift 28s ease-in-out infinite;
+}
+
 /* Drifting ocean wave divider */
 @keyframes waveX {
   from { transform: translateX(0); }
@@ -249,7 +260,7 @@ body {
 .beam { animation: beamSweep 4.5s ease-in-out forwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .shimmer-text, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x {
+  .shimmer-text, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x, .contour-drift {
     animation: none !important;
   }
   .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }
