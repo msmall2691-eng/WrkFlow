@@ -1,5 +1,11 @@
 [
   {
+    "sha": "3bbec6d",
+    "subject": "Quote tool layout swap, personal founder note, drop 'play'",
+    "date": "2026-06-22T13:15:06+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "6ca1987",
     "subject": "Homepage: replace rent/build section with a fun, playable free-tools beat",
     "date": "2026-06-22T13:05:19+00:00",
@@ -39,12 +45,6 @@
     "sha": "aa6b3dd",
     "subject": "Copy: first-person, plain-language service descriptions; founder note no longer opens on 'I'",
     "date": "2026-06-22T12:12:16+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "3434d72",
-    "subject": "Copy: align service descriptions to first-person, plain voice",
-    "date": "2026-06-22T11:25:02+00:00",
     "label": "Jun 22"
   }
 ]
