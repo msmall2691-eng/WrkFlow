@@ -262,7 +262,17 @@ export type WorkItem = {
   and private internal systems (screenshot only, never linked).
 */
 export const work: WorkItem[] = [
-  // Tier 1 — live websites (lead with the outside-client one)
+  // Tier 1 — live websites (lead with our own flagship, the best work so far)
+  {
+    tier: "site",
+    tag: "Website + system · our own company",
+    title: "The Maine Cleaning Co.",
+    blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
+    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
+    url: "https://maineclean.co",
+    live: true,
+    shot: "/shots/maineclean.png",
+  },
   {
     tier: "site",
     tag: "Client work",
@@ -273,18 +283,6 @@ export const work: WorkItem[] = [
     live: true,
     shot: "/shots/remote-admin.png",
     client: true,
-    // TODO: real metric — e.g. metric: "Shipped in N weeks" (confirm with Meg)
-  },
-  {
-    tier: "site",
-    tag: "Website + system · our own company",
-    title: "The Maine Cleaning Co.",
-    blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
-    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
-    url: "https://maineclean.co",
-    live: true,
-    shot: "/shots/maineclean.png",
-    // TODO: real metric — e.g. metric: "0 double-bookings since launch" or "~N hrs/week back" (confirm with Meg)
   },
   // Tier 2 — product we built
   {
@@ -298,6 +296,13 @@ export const work: WorkItem[] = [
     shot: "/shots/autopilot.png",
   },
   // Tier 3 — private internal/client systems (no links)
+  {
+    tier: "private",
+    tag: "Private system",
+    title: "BrightBase — Command Center",
+    blurb: "Jobs, revenue, occupancy & crew in one live view.",
+    shot: "/shots/brightbase-dashboard.png",
+  },
   {
     tier: "private",
     tag: "Private system",
