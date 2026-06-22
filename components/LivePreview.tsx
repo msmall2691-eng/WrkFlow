@@ -105,8 +105,17 @@ export default function LivePreview() {
                   src={s.url}
                   title={`${s.title} — live`}
                   loading="lazy"
-                  className="absolute inset-0 h-full w-full"
-                  style={{ border: 0, pointerEvents: hoverable && active === i ? "auto" : "none" }}
+                  className="absolute left-0 top-0"
+                  style={{
+                    border: 0,
+                    // Render at 2x the card width, then scale down — shows the full
+                    // desktop layout "zoomed out" instead of a cropped close-up.
+                    width: "200%",
+                    height: "200%",
+                    transform: "scale(0.5)",
+                    transformOrigin: "top left",
+                    pointerEvents: hoverable && active === i ? "auto" : "none",
+                  }}
                 />
               ) : (
                 <div className="flex h-full items-center justify-center font-mono text-xs text-faint">
