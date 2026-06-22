@@ -16,9 +16,9 @@ export default function Hero() {
           The signature coastal texture that brings the right side to life. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[62%] overflow-hidden md:block"
+        className="pointer-events-none absolute inset-y-0 right-0 w-full overflow-hidden md:w-[62%]"
       >
-        <ChartContours animate className="h-full w-full opacity-[0.14]" />
+        <ChartContours animate className="h-full w-full opacity-[0.16]" />
       </div>
 
       {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
@@ -31,6 +31,10 @@ export default function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,12,22,0.82)_0%,rgba(6,12,22,0.45)_42%,rgba(6,12,22,0)_78%)]"
       />
+      {/* Mobile: a ghost M STUDIO fills the empty lower space (desktop has its own column) */}
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[42%] overflow-hidden lg:hidden">
+        <HeroWordmark text="M STUDIO" size="text-[17vw]" />
+      </div>
       {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
       <div
         aria-hidden="true"

@@ -9,7 +9,12 @@ export const contentType = "image/png";
 const WORDMARK = "linear-gradient(135deg, #16a394 0%, #5ec9bd 38%, #e8c98f 72%, #d9a441 100%)";
 const GOLD = "linear-gradient(100deg, #d9a441, #f3d79a 50%, #d9a441)";
 
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const [display, mono] = await Promise.all([
+    fetch(new URL("./og-fonts/SpaceGrotesk-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
+    fetch(new URL("./og-fonts/JetBrainsMono-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
+  ]);
+
   return new ImageResponse(
     (
       <div
@@ -20,7 +25,7 @@ export default function OpengraphImage() {
           display: "flex",
           overflow: "hidden",
           background: "#08131d",
-          fontFamily: "sans-serif",
+          fontFamily: "Space Grotesk",
         }}
       >
         {/* Aurora swell — teal + brass, like the live hero backdrop */}
@@ -38,23 +43,23 @@ export default function OpengraphImage() {
         <div
           style={{
             position: "absolute",
-            right: 56,
+            right: 60,
             top: 0,
             bottom: 0,
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-end",
             justifyContent: "center",
-            opacity: 0.22,
+            opacity: 0.42,
           }}
         >
           <div
             style={{
               display: "flex",
               fontSize: 300,
-              fontWeight: 800,
+              fontWeight: 700,
               lineHeight: 0.8,
-              letterSpacing: -6,
+              letterSpacing: -10,
               backgroundImage: WORDMARK,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
@@ -66,9 +71,9 @@ export default function OpengraphImage() {
           <div
             style={{
               display: "flex",
-              fontSize: 92,
-              fontWeight: 800,
-              letterSpacing: 6,
+              fontSize: 88,
+              fontWeight: 700,
+              letterSpacing: 2,
               backgroundImage: WORDMARK,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
@@ -107,17 +112,17 @@ export default function OpengraphImage() {
               alignItems: "center",
               gap: 14,
               color: "#5ec9bd",
-              fontSize: 23,
+              fontSize: 22,
               letterSpacing: 4,
               textTransform: "uppercase",
-              fontFamily: "monospace",
+              fontFamily: "JetBrains Mono",
             }}
           >
             <div style={{ width: 10, height: 10, borderRadius: 9999, background: "#16a394", display: "flex" }} />
             Independent web &amp; software studio · Maine
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", fontSize: 60, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 62, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>
             <span style={{ color: "#eef2f4" }}>Websites and workflows,</span>
             <span
               style={{
@@ -131,13 +136,19 @@ export default function OpengraphImage() {
             </span>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", color: "#8497a8", fontSize: 26 }}>
-            <span style={{ color: "#aebecb" }}>Built on the Maine coast · yours to keep</span>
-            <span style={{ fontFamily: "monospace", letterSpacing: 1, color: "#eef2f4" }}>mlinx.studio</span>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", fontSize: 24, fontFamily: "JetBrains Mono" }}>
+            <span style={{ color: "#aebecb" }}>Built on the Maine coast</span>
+            <span style={{ color: "#eef2f4", letterSpacing: 1 }}>mlinx.studio</span>
           </div>
         </div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      fonts: [
+        { name: "Space Grotesk", data: display, weight: 700, style: "normal" },
+        { name: "JetBrains Mono", data: mono, weight: 700, style: "normal" },
+      ],
+    },
   );
 }
