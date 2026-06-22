@@ -44,7 +44,7 @@ export default function CommandPalette() {
     return [
       { id: "top", label: "Home", group: "Navigate", keywords: "hero start top", run: go("top") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings websites tools plugins", run: go("services") },
-      { id: "tools", label: "Free tools · have a play", group: "Navigate", keywords: "tools quote estimator email signature qr code website check lighthouse speed seo free play try", run: go("tools") },
+      { id: "tools", label: "Free tools", group: "Navigate", keywords: "tools quote estimator email signature qr code website check lighthouse speed seo free try", run: go("tools") },
       { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
       {
         id: "marketplace",

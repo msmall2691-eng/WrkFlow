@@ -62,8 +62,35 @@ export default function QuoteCalc() {
 
   return (
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
+      {/* Controls — left: adjust the job */}
       <Reveal>
-        <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
+        <div className="rounded-2xl border border-line bg-surface p-6">
+          <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">The job</p>
+          <div className="space-y-5">
+            <Seg label="Service" value={service} onChange={setService} options={[["standard", "Standard"], ["deep", "Deep clean"], ["moveout", "Move-out"]]} />
+            <Slider label="Bedrooms" value={beds} min={1} max={6} onChange={setBeds} />
+            <Slider label="Bathrooms" value={baths} min={1} max={5} onChange={setBaths} />
+            <Seg label="Frequency" value={freq} onChange={setFreq} options={[["onetime", "One-time"], ["biweekly", "Bi-weekly"], ["monthly", "Monthly"], ["weekly", "Weekly"]]} />
+            <div>
+              <Label>Add-ons</Label>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+                {ADDONS.map((a) => (
+                  <Toggle
+                    key={a.key}
+                    label={`${a.label} +$${a.price}`}
+                    checked={addons[a.key]}
+                    onChange={(v) => setAddons((p) => ({ ...p, [a.key]: v }))}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
+      {/* Result — right: the live price */}
+      <Reveal delay={80}>
+        <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:sticky md:top-24">
           <div className="rounded-2xl bg-[#0e1c28] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">Estimated price</p>
             <p className="mt-2 font-display text-4xl tracking-tight">
@@ -87,31 +114,6 @@ export default function QuoteCalc() {
               Request this quote →
             </a>
             <SaveResult summary={summary} filename="instant-quote" />
-          </div>
-        </div>
-      </Reveal>
-
-      <Reveal delay={80}>
-        <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
-          <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">The job</p>
-          <div className="space-y-5">
-            <Seg label="Service" value={service} onChange={setService} options={[["standard", "Standard"], ["deep", "Deep clean"], ["moveout", "Move-out"]]} />
-            <Slider label="Bedrooms" value={beds} min={1} max={6} onChange={setBeds} />
-            <Slider label="Bathrooms" value={baths} min={1} max={5} onChange={setBaths} />
-            <Seg label="Frequency" value={freq} onChange={setFreq} options={[["onetime", "One-time"], ["biweekly", "Bi-weekly"], ["monthly", "Monthly"], ["weekly", "Weekly"]]} />
-            <div>
-              <Label>Add-ons</Label>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
-                {ADDONS.map((a) => (
-                  <Toggle
-                    key={a.key}
-                    label={`${a.label} +$${a.price}`}
-                    checked={addons[a.key]}
-                    onChange={(v) => setAddons((p) => ({ ...p, [a.key]: v }))}
-                  />
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </Reveal>

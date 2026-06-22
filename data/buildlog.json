@@ -1,5 +1,11 @@
 [
   {
+    "sha": "6ca1987",
+    "subject": "Homepage: replace rent/build section with a fun, playable free-tools beat",
+    "date": "2026-06-22T13:05:19+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "27f9c10",
     "subject": "Atmosphere pass: nautical chart-contour texture, living hero, tonal rhythm",
     "date": "2026-06-22T12:53:02+00:00",
@@ -39,12 +45,6 @@
     "sha": "3434d72",
     "subject": "Copy: align service descriptions to first-person, plain voice",
     "date": "2026-06-22T11:25:02+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "8c8093c",
-    "subject": "Hero: bolder H1 ('what your work runs on'), 'Available for new projects' eyebrow, subtle Maine coast line back",
-    "date": "2026-06-22T08:37:34+00:00",
     "label": "Jun 22"
   }
 ]

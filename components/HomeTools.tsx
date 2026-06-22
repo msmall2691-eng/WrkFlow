@@ -8,8 +8,8 @@ import QRMaker from "./QRCode";
 import SiteCheck from "./SiteCheck";
 
 /*
-  HomeTools — a small, fun "have a play" beat. A curated handful of the free
-  M Linx tools, live and inline, so a visitor gets to actually use the kind of
+  HomeTools — a small, hands-on beat. A curated handful of the free M Linx
+  tools, live and inline, so a visitor gets to actually use the kind of
   software M Studio builds. The full lineup lives on /marketplace.
 */
 type Tool = "quote" | "sig" | "qr" | "sitecheck";
@@ -34,7 +34,7 @@ export default function HomeTools() {
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Free tools. Have a play.
+            Free tools. Try them out.
           </h2>
         </Reveal>
         <Reveal delay={80}>
