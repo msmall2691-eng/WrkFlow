@@ -63,11 +63,6 @@ export default function Footer() {
                     Work
                   </a>
                 </li>
-                <li>
-                  <a href="/playground" className="text-muted transition-colors hover:text-ink">
-                    Playground
-                  </a>
-                </li>
               </ul>
             </div>
 

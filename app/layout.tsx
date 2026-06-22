@@ -1,15 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Chakra_Petch, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
 import KonamiEgg from "@/components/KonamiEgg";
 
-const chakraPetch = Chakra_Petch({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-chakra",
+  variable: "--font-space-grotesk",
   display: "swap",
 });
 
@@ -166,7 +165,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${chakraPetch.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
         <script
