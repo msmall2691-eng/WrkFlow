@@ -1,6 +1,7 @@
 import { founderNote } from "@/lib/content";
 import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
+import TideWave from "./TideWave";
 
 /*
   FounderNote — a clean, dark "meet the founder" section that flows straight out
@@ -17,6 +18,8 @@ const rest = founderNote.slice(splitAt).trim();
 export default function FounderNote() {
   return (
     <section id="founder" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-16 md:py-24">
+      {/* Subtle, tide-driven accent wave where the founder meets the hero */}
+      <TideWave />
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
