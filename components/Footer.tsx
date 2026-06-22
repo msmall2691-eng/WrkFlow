@@ -23,10 +23,10 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              M Studio designs and builds custom websites, tools, and the systems
-              behind them—and connects the ones you already use, so less of your
-              week is busywork. Built on the coast of Maine, working with clients
-              anywhere.
+              Whatever you dream up, we&apos;ll build it — custom websites, tools,
+              automations, and the systems that connect everything you already
+              use. Less busywork, more yours. Built on the coast of Maine, working
+              with clients anywhere.
             </p>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
               Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere

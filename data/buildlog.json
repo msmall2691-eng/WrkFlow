@@ -1,5 +1,11 @@
 [
   {
+    "sha": "f44e290",
+    "subject": "Founder note: tighten to 3 sentences, keep the personal vibe",
+    "date": "2026-06-22T13:20:00+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "3bbec6d",
     "subject": "Quote tool layout swap, personal founder note, drop 'play'",
     "date": "2026-06-22T13:15:06+00:00",
@@ -39,12 +45,6 @@
     "sha": "5c369d4",
     "subject": "Services: surface full write-ups in expandable cards",
     "date": "2026-06-22T12:14:55+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "aa6b3dd",
-    "subject": "Copy: first-person, plain-language service descriptions; founder note no longer opens on 'I'",
-    "date": "2026-06-22T12:12:16+00:00",
     "label": "Jun 22"
   }
 ]

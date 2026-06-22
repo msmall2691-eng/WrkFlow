@@ -44,12 +44,12 @@ export default function MarketplacePage() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
-                M Linx is M Studio&apos;s line of ready-to-run builds—the work it
-                makes most often, packaged so you can{" "}
+                M Linx is our line of ready-to-run builds—the things we make
+                most often, packaged so you can{" "}
                 <span className="text-ink">buy and own</span> them outright,{" "}
                 <span className="text-ink">embed</span> a hosted widget in minutes,
-                or <span className="text-ink">start free</span>. Either way, the
-                studio that built them sets them up around your business.
+                or <span className="text-ink">start free</span>. Either way, we
+                set them up around your business.
               </p>
             </Reveal>
 
@@ -62,7 +62,7 @@ export default function MarketplacePage() {
                 />
                 <ModelCard
                   tag={marketModelLabels.embed}
-                  body="A hosted widget you drop into your existing site with one line. M Studio runs and updates it; small monthly."
+                  body="A hosted widget you drop into your existing site with one line. We run and update it; small monthly."
                 />
                 <ModelCard
                   tag={marketModelLabels.open}

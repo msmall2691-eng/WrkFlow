@@ -52,8 +52,9 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Websites, custom tools, and the systems that connect them. Built on the
-          Maine coast for small businesses, yours to keep, clients anywhere.
+          Whatever you dream up, we&apos;ll build it — websites, custom tools,
+          automations, AI. No cookie-cutter templates, all yours to keep. Made on
+          the Maine coast, working with small businesses anywhere.
         </p>
 
 

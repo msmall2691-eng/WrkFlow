@@ -1,7 +1,7 @@
 import Reveal from "./Reveal";
 
 /*
-  Services — the three things M Studio builds, in plain terms a non-technical
+  Services — the three things we build, in plain terms a non-technical
   owner gets at a glance. Custom studio work leads; the premade M Linx line is
   a quiet tap away at the end.
 */
@@ -65,12 +65,13 @@ export default function Services() {
         <div className="mb-12 max-w-3xl">
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              What M Studio builds.
+              What we can build.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-base leading-relaxed text-muted">
-              Custom software, built around how you run.
+              If you can picture it, we can build it — shaped around how you
+              actually work.
             </p>
           </Reveal>
         </div>

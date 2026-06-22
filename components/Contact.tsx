@@ -82,9 +82,9 @@ export default function Contact() {
             <Reveal delay={120}>
               <p className="mt-6 text-base leading-relaxed text-white/75">
                 No pitch deck required. A few sentences about what you want to
-                build, or what&apos;s slowing you down. Every message gets read
-                personally and answered within a day—a real reply, not a sales
-                sequence.
+                build — or just the idea you&apos;re dreaming up. Every message
+                gets read personally and answered within a day, a real reply, not
+                a sales sequence.
               </p>
             </Reveal>
             <Reveal delay={160}>
