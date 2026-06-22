@@ -7,7 +7,7 @@ import Reveal from "./Reveal";
 import ProjectVisual from "./ProjectVisual";
 
 /*
-  Services — the full "what I build" menu. Each discipline opens to its
+  Services — the full "what M Studio builds" menu. Each discipline opens to its
   write-up (what it is, the problem, what changes) and a real example,
   shown as a screenshot when one genuinely fits or a branded visual when
   a shot would mislead. Custom (M Studio) here; premade (M Linx) a tap away.
@@ -38,14 +38,14 @@ export default function Services() {
         <div className="mb-12 max-w-3xl">
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              What I build.
+              What M Studio builds.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-base leading-relaxed text-muted">
               Built around how you run. Or start from{" "}
               <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
-                M Linx, my premade line →
+                M Linx, the premade line →
               </a>
             </p>
           </Reveal>

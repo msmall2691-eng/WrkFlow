@@ -68,20 +68,21 @@ export default function Contact() {
           <div className="md:col-span-5">
             <Reveal delay={60}>
               <h2 className="display text-2xl text-white sm:text-3xl md:text-4xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-                Tell me what you&apos;re trying to solve.
+                Let&apos;s start with what you&apos;re trying to solve.
               </h2>
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 text-base leading-relaxed text-white/75">
                 No pitch deck required. A few sentences about what you want to
-                build, or what&apos;s slowing you down. I read every one myself and
-                reply within a day. A real reply, not a sales sequence.
+                build, or what&apos;s slowing you down. Every message gets read
+                personally and answered within a day—a real reply, not a sales
+                sequence.
               </p>
             </Reveal>
             <Reveal delay={160}>
               <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-signal/30 bg-signal/[0.06] px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-signal">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
-                Currently taking on my first outside projects
+                Currently available for new projects
               </p>
             </Reveal>
             <Reveal delay={200}>
@@ -217,7 +218,7 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
       </div>
       <h3 className="mt-5 font-display text-2xl text-white">Got it.</h3>
       <p className="mt-3 text-base leading-relaxed text-white/75">
-        I read every one myself and reply within a day.
+        Every message is read personally, with a reply within a day.
       </p>
       <button
         type="button"

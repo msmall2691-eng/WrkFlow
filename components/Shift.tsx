@@ -20,14 +20,14 @@ export default function Shift() {
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               Rented software rents you.{" "}
-              <span className="text-signal">I build the kind you own.</span>
+              <span className="text-signal">M Studio builds the kind you own.</span>
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
               Off-the-shelf software makes you work its way and pay per seat
-              forever. I build the opposite: shaped to how you run, owned outright,
-              no one to ask for permission.
+              forever. M Studio builds the opposite: shaped to how you run, owned
+              outright, with no one to ask for permission.
             </p>
           </Reveal>
         </div>

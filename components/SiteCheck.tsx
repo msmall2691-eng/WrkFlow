@@ -206,7 +206,7 @@ export default function SiteCheck() {
             ) : (
               <>
                 Scores from Google Lighthouse (0–100). Want these all green?
-                That&apos;s exactly the kind of website ops I handle.{" "}
+                That&apos;s exactly the kind of website ops M Studio handles.{" "}
                 <a href="#contact" className="text-signal hover:opacity-80">Let&apos;s talk</a>.
               </>
             )}
@@ -216,9 +216,9 @@ export default function SiteCheck() {
 
       {!result && !loading && !error && (
         <p className="mt-5 text-sm leading-relaxed text-muted">
-          Real audit, not a mockup: enter any public website and I&apos;ll run it
-          through Google Lighthouse for live speed, accessibility, best-practices,
-          and SEO scores.
+          Real audit, not a mockup: enter any public website and it runs through
+          Google Lighthouse for live speed, accessibility, best-practices, and SEO
+          scores.
         </p>
       )}
     </div>

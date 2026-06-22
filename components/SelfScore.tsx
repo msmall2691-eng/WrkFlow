@@ -66,7 +66,7 @@ export default function SelfScore() {
       {score != null && (
         <a
           href="/#kit"
-          title="I built the tool that measures this. Run it on your own site"
+          title="From a tool M Studio built—run it on your own site"
           className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-base px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-muted transition-colors hover:border-signal/50 hover:text-signal"
         >
           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal" />

@@ -20,7 +20,7 @@ export default function Deployments() {
         <div className="mb-12 max-w-3xl">
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              I built it for my own company first.
+              Built for our own company first.
             </h2>
           </Reveal>
           <Reveal delay={120}>

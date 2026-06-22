@@ -38,8 +38,8 @@ export default function MarketCatalog() {
       <Reveal>
         <p className="mt-10 text-sm leading-relaxed text-faint">
           Pricing is indicative. Every setup is tuned to your business, so the
-          final number depends on scope. Reserve one and I&apos;ll send a fixed
-          quote.
+          final number depends on scope. Reserve one and M Studio will send a
+          fixed quote.
         </p>
       </Reveal>
 
@@ -223,8 +223,8 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
         ) : (
           <form onSubmit={submit} className="p-6">
             <p className="mb-4 text-sm leading-relaxed text-muted">
-              Reserve your spot. Drop your details and I&apos;ll follow up with a
-              fixed quote. No payment now.
+              Reserve your spot. Drop your details and M Studio will follow up
+              with a fixed quote. No payment now.
             </p>
             {/* Honeypot */}
             <input

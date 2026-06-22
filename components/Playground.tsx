@@ -108,7 +108,7 @@ export default function Playground() {
             Real tools from{" "}
             <span className="inline-flex items-center gap-1.5 align-middle text-ink">
               <LinxMark className="h-3 w-auto" />M Linx
-            </span>, the same ones I build into client systems. Use them as much as
+            </span>, the same ones built into client systems. Use them as much as
             you want.{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
               See the full lineup →

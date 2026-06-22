@@ -75,7 +75,7 @@ export default function Hero() {
         {/* What we build — a quiet, interactive capability line (websites lead) */}
         <div className="mt-12 max-w-xl">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            What I build
+            What M Studio builds
           </p>
           <HeroCapabilities />
         </div>
