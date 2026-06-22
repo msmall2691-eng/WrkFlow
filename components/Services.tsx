@@ -15,12 +15,14 @@ const AUDIENCES = [
   "Property managers",
   "STR operators",
   "Founders",
+  "Organizations",
+  "Personal projects",
 ];
 
 const MENU: Item[] = [
   {
-    title: "Websites",
-    line: "A website that actually works for your business — marketing site, booking, client portal. Fast, and yours.",
+    title: "Websites & web apps",
+    line: "More than a marketing site — booking, client portals, member areas, dashboards. Real web apps, not templates (and not bloated native apps). Fast, custom, and yours.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <rect x="3" y="4" width="18" height="16" rx="2" />

@@ -18,10 +18,10 @@
   --color-muted: #aebecb;
   --color-faint: #8497a8;
 
-  /* Signal accent (sea-glass teal) */
-  --color-signal: #16a394;
-  --color-signal-dim: #0e8f86;
-  --color-signal-glow: rgba(22, 163, 148, 0.16);
+  /* Signal accent — default "Harbor" blue (the picker re-tunes it live) */
+  --color-signal: #2f6df0;
+  --color-signal-dim: #1f54c9;
+  --color-signal-glow: rgba(47, 109, 240, 0.16);
 
   /* Warm accent (brass / amber) — for highlights and focal pops */
   --color-gold: #d9a441;

@@ -51,10 +51,10 @@ function currentPhase(now = new Date()): Accent {
 
 export default function AccentSwitcher() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(-1); // index of manual accent, or -1 when auto
-  const [auto, setAuto] = useState(true);
+  const [active, setActive] = useState(1); // default: Harbor (index 1); -1 when auto
+  const [auto, setAuto] = useState(false);
   const [phase, setPhase] = useState<Accent>(PHASES.day);
-  const activeRef = useRef(-1);
+  const activeRef = useRef(1);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const applyColor = (a: Accent) => {
@@ -116,8 +116,9 @@ export default function AccentSwitcher() {
     } catch {
       /* ignore */
     }
-    if (saved != null && saved !== "auto" && ACCENTS[Number(saved)]) selectManual(Number(saved), false);
-    else enableAuto(false);
+    if (saved === "auto") enableAuto(false);
+    else if (saved != null && ACCENTS[Number(saved)]) selectManual(Number(saved), false);
+    else selectManual(1, false); // default: Harbor
     return stopTimer;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -210,7 +211,7 @@ export default function AccentSwitcher() {
           className="h-3.5 w-3.5 rounded-full ring-2 ring-offset-1 ring-offset-surface"
           style={{ backgroundColor: swatch.signal }}
         />
-        {auto ? "Maine" : "Accent"}
+        {auto ? "Maine daylight" : "Theme"}
       </button>
     </div>
   );
