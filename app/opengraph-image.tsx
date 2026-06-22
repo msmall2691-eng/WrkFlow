@@ -5,7 +5,6 @@ export const alt = "M Studio — custom websites & software, built on the Maine 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const WORDMARK = "linear-gradient(135deg, #16a394 0%, #5ec9bd 38%, #e8c98f 72%, #d9a441 100%)";
 const GOLD = "linear-gradient(100deg, #d9a441, #f3d79a 50%, #d9a441)";
 
 export default async function OpengraphImage() {
@@ -27,105 +26,71 @@ export default async function OpengraphImage() {
           fontFamily: "Space Grotesk",
         }}
       >
-        {/* Aurora swell — bright, like the live hero */}
+        {/* Aurora — Harbor blue, like the live hero */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
             backgroundImage:
-              "radial-gradient(60% 78% at 84% 78%, rgba(22,163,148,0.52), transparent 62%), radial-gradient(54% 66% at 80% 4%, rgba(217,164,65,0.34), transparent 62%), radial-gradient(50% 60% at 10% 26%, rgba(22,163,148,0.18), transparent 70%)",
+              "radial-gradient(60% 80% at 84% 78%, rgba(47,109,240,0.42), transparent 62%), radial-gradient(52% 64% at 80% 6%, rgba(217,164,65,0.18), transparent 62%), radial-gradient(48% 60% at 8% 24%, rgba(47,109,240,0.16), transparent 70%)",
           }}
         />
-        {/* Glow pool behind the wordmark */}
+        {/* Ghost M STUDIO — faint white, exactly like the hero wordmark */}
         <div
           style={{
             position: "absolute",
-            right: -40,
-            top: 80,
-            width: 600,
-            height: 480,
-            display: "flex",
-            backgroundImage: "radial-gradient(circle at 55% 50%, rgba(22,163,148,0.42), rgba(217,164,65,0.16) 45%, transparent 72%)",
-          }}
-        />
-        {/* Ghost wordmark */}
-        <div
-          style={{
-            position: "absolute",
-            right: 56,
+            right: 64,
             top: 0,
             bottom: 0,
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-end",
             justifyContent: "center",
-            opacity: 0.4,
+            color: "#eef2f4",
+            opacity: 0.14,
           }}
         >
-          <div style={{ display: "flex", fontSize: 230, fontWeight: 700, lineHeight: 0.8, letterSpacing: -8, backgroundImage: WORDMARK, backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent", textShadow: "0 0 55px rgba(22,163,148,0.5)" }}>
-            M
-          </div>
-          <div style={{ display: "flex", fontSize: 66, fontWeight: 700, letterSpacing: 2, backgroundImage: WORDMARK, backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}>
-            STUDIO
-          </div>
+          <div style={{ display: "flex", fontSize: 250, fontWeight: 700, lineHeight: 0.8, letterSpacing: -8 }}>M</div>
+          <div style={{ display: "flex", fontSize: 74, fontWeight: 700, letterSpacing: 2 }}>STUDIO</div>
         </div>
-        {/* Scrim */}
+        {/* Scrim — keeps the left text crisp */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
-            backgroundImage: "linear-gradient(105deg, rgba(8,19,29,0.92) 0%, rgba(8,19,29,0.55) 50%, rgba(8,19,29,0) 84%)",
+            backgroundImage: "linear-gradient(105deg, rgba(8,19,29,0.92) 0%, rgba(8,19,29,0.55) 52%, rgba(8,19,29,0) 84%)",
           }}
         />
 
-        {/* Foreground — the hero, faithfully */}
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", gap: 24, padding: 70, width: "66%" }}>
-          {/* eyebrow */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, color: "#9db8f5", fontSize: 20, letterSpacing: 4, textTransform: "uppercase", fontFamily: "JetBrains Mono" }}>
+        {/* Foreground */}
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", gap: 26, padding: 76, width: "66%" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, color: "#9db8f5", fontSize: 21, letterSpacing: 4, textTransform: "uppercase", fontFamily: "JetBrains Mono" }}>
             <div style={{ width: 10, height: 10, borderRadius: 9999, background: "#2f6df0", display: "flex" }} />
             Available for new projects
           </div>
 
-          {/* headline */}
-          <div style={{ display: "flex", flexDirection: "column", fontSize: 52, fontWeight: 700, lineHeight: 1.04, letterSpacing: -1.5 }}>
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 56, fontWeight: 700, lineHeight: 1.05, letterSpacing: -1.5 }}>
             <span style={{ color: "#f4f8fa" }}>Websites and workflows,</span>
-            <span style={{ backgroundImage: GOLD, backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent", textShadow: "0 0 30px rgba(217,164,65,0.35)" }}>
+            <span style={{ backgroundImage: GOLD, backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}>
               custom-made for your projects.
             </span>
           </div>
 
-          {/* sub */}
-          <div style={{ display: "flex", color: "#c2d0da", fontSize: 22, letterSpacing: -0.3 }}>
+          <div style={{ display: "flex", color: "#c2d0da", fontSize: 23, letterSpacing: -0.3 }}>
             Built by someone who ran the business first — then built the software it needed.
           </div>
 
-          {/* button — one clean CTA (content-sized, never shrinks) */}
-          <div style={{ display: "flex", marginTop: 6 }}>
-            <div
-              style={{
-                display: "flex",
-                flexShrink: 0,
-                alignItems: "center",
-                whiteSpace: "nowrap",
-                background: "#2f6df0",
-                color: "#ffffff",
-                fontSize: 20,
-                fontWeight: 600,
-                padding: "12px 28px",
-                borderRadius: 9999,
-              }}
-            >
-              Start a conversation →
-            </div>
-          </div>
-
-          {/* live chip */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 6, padding: "8px 14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(8,19,29,0.55)", fontFamily: "JetBrains Mono", fontSize: 16, color: "#aebecb" }}>
+          {/* Live chip — the Maine-data feature, matching the site panel */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 4, padding: "10px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(8,19,29,0.55)", fontFamily: "JetBrains Mono", fontSize: 16, color: "#aebecb", alignSelf: "flex-start" }}>
             <div style={{ width: 8, height: 8, borderRadius: 9999, background: "#2f6df0", display: "flex" }} />
             <span style={{ color: "#9db8f5" }}>LIVE</span>
             <span>Portland, ME · weather · tide · Maine daylight</span>
+          </div>
+
+          <div style={{ display: "flex", marginTop: 2, color: "#8497a8", fontSize: 22, fontFamily: "JetBrains Mono", letterSpacing: 1 }}>
+            mlinx.studio
           </div>
         </div>
       </div>
