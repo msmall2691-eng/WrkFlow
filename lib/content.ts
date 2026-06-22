@@ -15,7 +15,7 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `Off-the-shelf software never fit how I needed to work — so I built my own, to run ${provingGroundCompany}. That's how M Studio started. I'm finishing a Business Analytics & AI degree at the University of Southern Maine, with a minor in Computer Science, and now I build websites, web apps, and workflows for people who are done with cookie-cutter, plug-in sites. Whatever you dream up, we can build it, connect it, automate it, and make it actually work the way you do. What I love is the creative part — dreaming something up, connecting all the pieces, and making it real, right here on the Maine coast.`;
+export const founderNote = `Off-the-shelf software never fit how I needed to work — so I built my own, to run ${provingGroundCompany}. That's how M Studio began. I am finishing a Business Analytics & AI degree at the University of Southern Maine, with a minor in Computer Science, and now I build websites, web apps, and workflows for people who are done with cookie-cutter, plug-in sites you can't change or connect to anything. Whatever you dream up, we can build it, connect it, automate it, and make it work exactly how you do. The part I love most is the creative one — dreaming something up, connecting the pieces, and bringing it to life, right here on the Maine coast.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */

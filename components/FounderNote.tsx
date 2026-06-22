@@ -1,7 +1,6 @@
 import { founderNote } from "@/lib/content";
 import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
-import TideWave from "./TideWave";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 
@@ -19,9 +18,7 @@ const rest = founderNote.slice(splitAt).trim();
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] pt-16 pb-28 md:pt-24 md:pb-36">
-      {/* Tide-driven accent wave at the top (symmetry with the water below) */}
-      <TideWave />
+    <section id="founder" className="relative overflow-hidden border-t border-line bg-[#10243a] pt-16 pb-28 md:pt-24 md:pb-36">
       {/* Live "harbor water" — fills to the real Portland tide level (accent → re-tunes with theme) */}
       <TideLevel />
       <div
