@@ -1,5 +1,11 @@
 [
   {
+    "sha": "5c3bdb3",
+    "subject": "Work as horizontal rail; drop interactive dashboard; clearer cheaper marketplace",
+    "date": "2026-06-22T13:29:19+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "677630e",
     "subject": "Voice: collaborative 'you + we' across the site; restore the full founder note",
     "date": "2026-06-22T13:25:03+00:00",
@@ -39,12 +45,6 @@
     "sha": "9c13abd",
     "subject": "Homepage: simplify the offer (brief #6)",
     "date": "2026-06-22T12:41:30+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "5b124da",
-    "subject": "Copy: site-wide voice pass — brand-led 'M Studio' tone, fewer first-person 'I' openers",
-    "date": "2026-06-22T12:25:15+00:00",
     "label": "Jun 22"
   }
 ]
