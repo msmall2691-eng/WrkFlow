@@ -51,7 +51,7 @@ const RULES: { needs: ToolId[]; text: string }[] = [
   { needs: ["crm", "slack"], text: "New leads ping your team in chat the second they arrive." },
   { needs: ["stripe", "sms"], text: "Paid invoices trigger an automatic thank-you text." },
   { needs: ["website", "gmail"], text: "Inquiries get an instant, branded auto-reply while you sleep." },
-  { needs: ["quickbooks", "sheets"], text: "Financials flow into a live dashboard you actually read." },
+  { needs: ["quickbooks", "sheets"], text: "Financials flow into a live dashboard you read every day." },
   { needs: ["calendar", "slack"], text: "The team sees the day's jobs in chat every morning." },
 ];
 

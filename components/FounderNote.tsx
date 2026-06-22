@@ -24,11 +24,6 @@ export default function FounderNote() {
 
           {/* Note */}
           <div className="md:col-span-8">
-            <Reveal>
-              <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#3a5a6b]">
-                // From the founder
-              </p>
-            </Reveal>
             <Reveal delay={80}>
               <blockquote className="[font-family:var(--font-serif)] text-base leading-relaxed text-[#16384a] md:text-lg">
                 {founderNote}

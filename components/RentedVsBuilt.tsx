@@ -88,7 +88,7 @@ export default function RentedVsBuilt() {
 
         <p className="mt-6 text-sm text-muted">
           {own
-            ? "That's what we build—and you own it outright."
+            ? "That's the whole deal. You own it."
             : "Flip the switch. That's the shift."}
         </p>
       </div>

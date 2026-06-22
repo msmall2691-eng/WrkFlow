@@ -206,8 +206,8 @@ export default function SiteCheck() {
             ) : (
               <>
                 Scores from Google Lighthouse (0–100). Want these all green?
-                That&apos;s exactly the kind of website ops we handle—{" "}
-                <a href="#contact" className="text-signal hover:opacity-80">let&apos;s talk</a>.
+                That&apos;s exactly the kind of website ops I handle.{" "}
+                <a href="#contact" className="text-signal hover:opacity-80">Let&apos;s talk</a>.
               </>
             )}
           </p>
@@ -216,7 +216,7 @@ export default function SiteCheck() {
 
       {!result && !loading && !error && (
         <p className="mt-5 text-sm leading-relaxed text-muted">
-          Real audit, not a mockup: enter any public website and we&apos;ll run it
+          Real audit, not a mockup: enter any public website and I&apos;ll run it
           through Google Lighthouse for live speed, accessibility, best-practices,
           and SEO scores.
         </p>

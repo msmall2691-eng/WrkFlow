@@ -34,17 +34,17 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
           </span>
-          Originated in Maine
+          Maine-built
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Custom websites, tools, and plugins, built for{" "}
-          <span className="shimmer-text">the way you work.</span>
+          I build the software your business{" "}
+          <span className="shimmer-text">should&apos;ve come with.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Websites, apps, and custom tools for small businesses. New England,
-          working anywhere.
+          Websites, apps, and internal tools for small businesses. Built on the
+          Maine coast, yours to keep, clients anywhere.
         </p>
 
 
@@ -67,14 +67,14 @@ export default function Hero() {
             href="#services"
             className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:border-white/60 hover:bg-white/5"
           >
-            See what&apos;s possible
+            See the work.
           </a>
         </div>
 
         {/* What we build — a quiet, interactive capability line (websites lead) */}
         <div className="mt-12 max-w-xl">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            What we build
+            What I build
           </p>
           <HeroCapabilities />
         </div>

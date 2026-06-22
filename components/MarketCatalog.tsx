@@ -37,8 +37,8 @@ export default function MarketCatalog() {
 
       <Reveal>
         <p className="mt-10 text-sm leading-relaxed text-faint">
-          Pricing is indicative—every setup is tuned to your business, so the
-          final number depends on scope. Reserve one and we&apos;ll send a fixed
+          Pricing is indicative. Every setup is tuned to your business, so the
+          final number depends on scope. Reserve one and I&apos;ll send a fixed
           quote.
         </p>
       </Reveal>
@@ -223,7 +223,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
         ) : (
           <form onSubmit={submit} className="p-6">
             <p className="mb-4 text-sm leading-relaxed text-muted">
-              Reserve your spot—drop your details and we&apos;ll follow up with a
+              Reserve your spot. Drop your details and I&apos;ll follow up with a
               fixed quote. No payment now.
             </p>
             {/* Honeypot */}

@@ -99,19 +99,17 @@ export default function Playground() {
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
-          <p className="marker mb-4">// M Linx · try one free</p>
-        </Reveal>
-        <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Free tools you can actually use—built for trades.
+            Free tools. No signup. Built for trades.
           </h2>
         </Reveal>
         <Reveal delay={80}>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
-            Free, working tools by{" "}
+            Real tools from{" "}
             <span className="inline-flex items-center gap-1.5 align-middle text-ink">
               <LinxMark className="h-3 w-auto" />M Linx
-            </span>—the same kind we build into the systems behind your website.{" "}
+            </span>, the same ones I build into client systems. Use them as much as
+            you want.{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
               See the full lineup →
             </a>

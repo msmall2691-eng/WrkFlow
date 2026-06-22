@@ -12,7 +12,7 @@ export const provingGroundCompany = "The Maine Cleaning Company";
 
 /** "Who this is for" — names the buyer plainly. */
 export const whoIsItFor =
-  "For small businesses and independent makers alike: service companies, trades, property managers, short-term-rental operators, founders, and anyone who needs a website, a tool, or a plugin that actually works. Bring a whole business to streamline or a single project to build—both are welcome.";
+  "Service companies, trades, property managers, short-term-rental operators, founders. Anyone who's outgrown off-the-shelf and wants something built to fit. Whole business or one project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
 export const founderNote = `Designing and building websites, web apps, and the custom tools and workflows that keep a small business running—that's the work. My background is hands-on: I built the software for my own company, ${provingGroundCompany}, when nothing on the market fit, from the customer-facing site to the systems running scheduling and daily operations. That experience became the foundation for everything I do now. Today I build for other small businesses across Maine and beyond, while completing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
@@ -217,22 +217,22 @@ export const approachSteps: ApproachStep[] = [
   {
     index: "01",
     title: "Discovery",
-    body: "First we figure out how you actually work—where your time goes, where the data lives, what keeps breaking.",
+    body: "First I figure out how you actually run. Where time goes, where data lives, what keeps breaking.",
   },
   {
     index: "02",
     title: "Design",
-    body: "Then we sketch the system around that: the data, the flow, the screens—and run it past you before building anything.",
+    body: "I sketch the system around that: data, flow, screens. You sign off before I build anything.",
   },
   {
     index: "03",
     title: "Build",
-    body: "We build in small, working pieces you can poke at and react to. You steer the whole way.",
+    body: "I build in small, working pieces you can poke at. You steer.",
   },
   {
     index: "04",
     title: "Iterate",
-    body: "We tune it against real use, hand it over yours to keep, and stick around to add to it. No lock-in.",
+    body: "I tune it against real use, hand it over, and stick around to add to it. No lock-in.",
   },
 ];
 
@@ -274,9 +274,9 @@ export const work: WorkItem[] = [
   },
   {
     tier: "site",
-    tag: "Website + system · our own company",
+    tag: "Website + system · my own company",
     title: "The Maine Cleaning Co.",
-    blurb: "Marketing + booking site, wired straight into the back-office system we run the company on.",
+    blurb: "Marketing + booking site, wired straight into the back-office system I run the company on.",
     stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
     url: "https://maineclean.co",
     shot: "/shots/maineclean.png",

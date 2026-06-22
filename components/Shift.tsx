@@ -17,20 +17,17 @@ export default function Shift() {
 
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="max-w-3xl">
-          <Reveal>
-            <p className="marker mb-4">// Why M Studio</p>
-          </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Built to fit you—and{" "}
-              <span className="text-signal">yours to keep.</span>
+              Rented software rents you.{" "}
+              <span className="text-signal">I build the kind you own.</span>
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Rented software makes you bend to its forms and pay per seat forever.
-              We build the opposite: tools shaped around how you actually work, that
-              you own outright.
+              Off-the-shelf software makes you work its way and pay per seat
+              forever. I build the opposite: shaped to how you run, owned outright,
+              no one to ask for permission.
             </p>
           </Reveal>
         </div>
@@ -40,7 +37,6 @@ export default function Shift() {
         {/* Who it's for */}
         <Reveal delay={120}>
           <div className="mt-12 border-t border-line pt-8">
-            <p className="marker mb-4">// Who it&apos;s for</p>
             <p className="display-serif max-w-3xl text-xl leading-snug text-ink sm:text-2xl">
               {whoIsItFor}
             </p>

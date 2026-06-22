@@ -18,18 +18,15 @@ export default function Deployments() {
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
-          <Reveal>
-            <p className="marker mb-4">// Selected work</p>
-          </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              We built it for ourselves first.
+              I built it for my own company first.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Live client sites, a full SaaS platform, and the systems running
-              behind them.
+              Live client sites, a SaaS platform, and the systems running behind
+              them.
             </p>
           </Reveal>
         </div>

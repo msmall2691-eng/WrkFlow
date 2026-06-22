@@ -11,7 +11,7 @@ const I = "h-5 w-5 text-signal";
 const MENU: Item[] = [
   {
     title: "Websites & web apps",
-    line: "Custom marketing sites, client portals, booking & scheduling apps.",
+    line: "Marketing sites, client portals, booking apps. Fast, and yours.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -21,7 +21,7 @@ const MENU: Item[] = [
   },
   {
     title: "Custom tools & plugins",
-    line: "Purpose-built tools dropped right into how you already work.",
+    line: "Tools that drop into how you already work.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <rect x="3" y="3" width="8" height="8" rx="1.5" />
@@ -33,7 +33,7 @@ const MENU: Item[] = [
   },
   {
     title: "Workflow automation",
-    line: "Connect the systems you use so the data moves itself.",
+    line: "Wire your systems together so the data moves itself.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" strokeLinejoin="round" />
@@ -42,7 +42,7 @@ const MENU: Item[] = [
   },
   {
     title: "Dashboards",
-    line: "One live view of the numbers that actually run your day.",
+    line: "Your real numbers, one live screen.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <path d="M4 20V11M10 20V4M16 20v-6M22 20H2" strokeLinecap="round" />
@@ -51,7 +51,7 @@ const MENU: Item[] = [
   },
   {
     title: "Systems & data",
-    line: "CRMs, databases, migrations, and cleanups that hold up.",
+    line: "CRMs, databases, migrations, cleanups. Done right, once.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <ellipse cx="12" cy="5" rx="8" ry="3" />
@@ -76,18 +76,15 @@ export default function Services() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
-            <p className="marker mb-4">// What we do</p>
-          </Reveal>
-          <Reveal delay={60}>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              Five things we build, connect, and optimize.
+              What I build.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-base leading-relaxed text-muted">
-              Custom-built around how you work—or grab a head start from{" "}
+              Built around how you run. Or start from{" "}
               <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
-                M Linx, our premade line →
+                M Linx, my premade line →
               </a>
             </p>
           </Reveal>

@@ -11,19 +11,15 @@ export default function Approach() {
       <Watermark text="M STUDIO" />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
-          <Reveal>
-            <p className="marker mb-4">// How we work</p>
-          </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Draft-first. You stay in control the whole way.
+              No black boxes. You steer the whole build.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              No black boxes and no dependency by design. You see the work as it
-              takes shape, steer it at every step, and walk away owning it
-              outright.
+              You see the work as it takes shape, change course whenever, and walk
+              away owning it. No dependency by design.
             </p>
           </Reveal>
         </div>

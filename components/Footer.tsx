@@ -23,8 +23,8 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo tag />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              We design and build custom websites, tools, and the systems behind
-              them—and help connect the ones you already use—so less of your week is
+              I design and build custom websites, tools, and the systems behind
+              them, and connect the ones you already use, so less of your week is
               busywork. Built on the coast of Maine, working with clients anywhere.
             </p>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
