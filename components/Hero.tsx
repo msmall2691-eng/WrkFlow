@@ -43,8 +43,8 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Websites, apps, and internal tools for small businesses. Built on the
-          Maine coast, yours to keep, clients anywhere.
+          Websites, apps, tools, and workflows for any business or project. Built
+          on the Maine coast, yours to keep, clients anywhere.
         </p>
 
 

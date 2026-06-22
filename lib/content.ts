@@ -12,10 +12,10 @@ export const provingGroundCompany = "The Maine Cleaning Company";
 
 /** "Who this is for" — names the buyer plainly. */
 export const whoIsItFor =
-  "Service companies, trades, property managers, short-term-rental operators, founders. Anyone who's outgrown off-the-shelf and wants something built to fit. Whole business or one project, both work.";
+  "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I got into this by building software for my own company, ${provingGroundCompany}, because nothing on the market quite fit. I built the whole thing, from the website to the scheduling and daily operations behind it, and that's where I learned the work. Now I build websites, apps, and internal tools for other small businesses, while finishing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
+export const founderNote = `I got into this by building software for my own company, ${provingGroundCompany}, because nothing on the market quite fit. I built the whole thing, from the website to the scheduling and daily operations behind it, and that's where I learned the work. Now I build websites, apps, tools, and workflows for all kinds of businesses and personal projects, while finishing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */

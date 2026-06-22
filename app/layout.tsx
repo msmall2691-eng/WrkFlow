@@ -35,12 +35,12 @@ const jetbrainsMono = JetBrains_Mono({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "M Studio builds custom websites, web apps, and tools for small businesses—then links your systems together so everything just runs. Built on the Maine coast.";
+  "M Studio builds custom websites, apps, tools, and workflows for businesses and personal projects, then links your systems so everything runs. On the Maine coast.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Custom Websites & Software for Small Businesses | M Studio — Maine",
+    default: "Custom Websites, Apps & Workflows | M Studio — Maine",
     template: "%s · M Studio",
   },
   description: DESCRIPTION,
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "M Studio",
-    title: "Custom Websites & Software for Small Businesses | M Studio — Maine",
+    title: "Custom Websites, Apps & Workflows | M Studio — Maine",
     description: DESCRIPTION,
     images: [
       {
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Custom Websites & Software for Small Businesses | M Studio — Maine",
+    title: "Custom Websites, Apps & Workflows | M Studio — Maine",
     description: DESCRIPTION,
   },
   robots: {
@@ -109,7 +109,7 @@ const JSON_LD = {
       email: "contact@mlinx.studio",
       telephone: "+1-207-432-9492",
       description:
-        "Custom websites, web apps, and tools for small businesses—built to own, not rent. Founded by an operator who ran the business first.",
+        "Custom websites, apps, tools, and workflows for businesses and personal projects, built to own, not rent. Founded by an operator who ran the business first.",
       slogan: "Everything, linked.",
       knowsAbout: [
         "Custom software development",
@@ -140,7 +140,7 @@ const JSON_LD = {
       jobTitle: "Founder & Software Developer",
       worksFor: { "@id": `${SITE_URL}/#studio` },
       description:
-        "Operator-turned-builder. Ran The Maine Cleaning Company, then learned to build the software it needed—now building owned systems from scratch for other small businesses.",
+        "Operator-turned-builder. Ran The Maine Cleaning Company, then learned to build the software it needed, now building owned systems for all kinds of businesses and personal projects.",
       alumniOf: {
         "@type": "CollegeOrUniversity",
         name: "University of Southern Maine",
