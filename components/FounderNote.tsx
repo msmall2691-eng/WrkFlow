@@ -18,7 +18,7 @@ const rest = founderNote.slice(splitAt).trim();
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative overflow-hidden border-t border-line bg-base pt-16 pb-28 md:pt-24 md:pb-36">
+    <section id="founder" className="relative overflow-hidden border-t border-line bg-base pt-16 pb-20 md:pt-24 md:pb-24">
       {/* Live "harbor water" — fills to the real Portland tide level (accent → re-tunes with theme) */}
       <TideLevel />
       <div
@@ -26,11 +26,6 @@ export default function FounderNote() {
         className="floaty-slow pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
       />
       <div className="relative z-10 mx-auto max-w-5xl px-6">
-        {/* Quiet key so the rising "water" reads as the live tide */}
-        <div className="mb-10 flex justify-end">
-          <TideKey />
-        </div>
-
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
           {/* Circular portrait + identity caption */}
           <div className="md:col-span-4">
@@ -65,6 +60,11 @@ export default function FounderNote() {
               </blockquote>
             </Reveal>
           </div>
+        </div>
+
+        {/* Quiet key down by the water it labels */}
+        <div className="mt-12 flex justify-center md:justify-start">
+          <TideKey />
         </div>
       </div>
     </section>

@@ -31,7 +31,7 @@ export default function TideKey() {
   const pct = typeof d.tideLevel === "number" ? Math.round(d.tideLevel * 100) : null;
 
   return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#08131d]/50 px-3 py-1.5 font-mono text-[10px] text-white/55 backdrop-blur">
+    <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-[#08131d]/75 px-3 py-1.5 font-mono text-[10px] text-white/80 shadow-lg backdrop-blur">
       <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
