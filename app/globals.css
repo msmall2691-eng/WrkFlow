@@ -197,6 +197,22 @@ body {
   animation: shimmer 7s linear infinite;
 }
 
+/* Brushed-metal / chrome text — for the hero subline */
+.metallic-text {
+  background: linear-gradient(
+    180deg,
+    #f6f9fb 0%,
+    #cfdae1 40%,
+    #93a6b3 50%,
+    #d4dee4 60%,
+    #f6f9fb 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 /* Giant background wordmark — slow horizontal drift */
 @keyframes wmDrift {
   0%, 100% { transform: translate(-50%, -50%) translateX(-2.5%); }

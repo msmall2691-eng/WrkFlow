@@ -57,17 +57,6 @@ export default function CommandPalette() {
           window.location.href = "/marketplace";
         },
       },
-      {
-        id: "playground",
-        label: "Playground",
-        hint: "↗",
-        group: "Navigate",
-        keywords: "playground sandbox experiments tools lab shader liquid chrome maine live demo",
-        run: () => {
-          close();
-          window.location.href = "/playground";
-        },
-      },
       { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
       { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan starter site founding offer monthly", run: go("pricing") },
       { id: "meg", label: "Meet Meg", hint: "☕", group: "Navigate", keywords: "founder meg about story who", run: go("founder") },

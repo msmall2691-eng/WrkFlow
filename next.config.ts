@@ -38,7 +38,11 @@ const csp = [
   // server-side in the API routes, which CSP does not govern.
   `connect-src 'self'`,
   `manifest-src 'self'`,
-  `frame-src 'none'`,
+  // The Work section embeds live previews of our shipped sites (see the work[]
+  // URLs in lib/content.ts). Allow exactly those origins (apex + subdomains to
+  // survive www/redirects) to be framed BY us. Clickjacking protection of this
+  // site is unaffected — that is governed by frame-ancestors below.
+  `frame-src https://the-remote-admin.com https://*.the-remote-admin.com https://maineclean.co https://*.maineclean.co https://autopilot-sooty.vercel.app`,
   `upgrade-insecure-requests`,
 ].join("; ");
 

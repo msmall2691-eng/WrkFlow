@@ -99,12 +99,9 @@ export default function PrivacyPage() {
           processes server logs.
         </li>
         <li>
-          <strong className="text-ink">Supabase</strong> — securely stores contact
-          form submissions so we don’t lose your message.
-        </li>
-        <li>
-          <strong className="text-ink">Google (Gmail)</strong> — delivers the email
-          notification of your submission to our inbox.
+          <strong className="text-ink">Google (Gmail)</strong> — when you submit the
+          contact form, your message is delivered to, and kept in, our private email
+          inbox so we can read and reply to it.
         </li>
         <li>
           <strong className="text-ink">Google PageSpeed Insights</strong> — powers
@@ -137,12 +134,11 @@ export default function PrivacyPage() {
 
       <H2>How we protect it</H2>
       <P>
-        The site is served entirely over encrypted HTTPS. Stored submissions are
-        held in a database protected so that the public website key can add a
-        message but can never read messages back. We apply security headers and
-        input validation to reduce common web risks. No method of transmission or
-        storage is ever 100% secure, but we take reasonable steps to protect your
-        information.
+        The site is served entirely over encrypted HTTPS, so your submission is
+        encrypted in transit and delivered to a private email inbox that only we
+        can access. We apply security headers, input validation, and rate limiting
+        to reduce common web risks. No method of transmission or storage is ever
+        100% secure, but we take reasonable steps to protect your information.
       </P>
 
       <H2>Your choices and rights</H2>

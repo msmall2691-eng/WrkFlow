@@ -39,7 +39,8 @@ export default function HomeTools() {
         </Reveal>
         <Reveal delay={80}>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
-            Real tools we&apos;ve built — free to use, right here, no signup.{" "}
+            Real tools we&apos;ve built — free to use, no signup. Set one up for
+            your business and we tune it to your pricing, branding, and workflow.{" "}
             <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
               See the full lineup on M Linx →
             </a>
