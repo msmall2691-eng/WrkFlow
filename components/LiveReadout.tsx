@@ -3,9 +3,9 @@
 import MaineReadout from "./MaineReadout";
 
 /*
-  LiveReadout — a small, always-visible "live Maine" panel: the readout, a
-  condensed map of what the data drives, and an inline theme remote you can try.
-  Organized and quietly prominent — no dropdown.
+  LiveReadout — the hero's "live Maine data" panel. Clear, labeled sections:
+  what it is, the live conditions, what they change on the page, and a theme
+  remote you can try. Quietly prominent, not a dropdown.
 */
 const REACTS: { from: string; to: string }[] = [
   { from: "weather", to: "glow" },
@@ -26,31 +26,37 @@ const setAccent = (detail: number | "auto") =>
 
 export default function LiveReadout() {
   return (
-    <div className="max-w-md rounded-xl border border-white/10 bg-[#08131d]/55 p-3.5 backdrop-blur-sm">
-      {/* The live readout */}
-      <div className="flex flex-wrap items-center gap-2.5">
-        <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-signal">
-          <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
-          </span>
-          Live
+    <div className="max-w-md rounded-xl border border-white/12 bg-[#08131d]/60 p-4 backdrop-blur-sm">
+      {/* What it is */}
+      <div className="flex items-center gap-2">
+        <span className="relative flex h-2 w-2" aria-hidden="true">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
         </span>
-        <MaineReadout showDot={false} className="text-white/75" />
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/55">
+          This site runs on live Maine data
+        </span>
       </div>
 
-      {/* What the data drives — condensed */}
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] text-white/45">
-        <span className="uppercase tracking-widest text-white/35">Reacts live</span>
-        {REACTS.map((r) => (
-          <span key={r.from}>
-            <span className="text-signal">{r.from}</span> → {r.to}
-          </span>
-        ))}
+      {/* Live conditions */}
+      <div className="mt-2.5">
+        <MaineReadout showDot={false} className="text-[11px] text-white/85" />
       </div>
 
-      {/* Inline theme remote — recolors the whole site */}
-      <div className="mt-2.5 flex flex-wrap items-center gap-2 border-t border-white/10 pt-2.5">
+      {/* What it changes on the page */}
+      <div className="mt-3 border-t border-white/10 pt-3">
+        <p className="mb-1.5 font-mono text-[9px] uppercase tracking-widest text-white/40">What it changes</p>
+        <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] text-white/60">
+          {REACTS.map((r) => (
+            <span key={r.from}>
+              <span className="text-signal">{r.from}</span> → {r.to}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Theme remote — recolors the whole site, live */}
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3">
         <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">Theme</span>
         {SWATCHES.map((s) => (
           <button
@@ -71,7 +77,7 @@ export default function LiveReadout() {
           className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125"
           style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#16a394 55%,#6f7fd6)" }}
         />
-        <span className="font-mono text-[9px] text-white/30">try it →</span>
+        <span className="font-mono text-[9px] text-white/35">try it →</span>
       </div>
     </div>
   );
