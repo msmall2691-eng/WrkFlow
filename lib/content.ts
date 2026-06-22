@@ -270,6 +270,7 @@ export const work: WorkItem[] = [
     blurb: "Full marketing site for a Southern-NH admin-services business—designed, built, and shipped end to end.",
     stack: ["Next.js", "Vercel"],
     url: "https://the-remote-admin.com",
+    live: true,
     shot: "/shots/remote-admin.png",
     client: true,
     // TODO: real metric — e.g. metric: "Shipped in N weeks" (confirm with Meg)

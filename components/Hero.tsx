@@ -33,8 +33,8 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,12,22,0.82)_0%,rgba(6,12,22,0.45)_42%,rgba(6,12,22,0)_78%)]"
       />
       {/* Mobile: a ghost M STUDIO fills the empty lower space (desktop has its own column) */}
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[42%] overflow-hidden lg:hidden">
-        <HeroWordmark text="M STUDIO" size="text-[17vw]" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[32%] overflow-hidden opacity-80 lg:hidden">
+        <HeroWordmark text="M STUDIO" size="text-[16vw]" />
       </div>
       {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
       <div
@@ -85,9 +85,12 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Live Portland, ME readout — the place, in real time */}
-        <div className="mt-10">
-          <MaineReadout className="text-white/60" />
+        {/* Live Portland, ME readout — real data the whole site quietly reacts to */}
+        <div
+          className="mt-10 inline-flex max-w-full items-center rounded-xl border border-white/10 bg-[#08131d]/55 px-3.5 py-2 backdrop-blur-sm"
+          title="Live Portland conditions, updated through the day — and the site responds: the accent follows Maine daylight, the hero glow tracks the weather, and the waves under the founder note move with the tide."
+        >
+          <MaineReadout className="text-white/75" />
         </div>
       </div>
 
