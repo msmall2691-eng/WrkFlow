@@ -3,6 +3,7 @@ import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
 import TideWave from "./TideWave";
 import TideLevel from "./TideLevel";
+import TideKey from "./TideKey";
 
 /*
   FounderNote — a clean, dark "meet the founder" section that flows straight out
@@ -18,7 +19,7 @@ const rest = founderNote.slice(splitAt).trim();
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative overflow-hidden border-t border-line bg-gradient-to-b from-[#0e1d2b] to-[#16324a] py-16 md:py-24">
+    <section id="founder" className="relative overflow-hidden border-t border-line bg-[#112a3a] py-16 md:py-24">
       {/* Tide-driven accent wave at the top (symmetry with the water below) */}
       <TideWave />
       {/* Live "harbor water" — fills to the real Portland tide level */}
@@ -28,6 +29,10 @@ export default function FounderNote() {
         className="floaty-slow pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
       />
       <div className="relative z-10 mx-auto max-w-5xl px-6">
+        {/* Quiet key so the rising "water" reads as the live tide */}
+        <div className="mb-8 flex justify-end">
+          <TideKey />
+        </div>
         <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
           {/* Portrait + identity caption */}
           <div className="md:col-span-4">

@@ -53,8 +53,16 @@ export default function TideLevel() {
         <path
           d="M0 22 Q180 6 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22"
           stroke="var(--color-signal)"
-          strokeWidth="2"
-          strokeOpacity="0.45"
+          strokeWidth="2.5"
+          strokeOpacity="0.5"
+          fill="none"
+        />
+        {/* faint highlight on the crest — a little shimmer */}
+        <path
+          d="M0 22 Q180 6 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22"
+          stroke="#dff3ef"
+          strokeWidth="1"
+          strokeOpacity="0.3"
           fill="none"
         />
       </svg>
