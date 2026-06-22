@@ -1,68 +1,29 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { services, type Service } from "@/lib/content";
 import Reveal from "./Reveal";
+import ProjectVisual from "./ProjectVisual";
 
 /*
-  Services — a tight "what we do" menu. Five short items with line icons;
-  detail and proof live in Work below. Custom (M Studio) here; premade (M Linx) a tap away.
+  Services — the full "what I build" menu. Each discipline opens to its
+  write-up (what it is, the problem, what changes) and a real example,
+  shown as a screenshot when one genuinely fits or a branded visual when
+  a shot would mislead. Custom (M Studio) here; premade (M Linx) a tap away.
 */
-type Item = { title: string; line: string; icon: React.ReactNode };
-
-const I = "h-5 w-5 text-signal";
-
-const MENU: Item[] = [
-  {
-    title: "Websites & web apps",
-    line: "Marketing sites, client portals, booking apps. Fast, and yours.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <rect x="3" y="4" width="18" height="16" rx="2" />
-        <path d="M3 9h18" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    title: "Custom tools & plugins",
-    line: "Tools that drop into how you already work.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <rect x="3" y="3" width="8" height="8" rx="1.5" />
-        <rect x="13" y="3" width="8" height="8" rx="1.5" />
-        <rect x="3" y="13" width="8" height="8" rx="1.5" />
-        <rect x="13" y="13" width="8" height="8" rx="1.5" />
-      </svg>
-    ),
-  },
-  {
-    title: "Workflow automation",
-    line: "Wire your systems together so the data moves itself.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    title: "Dashboards",
-    line: "Your real numbers, one live screen.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <path d="M4 20V11M10 20V4M16 20v-6M22 20H2" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    title: "Systems & data",
-    line: "CRMs, databases, migrations, cleanups. Done right, once.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <ellipse cx="12" cy="5" rx="8" ry="3" />
-        <path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5" />
-        <path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3" />
-      </svg>
-    ),
-  },
-];
-
 export default function Services() {
+  // First one open by default so the section reads as alive, not inert.
+  const [open, setOpen] = useState<Set<string>>(new Set([services[0]?.id]));
+
+  const toggle = (id: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
   return (
     <section id="services" className="relative overflow-hidden border-t border-line py-14 md:py-20">
       <div
@@ -73,7 +34,7 @@ export default function Services() {
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -right-24 top-28 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
       />
-      <div className="relative mx-auto max-w-6xl px-6">
+      <div className="relative mx-auto max-w-5xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
@@ -90,22 +51,143 @@ export default function Services() {
           </Reveal>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {MENU.map((m, i) => (
-            <Reveal key={m.title} delay={i * 60}>
-              <div className="group h-full rounded-xl border border-line bg-surface/60 p-6 transition-colors hover:border-signal/50">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-base transition-colors group-hover:border-signal/50">
-                  {m.icon}
-                </span>
-                <h3 className="display-serif mt-4 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
-                  {m.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{m.line}</p>
-              </div>
+        <div className="space-y-3">
+          {services.map((svc, i) => (
+            <Reveal key={svc.id} delay={i * 50}>
+              <ServiceRow
+                svc={svc}
+                isOpen={open.has(svc.id)}
+                onToggle={() => toggle(svc.id)}
+              />
             </Reveal>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function ServiceRow({
+  svc,
+  isOpen,
+  onToggle,
+}: {
+  svc: Service;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  const panelId = `svc-panel-${svc.id}`;
+
+  return (
+    <div
+      className={`overflow-hidden rounded-xl border bg-surface/60 transition-colors ${
+        isOpen ? "border-signal/40" : "border-line hover:border-signal/30"
+      }`}
+    >
+      {/* Header — always visible, the whole bar is the toggle */}
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        className="flex w-full items-start gap-4 px-5 py-5 text-left md:px-6"
+      >
+        <span className="mt-0.5 font-mono text-xs text-faint">{svc.index}</span>
+        <span className="min-w-0 flex-1">
+          <span className="block display-serif text-lg text-ink md:text-xl">{svc.title}</span>
+          <span className="mt-1 block text-sm leading-relaxed text-muted">{svc.tagline}</span>
+        </span>
+        <span
+          aria-hidden="true"
+          className={`mt-1 shrink-0 text-faint transition-transform duration-300 ${
+            isOpen ? "rotate-180 text-signal" : ""
+          }`}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5">
+            <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </button>
+
+      {/* Body — smooth grid-rows reveal */}
+      <div
+        id={panelId}
+        className={`grid transition-all duration-500 ease-out ${
+          isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <div className="grid gap-8 border-t border-line px-5 py-6 md:grid-cols-2 md:gap-10 md:px-6">
+            {/* Left — the write-up */}
+            <div className="space-y-5">
+              <Block label="What it is" body={svc.what} />
+              <Block label="The problem" body={svc.pain} />
+              <Block label="What changes" body={svc.outcome} accent />
+
+              {svc.kinds.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  {svc.kinds.map((k) => (
+                    <span
+                      key={k}
+                      className="rounded-full border border-line bg-base px-2.5 py-1 font-mono text-[10px] text-muted"
+                    >
+                      {k}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right — a real example */}
+            <Example svc={svc} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Block({ label, body, accent }: { label: string; body: string; accent?: boolean }) {
+  return (
+    <div>
+      <p
+        className={`font-mono text-[10px] uppercase tracking-widest ${
+          accent ? "text-signal" : "text-faint"
+        }`}
+      >
+        {label}
+      </p>
+      <p className="mt-1.5 text-sm leading-relaxed text-muted">{body}</p>
+    </div>
+  );
+}
+
+function Example({ svc }: { svc: Service }) {
+  const { example } = svc;
+  return (
+    <figure className="flex flex-col">
+      <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-line bg-surface">
+        {example.shot ? (
+          <Image
+            src={example.shot}
+            alt={`${svc.title} — ${example.client}`}
+            fill
+            sizes="(min-width: 768px) 480px, 100vw"
+            className="object-cover object-top"
+          />
+        ) : example.visual ? (
+          <ProjectVisual type={example.visual} />
+        ) : null}
+      </div>
+      <figcaption className="mt-4">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+          Example · {example.client}
+        </p>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted">{example.built}</p>
+        <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-signal/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-signal">
+          {example.result}
+        </p>
+      </figcaption>
+    </figure>
   );
 }
