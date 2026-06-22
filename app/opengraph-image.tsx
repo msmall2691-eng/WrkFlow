@@ -11,7 +11,7 @@ const GOLD = "linear-gradient(100deg, #d9a441, #f3d79a 50%, #d9a441)";
 
 export default async function OpengraphImage() {
   const [display, mono] = await Promise.all([
-    fetch(new URL("./og-fonts/SpaceGrotesk-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
+    fetch(new URL("./og-fonts/Sora-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
     fetch(new URL("./og-fonts/JetBrainsMono-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
   ]);
 
@@ -25,7 +25,7 @@ export default async function OpengraphImage() {
           display: "flex",
           overflow: "hidden",
           background: "#08131d",
-          fontFamily: "Space Grotesk",
+          fontFamily: "Sora",
         }}
       >
         {/* Aurora swell — teal + brass, like the live hero backdrop */}
@@ -146,7 +146,7 @@ export default async function OpengraphImage() {
     {
       ...size,
       fonts: [
-        { name: "Space Grotesk", data: display, weight: 700, style: "normal" },
+        { name: "Sora", data: display, weight: 700, style: "normal" },
         { name: "JetBrains Mono", data: mono, weight: 700, style: "normal" },
       ],
     },

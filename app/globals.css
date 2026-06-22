@@ -28,7 +28,7 @@
   --color-gold-dim: #b9842b;
 
   /* Type */
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
   --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;

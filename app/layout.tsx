@@ -1,14 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Sora, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
 import KonamiEgg from "@/components/KonamiEgg";
 
-const spaceGrotesk = Space_Grotesk({
+const sora = Sora({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-sora",
   display: "swap",
 });
 
@@ -165,7 +165,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
+      className={`${sora.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
         <script
