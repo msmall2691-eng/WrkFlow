@@ -64,7 +64,7 @@ export const services: Service[] = [
     pain:
       "Drag-and-drop builders look like everyone else and box you in the moment you need something specific. Agencies hand back a site you can't edit and don't really own. And almost nobody wires up the hosting, domain, and integrations so the thing just runs.",
     outcome:
-      "A fast, custom site or app you own outright—fully set up, connected to the rest of your systems, and live. No monthly hostage situation, no logging a ticket to change a word.",
+      "A fast, custom site or app you own outright—fully set up, connected to the rest of your systems, and live. No monthly fee holding it over you, no logging a ticket just to change a word.",
     example: {
       client: "The Maine Cleaning Co.",
       built: "Custom marketing site with instant online quoting and booking, wired to the back-office system.",
@@ -100,9 +100,9 @@ export const services: Service[] = [
     what:
       "Purpose-built customer and operations databases with a clean schema and exactly the fields your work actually uses—built around how your business really runs.",
     pain:
-      "Off-the-shelf tools force you to bend your process to fit their forms, then charge a monthly per-seat ransom for the privilege. The data you need lives in the gaps their software never anticipated.",
+      "Off-the-shelf tools make you bend your process to fit their forms, then charge a per-seat fee every month on top. The data you actually need lives in the gaps their software never planned for.",
     outcome:
-      "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no recurring per-seat tax on growth.",
+      "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no per-seat fee that climbs every time you grow.",
     example: {
       client: "Owned CRM",
       built: "A custom customer + job database with exactly the fields the work uses—accessible from anywhere, owned outright.",
@@ -159,7 +159,7 @@ export const services: Service[] = [
     pain:
       "Most operations grow by accretion: tools bolted on over years, steps nobody remembers adding, integrations that fail without anyone noticing. The drag is invisible until it isn't.",
     outcome:
-      "A precise map of your systems and processes, and a ranked list of what to fix first. No jargon, no fear-mongering—just the facts and a sensible order of operations.",
+      "A clear map of your systems and processes, and a ranked list of what to fix first. No jargon, no upselling—just the facts and a sensible order to work through them.",
     example: {
       client: "Operations review",
       built: "A full walk-through of an operator's tools and handoffs—mapping where data leaked, where steps doubled up, and where time quietly vanished.",
