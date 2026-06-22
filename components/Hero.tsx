@@ -56,8 +56,8 @@ export default function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          Designed, built, and wired together to run how you do — yours to keep,
-          made on the Maine coast, with clients anywhere.
+          Dashboards, automations, AI, and integrations, too — all custom-built,
+          and yours to keep.
         </p>
 
 

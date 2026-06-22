@@ -1,5 +1,11 @@
 [
   {
+    "sha": "8a5acc0",
+    "subject": "OG card: real site font (Space Grotesk + JetBrains Mono), bolder wordmark, sharper metadata; livelier mobile hero",
+    "date": "2026-06-22T14:30:58+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "7eedade",
     "subject": "OG card: mirror the site hero (ghost M STUDIO wordmark, aurora, gold accent)",
     "date": "2026-06-22T14:20:29+00:00",
@@ -39,12 +45,6 @@
     "sha": "5c3bdb3",
     "subject": "Work as horizontal rail; drop interactive dashboard; clearer cheaper marketplace",
     "date": "2026-06-22T13:29:19+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "677630e",
-    "subject": "Voice: collaborative 'you + we' across the site; restore the full founder note",
-    "date": "2026-06-22T13:25:03+00:00",
     "label": "Jun 22"
   }
 ]
