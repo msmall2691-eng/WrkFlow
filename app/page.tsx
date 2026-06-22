@@ -7,6 +7,7 @@ import Services from "@/components/Services";
 import Approach from "@/components/Approach";
 import FounderNote from "@/components/FounderNote";
 import Contact from "@/components/Contact";
+import BuildLog from "@/components/BuildLog";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import CommandPalette from "@/components/CommandPalette";
@@ -27,6 +28,7 @@ export default function Home() {
         <MLinxTeaser />
         <Approach />
         <Contact />
+        <BuildLog />
       </main>
       <Footer />
       <AccentSwitcher />

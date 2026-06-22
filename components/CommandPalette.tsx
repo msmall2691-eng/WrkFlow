@@ -90,6 +90,26 @@ export default function CommandPalette() {
           window.location.href = "tel:+12074329492";
         },
       },
+      {
+        id: "sitecheck",
+        label: "Run a site check",
+        hint: "↗",
+        group: "Actions",
+        keywords: "lighthouse speed audit performance seo accessibility site check pagespeed tool",
+        run: () => {
+          close();
+          window.location.href = "/marketplace";
+        },
+      },
+      {
+        id: "accent",
+        label: "Toggle accent color",
+        hint: "◑",
+        group: "Actions",
+        keywords: "theme color accent palette signal recolor make it yours",
+        // Leave the palette open so Enter can cycle through accents quickly.
+        run: () => window.dispatchEvent(new Event("accent:cycle")),
+      },
     ];
   }, [close]);
 

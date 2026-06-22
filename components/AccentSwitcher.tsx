@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /*
   AccentSwitcher — a public "make it yours" accent picker.
@@ -34,6 +34,7 @@ function hexToRgb(hex: string) {
 export default function AccentSwitcher() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(0);
+  const activeRef = useRef(0);
 
   const apply = (i: number, persist = true) => {
     const a = ACCENTS[i];
@@ -43,6 +44,7 @@ export default function AccentSwitcher() {
     const { r, g, b } = hexToRgb(a.signal);
     root.setProperty("--color-signal-glow", `rgba(${r}, ${g}, ${b}, 0.16)`);
     setActive(i);
+    activeRef.current = i;
     if (persist) {
       try {
         localStorage.setItem(KEY, String(i));
@@ -63,6 +65,14 @@ export default function AccentSwitcher() {
     } catch {
       /* ignore */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Let the command palette cycle the accent (Actions → "Toggle accent color").
+  useEffect(() => {
+    const onCycle = () => apply((activeRef.current + 1) % ACCENTS.length);
+    window.addEventListener("accent:cycle", onCycle);
+    return () => window.removeEventListener("accent:cycle", onCycle);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -2,13 +2,17 @@ import Image from "next/image";
 import { work, type WorkItem } from "@/lib/content";
 import Reveal from "./Reveal";
 import Tilt from "./Tilt";
+import DashboardDemo from "./DashboardDemo";
 
 const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 export default function Deployments() {
   const sites = work.filter((w) => w.tier === "site");
   const products = work.filter((w) => w.tier === "product");
-  const privates = work.filter((w) => w.tier === "private");
+  // The BrightBase command-center screenshot is replaced by the live demo below.
+  const privates = work.filter(
+    (w) => w.tier === "private" && w.shot !== "/shots/brightbase-dashboard.png",
+  );
 
   return (
     <section id="work" className="relative overflow-hidden border-t border-line py-14 md:py-20">
@@ -53,12 +57,15 @@ export default function Deployments() {
           </Reveal>
         ))}
 
-        {/* Tier 3 — private systems (small tiles, no links) */}
+        {/* Tier 3 — internal ops software: a drivable demo + private tiles */}
         <div className="mt-10">
           <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-faint">
-            Behind the scenes — private, login-gated systems
+            Behind the scenes — internal ops software
           </p>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <Reveal>
+            <DashboardDemo />
+          </Reveal>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {privates.map((w, i) => (
               <Reveal key={w.title} delay={i * 60}>
                 <PrivateTile w={w} />
