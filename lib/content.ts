@@ -15,7 +15,7 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders. Anyone who's outgrown off-the-shelf and wants something built to fit. Whole business or one project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I design and build websites, web apps, and the custom tools and workflows that keep a small business running. My background is hands-on: I built the software for my own company, ${provingGroundCompany}, when nothing on the market fit, from the customer-facing site to the systems running scheduling and daily operations. That experience became the foundation for everything I do now. Today I build for other small businesses across Maine and beyond, while completing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
+export const founderNote = `I got into this by building software for my own company, ${provingGroundCompany}, because nothing on the market quite fit. I built the whole thing, from the website to the scheduling and daily operations behind it, and that's where I learned the work. Now I build websites, apps, and internal tools for other small businesses, while finishing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
