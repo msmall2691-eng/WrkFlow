@@ -50,7 +50,7 @@ export default function Hero() {
           Available for new projects
         </p>
 
-        <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+        <h1 className="display max-w-3xl text-balance text-[2rem] text-white sm:text-5xl md:text-[3.4rem] [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
           Websites and workflows,{" "}
           <span className="shimmer-text">custom-made for your projects.</span>
         </h1>
