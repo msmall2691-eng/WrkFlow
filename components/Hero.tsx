@@ -1,7 +1,6 @@
 import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import HeroWordmark from "./HeroWordmark";
-import ChartContours from "./ChartContours";
 import LiveReadout from "./LiveReadout";
 
 export default function Hero() {
@@ -12,15 +11,6 @@ export default function Hero() {
     >
       {/* Aurora Swell — calm ocean backdrop, tuned to live Portland weather */}
       <ReactiveAurora />
-
-      {/* Nautical depth-contour soundings — faint, slowly drifting on the right.
-          The signature coastal texture that brings the right side to life. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 w-full overflow-hidden md:w-[62%]"
-      >
-        <ChartContours animate className="h-full w-full opacity-[0.16]" />
-      </div>
 
       {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
       <div className="absolute inset-y-0 right-0 hidden w-[50%] overflow-hidden lg:block">

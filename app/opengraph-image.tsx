@@ -101,13 +101,23 @@ export default async function OpengraphImage() {
             Built by someone who ran the business first — then built the software it needed.
           </div>
 
-          {/* buttons */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 6 }}>
-            <div style={{ display: "flex", alignItems: "center", background: "#2f6df0", color: "#ffffff", fontSize: 19, fontWeight: 600, padding: "11px 22px", borderRadius: 9999 }}>
-              Start a conversation&nbsp;→
-            </div>
-            <div style={{ display: "flex", alignItems: "center", color: "#dbe4ee", fontSize: 19, fontWeight: 500, padding: "11px 22px", borderRadius: 9999, border: "1px solid rgba(219,228,238,0.25)" }}>
-              See the work
+          {/* button — one clean CTA (content-sized, never shrinks) */}
+          <div style={{ display: "flex", marginTop: 6 }}>
+            <div
+              style={{
+                display: "flex",
+                flexShrink: 0,
+                alignItems: "center",
+                whiteSpace: "nowrap",
+                background: "#2f6df0",
+                color: "#ffffff",
+                fontSize: 20,
+                fontWeight: 600,
+                padding: "12px 28px",
+                borderRadius: 9999,
+              }}
+            >
+              Start a conversation →
             </div>
           </div>
 
