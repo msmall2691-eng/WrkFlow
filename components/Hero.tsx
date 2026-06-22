@@ -2,6 +2,7 @@ import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
 import HeroWordmark from "./HeroWordmark";
 import ChartContours from "./ChartContours";
+import MaineReadout from "./MaineReadout";
 
 export default function Hero() {
   return (
@@ -82,6 +83,11 @@ export default function Hero() {
           >
             See the work.
           </a>
+        </div>
+
+        {/* Live Portland, ME readout — the place, in real time */}
+        <div className="mt-10">
+          <MaineReadout className="text-white/60" />
         </div>
       </div>
 

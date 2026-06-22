@@ -37,7 +37,7 @@ export default function MaineReadout({ className = "" }: { className?: string })
   if (parts.length === 1) return null; // nothing live came back
 
   return (
-    <p className={`inline-flex items-center gap-2 font-mono text-[11px] text-faint ${className}`}>
+    <p className={`inline-flex items-center gap-2 font-mono text-[11px] ${className}`}>
       <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
