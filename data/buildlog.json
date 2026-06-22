@@ -1,5 +1,11 @@
 [
   {
+    "sha": "3b3bb1d",
+    "subject": "Hero: enlarge the headline (and widen its column for clean wrapping)",
+    "date": "2026-06-22T14:48:07+00:00",
+    "label": "Jun 22"
+  },
+  {
     "sha": "e0c621d",
     "subject": "Brand font → Sora (display): logo, hero wordmark, headings, and OG card",
     "date": "2026-06-22T14:43:38+00:00",
@@ -39,12 +45,6 @@
     "sha": "8a3af27",
     "subject": "Add pricing section + founding offer; wire Care Plan and quote-demo nudge",
     "date": "2026-06-22T13:47:52+00:00",
-    "label": "Jun 22"
-  },
-  {
-    "sha": "d768035",
-    "subject": "Pricing: add setup fees to hosted M Linx tools; protect open-source offer",
-    "date": "2026-06-22T13:41:18+00:00",
     "label": "Jun 22"
   }
 ]
