@@ -9,8 +9,8 @@ import AuroraSwell from "./AuroraSwell";
   back to a calm default until conditions load.
 */
 export default function ReactiveAurora() {
-  const [intensity, setIntensity] = useState(0.6);
-  const [speed, setSpeed] = useState(0.7);
+  const [intensity, setIntensity] = useState(0.78);
+  const [speed, setSpeed] = useState(0.8);
 
   useEffect(() => {
     let on = true;
@@ -20,8 +20,8 @@ export default function ReactiveAurora() {
         if (!on) return;
         const c = j?.conditions?.clarity;
         if (typeof c === "number") {
-          setIntensity(0.42 + c * 0.5); // overcast ~0.55 → clear ~0.92
-          setSpeed(0.55 + c * 0.4); // calmer when grey, livelier when clear
+          setIntensity(0.62 + c * 0.55); // overcast ~0.78 → clear ~1.17
+          setSpeed(0.6 + c * 0.45); // calmer when grey, livelier when clear
         }
       })
       .catch(() => {});

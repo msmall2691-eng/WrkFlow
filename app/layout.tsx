@@ -57,6 +57,7 @@ export const metadata: Metadata = {
     "Maine web design",
   ],
   authors: [{ name: "M Studio" }],
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
@@ -123,6 +124,15 @@ const JSON_LD = {
         "Business analytics",
         "Artificial intelligence",
       ],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Services",
+        itemListElement: [
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Websites & web apps", description: "Custom marketing sites, booking, and client portals." } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom tools & dashboards", description: "Booking apps, CRMs, dashboards, and quoting tools, built around how you run." } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Systems integration & automation", description: "Connecting the tools you already use, with workflow automation and practical AI." } },
+        ],
+      },
       areaServed: [
         { "@type": "State", name: "Maine" },
         { "@type": "Place", name: "New England" },

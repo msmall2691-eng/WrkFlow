@@ -42,13 +42,13 @@ export default function WaveDivider({
       } overflow-hidden leading-[0] ${className}`}
     >
       <svg
-        className="wave-x block h-9 w-[200%] md:h-12"
+        className="wave-x block h-12 w-[200%] md:h-20"
         style={dur ? { animationDuration: dur } : undefined}
         viewBox="0 0 2880 80"
         preserveAspectRatio="none"
       >
         <path
-          d="M0 40 Q180 10 360 40 T720 40 T1080 40 T1440 40 T1800 40 T2160 40 T2520 40 T2880 40 V0 H0 Z"
+          d="M0 44 Q180 4 360 44 T720 44 T1080 44 T1440 44 T1800 44 T2160 44 T2520 44 T2880 44 V0 H0 Z"
           fill={fill}
         />
       </svg>
