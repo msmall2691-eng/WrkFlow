@@ -1,4 +1,3 @@
-import { whoIsItFor } from "@/lib/content";
 import Reveal from "./Reveal";
 import RentedVsBuilt from "./RentedVsBuilt";
 
@@ -6,6 +5,13 @@ import RentedVsBuilt from "./RentedVsBuilt";
   The Shift — the "why now" intro. One tight statement + one lead, the
   interactive rent-vs-build flip, and who it's for. No repetition.
 */
+const AUDIENCES = [
+  "Service companies",
+  "Trades",
+  "Property managers",
+  "STR operators",
+  "Founders",
+];
 export default function Shift() {
   return (
     <section id="why" className="relative overflow-hidden border-t border-line py-14 md:py-20">
@@ -34,12 +40,22 @@ export default function Shift() {
 
         <RentedVsBuilt />
 
-        {/* Who it's for */}
+        {/* Who it's for — compact chip row */}
         <Reveal delay={120}>
           <div className="mt-12 border-t border-line pt-8">
-            <p className="display-serif max-w-3xl text-xl leading-snug text-ink sm:text-2xl">
-              {whoIsItFor}
+            <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+              Who it&apos;s for
             </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {AUDIENCES.map((a) => (
+                <span
+                  key={a}
+                  className="rounded-full border border-line bg-surface px-3 py-1.5 text-sm text-muted"
+                >
+                  {a}
+                </span>
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>

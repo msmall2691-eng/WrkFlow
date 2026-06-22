@@ -1,6 +1,5 @@
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
-import HeroCapabilities from "./HeroCapabilities";
 import HeroWordmark from "./HeroWordmark";
 
 export default function Hero() {
@@ -38,14 +37,13 @@ export default function Hero() {
         </p>
 
         <h1 className="display max-w-2xl text-balance text-[1.7rem] text-white sm:text-4xl md:text-5xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
-          Let&apos;s build what your work{" "}
-          <span className="shimmer-text">runs on.</span>
+          Let&apos;s build your website — and{" "}
+          <span className="shimmer-text">the software behind it.</span>
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-          From a single website to the tools and workflows that run your whole
-          operation. Custom-built for any business or project, and yours to keep.
-          Made on the Maine coast.
+          Websites, custom tools, and the systems that connect them. Built on the
+          Maine coast for small businesses, yours to keep, clients anywhere.
         </p>
 
 
@@ -70,14 +68,6 @@ export default function Hero() {
           >
             See the work.
           </a>
-        </div>
-
-        {/* What we build — a quiet, interactive capability line (websites lead) */}
-        <div className="mt-12 max-w-xl">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-            What M Studio builds
-          </p>
-          <HeroCapabilities />
         </div>
       </div>
 
