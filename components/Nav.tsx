@@ -33,7 +33,7 @@ export default function Nav() {
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="/#top" aria-label="M Studio — back to top" onClick={() => setMenuOpen(false)}>
-          <Logo tag tone={solid ? "dark" : "light"} />
+          <Logo tone={solid ? "dark" : "light"} />
         </a>
 
         <div className="hidden items-center gap-8 md:flex">

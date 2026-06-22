@@ -28,18 +28,31 @@ export default async function OpengraphImage() {
           fontFamily: "Space Grotesk",
         }}
       >
-        {/* Aurora swell — teal + brass, like the live hero backdrop */}
+        {/* Aurora swell — brighter teal + brass for more glow */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
             backgroundImage:
-              "radial-gradient(62% 80% at 86% 80%, rgba(22,163,148,0.32), transparent 60%), radial-gradient(55% 70% at 78% 6%, rgba(217,164,65,0.22), transparent 60%)",
+              "radial-gradient(60% 78% at 84% 78%, rgba(22,163,148,0.48), transparent 62%), radial-gradient(54% 66% at 80% 4%, rgba(217,164,65,0.34), transparent 62%), radial-gradient(50% 60% at 12% 30%, rgba(22,163,148,0.16), transparent 70%)",
           }}
         />
 
-        {/* Ghost M STUDIO wordmark — the brand's signature element, on the right */}
+        {/* Soft glow pool behind the wordmark */}
+        <div
+          style={{
+            position: "absolute",
+            right: -40,
+            top: 90,
+            width: 620,
+            height: 460,
+            display: "flex",
+            backgroundImage: "radial-gradient(circle at 55% 50%, rgba(22,163,148,0.40), rgba(217,164,65,0.16) 45%, transparent 72%)",
+          }}
+        />
+
+        {/* Ghost M STUDIO wordmark — the brand's signature, now glowing */}
         <div
           style={{
             position: "absolute",
@@ -50,7 +63,7 @@ export default async function OpengraphImage() {
             flexDirection: "column",
             alignItems: "flex-end",
             justifyContent: "center",
-            opacity: 0.42,
+            opacity: 0.6,
           }}
         >
           <div
@@ -64,6 +77,7 @@ export default async function OpengraphImage() {
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               color: "transparent",
+              textShadow: "0 0 60px rgba(22,163,148,0.55)",
             }}
           >
             M
@@ -78,6 +92,7 @@ export default async function OpengraphImage() {
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               color: "transparent",
+              textShadow: "0 0 40px rgba(217,164,65,0.4)",
             }}
           >
             STUDIO
@@ -91,11 +106,11 @@ export default async function OpengraphImage() {
             inset: 0,
             display: "flex",
             backgroundImage:
-              "linear-gradient(105deg, rgba(8,19,29,0.92) 0%, rgba(8,19,29,0.55) 46%, rgba(8,19,29,0) 80%)",
+              "linear-gradient(105deg, rgba(8,19,29,0.9) 0%, rgba(8,19,29,0.5) 48%, rgba(8,19,29,0) 82%)",
           }}
         />
 
-        {/* Foreground content — mirrors the hero composition */}
+        {/* Foreground content */}
         <div
           style={{
             position: "relative",
@@ -111,7 +126,7 @@ export default async function OpengraphImage() {
               display: "flex",
               alignItems: "center",
               gap: 14,
-              color: "#5ec9bd",
+              color: "#6fdccf",
               fontSize: 22,
               letterSpacing: 4,
               textTransform: "uppercase",
@@ -119,17 +134,18 @@ export default async function OpengraphImage() {
             }}
           >
             <div style={{ width: 10, height: 10, borderRadius: 9999, background: "#16a394", display: "flex" }} />
-            Independent web &amp; software studio · Maine
+            Independent web &amp; software studio
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", fontSize: 62, fontWeight: 700, lineHeight: 1.05, letterSpacing: -2 }}>
-            <span style={{ color: "#eef2f4" }}>Websites and workflows,</span>
+            <span style={{ color: "#f4f8fa", textShadow: "0 0 30px rgba(110,220,207,0.25)" }}>Websites and workflows,</span>
             <span
               style={{
                 backgroundImage: GOLD,
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",
+                textShadow: "0 0 34px rgba(217,164,65,0.4)",
               }}
             >
               custom-made for your projects.

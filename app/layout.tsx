@@ -37,7 +37,7 @@ const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
   "Websites, apps, and the systems behind them — designed around how you actually work, then handed over, yours to keep. Built on the Maine coast.";
 
-const TITLE = "M Studio — Web & Software Studio, Maine Coast";
+const TITLE = "M Studio — Custom Websites & Software";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
