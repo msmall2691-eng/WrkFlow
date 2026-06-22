@@ -47,6 +47,10 @@ export default function Hero() {
           working anywhere.
         </p>
 
+        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-white/45">
+          Live for The Maine Cleaning Co. &amp; The Remote Admin
+        </p>
+
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
           <Magnetic strength={0.35}>
             <a

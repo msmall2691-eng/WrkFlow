@@ -27,6 +27,9 @@ export default function Footer() {
               them—and help connect the ones you already use—so less of your week is
               busywork. Built on the coast of Maine, working with clients anywhere.
             </p>
+            <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
+              Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere
+            </p>
             <SelfScore />
           </div>
 

@@ -9,7 +9,7 @@ import LinxMark from "@/components/LinxMark";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "M Linx — premade tools & sites",
+  title: "M Linx — Premade Tools, Sites & Plugins | M Studio",
   description:
     "M Linx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
 };
@@ -25,7 +25,7 @@ export default function MarketplacePage() {
             aria-hidden="true"
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
           />
-          <HeroWordmark text="MLINX" />
+          <HeroWordmark text="M LINX" />
           <div className="relative z-10 mx-auto max-w-6xl px-6">
             <Reveal>
               <div className="mb-5 flex items-center gap-2.5 text-ink">

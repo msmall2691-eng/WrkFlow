@@ -113,6 +113,13 @@ function BigCard({ w }: { w: WorkItem }) {
         <h3 className="display-serif mt-2 text-xl text-ink">{w.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted">{w.blurb}</p>
 
+        {/* Real outcome metric only — see WorkItem.metric (never fabricated) */}
+        {w.metric && (
+          <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-signal/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-signal">
+            {w.metric}
+          </p>
+        )}
+
         {w.stack && (
           <div className="mt-4 flex flex-wrap gap-1.5">
             {w.stack.map((s) => (

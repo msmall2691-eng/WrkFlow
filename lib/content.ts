@@ -251,6 +251,8 @@ export type WorkItem = {
   shot: string; // /shots/*.png
   /** Set for outside-client work so it gets a distinct accent. */
   client?: boolean;
+  /** A single REAL outcome number (e.g. "0 double-bookings since launch"). Never fabricate—leave undefined until Meg confirms. */
+  metric?: string;
 };
 
 /*
@@ -268,6 +270,7 @@ export const work: WorkItem[] = [
     url: "https://the-remote-admin.com",
     shot: "/shots/remote-admin.png",
     client: true,
+    // TODO: real metric — e.g. metric: "Shipped in N weeks" (confirm with Meg)
   },
   {
     tier: "site",
@@ -277,6 +280,7 @@ export const work: WorkItem[] = [
     stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
     url: "https://maineclean.co",
     shot: "/shots/maineclean.png",
+    // TODO: real metric — e.g. metric: "0 double-bookings since launch" or "~N hrs/week back" (confirm with Meg)
   },
   // Tier 2 — product we built
   {

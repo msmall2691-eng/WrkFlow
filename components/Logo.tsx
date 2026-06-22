@@ -1,7 +1,7 @@
 /*
   Wordmark for M Studio. A glowing sea-glass "M" monogram (the brand letter,
   same as the favicon) leads the "Studio" wordmark in the monospace face.
-  Pass `tag` to append the smaller "| M Linx Studio" lockup.
+  Pass `tag` to append the smaller "· Maine" geo lockup.
 */
 export default function Logo({
   className = "",
@@ -29,7 +29,7 @@ export default function Logo({
       </span>
       {tag && (
         <span className={`hidden font-mono text-[11px] uppercase tracking-[0.22em] sm:inline ${tagColor}`}>
-          | M Linx Studio
+          &middot; Maine
         </span>
       )}
     </span>

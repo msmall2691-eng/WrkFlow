@@ -35,13 +35,13 @@ const jetbrainsMono = JetBrains_Mono({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "M Studio designs and builds custom websites, web apps, tools, and plugins—and helps connect the ones you already use. For businesses and one-off projects alike. Built on the coast of Maine, working with clients anywhere.";
+  "M Studio builds custom websites, web apps, and tools for small businesses—then links your systems together so everything just runs. Built on the Maine coast.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "M Studio | M Linx Studio — Custom websites, tools & plugins",
-    template: "%s · M Studio | M Linx Studio",
+    default: "Custom Websites & Software for Small Businesses | M Studio — Maine",
+    template: "%s · M Studio",
   },
   description: DESCRIPTION,
   keywords: [
@@ -58,21 +58,21 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "M Studio | M Linx Studio",
-    title: "M Studio | M Linx Studio — Custom websites, tools & plugins",
+    siteName: "M Studio",
+    title: "Custom Websites & Software for Small Businesses | M Studio — Maine",
     description: DESCRIPTION,
     images: [
       {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "M Studio | M Linx Studio",
+        alt: "M Studio — custom websites & software, Maine",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "M Studio | M Linx Studio — Custom websites, tools & plugins",
+    title: "Custom Websites & Software for Small Businesses | M Studio — Maine",
     description: DESCRIPTION,
   },
   robots: {
@@ -95,10 +95,19 @@ const JSON_LD = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "M Studio",
+      publisher: { "@id": `${SITE_URL}/#studio` },
+    },
+    {
       "@type": "ProfessionalService",
       "@id": `${SITE_URL}/#studio`,
       name: "M Studio",
       url: SITE_URL,
+      email: "contact@mlinx.studio",
+      telephone: "+1-207-432-9492",
       description:
         "Custom websites, web apps, and tools for small businesses—built to own, not rent. Founded by an operator who ran the business first.",
       slogan: "Everything, linked.",
