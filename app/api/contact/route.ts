@@ -28,7 +28,46 @@ type ContactPayload = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/*
+  Lightweight in-memory rate limit: at most MAX_HITS submissions per IP within
+  WINDOW_MS. This lives in the function instance's memory, so on serverless it
+  is best-effort (it resets on cold start and isn't shared across instances) —
+  enough to blunt casual spam/abuse without extra infrastructure. For a hard
+  guarantee, move this to a shared store (e.g. Upstash Redis / Vercel KV).
+*/
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_HITS = 5;
+const hits = new Map<string, { count: number; resetAt: number }>();
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = hits.get(ip);
+  if (!entry || now > entry.resetAt) {
+    hits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
+    // Opportunistic cleanup so the map can't grow unbounded.
+    if (hits.size > 5000) {
+      for (const [k, v] of hits) if (now > v.resetAt) hits.delete(k);
+    }
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > MAX_HITS;
+}
+
+function clientIp(req: Request): string {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return req.headers.get("x-real-ip") || "unknown";
+}
+
 export async function POST(req: Request) {
+  if (rateLimited(clientIp(req))) {
+    return NextResponse.json(
+      { ok: false, error: "Too many messages just now. Please try again in a few minutes." },
+      { status: 429 },
+    );
+  }
+
   let body: ContactPayload;
   try {
     body = await req.json();

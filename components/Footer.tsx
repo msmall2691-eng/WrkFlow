@@ -92,8 +92,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© {year} M Studio</span>
+          <div className="flex items-center gap-5">
+            <a href="/privacy" className="transition-colors hover:text-ink">
+              Privacy
+            </a>
+            <a href="/terms" className="transition-colors hover:text-ink">
+              Terms
+            </a>
+          </div>
           <span className="tracking-normal text-faint/80 [text-transform:none]">
             {sha ? `deployed ${built} · ${ref}@${sha}` : `built ${built} · live on Vercel`}
           </span>

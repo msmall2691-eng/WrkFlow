@@ -208,6 +208,18 @@ export default function Contact() {
                       )}
                     </button>
                   </Magnetic>
+
+                  <p className="text-xs leading-relaxed text-white/45">
+                    By sending this, you agree we can use your details to reply.
+                    We never sell your information. See our{" "}
+                    <a
+                      href="/privacy"
+                      className="text-white/70 underline underline-offset-2 transition-colors hover:text-white"
+                    >
+                      Privacy Policy
+                    </a>
+                    .
+                  </p>
                 </form>
               )}
             </Reveal>
