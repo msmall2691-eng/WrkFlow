@@ -15,7 +15,7 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /** Founder note. Owner to edit voice/details. */
-export const founderNote = `I got into this by building software for my own company, ${provingGroundCompany}, because nothing on the market quite fit. I built the whole thing, from the website to the scheduling and daily operations behind it, and that's where I learned the work. Now I build websites, apps, tools, and workflows for all kinds of businesses and personal projects, while finishing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
+export const founderNote = `It started with building software for my own company, ${provingGroundCompany}, because nothing on the market quite fit. I built the whole thing, from the website to the scheduling and daily operations behind it, and that's where I learned the work. These days I build websites, apps, tools, and workflows for all kinds of businesses and personal projects, while finishing a Business Analytics & AI degree at USM with a Computer Science minor. Based on the coast of Maine.`;
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
@@ -60,7 +60,7 @@ export const services: Service[] = [
     tagline: "A site or app that's actually yours—built, connected, and live.",
     kinds: ["Marketing sites", "Booking & scheduling", "Client portals", "Marketplaces", "Internal tools"],
     what:
-      "Custom websites and web applications designed and built from scratch—marketing sites, client portals, booking and scheduling apps—with everything around them handled too: hosting, domain, analytics, and the deploy pipeline.",
+      "I design and build custom websites and web apps from scratch—marketing sites, client portals, booking and scheduling—and handle everything around them too: hosting, domain, analytics, and getting it live.",
     pain:
       "Drag-and-drop builders look like everyone else and box you in the moment you need something specific. Agencies hand back a site you can't edit and don't really own. And almost nobody wires up the hosting, domain, and integrations so the thing just runs.",
     outcome:
@@ -79,7 +79,7 @@ export const services: Service[] = [
     tagline: "Data moves itself. Nobody re-types anything.",
     kinds: ["Lead intake", "Follow-ups", "Scheduling", "Invoicing sync", "Notifications"],
     what:
-      "Connecting the tools you already run and automating the repetitive handoffs between them with APIs, webhooks, and custom connectors built for your stack.",
+      "I connect the tools you already use and automate the repetitive handoffs between them, so the apps that never talked to each other finally do.",
     pain:
       "Information gets copy-pasted between apps, re-keyed into spreadsheets, and dropped in the cracks between systems that were never meant to talk to each other.",
     outcome:
@@ -98,7 +98,7 @@ export const services: Service[] = [
     tagline: "A system shaped to your business, not the other way around.",
     kinds: ["Customer records", "Job tracking", "Pipelines", "Owner reporting"],
     what:
-      "Purpose-built customer and operations databases with a clean schema and exactly the fields your work actually uses—built around how your business really runs.",
+      "I build customer and operations databases shaped around how your business really runs—with exactly the fields your work uses and nothing it doesn't.",
     pain:
       "Off-the-shelf tools make you bend your process to fit their forms, then charge a per-seat fee every month on top. The data you actually need lives in the gaps their software never planned for.",
     outcome:
@@ -117,7 +117,7 @@ export const services: Service[] = [
     tagline: "AI does the busywork. You keep the decisions.",
     kinds: ["Inbox triage", "Draft replies", "Summaries", "Smart intake"],
     what:
-      "Practical AI wired directly into operations—intake, follow-ups, drafting, summarizing, and triage—designed draft-first and owner-approved so nothing goes out without a human's sign-off.",
+      "I wire practical AI into your day-to-day—intake, follow-ups, drafting, summarizing, sorting—built draft-first so nothing goes out without your sign-off.",
     pain:
       "Generic AI tools either do too little to matter or too much to trust. The repetitive thinking work—reading, sorting, drafting the same replies—still eats hours every week.",
     outcome:
@@ -136,7 +136,7 @@ export const services: Service[] = [
     tagline: "The numbers that matter, finally in one view.",
     kinds: ["Revenue & KPIs", "Occupancy", "Team & jobs", "Live pipeline"],
     what:
-      "Real-time insight pulled from scattered sources into a single view—jobs, revenue, pipeline, and team—so the metrics that run the business stop hiding in separate tabs.",
+      "I pull your numbers from wherever they live into one live view—jobs, revenue, pipeline, team—so the metrics that run the business stop hiding in separate tabs.",
     pain:
       "Answering a simple question—how's this month tracking?—means opening five tools, exporting three spreadsheets, and reconciling them by hand. By the time you know, it's old news.",
     outcome:
@@ -155,7 +155,7 @@ export const services: Service[] = [
     tagline: "Find what's slow, broken, or costing you—and fix it in order.",
     kinds: ["Tool audit", "Process mapping", "Fix-it roadmap"],
     what:
-      "A thorough review of how your tools and processes actually run—where data is exposed, where things break silently, and where manual steps quietly cost time and money—delivered as a prioritized, plain-English plan to streamline it.",
+      "I go through how your tools and processes actually run—where data's exposed, where things break quietly, where manual steps cost you time and money—and hand back a plain-English plan, ranked by what to fix first.",
     pain:
       "Most operations grow by accretion: tools bolted on over years, steps nobody remembers adding, integrations that fail without anyone noticing. The drag is invisible until it isn't.",
     outcome:
@@ -174,7 +174,7 @@ export const services: Service[] = [
     tagline: "Leave the platform. Keep the history.",
     kinds: ["Jobber / Housecall exit", "Data export", "Clean cutover"],
     what:
-      "Getting you off rigid, expensive platforms—Jobber, Housecall Pro, and the like—and onto a system you own, with your full history migrated cleanly and intact.",
+      "I get you off rigid, pricey platforms—Jobber, Housecall Pro, and the like—and onto a system you own, with your full history carried over cleanly and intact.",
     pain:
       "You're locked in by years of accumulated data and the fear of losing it. Every month you stay, the subscription climbs and the software still doesn't fit.",
     outcome:
@@ -193,7 +193,7 @@ export const services: Service[] = [
     tagline: "One trustworthy source instead of five conflicting ones.",
     kinds: ["Dedupe", "Normalize", "Merge sources", "Validate"],
     what:
-      "Messy, duplicated customer data scattered across systems—deduplicated, normalized, validated, and merged into a single record you can rely on.",
+      "I take messy, duplicated customer data scattered across systems and merge it into one clean, reliable record—deduplicated, consistent, and checked.",
     pain:
       "The same customer exists three times with three spellings. Reports contradict each other. Every automation built on this foundation inherits the mess and quietly compounds it.",
     outcome:
