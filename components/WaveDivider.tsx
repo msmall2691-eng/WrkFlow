@@ -1,7 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 /*
-  WaveDivider — a slow, drifting ocean wave used to transition between a dark
-  section and the light Founder note. Decorative; the fill matches the adjacent
-  dark section so it reads as the dark "tide" lapping the light band.
+  WaveDivider — the drifting ocean wave between a dark section and the light
+  Founder note. The drift speed now tracks the LIVE Portland tide: faster as it
+  comes in (rising), slower as it goes out (falling). Decorative; reduced-motion
+  still freezes it via globals.css.
 */
 export default function WaveDivider({
   className = "",
@@ -12,6 +17,23 @@ export default function WaveDivider({
   fill?: string;
   position?: "top" | "bottom";
 }) {
+  const [dur, setDur] = useState<string>();
+
+  useEffect(() => {
+    let on = true;
+    fetch("/api/maine")
+      .then((r) => r.json())
+      .then((j) => {
+        if (!on) return;
+        const tide = j?.tide;
+        setDur(tide === "rising" ? "9s" : tide === "falling" ? "20s" : undefined);
+      })
+      .catch(() => {});
+    return () => {
+      on = false;
+    };
+  }, []);
+
   return (
     <div
       aria-hidden="true"
@@ -21,6 +43,7 @@ export default function WaveDivider({
     >
       <svg
         className="wave-x block h-9 w-[200%] md:h-12"
+        style={dur ? { animationDuration: dur } : undefined}
         viewBox="0 0 2880 80"
         preserveAspectRatio="none"
       >

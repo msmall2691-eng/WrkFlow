@@ -1,4 +1,4 @@
-import AuroraSwell from "./AuroraSwell";
+import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import HeroWordmark from "./HeroWordmark";
 import ChartContours from "./ChartContours";
@@ -10,8 +10,8 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#08131d]"
     >
-      {/* Aurora Swell — calm ocean backdrop (dialed back so the wordmark leads) */}
-      <AuroraSwell intensity={0.6} speed={0.7} />
+      {/* Aurora Swell — calm ocean backdrop, tuned to live Portland weather */}
+      <ReactiveAurora />
 
       {/* Nautical depth-contour soundings — faint, slowly drifting on the right.
           The signature coastal texture that brings the right side to life. */}
