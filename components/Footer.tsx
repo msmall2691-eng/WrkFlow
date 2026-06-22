@@ -31,6 +31,9 @@ export default function Footer() {
               Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere
             </p>
             <SelfScore />
+            <p className="mt-4 text-[11px] leading-relaxed text-faint">
+              This site runs on live Maine data — daylight, weather &amp; tide.
+            </p>
           </div>
 
           <div className="flex gap-10 sm:gap-16">

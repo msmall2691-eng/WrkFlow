@@ -19,7 +19,13 @@ type Data = {
   night: boolean;
 };
 
-export default function MaineReadout({ className = "" }: { className?: string }) {
+export default function MaineReadout({
+  className = "",
+  showDot = true,
+}: {
+  className?: string;
+  showDot?: boolean;
+}) {
   const [d, setD] = useState<Data | null>(null);
 
   useEffect(() => {
@@ -48,10 +54,12 @@ export default function MaineReadout({ className = "" }: { className?: string })
 
   return (
     <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-[11px] ${className}`}>
-      <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
-        <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
-      </span>
+      {showDot && (
+        <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
+        </span>
+      )}
       <span>{parts.join(" · ")}</span>
     </p>
   );

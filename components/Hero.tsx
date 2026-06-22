@@ -87,10 +87,17 @@ export default function Hero() {
 
         {/* Live Portland, ME readout — real data the whole site quietly reacts to */}
         <div
-          className="mt-10 inline-flex max-w-full items-center rounded-xl border border-white/10 bg-[#08131d]/55 px-3.5 py-2 backdrop-blur-sm"
+          className="mt-10 inline-flex max-w-full items-center gap-2.5 rounded-xl border border-white/10 bg-[#08131d]/55 px-3.5 py-2 backdrop-blur-sm"
           title="Live Portland conditions, updated through the day — and the site responds: the accent follows Maine daylight, the hero glow tracks the weather, and the waves under the founder note move with the tide."
         >
-          <MaineReadout className="text-white/75" />
+          <span className="inline-flex shrink-0 items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-signal">
+            <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-signal" />
+            </span>
+            Live
+          </span>
+          <MaineReadout showDot={false} className="text-white/75" />
         </div>
       </div>
 
