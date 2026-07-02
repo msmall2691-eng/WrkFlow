@@ -5,6 +5,7 @@ import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
 import KonamiEgg from "@/components/KonamiEgg";
+import { Analytics } from '@vercel/analytics/next';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -183,6 +184,7 @@ export default function RootLayout({
         <BackToTop />
         <ConsoleGreeting />
         <KonamiEgg />
+        <Analytics />
       </body>
     </html>
   );
