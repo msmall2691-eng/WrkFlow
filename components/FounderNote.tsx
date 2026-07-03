@@ -3,6 +3,7 @@ import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
+import MoonPhase from "./MoonPhase";
 
 /*
   FounderNote — a clean, neutral-dark "meet the founder" section that flows out
@@ -26,8 +27,24 @@ export default function FounderNote() {
           <div className="md:col-span-4 md:sticky md:top-24">
             <Reveal>
               <figure className="flex flex-col items-center text-center md:items-start md:text-left">
-                <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
-                <figcaption className="mt-4">
+                <div className="relative inline-block">
+                  {/*
+                    Tonight's actual moon slowly orbits the portrait — one
+                    revolution every 60s. The phase matches the footer moon
+                    and the sky-tracking story of the site. Motion respects
+                    prefers-reduced-motion (see .moon-orbit rule).
+                  */}
+                  <div
+                    aria-hidden="true"
+                    className="moon-orbit pointer-events-none absolute -inset-3"
+                  >
+                    <div className="absolute left-1/2 top-0 -translate-x-1/2 opacity-70">
+                      <MoonPhase size={18} />
+                    </div>
+                  </div>
+                  <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
+                </div>
+                <figcaption className="mt-6">
                   <p className="font-display text-lg text-ink">Meg</p>
                   <p className="mt-0.5 font-mono text-[11px] uppercase tracking-widest text-faint">
                     Founder · M Studio
