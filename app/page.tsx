@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import HomeTools from "@/components/HomeTools";
 import Deployments from "@/components/Deployments";
 import Services from "@/components/Services";
+import WorkflowMap from "@/components/WorkflowMap";
 import Approach from "@/components/Approach";
 import Pricing from "@/components/Pricing";
 import FounderNote from "@/components/FounderNote";
@@ -22,6 +23,7 @@ export default function Home() {
         <Hero />
         <FounderNote />
         <Services />
+        <WorkflowMap />
         <HomeTools />
         <Deployments />
         <Approach />

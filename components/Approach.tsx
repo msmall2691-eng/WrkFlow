@@ -1,14 +1,41 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { approachSteps } from "@/lib/content";
 import Reveal from "./Reveal";
 import Watermark from "./Watermark";
 
 /*
   Approach — the four-step process, rendered as small connected cards.
-  On desktop, a hairline connector spans the top of the row; on mobile, a
-  short vertical connector runs between each card, so the sequence reads
-  as one linked path either way.
+  On desktop, a hairline connector spans the top of the row; on mobile,
+  short vertical connectors run between each pair. In both cases a
+  signal-teal fill DRAWS ACROSS the connector when the section enters
+  view, so the whole thing reads as one connected workflow.
 */
 export default function Approach() {
+  const [drawn, setDrawn] = useState(false);
+  const flowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = flowRef.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDrawn(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setDrawn(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       id="approach"
@@ -36,12 +63,19 @@ export default function Approach() {
         </div>
 
         {/* Connected stepper */}
-        <div className="relative">
-          {/* Desktop hairline connector along the top of the row */}
+        <div
+          ref={flowRef}
+          className={`workflow-flow relative ${drawn ? "is-drawing" : ""}`}
+        >
+          {/* Desktop hairline connector along the top of the row + signal fill */}
           <div
             aria-hidden="true"
-            className="absolute inset-x-6 top-11 hidden h-px bg-gradient-to-r from-transparent via-line to-transparent md:block"
-          />
+            className="absolute inset-x-6 top-11 hidden h-px overflow-hidden md:block"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-line to-transparent" />
+            <div className="workflow-fill absolute inset-0 bg-gradient-to-r from-transparent via-signal/60 to-transparent" />
+          </div>
+
           <div className="flex flex-col md:grid md:grid-cols-4 md:gap-5">
             {approachSteps.map((step, i) => (
               <div key={step.index}>
@@ -58,12 +92,18 @@ export default function Approach() {
                     </p>
                   </div>
                 </Reveal>
-                {/* Mobile vertical connector between cards */}
+                {/* Mobile vertical connector between cards + signal fill */}
                 {i < approachSteps.length - 1 && (
                   <div
                     aria-hidden="true"
-                    className="mx-11 my-2 h-6 w-px bg-gradient-to-b from-line via-line/60 to-transparent md:hidden"
-                  />
+                    className="relative mx-11 my-2 h-6 w-px overflow-hidden md:hidden"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-b from-line via-line/60 to-transparent" />
+                    <div
+                      className="workflow-fill-v absolute inset-0 bg-gradient-to-b from-signal/60 to-signal/10"
+                      style={{ transitionDelay: `${i * 0.18}s` }}
+                    />
+                  </div>
                 )}
               </div>
             ))}
