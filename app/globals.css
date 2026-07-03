@@ -37,6 +37,147 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/*
+  Semantic tokens shared by both modes. These replace hardcoded hex values
+  in Hero / Contact / panels / sections so the whole site theme-swaps with
+  one root attribute. Non-@theme so we can override them per data-theme.
+*/
+:root {
+  /* Section backgrounds — hero sits deepest, alt sections slightly lifted. */
+  --hero-bg: #08131d;
+  --section-alt-bg: #0e1d2b;
+  --section-alt2-bg: #0b1722;
+
+  /* Footer moon SVG */
+  --moon-disc: #0b1722;
+  --moon-rim:  #dff3ef;
+  --moon-lit:  #8bd6c8;
+
+  /* Nav — colors used when transparent over the hero. Dark mode = white ink,
+     daylight = harbor navy ink. Scrolled state stays token-driven either way. */
+  --nav-hero-ink:  rgba(255, 255, 255, 0.75);
+  --nav-hero-ink2: #ffffff;
+  --nav-hero-line: rgba(255, 255, 255, 0.28);
+  --nav-hero-line2:rgba(255, 255, 255, 0.5);
+
+  /* Panel tokens — used by LiveReadout, InstallCard, Contact form. */
+  --panel-bg: rgba(8, 19, 29, 0.6);
+  --panel-line: rgba(238, 242, 244, 0.12);
+  --panel-ink: #ffffff;
+  --panel-muted: rgba(238, 242, 244, 0.75);
+  --panel-faint: rgba(238, 242, 244, 0.42);
+  --panel-input-bg: rgba(238, 242, 244, 0.05);
+
+  /* Aurora deep base color, RGB triple for the WebGL uniform. */
+  --aurora-deep-r: 0.03;
+  --aurora-deep-g: 0.08;
+  --aurora-deep-b: 0.16;
+}
+
+/*
+  Daylight mode — warm cream palette with harbor-navy text. Same brand,
+  same signal/gold accents, same ambient features. Toggle lives in the
+  LiveReadout swatch row; preference persists in localStorage.
+*/
+:root[data-theme="light"] {
+  --color-base: #f6f2ea;
+  --color-surface: #ffffff;
+  --color-elevated: #ffffff;
+  --color-line: rgba(11, 23, 34, 0.1);
+  --color-ink: #0b1722;
+  --color-muted: #4a5563;
+  --color-faint: #7a8697;
+
+  --color-signal-glow: rgba(47, 109, 240, 0.14);
+
+  --hero-bg: #f6f2ea;
+  --section-alt-bg: #efe8d9;
+  --section-alt2-bg: #f2ebde;
+
+  --panel-bg: rgba(255, 255, 255, 0.85);
+  --panel-line: rgba(11, 23, 34, 0.1);
+  --panel-ink: #0b1722;
+  --panel-muted: rgba(11, 23, 34, 0.68);
+  --panel-faint: rgba(11, 23, 34, 0.42);
+  --panel-input-bg: rgba(11, 23, 34, 0.04);
+
+  --aurora-deep-r: 0.96;
+  --aurora-deep-g: 0.94;
+  --aurora-deep-b: 0.88;
+
+  --moon-disc: transparent;
+  --moon-rim:  #0b1722;
+  --moon-lit:  #0b1722;
+
+  --nav-hero-ink:  rgba(11, 23, 34, 0.6);
+  --nav-hero-ink2: var(--color-ink);
+  --nav-hero-line: rgba(11, 23, 34, 0.25);
+  --nav-hero-line2:rgba(11, 23, 34, 0.5);
+}
+
+html { color-scheme: dark; }
+html[data-theme="light"] { color-scheme: light; }
+
+/* Hero headline & subtitle — text-shadow only makes sense over the dark aurora,
+   drop it in daylight. Metallic subline needs a warm-friendly gradient too. */
+.hero-heading { text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5); }
+.hero-sub     { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45); }
+:root[data-theme="light"] .hero-heading,
+:root[data-theme="light"] .hero-sub { text-shadow: none; }
+
+/* Metallic sub-line (below the h1) uses a chrome gradient tuned for dark;
+   remap to a warm harbor navy on light so text stays readable. */
+:root[data-theme="light"] .metallic-text {
+  background: none;
+  -webkit-text-fill-color: initial;
+  color: var(--color-muted);
+}
+
+/* Hero outline CTA — theme-aware border + text color */
+.hero-outline { border-color: rgba(255, 255, 255, 0.25); color: #ffffff; }
+.hero-outline:hover { border-color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.05); }
+:root[data-theme="light"] .hero-outline {
+  border-color: rgba(11, 23, 34, 0.25);
+  color: var(--color-ink);
+}
+:root[data-theme="light"] .hero-outline:hover {
+  border-color: rgba(11, 23, 34, 0.6);
+  background: rgba(11, 23, 34, 0.05);
+}
+
+/* Hero diagonal scrim — theme-aware, quieter in light mode */
+.hero-scrim {
+  background: linear-gradient(
+    105deg,
+    rgba(6, 12, 22, 0.82) 0%,
+    rgba(6, 12, 22, 0.45) 42%,
+    rgba(6, 12, 22, 0) 78%
+  );
+}
+:root[data-theme="light"] .hero-scrim {
+  background: linear-gradient(
+    105deg,
+    rgba(246, 242, 234, 0.7) 0%,
+    rgba(246, 242, 234, 0.3) 42%,
+    rgba(246, 242, 234, 0) 78%
+  );
+}
+
+/* Aurora canvas — pause WebGL work in light mode, show a soft warm gradient
+   instead. The canvas element still exists so it can resume on toggle. */
+:root[data-theme="light"] .aurora-canvas { display: none; }
+.hero-light-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(217, 164, 65, 0.15), transparent 60%),
+    radial-gradient(ellipse 100% 80% at 25% 70%, rgba(47, 109, 240, 0.1), transparent 65%),
+    linear-gradient(180deg, #f9f4ea 0%, #efe6d0 100%);
+}
+:root[data-theme="light"] .hero-light-bg { display: block; }
+
 * {
   border-color: var(--color-line);
 }

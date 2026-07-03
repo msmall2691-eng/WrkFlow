@@ -31,9 +31,9 @@ export default function MoonPhase({
     >
       <title>{label}</title>
       {/* Dark disc + faint rim so a new moon still reads as "there is a moon here" */}
-      <circle cx={cx} cy={cy} r={r} fill="#0b1722" stroke="#dff3ef" strokeOpacity="0.18" strokeWidth="0.6" />
+      <circle cx={cx} cy={cy} r={r} fill="var(--moon-disc, #0b1722)" stroke="var(--moon-rim, #dff3ef)" strokeOpacity="0.25" strokeWidth="0.6" />
       {/* Illuminated portion */}
-      <path d={moonPath(cx, cy, r, moon)} fill="#8bd6c8" />
+      <path d={moonPath(cx, cy, r, moon)} fill="var(--moon-lit, #8bd6c8)" />
     </svg>
   );
 }

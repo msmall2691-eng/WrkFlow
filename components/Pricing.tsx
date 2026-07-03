@@ -26,7 +26,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative overflow-hidden border-t border-line bg-[#0b1722] py-20 md:py-24"
+      className="relative overflow-hidden border-t border-line bg-[var(--section-alt2-bg)] py-20 md:py-24"
     >
       <div
         aria-hidden="true"

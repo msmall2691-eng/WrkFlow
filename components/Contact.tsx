@@ -44,20 +44,20 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-white/10 bg-[#08131d] py-16 md:py-24"
+      className="relative overflow-hidden border-t border-line bg-[var(--hero-bg)] py-16 md:py-24"
     >
       {/* Aurora Swell closer — same swell as the hero, bookending the page */}
       <AuroraSwell intensity={0.85} speed={0.85} />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[#08131d]/72"
+        className="pointer-events-none absolute inset-0 bg-[var(--hero-bg)]/72"
       />
-      {/* Top fade — eases in from the light section above */}
+      {/* Top fade — eases in from the section above */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[var(--color-base)] to-transparent"
       />
-      {/* Bottom fade — eases back out into the light footer below */}
+      {/* Bottom fade — eases back out into the footer */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-[var(--color-base)]"
@@ -72,12 +72,12 @@ export default function Contact() {
               </p>
             </Reveal>
             <Reveal delay={60}>
-              <h2 className="display text-2xl text-white sm:text-3xl md:text-4xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+              <h2 className="display hero-heading text-2xl text-ink sm:text-3xl md:text-4xl">
                 Let&apos;s start with what you&apos;re trying to solve.
               </h2>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 text-base leading-relaxed text-white/75">
+              <p className="mt-6 text-base leading-relaxed text-muted">
                 No pitch deck required. A few sentences about what you want to
                 build — or just the idea you&apos;re dreaming up. Every message
                 gets read personally and answered within a day, a real reply, not
@@ -91,12 +91,12 @@ export default function Contact() {
               </p>
             </Reveal>
             <Reveal delay={200}>
-              <div className="mt-8 space-y-2.5 font-mono text-xs uppercase tracking-widest text-white/55">
+              <div className="mt-8 space-y-2.5 font-mono text-xs uppercase tracking-widest text-faint">
                 <p>
                   Email ·{" "}
                   <a
                     href="mailto:contact@mlinx.studio"
-                    className="text-white/85 transition-colors hover:text-[#e6b964]"
+                    className="text-ink/85 transition-colors hover:text-gold"
                   >
                     contact@mlinx.studio
                   </a>
@@ -105,7 +105,7 @@ export default function Contact() {
                   Call or text ·{" "}
                   <a
                     href="tel:+12074329492"
-                    className="text-white/85 transition-colors hover:text-[#e6b964]"
+                    className="text-ink/85 transition-colors hover:text-gold"
                   >
                     (207) 432-9492
                   </a>
@@ -121,7 +121,7 @@ export default function Contact() {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="space-y-6 rounded-2xl border border-white/15 bg-white/[0.06] p-8 backdrop-blur-md md:p-10"
+                  className="space-y-6 rounded-2xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-8 backdrop-blur-md md:p-10"
                   noValidate
                 >
                   {/* Honeypot — hidden from humans, catches bots. */}
@@ -180,7 +180,7 @@ export default function Contact() {
                       required
                       rows={5}
                       placeholder="The site you want, the plugin you need, the busywork eating your week…"
-                      className="w-full resize-y rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-signal/70 focus:outline-none"
+                      className="w-full resize-y rounded-lg border border-[var(--panel-line)] bg-[var(--panel-input-bg)] px-4 py-3 text-sm text-[color:var(--panel-ink)] placeholder:text-[color:var(--panel-faint)] focus:border-signal/70 focus:outline-none"
                     />
                   </div>
 
@@ -206,12 +206,12 @@ export default function Contact() {
                     </button>
                   </Magnetic>
 
-                  <p className="text-xs leading-relaxed text-white/45">
+                  <p className="text-xs leading-relaxed text-[color:var(--panel-faint)]">
                     By sending this, you agree we can use your details to reply.
                     We never sell your information. See our{" "}
                     <a
                       href="/privacy"
-                      className="text-white/70 underline underline-offset-2 transition-colors hover:text-white"
+                      className="text-[color:var(--panel-muted)] underline underline-offset-2 transition-colors hover:text-[color:var(--panel-ink)]"
                     >
                       Privacy Policy
                     </a>
@@ -233,8 +233,8 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
       <div className="flex h-10 w-10 items-center justify-center rounded-full border border-signal/40 text-signal">
         ✓
       </div>
-      <h3 className="mt-5 font-display text-2xl text-white">Got it.</h3>
-      <p className="mt-3 text-base leading-relaxed text-white/75">
+      <h3 className="mt-5 font-display text-2xl text-ink">Got it.</h3>
+      <p className="mt-3 text-base leading-relaxed text-muted">
         Every message is read personally, with a reply within a day.
       </p>
       <button
@@ -252,7 +252,7 @@ function FieldLabel({ htmlFor, label, optional }: { htmlFor: string; label: stri
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-white/55"
+      className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-[color:var(--panel-muted)]"
     >
       {label}
       {optional && <span className="text-faint/60"> · optional</span>}
@@ -284,7 +284,7 @@ function Field({
         type={type}
         required={required}
         autoComplete={autoComplete}
-        className="w-full rounded-lg border border-white/15 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/40 focus:border-signal/70 focus:outline-none"
+        className="w-full rounded-lg border border-[var(--panel-line)] bg-[var(--panel-input-bg)] px-4 py-3 text-sm text-[color:var(--panel-ink)] placeholder:text-[color:var(--panel-faint)] focus:border-signal/70 focus:outline-none"
       />
     </div>
   );

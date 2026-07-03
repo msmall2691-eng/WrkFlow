@@ -73,11 +73,11 @@ export default function InstallCard() {
   };
 
   return (
-    <div className="rounded-2xl border border-white/12 bg-[#08131d]/60 p-4 backdrop-blur-sm">
+    <div className="rounded-2xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 backdrop-blur-sm">
       <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-signal/85">
         Installable as an app
       </p>
-      <p className="mt-2 text-[13px] leading-relaxed text-white/80">
+      <p className="mt-2 text-[13px] leading-relaxed text-[color:var(--panel-muted)]">
         Save this site to your home screen — no App Store, no downloads. Your customers could
         do the same with yours.
       </p>
@@ -85,14 +85,14 @@ export default function InstallCard() {
         <button
           type="button"
           onClick={onClick}
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 font-mono text-[11px] text-white transition-all hover:border-white/50 hover:bg-white/15 active:scale-[0.96]"
+          className="inline-flex items-center gap-1.5 rounded-full border border-[var(--panel-line)] bg-[var(--panel-input-bg)] px-3 py-1.5 font-mono text-[11px] text-[color:var(--panel-ink)] transition-all hover:border-signal/50 hover:bg-signal/10 active:scale-[0.96]"
         >
           Install this site <span aria-hidden="true">↓</span>
         </button>
-        {tip && <span className="font-mono text-[10px] leading-relaxed text-white/60">{tip}</span>}
+        {tip && <span className="font-mono text-[10px] leading-relaxed text-[color:var(--panel-muted)]">{tip}</span>}
       </div>
-      <p className="mt-3 border-t border-white/10 pt-3 font-mono text-[10px]">
-        <a href="#contact" className="text-signal transition-colors hover:text-white/90">
+      <p className="mt-3 border-t border-[var(--panel-line)] pt-3 font-mono text-[10px]">
+        <a href="#contact" className="text-signal transition-colors hover:opacity-80">
           Want it on your site? Start a conversation →
         </a>
       </p>
