@@ -74,7 +74,7 @@ function BigCard({ w }: { w: WorkItem }) {
   const cta = w.tier === "product" ? "View the demo" : "Visit site";
   return (
     <article
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border bg-elevated transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] ${
+      className={`group corner-accents flex h-full flex-col overflow-hidden rounded-2xl border bg-elevated transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] ${
         w.client ? "border-gold/40 hover:border-gold/60" : "border-line hover:border-signal/50"
       }`}
     >
@@ -133,7 +133,7 @@ function BigCard({ w }: { w: WorkItem }) {
 
 function PrivateTile({ w }: { w: WorkItem }) {
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-elevated">
+    <article className="group corner-accents flex h-full flex-col overflow-hidden rounded-xl border border-line bg-elevated">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface">
         <Image
           src={w.shot}
