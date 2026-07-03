@@ -5,28 +5,49 @@ import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 
 /*
-  FounderNote — editorial "meet the founder": portrait framed by
-  viewfinder-style corner brackets, name / location / coordinates
-  underneath, and LinkedIn-style Education + Experience chip groups.
-  Note on the right opens with a big serif quote glyph and closes with
-  a handwritten "— Meg" signature.
+  FounderNote — freestyled "about me" instead of a corporate "meet the
+  founder." Portrait + name + location + coordinates + a flat row of
+  casual chips (no "EDUCATION / EXPERIENCE" labels, no "Founder /
+  Founded" wording) + small social links + a serif note that closes
+  with a handwritten signature.
+
+  Edit CHIPS + SOCIALS below to change the CV. Note copy lives in
+  lib/content.ts (founderNote).
 */
 
-const CV_GROUPS: { label: string; items: string[] }[] = [
+const CHIPS = [
+  "USM · Business Analytics + AI",
+  "Comp Sci · Minor",
+  "The Maine Cleaning Co.",
+  "M Studio · now",
+];
+
+const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {
-    label: "Education",
-    items: ["USM · Business Analytics & AI", "Comp Sci · Minor"],
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45C23.2 24 24 23.22 24 22.27V1.73C24 .77 23.2 0 22.22 0z" />
+      </svg>
+    ),
   },
   {
-    label: "Experience",
-    items: ["M Studio · Founder", "Founded The Maine Cleaning Co."],
+    label: "Email",
+    href: "mailto:contact@mlinx.studio",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="14" rx="2" />
+        <path d="M3 7l9 6 9-6" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
   },
 ];
 
 export default function FounderNote() {
   return (
     <section id="founder" className="relative overflow-hidden border-t border-line bg-base pt-16 pb-20 md:pt-24 md:pb-24">
-      {/* Live "harbor water" — fills to the real Portland tide level (accent → re-tunes with theme) */}
+      {/* Live "harbor water" — fills to the real Portland tide level */}
       <TideLevel />
       <div
         aria-hidden="true"
@@ -34,58 +55,55 @@ export default function FounderNote() {
       />
       <div className="relative z-10 mx-auto max-w-5xl px-6">
         <div className="grid items-start gap-10 md:grid-cols-12 md:gap-12">
-          {/* Portrait + viewfinder frame + identity + CV chips */}
+          {/* Portrait + viewfinder frame + freestyle identity + chips */}
           <div className="md:col-span-4 md:sticky md:top-24">
             <Reveal>
               <figure className="flex flex-col items-center text-center md:items-start md:text-left">
                 <div className="relative inline-block">
-                  {/*
-                    Nautical viewfinder frame — four L-shape corner
-                    brackets in signal-teal, offset outside the portrait.
-                    Static, unique, on-brand: reads as a camera crosshair
-                    or chart bracket, not a floating blob.
-                  */}
+                  {/* Nautical viewfinder frame — four L-corner brackets */}
                   <div aria-hidden="true" className="pointer-events-none absolute -inset-4">
                     <span className="absolute left-0 top-0 h-4 w-4 border-l border-t border-signal/60" />
                     <span className="absolute right-0 top-0 h-4 w-4 border-r border-t border-signal/60" />
                     <span className="absolute left-0 bottom-0 h-4 w-4 border-l border-b border-signal/60" />
                     <span className="absolute right-0 bottom-0 h-4 w-4 border-r border-b border-signal/60" />
                   </div>
-                  {/* Grayscale + hover-to-color treatment now lives inside
-                      FounderAvatar's front face so it doesn't dim the
-                      cartoon back face when flipped. */}
                   <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 sm:w-40" />
                 </div>
                 <figcaption className="mt-6 w-full">
                   <p className="font-display text-lg text-ink">Meg</p>
-                  <p className="mt-0.5 font-mono text-[11px] uppercase tracking-widest text-faint">
-                    Founder · M Studio
-                  </p>
-                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
+                  <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
                     Portland, Maine
                   </p>
                   <p className="mt-0.5 font-mono text-[9px] tracking-[0.2em] text-faint/50">
                     43.6591°N · 70.2568°W
                   </p>
 
-                  {/* LinkedIn-style CV chip groups */}
-                  <div className="mt-6 space-y-3">
-                    {CV_GROUPS.map((group) => (
-                      <div key={group.label}>
-                        <p className="mb-1.5 font-mono text-[9px] uppercase tracking-widest text-faint/80">
-                          {group.label}
-                        </p>
-                        <ul className="flex flex-wrap justify-center gap-1.5 md:justify-start">
-                          {group.items.map((item) => (
-                            <li
-                              key={item}
-                              className="whitespace-nowrap rounded-full border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] leading-none text-muted"
-                            >
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
+                  {/* Flat chip row — no cheesy labels, no "Founder" wording */}
+                  <ul className="mt-5 flex flex-wrap justify-center gap-1.5 md:justify-start">
+                    {CHIPS.map((chip) => (
+                      <li
+                        key={chip}
+                        className="whitespace-nowrap rounded-full border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] leading-none text-muted"
+                      >
+                        {chip}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Small social links — swap the LinkedIn URL in SOCIALS above. */}
+                  <div className="mt-4 flex items-center justify-center gap-3 md:justify-start">
+                    {SOCIALS.map((s) => (
+                      <a
+                        key={s.label}
+                        href={s.href}
+                        target={s.href.startsWith("http") ? "_blank" : undefined}
+                        rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        aria-label={s.label}
+                        title={s.label}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-signal/50 hover:text-signal active:scale-95"
+                      >
+                        {s.icon}
+                      </a>
                     ))}
                   </div>
                 </figcaption>
@@ -93,11 +111,11 @@ export default function FounderNote() {
             </Reveal>
           </div>
 
-          {/* Note — eyebrow, open-quote glyph, lead, trimmed paragraphs, signature */}
+          {/* The note — freestyle warm eyebrow, open-quote, trimmed paragraphs, handwritten signature */}
           <div className="md:col-span-8">
             <Reveal delay={80}>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-signal">
-                Meet the founder
+                About me
               </p>
             </Reveal>
             <Reveal delay={120}>
