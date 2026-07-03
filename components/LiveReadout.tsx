@@ -1,6 +1,7 @@
 "use client";
 
 import MaineReadout from "./MaineReadout";
+import InstallChip from "./InstallChip";
 
 /*
   LiveReadout — the hero's "live Maine data" panel. Clear, labeled sections:
@@ -80,6 +81,9 @@ export default function LiveReadout() {
         />
         <span className="font-mono text-[9px] text-white/35">try it →</span>
       </div>
+
+      {/* Install — a small showcase that this whole thing is a real PWA */}
+      <InstallChip />
     </div>
   );
 }
