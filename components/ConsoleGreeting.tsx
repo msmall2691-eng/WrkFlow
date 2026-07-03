@@ -15,8 +15,10 @@ export default function ConsoleGreeting() {
       const wordmark = "\n  ▚  M  STUDIO  \n";
       const tagline =
         "\n  Built on live Maine data — weather, tide, daylight, and buoy 44007 are shaping what you see.\n  Curious how? hello@mlinx.studio\n";
+      const install =
+        "  ↓ Install this as an app: Chrome URL bar → install icon.  iOS Safari → Share → Add to Home Screen.\n";
       console.log(
-        `%c${wordmark}%c${tagline}`,
+        `%c${wordmark}%c${tagline}%c${install}`,
         // Wordmark: sea-glass teal on harbor navy, letter-spaced for calm.
         [
           "background:#0b1722",
@@ -33,6 +35,14 @@ export default function ConsoleGreeting() {
           "font-size:12px",
           "line-height:1.55",
           "padding:2px 0 6px",
+        ].join(";"),
+        // Install hint: quieter still, mono-ish.
+        [
+          "background:#0b1722",
+          "color:#8497a8",
+          "font-size:11px",
+          "line-height:1.55",
+          "padding:0 0 6px",
         ].join(";"),
       );
     } catch {
