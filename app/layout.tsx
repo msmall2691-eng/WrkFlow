@@ -4,9 +4,9 @@ import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
-import FogHaze from "@/components/FogHaze";
 import KonamiEgg from "@/components/KonamiEgg";
 import { Analytics } from "@vercel/analytics/next";
+import { getFog } from "@/lib/fog";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -163,12 +163,18 @@ const JSON_LD = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Server-side fog check — Next's fetch cache dedupes this with /api/maine's
+  // same NWS call, so no extra round-trip. Renders `data-fog="1"` on <html>
+  // at SSR so the veil is present on first paint; absent when NWS is down.
+  const fog = await getFog();
+
   return (
     <html
       lang="en"
+      data-fog={fog ? "1" : undefined}
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
@@ -181,7 +187,6 @@ export default function RootLayout({
           <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
         </noscript>
         <ScrollProgress />
-        <FogHaze />
         {children}
         <BackToTop />
         <ConsoleGreeting />
