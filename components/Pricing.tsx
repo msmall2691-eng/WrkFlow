@@ -66,10 +66,10 @@ export default function Pricing() {
           </div>
         </Reveal>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid items-stretch gap-5 md:grid-cols-3 md:items-center">
           {/* Starter site */}
           <Reveal delay={60}>
-            <article className="flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7">
+            <article className="group flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Starter site</p>
               <p className="mt-4 font-display text-3xl text-ink">
                 $399
@@ -95,8 +95,8 @@ export default function Pricing() {
 
           {/* Care Plan — default, highlighted */}
           <Reveal delay={120}>
-            <article className="relative flex h-full flex-col rounded-2xl border border-signal/50 bg-signal/[0.06] p-7 shadow-[0_24px_60px_-40px_rgba(22,163,148,0.6)]">
-              <span className="absolute right-5 top-5 rounded-full bg-signal/15 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-signal">
+            <article className="group relative flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99] md:scale-[1.03]">
+              <span className="absolute right-5 top-5 rounded-full border border-signal/40 bg-signal/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-signal shadow-[0_0_20px_-4px_rgba(22,163,148,0.6)]">
                 Most keep this
               </span>
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Care Plan</p>
@@ -117,7 +117,7 @@ export default function Pricing() {
 
           {/* Custom build */}
           <Reveal delay={180}>
-            <article className="flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7">
+            <article className="group flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Custom build</p>
               <p className="mt-4 font-display text-3xl text-ink">Let&apos;s scope it</p>
               <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-faint">

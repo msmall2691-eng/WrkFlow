@@ -66,7 +66,7 @@ export default function LiveReadout() {
             onClick={() => setAccent(s.detail)}
             title={s.label}
             aria-label={`Set accent: ${s.label}`}
-            className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125"
+            className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125 active:scale-95"
             style={{ backgroundColor: s.color }}
           />
         ))}
@@ -75,7 +75,7 @@ export default function LiveReadout() {
           onClick={() => setAccent("auto")}
           title="Maine daylight (auto)"
           aria-label="Set accent: Maine daylight (auto)"
-          className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125"
+          className="h-4 w-4 rounded-full ring-1 ring-white/25 transition-transform hover:scale-125 active:scale-95"
           style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#16a394 55%,#6f7fd6)" }}
         />
         <span className="font-mono text-[9px] text-white/35">try it →</span>

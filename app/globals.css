@@ -282,8 +282,25 @@ body {
   .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }
 }
 
+/* Mobile nav — slide the panel down, then fade+lift each link in sequence */
+@keyframes menuIn {
+  from { transform: translateY(-8px); opacity: 0; }
+  to   { transform: none;              opacity: 1; }
+}
+.animate-menu-in { animation: menuIn 220ms var(--ease-out-expo) both; }
+
+@keyframes menuItemIn {
+  from { transform: translateY(6px); opacity: 0; }
+  to   { transform: none;             opacity: 1; }
+}
+.animate-menu-item { animation: menuItemIn 340ms var(--ease-out-expo) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-menu-in, .animate-menu-item { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
 /*
-  Fog-day haze — set by <FogHaze/> on the <html> element when Portland is in
+  Fog-day haze — set on <html data-fog="1"> by layout.tsx when Portland is in
   fog / mist / haze. Two very light touches: a soft veil at the top of the
   page (where the hero sky sits) and gentler shadows site-wide. Aim: someone
   on a clear day vs. a foggy day *feels* the difference. Absolutely no

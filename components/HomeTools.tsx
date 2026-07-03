@@ -60,9 +60,9 @@ export default function HomeTools() {
                 type="button"
                 onClick={() => setTool(t.id)}
                 aria-pressed={tool === t.id}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition-all active:scale-[0.96] ${
                   tool === t.id
-                    ? "border-gold/40 bg-gold/15 text-gold"
+                    ? "border-gold/40 bg-gold/15 text-gold shadow-[0_0_24px_-8px_rgba(217,164,65,0.5)]"
                     : "border-line bg-surface text-muted hover:border-signal/40 hover:text-ink"
                 }`}
               >

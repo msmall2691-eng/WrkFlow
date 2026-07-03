@@ -90,8 +90,8 @@ export default function Services() {
         <div className="grid gap-4 sm:grid-cols-2">
           {MENU.map((m, i) => (
             <Reveal key={m.title} delay={i * 60}>
-              <div className="group h-full rounded-xl border border-line bg-surface/60 p-6 transition-colors hover:border-signal/50">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-line bg-base transition-colors group-hover:border-signal/50">
+              <div className="group h-full rounded-2xl border border-line bg-surface/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-signal/50 hover:bg-surface/80 hover:shadow-[0_24px_60px_-32px_rgba(22,163,148,0.55)] active:scale-[0.98]">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-base transition-all duration-300 group-hover:scale-110 group-hover:border-signal/60 group-hover:bg-signal/10 group-hover:shadow-[0_0_24px_-4px_rgba(22,163,148,0.5)]">
                   {m.icon}
                 </span>
                 <h3 className="display-serif mt-4 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
