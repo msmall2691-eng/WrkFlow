@@ -68,10 +68,6 @@ export default function Services() {
         aria-hidden="true"
         className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
       />
-      <div
-        aria-hidden="true"
-        className="floaty-slow pointer-events-none absolute -right-24 top-28 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
-      />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
           <Reveal>
