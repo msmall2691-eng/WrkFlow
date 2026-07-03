@@ -17,10 +17,10 @@ const REACTS: { from: string; to: string }[] = [
 ];
 
 const SWATCHES: { label: string; color: string; detail: number | "auto" }[] = [
-  { label: "Harbor", color: "#2f6df0", detail: 1 },
-  { label: "Rose", color: "#f43f5e", detail: 5 },
-  { label: "Sea Glass", color: "#16a394", detail: 0 },
-  { label: "Brass", color: "#d9a441", detail: 2 },
+  { label: "Harbor", color: "#2f6df0", detail: 1 },   // deep dusk / nautical blue
+  { label: "Coral", color: "#f4623a", detail: 3 },    // sunset orange
+  { label: "Rose", color: "#f43f5e", detail: 5 },     // sunset burn
+  { label: "Brass", color: "#d9a441", detail: 2 },    // golden hour amber
 ];
 
 const setAccent = (detail: number | "auto") =>
@@ -107,7 +107,7 @@ export default function LiveReadout() {
           title="Maine daylight (auto)"
           aria-label="Set accent: Maine daylight (auto)"
           className="h-4 w-4 rounded-full ring-1 ring-[var(--panel-line)] transition-transform hover:scale-125 active:scale-95"
-          style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#16a394 55%,#6f7fd6)" }}
+          style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#5eb2f0 55%,#6f7fd6)" }}
         />
         <span className="font-mono text-[9px] text-[color:var(--panel-faint)]">try it →</span>
       </div>
