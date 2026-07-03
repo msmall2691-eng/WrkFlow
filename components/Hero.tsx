@@ -8,29 +8,33 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[88vh] items-center overflow-hidden bg-[#08131d]"
+      className="relative flex min-h-[88vh] items-center overflow-hidden bg-[var(--hero-bg)]"
     >
-      {/* Aurora Swell — calm ocean backdrop, tuned to live Portland weather */}
+      {/* Aurora Swell — calm ocean backdrop, tuned to live Portland weather.
+          Hidden in daylight mode via CSS; a soft warm gradient replaces it. */}
       <ReactiveAurora />
+      <div aria-hidden="true" className="hero-light-bg" />
 
       {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
       <div className="absolute inset-y-0 right-0 hidden w-[50%] overflow-hidden lg:block">
         <HeroWordmark text="M STUDIO" size="text-[8.5vw]" />
       </div>
 
-      {/* Diagonal scrim — keeps the bright swell on the text-free side */}
+      {/* Diagonal scrim — keeps the bright swell on the text-free side.
+          Uses the hero background color at partial opacity so it works in
+          both themes. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(105deg,rgba(6,12,22,0.82)_0%,rgba(6,12,22,0.45)_42%,rgba(6,12,22,0)_78%)]"
+        className="hero-scrim pointer-events-none absolute inset-0"
       />
       {/* Mobile: a ghost M STUDIO fills the empty lower space (desktop has its own column) */}
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[32%] overflow-hidden opacity-80 lg:hidden">
         <HeroWordmark text="M STUDIO" size="text-[16vw]" />
       </div>
-      {/* Bottom fade — long, soft dissolve of the dark hero into the page below */}
+      {/* Bottom fade — long, soft dissolve of the hero into the page below */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[#08131d]/80 to-[var(--color-base)]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[var(--hero-bg)]/80 to-[var(--color-base)]"
       />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-20 pt-24 sm:pb-0">
@@ -42,12 +46,12 @@ export default function Hero() {
           Available for new projects
         </p>
 
-        <h1 className="display max-w-3xl text-balance text-[2rem] text-white sm:text-5xl md:text-[3.4rem] [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
+        <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
           Websites and workflows,{" "}
           <span className="shimmer-text">custom-made for your projects.</span>
         </h1>
 
-        <p className="metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed [text-shadow:0_1px_10px_rgba(0,0,0,0.45)]">
+        <p className="hero-sub metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed">
           Built by someone who ran the business first — then built the software
           it needed.
         </p>
@@ -70,7 +74,7 @@ export default function Hero() {
           </Magnetic>
           <a
             href="#services"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 text-sm font-medium text-white transition-all hover:border-white/60 hover:bg-white/5 active:scale-[0.97]"
+            className="hero-outline inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-sm font-medium transition-all active:scale-[0.97]"
           >
             See the work.
           </a>

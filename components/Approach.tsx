@@ -12,7 +12,7 @@ export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-20 md:py-24"
+      className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-20 md:py-24"
     >
       <Watermark text="M STUDIO" />
       <div className="relative mx-auto max-w-6xl px-6">

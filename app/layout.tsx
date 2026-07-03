@@ -179,6 +179,17 @@ export default async function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
+        {/*
+          Flash-prevention: pull the stored theme (if any) before first paint.
+          Runs synchronously in <body>, so the class is on <html> before
+          styles apply.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.dataset.theme='light';}catch(e){}",
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}

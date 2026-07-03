@@ -89,9 +89,22 @@ export default function AuroraSwell({
     const uRes = U("uRes"), uTime = U("uTime"), uMouse = U("uMouse"), uM = U("uM"), uInt = U("uIntensity"), uDeep = U("uDeep"), uMid = U("uMid"), uHi = U("uHi");
 
     let mid: [number, number, number] = [0.14, 0.38, 0.85], hi = lighten(mid, 0.72);
-    const deep: [number, number, number] = [0.03, 0.08, 0.16];
-    const readAccent = () => { mid = hexToRgb(getComputedStyle(cv).getPropertyValue(accentVar), [0.14, 0.38, 0.85]); hi = lighten(mid, 0.72); };
+    let deep: [number, number, number] = [0.03, 0.08, 0.16];
+    const readAccent = () => {
+      const cs = getComputedStyle(cv);
+      mid = hexToRgb(cs.getPropertyValue(accentVar), [0.14, 0.38, 0.85]);
+      hi = lighten(mid, 0.72);
+      // Deep base color follows the theme — dark harbor in dark, warm cream
+      // in daylight. Values come from --aurora-deep-{r,g,b} CSS vars.
+      const readVar = (k: string, fb: number) => {
+        const v = parseFloat(cs.getPropertyValue(k));
+        return Number.isFinite(v) ? v : fb;
+      };
+      deep = [readVar("--aurora-deep-r", 0.03), readVar("--aurora-deep-g", 0.08), readVar("--aurora-deep-b", 0.16)];
+    };
     readAccent();
+    const onTheme = () => readAccent();
+    window.addEventListener("theme:change", onTheme);
     window.addEventListener("accentchange", readAccent);
     const at = setInterval(readAccent, 1500);
 
@@ -123,9 +136,9 @@ export default function AuroraSwell({
       if (reduce) cancelAnimationFrame(raf);
     };
     raf = requestAnimationFrame(frame);
-    return () => { cancelAnimationFrame(raf); clearInterval(at); window.removeEventListener("accentchange", readAccent); ro.disconnect(); io.disconnect(); host.removeEventListener("pointermove", onMove); host.removeEventListener("pointerleave", onLeave); };
+    return () => { cancelAnimationFrame(raf); clearInterval(at); window.removeEventListener("accentchange", readAccent); window.removeEventListener("theme:change", onTheme); ro.disconnect(); io.disconnect(); host.removeEventListener("pointermove", onMove); host.removeEventListener("pointerleave", onLeave); };
   }, [accentVar, intensity, speed]);
 
-  return <canvas ref={ref} aria-hidden="true" className={className}
+  return <canvas ref={ref} aria-hidden="true" className={`aurora-canvas ${className}`}
     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0, display: "block" }} />;
 }

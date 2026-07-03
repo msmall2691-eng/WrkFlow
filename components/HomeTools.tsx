@@ -30,7 +30,7 @@ export default function HomeTools() {
   const active = TABS.find((t) => t.id === tool)!;
 
   return (
-    <section id="tools" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-16 md:py-20">
+    <section id="tools" className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-16 md:py-20">
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"

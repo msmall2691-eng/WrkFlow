@@ -42,7 +42,7 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               className={`font-mono text-xs uppercase tracking-widest transition-colors ${
-                scrolled ? "text-muted hover:text-ink" : "text-white/70 hover:text-white"
+                scrolled ? "text-muted hover:text-ink" : "text-[color:var(--nav-hero-ink)] hover:text-[color:var(--nav-hero-ink2)]"
               }`}
             >
               {link.label}
@@ -60,13 +60,13 @@ export default function Nav() {
             className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1.5 font-mono text-[11px] transition-all active:scale-[0.96] md:inline-flex ${
               scrolled
                 ? "border-line bg-surface/80 text-muted hover:text-ink"
-                : "border-white/25 text-white/70 hover:border-white/50 hover:text-white"
+                : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink)] hover:border-[color:var(--nav-hero-line2)] hover:text-[color:var(--nav-hero-ink2)]"
             }`}
           >
             <span aria-hidden="true">⌕</span>
             <kbd
               className={`rounded border px-1.5 text-[10px] tracking-normal ${
-                scrolled ? "border-line bg-base text-faint" : "border-white/20 text-white/60"
+                scrolled ? "border-line bg-base text-faint" : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink)]"
               }`}
             >
               ⌘K
@@ -77,7 +77,7 @@ export default function Nav() {
             onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
             aria-label="Open search"
             className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-all active:scale-[0.94] md:hidden ${
-              solid ? "border-line text-ink" : "border-white/30 text-white"
+              solid ? "border-line text-ink" : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink2)]"
             }`}
           >
             <span aria-hidden="true">⌕</span>
@@ -89,7 +89,7 @@ export default function Nav() {
               className={`inline-block rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-all active:scale-[0.96] ${
                 scrolled
                   ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
-                  : "border-white/30 text-white hover:bg-white/10"
+                  : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink2)] hover:bg-[color:var(--nav-hero-line)]/40"
               }`}
             >
               Start
@@ -103,7 +103,7 @@ export default function Nav() {
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
             className={`flex h-10 w-10 items-center justify-center rounded-full border transition-colors md:hidden ${
-              solid ? "border-line text-ink" : "border-white/30 text-white"
+              solid ? "border-line text-ink" : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink2)]"
             }`}
           >
             <div className="relative h-3.5 w-5">
