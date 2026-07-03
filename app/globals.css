@@ -282,6 +282,32 @@ body {
   .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }
 }
 
+/*
+  Fog-day haze — set by <FogHaze/> on the <html> element when Portland is in
+  fog / mist / haze. Two very light touches: a soft veil at the top of the
+  page (where the hero sky sits) and gentler shadows site-wide. Aim: someone
+  on a clear day vs. a foggy day *feels* the difference. Absolutely no
+  layout shift; harmless when it doesn't apply.
+*/
+html[data-fog="1"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(238, 242, 244, 0.05) 0%,
+    rgba(238, 242, 244, 0.025) 35%,
+    rgba(238, 242, 244, 0) 70%
+  );
+}
+html[data-fog="1"] .elevate {
+  box-shadow:
+    0 1px 2px rgba(24, 24, 27, 0.02),
+    0 8px 24px -12px rgba(24, 24, 27, 0.05);
+}
+
 /* Chromatic aurora drift — shared backdrop for dark sections */
 .aurora-blob {
   position: absolute;

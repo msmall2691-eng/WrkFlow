@@ -4,6 +4,7 @@ import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
+import FogHaze from "@/components/FogHaze";
 import KonamiEgg from "@/components/KonamiEgg";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -180,6 +181,7 @@ export default function RootLayout({
           <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
         </noscript>
         <ScrollProgress />
+        <FogHaze />
         {children}
         <BackToTop />
         <ConsoleGreeting />

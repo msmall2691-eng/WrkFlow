@@ -3,6 +3,7 @@ import FooterWordmark from "./FooterWordmark";
 import CopyLink from "./CopyLink";
 import LinxMark from "./LinxMark";
 import SelfScore from "./SelfScore";
+import MoonPhase from "./MoonPhase";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -31,8 +32,9 @@ export default function Footer() {
               Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere
             </p>
             <SelfScore />
-            <p className="mt-4 text-[11px] leading-relaxed text-faint">
-              This site runs on live Maine data — daylight, weather &amp; tide.
+            <p className="mt-4 flex items-center gap-2 text-[11px] leading-relaxed text-faint">
+              <MoonPhase size={14} className="inline-block shrink-0 align-[-2px]" />
+              <span>This site runs on live Maine data — daylight, weather &amp; tide.</span>
             </p>
           </div>
 
@@ -100,7 +102,10 @@ export default function Footer() {
           <span className="tracking-normal text-faint/80 [text-transform:none]">
             {sha ? `deployed ${built} · ${ref}@${sha}` : `built ${built} · live on Vercel`}
           </span>
-          <span>Built true.</span>
+          <span className="inline-flex items-center gap-1.5">
+            <MoonPhase size={12} className="align-[-2px]" />
+            <span>Made in Portland, ME</span>
+          </span>
         </div>
       </div>
     </footer>

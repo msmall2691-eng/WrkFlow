@@ -5,12 +5,15 @@ import { useEffect, useState } from "react";
 /*
   TideLevel — the founder section's "water". A translucent accent fill that
   rises/falls to the LIVE Portland tide height (tideLevel 0..1 from /api/maine),
-  capped by a drifting wave surface whose speed tracks the tide direction.
-  Low-opacity so text stays readable; reduced-motion freezes the drift.
+  capped by a drifting wave surface whose SPEED tracks the tide direction and
+  whose AMPLITUDE tracks the offshore buoy (wave.amp 0..1 from buoy 44007).
+  Low-opacity so text stays readable; reduced-motion freezes the drift but the
+  amplitude — the data story — is still baked into the static curve.
 */
 export default function TideLevel() {
   const [level, setLevel] = useState(0.4);
   const [dur, setDur] = useState<string>();
+  const [amp, setAmp] = useState(0.45); // default sits near the site's historical amplitude
 
   useEffect(() => {
     let on = true;
@@ -21,6 +24,7 @@ export default function TideLevel() {
         if (typeof j?.tideLevel === "number") setLevel(Math.max(0, Math.min(1, j.tideLevel)));
         const t = j?.tide;
         setDur(t === "rising" ? "11s" : t === "falling" ? "24s" : "16s");
+        if (typeof j?.wave?.amp === "number") setAmp(Math.max(0, Math.min(1, j.wave.amp)));
       })
       .catch(() => {});
     return () => {
@@ -29,6 +33,11 @@ export default function TideLevel() {
   }, []);
 
   const h = 10 + level * 15; // 10% (low) → 25% (high) — stays clear of the text
+  // Baseline y=22 in a 40-unit viewBox; crest y = 22 − a. a≈0.45 preserves the
+  // historical look; glass calm → ~4, rolling storm → ~24.
+  const a = 4 + amp * 26;
+  const crest = 22 - a;
+  const d = `M0 22 Q180 ${crest} 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22`;
 
   return (
     <div
@@ -45,26 +54,10 @@ export default function TideLevel() {
         viewBox="0 0 2880 40"
         preserveAspectRatio="none"
       >
-        <path
-          d="M0 22 Q180 6 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22 V40 H0 Z"
-          fill="var(--color-signal)"
-          fillOpacity="0.14"
-        />
-        <path
-          d="M0 22 Q180 6 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22"
-          stroke="var(--color-signal)"
-          strokeWidth="2.5"
-          strokeOpacity="0.5"
-          fill="none"
-        />
+        <path d={`${d} V40 H0 Z`} fill="var(--color-signal)" fillOpacity="0.14" />
+        <path d={d} stroke="var(--color-signal)" strokeWidth="2.5" strokeOpacity="0.5" fill="none" />
         {/* faint highlight on the crest — a little shimmer */}
-        <path
-          d="M0 22 Q180 6 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22"
-          stroke="#dff3ef"
-          strokeWidth="1"
-          strokeOpacity="0.3"
-          fill="none"
-        />
+        <path d={d} stroke="#dff3ef" strokeWidth="1" strokeOpacity="0.3" fill="none" />
       </svg>
     </div>
   );
