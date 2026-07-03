@@ -8,13 +8,8 @@ import TideKey from "./TideKey";
   FounderNote — a clean, neutral-dark "meet the founder" section that flows out
   of the hero and works under any accent (the only color is the accent itself,
   via the tide water + ring, so it re-tunes with the theme). Circular portrait,
-  emphasized lead. Wording is left exactly as authored — only the first sentence
-  is pulled out for rhythm.
+  emphasized lead sentence, then supporting paragraphs.
 */
-
-const splitAt = founderNote.indexOf(". ") + 1;
-const lead = founderNote.slice(0, splitAt).trim();
-const rest = founderNote.slice(splitAt).trim();
 
 export default function FounderNote() {
   return (
@@ -26,9 +21,9 @@ export default function FounderNote() {
         className="floaty-slow pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
       />
       <div className="relative z-10 mx-auto max-w-5xl px-6">
-        <div className="grid items-center gap-10 md:grid-cols-12 md:gap-12">
+        <div className="grid items-start gap-10 md:grid-cols-12 md:gap-12">
           {/* Circular portrait + identity caption */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-4 md:sticky md:top-24">
             <Reveal>
               <figure className="flex flex-col items-center text-center md:items-start md:text-left">
                 <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
@@ -37,12 +32,15 @@ export default function FounderNote() {
                   <p className="mt-0.5 font-mono text-[11px] uppercase tracking-widest text-faint">
                     Founder · M Studio
                   </p>
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
+                    Portland, Maine
+                  </p>
                 </figcaption>
               </figure>
             </Reveal>
           </div>
 
-          {/* Note — eyebrow, emphasized lead, supporting text */}
+          {/* Note — eyebrow, emphasized lead, supporting paragraphs */}
           <div className="md:col-span-8">
             <Reveal delay={80}>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-signal">
@@ -51,12 +49,14 @@ export default function FounderNote() {
             </Reveal>
             <Reveal delay={120}>
               <blockquote className="mt-4 [font-family:var(--font-serif)] text-white">
-                <span className="block text-balance text-xl leading-snug md:text-2xl">
-                  {lead}
-                </span>
-                <span className="mt-4 block text-base leading-relaxed text-muted md:text-lg">
-                  {rest}
-                </span>
+                <p className="text-balance text-xl leading-snug md:text-2xl">
+                  {founderNote.lead}
+                </p>
+                <div className="mt-5 space-y-4 text-base leading-relaxed text-muted md:text-lg">
+                  {founderNote.paragraphs.map((paragraph, i) => (
+                    <p key={i}>{paragraph}</p>
+                  ))}
+                </div>
               </blockquote>
             </Reveal>
           </div>
