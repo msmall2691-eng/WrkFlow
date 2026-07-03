@@ -46,14 +46,14 @@ export default function FounderAvatar({
       onClick={() => setFlipped((f) => !f)}
       aria-label={flipped ? "Show real photo of Meg" : "Show illustrated avatar of Meg"}
       onContextMenu={block}
-      className={`group relative block shrink-0 cursor-pointer border-0 bg-transparent p-0 [perspective:1000px] ${className}`}
+      className={`group relative block shrink-0 cursor-pointer appearance-none border-0 bg-transparent p-0 transition-transform active:scale-[0.98] [perspective:1000px] ${className}`}
     >
       <span
         className="relative block h-full w-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] motion-reduce:transition-none"
         style={{ transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)" }}
       >
         {/* Front — real headshot */}
-        <span className="absolute inset-0 overflow-hidden rounded-[inherit] [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
+        <span className="absolute inset-0 overflow-hidden rounded-full [backface-visibility:hidden] [-webkit-backface-visibility:hidden]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/meg.webp"
@@ -67,7 +67,7 @@ export default function FounderAvatar({
         </span>
         {/* Back — illustrated avatar (always full color) */}
         <span
-          className="absolute inset-0 overflow-hidden rounded-[inherit] bg-[#dfeaf3] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)]"
+          className="absolute inset-0 overflow-hidden rounded-full bg-[#dfeaf3] [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform:rotateY(180deg)]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -84,7 +84,7 @@ export default function FounderAvatar({
       {/* Transparent guard — intercepts long-press / right-click / drag on either face */}
       <span
         aria-hidden="true"
-        className="absolute inset-0 select-none rounded-[inherit]"
+        className="absolute inset-0 select-none rounded-full"
         onContextMenu={block}
         onDragStart={block}
       />
