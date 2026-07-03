@@ -16,7 +16,7 @@ import TideKey from "./TideKey";
 */
 
 const CHIPS = [
-  "USM · Business Analytics + AI",
+  "USM · Business Analytics & AI",
   "Comp Sci · Minor",
   "The Maine Cleaning Co.",
   "M Studio · now",
