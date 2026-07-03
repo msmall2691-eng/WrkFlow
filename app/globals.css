@@ -456,6 +456,15 @@ body {
 .corner-accents:hover::before,
 .corner-accents:hover::after { opacity: 0.75; }
 
+/* Founder portrait — tonight's moon orbits slowly around Meg (60s per
+   revolution). Quiet enough to feel meditative, not busy. Reduced-motion
+   parks the moon at the top (12 o'clock) and stops all rotation. */
+@keyframes moonOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.moon-orbit { animation: moonOrbit 60s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .moon-orbit { animation: none !important; }
+}
+
 /* Mobile nav — slide the panel down, then fade+lift each link in sequence */
 @keyframes menuIn {
   from { transform: translateY(-8px); opacity: 0; }
