@@ -121,7 +121,8 @@ export default function CommandPalette() {
     );
   }, [commands, query]);
 
-  // Open/close hotkeys.
+  // Open/close hotkeys — plus a global `cmdk:open` event so buttons
+  // anywhere in the app (Nav, hint chips) can trigger the palette.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -131,8 +132,13 @@ export default function CommandPalette() {
         close();
       }
     };
+    const onOpen = () => setOpen(true);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("cmdk:open", onOpen);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("cmdk:open", onOpen);
+    };
   }, [open, close]);
 
   // Focus the input when opened.
@@ -169,17 +175,6 @@ export default function CommandPalette() {
 
   return (
     <>
-      {/* Persistent hint chip — bottom-left, out of the way */}
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label="Open command menu"
-        className="fixed bottom-5 left-5 z-40 hidden items-center gap-2 rounded-full border border-line bg-base/80 px-3.5 py-2 font-mono text-[11px] uppercase tracking-widest text-muted shadow-sm backdrop-blur transition-colors hover:text-ink md:inline-flex"
-      >
-        <kbd className="rounded border border-line bg-surface px-1.5 py-0.5 text-[10px]">⌘K</kbd>
-        Menu
-      </button>
-
       {open && (
         <div
           className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-[12vh]"

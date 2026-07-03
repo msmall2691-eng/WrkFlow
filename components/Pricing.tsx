@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import CountUp from "./CountUp";
 
 /*
   Pricing — the "harbor at night" pricing section. Three honest ways to work
@@ -25,7 +26,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative overflow-hidden border-t border-line bg-[#0b1722] py-14 md:py-20"
+      className="relative overflow-hidden border-t border-line bg-[#0b1722] py-20 md:py-24"
     >
       <div
         aria-hidden="true"
@@ -60,7 +61,7 @@ export default function Pricing() {
             </span>
             <span className="text-sm text-ink">
               The first 10 businesses get a full Starter site for{" "}
-              <span className="font-semibold text-gold">$399</span>{" "}
+              <CountUp value={399} prefix="$" className="font-semibold text-gold" />{" "}
               <span className="text-faint line-through">$750</span>.
             </span>
           </div>
@@ -72,7 +73,7 @@ export default function Pricing() {
             <article className="group flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Starter site</p>
               <p className="mt-4 font-display text-3xl text-ink">
-                $399
+                <CountUp value={399} prefix="$" />
                 <span className="ml-2 align-middle text-base text-faint line-through">$750</span>
               </p>
               <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-gold">
@@ -101,7 +102,8 @@ export default function Pricing() {
               </span>
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Care Plan</p>
               <p className="mt-4 font-display text-3xl text-ink">
-                $49<span className="text-base text-faint">/mo</span>
+                <CountUp value={49} prefix="$" />
+                <span className="text-base text-faint">/mo</span>
               </p>
               <p className="mt-5 flex-1 text-sm leading-relaxed text-muted">
                 Hosting, domain, security, and small changes handled — plus your

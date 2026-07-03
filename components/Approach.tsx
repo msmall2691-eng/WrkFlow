@@ -12,11 +12,16 @@ export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-14 md:py-20"
+      className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-20 md:py-24"
     >
       <Watermark text="M STUDIO" />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
+          <Reveal>
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+              Approach
+            </p>
+          </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               No black boxes. You steer the whole build.

@@ -30,12 +30,17 @@ export default function HomeTools() {
   const active = TABS.find((t) => t.id === tool)!;
 
   return (
-    <section id="tools" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-12 md:py-16">
+    <section id="tools" className="relative overflow-hidden border-t border-line bg-[#0e1d2b] py-16 md:py-20">
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
+        <Reveal>
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+            Free tools
+          </p>
+        </Reveal>
         <Reveal>
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
             Free tools. Try them out.

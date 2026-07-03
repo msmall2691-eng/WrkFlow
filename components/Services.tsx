@@ -63,7 +63,7 @@ const MENU: Item[] = [
 
 export default function Services() {
   return (
-    <section id="services" className="relative overflow-hidden border-t border-line py-14 md:py-20">
+    <section id="services" className="relative overflow-hidden border-t border-line py-20 md:py-24">
       <div
         aria-hidden="true"
         className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
@@ -74,6 +74,11 @@ export default function Services() {
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
+          <Reveal>
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+              Services
+            </p>
+          </Reveal>
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
               What we can build.
