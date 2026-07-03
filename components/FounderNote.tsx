@@ -51,7 +51,10 @@ export default function FounderNote() {
                     <span className="absolute left-0 bottom-0 h-4 w-4 border-l border-b border-signal/60" />
                     <span className="absolute right-0 bottom-0 h-4 w-4 border-r border-b border-signal/60" />
                   </div>
-                  <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
+                  {/* Grayscale + hover-to-color treatment now lives inside
+                      FounderAvatar's front face so it doesn't dim the
+                      cartoon back face when flipped. */}
+                  <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 sm:w-40" />
                 </div>
                 <figcaption className="mt-6 w-full">
                   <p className="font-display text-lg text-ink">Meg</p>
