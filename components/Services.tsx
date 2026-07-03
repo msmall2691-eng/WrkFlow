@@ -19,6 +19,32 @@ const AUDIENCES = [
   "Personal projects",
 ];
 
+/*
+  Specific things we've built (or can build). Turns the four broad service
+  categories into a concrete showcase of what "custom software" actually
+  looks like in practice.
+*/
+const CAPABILITIES = [
+  "Booking apps",
+  "CRMs",
+  "Client portals",
+  "Member areas",
+  "Dashboards",
+  "Quote calculators",
+  "Admin tools",
+  "Data pipelines",
+  "Workflow automations",
+  "AI chatbots",
+  "AI agents",
+  "Stripe + payments",
+  "Calendar sync",
+  "Landing pages",
+  "E-commerce",
+  "Invoice systems",
+  "Email automations",
+  "Newsletter tools",
+];
+
 const MENU: Item[] = [
   {
     title: "Websites & web apps",
@@ -104,9 +130,28 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Who it's for — compact chip row */}
-        <Reveal delay={200}>
+        {/* Specifically — a wider chip cloud of concrete things we build */}
+        <Reveal delay={180}>
           <div className="mt-10 border-t border-line pt-8">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+              Specifically
+            </p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {CAPABILITIES.map((c) => (
+                <span
+                  key={c}
+                  className="rounded-full border border-line bg-base px-3 py-1.5 text-sm text-muted transition-colors hover:border-signal/40 hover:text-ink"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Who it's for — compact chip row */}
+        <Reveal delay={220}>
+          <div className="mt-8 border-t border-line pt-8">
             <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
               Who it&apos;s for
             </p>
