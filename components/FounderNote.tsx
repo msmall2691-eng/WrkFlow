@@ -28,7 +28,7 @@ export default function FounderNote() {
               <figure className="flex flex-col items-center text-center md:items-start md:text-left">
                 <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
                 <figcaption className="mt-4">
-                  <p className="font-display text-lg text-white">Meg</p>
+                  <p className="font-display text-lg text-ink">Meg</p>
                   <p className="mt-0.5 font-mono text-[11px] uppercase tracking-widest text-faint">
                     Founder · M Studio
                   </p>
@@ -48,7 +48,7 @@ export default function FounderNote() {
               </p>
             </Reveal>
             <Reveal delay={120}>
-              <blockquote className="mt-4 [font-family:var(--font-serif)] text-white">
+              <blockquote className="mt-4 [font-family:var(--font-serif)] text-ink">
                 <p className="text-balance text-xl leading-snug md:text-2xl">
                   {founderNote.lead}
                 </p>

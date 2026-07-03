@@ -13,8 +13,13 @@ export default function Logo({
   /** "dark" = ink wordmark on light bg; "light" = white wordmark on dark bg. */
   tone?: "dark" | "light";
 }) {
-  const wordColor = tone === "light" ? "text-white" : "text-ink";
-  const tagColor = tone === "light" ? "text-white/55" : "text-faint";
+  /*
+    Tone "light" = "for a transparent-over-hero context". In dark mode that's
+    white on harbor navy; in daylight it's ink on cream. Both come from the
+    same CSS vars the Nav uses so the wordmark and nav links match.
+  */
+  const wordColor = tone === "light" ? "text-[color:var(--nav-hero-ink2)]" : "text-ink";
+  const tagColor = tone === "light" ? "text-[color:var(--nav-hero-ink)]" : "text-faint";
   return (
     <span className={`inline-flex items-baseline gap-2 ${wordColor} ${className}`}>
       {/* Glowing "M" monogram — the brand letter, accent-aware */}
@@ -24,9 +29,7 @@ export default function Logo({
       >
         M
       </span>
-      <span className={`font-mono text-[16px] font-semibold tracking-[0.04em] ${wordColor}`}>
-        Studio
-      </span>
+      <span className={`font-mono text-[16px] font-semibold tracking-[0.04em] ${wordColor}`}>Studio</span>
       {tag && (
         <span className={`hidden font-mono text-[11px] uppercase tracking-[0.22em] sm:inline ${tagColor}`}>
           &middot; Maine

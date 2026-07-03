@@ -91,35 +91,35 @@ export default function QuoteCalc() {
       {/* Result — right: the live price */}
       <Reveal delay={80}>
         <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:sticky md:top-24">
-          <div className="rounded-2xl bg-[#0e1c28] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">Estimated price</p>
+          <div className="rounded-2xl border border-line bg-elevated p-7 text-ink shadow-[0_18px_50px_-16px_rgba(11,23,34,0.25)]">
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-faint">Estimated price</p>
             <p className="mt-2 font-display text-4xl tracking-tight">
-              {money(low)}<span className="text-white/40">–</span>{money(high)}
+              {money(low)}<span className="text-faint">–</span>{money(high)}
             </p>
-            <p className="mt-1 text-sm text-white/55">
+            <p className="mt-1 text-sm text-muted">
               {SERVICE[service].label} · {FREQ[freq].label.toLowerCase()}
               {FREQ[freq].off > 0 && (
-                <span className="text-[#6fd3c6]"> · {Math.round(FREQ[freq].off * 100)}% recurring discount</span>
+                <span className="text-signal"> · {Math.round(FREQ[freq].off * 100)}% recurring discount</span>
               )}
             </p>
-            <div className="mt-6 space-y-2 border-t border-white/10 pt-5 text-sm">
+            <div className="mt-6 space-y-2 border-t border-line pt-5 text-sm">
               <Line k={`${SERVICE[service].label} base`} v={money(SERVICE[service].base)} />
               <Line k={`${beds} bed · ${baths} bath`} v={money(beds * 18 + baths * 22)} />
               {addonTotal > 0 && <Line k="Add-ons" v={money(addonTotal)} />}
             </div>
             <a
               href="#contact"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Request this quote →
             </a>
             <SaveResult summary={summary} filename="instant-quote" />
             <a
               href="/#pricing"
-              className="mt-4 block text-center text-xs leading-relaxed text-white/55 transition-colors hover:text-white/80"
+              className="mt-4 block text-center text-xs leading-relaxed text-muted transition-colors hover:text-ink"
             >
               Just getting started? First 10 businesses get a full Starter site for{" "}
-              <span className="text-[#6fd3c6]">$399</span> →
+              <span className="text-signal">$399</span> →
             </a>
           </div>
         </div>
@@ -131,8 +131,8 @@ export default function QuoteCalc() {
 function Line({ k, v }: { k: string; v: string }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-white/55">{k}</span>
-      <span className="text-white/85">{v}</span>
+      <span className="text-muted">{k}</span>
+      <span className="text-ink">{v}</span>
     </div>
   );
 }
