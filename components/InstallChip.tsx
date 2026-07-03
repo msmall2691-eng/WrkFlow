@@ -10,21 +10,16 @@ type PromptEvent = Event & {
 type Mode = "prompt" | "ios" | "manual" | "installed";
 
 /*
-  InstallChip — a quiet, in-panel affordance advertising the site's PWA
-  install path. Lives inside the LiveReadout (the "here's the tech" panel)
-  so it feels like part of the showcase, not a marketing banner.
-
-  Chrome / Edge      → tap fires the deferred beforeinstallprompt.
-  iOS Safari         → tap reveals the Share → Add to Home Screen hint.
-  Anything else      → tap reveals the URL-bar-icon hint.
-  Already installed  → the chip hides itself.
+  InstallChip — a compact "install ↓" pill designed to sit inline in the
+  LiveReadout's theme row. Chrome / Edge fire the deferred install prompt
+  on tap; iOS Safari and other browsers reveal a short inline hint. Hides
+  itself when running standalone.
 */
 export default function InstallChip() {
   const [mode, setMode] = useState<Mode>("manual");
   const [tip, setTip] = useState<string | null>(null);
 
   useEffect(() => {
-    // If we're already running standalone, nothing to advertise.
     const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       (navigator as unknown as { standalone?: boolean }).standalone === true;
@@ -33,7 +28,6 @@ export default function InstallChip() {
       return;
     }
 
-    // Pick up an event RegisterSW already stashed.
     if (window.__mstudioInstallPrompt) {
       setMode("prompt");
     } else {
@@ -54,8 +48,6 @@ export default function InstallChip() {
 
   if (mode === "installed") return null;
 
-  const label = mode === "ios" ? "Add to home screen" : "Get the app";
-
   const onClick = async () => {
     setTip(null);
     if (mode === "prompt") {
@@ -67,34 +59,23 @@ export default function InstallChip() {
         window.__mstudioInstallPrompt = undefined;
         if (outcome === "accepted") setMode("installed");
       } catch {
-        /* user canceled */
+        /* dismissed */
       }
       return;
     }
-    if (mode === "ios") {
-      setTip("Tap Safari's Share button, then choose “Add to Home Screen”.");
-      return;
-    }
-    setTip("On Chrome / Edge, click the install icon at the right of the URL bar.");
+    setTip(mode === "ios" ? "Share → Add to Home Screen" : "URL bar → install icon");
   };
 
   return (
-    <div className="mt-3 border-t border-white/10 pt-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="font-mono text-[9px] uppercase tracking-widest text-white/40">Install</span>
-        <button
-          type="button"
-          onClick={onClick}
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-2.5 py-1 font-mono text-[10px] text-white/80 transition-colors hover:border-white/50 hover:bg-white/10 hover:text-white"
-        >
-          <span aria-hidden="true">↓</span>
-          {label}
-        </button>
-        <span className="font-mono text-[9px] text-white/35">yes, this site is a real app</span>
-      </div>
-      {tip && (
-        <p className="mt-2 font-mono text-[10px] leading-relaxed text-white/55">{tip}</p>
-      )}
-    </div>
+    <>
+      <button
+        type="button"
+        onClick={onClick}
+        className="inline-flex items-center gap-1 rounded-full border border-white/15 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-white/45 transition-colors hover:border-white/40 hover:text-white/85"
+      >
+        install <span aria-hidden="true">↓</span>
+      </button>
+      {tip && <span className="font-mono text-[9px] text-white/50">{tip}</span>}
+    </>
   );
 }

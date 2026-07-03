@@ -80,10 +80,8 @@ export default function LiveReadout() {
           style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#16a394 55%,#6f7fd6)" }}
         />
         <span className="font-mono text-[9px] text-white/35">try it →</span>
+        <InstallChip />
       </div>
-
-      {/* Install — a small showcase that this whole thing is a real PWA */}
-      <InstallChip />
     </div>
   );
 }
