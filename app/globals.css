@@ -456,13 +456,29 @@ body {
 .corner-accents:hover::before,
 .corner-accents:hover::after { opacity: 0.75; }
 
-/* Founder portrait — tonight's moon orbits slowly around Meg (60s per
-   revolution). Quiet enough to feel meditative, not busy. Reduced-motion
-   parks the moon at the top (12 o'clock) and stops all rotation. */
-@keyframes moonOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.moon-orbit { animation: moonOrbit 60s linear infinite; }
+/* Approach section — signal-teal line draws across the connector when the
+   section enters view. Desktop line scales horizontally; mobile between-card
+   connectors scale vertically with per-index delays. Reduced-motion just
+   shows the filled state instantly. */
+.workflow-flow .workflow-fill {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.8s var(--ease-out-expo);
+}
+.workflow-flow.is-drawing .workflow-fill { transform: scaleX(1); }
+
+.workflow-flow .workflow-fill-v {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.9s var(--ease-out-expo);
+}
+.workflow-flow.is-drawing .workflow-fill-v { transform: scaleY(1); }
+
 @media (prefers-reduced-motion: reduce) {
-  .moon-orbit { animation: none !important; }
+  .workflow-fill, .workflow-fill-v {
+    transition: none !important;
+    transform: none !important;
+  }
 }
 
 /* Mobile nav — slide the panel down, then fade+lift each link in sequence */
