@@ -1,7 +1,6 @@
 "use client";
 
 import MaineReadout from "./MaineReadout";
-import InstallChip from "./InstallChip";
 
 /*
   LiveReadout — the hero's "live Maine data" panel. Clear, labeled sections:
@@ -80,7 +79,6 @@ export default function LiveReadout() {
           style={{ backgroundImage: "linear-gradient(135deg,#e0a85a,#16a394 55%,#6f7fd6)" }}
         />
         <span className="font-mono text-[9px] text-white/35">try it →</span>
-        <InstallChip />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import HeroWordmark from "./HeroWordmark";
 import LiveReadout from "./LiveReadout";
+import InstallCard from "./InstallCard";
 
 export default function Hero() {
   return (
@@ -78,6 +79,11 @@ export default function Hero() {
         {/* Live Portland, ME readout — front and center, tap to see what it drives */}
         <div className="mt-10">
           <LiveReadout />
+        </div>
+
+        {/* Small capability card: this site is a PWA, so could theirs be. */}
+        <div className="mt-4">
+          <InstallCard />
         </div>
       </div>
 
