@@ -32,8 +32,19 @@ export default function FounderNote() {
           <div className="md:col-span-4 md:sticky md:top-24">
             <Reveal>
               <figure className="flex flex-col items-center text-center md:items-start md:text-left">
-                <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
-                <figcaption className="mt-4">
+                <div className="relative inline-block">
+                  {/*
+                    Three concentric harbor ripples emanating outward from
+                    the portrait — expanding + fading in sequence (~5s each,
+                    1.6s stagger) so the effect reads as continuous tide.
+                    Reduced-motion parks them, so nothing spins forever.
+                  */}
+                  <span aria-hidden="true" className="portrait-ripple absolute inset-0" />
+                  <span aria-hidden="true" className="portrait-ripple portrait-ripple-2 absolute inset-0" />
+                  <span aria-hidden="true" className="portrait-ripple portrait-ripple-3 absolute inset-0" />
+                  <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 grayscale transition-[filter] duration-700 hover:grayscale-0 sm:w-40" />
+                </div>
+                <figcaption className="mt-6">
                   <p className="font-display text-lg text-ink">Meg</p>
                   <p className="mt-0.5 font-mono text-[11px] uppercase tracking-widest text-faint">
                     Founder · M Studio
