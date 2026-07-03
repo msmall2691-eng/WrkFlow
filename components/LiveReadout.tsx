@@ -12,6 +12,7 @@ const REACTS: { from: string; to: string }[] = [
   { from: "daylight", to: "theme" },
   { from: "sun", to: "sky" },
   { from: "tide", to: "waves" },
+  { from: "buoy 44007", to: "swell" },
 ];
 
 const SWATCHES: { label: string; color: string; detail: number | "auto" }[] = [

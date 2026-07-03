@@ -2,9 +2,9 @@ import { getSunTimes, PORTLAND_ME } from "@/lib/sun";
 
 /*
   /api/maine — a live readout for Portland, Maine: air + water temperature,
-  wind, sky conditions, tide state, next sun event / golden hour, and the moon
-  phase. NWS + NOAA CO-OPS, computed sun/moon. Edge-cached ~10 min. Every
-  upstream call fails soft.
+  wind, sky conditions, tide state, next sun event / golden hour, moon phase,
+  and offshore wave height from NDBC buoy 44007. NWS + NOAA CO-OPS + NDBC,
+  computed sun/moon. Edge-cached ~10 min. Every upstream call fails soft.
 */
 
 const fmtTime = (d: Date) =>
@@ -25,6 +25,20 @@ function clarity(text: string): number {
   if (/(mostly clear|mostly sunny|few clouds)/.test(t)) return 0.85;
   if (/(clear|sunny|fair)/.test(t)) return 1;
   return 0.6;
+}
+const isFog = (text: string) => /(fog|mist|haze)/i.test(text);
+
+/*
+  Buoy WVHT (significant wave height, meters) → 0..1 amplitude for shaping
+  wave animations. Piecewise so the "current default" band sits in the middle:
+  <0.5m glassy, 0.5-1.5m near default, >2.5m rolling (clamped).
+*/
+function waveAmp(m: number): number {
+  if (m <= 0) return 0.1;
+  if (m < 0.5) return 0.1 + (m / 0.5) * 0.25; // 0.10..0.35
+  if (m < 1.5) return 0.35 + ((m - 0.5) / 1.0) * 0.2; // 0.35..0.55  (existing default sits here)
+  if (m < 2.5) return 0.55 + ((m - 1.5) / 1.0) * 0.35; // 0.55..0.90
+  return Math.min(1, 0.9 + ((m - 2.5) / 1.5) * 0.1); // 0.90..1.00
 }
 
 function moonPhase(date: Date) {
@@ -76,6 +90,45 @@ export async function GET() {
       }
       if (typeof p.textDescription === "string" && p.textDescription)
         conditions = { text: p.textDescription, clarity: clarity(p.textDescription) };
+    }
+  } catch {
+    /* fail soft */
+  }
+  const fog = conditions ? isFog(conditions.text) : false;
+
+  // Buoy 44007 (Portland, ME approaches) — significant wave height, meters.
+  // Fixed-width text; column 8 is WVHT, 'MM' means missing. Ignore if the
+  // latest sample is older than ~3 h so we fall back to the site default.
+  let waveM: number | null = null;
+  let wave: { m: number; amp: number } | null = null;
+  try {
+    const r = await fetch("https://www.ndbc.noaa.gov/data/realtime2/44007.txt", {
+      next: { revalidate: 900 },
+    });
+    if (r.ok) {
+      const text = await r.text();
+      const first = text.split("\n").find((l) => l && !l.startsWith("#"));
+      if (first) {
+        const c = first.trim().split(/\s+/);
+        // [YYYY, MM, DD, hh, mm, WDIR, WSPD, GST, WVHT, ...]
+        const wv = c[8];
+        if (wv && wv !== "MM") {
+          const h = parseFloat(wv);
+          if (Number.isFinite(h) && h >= 0 && h < 30) {
+            const sampled = Date.UTC(
+              parseInt(c[0], 10),
+              parseInt(c[1], 10) - 1,
+              parseInt(c[2], 10),
+              parseInt(c[3], 10),
+              parseInt(c[4], 10),
+            );
+            if (Number.isFinite(sampled) && t - sampled < 3 * 60 * 60 * 1000) {
+              waveM = Math.round(h * 10) / 10;
+              wave = { m: waveM, amp: Math.round(waveAmp(h) * 100) / 100 };
+            }
+          }
+        }
+      }
     }
   } catch {
     /* fail soft */
@@ -136,9 +189,11 @@ export async function GET() {
       waterTempF,
       wind,
       conditions,
+      fog,
       tide,
       nextTide,
       tideLevel,
+      wave,
       sun: nextSun,
       light,
       moon: moonPhase(now),
