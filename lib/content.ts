@@ -18,11 +18,12 @@ export const whoIsItFor =
 export const founderNote = {
   /** Pulled out as the emphasized lead. */
   lead: `Off-the-shelf software never fit how I needed to work — so I built my own, to run ${provingGroundCompany}.`,
-  /** Supporting paragraphs, rendered in order. */
+  /** Supporting paragraphs — kept intentionally short. The LinkedIn-style
+      chips beside the portrait carry the education + experience details, so
+      the paragraphs can focus on voice + creative vibe. */
   paragraphs: [
-    `That's how M Studio began. I'm finishing a Business Analytics & AI degree at the University of Southern Maine, with a minor in Computer Science.`,
-    `Now I build websites, web apps, and workflows for people done with cookie-cutter, plug-in sites — the kind you can't change or connect to anything. Whatever you dream up, we can build it, connect it, automate it, and make it work exactly how you do.`,
-    `The part I love most is the creative one — dreaming something up, connecting the pieces, and bringing it to life, right here on the Maine coast.`,
+    `Now I build websites, apps, and workflows for people tired of cookie-cutter tools. Whatever you dream up, we build it, connect it, and make it work exactly how you do.`,
+    `The part I love most is dreaming things up and connecting the pieces — right here on the Maine coast.`,
   ],
 } as const;
 
