@@ -11,10 +11,12 @@ import { useEffect, useState } from "react";
 
 const STEPS = [
   { id: "services", label: "Services" },
+  { id: "promises", label: "Promises" },
   { id: "workflow", label: "Workflow" },
   { id: "tools", label: "Free tools" },
   { id: "work", label: "Work" },
   { id: "approach", label: "Approach" },
+  { id: "faq", label: "FAQ" },
   { id: "pricing", label: "Pricing" },
   { id: "contact", label: "Contact" },
 ];
