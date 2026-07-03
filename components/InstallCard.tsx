@@ -73,7 +73,7 @@ export default function InstallCard() {
   };
 
   return (
-    <div className="max-w-md rounded-xl border border-white/12 bg-[#08131d]/60 p-4 backdrop-blur-sm">
+    <div className="rounded-2xl border border-white/12 bg-[#08131d]/60 p-4 backdrop-blur-sm">
       <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-signal/85">
         Installable as an app
       </p>

@@ -76,13 +76,13 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Live Portland, ME readout — front and center, tap to see what it drives */}
-        <div className="mt-10">
+        {/*
+          Two capability cards — live data on the left, "we build this for you"
+          on the right. Stacked on mobile, side-by-side on md+ so the fold
+          stays compact.
+        */}
+        <div className="mt-10 flex max-w-md flex-col gap-4 md:max-w-3xl md:grid md:grid-cols-2 md:gap-5">
           <LiveReadout />
-        </div>
-
-        {/* Small capability card: this site is a PWA, so could theirs be. */}
-        <div className="mt-4">
           <InstallCard />
         </div>
       </div>

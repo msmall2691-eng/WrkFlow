@@ -56,17 +56,16 @@ export default function Nav() {
           <button
             type="button"
             onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
-            aria-label="Open search"
-            className={`hidden items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[11px] transition-all active:scale-[0.96] md:inline-flex ${
+            aria-label="Open command menu"
+            className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1.5 font-mono text-[11px] transition-all active:scale-[0.96] md:inline-flex ${
               scrolled
                 ? "border-line bg-surface/80 text-muted hover:text-ink"
                 : "border-white/25 text-white/70 hover:border-white/50 hover:text-white"
             }`}
           >
             <span aria-hidden="true">⌕</span>
-            <span>Search</span>
             <kbd
-              className={`ml-1 rounded border px-1.5 text-[10px] tracking-normal ${
+              className={`rounded border px-1.5 text-[10px] tracking-normal ${
                 scrolled ? "border-line bg-base text-faint" : "border-white/20 text-white/60"
               }`}
             >

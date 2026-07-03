@@ -27,7 +27,7 @@ const setAccent = (detail: number | "auto") =>
 
 export default function LiveReadout() {
   return (
-    <div className="max-w-md rounded-xl border border-white/12 bg-[#08131d]/60 p-4 backdrop-blur-sm">
+    <div className="rounded-2xl border border-white/12 bg-[#08131d]/60 p-4 backdrop-blur-sm">
       {/* What it is */}
       <div className="flex items-center gap-2">
         <span className="relative flex h-2 w-2" aria-hidden="true">

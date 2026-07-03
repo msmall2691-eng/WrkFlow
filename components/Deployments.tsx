@@ -18,10 +18,6 @@ export default function Deployments() {
 
   return (
     <section id="work" className="relative overflow-hidden border-t border-line py-20 md:py-24">
-      <div
-        aria-hidden="true"
-        className="floaty pointer-events-none absolute -left-24 bottom-8 h-72 w-72 rounded-full bg-gold/[0.05] blur-[130px]"
-      />
       <div className="relative mx-auto max-w-5xl px-6">
         <div className="mb-10 max-w-3xl">
           <Reveal>
@@ -133,7 +129,7 @@ function BigCard({ w }: { w: WorkItem }) {
 
 function PrivateTile({ w }: { w: WorkItem }) {
   return (
-    <article className="group corner-accents flex h-full flex-col overflow-hidden rounded-xl border border-line bg-elevated">
+    <article className="group corner-accents flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-elevated">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface">
         <Image
           src={w.shot}
