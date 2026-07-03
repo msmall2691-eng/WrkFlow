@@ -5,6 +5,7 @@ import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
 import ConsoleGreeting from "@/components/ConsoleGreeting";
 import KonamiEgg from "@/components/KonamiEgg";
+import RegisterSW from "@/components/RegisterSW";
 import { Analytics } from "@vercel/analytics/next";
 import { getFog } from "@/lib/fog";
 
@@ -191,6 +192,7 @@ export default async function RootLayout({
         <BackToTop />
         <ConsoleGreeting />
         <KonamiEgg />
+        <RegisterSW />
         <Analytics />
       </body>
     </html>
