@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMaine } from "@/lib/useMaine";
 
 /*
   TideLevel — the founder section's "water". A translucent accent fill that
@@ -11,33 +11,18 @@ import { useEffect, useState } from "react";
   amplitude — the data story — is still baked into the static curve.
 */
 export default function TideLevel() {
-  const [level, setLevel] = useState(0.4);
-  const [dur, setDur] = useState<string>();
-  const [amp, setAmp] = useState(0.45); // default sits near the site's historical amplitude
-
-  useEffect(() => {
-    let on = true;
-    fetch("/api/maine")
-      .then((r) => r.json())
-      .then((j) => {
-        if (!on) return;
-        if (typeof j?.tideLevel === "number") setLevel(Math.max(0, Math.min(1, j.tideLevel)));
-        const t = j?.tide;
-        setDur(t === "rising" ? "11s" : t === "falling" ? "24s" : "16s");
-        if (typeof j?.wave?.amp === "number") setAmp(Math.max(0, Math.min(1, j.wave.amp)));
-      })
-      .catch(() => {});
-    return () => {
-      on = false;
-    };
-  }, []);
+  const d = useMaine();
+  const level = Math.max(0, Math.min(1, d?.tideLevel ?? 0.4));
+  const amp = Math.max(0, Math.min(1, d?.wave?.amp ?? 0.45));
+  const dur = d?.tide === "rising" ? "11s" : d?.tide === "falling" ? "24s" : undefined;
 
   const h = 10 + level * 15; // 10% (low) → 25% (high) — stays clear of the text
-  // Baseline y=22 in a 40-unit viewBox; crest y = 22 − a. a≈0.45 preserves the
-  // historical look; glass calm → ~4, rolling storm → ~24.
-  const a = 4 + amp * 26;
+  // Baseline y=22 in a 40-unit viewBox. Historical control-y ≈ 6 (a ≈ 16)
+  // sits around amp≈0.5. Capped so a storm reading doesn't clip the crest
+  // past the top of the viewBox.
+  const a = 8 + amp * 14; // 8 (glass) → 22 (rolling)
   const crest = 22 - a;
-  const d = `M0 22 Q180 ${crest} 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22`;
+  const path = `M0 22 Q180 ${crest} 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22`;
 
   return (
     <div
@@ -54,10 +39,10 @@ export default function TideLevel() {
         viewBox="0 0 2880 40"
         preserveAspectRatio="none"
       >
-        <path d={`${d} V40 H0 Z`} fill="var(--color-signal)" fillOpacity="0.14" />
-        <path d={d} stroke="var(--color-signal)" strokeWidth="2.5" strokeOpacity="0.5" fill="none" />
+        <path d={`${path} V40 H0 Z`} fill="var(--color-signal)" fillOpacity="0.14" />
+        <path d={path} stroke="var(--color-signal)" strokeWidth="2.5" strokeOpacity="0.5" fill="none" />
         {/* faint highlight on the crest — a little shimmer */}
-        <path d={d} stroke="#dff3ef" strokeWidth="1" strokeOpacity="0.3" fill="none" />
+        <path d={path} stroke="#dff3ef" strokeWidth="1" strokeOpacity="0.3" fill="none" />
       </svg>
     </div>
   );

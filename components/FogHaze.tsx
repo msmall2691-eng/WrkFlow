@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useMaine } from "@/lib/useMaine";
 
 /*
   FogHaze — on Portland fog/mist/haze days, adds a data flag to the root so
@@ -8,19 +9,14 @@ import { useEffect } from "react";
   ambient — no UI, silent on failure, no layout impact.
 */
 export default function FogHaze() {
+  const d = useMaine();
   useEffect(() => {
-    let on = true;
-    fetch("/api/maine")
-      .then((r) => r.json())
-      .then((j) => {
-        if (!on) return;
-        if (j?.fog === true) document.documentElement.dataset.fog = "1";
-      })
-      .catch(() => {});
-    return () => {
-      on = false;
-      delete document.documentElement.dataset.fog;
-    };
-  }, []);
+    if (d?.fog === true) {
+      document.documentElement.dataset.fog = "1";
+      return () => {
+        delete document.documentElement.dataset.fog;
+      };
+    }
+  }, [d?.fog]);
   return null;
 }

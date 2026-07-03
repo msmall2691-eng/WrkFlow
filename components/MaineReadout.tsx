@@ -1,24 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMaine } from "@/lib/useMaine";
 
 /*
   MaineReadout — a live line for Portland, ME: air + water temp, wind, tide,
-  next sun / golden hour, and the moon at night. From /api/maine. Renders only
-  the fields that come back; nothing until real data arrives.
+  next sun / golden hour, and the moon at night. Reads the shared /api/maine
+  cache. Renders only the fields that come back; nothing until real data
+  arrives.
 */
-type Data = {
-  place: string;
-  tempF: number | null;
-  waterTempF: number | null;
-  wind: { mph: number; dir: string } | null;
-  tide: "rising" | "falling" | null;
-  sun: { label: string; time: string } | null;
-  light: { label: string; time?: string } | null;
-  moon: { phase: string; emoji: string } | null;
-  night: boolean;
-};
-
 export default function MaineReadout({
   className = "",
   showDot = true,
@@ -26,19 +15,7 @@ export default function MaineReadout({
   className?: string;
   showDot?: boolean;
 }) {
-  const [d, setD] = useState<Data | null>(null);
-
-  useEffect(() => {
-    let on = true;
-    fetch("/api/maine")
-      .then((r) => r.json())
-      .then((j) => on && setD(j))
-      .catch(() => {});
-    return () => {
-      on = false;
-    };
-  }, []);
-
+  const d = useMaine();
   if (!d) return null;
 
   const parts: string[] = [d.place];
