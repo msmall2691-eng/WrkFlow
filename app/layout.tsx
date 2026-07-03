@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces, Caveat } from "next/font/google";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
@@ -32,6 +32,13 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+// Handwritten face — used sparingly for the founder-note "— Meg" signature.
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
   display: "swap",
 });
 
@@ -176,7 +183,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-fog={fog ? "1" : undefined}
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable} ${caveat.variable}`}
     >
       <body>
         {/*

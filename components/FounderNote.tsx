@@ -5,11 +5,17 @@ import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 
 /*
-  FounderNote — a clean, neutral-dark "meet the founder" section that flows out
-  of the hero and works under any accent (the only color is the accent itself,
-  via the tide water + ring, so it re-tunes with the theme). Circular portrait,
-  emphasized lead sentence, then supporting paragraphs.
+  FounderNote — an editorial "meet the founder" section. Portrait +
+  identity block + small credibility chips on the left, personal note on
+  the right. The note opens with a big serif quote glyph and closes with
+  a handwritten "— Meg" signature so it reads as a signed letter.
 */
+
+const QUICK_FACTS = [
+  "USM · Business Analytics & AI",
+  "Comp Sci minor",
+  "Founded The Maine Cleaning Co.",
+];
 
 export default function FounderNote() {
   return (
@@ -22,7 +28,7 @@ export default function FounderNote() {
       />
       <div className="relative z-10 mx-auto max-w-5xl px-6">
         <div className="grid items-start gap-10 md:grid-cols-12 md:gap-12">
-          {/* Circular portrait + identity caption */}
+          {/* Portrait + identity + quick facts */}
           <div className="md:col-span-4 md:sticky md:top-24">
             <Reveal>
               <figure className="flex flex-col items-center text-center md:items-start md:text-left">
@@ -35,12 +41,23 @@ export default function FounderNote() {
                   <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
                     Portland, Maine
                   </p>
+                  {/* Credibility chips — small, mono, quiet */}
+                  <ul className="mt-4 flex flex-wrap justify-center gap-1.5 md:justify-start">
+                    {QUICK_FACTS.map((f) => (
+                      <li
+                        key={f}
+                        className="whitespace-nowrap rounded-full border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] leading-none text-muted"
+                      >
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
                 </figcaption>
               </figure>
             </Reveal>
           </div>
 
-          {/* Note — eyebrow, emphasized lead, supporting paragraphs */}
+          {/* Note — eyebrow, open-quote glyph, emphasized lead, supporting paragraphs, signature */}
           <div className="md:col-span-8">
             <Reveal delay={80}>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-signal">
@@ -48,8 +65,14 @@ export default function FounderNote() {
               </p>
             </Reveal>
             <Reveal delay={120}>
-              <blockquote className="mt-4 [font-family:var(--font-serif)] text-ink">
-                <p className="text-balance text-xl leading-snug md:text-2xl">
+              <blockquote className="relative mt-4 [font-family:var(--font-serif)] text-ink">
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -top-8 left-0 select-none text-[6rem] leading-none text-signal/25 md:-left-4 md:-top-10"
+                >
+                  &ldquo;
+                </span>
+                <p className="relative text-balance text-xl leading-snug md:text-2xl">
                   {founderNote.lead}
                 </p>
                 <div className="mt-5 space-y-4 text-base leading-relaxed text-muted md:text-lg">
@@ -57,6 +80,12 @@ export default function FounderNote() {
                     <p key={i}>{paragraph}</p>
                   ))}
                 </div>
+                <p
+                  className="mt-6 text-4xl leading-none text-signal"
+                  style={{ fontFamily: "var(--font-hand)" }}
+                >
+                  — Meg
+                </p>
               </blockquote>
             </Reveal>
           </div>
