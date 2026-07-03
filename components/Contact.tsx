@@ -66,6 +66,11 @@ export default function Contact() {
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid gap-10 md:grid-cols-12 md:gap-14">
           <div className="md:col-span-5">
+            <Reveal>
+              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+                Contact
+              </p>
+            </Reveal>
             <Reveal delay={60}>
               <h2 className="display text-2xl text-white sm:text-3xl md:text-4xl [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]">
                 Let&apos;s start with what you&apos;re trying to solve.

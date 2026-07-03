@@ -51,6 +51,39 @@ export default function Nav() {
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Search: opens the ⌘K command palette (desktop shows a fake input,
+              mobile shows a compact icon button). */}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
+            aria-label="Open search"
+            className={`hidden items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[11px] transition-all active:scale-[0.96] md:inline-flex ${
+              scrolled
+                ? "border-line bg-surface/80 text-muted hover:text-ink"
+                : "border-white/25 text-white/70 hover:border-white/50 hover:text-white"
+            }`}
+          >
+            <span aria-hidden="true">⌕</span>
+            <span>Search</span>
+            <kbd
+              className={`ml-1 rounded border px-1.5 text-[10px] tracking-normal ${
+                scrolled ? "border-line bg-base text-faint" : "border-white/20 text-white/60"
+              }`}
+            >
+              ⌘K
+            </kbd>
+          </button>
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
+            aria-label="Open search"
+            className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-all active:scale-[0.94] md:hidden ${
+              solid ? "border-line text-ink" : "border-white/30 text-white"
+            }`}
+          >
+            <span aria-hidden="true">⌕</span>
+          </button>
+
           <Magnetic strength={0.4} className="hidden sm:inline-block">
             <a
               href="/#contact"

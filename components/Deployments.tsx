@@ -17,13 +17,18 @@ export default function Deployments() {
   const staticCards = work.filter((w) => (w.url && !w.live) || w.tier === "private");
 
   return (
-    <section id="work" className="relative overflow-hidden border-t border-line py-14 md:py-20">
+    <section id="work" className="relative overflow-hidden border-t border-line py-20 md:py-24">
       <div
         aria-hidden="true"
         className="floaty pointer-events-none absolute -left-24 bottom-8 h-72 w-72 rounded-full bg-gold/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-5xl px-6">
         <div className="mb-10 max-w-3xl">
+          <Reveal>
+            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+              Work
+            </p>
+          </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               Built and shipped.
