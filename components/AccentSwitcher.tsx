@@ -23,12 +23,14 @@ const ACCENTS: Accent[] = [
   { name: "Rose", signal: "#f43f5e", dim: "#e11d48" },
 ];
 
-// Maine daylight phases — the accent's place-based arc through the day.
+// Maine daylight phases — the accent's place-based arc through the day,
+// coloured to actual sky: warm sand at dawn, bright sky-blue at noon,
+// twilight purple at dusk, deep navy at night.
 const PHASES: Record<string, Accent> = {
-  dawn: { name: "dawn", signal: "#e0a85a", dim: "#c98f43" }, // sand
-  day: { name: "midday", signal: "#16a394", dim: "#0e8f86" }, // sea-glass teal
-  dusk: { name: "dusk", signal: "#6f7fd6", dim: "#5566bd" }, // twilight blue
-  night: { name: "night", signal: "#6b78c4", dim: "#5563aa" }, // deep navy (kept legible on dark)
+  dawn: { name: "dawn", signal: "#e0a85a", dim: "#c98f43" },
+  day: { name: "midday", signal: "#5eb2f0", dim: "#3a8fcf" },
+  dusk: { name: "dusk", signal: "#6f7fd6", dim: "#5566bd" },
+  night: { name: "night", signal: "#6b78c4", dim: "#5563aa" },
 };
 
 const KEY = "mstudio-accent";
