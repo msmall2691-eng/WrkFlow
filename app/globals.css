@@ -282,6 +282,39 @@ body {
   .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }
 }
 
+/*
+  Corner accents — quiet L-shaped tick marks on the top-left and bottom-right
+  of feature cards. Ties Services / Pricing / Approach / Work cards together
+  as one system. Uses the two available pseudo-elements per element; brightens
+  on hover to reward attention.
+*/
+.corner-accents { position: relative; }
+.corner-accents::before,
+.corner-accents::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  pointer-events: none;
+  border-color: var(--color-signal);
+  opacity: 0.35;
+  transition: opacity 300ms var(--ease-out-expo);
+}
+.corner-accents::before {
+  top: 12px;
+  left: 12px;
+  border-top: 1px solid;
+  border-left: 1px solid;
+}
+.corner-accents::after {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 1px solid;
+  border-right: 1px solid;
+}
+.corner-accents:hover::before,
+.corner-accents:hover::after { opacity: 0.75; }
+
 /* Mobile nav — slide the panel down, then fade+lift each link in sequence */
 @keyframes menuIn {
   from { transform: translateY(-8px); opacity: 0; }

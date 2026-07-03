@@ -70,7 +70,7 @@ export default function Pricing() {
         <div className="grid items-stretch gap-5 md:grid-cols-3 md:items-center">
           {/* Starter site */}
           <Reveal delay={60}>
-            <article className="group flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
+            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Starter site</p>
               <p className="mt-4 font-display text-3xl text-ink">
                 <CountUp value={399} prefix="$" />
@@ -83,8 +83,10 @@ export default function Pricing() {
                 A real, custom site — designed, built, and launched. Yours to own.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
-                {STARTER_BULLETS.map((b) => (
-                  <Bullet key={b}>{b}</Bullet>
+                {STARTER_BULLETS.map((b, i) => (
+                  <Reveal key={b} delay={180 + i * 60} as="li">
+                    <Bullet>{b}</Bullet>
+                  </Reveal>
                 ))}
               </ul>
               <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
@@ -96,7 +98,7 @@ export default function Pricing() {
 
           {/* Care Plan — default, highlighted */}
           <Reveal delay={120}>
-            <article className="group relative flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99] md:scale-[1.03]">
+            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99] md:scale-[1.03]">
               <span className="absolute right-5 top-5 rounded-full border border-signal/40 bg-signal/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-signal shadow-[0_0_20px_-4px_rgba(22,163,148,0.6)]">
                 Most keep this
               </span>
@@ -119,7 +121,7 @@ export default function Pricing() {
 
           {/* Custom build */}
           <Reveal delay={180}>
-            <article className="group flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
+            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Custom build</p>
               <p className="mt-4 font-display text-3xl text-ink">Let&apos;s scope it</p>
               <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-faint">
@@ -130,8 +132,10 @@ export default function Pricing() {
                 around how you work.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
-                {CUSTOM_BULLETS.map((b) => (
-                  <Bullet key={b}>{b}</Bullet>
+                {CUSTOM_BULLETS.map((b, i) => (
+                  <Reveal key={b} delay={240 + i * 60} as="li">
+                    <Bullet>{b}</Bullet>
+                  </Reveal>
                 ))}
               </ul>
               <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
