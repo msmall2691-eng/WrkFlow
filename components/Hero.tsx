@@ -57,7 +57,7 @@ export default function Hero() {
           <Magnetic strength={0.35}>
             <a
               href="#contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
             >
               Start a conversation
               <span
@@ -70,7 +70,7 @@ export default function Hero() {
           </Magnetic>
           <a
             href="#services"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:border-white/60 hover:bg-white/5"
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 px-7 py-3.5 text-sm font-medium text-white transition-all hover:border-white/60 hover:bg-white/5 active:scale-[0.97]"
           >
             See the work.
           </a>

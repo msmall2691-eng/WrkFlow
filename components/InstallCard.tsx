@@ -85,7 +85,7 @@ export default function InstallCard() {
         <button
           type="button"
           onClick={onClick}
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 font-mono text-[11px] text-white transition-colors hover:border-white/50 hover:bg-white/15"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-1.5 font-mono text-[11px] text-white transition-all hover:border-white/50 hover:bg-white/15 active:scale-[0.96]"
         >
           Install this site <span aria-hidden="true">↓</span>
         </button>

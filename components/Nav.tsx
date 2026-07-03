@@ -54,7 +54,7 @@ export default function Nav() {
           <Magnetic strength={0.4} className="hidden sm:inline-block">
             <a
               href="/#contact"
-              className={`inline-block rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
+              className={`inline-block rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-all active:scale-[0.96] ${
                 scrolled
                   ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
                   : "border-white/30 text-white hover:bg-white/10"
@@ -83,17 +83,18 @@ export default function Nav() {
         </div>
       </nav>
 
-      {/* Mobile menu panel */}
+      {/* Mobile menu panel — slides down with staggered link entrance */}
       {menuOpen && (
-        <div className="border-t border-line bg-base/95 backdrop-blur-md md:hidden">
+        <div className="animate-menu-in origin-top border-t border-line bg-base/95 backdrop-blur-md md:hidden">
           <div className="mx-auto max-w-6xl px-6 py-4">
             <div className="flex flex-col">
-              {links.map((link) => (
+              {links.map((link, i) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="border-b border-line/60 py-3 font-mono text-sm uppercase tracking-widest text-muted transition-colors hover:text-ink"
+                  style={{ animationDelay: `${i * 60}ms` }}
+                  className="animate-menu-item border-b border-line/60 py-3 font-mono text-sm uppercase tracking-widest text-muted opacity-0 transition-colors hover:text-ink active:text-signal"
                 >
                   {link.label}
                 </a>
@@ -101,7 +102,8 @@ export default function Nav() {
               <a
                 href="/#contact"
                 onClick={() => setMenuOpen(false)}
-                className="mt-4 inline-flex items-center justify-center rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white"
+                style={{ animationDelay: `${links.length * 60}ms` }}
+                className="animate-menu-item mt-4 inline-flex items-center justify-center rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white opacity-0 transition-transform active:scale-[0.97]"
               >
                 Start a conversation →
               </a>
