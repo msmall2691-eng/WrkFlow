@@ -111,7 +111,7 @@ export default function FounderNote() {
             </Reveal>
           </div>
 
-          {/* The note — freestyle warm eyebrow, open-quote, trimmed paragraphs, handwritten signature */}
+          {/* Numbered origin story instead of template founder-page prose */}
           <div className="md:col-span-8">
             <Reveal delay={80}>
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-signal">
@@ -119,28 +119,35 @@ export default function FounderNote() {
               </p>
             </Reveal>
             <Reveal delay={120}>
-              <blockquote className="relative mt-4 [font-family:var(--font-serif)] text-ink">
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute -top-8 left-0 select-none text-[6rem] leading-none text-signal/25 md:-left-4 md:-top-10"
-                >
-                  &ldquo;
-                </span>
-                <p className="relative text-balance text-xl leading-snug md:text-2xl">
-                  {founderNote.lead}
+              <div className="mt-4 text-ink">
+                <p className="[font-family:var(--font-serif)] text-lg text-muted md:text-xl">
+                  {founderNote.eyebrow}
                 </p>
-                <div className="mt-5 space-y-4 text-base leading-relaxed text-muted md:text-lg">
-                  {founderNote.paragraphs.map((paragraph, i) => (
-                    <p key={i}>{paragraph}</p>
+                <ol className="mt-4 space-y-3.5 md:mt-6 md:space-y-4">
+                  {founderNote.steps.map((step, i) => (
+                    <li key={i} className="flex items-baseline gap-4">
+                      <span className="shrink-0 font-mono text-sm text-signal md:text-base">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="[font-family:var(--font-serif)] text-xl leading-snug text-ink md:text-2xl">
+                        {step}
+                      </span>
+                    </li>
                   ))}
-                </div>
+                </ol>
+                <p className="mt-8 [font-family:var(--font-serif)] text-base italic leading-relaxed text-muted md:text-lg">
+                  {founderNote.aside}
+                </p>
+                <p className="mt-6 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg">
+                  {founderNote.favorite}
+                </p>
                 <p
-                  className="mt-6 text-4xl leading-none text-signal"
+                  className="mt-8 text-4xl leading-none text-signal"
                   style={{ fontFamily: "var(--font-hand)" }}
                 >
                   — Meg
                 </p>
-              </blockquote>
+              </div>
             </Reveal>
           </div>
         </div>

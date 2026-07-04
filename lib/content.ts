@@ -14,17 +14,23 @@ export const provingGroundCompany = "The Maine Cleaning Company";
 export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
-/** Founder note. Owner to edit voice/details. */
+/*
+  Founder note — structured as a numbered origin story so it reads as a
+  short list, not a template founder page. Owner to edit voice/details.
+  Steps render with mono numerals; `aside` is the italic personality
+  line; `favorite` closes it.
+*/
 export const founderNote = {
-  /** Pulled out as the emphasized lead. */
-  lead: `Off-the-shelf software never fit how I needed to work — so I built my own, to run ${provingGroundCompany}.`,
-  /** Supporting paragraphs — kept intentionally short. The LinkedIn-style
-      chips beside the portrait carry the education + experience details, so
-      the paragraphs can focus on voice + creative vibe. */
-  paragraphs: [
-    `Now I build websites, apps, and workflows for people tired of cookie-cutter tools. Whatever you dream up, we build it, connect it, and make it work exactly how you do.`,
-    `The part I love most is dreaming things up and connecting the pieces — right here on the Maine coast.`,
+  eyebrow: "The short version:",
+  steps: [
+    "I ran a cleaning company.",
+    "None of the software I could buy did what I needed.",
+    "So I taught myself to build it.",
+    "Now I do that for other people.",
   ],
+  aside: "The long version is best over coffee.",
+  favorite:
+    "Favorite part of the job — figuring out what you actually need, then making it real. Right here on the Maine coast.",
 } as const;
 
 
