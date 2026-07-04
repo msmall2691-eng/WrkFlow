@@ -35,11 +35,12 @@ const isFog = (text: string) => /(fog|mist|haze)/i.test(text);
   <0.5m glassy, 0.5-1.5m near default, >2.5m rolling (clamped).
 */
 function waveAmp(m: number): number {
-  if (m <= 0) return 0.1;
-  if (m < 0.5) return 0.1 + (m / 0.5) * 0.25; // 0.10..0.35
-  if (m < 1.5) return 0.35 + ((m - 0.5) / 1.0) * 0.2; // 0.35..0.55  (existing default sits here)
-  if (m < 2.5) return 0.55 + ((m - 1.5) / 1.0) * 0.35; // 0.55..0.90
-  return Math.min(1, 0.9 + ((m - 2.5) / 1.5) * 0.1); // 0.90..1.00
+  // Turned up so calm-day readings still show visible motion — Meg wants
+  // the ambient story to read on typical days, not only during storms.
+  if (m <= 0) return 0.28;
+  if (m < 0.5) return 0.28 + (m / 0.5) * 0.22; // 0.28..0.50
+  if (m < 1.5) return 0.5 + ((m - 0.5) / 1.0) * 0.3; // 0.50..0.80
+  return Math.min(1, 0.8 + ((m - 1.5) / 1.5) * 0.2); // 0.80..1.00
 }
 
 const MOON_EMOJI = ["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"];
