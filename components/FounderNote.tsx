@@ -74,10 +74,10 @@ export default function FounderNote() {
             <figcaption className="mt-6 w-full">
               <p className="font-display text-lg text-ink">Meg</p>
               <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
-                Portland, Maine
+                Waterboro, Maine
               </p>
               <p className="mt-0.5 font-mono text-[9px] tracking-[0.2em] text-faint/50">
-                43.6591°N · 70.2568°W
+                43.5395°N · 70.7278°W
               </p>
 
               {/* CV chips */}
@@ -112,19 +112,13 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Short about-me copy — uses "M Studio" as the actor to avoid the
-            solo-founder pronoun trap, reserves "I" for personal life. */}
+        {/* One grounded personal line — no positioning statement, no eyebrow.
+            Just where she lives and where she'd rather be. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
-              About me
-            </p>
-            <p className="mt-5 [font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl">
-              M Studio is Meg — for now. When a project needs more, I bring in
-              people I've worked with before.
-            </p>
-            <p className="mt-4 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg">
-              Off the clock: kids, saltwater, and whatever coast is closest.
+            <p className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl">
+              Waterboro, Maine. Weekends the kids and I are usually on the
+              coast — whatever beach, whatever tide.
             </p>
             <p
               className="mt-6 text-4xl leading-none text-signal"
