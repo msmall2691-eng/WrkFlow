@@ -56,8 +56,7 @@ export default function Approach() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              You see the work as it takes shape, change course whenever, and walk
-              away owning it. No dependency by design.
+              You see it as it takes shape. You own it. No lock-in.
             </p>
           </Reveal>
         </div>
