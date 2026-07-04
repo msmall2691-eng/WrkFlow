@@ -15,22 +15,17 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /*
-  Founder note — structured as a numbered origin story so it reads as a
-  short list, not a template founder page. Owner to edit voice/details.
-  Steps render with mono numerals; `aside` is the italic personality
-  line; `favorite` closes it.
+  Founder note — Meg's own copy. Two paragraphs + a signature. The first
+  paragraph ties the ambient site chrome (live tide, moon, daylight) to
+  the studio thesis; the second is the solo-vs-team framing and the
+  personal beat. Edit here, not in the component.
 */
 export const founderNote = {
-  eyebrow: "The short version:",
-  steps: [
-    "I ran a cleaning company.",
-    "None of the software I could buy did what I needed.",
-    "So I taught myself to build it.",
-    "Now I do that for other people.",
+  paragraphs: [
+    "The tide line up top is live — that's Casco Bay, right now. Same with the moon and the daylight. M Studio builds software that pays attention to the real world. I learned that at The Maine Cleaning Company — the business I still run — where nothing off the shelf fit how the work actually happened, so the tools got built from scratch.",
+    "M Studio grew out of those tools. Small builds are me, end to end. Bigger ones bring in people I trust. I'm self-taught and still studying, raising three kids on the coast of Maine, and there hasn't been a stretch yet where I wasn't building something.",
   ],
-  aside: "The long version is best over coffee.",
-  favorite:
-    "Favorite part of the job — figuring out what you actually need, then making it real. Right here on the Maine coast.",
+  signature: "— Meg",
 } as const;
 
 
