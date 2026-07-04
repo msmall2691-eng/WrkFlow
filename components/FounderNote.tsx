@@ -112,14 +112,22 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Signature — the only "note" left. Adds warmth without prose. */}
+        {/* Short about-me copy — uses "M Studio" as the actor to avoid the
+            solo-founder pronoun trap, reserves "I" for personal life. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-signal">
               About me
             </p>
+            <p className="mt-5 [font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl">
+              M Studio is Meg — for now. When a project needs more, I bring in
+              people I've worked with before.
+            </p>
+            <p className="mt-4 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg">
+              Off the clock: kids, saltwater, and whatever coast is closest.
+            </p>
             <p
-              className="mt-3 text-4xl leading-none text-signal"
+              className="mt-6 text-4xl leading-none text-signal"
               style={{ fontFamily: "var(--font-hand)" }}
             >
               — Meg

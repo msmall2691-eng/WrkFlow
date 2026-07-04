@@ -103,12 +103,12 @@ export default function Services() {
           </Reveal>
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              What we can build.
+              What M Studio can build.
             </h2>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-base leading-relaxed text-muted">
-              If you can picture it, we can build it — shaped around how you
+              If you can picture it, it can get built — shaped around how you
               actually work.
             </p>
           </Reveal>

@@ -8,11 +8,11 @@ import Reveal from "./Reveal";
 const QUESTIONS: { q: string; a: string }[] = [
   {
     q: "How long does a Starter site take?",
-    a: "Usually 2-3 weeks from kickoff to launch. Bigger builds we scope first, then give you a timeline.",
+    a: "Usually 2-3 weeks from kickoff to launch. Bigger builds get scoped first, then a timeline.",
   },
   {
     q: "Do you work with clients outside Maine?",
-    a: "Yes. We're in Portland but we work with clients everywhere — most of it happens over video calls and shared docs.",
+    a: "Yes. M Studio is based in Portland but works with clients everywhere — most of it happens over video calls and shared docs.",
   },
   {
     q: "Do I own the code?",
@@ -20,15 +20,15 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "What if I need changes later?",
-    a: "Small edits are on the Care Plan. Bigger changes get their own quote, so you know what you're paying before we start.",
+    a: "Small edits are on the Care Plan. Bigger changes get their own quote, so you know what you're paying before anything starts.",
   },
   {
     q: "How is this different from Squarespace or Wix?",
-    a: "Templated builders can only do what they were shipped with. A Starter site is built from scratch, so we can add whatever you actually need.",
+    a: "Templated builders can only do what they were shipped with. A Starter site is built from scratch — shaped to whatever you actually need.",
   },
   {
     q: "What if I outgrow the Care Plan?",
-    a: "We scope the next build like a new project. Your current site keeps running until the new one is ready.",
+    a: "The next build gets scoped like a new project. Your current site keeps running until the new one is ready.",
   },
 ];
 
