@@ -8,27 +8,27 @@ import Reveal from "./Reveal";
 const QUESTIONS: { q: string; a: string }[] = [
   {
     q: "How long does a Starter site take?",
-    a: "Two to three weeks from kickoff to launch. Larger builds get their own timeline once we scope them.",
+    a: "Usually 2-3 weeks from kickoff to launch. Bigger builds we scope first, then give you a timeline.",
   },
   {
     q: "Do you work with clients outside Maine?",
-    a: "Yes. We're based in Portland but build for clients everywhere — video calls, shared docs, and async carry the rest.",
+    a: "Yes. We're in Portland but we work with clients everywhere — most of it happens over video calls and shared docs.",
   },
   {
     q: "Do I own the code?",
-    a: "Always. Files, database, hosting keys, domain — everything is yours from day one. No lock-in by design.",
+    a: "Yes. Files, database, hosting keys, domain — all yours from day one. If you ever want to move on, everything moves with you.",
   },
   {
     q: "What if I need changes later?",
-    a: "Small edits are covered by the Care Plan. Bigger scope gets its own fixed-price quote — no surprise creep, no monthly-hour math.",
+    a: "Small edits are on the Care Plan. Bigger changes get their own quote, so you know what you're paying before we start.",
   },
   {
     q: "How is this different from Squarespace or Wix?",
-    a: "A Starter site is a real custom build, designed around how you actually work. Templated builders can't add features they weren't shipped with. Ours can — and does.",
+    a: "Templated builders can only do what they were shipped with. A Starter site is built from scratch, so we can add whatever you actually need.",
   },
   {
-    q: "What happens if I outgrow the Care Plan?",
-    a: "We scope the next build fresh. Your existing site keeps running until the new one launches — no interruption, no forced migration.",
+    q: "What if I outgrow the Care Plan?",
+    a: "We scope the next build like a new project. Your current site keeps running until the new one is ready.",
   },
 ];
 

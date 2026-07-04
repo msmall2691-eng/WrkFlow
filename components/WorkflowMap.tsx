@@ -29,8 +29,7 @@ export default function WorkflowMap() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Automation in one picture: what flows in, where it lands, who
-              gets pinged. Pick what you use — see what becomes possible.
+              Pick the tools you use, see what could connect to what.
             </p>
           </Reveal>
         </div>
