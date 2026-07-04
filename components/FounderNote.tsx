@@ -2,13 +2,15 @@ import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
+import { founderNote } from "@/lib/content";
 
 /*
-  FounderNote — no prose. The chips + LinkedIn/email carry the whole
-  "about me"; the signature makes it feel signed. When Meg has words she
-  actually wants to say, they get added back below the socials.
+  FounderNote — portrait + chips + socials + Meg's written note. The note
+  copy lives in `lib/content.ts` (founderNote.paragraphs) so voice edits
+  are one file, not one component.
 
-  Edit CHIPS + SOCIALS below to change the CV.
+  Edit CHIPS + SOCIALS below to change the CV; edit lib/content.ts to
+  change the paragraphs.
 */
 
 const CHIPS = [
@@ -109,25 +111,28 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Passion + origin + personal beat. Third person for the
-            "find the owner" line — signals the studio scale without
-            claiming a team. */}
+        {/* Meg's written note. First paragraph ties the ambient chrome
+            (live tide/moon/daylight) to the studio thesis; second is the
+            solo-vs-team + personal beat. Signature closes it. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
-            <p className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl">
-              M Studio started with the tools I built for my own company,
-              The Maine Cleaning Co. — still running that, part time. Now
-              it takes on projects from anywhere, at any scope.
-            </p>
-            <p className="mt-4 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg">
-              Find the owner on the Maine coast with her three kids,
-              exploring.
-            </p>
+            {founderNote.paragraphs.map((para, i) => (
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? "[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl"
+                    : "mt-5 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg"
+                }
+              >
+                {para}
+              </p>
+            ))}
             <p
               className="mt-6 text-4xl leading-none text-signal"
               style={{ fontFamily: "var(--font-hand)" }}
             >
-              — Meg
+              {founderNote.signature}
             </p>
           </div>
         </Reveal>
