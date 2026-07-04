@@ -111,9 +111,10 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Meg's written note. First paragraph ties the ambient chrome
-            (live tide/moon/daylight) to the studio thesis; second is the
-            solo-vs-team + personal beat. Signature closes it. */}
+        {/* Meg's written note. First paragraph (studio thesis) reads as
+            quiet context — small + faint. Second paragraph (who she is,
+            kids + coast, always building) is the prominent statement.
+            Signature closes it. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
             {founderNote.paragraphs.map((para, i) => (
@@ -121,8 +122,8 @@ export default function FounderNote() {
                 key={i}
                 className={
                   i === 0
-                    ? "[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl"
-                    : "mt-5 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg"
+                    ? "[font-family:var(--font-serif)] text-sm leading-relaxed text-faint md:text-base"
+                    : "mt-6 [font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl"
                 }
               >
                 {para}

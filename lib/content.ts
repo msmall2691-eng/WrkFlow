@@ -22,7 +22,7 @@ export const whoIsItFor =
 */
 export const founderNote = {
   paragraphs: [
-    "The tide line up top is live — that's Casco Bay, right now. Same with the moon and the daylight. M Studio builds software that pays attention to the real world. I learned that at The Maine Cleaning Company — the business I still run — where nothing off the shelf fit how the work actually happened, so the tools got built from scratch.",
+    "The tide line is live — that's Casco Bay, right now. Same with the moon and the daylight. M Studio builds software that pays attention to the real world. I learned that at The Maine Cleaning Company — the business I still run — where nothing off the shelf fit how the work actually happened, so the tools got built from scratch.",
     "M Studio grew out of those tools. Small builds are me, end to end. Bigger ones bring in people I trust. I'm self-taught and still studying, raising three kids on the coast of Maine, and there hasn't been a stretch yet where I wasn't building something.",
   ],
   signature: "— Meg",
