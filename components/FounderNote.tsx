@@ -74,10 +74,7 @@ export default function FounderNote() {
             <figcaption className="mt-6 w-full">
               <p className="font-display text-lg text-ink">Meg</p>
               <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
-                Waterboro, Maine
-              </p>
-              <p className="mt-0.5 font-mono text-[9px] tracking-[0.2em] text-faint/50">
-                43.5395°N · 70.7278°W
+                Founder · M Studio
               </p>
 
               {/* CV chips */}
@@ -112,13 +109,19 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* One grounded personal line — no positioning statement, no eyebrow.
-            Just where she lives and where she'd rather be. */}
+        {/* Passion + origin + personal beat. Third person for the
+            "find the owner" line — signals the studio scale without
+            claiming a team. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
             <p className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl">
-              Waterboro, Maine. Weekends the kids and I are usually on the
-              coast — whatever beach, whatever tide.
+              M Studio started with the tools I built for my own company,
+              The Maine Cleaning Co. — still running that, part time. Now
+              it takes on projects from anywhere, at any scope.
+            </p>
+            <p className="mt-4 [font-family:var(--font-serif)] text-base leading-relaxed text-muted md:text-lg">
+              Find the owner on the Maine coast with her three kids,
+              exploring.
             </p>
             <p
               className="mt-6 text-4xl leading-none text-signal"
