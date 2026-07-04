@@ -23,6 +23,7 @@ export default function MaineReadout({
   if (d.waterTempF != null) parts.push(`${d.waterTempF}° water`);
   if (d.wind && d.wind.mph > 0) parts.push(`wind ${d.wind.mph}${d.wind.dir ? ` ${d.wind.dir}` : ""}`);
   if (d.tide) parts.push(`tide ${d.tide}`);
+  if (d.wave && d.wave.m > 0) parts.push(`swell ${d.wave.m.toFixed(1)}m`);
   if (d.light) parts.push(d.light.time ? `${d.light.label} ${d.light.time}` : d.light.label);
   else if (d.sun) parts.push(`${d.sun.label} ${d.sun.time}`);
   if (d.night && d.moon) parts.push(`${d.moon.emoji} ${d.moon.phase.toLowerCase()}`);
