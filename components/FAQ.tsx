@@ -12,7 +12,7 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "Do you work with clients outside Maine?",
-    a: "Yes. M Studio is based in Portland but works with clients everywhere — most of it happens over video calls and shared docs.",
+    a: "Yes. Most of it happens over video calls and shared docs — location doesn't matter.",
   },
   {
     q: "Do I own the code?",

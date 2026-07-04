@@ -48,7 +48,7 @@ const CAPABILITIES = [
 const MENU: Item[] = [
   {
     title: "Websites & web apps",
-    line: "More than a marketing site — booking, client portals, member areas, dashboards. Real web apps, not templates (and not bloated native apps). Fast, custom, and yours.",
+    line: "Marketing sites, portals, dashboards — real web apps, not templates.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <rect x="3" y="4" width="18" height="16" rx="2" />
@@ -58,7 +58,7 @@ const MENU: Item[] = [
   },
   {
     title: "Custom tools & dashboards",
-    line: "The software behind the scenes — booking apps, CRMs, dashboards, quoting tools — built around how you run.",
+    line: "CRMs, booking, quotes, admin — built around how you actually run.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <path d="M4 20V11M10 20V4M16 20v-6M22 20H2" strokeLinecap="round" />
@@ -67,7 +67,7 @@ const MENU: Item[] = [
   },
   {
     title: "Automation & AI agents",
-    line: "Automations and AI agents that handle the busywork — intake, follow-ups, drafting, and triage — with you in control.",
+    line: "Intake, follow-ups, drafting, triage — automated, with you in control.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" strokeLinejoin="round" />
@@ -76,7 +76,7 @@ const MENU: Item[] = [
   },
   {
     title: "Integrations",
-    line: "Make the tools you already use talk to each other, so the data moves itself and nothing gets double-entered.",
+    line: "Make the tools you already use talk to each other. No more double-entry.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
         <circle cx="6" cy="6" r="2.5" />
@@ -105,12 +105,6 @@ export default function Services() {
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
               What M Studio can build.
             </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mt-4 text-base leading-relaxed text-muted">
-              If you can picture it, it can get built — shaped around how you
-              actually work.
-            </p>
           </Reveal>
         </div>
 

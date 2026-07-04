@@ -44,8 +44,7 @@ export default function Pricing() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-base leading-relaxed text-muted">
-              Own it outright, keep it running for a little a month, or scope
-              something custom — whatever works for you.
+              Own it, keep it running, or scope something bigger.
             </p>
           </Reveal>
         </div>
@@ -108,9 +107,8 @@ export default function Pricing() {
                 <span className="text-base text-faint">/mo</span>
               </p>
               <p className="mt-5 flex-1 text-sm leading-relaxed text-muted">
-                Hosting, domain, security, and small changes handled — plus your
-                live quote tool, kept in sync with your pricing. The stuff that
-                keeps a site earning, off your plate.
+                Hosting, domain, security, and small edits — handled. The stuff
+                that keeps a site running, off your plate.
               </p>
               <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
                 Keep it running
@@ -128,8 +126,7 @@ export default function Pricing() {
                 One-time · monthly · hybrid
               </p>
               <p className="mt-4 text-sm leading-relaxed text-muted">
-                Websites, apps, tools, and workflows — whatever you dream up, built
-                around how you work.
+                Websites, apps, tools, and workflows — built around how you run.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {CUSTOM_BULLETS.map((b, i) => (
