@@ -104,7 +104,7 @@ export default function Footer() {
           </span>
           <span className="inline-flex items-center gap-1.5">
             <MoonPhase size={12} className="align-[-2px]" />
-            <span>Made in Portland, ME</span>
+            <span>Made in Portland, ME · installable app</span>
           </span>
         </div>
       </div>

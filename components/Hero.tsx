@@ -2,7 +2,6 @@ import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import HeroWordmark from "./HeroWordmark";
 import LiveReadout from "./LiveReadout";
-import InstallCard from "./InstallCard";
 
 export default function Hero() {
   return (
@@ -80,14 +79,9 @@ export default function Hero() {
           </a>
         </div>
 
-        {/*
-          Two capability cards — live data on the left, "we build this for you"
-          on the right. Stacked on mobile, side-by-side on md+ so the fold
-          stays compact.
-        */}
-        <div className="mt-10 flex max-w-md flex-col gap-4 md:max-w-3xl md:grid md:grid-cols-2 md:gap-5">
+        {/* Live Portland, ME readout — the ambient data showcase */}
+        <div className="mt-10 max-w-md">
           <LiveReadout />
-          <InstallCard />
         </div>
       </div>
 

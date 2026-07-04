@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getSunTimes } from "@/lib/sun";
 
 /*
@@ -56,8 +56,24 @@ export default function AccentSwitcher() {
   const [active, setActive] = useState(1); // default: Harbor (index 1); -1 when auto
   const [auto, setAuto] = useState(false);
   const [phase, setPhase] = useState<Accent>(PHASES.day);
+  const [light, setLight] = useState(false);
   const activeRef = useRef(1);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Harbor (dark) / Daylight (light) — persists in localStorage. The flash-
+  // prevention script in layout.tsx reads the stored theme before first paint.
+  const applyTheme = useCallback((mode: "dark" | "light") => {
+    if (mode === "light") {
+      document.documentElement.dataset.theme = "light";
+      try { localStorage.setItem("theme", "light"); } catch { /* ignore */ }
+    } else {
+      delete document.documentElement.dataset.theme;
+      try { localStorage.setItem("theme", "dark"); } catch { /* ignore */ }
+    }
+    setLight(mode === "light");
+    window.dispatchEvent(new Event("theme:change"));
+  }, []);
+  const toggleTheme = () => applyTheme(light ? "dark" : "light");
 
   const applyColor = (a: Accent) => {
     const root = document.documentElement.style;
@@ -121,6 +137,8 @@ export default function AccentSwitcher() {
     if (saved === "auto") enableAuto(false);
     else if (saved != null && ACCENTS[Number(saved)]) selectManual(Number(saved), false);
     else selectManual(1, false); // default: Harbor
+    // Initialize the light-mode flag from whatever the flash script set.
+    setLight(document.documentElement.dataset.theme === "light");
     return stopTimer;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -210,6 +228,24 @@ export default function AccentSwitcher() {
                 Reset
               </button>
             )}
+          </div>
+
+          {/* Mode: Harbor (dark) vs Daylight (light) */}
+          <div className="mt-4 border-t border-line pt-3">
+            <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
+              Mode
+            </p>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-pressed={light}
+              className="inline-flex w-full items-center justify-between rounded-lg border border-line bg-base/70 px-3 py-2 font-mono text-[11px] transition-colors hover:border-signal/40 active:scale-[0.98]"
+            >
+              <span className="text-ink">{light ? "Daylight" : "Harbor"}</span>
+              <span aria-hidden="true" className="text-faint">
+                {light ? "☀ tap for Harbor" : "☾ tap for Daylight"}
+              </span>
+            </button>
           </div>
         </div>
       )}
