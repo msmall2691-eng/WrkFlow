@@ -6,10 +6,14 @@ import Reveal from "./Reveal";
   check, cost-of-busywork) now live in the Playground on /marketplace,
   so this stays a one-line pitch instead of re-hosting six live tools
   on the homepage.
+
+  Keeps id="tools" — CommandPalette's "Free tools" command and
+  WorkflowSpine's rail both scroll to this id in-page (see
+  components/CommandPalette.tsx and components/WorkflowSpine.tsx).
 */
 export default function ToolsTeaser() {
   return (
-    <section className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-14">
+    <section id="tools" className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-14">
       <div className="relative mx-auto max-w-6xl px-6">
         <Reveal>
           <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-line bg-surface/60 px-6 py-5">
