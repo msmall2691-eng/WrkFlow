@@ -1,14 +1,21 @@
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
+import { foundingOffer } from "@/lib/content";
 
 /*
   Pricing — the "harbor at night" pricing section. Three honest ways to work
   together (own a Starter site, keep it running on the Care Plan, or scope
   something custom) plus the founding offer. Collaborative you + we voice.
   CTAs route to contact — no live checkout.
+
+  Founding pricing ($399, split $199/$200) is a RISK-REVERSAL restructure of
+  the same $750 site, not a discount stunt — `foundingOffer.spotsRemaining`
+  in lib/content.ts is the one real number driving the banner, the Starter
+  card, and the auto-revert to full price at 0 spots left.
 */
 
 const STARTER_BULLETS = [
+  "See your homepage design before you commit",
   "Custom design — never a template",
   "Your core pages + a contact or booking form",
   "Set up, connected, and live",
@@ -23,6 +30,9 @@ const CUSTOM_BULLETS = [
 ];
 
 export default function Pricing() {
+  const spotsLeft = foundingOffer.spotsRemaining;
+  const foundingActive = spotsLeft > 0;
+
   return (
     <section
       id="pricing"
@@ -49,35 +59,51 @@ export default function Pricing() {
           </Reveal>
         </div>
 
-        {/* Founding offer banner */}
-        <Reveal delay={140}>
-          <div
-            id="founding"
-            className="mb-10 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-gold/40 bg-gold/[0.08] px-5 py-3.5"
-          >
-            <span className="rounded-full bg-gold/20 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-gold">
-              Founding offer
-            </span>
-            <span className="text-sm text-ink">
-              The first 10 businesses get a full Starter site for{" "}
-              <CountUp value={399} prefix="$" className="font-semibold text-gold" />{" "}
-              <span className="text-faint line-through">$750</span>.
-            </span>
-          </div>
-        </Reveal>
+        {/* Founding offer banner — hides once spotsRemaining hits 0 */}
+        {foundingActive && (
+          <Reveal delay={140}>
+            <div
+              id="founding"
+              className="mb-10 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-gold/40 bg-gold/[0.08] px-5 py-3.5"
+            >
+              <span className="rounded-full bg-gold/20 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-gold">
+                {spotsLeft} of {foundingOffer.totalSpots} founding spots left
+              </span>
+              <span className="text-sm text-ink">
+                Get a full Starter site for{" "}
+                <CountUp value={foundingOffer.price} prefix="$" className="font-semibold text-gold" />{" "}
+                <span className="text-faint line-through">${foundingOffer.fullPrice}</span>.
+              </span>
+            </div>
+          </Reveal>
+        )}
 
         <div className="grid items-stretch gap-5 md:grid-cols-3 md:items-center">
           {/* Starter site */}
           <Reveal delay={60}>
             <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Starter site</p>
-              <p className="mt-4 font-display text-3xl text-ink">
-                <CountUp value={399} prefix="$" />
-                <span className="ml-2 align-middle text-base text-faint line-through">$750</span>
-              </p>
-              <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-gold">
-                Founding · first 10 businesses
-              </p>
+              {foundingActive ? (
+                <>
+                  <p className="mt-4 font-display text-3xl text-ink">
+                    <CountUp value={foundingOffer.price} prefix="$" />
+                    <span className="ml-2 align-middle text-base text-faint line-through">${foundingOffer.fullPrice}</span>
+                  </p>
+                  <p className="mt-1.5 text-sm text-muted">
+                    ${foundingOffer.deposit} to start · ${foundingOffer.balance} at launch
+                  </p>
+                  <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-gold">
+                    Founding · {spotsLeft} of {foundingOffer.totalSpots} left
+                  </p>
+                  <p className="mt-1.5 text-xs leading-relaxed text-faint">
+                    You approve the design before the second payment.
+                  </p>
+                </>
+              ) : (
+                <p className="mt-4 font-display text-3xl text-ink">
+                  <CountUp value={foundingOffer.fullPrice} prefix="$" />
+                </p>
+              )}
               <p className="mt-4 text-sm leading-relaxed text-muted">
                 A real, custom site — designed, built, and launched. Yours to own.
               </p>
@@ -89,9 +115,14 @@ export default function Pricing() {
                 ))}
               </ul>
               <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
-                Claim a founding spot
+                {foundingActive ? "Claim a founding spot" : "Get a Starter site"}
                 <span aria-hidden="true">→</span>
               </a>
+              {foundingActive && (
+                <p className="mt-3 text-xs leading-relaxed text-faint">
+                  Founding pricing includes a testimonial + permission to feature your site in our portfolio.
+                </p>
+              )}
             </article>
           </Reveal>
 
@@ -106,7 +137,10 @@ export default function Pricing() {
                 <CountUp value={49} prefix="$" />
                 <span className="text-base text-faint">/mo</span>
               </p>
-              <p className="mt-5 flex-1 text-sm leading-relaxed text-muted">
+              <p className="mt-1.5 text-xs leading-relaxed text-faint">
+                Cancel anytime — your site keeps running, you just take over hosting.
+              </p>
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
                 Hosting, domain, security, and small edits — handled. The stuff
                 that keeps a site running, off your plate.
               </p>

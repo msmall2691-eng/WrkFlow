@@ -136,7 +136,7 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
           >
             Print / Save as PDF
           </button>
-          <SaveResult summary={summary} filename={`invoice-${invNo}`} />
+          <SaveResult summary={summary} filename={`invoice-${invNo}`} tool="invoice" toolLabel="Invoice maker" />
         </div>
       </Reveal>
 

@@ -204,7 +204,7 @@ export default function IntegrationMapper() {
               )}
             </ul>
 
-            <SaveResult summary={summary} filename="mstudio-integration-map" />
+            <SaveResult summary={summary} filename="mstudio-integration-map" tool="workflow-map" toolLabel="Workflow map" />
           </div>
         </Reveal>
       </div>

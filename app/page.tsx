@@ -1,6 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import HomeTools from "@/components/HomeTools";
+import ToolsTeaser from "@/components/ToolsTeaser";
 import Deployments from "@/components/Deployments";
 import Services from "@/components/Services";
 import WorkflowMap from "@/components/WorkflowMap";
@@ -20,12 +20,12 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → founder → services → free tools → work → approach → pricing → contact */}
+        {/* Hero → founder → services → workflow → tools teaser → work → approach → pricing → contact */}
         <Hero />
         <FounderNote />
         <Services />
         <WorkflowMap />
-        <HomeTools />
+        <ToolsTeaser />
         <Deployments />
         <Approach />
         <FAQ />

@@ -22,11 +22,31 @@ export const whoIsItFor =
 */
 export const founderNote = {
   paragraphs: [
-    "The tide line is live — that's Casco Bay, right now. Same with the moon and the daylight. M Studio builds software that pays attention to the real world. I learned that at The Maine Cleaning Company — the business I still run — where nothing off the shelf fit how the work actually happened, so the tools got built from scratch.",
-    "Small builds are me, end to end. Bigger ones bring in people I trust. I'm self-taught and still studying, raising three kids on the coast of Maine, and there hasn't been a stretch yet where I wasn't building something.",
+    "The tide line is live — that's Casco Bay, right now. Same with the moon and the daylight. M Studio builds software that pays attention to the real world. I learned that at The Maine Cleaning Company — the business I still run — where nothing off the shelf fit how the work actually happened, so I built the tools from scratch.",
+    "I build most projects myself, end to end. For bigger builds, I bring in trusted specialists so nothing gets stretched thin — but every project gets my eyes, my standards, and a direct line to me. I'm self-taught and still studying, raising three kids on the coast of Maine, and there hasn't been a stretch yet where I wasn't building something.",
   ],
   signature: "— Meg",
 } as const;
+
+/*
+  Founding offer — the real, current state of the first-10-businesses deal.
+  `spotsRemaining` is maintained BY HAND (decrement it as each founding spot
+  sells). It is never computed or animated from fake activity — Pricing.tsx
+  reads it as-is. When it hits 0, the Starter card auto-reverts to
+  `fullPrice` and the founding banner stops rendering.
+*/
+export const foundingOffer = {
+  totalSpots: 10,
+  spotsRemaining: 10,
+  price: 399,
+  deposit: 199,
+  balance: 200,
+  fullPrice: 750,
+} as const;
+
+/** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
+export const toolsStamp =
+  "Made with the free tools at mlinx.studio — get one tuned to your business.";
 
 
 /** On-brand animated illustration types (used when no true screenshot fits). */
