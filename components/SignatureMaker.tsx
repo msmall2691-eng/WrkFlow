@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Label } from "./KitUI";
 import { useLocalStorage } from "@/lib/useLocalStorage";
+import { toolsStamp } from "@/lib/content";
+import { trackTool } from "@/lib/track";
+import ToolEmailCapture from "./ToolEmailCapture";
 
 /*
   SignatureMaker — fill in your details, get a styled email signature you can
@@ -68,6 +71,7 @@ export default function SignatureMaker() {
   }
   function flash(which: "rich" | "html") {
     setCopied(which);
+    trackTool("sig", "copied");
     window.setTimeout(() => setCopied(""), 1800);
   }
 
@@ -98,6 +102,13 @@ export default function SignatureMaker() {
         <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-faint">
           Paste into Gmail or Outlook settings
         </p>
+        <div className="mt-4">
+          <ToolEmailCapture
+            tool="sig"
+            toolLabel="Email signature"
+            summary={`${plain}\n\n—\n${toolsStamp}`}
+          />
+        </div>
       </div>
 
       {/* Controls */}

@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import QRCodeLib from "qrcode";
 import { Label, Seg, Toggle } from "./KitUI";
 import { useLocalStorage } from "@/lib/useLocalStorage";
+import { toolsStamp } from "@/lib/content";
+import { trackTool } from "@/lib/track";
+import ToolEmailCapture from "./ToolEmailCapture";
 
 /*
   QRMaker — type a link (or WiFi details) and get a real QR you can download as
@@ -58,6 +61,7 @@ export default function QRMaker() {
         <a
           href={dataUrl || undefined}
           download={mode === "wifi" ? "wifi-qr.png" : "qr-code.png"}
+          onClick={() => trackTool("qr", "downloaded")}
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
         >
           Download PNG
@@ -65,6 +69,20 @@ export default function QRMaker() {
         <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-widest text-faint">
           {mode === "wifi" ? "Guests scan to join your WiFi" : "Scans on any phone camera"}
         </p>
+        {dataUrl && (
+          <div className="mt-4">
+            <ToolEmailCapture
+              tool="qr"
+              toolLabel="QR code"
+              summary={`Your QR code (${mode === "wifi" ? "WiFi" : "link"}): ${payload}\n\n—\n${toolsStamp}`}
+              attachment={{
+                filename: mode === "wifi" ? "wifi-qr.png" : "qr-code.png",
+                contentBase64: dataUrl.split(",")[1] ?? "",
+                contentType: "image/png",
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {/* Controls */}

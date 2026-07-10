@@ -10,7 +10,8 @@
 //   3. Point your form's submit at  POST /api/contact  with a JSON body of the fields below.
 
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { createMailTransporter, getMailEnv } from "@/lib/mailer";
+import { createRateLimiter, clientIp } from "@/lib/rateLimit";
 
 // Force the Node.js runtime — Nodemailer (SMTP) does not run on the Edge runtime.
 export const runtime = "nodejs";
@@ -28,37 +29,8 @@ type ContactPayload = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-/*
-  Lightweight in-memory rate limit: at most MAX_HITS submissions per IP within
-  WINDOW_MS. This lives in the function instance's memory, so on serverless it
-  is best-effort (it resets on cold start and isn't shared across instances) —
-  enough to blunt casual spam/abuse without extra infrastructure. For a hard
-  guarantee, move this to a shared store (e.g. Upstash Redis / Vercel KV).
-*/
-const WINDOW_MS = 10 * 60 * 1000;
-const MAX_HITS = 5;
-const hits = new Map<string, { count: number; resetAt: number }>();
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = hits.get(ip);
-  if (!entry || now > entry.resetAt) {
-    hits.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    // Opportunistic cleanup so the map can't grow unbounded.
-    if (hits.size > 5000) {
-      for (const [k, v] of hits) if (now > v.resetAt) hits.delete(k);
-    }
-    return false;
-  }
-  entry.count += 1;
-  return entry.count > MAX_HITS;
-}
-
-function clientIp(req: Request): string {
-  const fwd = req.headers.get("x-forwarded-for");
-  if (fwd) return fwd.split(",")[0].trim();
-  return req.headers.get("x-real-ip") || "unknown";
-}
+// At most 5 submissions per IP within 10 minutes.
+const rateLimited = createRateLimiter({ windowMs: 10 * 60 * 1000, maxHits: 5 });
 
 export async function POST(req: Request) {
   if (rateLimited(clientIp(req))) {
@@ -100,19 +72,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Message is too long." }, { status: 422 });
   }
 
-  const { GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO } = process.env;
+  const { GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO } = getMailEnv();
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
     console.error("Contact form: missing GMAIL_USER or GMAIL_APP_PASSWORD env vars.");
     return NextResponse.json({ ok: false, error: "Server email is not configured." }, { status: 500 });
   }
 
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
-  });
-
+  const transporter = createMailTransporter(GMAIL_USER, GMAIL_APP_PASSWORD);
   const to = CONTACT_TO || GMAIL_USER;
   const subject = `New M Studio inquiry — ${name}${company ? ` (${company})` : ""}`;
 

@@ -103,7 +103,7 @@ export default function AutomationCost() {
               Let&apos;s recover this →
             </a>
 
-            <SaveResult summary={summary} filename="mstudio-automation-cost" />
+            <SaveResult summary={summary} filename="mstudio-automation-cost" tool="cost" toolLabel="Cost of busywork" />
           </div>
         </div>
       </Reveal>

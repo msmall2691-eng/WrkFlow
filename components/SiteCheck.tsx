@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
+import { trackTool } from "@/lib/track";
 
 /*
   SiteCheck — a real website health check (Playground tool).
@@ -66,6 +67,7 @@ export default function SiteCheck() {
       } else {
         setResult(data as Result);
         setIsSample(false);
+        trackTool("sitecheck", "generated");
       }
     } catch {
       setError("Couldn't run the check—check your connection and try again.");
@@ -198,7 +200,9 @@ export default function SiteCheck() {
             ))}
           </div>
 
-          {!isSample && <SaveResult summary={summary} filename="mstudio-site-check" />}
+          {!isSample && (
+            <SaveResult summary={summary} filename="mstudio-site-check" tool="sitecheck" toolLabel="Website check" />
+          )}
 
           <p className="mt-4 text-xs leading-relaxed text-faint">
             {isSample ? (
