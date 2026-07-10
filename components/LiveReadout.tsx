@@ -3,11 +3,11 @@
 import MaineReadout from "./MaineReadout";
 
 /*
-  LiveReadout — the hero's "live Maine data" panel. Kept intentionally
-  simple: pulse marker, the readings, and a small "what it changes" line
-  so the ambient system is legible in one glance. Theme + mode controls
-  live in the floating AccentSwitcher (bottom-right) and the command
-  palette; no reason to double them up here.
+  LiveReadout — the hero's live-conditions panel. The "runs on live Maine
+  data" explainer lives in the founder note and footer, so this stays a
+  quiet marker + readings + "what it changes" line, not a repeat of that
+  copy. Theme + mode controls live in the floating AccentSwitcher
+  (bottom-right) and the command palette; no reason to double them up here.
 */
 const REACTS: { from: string; to: string }[] = [
   { from: "weather", to: "glow" },
@@ -27,7 +27,7 @@ export default function LiveReadout() {
           <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
         </span>
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--panel-muted)]">
-          This site runs on live Maine data
+          Live right now
         </span>
       </div>
 

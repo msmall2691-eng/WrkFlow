@@ -7,7 +7,7 @@ import IntegrationMapper from "./IntegrationMapper";
   Small always-flowing node illustration on top says "this is the shape of
   it"; the interactive IntegrationMapper below lets a visitor pick their
   own tools and see what unlocks. Sits between Services (what we build in
-  words) and HomeTools (things to try).
+  words) and the free-tools teaser (things to try).
 */
 export default function WorkflowMap() {
   return (

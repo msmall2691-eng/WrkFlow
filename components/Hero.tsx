@@ -47,7 +47,7 @@ export default function Hero() {
 
         <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
           Websites and workflows,{" "}
-          <span className="shimmer-text">custom-made for your projects.</span>
+          <span className="shimmer-text">custom-made for how you actually run.</span>
         </h1>
 
         <p className="hero-sub metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed">

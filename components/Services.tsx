@@ -28,21 +28,11 @@ const CAPABILITIES = [
   "Booking apps",
   "CRMs",
   "Client portals",
-  "Member areas",
   "Dashboards",
   "Quote calculators",
-  "Admin tools",
-  "Data pipelines",
   "Workflow automations",
-  "AI chatbots",
   "AI agents",
   "Stripe + payments",
-  "Calendar sync",
-  "Landing pages",
-  "E-commerce",
-  "Invoice systems",
-  "Email automations",
-  "Newsletter tools",
 ];
 
 const MENU: Item[] = [
