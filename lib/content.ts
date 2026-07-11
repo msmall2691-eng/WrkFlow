@@ -37,9 +37,9 @@ export const founderNote = {
 export const foundingOffer = {
   totalSpots: 10,
   spotsRemaining: 8,
-  price: 299,
-  deposit: 149,
-  balance: 150,
+  price: 399,
+  deposit: 199,
+  balance: 200,
   fullPrice: 750,
 } as const;
 
@@ -395,7 +395,7 @@ export const marketItems: MarketItem[] = [
       "Hosting, domain & analytics set up",
       "You own the code outright",
     ],
-    price: "from $750 one-time",
+    price: "from $299 one-time",
     shot: "/shots/maineclean.png",
     featured: true,
   },
