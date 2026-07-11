@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces, Caveat } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
@@ -178,6 +179,10 @@ export default async function RootLayout({
   // same NWS call, so no extra round-trip. Renders `data-fog="1"` on <html>
   // at SSR so the veil is present on first paint; absent when NWS is down.
   const fog = await getFog();
+  // CSP nonce, minted per-request by middleware.ts — required on every
+  // inline <script> we write ourselves now that script-src no longer allows
+  // 'unsafe-inline'.
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
     <html
@@ -192,12 +197,14 @@ export default async function RootLayout({
           styles apply.
         */}
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html:
               "try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.dataset.theme='light';}catch(e){}",
           }}
         />
         <script
+          nonce={nonce}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
