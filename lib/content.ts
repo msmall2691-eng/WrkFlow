@@ -37,9 +37,9 @@ export const founderNote = {
 export const foundingOffer = {
   totalSpots: 10,
   spotsRemaining: 8,
-  price: 399,
-  deposit: 199,
-  balance: 200,
+  price: 299,
+  deposit: 149,
+  balance: 150,
   fullPrice: 750,
 } as const;
 
