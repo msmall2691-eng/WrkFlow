@@ -15,7 +15,8 @@ import { foundingOffer } from "@/lib/content";
 */
 
 const STARTER_BULLETS = [
-  "See your homepage design before you commit",
+  "Free 15-min concept call — no obligation",
+  "Unlimited revisions on your homepage design before you commit",
   "Custom design — never a template",
   "Your core pages + a contact or booking form",
   "Set up, connected, and live",
@@ -114,7 +115,11 @@ export default function Pricing() {
                   </Reveal>
                 ))}
               </ul>
-              <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
+              <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink">
+                Book a free 15-min call
+                <span aria-hidden="true">→</span>
+              </a>
+              <a href="#contact" className="mt-2 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
                 {foundingActive ? "Claim a founding spot" : "Get a Starter site"}
                 <span aria-hidden="true">→</span>
               </a>
