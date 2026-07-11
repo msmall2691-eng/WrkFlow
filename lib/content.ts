@@ -16,7 +16,7 @@ export const whoIsItFor =
 */
 export const founderNote = {
   paragraphs: [
-    "Built by Meg — coast of Maine, live tide and all. I've spent eight years running my cleaning company, and somewhere between 700 clients and a growing crew, I got tired of software that didn't understand the work. So I built my own. M Studio is that, opened up to other owners. Three kids, two companies, still building.",
+    "M Studio is built by hand — one owner, one project at a time. I've spent eight years running my cleaning company, and somewhere between 700 clients and a growing crew, I got tired of software that didn't understand the work. So I built my own, and opened it up to other owners. These days it's kids, a husky, and a business analytics & AI degree in progress — always building and creating.",
   ],
   signature: "— Meg",
 } as const;
