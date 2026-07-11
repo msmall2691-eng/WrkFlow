@@ -2,13 +2,7 @@
   Central content for M Studio. Keeping copy here makes the
   service list and headline iterations a one-file change.
 */
-
-/*
-  The proving-ground company named in the origin story and Work section.
-  Option A (default, most credible): the real company. Option B: swap to
-  "our own operating company" if the owner prefers not to name it.
-*/
-export const provingGroundCompany = "The Maine Cleaning Company";
+import type { VisualType } from "@/components/ProjectVisual";
 
 /** "Who this is for" — names the buyer plainly. */
 export const whoIsItFor =
@@ -47,9 +41,6 @@ export const foundingOffer = {
 export const toolsStamp =
   "Made with the free tools at mlinx.studio — get one tuned to your business.";
 
-
-/** On-brand animated illustration types (used when no true screenshot fits). */
-export type VisualType = "database" | "automation" | "audit" | "cleanup";
 
 export type ServiceExample = {
   /** Short client/project label shown on the example card. */

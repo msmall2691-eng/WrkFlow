@@ -1,14 +1,18 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
 import Reveal from "./Reveal";
+import ProjectVisual from "./ProjectVisual";
+import { services, whoIsItFor } from "@/lib/content";
 
 /*
-  Services — the three things we build, in plain terms a non-technical
-  owner gets at a glance. Custom studio work leads; the premade M Linx line is
-  a quiet tap away at the end.
+  Services — every discipline M Studio works in, as an expandable list.
+  Collapsed, each row is scannable (title, tagline, concrete "kinds" chips).
+  Expanded, it shows the full case for it: what it is, the pain it solves,
+  what changes after, and a real example. One open at a time keeps the
+  section from turning into a wall of text.
 */
-type Item = { title: string; line: string; icon: React.ReactNode };
-
-const I = "h-5 w-5 text-signal";
-
 const AUDIENCES = [
   "Service companies",
   "Trades",
@@ -20,9 +24,8 @@ const AUDIENCES = [
 ];
 
 /*
-  Specific things we've built (or can build). Turns the four broad service
-  categories into a concrete showcase of what "custom software" actually
-  looks like in practice.
+  Specific things we've built (or can build) — a quick-scan companion to the
+  deeper per-service breakdown above, not a duplicate of it.
 */
 const CAPABILITIES = [
   "Booking apps",
@@ -35,49 +38,9 @@ const CAPABILITIES = [
   "Stripe + payments",
 ];
 
-const MENU: Item[] = [
-  {
-    title: "Websites & web apps",
-    line: "Marketing sites, portals, dashboards — real web apps, not templates.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <rect x="3" y="4" width="18" height="16" rx="2" />
-        <path d="M3 9h18" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    title: "Custom tools & dashboards",
-    line: "CRMs, booking, quotes, admin — built around how you actually run.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <path d="M4 20V11M10 20V4M16 20v-6M22 20H2" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-  {
-    title: "Automation & AI agents",
-    line: "Intake, follow-ups, drafting, triage — automated, with you in control.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
-    title: "Integrations",
-    line: "Make the tools you already use talk to each other. No more double-entry.",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className={I} aria-hidden="true">
-        <circle cx="6" cy="6" r="2.5" />
-        <circle cx="18" cy="18" r="2.5" />
-        <path d="M8 8l8 8" strokeLinecap="round" />
-      </svg>
-    ),
-  },
-];
-
 export default function Services() {
+  const [openId, setOpenId] = useState<string | null>(null);
+
   return (
     <section id="services" className="relative overflow-hidden border-t border-line py-20 md:py-24">
       <div
@@ -98,20 +61,87 @@ export default function Services() {
           </Reveal>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          {MENU.map((m, i) => (
-            <Reveal key={m.title} delay={i * 60}>
-              <div className="group corner-accents h-full rounded-2xl border border-line bg-surface/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-signal/50 hover:bg-surface/80 hover:shadow-[0_24px_60px_-32px_rgba(22,163,148,0.55)] active:scale-[0.98]">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-line bg-base transition-all duration-300 group-hover:scale-110 group-hover:border-signal/60 group-hover:bg-signal/10 group-hover:shadow-[0_0_24px_-4px_rgba(22,163,148,0.5)]">
-                  {m.icon}
-                </span>
-                <h3 className="display-serif mt-4 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
-                  {m.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{m.line}</p>
-              </div>
-            </Reveal>
-          ))}
+        <div className="space-y-3">
+          {services.map((s, i) => {
+            const isOpen = openId === s.id;
+            return (
+              <Reveal key={s.id} delay={i * 40}>
+                <article className="overflow-hidden rounded-2xl border border-line bg-surface/60 transition-colors duration-300 hover:border-signal/40">
+                  <button
+                    type="button"
+                    onClick={() => setOpenId(isOpen ? null : s.id)}
+                    aria-expanded={isOpen}
+                    className="flex w-full items-start gap-4 p-6 text-left"
+                  >
+                    <span className="mt-0.5 shrink-0 font-mono text-xs text-faint">{s.index}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="display-serif text-lg text-ink md:text-xl">{s.title}</h3>
+                        <span
+                          aria-hidden="true"
+                          className={`shrink-0 text-lg text-signal transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}
+                        >
+                          +
+                        </span>
+                      </div>
+                      <p className="mt-1 text-sm leading-relaxed text-muted">{s.tagline}</p>
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {s.kinds.map((k) => (
+                          <span
+                            key={k}
+                            className="rounded-full border border-line bg-base px-2.5 py-1 text-xs text-faint"
+                          >
+                            {k}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </button>
+
+                  {isOpen && (
+                    <div className="grid gap-6 border-t border-line px-6 pb-6 pt-5 md:grid-cols-2">
+                      <div className="space-y-4 text-sm leading-relaxed text-muted">
+                        <p>
+                          <span className="font-semibold text-ink">What it is — </span>
+                          {s.what}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-ink">The pain — </span>
+                          {s.pain}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-ink">What changes — </span>
+                          {s.outcome}
+                        </p>
+                      </div>
+                      <div className="overflow-hidden rounded-xl border border-line">
+                        <div className="relative aspect-[4/3] bg-base">
+                          {s.example.shot ? (
+                            <Image
+                              src={s.example.shot}
+                              alt={s.example.client}
+                              fill
+                              sizes="(min-width: 768px) 400px, 100vw"
+                              className="object-cover object-top"
+                            />
+                          ) : (
+                            <ProjectVisual type={s.example.visual!} />
+                          )}
+                        </div>
+                        <div className="p-4">
+                          <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+                            {s.example.client}
+                          </p>
+                          <p className="mt-1.5 text-sm text-muted">{s.example.built}</p>
+                          <p className="mt-2 text-sm font-medium text-signal">{s.example.result}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </article>
+              </Reveal>
+            );
+          })}
         </div>
 
         {/* Specifically — a wider chip cloud of concrete things we build */}
@@ -139,6 +169,7 @@ export default function Services() {
             <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
               Who it&apos;s for
             </p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{whoIsItFor}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {AUDIENCES.map((a) => (
                 <span
