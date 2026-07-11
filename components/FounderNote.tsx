@@ -111,20 +111,13 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Meg's written note. First paragraph (studio thesis) reads as
-            quiet context — small + faint. Second paragraph (who she is,
-            kids + coast, always building) is the prominent statement.
-            Signature closes it. */}
+        {/* Meg's written note — one paragraph, then the signature. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
             {founderNote.paragraphs.map((para, i) => (
               <p
                 key={i}
-                className={
-                  i === 0
-                    ? "[font-family:var(--font-serif)] text-sm leading-relaxed text-faint md:text-base"
-                    : "mt-6 [font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl"
-                }
+                className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl"
               >
                 {para}
               </p>
