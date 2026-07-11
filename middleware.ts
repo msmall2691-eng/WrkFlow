@@ -55,7 +55,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip static assets and image optimization — no HTML/scripts to protect there.
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    // Skip static assets, image optimization, and API routes — none of them
+    // render HTML/scripts that need a CSP nonce.
+    "/((?!_next/static|_next/image|favicon.ico|api/).*)",
   ],
 };

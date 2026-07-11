@@ -110,7 +110,7 @@ export default function Pricing() {
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {STARTER_BULLETS.map((b, i) => (
-                  <Reveal key={b} delay={180 + i * 60} as="li">
+                  <Reveal key={b} delay={180 + i * 60} as="li" className="flex items-start gap-2.5 text-sm text-muted">
                     <Bullet>{b}</Bullet>
                   </Reveal>
                 ))}
@@ -187,10 +187,13 @@ export default function Pricing() {
 }
 
 function Bullet({ children }: { children: React.ReactNode }) {
+  // No wrapping element here — the parent <Reveal as="li"> is already the
+  // real <li>; this used to render its own nested <li>, which is invalid
+  // HTML and was causing a hydration mismatch.
   return (
-    <li className="flex items-start gap-2.5 text-sm text-muted">
+    <>
       <span aria-hidden="true" className="mt-0.5 text-signal">✓</span>
       <span>{children}</span>
-    </li>
+    </>
   );
 }
