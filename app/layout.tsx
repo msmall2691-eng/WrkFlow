@@ -194,10 +194,16 @@ export default async function RootLayout({
         {/*
           Flash-prevention: pull the stored theme (if any) before first paint.
           Runs synchronously in <body>, so the class is on <html> before
-          styles apply.
+          styles apply. suppressHydrationWarning on both scripts below:
+          browsers redact the `nonce` attribute's value from the DOM right
+          after applying it (so a compromised script can't read/exfiltrate
+          it), so the client will always see nonce="" here even though the
+          real nonce was correctly validated against the CSP header before
+          that redaction happened — a false-positive mismatch, not a bug.
         */}
         <script
           nonce={nonce}
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html:
               "try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.dataset.theme='light';}catch(e){}",
@@ -205,6 +211,7 @@ export default async function RootLayout({
         />
         <script
           nonce={nonce}
+          suppressHydrationWarning
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
