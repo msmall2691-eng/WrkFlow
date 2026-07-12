@@ -5,9 +5,12 @@ import TideKey from "./TideKey";
 import { founderNote } from "@/lib/content";
 
 /*
-  FounderNote — portrait + chips + socials + Meg's written note. The note
-  copy lives in `lib/content.ts` (founderNote.paragraphs) so voice edits
-  are one file, not one component.
+  FounderNote — a big M Studio lockup (the visual lead) with Meg's photo as
+  a small corner badge, then chips + socials + the written note. The badge
+  is still FounderAvatar (tap to flip illustrated/real), just with its own
+  internal corner badge suppressed via showBadge={false} since it's already
+  being used as one. Note copy lives in `lib/content.ts`
+  (founderNote.paragraphs) so voice edits are one file, not one component.
 
   Edit CHIPS + SOCIALS below to change the CV; edit lib/content.ts to
   change the paragraphs.
@@ -64,29 +67,45 @@ export default function FounderNote() {
         <Reveal>
           <figure className="flex flex-col items-center text-center">
             <div className="relative inline-block">
-              {/* Nautical viewfinder frame — four L-corner brackets */}
-              <div aria-hidden="true" className="pointer-events-none absolute -inset-4">
-                <span className="absolute left-0 top-0 h-4 w-4 border-l border-t border-signal/60" />
-                <span className="absolute right-0 top-0 h-4 w-4 border-r border-t border-signal/60" />
-                <span className="absolute left-0 bottom-0 h-4 w-4 border-l border-b border-signal/60" />
-                <span className="absolute right-0 bottom-0 h-4 w-4 border-r border-b border-signal/60" />
+              {/* Soft teal glow behind the lockup — replaces the old bracket
+                  frame, which only made sense around a circular photo. */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-3 rounded-[28px] bg-signal/[0.12] blur-2xl"
+              />
+              {/* Big M Studio lockup — the section's visual lead */}
+              <div className="relative flex items-center gap-3 rounded-2xl border border-signal/20 bg-surface/70 px-9 py-7 shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] sm:px-12 sm:py-9">
+                <span className="font-display text-6xl font-bold leading-none text-signal [text-shadow:0_0_34px_rgba(45,212,191,0.6),0_0_14px_rgba(45,212,191,0.45)] sm:text-7xl">
+                  M
+                </span>
+                <span className="shimmer-text-signal font-mono text-3xl font-semibold tracking-[0.04em] sm:text-4xl">
+                  Studio
+                </span>
               </div>
-              <FounderAvatar className="aspect-square w-36 rounded-full shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] ring-2 ring-signal/30 sm:w-40" />
+              {/* Small photo badge — still Meg, just not the focal point */}
+              <FounderAvatar
+                showBadge={false}
+                className="absolute -bottom-2.5 -right-2.5 h-14 w-14 rounded-full shadow-[0_6px_20px_-8px_rgba(0,0,0,0.55)] ring-[3px] ring-[var(--color-base)] sm:h-16 sm:w-16"
+              />
             </div>
-            <figcaption className="mt-6 w-full">
-              <p className="font-display text-lg text-ink">Meg</p>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
+            <figcaption className="mt-7 w-full">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
                 Founder · M Studio
               </p>
 
-              {/* CV chips */}
-              <ul className="mt-5 flex flex-wrap justify-center gap-1.5">
-                {CHIPS.map((chip) => (
-                  <li
-                    key={chip}
-                    className="whitespace-nowrap rounded-full border border-line bg-surface/60 px-2.5 py-1 font-mono text-[10px] leading-none text-muted"
-                  >
-                    {chip}
+              {/* CV chips — plain, dot-separated footnote so the wordmark
+                  stays the visual lead */}
+              <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+                {CHIPS.map((chip, i) => (
+                  <li key={chip} className="flex items-center gap-2">
+                    {i > 0 && (
+                      <span aria-hidden="true" className="text-faint/40">
+                        ·
+                      </span>
+                    )}
+                    <span className="whitespace-nowrap font-mono text-[10px] leading-none text-faint/70">
+                      {chip}
+                    </span>
                   </li>
                 ))}
               </ul>
