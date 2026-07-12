@@ -339,6 +339,19 @@ body {
   animation: shimmer 7s linear infinite;
 }
 
+/* Signal-teal shimmer — same sweep as .shimmer-text, in the brand's primary
+   teal instead of gold (gold stays reserved for pricing/founding-offer
+   emphasis). Used for the "M Studio" wordmark. */
+.shimmer-text-signal {
+  background: linear-gradient(100deg, var(--color-signal) 10%, #99f6e4 35%, var(--color-signal) 60%, #99f6e4 85%, var(--color-signal) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+}
+
 /* Brushed-metal / chrome text — for the hero subline */
 .metallic-text {
   background: linear-gradient(
@@ -418,10 +431,11 @@ body {
 .beam { animation: beamSweep 4.5s ease-in-out forwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .shimmer-text, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x, .contour-drift {
+  .shimmer-text, .shimmer-text-signal, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x, .contour-drift {
     animation: none !important;
   }
   .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }
+  .shimmer-text-signal { -webkit-text-fill-color: var(--color-signal); color: var(--color-signal); }
 }
 
 /*

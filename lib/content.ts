@@ -19,8 +19,8 @@ export const founderNote = {
   headline: "You run the business.",
   headlineFollow: "We build the systems that fit it.",
   paragraphs: [
-    "For nearly a decade running The Maine Cleaning Company, we tried every software platform out there — none of them really fit. So we built our own. M Studio grew out of those systems, the same ones now running a business with 1,000+ customers, 7,000+ visits (about 90% recurring), and $1M+ in sales. We know a thing or two about systems.",
-    "Megan, the founder, is studying business analytics & AI at USM (minor: computer science) — pushing M Studio further into everything technical a business could need. Off the clock: the coast of Maine, three kids, and a husky.",
+    "M Studio didn't start as a studio. It started as a problem: nearly a decade running The Maine Cleaning Company, and not one platform on the market fit the way we actually worked. So we built our own — the same systems now running a business with 1,000+ customers, 7,000+ visits (about 90% recurring), and $1M+ in sales. Everything we build for you is proven on our own operation first.",
+    "Megan, the founder, is studying business analytics & AI at the University of Southern Maine (minor: computer science), pushing M Studio further into whatever a business needs next. Off the clock: the coast of Maine, three kids, and a husky.",
     "New projects always welcome.",
   ],
   signature: "— M Studio",

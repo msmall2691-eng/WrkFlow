@@ -14,8 +14,12 @@ import { useState } from "react";
 */
 export default function FounderAvatar({
   className = "h-28 w-28 rounded-full",
+  showBadge = true,
 }: {
   className?: string;
+  /** Hide the internal corner badge — set false when this whole avatar is
+   *  already being used as a small badge elsewhere (avoids a badge-on-a-badge). */
+  showBadge?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   const [flipped, setFlipped] = useState(false);
@@ -73,20 +77,22 @@ export default function FounderAvatar({
       </span>
       {/* Corner badge — always shows "the other face" so both stay on screen.
           Positioned outside the flip inner so it doesn't rotate with the card. */}
-      <span
-        aria-hidden="true"
-        className="absolute -bottom-1 -right-1 h-12 w-12 overflow-hidden rounded-full bg-[#dfeaf3] shadow-[0_6px_20px_-8px_rgba(0,0,0,0.4)] ring-4 ring-[var(--color-base)] sm:h-14 sm:w-14"
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={flipped ? "/meg-avatar.webp" : "/meg.webp"}
-          alt=""
-          draggable={false}
-          onContextMenu={block}
-          onDragStart={block}
-          className="pointer-events-none h-full w-full select-none object-cover [-webkit-user-drag:none]"
-        />
-      </span>
+      {showBadge && (
+        <span
+          aria-hidden="true"
+          className="absolute -bottom-1 -right-1 h-12 w-12 overflow-hidden rounded-full bg-[#dfeaf3] shadow-[0_6px_20px_-8px_rgba(0,0,0,0.4)] ring-4 ring-[var(--color-base)] sm:h-14 sm:w-14"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={flipped ? "/meg-avatar.webp" : "/meg.webp"}
+            alt=""
+            draggable={false}
+            onContextMenu={block}
+            onDragStart={block}
+            className="pointer-events-none h-full w-full select-none object-cover [-webkit-user-drag:none]"
+          />
+        </span>
+      )}
       {/* Transparent guard — intercepts long-press / right-click / drag */}
       <span
         aria-hidden="true"
