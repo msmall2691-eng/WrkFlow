@@ -19,11 +19,11 @@ export const founderNote = {
   headline: "You run the business.",
   headlineFollow: "We build the systems that fit it.",
   paragraphs: [
-    "For nearly a decade running The Maine Cleaning Company, we struggled to find software that actually fit — every platform almost worked, and all of them cost too much for what they did. So we built our own. M Studio grew out of those systems: the same ones that now run a business with over 1,000 service customers, 7,000+ visits — about 90% of them recurring, not one-time — and more than a million in sales. We know a thing or two about systems.",
-    "Megan, the founder, is studying business analytics & AI at the University of Southern Maine with a minor in computer science — pushing M Studio further into everything technical a business could need. Off the clock, she's on the coast of Maine with her three kids and a husky.",
+    "For nearly a decade running The Maine Cleaning Company, we tried every software platform out there — none of them really fit. So we built our own. M Studio grew out of those systems, the same ones now running a business with 1,000+ customers, 7,000+ visits (about 90% recurring), and $1M+ in sales. We know a thing or two about systems.",
+    "Megan, the founder, is studying business analytics & AI at USM (minor: computer science) — pushing M Studio further into everything technical a business could need. Off the clock: the coast of Maine, three kids, and a husky.",
     "New projects always welcome.",
   ],
-  signature: "— Meg",
+  signature: "— M Studio",
 } as const;
 
 /*
