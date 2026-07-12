@@ -1,27 +1,20 @@
 import Reveal from "./Reveal";
-import FounderAvatar from "./FounderAvatar";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
-import { founderNote } from "@/lib/content";
+import { founderNote, founderBio } from "@/lib/content";
 
 /*
-  FounderNote — a big M Studio lockup (the visual lead) with Meg's photo as
-  a small corner badge, then chips + socials + the written note. The badge
-  is still FounderAvatar (tap to flip illustrated/real), just with its own
-  internal corner badge suppressed via showBadge={false} since it's already
-  being used as one. Note copy lives in `lib/content.ts`
-  (founderNote.paragraphs) so voice edits are one file, not one component.
+  FounderNote — origin-story section, not an "about me." The M Studio
+  lockup + real operating stats lead; the written note is the "why this
+  exists" story; the named founder bio comes last, after the case has
+  been made. Note copy lives in `lib/content.ts` (founderNote, founderBio)
+  so voice edits are one file, not one component.
 
-  Edit CHIPS + SOCIALS below to change the CV; edit lib/content.ts to
-  change the paragraphs.
+  Edit STATS + SOCIALS below to change the top row; edit lib/content.ts to
+  change the story or bio copy.
 */
 
-const CHIPS = [
-  "USM · Business Analytics & AI",
-  "Comp Sci · Minor",
-  "The Maine Cleaning Co.",
-  "M Studio · now",
-];
+const STATS = ["Nearly 10 yrs in business", "1,000+ customers", "7,000+ visits", "$1M+ in sales"];
 
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -73,7 +66,7 @@ export default function FounderNote() {
                 aria-hidden="true"
                 className="pointer-events-none absolute -inset-3 rounded-[28px] bg-signal/[0.12] blur-2xl"
               />
-              {/* Big M Studio lockup — the section's visual lead */}
+              {/* Big M Studio lockup — the section's whole visual lead, no photo */}
               <div className="relative flex items-center gap-3 rounded-2xl border border-signal/20 bg-surface/70 px-9 py-7 shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] sm:px-12 sm:py-9">
                 <span className="font-display text-6xl font-bold leading-none text-signal [text-shadow:0_0_34px_rgba(45,212,191,0.6),0_0_14px_rgba(45,212,191,0.45)] sm:text-7xl">
                   M
@@ -82,29 +75,24 @@ export default function FounderNote() {
                   Studio
                 </span>
               </div>
-              {/* Small photo badge — still Meg, just not the focal point */}
-              <FounderAvatar
-                showBadge={false}
-                className="absolute -bottom-2.5 -right-2.5 h-14 w-14 rounded-full shadow-[0_6px_20px_-8px_rgba(0,0,0,0.55)] ring-[3px] ring-[var(--color-base)] sm:h-16 sm:w-16"
-              />
             </div>
             <figcaption className="mt-7 w-full">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
-                Founder · M Studio
+                Built from real business.
               </p>
 
-              {/* CV chips — plain, dot-separated footnote so the wordmark
-                  stays the visual lead */}
+              {/* Operating stats — the proof, not a CV — plain dot-separated
+                  footnote so the wordmark stays the visual lead */}
               <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-                {CHIPS.map((chip, i) => (
-                  <li key={chip} className="flex items-center gap-2">
+                {STATS.map((stat, i) => (
+                  <li key={stat} className="flex items-center gap-2">
                     {i > 0 && (
                       <span aria-hidden="true" className="text-faint/40">
                         ·
                       </span>
                     )}
                     <span className="whitespace-nowrap font-mono text-[10px] leading-none text-faint/70">
-                      {chip}
+                      {stat}
                     </span>
                   </li>
                 ))}
@@ -130,7 +118,7 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Meg's written note — bold lead-in, three short paragraphs, signature. */}
+        {/* The written note — bold lead-in, three short paragraphs, signature. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
             <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
@@ -154,6 +142,18 @@ export default function FounderNote() {
               style={{ fontFamily: "var(--font-hand)" }}
             >
               {founderNote.signature}
+            </p>
+          </div>
+        </Reveal>
+
+        {/* Named founder bio — comes after the story, not before it */}
+        <Reveal delay={140}>
+          <div className="mt-12 flex flex-col items-center border-t border-line pt-8 text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
+              {founderBio.label}
+            </p>
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
+              {founderBio.body}
             </p>
           </div>
         </Reveal>

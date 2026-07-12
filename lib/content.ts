@@ -9,21 +9,34 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /*
-  Founder note — a bold lead-in ("You run the business...") plus three short
-  paragraphs and a signature. The operating numbers (customers, visits,
-  sales) live in the copy itself now — there's no separate stat strip, so
-  don't add one back without removing them from here first, or the numbers
-  would show twice. Edit here, not in the component.
+  Founder note — the section's origin story, in first person: why M Studio
+  exists, told as a real-business problem (not an "about me" bio). Named
+  founder identity is kept in `founderBio` below and rendered further down
+  the page, after the story, not as the lead. The operating numbers
+  (customers, visits, sales) live in the copy itself now — there's no
+  separate stat strip, so don't add one back without removing them from
+  here first, or the numbers would show twice. Edit here, not in the
+  component.
 */
 export const founderNote = {
-  headline: "You run the business.",
-  headlineFollow: "We build the systems that fit it.",
+  headline: "Why M Studio exists.",
+  headlineFollow: "Every business has its own way of operating.",
   paragraphs: [
-    "M Studio didn't start as a studio. It started as a problem: nearly a decade running The Maine Cleaning Company, and not one platform on the market fit the way we actually worked. So we built our own — the same systems now running a business with 1,000+ customers, 7,000+ visits (about 90% recurring), and $1M+ in sales. Everything we build for you is proven on our own operation first.",
-    "Megan, the founder, is studying business analytics & AI at the University of Southern Maine (minor: computer science), pushing M Studio further into whatever a business needs next. Off the clock: the coast of Maine, three kids, and a husky.",
-    "New projects always welcome.",
+    "The problem is most software expects you to change the way you work. M Studio was built because I got tired of forcing my own business into tools that almost fit.",
+    "After nearly a decade running The Maine Cleaning Company, I started building the missing pieces myself — better workflows, smarter automations, custom dashboards, systems that actually reflected how the business operated. Those tools became the backbone of the company: 1,000+ customers, 7,000+ service visits, and $1M+ in sales, all run on software I built because nothing else fit.",
+    "Now I build them for others. No bloated software, no unnecessary complexity — just thoughtful systems designed around the way your business already works.",
   ],
-  signature: "— M Studio",
+  signature: "— Megan",
+} as const;
+
+/*
+  Founder bio — kept short and placed after the origin story, not before
+  it. Education is mentioned once, in passing, not led with — the
+  credibility case is the operating history above.
+*/
+export const founderBio = {
+  label: "Meet the founder",
+  body: "Megan Small is a business owner and systems builder in Maine — nearly a decade running The Maine Cleaning Company before M Studio, also studying business analytics & AI at USM. Off the clock: the coast of Maine, three kids, and a husky.",
 } as const;
 
 /*
