@@ -16,7 +16,7 @@ import { foundingOffer } from "@/lib/content";
 
 const STARTER_BULLETS = [
   "Free 15-min concept call — no obligation",
-  "Unlimited revisions on your homepage design before you commit",
+  "Up to 3 rounds of revisions on your homepage design before you commit",
   "Custom design — never a template",
   "Your core pages + a contact or booking form",
   "Set up, connected, and live",
