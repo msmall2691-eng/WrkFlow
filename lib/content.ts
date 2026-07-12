@@ -16,10 +16,26 @@ export const whoIsItFor =
 */
 export const founderNote = {
   paragraphs: [
-    "M Studio is built by hand — one owner, one project at a time. I've spent eight years running my cleaning company, and somewhere between 700 clients and a growing crew, I got tired of software that didn't understand the work. So I built my own, and opened it up to other owners. These days it's kids, a husky, and a business analytics & AI degree in progress — always building and creating.",
+    "One owner, one project at a time — that's the whole org chart. I've run my cleaning company for eight years — over 1,000 customers, 7,000 visits, more than a million in sales — and spent five of those years trying every software platform that promised to help. Two years ago I gave up and built my own. M Studio is that, opened up to other owners. Between builds: three kids, a husky, and a degree in progress.",
   ],
   signature: "— Meg",
 } as const;
+
+/*
+  Founder stat strip — the real, operating numbers behind The Maine
+  Cleaning Company, shown between the CV chips and the written note. These
+  back up the bio's claim with hard numbers; keep them accurate as the
+  business grows.
+*/
+export const founderStats = [
+  { value: "8 yrs", label: "Running a service business" },
+  { value: "1,000+", label: "Customers" },
+  { value: "7,000+", label: "Visits" },
+  { value: "$1M+", label: "Lifetime sales" },
+] as const;
+
+export const founderStatsCaption =
+  "The Maine Cleaning Co. — the business M Studio was built inside.";
 
 /*
   Founding offer — the real, current state of the first-10-businesses deal.
