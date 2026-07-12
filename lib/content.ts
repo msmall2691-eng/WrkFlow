@@ -9,33 +9,22 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /*
-  Founder note — Meg's own copy. One paragraph + a signature (supersedes the
-  earlier two-paragraph version). Touches the live tide chrome in passing,
-  then the origin story and the personal beat, in one breath. Edit here, not
-  in the component.
+  Founder note — a bold lead-in ("You run the business...") plus three short
+  paragraphs and a signature. The operating numbers (customers, visits,
+  sales) live in the copy itself now — there's no separate stat strip, so
+  don't add one back without removing them from here first, or the numbers
+  would show twice. Edit here, not in the component.
 */
 export const founderNote = {
+  headline: "You run the business.",
+  headlineFollow: "We build the systems that fit it.",
   paragraphs: [
-    "One owner, one project at a time — that's the whole org chart. I've run my cleaning company for eight years — over 1,000 customers, 7,000 visits, more than a million in sales — and spent five of those years trying every software platform that promised to help. Two years ago I gave up and built my own. M Studio is that, opened up to other owners. Between builds: three kids, a husky, and a degree in progress.",
+    "For nearly a decade running The Maine Cleaning Company, we struggled to find software that actually fit — every platform almost worked, and all of them cost too much for what they did. So we built our own. M Studio grew out of those systems: the same ones that now run a business with over 1,000 service customers, 7,000+ visits — about 90% of them recurring, not one-time — and more than a million in sales. We know a thing or two about systems.",
+    "Megan, the founder, is studying business analytics & AI at the University of Southern Maine with a minor in computer science — pushing M Studio further into everything technical a business could need. Off the clock, she's on the coast of Maine with her three kids and a husky.",
+    "New projects always welcome.",
   ],
   signature: "— Meg",
 } as const;
-
-/*
-  Founder stat strip — the real, operating numbers behind The Maine
-  Cleaning Company, shown between the CV chips and the written note. These
-  back up the bio's claim with hard numbers; keep them accurate as the
-  business grows.
-*/
-export const founderStats = [
-  { value: "8 yrs", label: "Running a service business" },
-  { value: "1,000+", label: "Customers" },
-  { value: "7,000+", label: "Visits" },
-  { value: "$1M+", label: "Lifetime sales" },
-] as const;
-
-export const founderStatsCaption =
-  "The Maine Cleaning Co. — the business M Studio was built inside.";
 
 /*
   Founding offer — the real, current state of the first-10-businesses deal.

@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 import FounderAvatar from "./FounderAvatar";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
-import { founderNote, founderStats, founderStatsCaption } from "@/lib/content";
+import { founderNote } from "@/lib/content";
 
 /*
   FounderNote — portrait + chips + socials + Meg's written note. The note
@@ -111,36 +111,25 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* Stat strip — the real operating numbers behind the bio's claim */}
-        <Reveal delay={40}>
-          <div className="mt-8">
-            <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-4">
-              {founderStats.map((s) => (
-                <div key={s.label} className="text-center">
-                  <p className="font-mono text-lg text-ink sm:text-xl">{s.value}</p>
-                  <p className="mt-0.5 font-mono text-[9px] uppercase tracking-widest text-faint">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-center font-mono text-[10px] uppercase tracking-widest text-faint/70">
-              {founderStatsCaption}
-            </p>
-          </div>
-        </Reveal>
-
-        {/* Meg's written note — one paragraph, then the signature. */}
+        {/* Meg's written note — bold lead-in, three short paragraphs, signature. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
-            {founderNote.paragraphs.map((para, i) => (
-              <p
-                key={i}
-                className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink md:text-xl"
-              >
-                {para}
-              </p>
-            ))}
+            <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+              {founderNote.headline}
+            </p>
+            <p className="mt-1 text-lg font-medium text-ink sm:text-xl">
+              {founderNote.headlineFollow}
+            </p>
+            <div className="mt-6 space-y-5">
+              {founderNote.paragraphs.map((para, i) => (
+                <p
+                  key={i}
+                  className="[font-family:var(--font-serif)] text-base leading-relaxed text-ink md:text-lg"
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
             <p
               className="mt-6 text-4xl leading-none text-signal"
               style={{ fontFamily: "var(--font-hand)" }}
