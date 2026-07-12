@@ -4,11 +4,13 @@ import TideKey from "./TideKey";
 import { founderNote, founderBio } from "@/lib/content";
 
 /*
-  FounderNote — origin-story section, not an "about me." The M Studio
-  lockup + real operating stats lead; the written note is the "why this
-  exists" story; the named founder bio comes last, after the case has
-  been made. Note copy lives in `lib/content.ts` (founderNote, founderBio)
-  so voice edits are one file, not one component.
+  FounderNote — three beats, each with its own visual register: Mission
+  (M Studio lockup + stats + the "why this exists" story, no signature —
+  reads as philosophy) → Person ("Meet Megan," a short conversational
+  bio with its own kicker/heading so it visibly steps into the
+  conversation instead of reading as a continuation of the mission).
+  Copy lives in `lib/content.ts` (founderNote, founderBio) so voice edits
+  are one file, not one component.
 
   Edit STATS + SOCIALS below to change the top row; edit lib/content.ts to
   change the story or bio copy.
@@ -50,8 +52,13 @@ const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
 export default function FounderNote() {
   return (
     <section id="founder" className="relative overflow-hidden border-t border-line bg-base pt-16 pb-20 md:pt-24 md:pb-24">
-      {/* Live "harbor water" — fills to the real Portland tide level */}
-      <TideLevel />
+      {/* Live "harbor water" — fills to the real Portland tide level. Pinned
+          to a fixed-height strip at the bottom (not a % of the whole
+          section) so it stays clear of copy no matter how long the note
+          and bio get. */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 overflow-hidden md:h-56">
+        <TideLevel />
+      </div>
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
@@ -118,7 +125,8 @@ export default function FounderNote() {
           </figure>
         </Reveal>
 
-        {/* The written note — bold lead-in, three short paragraphs, signature. */}
+        {/* The mission — the "why this exists" story. No signature: this
+            reads as a philosophy, not a personal letter. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
             <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
@@ -137,23 +145,35 @@ export default function FounderNote() {
                 </p>
               ))}
             </div>
+          </div>
+        </Reveal>
+
+        {/* The person — visually distinct from the mission above (its own
+            kicker + headline weight) so it reads as stepping into the
+            conversation, not a continuation of the pitch. */}
+        <Reveal delay={140}>
+          <div className="mt-16 flex flex-col items-center border-t border-line pt-10 text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+              {founderBio.kicker}
+            </p>
+            <p className="mt-3 display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+              {founderBio.heading}
+            </p>
+            <div className="mt-6 max-w-md space-y-4">
+              {founderBio.paragraphs.map((para, i) => (
+                <p
+                  key={i}
+                  className="[font-family:var(--font-serif)] text-base leading-relaxed text-ink md:text-lg"
+                >
+                  {para}
+                </p>
+              ))}
+            </div>
             <p
               className="mt-6 text-4xl leading-none text-signal"
               style={{ fontFamily: "var(--font-hand)" }}
             >
-              {founderNote.signature}
-            </p>
-          </div>
-        </Reveal>
-
-        {/* Named founder bio — comes after the story, not before it */}
-        <Reveal delay={140}>
-          <div className="mt-12 flex flex-col items-center border-t border-line pt-8 text-center">
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
-              {founderBio.label}
-            </p>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-muted">
-              {founderBio.body}
+              {founderBio.signature}
             </p>
           </div>
         </Reveal>
