@@ -9,34 +9,42 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /*
-  Founder note — the section's origin story, in first person: why M Studio
-  exists, told as a real-business problem (not an "about me" bio). Named
-  founder identity is kept in `founderBio` below and rendered further down
-  the page, after the story, not as the lead. The operating numbers
-  (customers, visits, sales) live in the copy itself now — there's no
-  separate stat strip, so don't add one back without removing them from
-  here first, or the numbers would show twice. Edit here, not in the
-  component.
+  Founder note — the mission, told about the business rather than "I" (the
+  evolution wasn't a solo effort — years of running teams, customer
+  feedback, and mistakes went into it). The story builds toward the
+  numbers as a payoff, not a mid-sentence stat dump. No signature here —
+  this reads as a philosophy, not a personal letter; the personal voice
+  lives in `founderBio` below. Edit here, not in the component.
 */
 export const founderNote = {
   headline: "Why M Studio exists.",
   headlineFollow: "Every business has its own way of operating.",
   paragraphs: [
-    "The problem is most software expects you to change the way you work. M Studio was built because I got tired of forcing my own business into tools that almost fit.",
-    "After nearly a decade running The Maine Cleaning Company, I started building the missing pieces myself — better workflows, smarter automations, custom dashboards, systems that actually reflected how the business operated. Those tools became the backbone of the company: 1,000+ customers, 7,000+ service visits, and $1M+ in sales, all run on software I built because nothing else fit.",
-    "Now I build them for others. No bloated software, no unnecessary complexity — just thoughtful systems designed around the way your business already works.",
+    "M Studio was built because the business kept running into the same problem: every tool solved part of it, but none of them truly fit.",
+    "Over nearly a decade running The Maine Cleaning Company, those small fixes turned into an entire operating system — custom dashboards, automated workflows, scheduling, client management, reporting, and internal software built around the way the company actually worked, instead of the other way around.",
+    "Those systems went on to support more than 1,000 customers, 7,000+ service visits, and over $1 million in revenue — without relying on bloated, one-size-fits-all software.",
+    "Today, M Studio helps other businesses build software that fits the way they already work — not the way someone else's platform expects them to.",
   ],
-  signature: "— Megan",
 } as const;
 
 /*
-  Founder bio — kept short and placed after the origin story, not before
-  it. Education is mentioned once, in passing, not led with — the
-  credibility case is the operating history above.
+  Founder bio — the human step into the conversation, after the mission
+  and the proof. Short, conversational lines rather than a résumé
+  paragraph; education is left out entirely per Meg's call (the operating
+  history above is the credibility case). Signature moved here from
+  founderNote — this is the personal letter, not the philosophy.
 */
 export const founderBio = {
-  label: "Meet the founder",
-  body: "Megan Small is a business owner and systems builder in Maine — nearly a decade running The Maine Cleaning Company before M Studio, also studying business analytics & AI at USM. Off the clock: the coast of Maine, three kids, and a husky.",
+  kicker: "The story behind it",
+  heading: "Meet Megan",
+  paragraphs: [
+    "I didn't set out to become a software builder. I started a cleaning company.",
+    "Like most business owners, I spent years piecing together software that almost worked — jumping between apps, spreadsheets, and manual workarounds.",
+    "Eventually, instead of searching for better software, I started building it.",
+    "Today I combine nearly a decade of running a service business with AI, automation, and software development to help other companies simplify operations and cut out repetitive work.",
+    "When I'm not building systems, you'll probably find me somewhere on the Maine coast, working on a side project, or chasing three kids and a husky.",
+  ],
+  signature: "— Megan",
 } as const;
 
 /*
