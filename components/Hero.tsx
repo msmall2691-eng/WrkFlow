@@ -46,13 +46,12 @@ export default function Hero() {
         </p>
 
         <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
-          Websites and workflows,{" "}
-          <span className="shimmer-text">custom-made for how you actually run.</span>
+          Technology that works{" "}
+          <span className="shimmer-text">the way your business does.</span>
         </h1>
 
         <p className="hero-sub metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed">
-          Built by someone who ran the business first — then built the software
-          it needed.
+          Built from real operations. Designed for the way people actually work.
         </p>
 
 
@@ -62,7 +61,7 @@ export default function Hero() {
               href="#contact"
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
             >
-              Start a conversation
+              Start a Project
               <span
                 aria-hidden="true"
                 className="transition-transform group-hover:translate-x-0.5"

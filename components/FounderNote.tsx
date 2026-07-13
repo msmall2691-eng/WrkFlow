@@ -1,22 +1,35 @@
 import Reveal from "./Reveal";
+import Magnetic from "./Magnetic";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
-import { founderNote, founderBio } from "@/lib/content";
+import {
+  founderNote,
+  whatWeBuild,
+  founderBio,
+  founderPhilosophy,
+  founderCta,
+} from "@/lib/content";
 
 /*
-  FounderNote — three beats, each with its own visual register: Mission
-  (M Studio lockup + stats + the "why this exists" story, no signature —
-  reads as philosophy) → Person ("Meet Megan," a short conversational
-  bio with its own kicker/heading so it visibly steps into the
-  conversation instead of reading as a continuation of the mission).
-  Copy lives in `lib/content.ts` (founderNote, founderBio) so voice edits
-  are one file, not one component.
+  FounderNote — the narrative arc, belief before proof: Belief (M Studio
+  lockup + stats + "why M Studio," no signature — reads as a conviction)
+  → What we build (a quick tag teaser; Services.tsx below has the deep
+  dive) → Proof ("Built by an Operator," a short conversational bio that
+  visibly steps into the conversation instead of continuing the pitch)
+  → Philosophy (the short manifesto that caps it) → CTA, handing off into
+  the rest of the page. Copy lives in `lib/content.ts` so voice edits are
+  one file, not one component.
 
   Edit STATS + SOCIALS below to change the top row; edit lib/content.ts to
-  change the story or bio copy.
+  change any of the arc's copy.
 */
 
-const STATS = ["Nearly 10 yrs in business", "1,000+ customers", "7,000+ visits", "$1M+ in sales"];
+const STATS = [
+  "10 yrs building systems",
+  "1,000+ customers",
+  "7,000+ service visits",
+  "$1M+ managed through custom operations",
+];
 
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -148,10 +161,31 @@ export default function FounderNote() {
           </div>
         </Reveal>
 
-        {/* The person — visually distinct from the mission above (its own
+        {/* What we build — a quick tag teaser, not another paragraph.
+            Services.tsx further down has the full breakdown. */}
+        <Reveal delay={110}>
+          <div className="mt-12 flex flex-col items-center text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+              What we build
+            </p>
+            <ul className="mt-4 flex flex-wrap justify-center gap-2">
+              {whatWeBuild.map((item) => (
+                <li
+                  key={item}
+                  className="rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-sm text-muted"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+
+        {/* The proof — visually distinct from the belief above (its own
             kicker + headline weight) so it reads as stepping into the
-            conversation, not a continuation of the pitch. */}
-        <Reveal delay={140}>
+            conversation, not a continuation of the pitch. Company name is
+            a footnote detail, not the headline. */}
+        <Reveal delay={150}>
           <div className="mt-16 flex flex-col items-center border-t border-line pt-10 text-center">
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
               {founderBio.kicker}
@@ -169,12 +203,58 @@ export default function FounderNote() {
                 </p>
               ))}
             </div>
+            <p className="mt-5 max-w-md font-mono text-[11px] leading-relaxed text-faint/70">
+              {founderBio.detail}
+            </p>
             <p
               className="mt-6 text-4xl leading-none text-signal"
               style={{ fontFamily: "var(--font-hand)" }}
             >
               {founderBio.signature}
             </p>
+          </div>
+        </Reveal>
+
+        {/* Philosophy — the short manifesto that caps the arc. Deliberately
+            small: a pull-quote, not another paragraph block. */}
+        <Reveal delay={190}>
+          <div className="mt-16 flex flex-col items-center border-t border-line pt-10 text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+              {founderPhilosophy.heading}
+            </p>
+            <div className="mt-5 max-w-md space-y-4">
+              {founderPhilosophy.lines.map((line, i) => (
+                <p
+                  key={i}
+                  className="[font-family:var(--font-serif)] text-lg italic leading-relaxed text-ink md:text-xl"
+                >
+                  {line}
+                </p>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* CTA — closes the arc before handing off into Services below. */}
+        <Reveal delay={230}>
+          <div className="mt-14 flex flex-col items-center text-center">
+            <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+              {founderCta.headline}
+            </p>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-muted">
+              {founderCta.body}
+            </p>
+            <Magnetic strength={0.35}>
+              <a
+                href="#contact"
+                className="group mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
+              >
+                {founderCta.buttonLabel}
+                <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
+                  →
+                </span>
+              </a>
+            </Magnetic>
           </div>
         </Reveal>
 
