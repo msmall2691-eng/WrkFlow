@@ -9,42 +9,73 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /*
-  Founder note — the mission, told about the business rather than "I" (the
-  evolution wasn't a solo effort — years of running teams, customer
-  feedback, and mistakes went into it). The story builds toward the
-  numbers as a payoff, not a mid-sentence stat dump. No signature here —
-  this reads as a philosophy, not a personal letter; the personal voice
-  lives in `founderBio` below. Edit here, not in the component.
+  Founder note — the belief, stated first person ("I believe..."), not the
+  origin story — that comes later, in founderBio. This is the "here's what
+  I believe" beat of the narrative arc: Belief → What we build → Proof
+  (founderBio) → Philosophy. No signature here — this reads as a
+  conviction, not a personal letter; the personal voice lives in
+  `founderBio` below. Edit here, not in the component.
 */
 export const founderNote = {
-  headline: "Why M Studio exists.",
-  headlineFollow: "Every business has its own way of operating.",
+  headline: "Why M Studio.",
+  headlineFollow: "Every business works differently.",
   paragraphs: [
-    "M Studio was built because the business kept running into the same problem: every tool solved part of it, but none of them truly fit.",
-    "Over nearly a decade running The Maine Cleaning Company, those small fixes turned into an entire operating system — custom dashboards, automated workflows, scheduling, client management, reporting, and internal software built around the way the company actually worked, instead of the other way around.",
-    "Those systems went on to support more than 1,000 customers, 7,000+ service visits, and over $1 million in revenue — without relying on bloated, one-size-fits-all software.",
-    "Today, M Studio helps other businesses build software that fits the way they already work — not the way someone else's platform expects them to.",
+    "Most software asks businesses to change the way they work. I believe software should do the opposite.",
+    "M Studio builds AI, automation, and custom software around the way your business already operates — eliminating repetitive work, connecting disconnected tools, and simplifying the systems behind your business.",
+    "Technology shouldn't create more work. It should quietly make everything work better.",
   ],
 } as const;
 
+/** "What we build" — a quick, tag-only teaser up top; Services.tsx below has the deep dive. */
+export const whatWeBuild = [
+  "AI Workflows",
+  "Custom Software",
+  "Internal Tools",
+  "Automation",
+  "Dashboards",
+  "Operations Systems",
+] as const;
+
 /*
-  Founder bio — the human step into the conversation, after the mission
-  and the proof. Short, conversational lines rather than a résumé
-  paragraph; education is left out entirely per Meg's call (the operating
-  history above is the credibility case). Signature moved here from
-  founderNote — this is the personal letter, not the philosophy.
+  Founder bio — the proof: an operator's story, not a résumé. Leads with
+  the problem-solving instinct, not the company name — the Maine Cleaning
+  Company is mentioned once, in passing, as a footnote detail rather than
+  the headline. Education is left out entirely per Meg's call. Signature
+  lives here — this is the personal letter, not the belief statement.
 */
 export const founderBio = {
   kicker: "The story behind it",
-  heading: "Meet Megan",
+  heading: "Built by an Operator",
   paragraphs: [
-    "I didn't set out to become a software builder. I started a cleaning company.",
-    "Like most business owners, I spent years piecing together software that almost worked — jumping between apps, spreadsheets, and manual workarounds.",
-    "Eventually, instead of searching for better software, I started building it.",
-    "Today I combine nearly a decade of running a service business with AI, automation, and software development to help other companies simplify operations and cut out repetitive work.",
-    "When I'm not building systems, you'll probably find me somewhere on the Maine coast, working on a side project, or chasing three kids and a husky.",
+    "I didn't start by building software. I started by solving problems.",
+    "Running a business taught me that the hardest part usually isn't the work itself — it's the disconnected systems behind it. So I started building my own.",
+    "What began as spreadsheets and automations eventually became custom software built around the way people actually work.",
+    "Today, I combine real operating experience with AI, automation, and software development to help other businesses simplify operations and spend less time fighting their tools.",
   ],
+  detail:
+    "It started while building internal systems for a service business that grew to more than 1,000 customers and 7,000+ service visits.",
   signature: "— Megan",
+} as const;
+
+/*
+  Philosophy — the short manifesto that caps the narrative arc, right
+  before the CTA. Kept deliberately small; this is a pull-quote, not
+  another paragraph block.
+*/
+export const founderPhilosophy = {
+  heading: "My Philosophy",
+  lines: [
+    "Good software disappears.",
+    "The best systems don't force people to learn new ways of working — they fit naturally into the way work already happens.",
+    "Every project starts by understanding the business first. The technology comes second.",
+  ],
+} as const;
+
+/** CTA that closes the founder section's arc before handing off to Services. */
+export const founderCta = {
+  headline: "Let's build something that actually fits.",
+  body: "Whether you're replacing spreadsheets, connecting software, or starting from scratch, I'd love to help.",
+  buttonLabel: "Start a Project",
 } as const;
 
 /*
