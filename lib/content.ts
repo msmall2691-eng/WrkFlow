@@ -9,20 +9,20 @@ export const whoIsItFor =
   "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
 
 /*
-  Founder note — the belief, stated first person ("I believe..."), not the
-  origin story — that comes later, in founderBio. This is the "here's what
-  I believe" beat of the narrative arc: Belief → What we build → Proof
+  Founder note — the belief. Third person, stated as fact rather than
+  "I believe" — the origin story (first person, but kept light on "I")
+  comes later, in founderBio. Beat order: Belief → What we build → Proof
   (founderBio) → Philosophy. No signature here — this reads as a
-  conviction, not a personal letter; the personal voice lives in
-  `founderBio` below. Edit here, not in the component.
+  conviction, not a personal letter. Keep this short — it's a belief
+  statement, not an essay. Edit here, not in the component.
 */
 export const founderNote = {
   headline: "Why M Studio.",
   headlineFollow: "Every business works differently.",
   paragraphs: [
-    "Most software asks businesses to change the way they work. I believe software should do the opposite.",
-    "M Studio builds AI, automation, and custom software around the way your business already operates — eliminating repetitive work, connecting disconnected tools, and simplifying the systems behind your business.",
-    "Technology shouldn't create more work. It should quietly make everything work better.",
+    "Most software makes you change how you work. M Studio does the opposite.",
+    "AI, automation, and custom software built around how your business already runs — fewer disconnected tools, less repetitive work.",
+    "Technology shouldn't create more work. It should make everything work better.",
   ],
 } as const;
 
@@ -40,20 +40,20 @@ export const whatWeBuild = [
   Founder bio — the proof: an operator's story, not a résumé. Leads with
   the problem-solving instinct, not the company name — the Maine Cleaning
   Company is mentioned once, in passing, as a footnote detail rather than
-  the headline. Education is left out entirely per Meg's call. Signature
-  lives here — this is the personal letter, not the belief statement.
+  the headline. Education is left out entirely per Meg's call. Kept to a
+  single "I" — enough to read as a person, not a pitch. Signature lives
+  here — this is the personal letter, not the belief statement.
 */
 export const founderBio = {
   kicker: "The story behind it",
   heading: "Built by an Operator",
   paragraphs: [
-    "I didn't start by building software. I started by solving problems.",
-    "Running a business taught me that the hardest part usually isn't the work itself — it's the disconnected systems behind it. So I started building my own.",
-    "What began as spreadsheets and automations eventually became custom software built around the way people actually work.",
-    "Today, I combine real operating experience with AI, automation, and software development to help other businesses simplify operations and spend less time fighting their tools.",
+    "Not software first — problems first.",
+    "Running a business exposed the real issue: not the work, but the disconnected systems behind it. So those systems got rebuilt — spreadsheets and automations, then custom software built around how people actually work.",
+    "Today, I combine that experience with AI, automation, and software development to help other businesses spend less time fighting their tools.",
   ],
   detail:
-    "It started while building internal systems for a service business that grew to more than 1,000 customers and 7,000+ service visits.",
+    "Built while running internal systems for a service business that grew past 1,000 customers and 7,000+ service visits.",
   signature: "— Megan",
 } as const;
 
@@ -66,15 +66,15 @@ export const founderPhilosophy = {
   heading: "My Philosophy",
   lines: [
     "Good software disappears.",
-    "The best systems don't force people to learn new ways of working — they fit naturally into the way work already happens.",
-    "Every project starts by understanding the business first. The technology comes second.",
+    "The best systems don't force new habits — they fit the way work already happens.",
+    "Understand the business first. Technology comes second.",
   ],
 } as const;
 
 /** CTA that closes the founder section's arc before handing off to Services. */
 export const founderCta = {
   headline: "Let's build something that actually fits.",
-  body: "Whether you're replacing spreadsheets, connecting software, or starting from scratch, I'd love to help.",
+  body: "Replacing spreadsheets, connecting tools, or starting from scratch — let's talk.",
   buttonLabel: "Start a Project",
 } as const;
 
