@@ -33,7 +33,7 @@ export default function Deployments() {
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
               Client sites, our own company&apos;s, a product platform, and the
-              internal systems behind them — a couple embedded live below.
+              internal systems behind them — several embedded live below.
             </p>
           </Reveal>
         </div>
@@ -87,13 +87,15 @@ function BigCard({ w }: { w: WorkItem }) {
           )}
         </div>
         <div className="relative aspect-[16/10] overflow-hidden">
-          <Image
-            src={w.shot}
-            alt={`${w.title} — preview`}
-            fill
-            sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw"
-            className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-          />
+          {w.shot && (
+            <Image
+              src={w.shot}
+              alt={`${w.title} — preview`}
+              fill
+              sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw"
+              className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
+            />
+          )}
         </div>
       </div>
 
@@ -131,13 +133,15 @@ function PrivateTile({ w }: { w: WorkItem }) {
   return (
     <article className="group corner-accents flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-elevated">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface">
-        <Image
-          src={w.shot}
-          alt={`${w.title} — preview`}
-          fill
-          sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
-          className="object-cover object-top"
-        />
+        {w.shot && (
+          <Image
+            src={w.shot}
+            alt={`${w.title} — preview`}
+            fill
+            sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
+            className="object-cover object-top"
+          />
+        )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <span className="absolute right-3 top-3 rounded-full border border-line bg-base/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-faint backdrop-blur">
           🔒 Private

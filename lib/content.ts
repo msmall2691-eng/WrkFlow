@@ -328,7 +328,8 @@ export type WorkItem = {
   url?: string;
   /** True if the site allows embedding (show a live iframe preview, not a shot). */
   live?: boolean;
-  shot: string; // /shots/*.png
+  /** Screenshot for static/private cards. Live sites render via iframe, so they can omit it. */
+  shot?: string; // /shots/*.png
   /** Set for outside-client work so it gets a distinct accent. */
   client?: boolean;
   /** A single REAL outcome number (e.g. "0 double-bookings since launch"). Never fabricate—leave undefined until Meg confirms. */
@@ -350,6 +351,15 @@ export const work: WorkItem[] = [
     url: "https://maineclean.co",
     live: true,
     shot: "/shots/maineclean.png",
+  },
+  {
+    tier: "site",
+    tag: "Guest experience · our own rental",
+    title: "The Keystone House",
+    blurb: "A digital welcome book for our Maine short-term rental — check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
+    stack: ["Next.js", "Vercel"],
+    url: "https://keystonestay.maineclean.co",
+    live: true,
   },
   {
     tier: "site",
@@ -431,6 +441,21 @@ export const marketModelLabels: Record<MarketItemModel, string> = {
 };
 
 export const marketItems: MarketItem[] = [
+  {
+    id: "welcome-book",
+    name: "Digital Welcome Book",
+    model: "template",
+    category: "Guest experience",
+    tagline: "The printed check-in binder, reborn as one link guests actually open — house guide, WiFi, and local picks for your short-term rental.",
+    includes: [
+      "Check-in steps, WiFi & the full house manual",
+      "Local food, beaches & things-to-do picks",
+      "House rules + a checkout checklist",
+      "Your own link & QR code — yours to own",
+    ],
+    price: "from $149 one-time",
+    featured: true,
+  },
   {
     id: "service-site",
     name: "M Linx Site",
