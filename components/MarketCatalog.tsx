@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import LinxMark from "./LinxMark";
@@ -66,7 +66,9 @@ function ProductCard({
     >
       {/* Thumbnail */}
       <div className="relative aspect-[16/9] overflow-hidden bg-surface">
-        {item.shot ? (
+        {item.liveUrl ? (
+          <LiveThumb url={item.liveUrl} title={item.name} />
+        ) : item.shot ? (
           <Image
             src={item.shot}
             alt={`${item.name} — preview`}
@@ -134,6 +136,63 @@ function ProductCard({
         </div>
       </div>
     </article>
+  );
+}
+
+/*
+  LiveThumb — an always-current preview of a real site, embedded as a scaled,
+  non-interactive iframe (the page renders at 2x the card width, then scales to
+  0.5, so the full desktop layout shows "zoomed out"). Lazy: nothing loads until
+  the card scrolls near the viewport. Pointer events are off so the card's own
+  Reserve button stays clickable.
+*/
+function LiveThumb({ url, title }: { url: string; title: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [load, setLoad] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setLoad(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="absolute inset-0 bg-base">
+      {load ? (
+        <iframe
+          src={url}
+          title={`${title} — live preview`}
+          loading="lazy"
+          className="absolute left-0 top-0"
+          style={{
+            border: 0,
+            width: "200%",
+            height: "200%",
+            transform: "scale(0.5)",
+            transformOrigin: "top left",
+            pointerEvents: "none",
+          }}
+        />
+      ) : (
+        <div className="flex h-full items-center justify-center font-mono text-xs text-faint">
+          Loading live preview…
+        </div>
+      )}
+      <span className="absolute bottom-2 left-2 z-10 inline-flex items-center gap-1.5 rounded-full bg-base/70 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-signal backdrop-blur">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal motion-reduce:animate-none" />
+        Live preview
+      </span>
+    </div>
   );
 }
 
