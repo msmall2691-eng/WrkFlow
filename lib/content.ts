@@ -459,7 +459,7 @@ export const marketItems: MarketItem[] = [
       "House rules + a checkout checklist",
       "Your own link & QR code — yours to own",
     ],
-    price: "from $149 one-time",
+    price: "$99 intro · reg. $149",
     liveUrl: "https://keystonestay.maineclean.co",
     featured: true,
   },
@@ -554,3 +554,74 @@ export const marketItems: MarketItem[] = [
     price: "Free",
   },
 ];
+
+/*
+  Digital Welcome Book — content for the dedicated /welcome-book landing page.
+  Kept here so the campaign copy is a one-file edit. `introPrice` is the
+  founding price for the first few; bump the page over to `regularPrice` by
+  editing here once the founding run is done. `demoUrl` is the real, live
+  example (Meg's own Maine rental) — it embeds and links straight from the page.
+*/
+export const welcomeBook = {
+  introPrice: 99,
+  regularPrice: 149,
+  demoUrl: "https://keystonestay.maineclean.co",
+  demoName: "The Keystone House",
+  hero: {
+    kicker: "Digital Welcome Book",
+    headline: "The welcome binder your guests actually open.",
+    sub: "One link — check-in steps, WiFi, the house manual, and your own local picks — on the phone that's already in their hand. Built for you, yours to keep.",
+  },
+  // What the host gets — written around the questions hosts answer every week.
+  includes: [
+    "Check-in steps, door code & parking — the questions you answer every single week",
+    "WiFi, thermostat, grill, laundry — your whole house manual in one tap",
+    "Local food, beaches & things to do — your recommendations, not a generic list",
+    "House rules + a checkout checklist guests can't skim past",
+    "A printable QR code for the door or the fridge",
+    "Your own link, yours to keep — no monthly app fee",
+  ],
+  steps: [
+    {
+      n: "01",
+      title: "Send me the details",
+      body: "Share your listing and the basics — check-in, WiFi, rules, your favorite local spots. A short form is all it takes; I'll pull the rest together.",
+    },
+    {
+      n: "02",
+      title: "I build your book",
+      body: "You get a custom welcome book matched to your place, usually within a few days. One round of tweaks is included, so it reads exactly how you'd say it.",
+    },
+    {
+      n: "03",
+      title: "Share the link",
+      body: "Drop it into your Airbnb or VRBO message and print the QR for the door. Fewer “how do I…” texts, smoother stays, better reviews.",
+    },
+  ],
+  faqs: [
+    {
+      q: "Do I need any tech skills?",
+      a: "None. You send the info, I build it, and you get a link plus a printable QR code. That's the whole job on your end.",
+    },
+    {
+      q: "Does it work for VRBO, Booking.com, or direct bookings?",
+      a: "Yes. It's just a link, so it works with any platform — or with none, for direct guests.",
+    },
+    {
+      q: "Can I update it later?",
+      a: "Yes. Small changes are quick. If you'd rather have seasonal updates handled for you, that can be a simple ongoing plan.",
+    },
+    {
+      q: "What does it cost?",
+      a: "$99 for the first few (a founding price while I gather reviews), then $149. One-time — no monthly app fee, and the book is yours.",
+    },
+    {
+      q: "How long does it take?",
+      a: "Usually just a few days from when you send your details.",
+    },
+    {
+      q: "Do you only work with Maine rentals?",
+      a: "No — anywhere. The Keystone House is my own place here in Maine, but the welcome book works for any short-term rental.",
+    },
+  ],
+} as const;
