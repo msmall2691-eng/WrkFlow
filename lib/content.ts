@@ -430,6 +430,12 @@ export type MarketItem = {
   price: string;
   /** Preview screenshot in /shots. Optional — a gradient renders without one. */
   shot?: string;
+  /**
+   * A live URL to embed as the preview instead of a static shot — an
+   * always-current, interactive-looking thumbnail. Only use for sites that
+   * allow framing. Takes precedence over `shot`.
+   */
+  liveUrl?: string;
   /** True for the highlighted / recommended card. */
   featured?: boolean;
 };
@@ -454,6 +460,7 @@ export const marketItems: MarketItem[] = [
       "Your own link & QR code — yours to own",
     ],
     price: "from $149 one-time",
+    liveUrl: "https://keystonestay.maineclean.co",
     featured: true,
   },
   {
