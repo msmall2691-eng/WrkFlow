@@ -2,6 +2,36 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 /*
+  Subdomain routing — start.mlinx.studio serves the new-client project
+  questionnaire (app/start/page.tsx).
+
+  Rewriting rather than redirecting keeps the client on the short, speakable
+  hostname the whole way through ("go to start dot mlinx dot studio"), which
+  is the entire reason for having a subdomain instead of a path. The path
+  form, mlinx.studio/start, keeps working either way.
+
+  Everything on the subdomain maps into /start/*, so the questionnaire host
+  exposes the questionnaire and nothing else — start.mlinx.studio/pricing is
+  a 404, not a second copy of the marketing site on a second hostname.
+  Requests for a filename (anything with an extension) are left alone so
+  public/ assets and the service worker still resolve.
+*/
+const QUESTIONNAIRE_HOSTS = new Set(["start.mlinx.studio", "start.localhost"]);
+
+function questionnaireRewrite(request: NextRequest): URL | null {
+  const hostname = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
+  if (!QUESTIONNAIRE_HOSTS.has(hostname)) return null;
+
+  const { pathname } = request.nextUrl;
+  if (pathname.startsWith("/start")) return null;
+  if (pathname.includes(".")) return null; // /sw.js, /shots/x.png, …
+
+  const url = request.nextUrl.clone();
+  url.pathname = pathname === "/" ? "/start" : `/start${pathname}`;
+  return url;
+}
+
+/*
   Nonce-based CSP — replaces 'unsafe-inline' on script-src with a per-request
   nonce, per Next.js's documented pattern
   (https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy).
@@ -46,9 +76,13 @@ export function middleware(request: NextRequest) {
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", csp);
 
-  const response = NextResponse.next({
-    request: { headers: requestHeaders },
-  });
+  // The subdomain rewrite has to carry the nonce headers too, or the
+  // questionnaire renders without one and CSP blocks its own hydration.
+  const rewriteUrl = questionnaireRewrite(request);
+  const response = rewriteUrl
+    ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
+    : NextResponse.next({ request: { headers: requestHeaders } });
+
   response.headers.set("Content-Security-Policy", csp);
   return response;
 }

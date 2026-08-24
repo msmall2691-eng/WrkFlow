@@ -37,10 +37,44 @@ app/
   opengraph-image.tsx   Dynamic OG image
   sitemap.ts / robots.ts
   api/contact/route.ts  Contact form handler
+  start/page.tsx        New-client questionnaire (start.mlinx.studio)
+  api/questionnaire/    Questionnaire handler
 components/             Hero, Shift, Services, Approach, Work, Contact, …
 lib/content.ts          Service copy + section content (single source)
+lib/questionnaire.ts    Questionnaire steps + fields (single source)
 supabase/schema.sql     contact_submissions table
 ```
+
+## New-client questionnaire
+
+`start.mlinx.studio` is an eight-step intake form a prospective client fills
+out before the first call. It lives in this app rather than a separate deploy:
+`middleware.ts` rewrites the subdomain onto `/start`, so there's one codebase
+and one set of design tokens. `mlinx.studio/start` works as a fallback, and the
+page is `noindex` — it's intake, not marketing, and it answers on two hostnames.
+
+`lib/questionnaire.ts` is the single source of truth. Adding or reordering a
+question means editing that file only: the form renders from it, and
+`/api/questionnaire` validates against it and builds the notification email
+from it. The server never takes a question label from the request body, so a
+forged payload can't inject its own text into the inbox.
+
+On submit the route sends two emails through the same Gmail SMTP account the
+contact form uses — the brief to `CONTACT_TO`, and a copy back to the client.
+No new environment variables. Answers are also mirrored to `localStorage` as
+the client types, so a closed tab doesn't cost them ten minutes of work.
+
+### DNS setup (one-time)
+
+The code is live as soon as it deploys; the hostname needs pointing:
+
+1. Vercel → the project → **Settings → Domains → Add** → `start.mlinx.studio`.
+2. At the `mlinx.studio` registrar, add the `CNAME` Vercel shows you
+   (`start` → `cname.vercel-dns.com`).
+3. Wait for the certificate to issue, then load `https://start.mlinx.studio`.
+
+Until step 1 is done the subdomain won't resolve — but `/start` on the main
+domain is already serving the same page, so it's testable immediately.
 
 ## Contact form backend
 
