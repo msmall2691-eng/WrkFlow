@@ -233,9 +233,44 @@ export const questionnaireSteps: QuestionStep[] = [
 
   /* ----------------------------------------------- Phase 2: project details */
   {
+    id: "business",
+    phase: 2,
+    kicker: "Project details · 1 of 7",
+    timeHint: "~1 min",
+    title: "Tell us about the business",
+    intro:
+      "Plain words are perfect. This is what your scope — and your homepage concepts — get built from.",
+    fields: [
+      {
+        kind: "text",
+        id: "bizName",
+        label: "Business name",
+        autoComplete: "organization",
+      },
+      {
+        kind: "textarea",
+        id: "whatYouDo",
+        label: "What do you do, in a sentence or two?",
+        hint: "What you offer, who it's for, and where — e.g. “vacation-rental cleaning across Midcoast Maine”.",
+      },
+      {
+        kind: "text",
+        id: "idealCustomer",
+        label: "Who's your ideal customer?",
+        hint: "The person you'd gladly take ten more of.",
+      },
+      {
+        kind: "text",
+        id: "different",
+        label: "What sets you apart?",
+        hint: "One honest line is plenty — it often becomes the headline.",
+      },
+    ],
+  },
+  {
     id: "goals",
     phase: 2,
-    kicker: "Project details · 1 of 5",
+    kicker: "Project details · 2 of 7",
     timeHint: "~30 sec",
     title: "What should the site accomplish?",
     intro: "Pick everything that applies — most businesses pick two or three.",
@@ -261,7 +296,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "scope",
     phase: 2,
-    kicker: "Project details · 2 of 5",
+    kicker: "Project details · 3 of 7",
     timeHint: "~30 sec",
     title: "What's on the site?",
     fields: [
@@ -290,9 +325,48 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
+    id: "style",
+    phase: 2,
+    kicker: "Project details · 4 of 7",
+    timeHint: "~30 sec",
+    title: "What should it feel like?",
+    intro:
+      "A few words are enough to point the design in the right direction — contradictions are fine, we'll reconcile them.",
+    fields: [
+      {
+        kind: "chips",
+        id: "styleWords",
+        label: "Feel",
+        hint: "Tap any that fit.",
+        options: [
+          "Warm & personal",
+          "Clean & modern",
+          "Bold & confident",
+          "Classic & established",
+          "High-end & polished",
+          "Playful",
+          "Rugged & outdoorsy",
+          "Coastal",
+        ],
+      },
+      {
+        kind: "text",
+        id: "brandColors",
+        label: "Brand colors, if you have them",
+        hint: "Names are fine — “navy and gold”, “forest green”. Leave blank and we'll propose.",
+      },
+      {
+        kind: "text",
+        id: "loveSites",
+        label: "A site or two whose look you like",
+        hint: "Links or names — competitors or not.",
+      },
+    ],
+  },
+  {
     id: "tools",
     phase: 2,
-    kicker: "Project details · 3 of 5",
+    kicker: "Project details · 5 of 7",
     timeHint: "~30 sec",
     title: "What does the business run on today?",
     intro:
@@ -326,7 +400,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "pain",
     phase: 2,
-    kicker: "Project details · 4 of 5",
+    kicker: "Project details · 6 of 7",
     timeHint: "~1 min",
     title: "What's not working today?",
     fields: [
@@ -348,7 +422,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "contact",
     phase: 2,
-    kicker: "Project details · 5 of 5",
+    kicker: "Project details · 7 of 7",
     timeHint: "~30 sec",
     title: "Where should we send your scope?",
     intro:
@@ -370,12 +444,6 @@ export const questionnaireSteps: QuestionStep[] = [
         required: true,
         autoComplete: "email",
         half: true,
-      },
-      {
-        kind: "text",
-        id: "bizName",
-        label: "Business name",
-        autoComplete: "organization",
       },
     ],
   },

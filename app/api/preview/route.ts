@@ -46,10 +46,15 @@ function isAllowedOrigin(origin: string | null): boolean {
 const PROMPT_FIELDS: Record<string, number> = {
   bizName: 120,
   bizType: 60,
-  whatMakesYouDifferent: 400, // reserved; not collected today
+  whatYouDo: 300,
+  idealCustomer: 200,
+  different: 300,
   goals: 400,
   features: 400,
   pages: 300,
+  styleWords: 200,
+  brandColors: 120,
+  loveSites: 200,
   painPoint: 600,
 };
 
@@ -88,7 +93,8 @@ Hard constraints (the render environment enforces these — anything else shows 
 Content rules:
 - Use the client's real business name and facts verbatim where given. Invent NOTHING factual: no fake phone numbers, addresses, reviews, star ratings, client names, or statistics. Where a testimonial or credential would sit, use an obviously-labelled placeholder like "A word from your customers goes here."
 - Structure: simple nav (name + 2-4 anchor links), a hero with a headline built from what the business actually does, one section reflecting their stated goals/features (e.g. a booking call-to-action if they want online booking), a services/offer section, and a footer.
-- Headline copy should be specific to their business, plain-spoken and professional — no "Welcome to our website", no exclamation marks, no buzzword soup.
+- Headline copy should be specific to their business, plain-spoken and professional — no "Welcome to our website", no exclamation marks, no buzzword soup. If they said what sets them apart ("different"), build the hero headline around it. Write for the audience in "idealCustomer" where given.
+- If the client gave style words ("styleWords") or brand colors ("brandColors"), honor them in EVERY direction — colors become the accent palette, style words tune the treatment — while still keeping this direction's own character distinct. Their stated preferences outrank the direction brief where the two conflict.
 - This is a concept sketch, not a final site: favor clear structure and strong typography over decoration.`;
 
 function fieldLines(answers: Record<string, unknown>): string {
@@ -152,7 +158,7 @@ export async function POST(req: Request) {
   }
 
   const facts = fieldLines(answers as Record<string, unknown>);
-  if (!facts.includes("bizName:") && !facts.includes("goals:")) {
+  if (!facts.includes("bizName:") && !facts.includes("whatYouDo:") && !facts.includes("goals:")) {
     return NextResponse.json(
       { ok: false, error: "Not enough answers yet to draft a concept." },
       { status: 422 },
