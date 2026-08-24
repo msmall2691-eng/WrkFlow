@@ -279,10 +279,10 @@ export default function Questionnaire({
   const phaseLabel =
     view.screen === "step"
       ? questionnaireSteps[view.index].phase === 1
-        ? "Quick fit check"
+        ? "The basics"
         : "Project details"
       : view.screen === "route"
-        ? "Quick fit check"
+        ? "The basics"
         : view.screen === "preview"
           ? "Project details"
           : view.screen === "success"
@@ -301,7 +301,8 @@ export default function Questionnaire({
         </div>
         <div className="mt-2.5 flex items-baseline justify-between">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
-            {phaseLabel || "Project intake"}
+            <span className="text-ink">M Studio</span>
+            {phaseLabel ? ` · ${phaseLabel}` : " · Project intake"}
           </p>
           <p className="font-mono text-[10px] tabular-nums text-faint">
             {Math.round(progress)}%
@@ -316,7 +317,11 @@ export default function Questionnaire({
       )}
 
       {view.screen === "intro" && (
-        <Intro headingRef={headingRef} onStart={() => goTo({ screen: "step", index: 0 })} />
+        <Intro
+          headingRef={headingRef}
+          aiEnabled={previewEnabled}
+          onStart={() => goTo({ screen: "step", index: 0 })}
+        />
       )}
 
       {view.screen === "step" && (
@@ -349,6 +354,7 @@ export default function Questionnaire({
       )}
       {view.screen === "route" && view.variant === "qualified" && (
         <QualifiedScreen
+          aiEnabled={previewEnabled}
           headingRef={headingRef}
           onBack={() => goTo({ screen: "step", index: PHASE1_STEPS - 1 })}
           onContinue={() => goTo({ screen: "step", index: PHASE1_STEPS })}
@@ -392,38 +398,41 @@ export default function Questionnaire({
 
 function Intro({
   headingRef,
+  aiEnabled,
   onStart,
 }: {
   headingRef: React.RefObject<HTMLDivElement | null>;
+  aiEnabled: boolean;
   onStart: () => void;
 }) {
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <div ref={headingRef} tabIndex={-1} className="outline-none">
         <h2 className="display-serif text-3xl leading-[1.12] text-ink sm:text-4xl">
-          Let&apos;s see if we&apos;re a fit — in about 60 seconds.
+          Let&apos;s scope your project.
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
-        Four quick taps tell us whether a custom build makes sense for you. If
-        it does, a few more minutes gets you a real scope — pages, features,
-        price range — within 24 hours. Nothing here is binding, and your
-        answers save on this device as you go.
+        {aiEnabled ? (
+          <>
+            A short set of questions about your business and what you&apos;re
+            looking to build. Before you finish, we&apos;ll design three
+            concepts of your site from your answers — built while you watch,
+            yours to compare and pick from. A written scope with pages,
+            features, and a price range follows within 24 hours.
+          </>
+        ) : (
+          <>
+            A short set of questions about your business and what you&apos;re
+            looking to build. Within 24 hours you&apos;ll have a written scope —
+            pages, features, and a price range — from the person who would
+            build it.
+          </>
+        )}
       </p>
-
-      {/* Time expectations */}
-      <div className="mt-8 grid grid-cols-3 gap-3">
-        {[
-          { big: "~1 min", small: "fit check" },
-          { big: "~5 min", small: "project details" },
-          { big: "24 hrs", small: "to a real scope" },
-        ].map((t) => (
-          <div key={t.small} className="rounded-xl border border-line bg-[var(--panel-input-bg)] px-3 py-4 text-center">
-            <p className="display-serif text-xl text-ink">{t.big}</p>
-            <p className="mt-1 text-[12px] text-muted">{t.small}</p>
-          </div>
-        ))}
-      </div>
+      <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
+        About 6 minutes · answers save on this device · nothing is binding
+      </p>
 
       {/* Trust strip — proof lives in teal */}
       <div className="mt-8 rounded-xl border border-line px-5 py-4">
@@ -440,7 +449,7 @@ function Intro({
       </div>
 
       <div className="mt-9">
-        <ContinueButton onClick={onStart} label="Start the fit check" />
+        <ContinueButton onClick={onStart} label="Begin" />
       </div>
     </section>
   );
@@ -876,7 +885,7 @@ function RedirectScreen({
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
         <h2 className="display-serif text-2xl leading-[1.15] text-ink sm:text-3xl">
-          A custom build might be overkill — here&apos;s the faster path.
+          For this budget and timeline, there&apos;s a better-value path.
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
@@ -922,10 +931,12 @@ function RedirectScreen({
 }
 
 function QualifiedScreen({
+  aiEnabled,
   headingRef,
   onBack,
   onContinue,
 }: {
+  aiEnabled: boolean;
   headingRef: React.RefObject<HTMLDivElement | null>;
   onBack: () => void;
   onContinue: () => void;
@@ -933,18 +944,30 @@ function QualifiedScreen({
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: TEAL }}>
-        Fit check passed
+A strong fit
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
         <h2 className="display-serif text-2xl leading-[1.15] text-ink sm:text-3xl">
-          Good news — this looks like a real fit.
+          This looks like a project we&apos;d build well.
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
-        Here&apos;s the deal: answer the next five steps properly — about five
-        minutes — and within 24 hours you&apos;ll get a real scope back. Pages,
-        features, a price range, and a timeline. Not a discovery call to find
-        out; the actual plan.
+        {aiEnabled ? (
+          <>
+            The next steps take about five minutes and cover the details a
+            design is made from. At the end, we&apos;ll build three concepts
+            of your site right here — from your answers, while you watch —
+            and the direction you pick shapes the written scope you get
+            within 24 hours.
+          </>
+        ) : (
+          <>
+            The next steps take about five minutes and cover the details a
+            scope is made from. Within 24 hours you&apos;ll have it in
+            writing — pages, features, a price range, and a timeline — rather
+            than a discovery call to schedule first.
+          </>
+        )}
       </p>
 
       {qualifiedTestimonial && (
