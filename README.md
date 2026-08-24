@@ -37,10 +37,54 @@ app/
   opengraph-image.tsx   Dynamic OG image
   sitemap.ts / robots.ts
   api/contact/route.ts  Contact form handler
+  intake/page.tsx       New-client questionnaire (intake.mlinx.studio)
+  api/questionnaire/    Questionnaire handler
 components/             Hero, Shift, Services, Approach, Work, Contact, …
 lib/content.ts          Service copy + section content (single source)
+lib/questionnaire.ts    Questionnaire steps + fields (single source)
 supabase/schema.sql     contact_submissions table
 ```
+
+## New-client questionnaire
+
+`intake.mlinx.studio` is a ten-step intake form a prospective client fills out
+before the first call. It lives in this app rather than a separate deploy:
+`middleware.ts` rewrites the subdomain onto `/intake`, so there's one codebase
+and one set of design tokens. Both entry points are intended — the short
+`intake.mlinx.studio` is the one to send clients, and `mlinx.studio/intake`
+serves the same page from the main site. It's `noindex`: intake, not marketing,
+and it answers on two hostnames.
+
+`lib/questionnaire.ts` is the single source of truth. Adding or reordering a
+question means editing that file only: the form renders from it, and
+`/api/questionnaire` validates against it and builds the notification email
+from it. The server never takes a question label from the request body, so a
+forged payload can't inject its own text into the inbox.
+
+On submit the route sends two emails through the same Gmail SMTP account the
+contact form uses — the brief to `CONTACT_TO`, and a copy back to the client.
+No new environment variables. Answers are also mirrored to `localStorage` as
+the client types, so a closed tab doesn't cost them ten minutes of work.
+
+### DNS setup (one-time)
+
+The code is live as soon as it deploys; the hostname needs pointing:
+
+1. Vercel → the project → **Settings → Domains → Add** → `intake.mlinx.studio`,
+   and confirm it then appears in that project's domain list. A domain that
+   resolves but serves `DEPLOYMENT_NOT_FOUND` is attached to no project (or to
+   a different one) — that is the failure mode to check for first.
+2. At the `mlinx.studio` registrar, add the record Vercel shows you
+   (`intake` → `cname.vercel-dns.com`).
+3. Wait for the certificate to issue, then load `https://intake.mlinx.studio`.
+
+Send clients the bare `intake.mlinx.studio`. The `www.intake.mlinx.studio`
+form is matched in middleware, but it needs its own DNS record *and* its own
+certificate to work at all — without them a browser fails on TLS before it
+ever reaches the app.
+
+Until step 1 is done the subdomain won't serve the page — but `/intake` on the
+main domain already does, so it's testable immediately.
 
 ## Contact form backend
 

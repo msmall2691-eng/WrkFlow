@@ -2,6 +2,45 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 /*
+  Subdomain routing — intake.mlinx.studio serves the new-client project
+  questionnaire (app/intake/page.tsx).
+
+  Rewriting rather than redirecting keeps the client on the short, speakable
+  hostname the whole way through ("go to intake dot mlinx dot studio"), which
+  is the entire reason for having a subdomain instead of a path. The path
+  form, mlinx.studio/intake, keeps working either way — the same page is
+  meant to be reachable both ways.
+
+  Everything on the subdomain maps into /intake/*, so the questionnaire host
+  exposes the questionnaire and nothing else — intake.mlinx.studio/pricing is
+  a 404, not a second copy of the marketing site on a second hostname.
+  Requests for a filename (anything with an extension) are left alone so
+  public/ assets and the service worker still resolve.
+
+  The www. variant is matched because a registrar or a link-formatter will
+  happily produce it; whether it actually resolves depends on a DNS record
+  and a certificate existing for that name too.
+*/
+const QUESTIONNAIRE_HOSTS = new Set([
+  "intake.mlinx.studio",
+  "www.intake.mlinx.studio",
+  "intake.localhost",
+]);
+
+function questionnaireRewrite(request: NextRequest): URL | null {
+  const hostname = (request.headers.get("host") ?? "").split(":")[0].toLowerCase();
+  if (!QUESTIONNAIRE_HOSTS.has(hostname)) return null;
+
+  const { pathname } = request.nextUrl;
+  if (pathname.startsWith("/intake")) return null;
+  if (pathname.includes(".")) return null; // /sw.js, /shots/x.png, …
+
+  const url = request.nextUrl.clone();
+  url.pathname = pathname === "/" ? "/intake" : `/intake${pathname}`;
+  return url;
+}
+
+/*
   Nonce-based CSP — replaces 'unsafe-inline' on script-src with a per-request
   nonce, per Next.js's documented pattern
   (https://nextjs.org/docs/app/building-your-application/configuring/content-security-policy).
@@ -46,9 +85,13 @@ export function middleware(request: NextRequest) {
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", csp);
 
-  const response = NextResponse.next({
-    request: { headers: requestHeaders },
-  });
+  // The subdomain rewrite has to carry the nonce headers too, or the
+  // questionnaire renders without one and CSP blocks its own hydration.
+  const rewriteUrl = questionnaireRewrite(request);
+  const response = rewriteUrl
+    ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
+    : NextResponse.next({ request: { headers: requestHeaders } });
+
   response.headers.set("Content-Security-Policy", csp);
   return response;
 }
