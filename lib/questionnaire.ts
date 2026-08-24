@@ -11,6 +11,9 @@
   posts, so a forged payload can't inject its own question text into the
   email that lands in Meg's inbox. Same principle as TOOL_LABELS in
   /api/tool-lead — the client sends field ids and values, nothing else.
+
+  Adding or reordering a question is a change to this file alone: the form,
+  the review screen, the validator, and both emails all follow.
 */
 
 export type QuestionField =
@@ -21,7 +24,7 @@ export type QuestionField =
       /** Rendered under the label as smaller guidance copy. */
       hint?: string;
       placeholder?: string;
-      type?: "text" | "email" | "url";
+      type?: "text" | "email" | "url" | "tel";
       required?: boolean;
       autoComplete?: string;
       /** Sits two-across on desktop with the adjacent half-width field. */
@@ -136,6 +139,7 @@ export const questionnaireSteps: QuestionStep[] = [
           "Show off my work or portfolio",
           "Collect leads and quote requests",
           "Build credibility and look professional",
+          "Cut down the admin work I do by hand",
         ],
       },
       {
@@ -143,6 +147,12 @@ export const questionnaireSteps: QuestionStep[] = [
         id: "goalsOther",
         label: "Another goal we missed?",
         hint: "Optional.",
+      },
+      {
+        kind: "textarea",
+        id: "successMetric",
+        label: "Six months in, what would tell you this worked?",
+        hint: "More calls? Fewer of the wrong ones? Hours back in your week? Anything you'd actually notice.",
       },
     ],
   },
@@ -179,10 +189,60 @@ export const questionnaireSteps: QuestionStep[] = [
         label: "Another feature you have in mind?",
         hint: "Optional.",
       },
+      {
+        kind: "select",
+        id: "audienceDevice",
+        label: "Where do your customers usually find you?",
+        hint: "Every site we build works on a phone — this just tells us which screen to design for first.",
+        options: [
+          "Mostly on their phone",
+          "Mostly on a computer",
+          "A real mix of both",
+          "Not sure",
+        ],
+      },
     ],
   },
   {
     index: "05",
+    eyebrow: "How You Run",
+    title: "What does the business run on today?",
+    intro:
+      "A website is usually the visible part of something bigger. This is where we find the rest.",
+    fields: [
+      {
+        kind: "checkboxes",
+        id: "tools",
+        label: "Tools in use",
+        hint: "Whatever you already use to run the day-to-day.",
+        options: [
+          "Booking or scheduling software",
+          "A CRM or customer list",
+          "Point of sale / card payments",
+          "Invoicing or accounting software",
+          "Email marketing",
+          "Spreadsheets — a lot of them",
+          "Texting customers from my own phone",
+          "Paper, whiteboards, or a notebook",
+          "Honestly, it's mostly in my head",
+        ],
+      },
+      {
+        kind: "text",
+        id: "toolsOther",
+        label: "Anything else you rely on?",
+        hint: "Optional — name it if it matters.",
+      },
+      {
+        kind: "textarea",
+        id: "busywork",
+        label: "What repetitive work eats the most of your week?",
+        hint: "Typing the same thing into two places, chasing people for details, answering the same question over and over. Even if it seems unrelated to a website — it usually isn't.",
+      },
+    ],
+  },
+  {
+    index: "06",
     eyebrow: "Content & Assets",
     title: "What do you already have?",
     intro: "No wrong answers here — missing pieces are normal, and we can fill them.",
@@ -214,10 +274,26 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "06",
+    index: "07",
     eyebrow: "Look & Feel",
     title: "What's the vibe?",
     fields: [
+      {
+        kind: "checkboxes",
+        id: "aesthetic",
+        label: "Aesthetic",
+        hint: "Pick two or three that feel right. Contradictions are fine — we'll sort it out.",
+        options: [
+          "Clean and minimal",
+          "Warm and personal",
+          "Bold and colorful",
+          "Classic and established",
+          "Modern and technical",
+          "Rugged and outdoorsy",
+          "High-end and polished",
+          "Playful",
+        ],
+      },
       {
         kind: "textarea",
         id: "loveSites",
@@ -237,7 +313,7 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "07",
+    index: "08",
     eyebrow: "Practical Stuff",
     title: "Timeline and logistics",
     fields: [
@@ -251,17 +327,52 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "timeline",
         label: "When do you need this live?",
+        hint: "A season or a deadline is enough — \"before summer\", \"end of Q2\".",
       },
       {
-        kind: "text",
+        kind: "select",
         id: "budget",
         label: "Rough budget range in mind?",
-        hint: "Totally fine to say \"not sure yet\" — this just helps us scope realistically.",
+        hint: "A band is plenty, and \"not sure yet\" is a real answer — this just keeps us from scoping something that was never going to fit.",
+        options: [
+          "Not sure yet — help me figure it out",
+          "Under $2,000",
+          "$2,000 – $5,000",
+          "$5,000 – $10,000",
+          "$10,000+",
+        ],
       },
     ],
   },
   {
-    index: "08",
+    index: "09",
+    eyebrow: "After Launch",
+    title: "Who's driving once it's live?",
+    intro:
+      "Whatever we build is yours to keep either way — this is just about how involved you want to be.",
+    fields: [
+      {
+        kind: "select",
+        id: "maintenance",
+        label: "How hands-on do you want to be?",
+        options: [
+          "I'll run it myself — hand it over with the keys",
+          "Mostly me, with backup when I get stuck",
+          "Split it — you handle the technical side, I'll do content",
+          "Hands-off — keep the whole thing running for me",
+          "Not sure yet — let's talk it through",
+        ],
+      },
+      {
+        kind: "textarea",
+        id: "selfServe",
+        label: "Anything you'll want to change yourself, often?",
+        hint: "Prices, hours, staff, photos, a menu. Worth knowing now — it changes how we build it.",
+      },
+    ],
+  },
+  {
+    index: "10",
     eyebrow: "Almost Done",
     title: "Anything else, and how to reach you",
     fields: [
@@ -285,6 +396,22 @@ export const questionnaireSteps: QuestionStep[] = [
         type: "email",
         required: true,
         autoComplete: "email",
+        half: true,
+      },
+      {
+        kind: "text",
+        id: "contactPhone",
+        label: "Phone",
+        hint: "Optional — only if you'd rather talk than type.",
+        type: "tel",
+        autoComplete: "tel",
+        half: true,
+      },
+      {
+        kind: "select",
+        id: "preferredContact",
+        label: "Best way to reach you",
+        options: ["Email", "Phone call", "Text", "Whatever's easiest"],
         half: true,
       },
     ],

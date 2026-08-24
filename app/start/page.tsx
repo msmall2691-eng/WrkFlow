@@ -15,7 +15,7 @@ import LinxMark from "@/components/LinxMark";
 export const metadata: Metadata = {
   title: "Project Questionnaire",
   description:
-    "A few questions about your business and goals, so our first conversation starts from something real. Takes about ten minutes, and nothing here is binding.",
+    "A few questions about your business, how it runs, and your goals, so our first conversation starts from something real. Ten minutes or so, and nothing here is binding.",
   alternates: { canonical: "/start" },
   // Intake, not marketing — it shouldn't compete with the main site in
   // search, and it's reachable on two hostnames, which is a duplicate-content
@@ -41,9 +41,10 @@ export default function StartPage() {
           Let&apos;s scope your project.
         </h1>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-          A few questions about your business and what you&apos;re trying to
-          build, so our first conversation starts from something real instead of
-          a blank page. About ten minutes — and nothing here is binding.
+          A few questions about your business, how it runs, and what
+          you&apos;re trying to build — so our first conversation starts from
+          something real instead of a blank page. Ten minutes or so, most of it
+          optional, and nothing here is binding.
         </p>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-faint">
           Your answers save as you go, so you can close this and come back.
