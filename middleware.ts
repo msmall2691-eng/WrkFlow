@@ -90,15 +90,12 @@ export function middleware(request: NextRequest) {
   const rewriteUrl = questionnaireRewrite(request);
 
   /*
-    The site defaults to the dark "Harbor" theme, which is right for the
-    marketing pages but heavy for a ten-minute form. The questionnaire opens
-    in Daylight instead — signalled here rather than in the page so that
-    app/layout.tsx can apply it in its pre-paint script, before anything is
-    drawn. A visitor who has explicitly chosen a theme still keeps it.
+    The intake previously defaulted to Daylight; per Meg it now opens in the
+    same dark "Harbor" theme as the rest of the site, so the questionnaire
+    reads as one continuous surface with mlinx.studio. The x-theme-default
+    plumbing in app/layout.tsx stays (absent header = dark), and a visitor
+    who explicitly chose a theme still keeps their choice.
   */
-  const isIntake =
-    rewriteUrl !== null || request.nextUrl.pathname.startsWith("/intake");
-  if (isIntake) requestHeaders.set("x-theme-default", "light");
 
   const response = rewriteUrl
     ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
