@@ -124,11 +124,11 @@ export default function Questionnaire({
     [],
   );
 
-  // Prefetch trigger: entering the pain step (or landing directly on the
+  // Prefetch trigger: entering the logistics step (or landing directly on the
   // preview screen from a resumed session) starts generation exactly once.
   useEffect(() => {
     if (!previewEnabled || genStartedRef.current) return;
-    const onPain = view.screen === "step" && questionnaireSteps[view.index]?.id === "pain";
+    const onPain = view.screen === "step" && questionnaireSteps[view.index]?.id === "logistics";
     const onPreview = view.screen === "preview";
     if (onPain || onPreview) {
       genStartedRef.current = true;
@@ -244,7 +244,7 @@ export default function Questionnaire({
     }
     // The AI concept preview slots between the pain step and contact —
     // optional, and only when the server can actually generate.
-    if (previewEnabled && questionnaireSteps[index].id === "pain") {
+    if (previewEnabled && questionnaireSteps[index].id === "logistics") {
       goTo({ screen: "preview" });
       return;
     }
@@ -268,7 +268,7 @@ export default function Questionnaire({
     }
     // The preview screen sits between the pain step and whatever follows it —
     // structural, so inserting steps later can't strand it.
-    if (previewEnabled && questionnaireSteps[index - 1]?.id === "pain") {
+    if (previewEnabled && questionnaireSteps[index - 1]?.id === "logistics") {
       goTo({ screen: "preview" });
       return;
     }
@@ -425,13 +425,13 @@ export default function Questionnaire({
           onBack={() =>
             goTo({
               screen: "step",
-              index: questionnaireSteps.findIndex((st) => st.id === "pain"),
+              index: questionnaireSteps.findIndex((st) => st.id === "logistics"),
             })
           }
           onContinue={() =>
             goTo({
               screen: "step",
-              index: questionnaireSteps.findIndex((st) => st.id === "pain") + 1,
+              index: questionnaireSteps.findIndex((st) => st.id === "logistics") + 1,
             })
           }
         />

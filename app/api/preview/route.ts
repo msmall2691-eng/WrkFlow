@@ -54,7 +54,6 @@ const PROMPT_FIELDS: Record<string, number> = {
   pages: 300,
   styleWords: 200,
   brandColors: 120,
-  loveSites: 200,
   // painPoint intentionally absent: generation is prefetched one step before
   // the visitor types it, and a homepage concept doesn't need it anyway.
 };
