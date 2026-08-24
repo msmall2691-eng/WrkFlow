@@ -155,6 +155,25 @@ export default function Questionnaire({
     });
   }, []);
 
+  /*
+    Fast-fill merge: drafted answers land only in fields the visitor hasn't
+    touched. Their own words always win over the model's reading of them.
+  */
+  const mergeDraft = useCallback((draft: Record<string, string | string[]>) => {
+    setAnswers((prev) => {
+      const next = { ...prev };
+      for (const [k, v] of Object.entries(draft)) {
+        const existing = prev[k];
+        const empty =
+          existing === undefined ||
+          (typeof existing === "string" && existing.trim() === "") ||
+          (Array.isArray(existing) && existing.length === 0);
+        if (empty) next[k] = v;
+      }
+      return next;
+    });
+  }, []);
+
   const setField = useCallback((id: string, value: string | string[]) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
   }, []);
@@ -306,6 +325,9 @@ export default function Questionnaire({
           index={view.index}
           answers={answers}
           setField={setField}
+          aiEnabled={previewEnabled}
+          onDraft={mergeDraft}
+          botField={botField}
           headingRef={headingRef}
           onBack={() => backFrom(view.index)}
           onContinue={() => advanceFrom(view.index)}
@@ -430,6 +452,9 @@ function StepScreen({
   index,
   answers,
   setField,
+  aiEnabled,
+  onDraft,
+  botField,
   headingRef,
   onBack,
   onContinue,
@@ -440,6 +465,9 @@ function StepScreen({
   index: number;
   answers: Answers;
   setField: (id: string, value: string | string[]) => void;
+  aiEnabled: boolean;
+  onDraft: (draft: Record<string, string | string[]>) => void;
+  botField: React.RefObject<HTMLInputElement | null>;
   headingRef: React.RefObject<HTMLDivElement | null>;
   onBack: () => void;
   onContinue: () => void;
@@ -471,6 +499,10 @@ function StepScreen({
       </div>
       {step.intro && (
         <p className="mt-3 text-[15px] leading-relaxed text-muted">{step.intro}</p>
+      )}
+
+      {step.id === "business" && aiEnabled && (
+        <FastFill onDraft={onDraft} botField={botField} />
       )}
 
       <div className="mt-8 grid gap-7 sm:grid-cols-2">
@@ -1029,6 +1061,151 @@ function SuccessScreen({ name }: { name: string }) {
         </a>
       </div>
     </section>
+  );
+}
+
+/* ---------------------------------------------------------------- fast fill */
+
+type FastFillState =
+  | { phase: "closed" }
+  | { phase: "open" }
+  | { phase: "working" }
+  | { phase: "done"; count: number }
+  | { phase: "error"; message: string };
+
+/*
+  Fast fill — the visitor describes the business and the project in their
+  own words, once, and the answers are drafted onto the form's fields for
+  them to review. Optional, never overwrites anything they typed, and every
+  drafted answer stays fully editable on the steps that follow. Doubles as
+  a live demo of the studio's actual work: messy input in, structure out.
+*/
+function FastFill({
+  onDraft,
+  botField,
+}: {
+  onDraft: (draft: Record<string, string | string[]>) => void;
+  botField: React.RefObject<HTMLInputElement | null>;
+}) {
+  const [state, setState] = useState<FastFillState>({ phase: "closed" });
+  const [text, setText] = useState("");
+
+  async function run() {
+    setState({ phase: "working" });
+    try {
+      const res = await fetch("/api/prefill", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description: text, botField: botField.current?.value ?? "" }),
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok || !payload?.ok) {
+        throw new Error(payload?.error ?? "Couldn't read that this time.");
+      }
+      const draft = payload.answers as Record<string, string | string[]>;
+      const count = Object.keys(draft).length;
+      if (count === 0) {
+        setState({
+          phase: "error",
+          message: "We couldn't pull much from that — the questions are quick by hand.",
+        });
+        return;
+      }
+      onDraft(draft);
+      setState({ phase: "done", count });
+    } catch (err) {
+      setState({
+        phase: "error",
+        message: err instanceof Error ? err.message : "Couldn't read that this time.",
+      });
+    }
+  }
+
+  if (state.phase === "closed") {
+    return (
+      <button
+        type="button"
+        onClick={() => setState({ phase: "open" })}
+        className="mt-7 flex w-full items-center justify-between gap-3 rounded-xl border border-dashed px-4 py-3.5 text-left transition-colors hover:bg-white/5"
+        style={{ borderColor: "rgba(22, 163, 148, 0.4)" }}
+      >
+        <span className="text-[14px] text-ink">
+          <span className="font-medium" style={{ color: TEAL }}>Skip the typing</span>
+          {" "}— describe it your way and we&apos;ll draft the answers for you.
+        </span>
+        <span aria-hidden="true" className="text-faint">→</span>
+      </button>
+    );
+  }
+
+  if (state.phase === "done") {
+    return (
+      <p
+        className="mt-7 rounded-xl px-4 py-3.5 text-[14px] font-medium"
+        style={{ color: TEAL, backgroundColor: "rgba(22, 163, 148, 0.09)" }}
+      >
+        ✓ Drafted {state.count} answer{state.count === 1 ? "" : "s"} from your description —
+        review them below and on the next steps. Everything stays editable, and
+        nothing is sent until you say so.
+      </p>
+    );
+  }
+
+  return (
+    <div
+      className="mt-7 rounded-xl border p-4"
+      style={{ borderColor: "rgba(22, 163, 148, 0.4)" }}
+    >
+      <label htmlFor="fastFill" className="block text-[15px] font-medium text-ink">
+        Describe the business and what you want, in your own words
+      </label>
+      <p className="mt-1 text-[13px] leading-relaxed text-muted">
+        A few sentences is plenty — what you do, who for, what the site should
+        handle, anything that bugs you today. We&apos;ll draft the form&apos;s
+        answers from it; you review everything before it goes anywhere.
+      </p>
+      <textarea
+        id="fastFill"
+        rows={4}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        disabled={state.phase === "working"}
+        placeholder="e.g. We run a twelve-room inn in Rockland with a small restaurant. People still call to book — we want online booking, and the current site looks terrible on phones…"
+        className="mt-3 w-full rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3 text-[15px] leading-relaxed text-ink placeholder:text-faint focus:outline-none disabled:opacity-60"
+        style={{ caretColor: TEAL }}
+      />
+      {state.phase === "error" && (
+        <p className="mt-2 text-[13px] text-muted">{state.message}</p>
+      )}
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={() => setState({ phase: "closed" })}
+          className="font-mono text-[10px] uppercase tracking-widest text-faint transition-colors hover:text-ink"
+        >
+          Never mind
+        </button>
+        <button
+          type="button"
+          onClick={run}
+          disabled={state.phase === "working" || text.trim().length < 20}
+          className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-[14px] font-semibold text-white transition-all hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 motion-reduce:transition-none"
+          style={{ backgroundColor: TEAL }}
+        >
+          {state.phase === "working" ? (
+            <>
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white/60 motion-reduce:hidden" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+              </span>
+              Reading…
+            </>
+          ) : (
+            <>Draft my answers</>
+          )}
+        </button>
+      </div>
+    </div>
   );
 }
 
