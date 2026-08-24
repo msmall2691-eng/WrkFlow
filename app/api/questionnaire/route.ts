@@ -149,6 +149,7 @@ export async function POST(req: Request) {
     }
     if (field.kind === "cards" && !field.options.some((o) => o.value === trimmed))
       continue;
+    if (field.kind === "select" && !field.options.includes(trimmed)) continue;
     clean[id] = trimmed;
   }
 

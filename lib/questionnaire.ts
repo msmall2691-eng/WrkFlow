@@ -64,6 +64,16 @@ export type QuestionField =
       label: string;
       hint?: string;
       options: string[];
+    }
+  | {
+      /** Compact native dropdown — for short single-choice questions where a
+          card per option would eat the screen. */
+      kind: "select";
+      id: string;
+      label: string;
+      hint?: string;
+      options: string[];
+      half?: boolean;
     };
 
 export type QuestionStep = {
@@ -235,7 +245,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "business",
     phase: 2,
-    kicker: "Project details · 1 of 7",
+    kicker: "Project details · 1 of 9",
     timeHint: "~1 min",
     title: "Tell us about the business",
     intro:
@@ -270,7 +280,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "goals",
     phase: 2,
-    kicker: "Project details · 2 of 7",
+    kicker: "Project details · 2 of 9",
     timeHint: "~30 sec",
     title: "What should the site accomplish?",
     intro: "Pick everything that applies — most businesses pick two or three.",
@@ -296,7 +306,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "scope",
     phase: 2,
-    kicker: "Project details · 3 of 7",
+    kicker: "Project details · 3 of 9",
     timeHint: "~30 sec",
     title: "What's on the site?",
     fields: [
@@ -327,7 +337,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "style",
     phase: 2,
-    kicker: "Project details · 4 of 7",
+    kicker: "Project details · 4 of 9",
     timeHint: "~30 sec",
     title: "What should it feel like?",
     intro:
@@ -361,12 +371,47 @@ export const questionnaireSteps: QuestionStep[] = [
         label: "A site or two whose look you like",
         hint: "Links or names — competitors or not.",
       },
+      {
+        kind: "text",
+        id: "avoidSites",
+        label: "Anything you don't want to look like?",
+      },
+    ],
+  },
+  {
+    id: "assets",
+    phase: 2,
+    kicker: "Project details · 5 of 9",
+    timeHint: "~20 sec",
+    title: "What do you already have?",
+    intro: "Missing pieces are normal — we fill them all the time.",
+    fields: [
+      {
+        kind: "select",
+        id: "hasLogo",
+        label: "Logo",
+        options: ["Yes, ready to go", "No, need one", "Have one, needs a refresh"],
+        half: true,
+      },
+      {
+        kind: "select",
+        id: "hasPhotos",
+        label: "Photos",
+        options: ["Yes, ready to go", "No, need them", "Some, need more"],
+        half: true,
+      },
+      {
+        kind: "select",
+        id: "hasCopy",
+        label: "Written content",
+        options: ["Yes, I'll provide it", "No, need help writing it", "Some, need help with the rest"],
+      },
     ],
   },
   {
     id: "tools",
     phase: 2,
-    kicker: "Project details · 5 of 7",
+    kicker: "Project details · 6 of 9",
     timeHint: "~30 sec",
     title: "What does the business run on today?",
     intro:
@@ -400,10 +445,16 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "pain",
     phase: 2,
-    kicker: "Project details · 6 of 7",
+    kicker: "Project details · 7 of 9",
     timeHint: "~1 min",
     title: "What's not working today?",
     fields: [
+      {
+        kind: "textarea",
+        id: "whyNow",
+        label: "What's prompting this now?",
+        hint: "New business, outdated site, growth, a competitor…",
+      },
       {
         kind: "textarea",
         id: "painPoint",
@@ -420,13 +471,45 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
+    id: "logistics",
+    phase: 2,
+    kicker: "Project details · 8 of 9",
+    timeHint: "~30 sec",
+    title: "A few practical things",
+    fields: [
+      {
+        kind: "text",
+        id: "domain",
+        label: "Do you have a domain? Where's it registered?",
+        hint: "GoDaddy, Squarespace, “not yet”…",
+      },
+      {
+        kind: "select",
+        id: "maintenance",
+        label: "Once it's live, who runs it?",
+        options: [
+          "I'll run it myself — hand over the keys",
+          "Mostly me, with backup when stuck",
+          "You handle technical, I'll do content",
+          "Hands-off — keep it running for me",
+          "Not sure yet",
+        ],
+      },
+      {
+        kind: "text",
+        id: "selfServe",
+        label: "Anything you'll want to change yourself, often?",
+        hint: "Prices, hours, photos, a menu — it changes how we build.",
+      },
+    ],
+  },
+  {
     id: "contact",
     phase: 2,
-    kicker: "Project details · 7 of 7",
+    kicker: "Project details · 9 of 9",
     timeHint: "~30 sec",
     title: "Where should we send your scope?",
-    intro:
-      "Within 24 hours you'll get a personal reply with a rough plan and price range — a real person, not a sequence.",
+    intro: "A personal reply within 24 hours — a real person, not a sequence.",
     fields: [
       {
         kind: "text",
@@ -443,6 +526,22 @@ export const questionnaireSteps: QuestionStep[] = [
         type: "email",
         required: true,
         autoComplete: "email",
+        half: true,
+      },
+      {
+        kind: "text",
+        id: "contactPhone",
+        label: "Phone",
+        hint: "Only if you'd rather talk than type.",
+        type: "tel",
+        autoComplete: "tel",
+        half: true,
+      },
+      {
+        kind: "select",
+        id: "preferredContact",
+        label: "Best way to reach you",
+        options: ["Email", "Phone call", "Text", "Whatever's easiest"],
         half: true,
       },
     ],
