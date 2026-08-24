@@ -317,7 +317,11 @@ export default function Questionnaire({
       )}
 
       {view.screen === "intro" && (
-        <Intro headingRef={headingRef} onStart={() => goTo({ screen: "step", index: 0 })} />
+        <Intro
+          headingRef={headingRef}
+          aiEnabled={previewEnabled}
+          onStart={() => goTo({ screen: "step", index: 0 })}
+        />
       )}
 
       {view.screen === "step" && (
@@ -350,6 +354,7 @@ export default function Questionnaire({
       )}
       {view.screen === "route" && view.variant === "qualified" && (
         <QualifiedScreen
+          aiEnabled={previewEnabled}
           headingRef={headingRef}
           onBack={() => goTo({ screen: "step", index: PHASE1_STEPS - 1 })}
           onContinue={() => goTo({ screen: "step", index: PHASE1_STEPS })}
@@ -393,9 +398,11 @@ export default function Questionnaire({
 
 function Intro({
   headingRef,
+  aiEnabled,
   onStart,
 }: {
   headingRef: React.RefObject<HTMLDivElement | null>;
+  aiEnabled: boolean;
   onStart: () => void;
 }) {
   return (
@@ -406,10 +413,22 @@ function Intro({
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
-        A short set of questions about your business and what you&apos;re
-        looking to build. Within 24 hours you&apos;ll have a written scope —
-        pages, features, and a price range — from the person who would build
-        it.
+        {aiEnabled ? (
+          <>
+            A short set of questions about your business and what you&apos;re
+            looking to build. Before you finish, we&apos;ll design three
+            concepts of your site from your answers — built while you watch,
+            yours to compare and pick from. A written scope with pages,
+            features, and a price range follows within 24 hours.
+          </>
+        ) : (
+          <>
+            A short set of questions about your business and what you&apos;re
+            looking to build. Within 24 hours you&apos;ll have a written scope —
+            pages, features, and a price range — from the person who would
+            build it.
+          </>
+        )}
       </p>
       <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
         About 6 minutes · answers save on this device · nothing is binding
@@ -912,10 +931,12 @@ function RedirectScreen({
 }
 
 function QualifiedScreen({
+  aiEnabled,
   headingRef,
   onBack,
   onContinue,
 }: {
+  aiEnabled: boolean;
   headingRef: React.RefObject<HTMLDivElement | null>;
   onBack: () => void;
   onContinue: () => void;
@@ -931,10 +952,22 @@ A strong fit
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
-        The next steps take about five minutes and cover the details a scope
-        is made from. Within 24 hours you&apos;ll have it in writing — pages,
-        features, a price range, and a timeline — rather than a discovery
-        call to schedule first.
+        {aiEnabled ? (
+          <>
+            The next steps take about five minutes and cover the details a
+            design is made from. At the end, we&apos;ll build three concepts
+            of your site right here — from your answers, while you watch —
+            and the direction you pick shapes the written scope you get
+            within 24 hours.
+          </>
+        ) : (
+          <>
+            The next steps take about five minutes and cover the details a
+            scope is made from. Within 24 hours you&apos;ll have it in
+            writing — pages, features, a price range, and a timeline — rather
+            than a discovery call to schedule first.
+          </>
+        )}
       </p>
 
       {qualifiedTestimonial && (
