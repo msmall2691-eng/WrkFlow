@@ -35,8 +35,14 @@ import {
   behavior comes from the platform, not from re-implemented div roles.
 */
 
-const STORAGE_KEY = "mstudio:questionnaire:v2";
-const LEGACY_KEYS = ["mstudio:questionnaire:v1"];
+/*
+  v3: the #83 question swap reordered steps, and saved views index into the
+  step array — a v2 draft would resume on an unrelated screen and could skip
+  the new questions entirely. Old drafts are discarded rather than remapped;
+  the answers they'd carry mostly point at questions that no longer exist.
+*/
+const STORAGE_KEY = "mstudio:questionnaire:v3";
+const LEGACY_KEYS = ["mstudio:questionnaire:v1", "mstudio:questionnaire:v2"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const TEAL = "#16a394";
@@ -226,7 +232,36 @@ export default function Questionnaire({
   }, []);
 
   const setField = useCallback((id: string, value: string | string[]) => {
-    setAnswers((prev) => ({ ...prev, [id]: value }));
+    setAnswers((prev) => {
+      const next = { ...prev, [id]: value };
+      /*
+        Adaptive pre-select: goals imply features, and both now live on the
+        same step — so the inference runs when goals change, not on step
+        entry (where goals wouldn't exist yet). The seed keeps tracking the
+        goals for as long as the feature chips hold exactly what seeding put
+        there; the moment the visitor's own taps diverge from that, their
+        picks win and seeding stops for good.
+      */
+      if (id === "goals") {
+        const implied = (goals: string[]) => {
+          const out: string[] = [];
+          if (goals.includes("Let people book or schedule online")) out.push("Online booking");
+          if (goals.includes("Sell products or take payments")) out.push("Payments / store");
+          return out;
+        };
+        const prevSeed = implied((prev.goals as string[]) ?? []);
+        const current = (prev.features as string[]) ?? [];
+        const untouched =
+          prev.features === undefined ||
+          (current.length === prevSeed.length && prevSeed.every((f) => current.includes(f)));
+        if (untouched) {
+          const seed = implied(value as string[]);
+          if (seed.length) next.features = seed;
+          else if (prev.features !== undefined) next.features = [];
+        }
+      }
+      return next;
+    });
   }, []);
 
   function advanceFrom(index: number) {
@@ -249,15 +284,6 @@ export default function Questionnaire({
       return;
     }
     const next = index + 1;
-    /* Adaptive pre-select: goals imply features. Only seeds an untouched
-       chip set — a visitor's own picks are never overwritten. */
-    if (questionnaireSteps[next].id === "scope" && answers.features === undefined) {
-      const goals = (answers.goals as string[]) ?? [];
-      const seed: string[] = [];
-      if (goals.includes("Let people book or schedule online")) seed.push("Online booking");
-      if (goals.includes("Sell products or take payments")) seed.push("Payments / store");
-      if (seed.length) setAnswers((prev) => ({ ...prev, features: seed }));
-    }
     goTo({ screen: "step", index: next });
   }
 
