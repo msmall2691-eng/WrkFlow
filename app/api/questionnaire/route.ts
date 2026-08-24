@@ -51,9 +51,39 @@ function isAllowedOrigin(origin: string | null): boolean {
 
 type Payload = {
   answers?: Answers;
+  /*
+    Concepts generated for the visitor during the form, riding along so the
+    notification email carries exactly what they saw. Client-supplied, so
+    treated as hostile until validated: count-capped, size-capped, and any
+    document containing script, inline handlers, or javascript: URLs is
+    dropped rather than attached.
+  */
+  concepts?: { title?: string; html?: string }[];
   // Honeypot: real users never see/fill this. Bots do.
   botField?: string;
 };
+
+const MAX_CONCEPTS = 3;
+const MAX_CONCEPT_HTML = 120_000;
+
+function sanitizeConcepts(
+  raw: unknown,
+): { title: string; html: string }[] {
+  if (!Array.isArray(raw)) return [];
+  const out: { title: string; html: string }[] = [];
+  for (const c of raw.slice(0, MAX_CONCEPTS)) {
+    if (!c || typeof c !== "object") continue;
+    const title = typeof c.title === "string" ? c.title.trim().slice(0, 80) : "";
+    const html = typeof c.html === "string" ? c.html : "";
+    if (!title || !html || html.length > MAX_CONCEPT_HTML) continue;
+    if (!/<style[\s>]/i.test(html) || !/<body[\s>]/i.test(html)) continue;
+    if (/<script[\s>]/i.test(html)) continue;
+    if (/\son\w+\s*=/i.test(html)) continue; // inline event handlers
+    if (/javascript:/i.test(html)) continue;
+    out.push({ title, html });
+  }
+  return out;
+}
 
 export async function POST(req: Request) {
   if (!isAllowedOrigin(req.headers.get("origin"))) {
@@ -169,8 +199,16 @@ export async function POST(req: Request) {
 
   const transporter = createMailTransporter(GMAIL_USER, GMAIL_APP_PASSWORD);
   const to = CONTACT_TO || GMAIL_USER;
-  const text = renderText(clean);
+  const concepts = sanitizeConcepts(body.concepts);
+  const text = renderText(clean, concepts.length);
   const html = renderHtml(clean);
+  // Attached to Meg's brief only — the visitor already saw them live, and
+  // the client copy stays light.
+  const attachments = concepts.map((c, i) => ({
+    filename: `concept-${i + 1}-${c.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.html`,
+    content: c.html,
+    contentType: "text/html",
+  }));
 
   try {
     // 1. The brief, to Meg. replyTo is the client so hitting Reply just works.
@@ -181,6 +219,7 @@ export async function POST(req: Request) {
       subject: `Intake [${tag}] — ${bizName || contactName}`,
       text,
       html,
+      attachments,
     });
 
     // 2. A copy back to the client. Sent second and non-fatally: if this one
@@ -232,7 +271,10 @@ export async function POST(req: Request) {
 /* ------------------------------------------------------------ rendering */
 
 /** Plain-text brief, grouped by section, skipping anything left blank. */
-function renderText(answers: Record<string, string | string[]>): string {
+function renderText(
+  answers: Record<string, string | string[]>,
+  conceptCount = 0,
+): string {
   const out: string[] = [`Project intake from intake.mlinx.studio`, ``];
 
   for (const step of questionnaireSteps) {
@@ -246,13 +288,17 @@ function renderText(answers: Record<string, string | string[]>): string {
     out.push(step.kicker.toUpperCase(), `--------------------------------`, ...rows, ``);
   }
 
-  if (typeof answers.previewChoice === "string") {
-    out.push(
-      `CONCEPT PREVIEW`,
-      `--------------------------------`,
-      `Direction they picked:\n  ${answers.previewChoice}`,
-      ``,
-    );
+  if (typeof answers.previewChoice === "string" || conceptCount > 0) {
+    out.push(`CONCEPT PREVIEW`, `--------------------------------`);
+    if (typeof answers.previewChoice === "string") {
+      out.push(`Direction they picked:\n  ${answers.previewChoice}`);
+    }
+    if (conceptCount > 0) {
+      out.push(
+        `The ${conceptCount} concept${conceptCount === 1 ? "" : "s"} they were shown are attached to this email.`,
+      );
+    }
+    out.push(``);
   }
 
   return out.join("\n");

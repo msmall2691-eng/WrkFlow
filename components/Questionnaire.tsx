@@ -85,6 +85,9 @@ export default function Questionnaire({
   const [view, setView] = useState<View>({ screen: "intro" });
   const [answers, setAnswers] = useState<Answers>({});
   const [status, setStatus] = useState<Status>("idle");
+  // Generated concepts, held outside the preview screen so they survive
+  // navigating on to contact and ride along with the submission.
+  const [concepts, setConcepts] = useState<Concept[]>([]);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [restored, setRestored] = useState(false);
   /* True once the visitor took the redirect's escape hatch — phase 2's Back
@@ -237,7 +240,7 @@ export default function Questionnaire({
       const res = await fetch("/api/questionnaire", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers, botField: botField.current?.value ?? "" }),
+        body: JSON.stringify({ answers, concepts, botField: botField.current?.value ?? "" }),
       });
       if (!res.ok) {
         const payload = await res.json().catch(() => null);
@@ -366,6 +369,7 @@ export default function Questionnaire({
           answers={answers}
           choice={(answers.previewChoice as string) ?? ""}
           onChoose={(label) => setField("previewChoice", label)}
+          onGenerated={(c) => setConcepts(c)}
           headingRef={headingRef}
           botField={botField}
           onBack={() =>
@@ -415,38 +419,20 @@ function Intro({
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
         {aiEnabled ? (
           <>
-            A short set of questions about your business and what you&apos;re
-            looking to build. Before you finish, we&apos;ll design three
-            concepts of your site from your answers — built while you watch,
-            yours to compare and pick from. A written scope with pages,
-            features, and a price range follows within 24 hours.
+            A few questions about your business — then we design three concepts
+            of your site from your answers, while you watch. A written scope
+            follows within 24 hours.
           </>
         ) : (
           <>
-            A short set of questions about your business and what you&apos;re
-            looking to build. Within 24 hours you&apos;ll have a written scope —
-            pages, features, and a price range — from the person who would
-            build it.
+            A few questions about your business. Within 24 hours you&apos;ll
+            have a written scope — pages, features, and a price range.
           </>
         )}
       </p>
       <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
         About 6 minutes · answers save on this device · nothing is binding
       </p>
-
-      {/* Trust strip — proof lives in teal */}
-      <div className="mt-8 rounded-xl border border-line px-5 py-4">
-        <div className="grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-4">
-          {trustStats.map((s) => (
-            <div key={s.label}>
-              <p className="display-serif text-lg leading-none" style={{ color: TEAL }}>
-                {s.value}
-              </p>
-              <p className="mt-1 text-[11px] leading-snug text-faint">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </div>
 
       <div className="mt-9">
         <ContinueButton onClick={onStart} label="Begin" />
@@ -1236,7 +1222,6 @@ function FastFill({
 
 type Concept = { key: string; title: string; html: string };
 type PreviewState =
-  | { phase: "idle" }
   | { phase: "generating" }
   | { phase: "ready"; concepts: Concept[] }
   | { phase: "error"; message: string };
@@ -1252,6 +1237,7 @@ function PreviewScreen({
   answers,
   choice,
   onChoose,
+  onGenerated,
   headingRef,
   botField,
   onBack,
@@ -1260,13 +1246,23 @@ function PreviewScreen({
   answers: Answers;
   choice: string;
   onChoose: (label: string) => void;
+  onGenerated: (concepts: Concept[]) => void;
   headingRef: React.RefObject<HTMLDivElement | null>;
   botField: React.RefObject<HTMLInputElement | null>;
   onBack: () => void;
   onContinue: () => void;
 }) {
-  const [state, setState] = useState<PreviewState>({ phase: "idle" });
+  const [state, setState] = useState<PreviewState>({ phase: "generating" });
   const [expanded, setExpanded] = useState<string | null>(null);
+  const startedRef = useRef(false);
+
+  // No button: the concepts start building the moment the step appears.
+  useEffect(() => {
+    if (startedRef.current) return;
+    startedRef.current = true;
+    generate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function generate() {
     setState({ phase: "generating" });
@@ -1283,6 +1279,7 @@ function PreviewScreen({
         );
       }
       setState({ phase: "ready", concepts: payload.concepts });
+      onGenerated(payload.concepts);
     } catch (err) {
       setState({
         phase: "error",
@@ -1295,33 +1292,19 @@ function PreviewScreen({
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
-        Optional · First look
-        <span className="ml-2 normal-case tracking-normal text-faint">· ~1 min to generate</span>
+        First look
+        <span className="ml-2 normal-case tracking-normal text-faint">· about a minute</span>
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
         <h2 className="display-serif text-2xl text-ink sm:text-3xl">
-          Want a first look before you send this?
+          Your first look is building now.
         </h2>
       </div>
       <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
-        We can draft three visual directions for your homepage from what
-        you&apos;ve told us — real concepts built around your business, not
-        stock templates. Pick the one that feels right and it shapes the scope
-        you get back. Rough sketches, not final designs.
+        Three visual directions for your homepage, designed from your answers —
+        not stock templates. Pick the one that feels closest; it shapes the
+        scope you get back. Rough sketches, not final designs.
       </p>
-
-      {state.phase === "idle" && (
-        <div className="mt-8">
-          <button
-            type="button"
-            onClick={generate}
-            className="group inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/[0.08] px-7 py-3.5 text-[15px] font-semibold text-gold transition-all hover:-translate-y-0.5 active:scale-[0.97] motion-reduce:transition-none"
-          >
-            Draft three concepts
-            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none">→</span>
-          </button>
-        </div>
-      )}
 
       {state.phase === "generating" && (
         <div className="mt-8 rounded-2xl border border-line bg-[var(--panel-input-bg)] p-6" aria-live="polite">
@@ -1340,10 +1323,19 @@ function PreviewScreen({
       )}
 
       {state.phase === "error" && (
-        <p className="mt-8 rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3 text-[14px] text-muted">
-          {state.message} You can try once more, or just continue — your scope
-          reply will include visual directions either way.
-        </p>
+        <div className="mt-8 rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3">
+          <p className="text-[14px] text-muted">
+          {state.message} You can try once more, or just continue — your
+            scope will include visual directions either way.
+          </p>
+          <button
+            type="button"
+            onClick={generate}
+            className="mt-2 font-mono text-[10px] uppercase tracking-widest text-gold transition-opacity hover:opacity-75"
+          >
+            Try again →
+          </button>
+        </div>
       )}
 
       {state.phase === "ready" && (
