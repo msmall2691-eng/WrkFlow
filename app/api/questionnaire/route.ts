@@ -1,5 +1,5 @@
 // app/api/questionnaire/route.ts
-// M Studio — new-client project questionnaire handler (start.mlinx.studio).
+// M Studio — new-client project questionnaire handler (intake.mlinx.studio).
 //
 // Sends two emails through the same Gmail SMTP account the contact form uses
 // (GMAIL_USER / GMAIL_APP_PASSWORD, delivered to CONTACT_TO):
@@ -41,9 +41,10 @@ const rateLimitedGlobally = createRateLimiter({ windowMs: 60 * 60 * 1000, maxHit
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
   if (origin === "https://mlinx.studio") return true;
-  if (origin === "https://start.mlinx.studio") return true;
+  if (origin === "https://intake.mlinx.studio") return true;
+  if (origin === "https://www.intake.mlinx.studio") return true;
   if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) return true; // preview deployments
-  if (/^http:\/\/(start\.)?localhost(:\d+)?$/.test(origin)) return true; // local dev
+  if (/^http:\/\/(intake\.)?localhost(:\d+)?$/.test(origin)) return true; // local dev
   return false;
 }
 
@@ -204,7 +205,7 @@ export async function POST(req: Request) {
 
 /** Plain-text brief, grouped by section, skipping anything left blank. */
 function renderText(answers: Record<string, string | string[]>): string {
-  const out: string[] = [`Project questionnaire from start.mlinx.studio`, ``];
+  const out: string[] = [`Project questionnaire from intake.mlinx.studio`, ``];
 
   for (const step of questionnaireSteps) {
     const rows = step.fields

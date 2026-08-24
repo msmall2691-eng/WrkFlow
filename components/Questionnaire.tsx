@@ -9,7 +9,7 @@ import {
 } from "@/lib/questionnaire";
 
 /*
-  Questionnaire — the multi-step intake form behind start.mlinx.studio.
+  Questionnaire — the multi-step intake form behind intake.mlinx.studio.
 
   Renders entirely from lib/questionnaire.ts, so adding a question means
   editing that file and nothing here.
