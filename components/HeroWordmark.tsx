@@ -69,7 +69,13 @@ export default function HeroWordmark({
     >
       {/* Faint base — the word always sits in the fog */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter text-white/[0.08] [-webkit-text-stroke:1px_rgba(255,255,255,0.09)]`}>
+        <span
+          className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter`}
+          style={{
+            color: "var(--wm-ink)",
+            WebkitTextStroke: "1.5px var(--wm-stroke)",
+          }}
+        >
           {text}
         </span>
       </div>
@@ -77,22 +83,23 @@ export default function HeroWordmark({
       {/* Revealed — soft sea-glass letters, masked to a spotlight at the cursor */}
       <div
         ref={reveal}
-        className="absolute inset-0 flex items-center justify-center opacity-90"
+        className="absolute inset-0 flex items-center justify-center"
         style={{
           WebkitMaskImage:
-            "radial-gradient(circle 200px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.3) 45%, transparent 72%)",
+            "radial-gradient(circle 300px at var(--mx,50%) var(--my,50%), #000 0%, #000 30%, rgba(0,0,0,0.45) 58%, transparent 80%)",
           maskImage:
-            "radial-gradient(circle 200px at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,0.3) 45%, transparent 72%)",
+            "radial-gradient(circle 300px at var(--mx,50%) var(--my,50%), #000 0%, #000 30%, rgba(0,0,0,0.45) 58%, transparent 80%)",
         }}
       >
         <span
           className={`whitespace-nowrap font-display ${size} font-bold leading-none tracking-tighter text-transparent`}
           style={{
             backgroundImage:
-              "linear-gradient(120deg, var(--color-signal), #7fd8cd 50%, var(--color-signal))",
+              "linear-gradient(120deg, var(--color-signal), #b9f0e6 45%, #ffffff 55%, var(--color-signal))",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             WebkitTextFillColor: "transparent",
+            filter: "drop-shadow(0 0 26px var(--color-signal-glow))",
           }}
         >
           {text}

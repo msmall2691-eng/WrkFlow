@@ -65,6 +65,11 @@ export default function Footer() {
                     Work
                   </a>
                 </li>
+                <li>
+                  <a href="/intake" className="text-muted transition-colors hover:text-ink">
+                    Project questionnaire
+                  </a>
+                </li>
               </ul>
             </div>
 

@@ -69,6 +69,12 @@
   --panel-faint: rgba(238, 242, 244, 0.42);
   --panel-input-bg: rgba(238, 242, 244, 0.05);
 
+  /* Giant background wordmark. Was hardcoded white, so it simply vanished
+     against the cream daylight background — the reason it never read as a
+     brand mark in that mode. Tokenised so both themes get a visible one. */
+  --wm-ink: rgba(255, 255, 255, 0.16);
+  --wm-stroke: rgba(255, 255, 255, 0.22);
+
   /* Aurora deep base color, RGB triple for the WebGL uniform. */
   --aurora-deep-r: 0.03;
   --aurora-deep-g: 0.08;
@@ -114,6 +120,10 @@
   --nav-hero-ink2: var(--color-ink);
   --nav-hero-line: rgba(11, 23, 34, 0.25);
   --nav-hero-line2:rgba(11, 23, 34, 0.5);
+
+  /* Harbor navy at low alpha reads on cream the way white does on navy. */
+  --wm-ink: rgba(11, 23, 34, 0.13);
+  --wm-stroke: rgba(11, 23, 34, 0.20);
 }
 
 html { color-scheme: dark; }
@@ -375,6 +385,18 @@ body {
 }
 .wm {
   animation: wmDrift 22s ease-in-out infinite;
+}
+
+/* Intake form — selection "pop" (a quick scale bounce on check). Kept under
+   300ms and disabled entirely for prefers-reduced-motion. */
+@keyframes checkPop {
+  0% { transform: scale(0.85); }
+  55% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.check-pop { animation: checkPop 240ms var(--ease-out-expo); }
+@media (prefers-reduced-motion: reduce) {
+  .check-pop { animation: none; }
 }
 
 /* Gentle floating for accent glow orbs */

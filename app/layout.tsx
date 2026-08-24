@@ -182,7 +182,11 @@ export default async function RootLayout({
   // CSP nonce, minted per-request by middleware.ts — required on every
   // inline <script> we write ourselves now that script-src no longer allows
   // 'unsafe-inline'.
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
+  const hdrs = await headers();
+  const nonce = hdrs.get("x-nonce") ?? undefined;
+  // Per-route default theme (middleware sets this for the questionnaire).
+  // Only applies when the visitor has made no explicit choice of their own.
+  const themeDefault = hdrs.get("x-theme-default") === "light" ? "light" : "dark";
 
   return (
     <html
@@ -206,7 +210,7 @@ export default async function RootLayout({
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html:
-              "try{var t=localStorage.getItem('theme');if(t==='light')document.documentElement.dataset.theme='light';}catch(e){}",
+              `try{var t=localStorage.getItem('theme');var d='${themeDefault}';if(t==='light'||(!t&&d==='light'))document.documentElement.dataset.theme='light';}catch(e){}`,
           }}
         />
         <script

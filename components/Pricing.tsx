@@ -8,8 +8,8 @@ import { foundingOffer } from "@/lib/content";
   something custom) plus the founding offer. Collaborative you + we voice.
   CTAs route to contact — no live checkout.
 
-  Founding pricing ($399, split $199/$200) is a RISK-REVERSAL restructure of
-  the same $750 site, not a discount stunt — `foundingOffer.spotsRemaining`
+  Founding pricing (foundingOffer.price, split deposit/balance) is a RISK-REVERSAL restructure of
+  the same full-price site, not a discount stunt — `foundingOffer.spotsRemaining`
   in lib/content.ts is the one real number driving the banner, the Starter
   card, and the auto-revert to full price at 0 spots left.
 */
@@ -73,7 +73,7 @@ export default function Pricing() {
               <span className="text-sm text-ink">
                 Get a full Starter site for{" "}
                 <CountUp value={foundingOffer.price} prefix="$" className="font-semibold text-gold" />{" "}
-                <span className="text-faint line-through">${foundingOffer.fullPrice}</span>.
+                <span className="text-faint line-through">${foundingOffer.fullPrice.toLocaleString("en-US")}</span>.
               </span>
             </div>
           </Reveal>
@@ -88,7 +88,7 @@ export default function Pricing() {
                 <>
                   <p className="mt-4 font-display text-3xl text-ink">
                     <CountUp value={foundingOffer.price} prefix="$" />
-                    <span className="ml-2 align-middle text-base text-faint line-through">${foundingOffer.fullPrice}</span>
+                    <span className="ml-2 align-middle text-base text-faint line-through">${foundingOffer.fullPrice.toLocaleString("en-US")}</span>
                   </p>
                   <p className="mt-1.5 text-sm text-muted">
                     ${foundingOffer.deposit} to start · ${foundingOffer.balance} at launch
