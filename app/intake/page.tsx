@@ -26,10 +26,10 @@ export const metadata: Metadata = {
 export default function StartPage() {
   return (
     <main className="min-h-screen bg-[var(--color-base)]">
-      <header className="mx-auto max-w-2xl px-6 pb-2 pt-14 md:pt-20">
+      <header className="mx-auto max-w-2xl px-6 pb-2 pt-12 md:pt-16">
         <a
           href="https://mlinx.studio"
-          className="mb-9 inline-flex items-center gap-2.5 text-ink transition-opacity hover:opacity-75"
+          className="mb-2 inline-flex items-center gap-2.5 text-ink transition-opacity hover:opacity-75"
         >
           <LinxMark className="h-4 w-auto" />
           <span className="font-mono text-xs uppercase tracking-widest text-gold">
@@ -37,18 +37,10 @@ export default function StartPage() {
           </span>
         </a>
 
-        <h1 className="display-serif text-3xl leading-[1.1] text-ink sm:text-4xl md:text-5xl">
-          Let&apos;s scope your project.
-        </h1>
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
-          A few questions about your business, how it runs, and what
-          you&apos;re trying to build — so our first conversation starts from
-          something real instead of a blank page. Ten minutes or so, most of it
-          optional, and nothing here is binding.
-        </p>
-        <p className="mt-4 max-w-xl text-sm leading-relaxed text-faint">
-          Your answers save as you go, so you can close this and come back.
-        </p>
+        {/* The intro screen inside <Questionnaire /> carries the headline,
+            time expectations, and trust strip — a second pitch up here would
+            just push the first question below the fold. */}
+        <h1 className="sr-only">M Studio project intake</h1>
       </header>
 
       <Questionnaire />

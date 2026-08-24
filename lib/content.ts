@@ -88,11 +88,24 @@ export const founderCta = {
 export const foundingOffer = {
   totalSpots: 10,
   spotsRemaining: 8,
-  price: 399,
-  deposit: 199,
-  balance: 200,
-  fullPrice: 750,
+  price: 749,
+  deposit: 375,
+  balance: 374,
+  fullPrice: 1200,
 } as const;
+
+/*
+  Trust stats — the proof numbers, shared by the homepage and the intake
+  form's trust strip so the two can never drift apart. Real operating
+  history, not marketing rounding: update here only when the underlying
+  facts change.
+*/
+export const trustStats = [
+  { value: "10 yrs", label: "building systems" },
+  { value: "1,000+", label: "customers served" },
+  { value: "7,000+", label: "service visits" },
+  { value: "$1M+", label: "operations managed" },
+] as const;
 
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =

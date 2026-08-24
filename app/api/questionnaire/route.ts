@@ -22,6 +22,7 @@ import { createRateLimiter, clientIp } from "@/lib/rateLimit";
 import {
   questionnaireSteps,
   questionnaireFields,
+  shouldRedirect,
   MAX_FIELD_LEN,
   type Answers,
 } from "@/lib/questionnaire";
@@ -91,10 +92,17 @@ export async function POST(req: Request) {
     const field = questionnaireFields.get(id);
     if (!field) continue;
 
-    if (field.kind === "checkboxes") {
+    // Chips and multi-select cards arrive as arrays; both are constrained to
+    // their declared options. Single-select cards arrive as one string and
+    // must equal a declared option exactly.
+    if (field.kind === "chips" || (field.kind === "cards" && field.multi)) {
       if (!Array.isArray(value)) continue;
+      const allowed =
+        field.kind === "chips"
+          ? field.options
+          : field.options.map((o) => o.value);
       const picked = value.filter(
-        (v): v is string => typeof v === "string" && field.options.includes(v),
+        (v): v is string => typeof v === "string" && allowed.includes(v),
       );
       if (picked.length) clean[id] = picked;
       continue;
@@ -109,7 +117,8 @@ export async function POST(req: Request) {
         { status: 422 },
       );
     }
-    if (field.kind === "select" && !field.options.includes(trimmed)) continue;
+    if (field.kind === "cards" && !field.options.some((o) => o.value === trimmed))
+      continue;
     clean[id] = trimmed;
   }
 
@@ -128,7 +137,15 @@ export async function POST(req: Request) {
 
   const contactEmail = clean.contactEmail as string;
   const contactName = clean.contactName as string;
-  const bizName = clean.bizName as string;
+  const bizName = (clean.bizName as string) || "";
+
+  /*
+    Qualification tag, derived here from the same routing rule the form uses —
+    never taken from the client. A submission whose fit-check answers would
+    have routed to M Linx but which arrived anyway is exactly the
+    "redirected-continued" cohort worth tracking against close rates.
+  */
+  const tag = shouldRedirect(clean) ? "redirected-continued" : "qualified";
 
   if (!EMAIL_RE.test(contactEmail)) {
     return NextResponse.json({ ok: false, error: "That email doesn't look right." }, { status: 422 });
@@ -151,7 +168,7 @@ export async function POST(req: Request) {
       from: `"M Studio Questionnaire" <${GMAIL_USER}>`,
       to,
       replyTo: contactEmail,
-      subject: `Project questionnaire — ${bizName} (${contactName})`,
+      subject: `Intake [${tag}] — ${bizName || contactName}`,
       text,
       html,
     });
@@ -164,12 +181,13 @@ export async function POST(req: Request) {
         from: `"M Studio" <${GMAIL_USER}>`,
         to: contactEmail,
         replyTo: to,
-        subject: `Your project questionnaire — ${bizName}`,
+        subject: `Your project scope request — M Studio`,
         text: [
-          `Thanks for filling this out — here's your copy.`,
+          `Thanks — your answers are in. Here's your copy.`,
           ``,
-          `We read every one of these properly before we reply, so you'll hear`,
-          `back within a day from a person, not an autoresponder. If anything`,
+          `Within 24 hours you'll get a personal reply with a rough scope:`,
+          `pages, features, a price range, and a timeline. A real person reads`,
+          `all of this first — no autoresponder, no sales sequence. If anything`,
           `else comes to mind, just reply to this email.`,
           ``,
           `— M Studio · mlinx.studio`,
@@ -181,8 +199,8 @@ export async function POST(req: Request) {
         html: `
           <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.6;">
             <p style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#b9842b;margin:0 0 6px;">M Studio</p>
-            <h2 style="margin:0 0 14px;font-size:20px;">Thanks — here's your copy.</h2>
-            <p style="font-size:15px;margin:0 0 10px;">We read every one of these properly before replying, so you'll hear back within a day from a person, not an autoresponder.</p>
+            <h2 style="margin:0 0 14px;font-size:20px;">Thanks — your answers are in.</h2>
+            <p style="font-size:15px;margin:0 0 10px;">Within 24 hours you'll get a personal reply with a rough scope: pages, features, a price range, and a timeline. A real person reads all of this first.</p>
             <p style="font-size:15px;margin:0 0 24px;">If anything else comes to mind, just reply to this email.</p>
             ${html}
           </div>`,
@@ -205,7 +223,7 @@ export async function POST(req: Request) {
 
 /** Plain-text brief, grouped by section, skipping anything left blank. */
 function renderText(answers: Record<string, string | string[]>): string {
-  const out: string[] = [`Project questionnaire from intake.mlinx.studio`, ``];
+  const out: string[] = [`Project intake from intake.mlinx.studio`, ``];
 
   for (const step of questionnaireSteps) {
     const rows = step.fields
@@ -215,7 +233,7 @@ function renderText(answers: Record<string, string | string[]>): string {
         return `${f.label}:\n  ${Array.isArray(v) ? v.join("\n  ") : v.replace(/\n/g, "\n  ")}`;
       });
     if (!rows.length) continue;
-    out.push(`${step.index} — ${step.eyebrow.toUpperCase()}`, `--------------------------------`, ...rows, ``);
+    out.push(step.kicker.toUpperCase(), `--------------------------------`, ...rows, ``);
   }
 
   return out.join("\n");
@@ -245,7 +263,7 @@ function renderHtml(answers: Record<string, string | string[]>): string {
       if (!rows.length) return "";
       return `
         <div style="margin:0 0 26px;">
-          <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b9842b;margin:0 0 10px;border-bottom:1px solid #e3e8ec;padding-bottom:6px;">${escapeHtml(step.index)} — ${escapeHtml(step.eyebrow)}</p>
+          <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b9842b;margin:0 0 10px;border-bottom:1px solid #e3e8ec;padding-bottom:6px;">${escapeHtml(step.kicker)}</p>
           ${rows.join("")}
         </div>`;
     })
