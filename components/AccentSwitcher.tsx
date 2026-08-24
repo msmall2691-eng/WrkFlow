@@ -53,6 +53,7 @@ function currentPhase(now = new Date()): Accent {
 
 export default function AccentSwitcher() {
   const [open, setOpen] = useState(false);
+  const shell = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(1); // default: Harbor (index 1); -1 when auto
   const [auto, setAuto] = useState(false);
   const [phase, setPhase] = useState<Accent>(PHASES.day);
@@ -163,89 +164,169 @@ export default function AccentSwitcher() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  /*
+    Dismissal. The panel opens above its own trigger, so "click the button
+    again" means aiming at a target the panel is sitting on top of — the
+    reason this felt hard to close. Escape and an outside click are the two
+    things people actually try, plus an explicit ✕ in the header.
+  */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onDown = (e: PointerEvent) => {
+      if (!shell.current?.contains(e.target as Node)) setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    // Deferred so the click that opened the panel doesn't immediately close it.
+    const id = setTimeout(() => window.addEventListener("pointerdown", onDown), 0);
+    return () => {
+      clearTimeout(id);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", onDown);
+    };
+  }, [open]);
+
   const swatch = auto ? phase : ACCENTS[active] ?? PHASES.day;
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end">
+    <div ref={shell} className="fixed bottom-5 right-5 z-40 flex flex-col items-end">
       {open && (
-        <div className="mb-3 w-60 rounded-2xl border border-line bg-surface/95 p-4 shadow-2xl backdrop-blur-md">
-          <p className="mb-3 font-mono text-[10px] uppercase tracking-widest text-faint">
-            Make it yours · accent
-          </p>
-
-          {/* Auto — follows Maine daylight */}
-          <button
-            type="button"
-            onClick={() => enableAuto()}
-            className={`mb-3 flex w-full items-center gap-2.5 rounded-lg border px-3 py-2 text-left transition-colors ${
-              auto ? "border-signal/50 bg-signal/10" : "border-line hover:bg-white/5"
-            }`}
-          >
-            <span className="h-4 w-4 rounded-full" style={{ backgroundColor: phase.signal }} />
-            <span className="flex-1 text-xs text-ink">Maine daylight</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-faint">{phase.name}</span>
-          </button>
-
-          <div className="grid grid-cols-3 gap-2">
-            {ACCENTS.map((a, i) => (
-              <button
-                key={a.name}
-                type="button"
-                onClick={() => selectManual(i)}
-                title={a.name}
-                className={`flex flex-col items-center gap-1.5 rounded-lg p-2 transition-colors hover:bg-white/5 ${
-                  !auto && active === i ? "bg-white/5" : ""
-                }`}
-              >
-                <span
-                  className={`h-7 w-7 rounded-full ring-2 ring-offset-2 ring-offset-surface transition ${
-                    !auto && active === i ? "ring-ink" : "ring-transparent"
-                  }`}
-                  style={{ backgroundColor: a.signal }}
-                />
-                <span className="text-[10px] text-muted">{a.name}</span>
-              </button>
-            ))}
-          </div>
-
-          <div className="mt-3 flex items-center justify-between">
-            <span className="text-[10px] text-faint">
-              {auto ? "Following Maine daylight" : "Saved on this device"}
-            </span>
-            {!auto && (
-              <button
-                type="button"
-                onClick={() => {
-                  try {
-                    localStorage.removeItem(KEY);
-                  } catch {
-                    /* ignore */
-                  }
-                  enableAuto(false);
-                }}
-                className="font-mono text-[10px] uppercase tracking-widest text-faint transition-colors hover:text-ink"
-              >
-                Reset
-              </button>
-            )}
-          </div>
-
-          {/* Mode: Harbor (dark) vs Daylight (light) */}
-          <div className="mt-4 border-t border-line pt-3">
-            <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
-              Mode
+        <div
+          role="dialog"
+          aria-label="Appearance settings"
+          className="mb-3 w-[17.5rem] overflow-hidden rounded-2xl border border-line bg-surface/95 shadow-2xl backdrop-blur-md"
+        >
+          {/* Header — titled, and closable without hunting for the trigger. */}
+          <div className="flex items-center justify-between border-b border-line px-4 py-3">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+              Appearance
             </p>
             <button
               type="button"
-              onClick={toggleTheme}
-              aria-pressed={light}
-              className="inline-flex w-full items-center justify-between rounded-lg border border-line bg-base/70 px-3 py-2 font-mono text-[11px] transition-colors hover:border-signal/40 active:scale-[0.98]"
+              onClick={() => setOpen(false)}
+              aria-label="Close appearance settings"
+              className="-mr-1 flex h-6 w-6 items-center justify-center rounded-md text-faint transition-colors hover:bg-white/5 hover:text-ink"
             >
-              <span className="text-ink">{light ? "Daylight" : "Harbor"}</span>
-              <span aria-hidden="true" className="text-faint">
-                {light ? "☀ tap for Harbor" : "☾ tap for Daylight"}
-              </span>
+              <span aria-hidden="true" className="text-sm leading-none">✕</span>
             </button>
+          </div>
+
+          <div className="space-y-4 p-4">
+            {/* Mode — two explicit choices. The old single toggle made you read
+                a "tap for…" hint to work out which state you were in. */}
+            <div>
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
+                Mode
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {([
+                  { id: "dark", label: "Harbor", note: "Dark", glyph: "☾" },
+                  { id: "light", label: "Daylight", note: "Light", glyph: "☀" },
+                ] as const).map((m) => {
+                  const on = m.id === (light ? "light" : "dark");
+                  return (
+                    <button
+                      key={m.id}
+                      type="button"
+                      onClick={() => applyTheme(m.id)}
+                      aria-pressed={on}
+                      className={`flex flex-col items-start gap-0.5 rounded-lg border px-3 py-2 text-left transition-colors ${
+                        on
+                          ? "border-signal/50 bg-signal/10"
+                          : "border-line hover:border-signal/30 hover:bg-white/5"
+                      }`}
+                    >
+                      <span className="text-xs text-ink">
+                        <span aria-hidden="true" className="mr-1 text-faint">{m.glyph}</span>
+                        {m.label}
+                      </span>
+                      <span className="font-mono text-[9px] uppercase tracking-widest text-faint">
+                        {m.note}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Accent — auto first, with a plain-language explanation of what
+                "Maine daylight" actually means. */}
+            <div>
+              <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
+                Accent color
+              </p>
+
+              <button
+                type="button"
+                onClick={() => enableAuto()}
+                aria-pressed={auto}
+                className={`flex w-full items-center gap-2.5 rounded-lg border px-3 py-2.5 text-left transition-colors ${
+                  auto ? "border-signal/50 bg-signal/10" : "border-line hover:border-signal/30 hover:bg-white/5"
+                }`}
+              >
+                <span
+                  className="h-4 w-4 shrink-0 rounded-full"
+                  style={{ backgroundColor: phase.signal }}
+                />
+                <span className="flex-1">
+                  <span className="block text-xs text-ink">Maine daylight</span>
+                  <span className="block text-[10px] leading-snug text-faint">
+                    Follows the sky in Portland — {phase.name} right now
+                  </span>
+                </span>
+                {auto && (
+                  <span aria-hidden="true" className="text-xs text-signal">✓</span>
+                )}
+              </button>
+
+              <p className="mb-2 mt-3 text-[10px] text-faint">Or pick one and keep it:</p>
+              <div className="grid grid-cols-3 gap-2">
+                {ACCENTS.map((a, i) => (
+                  <button
+                    key={a.name}
+                    type="button"
+                    onClick={() => selectManual(i)}
+                    aria-pressed={!auto && active === i}
+                    className={`flex flex-col items-center gap-1.5 rounded-lg border p-2 transition-colors ${
+                      !auto && active === i
+                        ? "border-signal/50 bg-signal/10"
+                        : "border-transparent hover:border-line hover:bg-white/5"
+                    }`}
+                  >
+                    <span
+                      className="h-6 w-6 rounded-full"
+                      style={{ backgroundColor: a.signal }}
+                    />
+                    <span className="text-[10px] leading-none text-muted">{a.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Current state, in words rather than jargon. */}
+            <div className="flex items-center justify-between border-t border-line pt-3">
+              <span className="text-[10px] text-faint">
+                {auto ? "Changing with the day" : "Saved on this device"}
+              </span>
+              {!auto && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      localStorage.removeItem(KEY);
+                    } catch {
+                      /* ignore */
+                    }
+                    enableAuto(false);
+                  }}
+                  className="font-mono text-[10px] uppercase tracking-widest text-signal transition-opacity hover:opacity-75"
+                >
+                  Back to auto
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

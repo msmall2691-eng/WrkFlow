@@ -77,7 +77,6 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "bizName",
         label: "Business name",
-        required: true,
         autoComplete: "organization",
       },
       {
@@ -93,7 +92,6 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "textarea",
         id: "whatYouDo",
         label: "What does your business do, in a sentence or two?",
-        required: true,
       },
       {
         kind: "textarea",
@@ -113,7 +111,6 @@ export const questionnaireSteps: QuestionStep[] = [
         id: "whyNow",
         label: "What's driving the redesign — or the new site?",
         hint: "Outdated look, no site yet, not getting leads, doesn't work on mobile…",
-        required: true,
       },
       {
         kind: "textarea",
@@ -146,7 +143,6 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "goalsOther",
         label: "Another goal we missed?",
-        hint: "Optional.",
       },
       {
         kind: "textarea",
@@ -187,7 +183,6 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "featOther",
         label: "Another feature you have in mind?",
-        hint: "Optional.",
       },
       {
         kind: "select",
@@ -205,6 +200,36 @@ export const questionnaireSteps: QuestionStep[] = [
   },
   {
     index: "05",
+    eyebrow: "The Fun Part",
+    title: "Anything you'd enjoy having?",
+    intro:
+      "The parts that make a site feel alive instead of a brochure. Pick whatever sounds good — we'll tell you honestly what's worth building and what isn't.",
+    fields: [
+      {
+        kind: "checkboxes",
+        id: "funExtras",
+        label: "Fun extras",
+        options: [
+          "Live chat or a chatbot",
+          "Live data widgets — weather, hours, availability",
+          "Light and dark mode",
+          "Motion and animation",
+          "An interactive calculator or instant quote",
+          "A customer portal or dashboard",
+          "Map or location finder",
+          "Video or photo backgrounds",
+          "A hidden easter egg or two",
+        ],
+      },
+      {
+        kind: "text",
+        id: "funOther",
+        label: "Something you saw somewhere and liked?",
+      },
+    ],
+  },
+  {
+    index: "06",
     eyebrow: "How You Run",
     title: "What does the business run on today?",
     intro:
@@ -231,7 +256,6 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "toolsOther",
         label: "Anything else you rely on?",
-        hint: "Optional — name it if it matters.",
       },
       {
         kind: "textarea",
@@ -242,7 +266,7 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "06",
+    index: "07",
     eyebrow: "Content & Assets",
     title: "What do you already have?",
     intro: "No wrong answers here — missing pieces are normal, and we can fill them.",
@@ -274,7 +298,7 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "07",
+    index: "08",
     eyebrow: "Look & Feel",
     title: "What's the vibe?",
     fields: [
@@ -313,7 +337,7 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "08",
+    index: "09",
     eyebrow: "Practical Stuff",
     title: "Timeline and logistics",
     fields: [
@@ -345,7 +369,7 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "09",
+    index: "10",
     eyebrow: "After Launch",
     title: "Who's driving once it's live?",
     intro:
@@ -372,7 +396,7 @@ export const questionnaireSteps: QuestionStep[] = [
     ],
   },
   {
-    index: "10",
+    index: "11",
     eyebrow: "Almost Done",
     title: "Anything else, and how to reach you",
     fields: [
@@ -385,7 +409,6 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "contactName",
         label: "Your name",
-        required: true,
         autoComplete: "name",
         half: true,
       },
@@ -393,6 +416,7 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "contactEmail",
         label: "Email",
+        hint: "The one thing we do need — it's how we get back to you.",
         type: "email",
         required: true,
         autoComplete: "email",
@@ -402,7 +426,7 @@ export const questionnaireSteps: QuestionStep[] = [
         kind: "text",
         id: "contactPhone",
         label: "Phone",
-        hint: "Optional — only if you'd rather talk than type.",
+        hint: "Only if you'd rather talk than type.",
         type: "tel",
         autoComplete: "tel",
         half: true,

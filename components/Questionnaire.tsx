@@ -220,7 +220,7 @@ export default function Questionnaire() {
             </h2>
           </div>
           {current!.intro && (
-            <p className="mt-3 text-sm leading-relaxed text-muted">{current!.intro}</p>
+            <p className="mt-3 text-[15px] leading-relaxed text-muted">{current!.intro}</p>
           )}
 
           <div className="mt-9 grid gap-7 sm:grid-cols-2">
@@ -279,9 +279,9 @@ export default function Questionnaire() {
       </nav>
 
       {!onReview && (
-        <p className="mt-6 text-xs leading-relaxed text-faint">
-          Nothing here is binding, and only the starred questions are required —
-          skip anything you're unsure about.
+        <p className="mt-6 text-[13px] leading-relaxed text-muted">
+          Skip anything you&apos;re unsure about — none of it is required except
+          an email address to reply to, and nothing here is binding.
         </p>
       )}
     </div>
@@ -290,8 +290,13 @@ export default function Questionnaire() {
 
 /* ---------------------------------------------------------------- fields */
 
+/*
+  Readability over styling flourish: this is a long form people read carefully,
+  so inputs carry normal body text rather than the small UI text used elsewhere
+  on the site.
+*/
 const inputClass =
-  "w-full rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3 text-sm text-ink placeholder:text-faint focus:border-gold/70 focus:outline-none";
+  "w-full rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3.5 text-base leading-relaxed text-ink placeholder:text-faint focus:border-gold/70 focus:outline-none";
 
 function Field({
   field,
@@ -318,7 +323,7 @@ function Field({
       {showLabel && (
         <label
           htmlFor={field.id}
-          className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-muted"
+          className="mb-1.5 block text-[15px] font-medium leading-snug text-ink"
         >
           {field.label}
           {"required" in field && field.required && (
@@ -330,7 +335,7 @@ function Field({
         </label>
       )}
       {field.hint && (
-        <p id={describedBy} className="mb-2.5 text-xs leading-relaxed text-faint">
+        <p id={describedBy} className="mb-2.5 text-[13px] leading-relaxed text-muted">
           {field.hint}
         </p>
       )}
@@ -422,7 +427,7 @@ function CheckboxGroup({
         return (
           <label
             key={opt}
-            className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3 text-sm transition-colors ${
+            className={`flex cursor-pointer items-center gap-3 rounded-lg border px-4 py-3.5 text-[15px] transition-colors ${
               checked
                 ? "border-gold/60 bg-gold/[0.07] text-ink"
                 : "border-line bg-[var(--panel-input-bg)] text-muted hover:border-gold/40"
@@ -463,7 +468,7 @@ function ReviewStep({
           Here&apos;s what you told us
         </h2>
       </div>
-      <p className="mt-3 text-sm leading-relaxed text-muted">
+      <p className="mt-3 text-[15px] leading-relaxed text-muted">
         Change anything that isn&apos;t right, then send it over. You&apos;ll get
         a copy in your inbox.
       </p>
@@ -491,15 +496,15 @@ function ReviewStep({
               </div>
 
               {filled.length === 0 ? (
-                <p className="text-sm italic text-faint">Skipped</p>
+                <p className="text-[15px] italic text-faint">Skipped</p>
               ) : (
                 <dl className="space-y-3.5">
                   {filled.map((f) => {
                     const v = answers[f.id];
                     return (
                       <div key={f.id}>
-                        <dt className="text-xs text-faint">{f.label}</dt>
-                        <dd className="mt-1 whitespace-pre-wrap text-sm leading-relaxed text-ink">
+                        <dt className="text-[13px] text-muted">{f.label}</dt>
+                        <dd className="mt-1 whitespace-pre-wrap text-[15px] leading-relaxed text-ink">
                           {Array.isArray(v) ? v.join(" · ") : v}
                         </dd>
                       </div>

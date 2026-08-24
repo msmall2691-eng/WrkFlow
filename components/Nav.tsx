@@ -9,6 +9,7 @@ const links = [
   { href: "/#work", label: "Work" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/marketplace", label: "M Linx" },
+  { href: "/intake", label: "Intake" },
 ];
 
 export default function Nav() {

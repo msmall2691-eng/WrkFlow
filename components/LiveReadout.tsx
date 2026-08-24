@@ -1,54 +1,94 @@
 "use client";
 
-import MaineReadout from "./MaineReadout";
+import { useMaine } from "@/lib/useMaine";
 
 /*
-  LiveReadout — the hero's live-conditions panel. The "runs on live Maine
-  data" explainer lives in the founder note and footer, so this stays a
-  quiet marker + readings + "what it changes" line, not a repeat of that
-  copy. Theme + mode controls live in the floating AccentSwitcher
-  (bottom-right) and the command palette; no reason to double them up here.
+  LiveReadout — the hero's live-conditions panel.
+
+  Previously a single run-on line of readings, which showed the data but
+  never made the point: that the page you're looking at is *driven* by it.
+  Now a labelled grid, so each reading is legible on its own, plus an
+  explicit map from each input to the thing on the page it changes.
+
+  Tiles render only when their reading is present — the upstream feeds drop
+  fields routinely (no buoy swell in winter, no moon during the day), and a
+  tile reading "—" is worse than no tile. Before any data arrives the panel
+  holds its shape with placeholders rather than popping in late.
 */
-const REACTS: { from: string; to: string }[] = [
-  { from: "weather", to: "glow" },
-  { from: "daylight", to: "theme" },
-  { from: "sun", to: "sky" },
-  { from: "tide", to: "waves" },
-  { from: "buoy 44007", to: "swell" },
-];
+
+type Tile = { label: string; value: string; drives: string };
 
 export default function LiveReadout() {
+  const d = useMaine();
+
+  const tiles: Tile[] = [];
+  if (d) {
+    if (d.tempF != null) tiles.push({ label: "Air", value: `${d.tempF}°F`, drives: "glow" });
+    if (d.waterTempF != null)
+      tiles.push({ label: "Water", value: `${d.waterTempF}°F`, drives: "depth" });
+    if (d.wind && d.wind.mph > 0)
+      tiles.push({
+        label: "Wind",
+        value: `${d.wind.mph}${d.wind.dir ? ` ${d.wind.dir}` : ""}`,
+        drives: "drift",
+      });
+    if (d.conditions?.text)
+      tiles.push({ label: d.fog ? "Fog" : "Sky", value: d.conditions.text, drives: "haze" });
+    if (d.tide) tiles.push({ label: "Tide", value: d.tide, drives: "waves" });
+    if (d.wave && d.wave.m > 0)
+      tiles.push({ label: "Swell", value: `${d.wave.m.toFixed(1)}m`, drives: "swell" });
+    if (d.light) tiles.push({ label: "Light", value: d.light.label, drives: "accent" });
+    else if (d.sun) tiles.push({ label: d.sun.label, value: d.sun.time, drives: "accent" });
+    if (d.night && d.moon)
+      tiles.push({ label: "Moon", value: d.moon.phase.toLowerCase(), drives: "night" });
+  }
+
+  const shown = tiles.slice(0, 6);
+  const loading = shown.length === 0;
+
   return (
-    <div className="rounded-2xl border border-[var(--panel-line)] bg-[var(--panel-bg)] p-4 backdrop-blur-sm">
-      {/* Marker */}
-      <div className="flex items-center gap-2">
-        <span className="relative flex h-2 w-2" aria-hidden="true">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+    <div className="overflow-hidden rounded-2xl border border-[var(--panel-line)] bg-[var(--panel-bg)] backdrop-blur-sm">
+      {/* Header — says plainly where this comes from. */}
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--panel-line)] px-4 py-2.5">
+        <span className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2" aria-hidden="true">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--panel-ink)]">
+            Live · {d?.place ?? "Portland, ME"}
+          </span>
         </span>
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[color:var(--panel-muted)]">
-          Live right now
+        <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--panel-faint)]">
+          {loading ? "Reading…" : "Now"}
         </span>
       </div>
 
-      {/* Live conditions */}
-      <div className="mt-2.5">
-        <MaineReadout showDot={false} className="text-[11px] text-[color:var(--panel-ink)]" />
+      {/* Readings — one box per measurement. */}
+      <div className="grid grid-cols-3 gap-px bg-[var(--panel-line)]">
+        {(loading ? Array.from({ length: 6 }) : shown).map((t, i) => {
+          const tile = t as Tile | undefined;
+          return (
+            <div key={tile?.label ?? i} className="bg-[var(--panel-bg)] px-3 py-2.5">
+              <p className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--panel-faint)]">
+                {tile?.label ?? "—"}
+              </p>
+              <p className="mt-1 truncate font-mono text-[13px] leading-none text-[color:var(--panel-ink)]">
+                {tile?.value ?? "··"}
+              </p>
+              <p className="mt-1.5 font-mono text-[9px] leading-none text-signal">
+                → {tile?.drives ?? ""}
+              </p>
+            </div>
+          );
+        })}
       </div>
 
-      {/* What it changes on the page */}
-      <div className="mt-3 border-t border-[var(--panel-line)] pt-3">
-        <p className="mb-1.5 font-mono text-[9px] uppercase tracking-widest text-[color:var(--panel-faint)]">
-          What it changes
-        </p>
-        <div className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] text-[color:var(--panel-muted)]">
-          {REACTS.map((r) => (
-            <span key={r.from}>
-              <span className="text-signal">{r.from}</span> → {r.to}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* The point of the whole panel. */}
+      <p className="border-t border-[var(--panel-line)] px-4 py-2.5 text-[11px] leading-relaxed text-[color:var(--panel-muted)]">
+        This page reads the Maine coast in real time — the daylight sets the
+        theme, the weather sets the glow, the tide moves the water.
+      </p>
     </div>
   );
 }

@@ -90,7 +90,26 @@ export default function Contact() {
                 Currently available for new projects
               </p>
             </Reveal>
-            <Reveal delay={200}>
+            <Reveal delay={180}>
+              <div className="mt-8 rounded-xl border border-line bg-surface/40 p-5">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-gold">
+                  Rather be asked than face a blank box?
+                </p>
+                <p className="mt-2.5 text-sm leading-relaxed text-muted">
+                  The project questionnaire walks you through it — your business,
+                  your goals, what you already run on. About ten minutes, saved as
+                  you go, and none of it binding.
+                </p>
+                <a
+                  href="/intake"
+                  className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-signal transition-opacity hover:opacity-75"
+                >
+                  Start the questionnaire
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </Reveal>
+            <Reveal delay={220}>
               <div className="mt-8 space-y-2.5 font-mono text-xs uppercase tracking-widest text-faint">
                 <p>
                   Email ·{" "}

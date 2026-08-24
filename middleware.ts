@@ -88,6 +88,18 @@ export function middleware(request: NextRequest) {
   // The subdomain rewrite has to carry the nonce headers too, or the
   // questionnaire renders without one and CSP blocks its own hydration.
   const rewriteUrl = questionnaireRewrite(request);
+
+  /*
+    The site defaults to the dark "Harbor" theme, which is right for the
+    marketing pages but heavy for a ten-minute form. The questionnaire opens
+    in Daylight instead — signalled here rather than in the page so that
+    app/layout.tsx can apply it in its pre-paint script, before anything is
+    drawn. A visitor who has explicitly chosen a theme still keeps it.
+  */
+  const isIntake =
+    rewriteUrl !== null || request.nextUrl.pathname.startsWith("/intake");
+  if (isIntake) requestHeaders.set("x-theme-default", "light");
+
   const response = rewriteUrl
     ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
     : NextResponse.next({ request: { headers: requestHeaders } });

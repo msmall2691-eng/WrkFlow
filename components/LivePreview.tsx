@@ -13,7 +13,13 @@ const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "
 
 const SITES = work
   .filter((w) => !!w.url && w.live)
-  .map((w) => ({ tag: w.tag, title: w.title, blurb: w.blurb, url: w.url as string }));
+  .map((w) => ({
+    tag: w.tag,
+    title: w.title,
+    blurb: w.blurb,
+    url: w.url as string,
+    shot: w.shot,
+  }));
 
 export default function LivePreview() {
   const railRef = useRef<HTMLDivElement>(null);
@@ -97,8 +103,24 @@ export default function LivePreview() {
               </span>
             </div>
 
-            {/* Live embed */}
+            {/* Live embed.
+
+                The screenshot sits underneath as a poster rather than being an
+                either/or with the iframe. Two reasons: the card shows the real
+                site immediately instead of an empty "loading" box on first
+                paint, and if an embed is slow or refuses to frame at all, what
+                remains is still a picture of the site rather than a blank
+                panel. The iframe simply covers it once it arrives. */}
             <div className="relative aspect-[16/10] bg-base">
+              {s.shot && (
+                <img
+                  src={s.shot}
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+              )}
               {load ? (
                 <iframe
                   key={s.url}
@@ -118,9 +140,11 @@ export default function LivePreview() {
                   }}
                 />
               ) : (
-                <div className="flex h-full items-center justify-center font-mono text-xs text-faint">
-                  Loading live site…
-                </div>
+                !s.shot && (
+                  <div className="flex h-full items-center justify-center font-mono text-xs text-faint">
+                    Loading live site…
+                  </div>
+                )
               )}
               {hoverable && active !== i && (
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/45 to-transparent p-2">
