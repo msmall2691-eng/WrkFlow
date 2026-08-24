@@ -50,6 +50,7 @@ type View =
   | { screen: "intro" }
   | { screen: "step"; index: number }
   | { screen: "route"; variant: "redirect" | "qualified" }
+  | { screen: "preview" }
   | { screen: "success" };
 
 type Status = "idle" | "submitting" | "error";
@@ -66,12 +67,21 @@ function progressFor(view: View): number {
     }
     case "route":
       return 40;
+    case "preview":
+      // Sits between the pain step and contact.
+      return 40 + ((PHASE2_STEPS - 1) / PHASE2_STEPS) * 60;
     case "success":
       return 100;
   }
 }
 
-export default function Questionnaire() {
+export default function Questionnaire({
+  previewEnabled = false,
+}: {
+  /* True when the server has an ANTHROPIC_API_KEY — gates the AI concept
+     preview step. The page decides; the client never probes for the key. */
+  previewEnabled?: boolean;
+}) {
   const [view, setView] = useState<View>({ screen: "intro" });
   const [answers, setAnswers] = useState<Answers>({});
   const [status, setStatus] = useState<Status>("idle");
@@ -162,6 +172,12 @@ export default function Questionnaire() {
       submit();
       return;
     }
+    // The AI concept preview slots between the pain step and contact —
+    // optional, and only when the server can actually generate.
+    if (previewEnabled && questionnaireSteps[index].id === "pain") {
+      goTo({ screen: "preview" });
+      return;
+    }
     const next = index + 1;
     /* Adaptive pre-select: goals imply features. Only seeds an untouched
        chip set — a visitor's own picks are never overwritten. */
@@ -178,6 +194,10 @@ export default function Questionnaire() {
   function backFrom(index: number) {
     if (index === 0) {
       goTo({ screen: "intro" });
+      return;
+    }
+    if (previewEnabled && questionnaireSteps[index].id === "contact") {
+      goTo({ screen: "preview" });
       return;
     }
     if (index === PHASE1_STEPS) {
@@ -244,9 +264,11 @@ export default function Questionnaire() {
         : "Project details"
       : view.screen === "route"
         ? "Quick fit check"
-        : view.screen === "success"
-          ? "Done"
-          : "";
+        : view.screen === "preview"
+          ? "Project details"
+          : view.screen === "success"
+            ? "Done"
+            : "";
 
   return (
     <div className="mx-auto max-w-2xl px-6 pb-24">
@@ -308,6 +330,28 @@ export default function Questionnaire() {
           headingRef={headingRef}
           onBack={() => goTo({ screen: "step", index: PHASE1_STEPS - 1 })}
           onContinue={() => goTo({ screen: "step", index: PHASE1_STEPS })}
+        />
+      )}
+
+      {view.screen === "preview" && (
+        <PreviewScreen
+          answers={answers}
+          choice={(answers.previewChoice as string) ?? ""}
+          onChoose={(label) => setField("previewChoice", label)}
+          headingRef={headingRef}
+          botField={botField}
+          onBack={() =>
+            goTo({
+              screen: "step",
+              index: questionnaireSteps.findIndex((st) => st.id === "pain"),
+            })
+          }
+          onContinue={() =>
+            goTo({
+              screen: "step",
+              index: questionnaireSteps.findIndex((st) => st.id === "contact"),
+            })
+          }
         />
       )}
 
@@ -984,6 +1028,198 @@ function SuccessScreen({ name }: { name: string }) {
           contact@mlinx.studio
         </a>
       </div>
+    </section>
+  );
+}
+
+/* --------------------------------------------------------- concept preview */
+
+type Concept = { key: string; title: string; html: string };
+type PreviewState =
+  | { phase: "idle" }
+  | { phase: "generating" }
+  | { phase: "ready"; concepts: Concept[] }
+  | { phase: "error"; message: string };
+
+/*
+  AI concept previews — three style-distinct homepage sketches drafted from
+  the visitor's own answers, rendered in fully sandboxed iframes (no scripts,
+  no navigation). Entirely optional: skipping costs nothing, generation
+  failures degrade to a note, and the only thing that ever reaches the
+  submission is the label of the direction they picked.
+*/
+function PreviewScreen({
+  answers,
+  choice,
+  onChoose,
+  headingRef,
+  botField,
+  onBack,
+  onContinue,
+}: {
+  answers: Answers;
+  choice: string;
+  onChoose: (label: string) => void;
+  headingRef: React.RefObject<HTMLDivElement | null>;
+  botField: React.RefObject<HTMLInputElement | null>;
+  onBack: () => void;
+  onContinue: () => void;
+}) {
+  const [state, setState] = useState<PreviewState>({ phase: "idle" });
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  async function generate() {
+    setState({ phase: "generating" });
+    try {
+      const res = await fetch("/api/preview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answers, botField: botField.current?.value ?? "" }),
+      });
+      const payload = await res.json().catch(() => null);
+      if (!res.ok || !payload?.ok || !payload.concepts?.length) {
+        throw new Error(
+          payload?.error ?? "Couldn't draft concepts this time.",
+        );
+      }
+      setState({ phase: "ready", concepts: payload.concepts });
+    } catch (err) {
+      setState({
+        phase: "error",
+        message:
+          err instanceof Error ? err.message : "Couldn't draft concepts this time.",
+      });
+    }
+  }
+
+  return (
+    <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
+      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
+        Optional · First look
+        <span className="ml-2 normal-case tracking-normal text-faint">· ~1 min to generate</span>
+      </p>
+      <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
+        <h2 className="display-serif text-2xl text-ink sm:text-3xl">
+          Want a first look before you send this?
+        </h2>
+      </div>
+      <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
+        We can draft three visual directions for your homepage from what
+        you&apos;ve told us — real concepts built around your business, not
+        stock templates. Pick the one that feels right and it shapes the scope
+        you get back. Rough sketches, not final designs.
+      </p>
+
+      {state.phase === "idle" && (
+        <div className="mt-8">
+          <button
+            type="button"
+            onClick={generate}
+            className="group inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 bg-gold/[0.08] px-7 py-3.5 text-[15px] font-semibold text-gold transition-all hover:-translate-y-0.5 active:scale-[0.97] motion-reduce:transition-none"
+          >
+            Draft three concepts
+            <span aria-hidden="true" className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none">→</span>
+          </button>
+        </div>
+      )}
+
+      {state.phase === "generating" && (
+        <div className="mt-8 rounded-2xl border border-line bg-[var(--panel-input-bg)] p-6" aria-live="polite">
+          <p className="flex items-center gap-3 text-[15px] text-ink">
+            <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold/60 motion-reduce:hidden" />
+              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-gold" />
+            </span>
+            Drafting three directions for {(answers.bizName as string) || "your business"}…
+          </p>
+          <p className="mt-2 text-[13px] leading-relaxed text-muted">
+            Takes about a minute. Your answers are safe — feel free to wait, or
+            skip ahead and we&apos;ll include directions in your scope instead.
+          </p>
+        </div>
+      )}
+
+      {state.phase === "error" && (
+        <p className="mt-8 rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3 text-[14px] text-muted">
+          {state.message} You can try once more, or just continue — your scope
+          reply will include visual directions either way.
+        </p>
+      )}
+
+      {state.phase === "ready" && (
+        <div className="mt-8 space-y-5">
+          <p className="text-[13px] text-muted">
+            Tap a concept to expand it; pick the direction that feels closest.
+            None of them is binding — they&apos;re a starting point for the real design.
+          </p>
+          {state.concepts.map((c) => {
+            const selected = choice === c.title;
+            const isOpen = expanded === c.key;
+            return (
+              <div
+                key={c.key}
+                className={`overflow-hidden rounded-2xl border transition-colors ${
+                  selected ? "border-gold/60" : "border-line"
+                }`}
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-[var(--panel-input-bg)] px-4 py-3">
+                  <p className="text-[15px] font-medium text-ink">{c.title}</p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setExpanded(isOpen ? null : c.key)}
+                      className="rounded-full border border-line px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-muted transition-colors hover:text-ink"
+                    >
+                      {isOpen ? "Collapse" : "Expand"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onChoose(selected ? "" : c.title)}
+                      aria-pressed={selected}
+                      className={`rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                        selected
+                          ? "bg-gold text-[#0b1722]"
+                          : "border border-gold/40 text-gold hover:bg-gold/10"
+                      }`}
+                    >
+                      {selected ? "✓ Your pick" : "This one"}
+                    </button>
+                  </div>
+                </div>
+                {/* sandbox with NO tokens: no scripts, no forms, no popups,
+                    no top navigation. The concept is inert markup. */}
+                <iframe
+                  srcDoc={c.html}
+                  sandbox=""
+                  title={`Concept: ${c.title}`}
+                  loading="lazy"
+                  className={`w-full border-0 bg-white transition-all ${isOpen ? "h-[560px]" : "h-64"}`}
+                />
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <nav className="mt-10 flex items-center justify-between gap-4">
+        <button
+          type="button"
+          onClick={onBack}
+          className="font-mono text-xs uppercase tracking-widest text-faint transition-colors hover:text-ink"
+        >
+          ← Back
+        </button>
+        <ContinueButton
+          onClick={onContinue}
+          label={
+            state.phase === "ready"
+              ? choice
+                ? "Continue with this direction"
+                : "Continue"
+              : "Skip this step"
+          }
+        />
+      </nav>
     </section>
   );
 }

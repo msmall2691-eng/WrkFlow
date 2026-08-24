@@ -122,6 +122,16 @@ export async function POST(req: Request) {
     clean[id] = trimmed;
   }
 
+  /*
+    previewChoice is not a schema field — it's set by the AI concept-preview
+    step when the visitor picks a direction. Whitelisted here explicitly:
+    a short free-text label, hard-capped, never echoed anywhere but the
+    notification email.
+  */
+  if (typeof raw.previewChoice === "string" && raw.previewChoice.trim()) {
+    clean.previewChoice = raw.previewChoice.trim().slice(0, 300);
+  }
+
   // Required fields, per the same schema the form validates against.
   for (const step of questionnaireSteps) {
     for (const field of step.fields) {
@@ -236,6 +246,15 @@ function renderText(answers: Record<string, string | string[]>): string {
     out.push(step.kicker.toUpperCase(), `--------------------------------`, ...rows, ``);
   }
 
+  if (typeof answers.previewChoice === "string") {
+    out.push(
+      `CONCEPT PREVIEW`,
+      `--------------------------------`,
+      `Direction they picked:\n  ${answers.previewChoice}`,
+      ``,
+    );
+  }
+
   return out.join("\n");
 }
 
@@ -269,7 +288,17 @@ function renderHtml(answers: Record<string, string | string[]>): string {
     })
     .join("");
 
-  return `<div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.5;">${sections}</div>`;
+  const preview =
+    typeof answers.previewChoice === "string"
+      ? `
+        <div style="margin:0 0 26px;">
+          <p style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#b9842b;margin:0 0 10px;border-bottom:1px solid #e3e8ec;padding-bottom:6px;">Concept preview</p>
+          <div style="font-size:12px;color:#7a8697;margin:0 0 3px;">Direction they picked</div>
+          <div style="font-size:15px;">${escapeHtml(answers.previewChoice)}</div>
+        </div>`
+      : "";
+
+  return `<div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.5;">${sections}${preview}</div>`;
 }
 
 function escapeHtml(s: string) {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Questionnaire from "@/components/Questionnaire";
 import LinxMark from "@/components/LinxMark";
+import MaineReadout from "@/components/MaineReadout";
 
 /*
   The new-client project questionnaire, served at intake.mlinx.studio (the
@@ -24,6 +25,9 @@ export const metadata: Metadata = {
 };
 
 export default function StartPage() {
+  // Server-side gate for the AI concept-preview step: the client never
+  // learns whether a key exists, only whether the step should render.
+  const previewEnabled = Boolean(process.env.ANTHROPIC_API_KEY);
   return (
     <main className="min-h-screen bg-[var(--color-base)]">
       <header className="mx-auto max-w-2xl px-6 pb-2 pt-12 md:pt-16">
@@ -43,7 +47,21 @@ export default function StartPage() {
         <h1 className="sr-only">M Studio project intake</h1>
       </header>
 
-      <Questionnaire />
+      <Questionnaire previewEnabled={previewEnabled} />
+
+      {/* Live Maine data — the same real-time feed that drives mlinx.studio,
+          shown here as quiet proof: this studio builds pages that react to
+          the world, and this one is doing it right now. */}
+      <footer className="mx-auto max-w-2xl px-6 pb-14">
+        <div className="border-t border-line pt-6">
+          <MaineReadout className="text-faint" />
+          <p className="mt-2 text-[12px] leading-relaxed text-faint">
+            Live from the Maine coast — this page runs on real-time weather,
+            tide, and daylight data, the same kind of live detail we can build
+            into yours.
+          </p>
+        </div>
+      </footer>
     </main>
   );
 }

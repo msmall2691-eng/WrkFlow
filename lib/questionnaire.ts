@@ -117,7 +117,7 @@ export const questionnaireSteps: QuestionStep[] = [
         options: [
           {
             value: "Service business",
-            hint: "Cleaning, trades, landscaping, care — you go to the customer.",
+            hint: "Cleaning, trades, landscaping, care, repair — you go to the customer.",
             icon: "wrench",
           },
           {
@@ -132,7 +132,7 @@ export const questionnaireSteps: QuestionStep[] = [
           },
           {
             value: "Something else",
-            hint: "Professional practice, nonprofit, personal project…",
+            hint: "Consulting, professional practice, nonprofit, personal project…",
             icon: "sparkle",
           },
         ],
@@ -144,9 +144,9 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 1,
     kicker: "Fit check · 2 of 4",
     timeHint: "~10 sec",
-    title: "Rough budget in mind?",
+    title: "What budget range are you working with?",
     intro:
-      "This tells us what to recommend, not what to charge — and “no idea” is a perfectly good answer.",
+      "This shapes what we recommend, not what we charge — and “not sure yet” is a perfectly good answer.",
     fields: [
       {
         kind: "cards",
@@ -172,8 +172,8 @@ export const questionnaireSteps: QuestionStep[] = [
             hint: "Custom software, CRM, full systems.",
           },
           {
-            value: "Honestly, no idea yet",
-            hint: "Totally fine — we'll help you size it.",
+            value: "Not sure yet",
+            hint: "Completely fine — we'll help you size it.",
           },
         ],
       },
@@ -184,7 +184,7 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 1,
     kicker: "Fit check · 3 of 4",
     timeHint: "~10 sec",
-    title: "When do you need it?",
+    title: "What's your timeline?",
     fields: [
       {
         kind: "cards",
@@ -212,7 +212,7 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 1,
     kicker: "Fit check · 4 of 4",
     timeHint: "~10 sec",
-    title: "Who says yes to this?",
+    title: "Who's involved in the decision?",
     fields: [
       {
         kind: "cards",
@@ -220,11 +220,11 @@ export const questionnaireSteps: QuestionStep[] = [
         label: "Decision-maker",
         required: true,
         options: [
-          { value: "Me — I can green-light it" },
-          { value: "Me plus a partner or team" },
+          { value: "Just me — I can approve it" },
+          { value: "Me and a partner or team" },
           {
-            value: "Just exploring",
-            hint: "We'll send info you can share, not a hard pitch.",
+            value: "Still exploring",
+            hint: "We'll send information you can share — not a sales pitch.",
           },
         ],
       },
@@ -237,7 +237,7 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 2,
     kicker: "Project details · 1 of 5",
     timeHint: "~30 sec",
-    title: "What should this do for you?",
+    title: "What should the site accomplish?",
     intro: "Pick everything that applies — most businesses pick two or three.",
     fields: [
       {
@@ -252,8 +252,8 @@ export const questionnaireSteps: QuestionStep[] = [
           },
           { value: "Let people book or schedule online" },
           { value: "Sell products or take payments" },
-          { value: "Cut down the admin work I do by hand" },
-          { value: "Look credible and professional" },
+          { value: "Reduce manual admin work" },
+          { value: "Build credibility with a professional presence" },
         ],
       },
     ],
@@ -294,9 +294,9 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 2,
     kicker: "Project details · 3 of 5",
     timeHint: "~30 sec",
-    title: "What do you run on today?",
+    title: "What does the business run on today?",
     intro:
-      "The most useful question on this form — it tells us what to connect, replace, or leave alone.",
+      "The most useful question we ask — it tells us what to connect, what to replace, and what to leave alone.",
     milestone: "✓ Over halfway. About 2 minutes left…",
     fields: [
       {
@@ -311,7 +311,7 @@ export const questionnaireSteps: QuestionStep[] = [
           "Google Calendar",
           "Airbnb / VRBO",
           "Spreadsheets",
-          "Paper & memory",
+          "Paper, whiteboard, or memory",
           "Other",
         ],
       },
@@ -328,14 +328,14 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 2,
     kicker: "Project details · 4 of 5",
     timeHint: "~1 min",
-    title: "What's the headache?",
+    title: "What's not working today?",
     fields: [
       {
         kind: "textarea",
         id: "painPoint",
-        label: "What frustrates you most right now?",
+        label: "What costs you the most time or business right now?",
         placeholder:
-          "e.g. “I retype every booking into two places”, “people call to ask things a site should answer”, “my current site looks broken on phones”…",
+          "e.g. “every booking gets typed into two systems”, “customers call with questions a site should answer”, “our current site doesn't work on phones”…"
       },
       {
         kind: "textarea",
@@ -350,7 +350,7 @@ export const questionnaireSteps: QuestionStep[] = [
     phase: 2,
     kicker: "Project details · 5 of 5",
     timeHint: "~30 sec",
-    title: "Where do we send your scope?",
+    title: "Where should we send your scope?",
     intro:
       "Within 24 hours you'll get a personal reply with a rough plan and price range — a real person, not a sequence.",
     fields: [
