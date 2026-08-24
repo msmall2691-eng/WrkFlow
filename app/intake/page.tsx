@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Questionnaire from "@/components/Questionnaire";
-import LinxMark from "@/components/LinxMark";
+import Logo from "@/components/Logo";
 import MaineReadout from "@/components/MaineReadout";
 
 /*
@@ -30,20 +30,18 @@ export default function StartPage() {
   const previewEnabled = Boolean(process.env.ANTHROPIC_API_KEY);
   return (
     <main className="min-h-screen bg-[var(--color-base)]">
-      <header className="mx-auto max-w-2xl px-6 pb-2 pt-12 md:pt-16">
+      {/* Same wordmark as the main site's nav, so this reads as a page OF
+          mlinx.studio rather than a funnel pointed at it. */}
+      <header className="mx-auto flex max-w-2xl items-center justify-between px-6 pb-2 pt-10 md:pt-14">
+        <a href="https://mlinx.studio" aria-label="M Studio — back to the main site" className="transition-opacity hover:opacity-75">
+          <Logo tag />
+        </a>
         <a
           href="https://mlinx.studio"
-          className="mb-2 inline-flex items-center gap-2.5 text-ink transition-opacity hover:opacity-75"
+          className="font-mono text-[11px] uppercase tracking-widest text-faint transition-colors hover:text-ink"
         >
-          <LinxMark className="h-4 w-auto" />
-          <span className="font-mono text-xs uppercase tracking-widest text-gold">
-            M Studio
-          </span>
+          mlinx.studio
         </a>
-
-        {/* The intro screen inside <Questionnaire /> carries the headline,
-            time expectations, and trust strip — a second pitch up here would
-            just push the first question below the fold. */}
         <h1 className="sr-only">M Studio project intake</h1>
       </header>
 
@@ -59,6 +57,9 @@ export default function StartPage() {
             Live from the Maine coast — this page runs on real-time weather,
             tide, and daylight data, the same kind of live detail we can build
             into yours.
+          </p>
+          <p className="mt-5 font-mono text-[11px] uppercase tracking-widest text-faint">
+            © {new Date().getFullYear()} M Studio · <a href="https://mlinx.studio" className="transition-colors hover:text-ink">mlinx.studio</a> · Built on the Maine coast
           </p>
         </div>
       </footer>

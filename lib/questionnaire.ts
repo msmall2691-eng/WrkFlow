@@ -70,7 +70,7 @@ export type QuestionStep = {
   id: string;
   /** 1 = fit check, 2 = project details. Drives progress weighting. */
   phase: 1 | 2;
-  /** Kicker line, e.g. "Fit check · 1 of 4". */
+  /** Kicker line, e.g. "The basics · 1 of 4". */
   kicker: string;
   /** Honest time estimate shown next to the kicker. */
   timeHint: string;
@@ -105,7 +105,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "bizType",
     phase: 1,
-    kicker: "Fit check · 1 of 4",
+    kicker: "The basics · 1 of 4",
     timeHint: "~10 sec",
     title: "What kind of business is this for?",
     fields: [
@@ -142,7 +142,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "budget",
     phase: 1,
-    kicker: "Fit check · 2 of 4",
+    kicker: "The basics · 2 of 4",
     timeHint: "~10 sec",
     title: "What budget range are you working with?",
     intro:
@@ -182,7 +182,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "timeline",
     phase: 1,
-    kicker: "Fit check · 3 of 4",
+    kicker: "The basics · 3 of 4",
     timeHint: "~10 sec",
     title: "What's your timeline?",
     fields: [
@@ -210,7 +210,7 @@ export const questionnaireSteps: QuestionStep[] = [
   {
     id: "decider",
     phase: 1,
-    kicker: "Fit check · 4 of 4",
+    kicker: "The basics · 4 of 4",
     timeHint: "~10 sec",
     title: "Who's involved in the decision?",
     fields: [
