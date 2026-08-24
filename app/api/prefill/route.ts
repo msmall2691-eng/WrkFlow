@@ -60,6 +60,7 @@ const PrefillSchema = z.object({
   brandColors: z.string().nullable(),
   tools: z.array(z.string()),
   painPoint: z.string().nullable(),
+  whyNow: z.string().nullable(),
 });
 
 /** Exact allowed option strings for a multi-select field in the schema. */
@@ -79,6 +80,7 @@ const TEXT_CAPS: Record<string, number> = {
   pages: 300,
   brandColors: 120,
   painPoint: 600,
+  whyNow: 300,
 };
 
 function buildSystemPrompt(): string {
@@ -93,7 +95,8 @@ Rules:
   styleWords: ${JSON.stringify(allowedOptions("styleWords"))}
   tools: ${JSON.stringify(allowedOptions("tools"))}
 - "different" is what sets this business apart, one line, in plain words.
-- "painPoint" is what's currently broken or costing them time, if mentioned.`;
+- "painPoint" is what's currently broken or costing them time, if mentioned.
+- "whyNow" is why they're doing this now, if the description says.`;
 }
 
 type Payload = { description?: string; botField?: string };

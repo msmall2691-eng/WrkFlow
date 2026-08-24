@@ -51,14 +51,10 @@ export default function StartPage() {
           shown here as quiet proof: this studio builds pages that react to
           the world, and this one is doing it right now. */}
       <footer className="mx-auto max-w-2xl px-6 pb-14">
-        <div className="border-t border-line pt-6">
+        <div className="border-t border-line pt-6 opacity-70">
+          {/* One quiet line — proof, not a pitch. */}
           <MaineReadout className="text-faint" />
-          <p className="mt-2 text-[12px] leading-relaxed text-faint">
-            Live from the Maine coast — this page runs on real-time weather,
-            tide, and daylight data, the same kind of live detail we can build
-            into yours.
-          </p>
-          <p className="mt-5 font-mono text-[11px] uppercase tracking-widest text-faint">
+          <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
             © {new Date().getFullYear()} M Studio · <a href="https://mlinx.studio" className="transition-colors hover:text-ink">mlinx.studio</a> · Built on the Maine coast
           </p>
         </div>

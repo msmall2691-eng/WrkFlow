@@ -88,6 +88,54 @@ export default function Questionnaire({
   // Generated concepts, held outside the preview screen so they survive
   // navigating on to contact and ride along with the submission.
   const [concepts, setConcepts] = useState<Concept[]>([]);
+  /*
+    Concept generation is kicked off one step EARLY — the moment the pain
+    step appears — so it runs while the visitor is still typing. By the time
+    they reach the first-look screen the concepts are usually already there,
+    which is the difference between "instant" and "watch a spinner". Lifted
+    to the parent so an in-flight generation also survives skipping ahead:
+    whatever finishes still rides along with the submission.
+  */
+  const [genState, setGenState] = useState<PreviewState | null>(null);
+  const genStartedRef = useRef(false);
+
+  const startGeneration = useCallback(
+    async (snapshot: Answers) => {
+      setGenState({ phase: "generating" });
+      try {
+        const res = await fetch("/api/preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answers: snapshot, botField: botField.current?.value ?? "" }),
+        });
+        const payload = await res.json().catch(() => null);
+        if (!res.ok || !payload?.ok || !payload.concepts?.length) {
+          throw new Error(payload?.error ?? "Couldn't draft concepts this time.");
+        }
+        setGenState({ phase: "ready", concepts: payload.concepts });
+        setConcepts(payload.concepts);
+      } catch (err) {
+        setGenState({
+          phase: "error",
+          message: err instanceof Error ? err.message : "Couldn't draft concepts this time.",
+        });
+      }
+    },
+    [],
+  );
+
+  // Prefetch trigger: entering the pain step (or landing directly on the
+  // preview screen from a resumed session) starts generation exactly once.
+  useEffect(() => {
+    if (!previewEnabled || genStartedRef.current) return;
+    const onPain = view.screen === "step" && questionnaireSteps[view.index]?.id === "pain";
+    const onPreview = view.screen === "preview";
+    if (onPain || onPreview) {
+      genStartedRef.current = true;
+      startGeneration(answers);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, previewEnabled]);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [restored, setRestored] = useState(false);
   /* True once the visitor took the redirect's escape hatch — phase 2's Back
@@ -218,7 +266,9 @@ export default function Questionnaire({
       goTo({ screen: "intro" });
       return;
     }
-    if (previewEnabled && questionnaireSteps[index].id === "contact") {
+    // The preview screen sits between the pain step and whatever follows it —
+    // structural, so inserting steps later can't strand it.
+    if (previewEnabled && questionnaireSteps[index - 1]?.id === "pain") {
       goTo({ screen: "preview" });
       return;
     }
@@ -366,12 +416,12 @@ export default function Questionnaire({
 
       {view.screen === "preview" && (
         <PreviewScreen
-          answers={answers}
+          genState={genState ?? { phase: "generating" }}
+          onRetry={() => startGeneration(answers)}
+          bizName={(answers.bizName as string) ?? ""}
           choice={(answers.previewChoice as string) ?? ""}
           onChoose={(label) => setField("previewChoice", label)}
-          onGenerated={(c) => setConcepts(c)}
           headingRef={headingRef}
-          botField={botField}
           onBack={() =>
             goTo({
               screen: "step",
@@ -381,7 +431,7 @@ export default function Questionnaire({
           onContinue={() =>
             goTo({
               screen: "step",
-              index: questionnaireSteps.findIndex((st) => st.id === "contact"),
+              index: questionnaireSteps.findIndex((st) => st.id === "pain") + 1,
             })
           }
         />
@@ -431,7 +481,7 @@ function Intro({
         )}
       </p>
       <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
-        About 6 minutes · answers save on this device · nothing is binding
+        About 8 minutes · answers save on this device · nothing is binding
       </p>
 
       <div className="mt-9">
@@ -508,9 +558,8 @@ function StepScreen({
 
       {isLast && (
         <p className="mt-6 text-[12px] text-faint">
-          <span className="text-gold">*</span> = required. Everything else on
-          this form was optional — thanks for whatever you shared. We never
-          sell your information; see the{" "}
+          <span className="text-gold">*</span> required · we never sell your
+          information — see the{" "}
           <a href="/privacy" className="underline underline-offset-2 hover:text-ink">
             privacy policy
           </a>
@@ -629,7 +678,24 @@ function Field({
           {field.hint}
         </p>
       )}
-      {field.kind === "text" ? (
+      {field.kind === "select" ? (
+        <select
+          id={field.id}
+          value={(value as string) ?? ""}
+          aria-describedby={describedBy}
+          onChange={(e) => onChange(field.id, e.target.value)}
+          className={inputClass}
+        >
+          <option value="" disabled>
+            Choose one…
+          </option>
+          {field.options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      ) : field.kind === "text" ? (
         <input
           id={field.id}
           type={field.type ?? "text"}
@@ -998,15 +1064,15 @@ A strong fit
 function SuccessScreen({ name }: { name: string }) {
   const first = name.trim().split(/\s+/)[0];
   const steps = [
-    { title: "Answers received", detail: "Done — they're in Meg's inbox now.", done: true },
+    { title: "Answers received", detail: "Done.", done: true },
     {
       title: "Within 24 hours: your rough scope",
-      detail: "Pages, features, a price range, and a timeline — written for your answers.",
+      detail: "Pages, features, price range, timeline.",
       done: false,
     },
     {
       title: "Optional free 15-minute call",
-      detail: "Only if you want to talk it through. No pitch, no pressure.",
+      detail: "Only if you want it. No pitch.",
       done: false,
     },
   ];
@@ -1234,60 +1300,27 @@ type PreviewState =
   submission is the label of the direction they picked.
 */
 function PreviewScreen({
-  answers,
+  genState,
+  onRetry,
+  bizName,
   choice,
   onChoose,
-  onGenerated,
   headingRef,
-  botField,
   onBack,
   onContinue,
 }: {
-  answers: Answers;
+  genState: PreviewState;
+  onRetry: () => void;
+  bizName: string;
   choice: string;
   onChoose: (label: string) => void;
-  onGenerated: (concepts: Concept[]) => void;
   headingRef: React.RefObject<HTMLDivElement | null>;
-  botField: React.RefObject<HTMLInputElement | null>;
   onBack: () => void;
   onContinue: () => void;
 }) {
-  const [state, setState] = useState<PreviewState>({ phase: "generating" });
+  const state = genState;
   const [expanded, setExpanded] = useState<string | null>(null);
-  const startedRef = useRef(false);
 
-  // No button: the concepts start building the moment the step appears.
-  useEffect(() => {
-    if (startedRef.current) return;
-    startedRef.current = true;
-    generate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  async function generate() {
-    setState({ phase: "generating" });
-    try {
-      const res = await fetch("/api/preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ answers, botField: botField.current?.value ?? "" }),
-      });
-      const payload = await res.json().catch(() => null);
-      if (!res.ok || !payload?.ok || !payload.concepts?.length) {
-        throw new Error(
-          payload?.error ?? "Couldn't draft concepts this time.",
-        );
-      }
-      setState({ phase: "ready", concepts: payload.concepts });
-      onGenerated(payload.concepts);
-    } catch (err) {
-      setState({
-        phase: "error",
-        message:
-          err instanceof Error ? err.message : "Couldn't draft concepts this time.",
-      });
-    }
-  }
 
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
@@ -1301,9 +1334,8 @@ function PreviewScreen({
         </h2>
       </div>
       <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
-        Three visual directions for your homepage, designed from your answers —
-        not stock templates. Pick the one that feels closest; it shapes the
-        scope you get back. Rough sketches, not final designs.
+        Three directions for your homepage, designed from your answers. Pick
+        the one that feels closest — rough sketches, not final designs.
       </p>
 
       {state.phase === "generating" && (
@@ -1313,11 +1345,10 @@ function PreviewScreen({
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold/60 motion-reduce:hidden" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-gold" />
             </span>
-            Drafting three directions for {(answers.bizName as string) || "your business"}…
+            Drafting three directions for {bizName || "your business"}…
           </p>
           <p className="mt-2 text-[13px] leading-relaxed text-muted">
-            Takes about a minute. Your answers are safe — feel free to wait, or
-            skip ahead and we&apos;ll include directions in your scope instead.
+            Feel free to skip ahead — whatever finishes still comes with your scope.
           </p>
         </div>
       )}
@@ -1330,7 +1361,7 @@ function PreviewScreen({
           </p>
           <button
             type="button"
-            onClick={generate}
+            onClick={onRetry}
             className="mt-2 font-mono text-[10px] uppercase tracking-widest text-gold transition-opacity hover:opacity-75"
           >
             Try again →
@@ -1341,8 +1372,7 @@ function PreviewScreen({
       {state.phase === "ready" && (
         <div className="mt-8 space-y-5">
           <p className="text-[13px] text-muted">
-            Tap a concept to expand it; pick the direction that feels closest.
-            None of them is binding — they&apos;re a starting point for the real design.
+            Tap to expand · pick your favorite. Nothing is binding.
           </p>
           {state.concepts.map((c) => {
             const selected = choice === c.title;
