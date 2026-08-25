@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import Reveal from "@/components/Reveal";
 import MarketCatalog from "@/components/MarketCatalog";
-import Playground from "@/components/Playground";
+import WorkflowMap from "@/components/WorkflowMap";
 import HeroWordmark from "@/components/HeroWordmark";
 import LinxMark from "@/components/LinxMark";
 import { marketModelLabels } from "@/lib/content";
@@ -78,6 +78,10 @@ export default function MarketplacePage() {
           </div>
         </section>
 
+        {/* Workflow / integration mapper — moved here from the homepage: "see
+            what could connect to what" is the M Linx pitch in miniature. */}
+        <WorkflowMap />
+
         {/* Catalog */}
         <section className="relative overflow-hidden py-14 md:py-20">
           <div
@@ -88,9 +92,6 @@ export default function MarketplacePage() {
             <MarketCatalog />
           </div>
         </section>
-
-        {/* Free tools — the full kit + live estimator, moved off the homepage */}
-        <Playground />
 
         {/* CTA */}
         <section className="relative overflow-hidden border-t border-line py-16">

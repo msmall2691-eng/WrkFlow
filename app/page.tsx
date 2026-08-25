@@ -1,9 +1,8 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import ToolsTeaser from "@/components/ToolsTeaser";
 import Deployments from "@/components/Deployments";
 import Services from "@/components/Services";
-import WorkflowMap from "@/components/WorkflowMap";
+import Playground from "@/components/Playground";
 import Approach from "@/components/Approach";
 import FAQ from "@/components/FAQ";
 import Pricing from "@/components/Pricing";
@@ -20,12 +19,13 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → founder → services → workflow → tools teaser → work → approach → pricing → contact */}
+        {/* Hero → founder → services → free tools → work → approach → pricing → contact.
+            The full free-tools kit lives here (per Meg — she uses them herself);
+            the workflow/integration-mapper section moved to the M Linx page. */}
         <Hero />
         <FounderNote />
         <Services />
-        <WorkflowMap />
-        <ToolsTeaser />
+        <Playground />
         <Deployments />
         <Approach />
         <FAQ />

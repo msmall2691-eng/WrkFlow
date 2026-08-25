@@ -20,9 +20,7 @@ export const founderNote = {
   headline: "Why M Studio.",
   headlineFollow: "Every business works differently.",
   paragraphs: [
-    "Most software makes you change how you work. M Studio does the opposite.",
     "AI, automation, and custom software built around how your business already runs — fewer disconnected tools, less repetitive work.",
-    "Technology shouldn't create more work. It should make everything work better.",
   ],
 } as const;
 
@@ -48,9 +46,7 @@ export const founderBio = {
   kicker: "The story behind it",
   heading: "Built by an Operator",
   paragraphs: [
-    "Not software first — problems first.",
-    "Running a business exposed the real issue: not the work, but the disconnected systems behind it. So those systems got rebuilt — spreadsheets and automations, then custom software built around how people actually work.",
-    "Today, I combine that experience with AI, automation, and software development to help other businesses spend less time fighting their tools.",
+    "Running a business exposed the real problem — not the work, but the disconnected systems behind it. I rebuilt those systems, and now I build them for other businesses.",
   ],
   detail:
     "Built while running internal systems for a service business that grew past 1,000 customers and 7,000+ service visits.",
@@ -66,7 +62,6 @@ export const founderPhilosophy = {
   heading: "My Philosophy",
   lines: [
     "Good software disappears.",
-    "The best systems don't force new habits — they fit the way work already happens.",
     "Understand the business first. Technology comes second.",
   ],
 } as const;

@@ -16,6 +16,10 @@ import { trackTool } from "@/lib/track";
 /*
   Playground — a small set of genuinely useful, free tools. Each one gives the
   visitor something to take with them (a report, a signature, a QR, a quote, an invoice).
+
+  Lives on the homepage (id="tools" — CommandPalette's "Free tools" command and
+  WorkflowSpine's rail scroll here). MarketCatalog's "Use it free" links point
+  at /#tools too.
 */
 
 type Tool = "sitecheck" | "quote" | "invoice" | "sig" | "vcard" | "qr" | "utm" | "cost";
@@ -105,7 +109,7 @@ export default function Playground() {
   }
 
   return (
-    <section id="kit" className="relative overflow-hidden border-t border-line py-14 md:py-20">
+    <section id="tools" className="relative overflow-hidden border-t border-line py-14 md:py-20">
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"

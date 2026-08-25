@@ -117,7 +117,7 @@ function ProductCard({
           <span className="font-display text-sm font-medium text-ink">{item.price}</span>
           {isOpen ? (
             <a
-              href="#kit"
+              href="/#tools"
               className="inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-signal/10 px-4 py-2 text-xs font-semibold text-signal transition-colors hover:bg-signal/20"
             >
               Use it free
