@@ -1,61 +1,45 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { foundingOffer, trustStats } from "@/lib/content";
 import {
   questionnaireSteps,
   questionnaireFields,
-  qualifiedTestimonial,
-  shouldRedirect,
   type Answers,
   type QuestionField,
   type CardOption,
 } from "@/lib/questionnaire";
 
 /*
-  Questionnaire — the two-phase intake behind intake.mlinx.studio.
+  Questionnaire — the intake behind intake.mlinx.studio.
 
-  Renders entirely from lib/questionnaire.ts. The flow:
+  Renders entirely from lib/questionnaire.ts: one linear flow of Meg's own
+  questions (restored from her original prototype), an optional AI fast-fill
+  on the first step, and an AI concept-preview screen before the final step.
+  No qualification gate — every lead reaches the inbox.
 
-    intro → phase 1 "fit check" (4 card taps) → routing gate
-      ├─ redirect  → M Linx suggestion, with a "continue anyway" escape hatch
-      └─ qualified → "good news" promise screen
-    → phase 2 "project details" (5 steps, contact LAST) → success roadmap
-
-  Color roles are deliberate and never mixed: GOLD is action and progress
-  (CTA, progress bar, selected answers, required markers); TEAL is proof and
-  reassurance (trust stats, badges, milestone banner). Teal is a fixed value
-  rather than the user-tunable --color-signal accent, because a proof color
-  that visitors can re-theme isn't playing its role.
-
-  Answers persist to localStorage per device (v2 key — the legacy 10-step
-  form's v1 answers don't map onto this flow, so they're discarded rather
-  than migrated into the wrong questions). Cards and chips are native radio /
-  checkbox inputs visually styled as cards, so keyboard and screen-reader
-  behavior comes from the platform, not from re-implemented div roles.
+  GOLD is action and progress; TEAL is proof and reassurance, as a fixed
+  value rather than the user-tunable accent. Answers persist per device;
+  cards and chips are native inputs styled as cards, so keyboard and
+  screen-reader behavior comes from the platform.
 */
 
-/*
-  v3: the #83 question swap reordered steps, and saved views index into the
-  step array — a v2 draft would resume on an unrelated screen and could skip
-  the new questions entirely. Old drafts are discarded rather than remapped;
-  the answers they'd carry mostly point at questions that no longer exist.
-*/
-const STORAGE_KEY = "mstudio:questionnaire:v3";
-const LEGACY_KEYS = ["mstudio:questionnaire:v1", "mstudio:questionnaire:v2"];
+/* v4: Meg's original questions restored, gate removed — earlier drafts
+   index into step lists that no longer exist. */
+const STORAGE_KEY = "mstudio:questionnaire:v4";
+const LEGACY_KEYS = [
+  "mstudio:questionnaire:v1",
+  "mstudio:questionnaire:v2",
+  "mstudio:questionnaire:v3",
+];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const TEAL = "#16a394";
 
-/* Phase weighting: the four fit-check taps carry 0→40%, the five detail
-   steps 40→100% — early steps feel fast because they are. */
-const PHASE1_STEPS = questionnaireSteps.filter((s) => s.phase === 1).length;
-const PHASE2_STEPS = questionnaireSteps.length - PHASE1_STEPS;
+const STEP_COUNT = questionnaireSteps.length;
 
 type View =
   | { screen: "intro" }
   | { screen: "step"; index: number }
-  | { screen: "route"; variant: "redirect" | "qualified" }
   | { screen: "preview" }
   | { screen: "success" };
 
@@ -65,17 +49,11 @@ function progressFor(view: View): number {
   switch (view.screen) {
     case "intro":
       return 0;
-    case "step": {
-      const step = questionnaireSteps[view.index];
-      if (step.phase === 1) return (view.index / PHASE1_STEPS) * 40;
-      const detailIndex = view.index - PHASE1_STEPS;
-      return 40 + (detailIndex / PHASE2_STEPS) * 60;
-    }
-    case "route":
-      return 40;
+    case "step":
+      return (view.index / STEP_COUNT) * 94;
     case "preview":
-      // Sits between the pain step and contact.
-      return 40 + ((PHASE2_STEPS - 1) / PHASE2_STEPS) * 60;
+      // Sits between the practical step and the final one.
+      return ((STEP_COUNT - 1) / STEP_COUNT) * 94;
     case "success":
       return 100;
   }
@@ -130,13 +108,14 @@ export default function Questionnaire({
     [],
   );
 
-  // Prefetch trigger: entering the logistics step (or landing directly on the
+  // Prefetch trigger: entering the practical step (or landing directly on the
   // preview screen from a resumed session) starts generation exactly once.
   useEffect(() => {
     if (!previewEnabled || genStartedRef.current) return;
-    const onPain = view.screen === "step" && questionnaireSteps[view.index]?.id === "logistics";
+    const onPractical =
+      view.screen === "step" && questionnaireSteps[view.index]?.id === "practical";
     const onPreview = view.screen === "preview";
-    if (onPain || onPreview) {
+    if (onPractical || onPreview) {
       genStartedRef.current = true;
       startGeneration(answers);
     }
@@ -144,10 +123,6 @@ export default function Questionnaire({
   }, [view, previewEnabled]);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [restored, setRestored] = useState(false);
-  /* True once the visitor took the redirect's escape hatch — phase 2's Back
-     from its first step should return them to the redirect screen, not the
-     qualified one. */
-  const [cameViaRedirect, setCameViaRedirect] = useState(false);
 
   const headingRef = useRef<HTMLDivElement>(null);
   const hydrated = useRef(false);
@@ -159,14 +134,9 @@ export default function Questionnaire({
       for (const k of LEGACY_KEYS) window.localStorage.removeItem(k);
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const saved = JSON.parse(raw) as {
-          answers?: Answers;
-          view?: View;
-          cameViaRedirect?: boolean;
-        };
+        const saved = JSON.parse(raw) as { answers?: Answers; view?: View };
         if (saved.answers && Object.keys(saved.answers).length > 0) {
           setAnswers(saved.answers);
-          setCameViaRedirect(Boolean(saved.cameViaRedirect));
           if (
             saved.view &&
             (saved.view.screen !== "step" ||
@@ -188,12 +158,12 @@ export default function Questionnaire({
     try {
       window.localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ answers, view, cameViaRedirect }),
+        JSON.stringify({ answers, view }),
       );
     } catch {
       /* saving is a nicety, not a requirement */
     }
-  }, [answers, view, cameViaRedirect]);
+  }, [answers, view]);
 
   useEffect(() => {
     if (view.screen === "success" || Object.keys(answers).length === 0) return;
@@ -245,8 +215,9 @@ export default function Questionnaire({
       if (id === "goals") {
         const implied = (goals: string[]) => {
           const out: string[] = [];
-          if (goals.includes("Let people book or schedule online")) out.push("Online booking");
-          if (goals.includes("Sell products or take payments")) out.push("Payments / store");
+          if (goals.includes("Let people book or schedule online"))
+            out.push("Online booking / scheduling");
+          if (goals.includes("Sell products online")) out.push("Online payments / store");
           return out;
         };
         const prevSeed = implied((prev.goals as string[]) ?? []);
@@ -265,26 +236,17 @@ export default function Questionnaire({
   }, []);
 
   function advanceFrom(index: number) {
-    const lastPhase1 = PHASE1_STEPS - 1;
-    if (index === lastPhase1) {
-      goTo({
-        screen: "route",
-        variant: shouldRedirect(answers) ? "redirect" : "qualified",
-      });
-      return;
-    }
     if (index === questionnaireSteps.length - 1) {
       submit();
       return;
     }
-    // The AI concept preview slots between the pain step and contact —
-    // optional, and only when the server can actually generate.
-    if (previewEnabled && questionnaireSteps[index].id === "logistics") {
+    // The AI concept preview slots between the practical step and the final
+    // one — only when the server can actually generate.
+    if (previewEnabled && questionnaireSteps[index].id === "practical") {
       goTo({ screen: "preview" });
       return;
     }
-    const next = index + 1;
-    goTo({ screen: "step", index: next });
+    goTo({ screen: "step", index: index + 1 });
   }
 
   function backFrom(index: number) {
@@ -292,17 +254,8 @@ export default function Questionnaire({
       goTo({ screen: "intro" });
       return;
     }
-    // The preview screen sits between the pain step and whatever follows it —
-    // structural, so inserting steps later can't strand it.
-    if (previewEnabled && questionnaireSteps[index - 1]?.id === "logistics") {
+    if (previewEnabled && questionnaireSteps[index - 1]?.id === "practical") {
       goTo({ screen: "preview" });
-      return;
-    }
-    if (index === PHASE1_STEPS) {
-      goTo({
-        screen: "route",
-        variant: cameViaRedirect ? "redirect" : "qualified",
-      });
       return;
     }
     goTo({ screen: "step", index: index - 1 });
@@ -356,17 +309,7 @@ export default function Questionnaire({
 
   const progress = progressFor(view);
   const phaseLabel =
-    view.screen === "step"
-      ? questionnaireSteps[view.index].phase === 1
-        ? "The basics"
-        : "Project details"
-      : view.screen === "route"
-        ? "The basics"
-        : view.screen === "preview"
-          ? "Project details"
-          : view.screen === "success"
-            ? "Done"
-            : "";
+    view.screen === "success" ? "Done" : "Project questionnaire";
 
   return (
     <div className="mx-auto max-w-2xl px-6 pb-24">
@@ -421,25 +364,6 @@ export default function Questionnaire({
         />
       )}
 
-      {view.screen === "route" && view.variant === "redirect" && (
-        <RedirectScreen
-          headingRef={headingRef}
-          onBack={() => goTo({ screen: "step", index: PHASE1_STEPS - 1 })}
-          onContinue={() => {
-            setCameViaRedirect(true);
-            goTo({ screen: "step", index: PHASE1_STEPS });
-          }}
-        />
-      )}
-      {view.screen === "route" && view.variant === "qualified" && (
-        <QualifiedScreen
-          aiEnabled={previewEnabled}
-          headingRef={headingRef}
-          onBack={() => goTo({ screen: "step", index: PHASE1_STEPS - 1 })}
-          onContinue={() => goTo({ screen: "step", index: PHASE1_STEPS })}
-        />
-      )}
-
       {view.screen === "preview" && (
         <PreviewScreen
           genState={genState ?? { phase: "generating" }}
@@ -451,13 +375,13 @@ export default function Questionnaire({
           onBack={() =>
             goTo({
               screen: "step",
-              index: questionnaireSteps.findIndex((st) => st.id === "logistics"),
+              index: questionnaireSteps.findIndex((st) => st.id === "practical"),
             })
           }
           onContinue={() =>
             goTo({
               screen: "step",
-              index: questionnaireSteps.findIndex((st) => st.id === "logistics") + 1,
+              index: questionnaireSteps.findIndex((st) => st.id === "practical") + 1,
             })
           }
         />
@@ -489,25 +413,25 @@ function Intro({
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <div ref={headingRef} tabIndex={-1} className="outline-none">
         <h2 className="display-serif text-3xl leading-[1.12] text-ink sm:text-4xl">
-          Let&apos;s scope your project.
+          Let&apos;s scope your website.
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
         {aiEnabled ? (
           <>
-            A few questions about your business — then we design three concepts
-            of your site from your answers, while you watch. A written scope
-            follows within 24 hours.
+            A few questions so we understand your business and goals before we
+            talk — then we design three concepts of your site from your
+            answers, while you watch.
           </>
         ) : (
           <>
-            A few questions about your business. Within 24 hours you&apos;ll
-            have a written scope — pages, features, and a price range.
+            A few questions so we understand your business and goals before we
+            talk.
           </>
         )}
       </p>
       <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
-        About 8 minutes · answers save on this device · nothing is binding
+        About 10 minutes · answers save on this device · nothing is binding
       </p>
 
       <div className="mt-9">
@@ -572,7 +496,7 @@ function StepScreen({
         <p className="mt-3 text-[15px] leading-relaxed text-muted">{step.intro}</p>
       )}
 
-      {step.id === "business" && aiEnabled && (
+      {step.id === "basics" && aiEnabled && (
         <FastFill onDraft={onDraft} botField={botField} />
       )}
 
@@ -945,146 +869,6 @@ function ChipGroup({
   );
 }
 
-/* ------------------------------------------------------------ route gates */
-
-function RedirectScreen({
-  headingRef,
-  onBack,
-  onContinue,
-}: {
-  headingRef: React.RefObject<HTMLDivElement | null>;
-  onBack: () => void;
-  onContinue: () => void;
-}) {
-  return (
-    <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
-        Honest answer
-      </p>
-      <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
-        <h2 className="display-serif text-2xl leading-[1.15] text-ink sm:text-3xl">
-          For this budget and timeline, there&apos;s a better-value path.
-        </h2>
-      </div>
-      <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
-        Based on your budget or timeline, a premade M&nbsp;Linx kit will get you
-        live sooner and for less. They&apos;re built by the same studio, tuned
-        for small businesses, and yours to keep — no subscription.
-      </p>
-
-      <a
-        href="/marketplace#kit"
-        className="mt-8 block rounded-2xl border border-line bg-[var(--panel-input-bg)] p-6 transition-all hover:-translate-y-0.5 hover:border-gold/40 motion-reduce:transition-none"
-      >
-        <p className="font-mono text-[10px] uppercase tracking-widest" style={{ color: TEAL }}>
-          M Linx marketplace
-        </p>
-        <p className="mt-2 display-serif text-xl text-ink">
-          Premade sites &amp; tools, ready this week →
-        </p>
-        <p className="mt-2 text-[14px] leading-relaxed text-muted">
-          Templates and small tools you can launch now, with the option to grow
-          into a custom build later.
-        </p>
-      </a>
-
-      <div className="mt-9 flex flex-col items-start gap-4">
-        <button
-          type="button"
-          onClick={onContinue}
-          className="font-mono text-[11px] uppercase tracking-widest text-muted transition-colors hover:text-ink"
-        >
-          I still want to scope a custom build →
-        </button>
-        <button
-          type="button"
-          onClick={onBack}
-          className="font-mono text-xs uppercase tracking-widest text-faint transition-colors hover:text-ink"
-        >
-          ← Back
-        </button>
-      </div>
-    </section>
-  );
-}
-
-function QualifiedScreen({
-  aiEnabled,
-  headingRef,
-  onBack,
-  onContinue,
-}: {
-  aiEnabled: boolean;
-  headingRef: React.RefObject<HTMLDivElement | null>;
-  onBack: () => void;
-  onContinue: () => void;
-}) {
-  return (
-    <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: TEAL }}>
-A strong fit
-      </p>
-      <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
-        <h2 className="display-serif text-2xl leading-[1.15] text-ink sm:text-3xl">
-          This looks like a project we&apos;d build well.
-        </h2>
-      </div>
-      <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
-        {aiEnabled ? (
-          <>
-            The next steps take about five minutes and cover the details a
-            design is made from. At the end, we&apos;ll build three concepts
-            of your site right here — from your answers, while you watch —
-            and the direction you pick shapes the written scope you get
-            within 24 hours.
-          </>
-        ) : (
-          <>
-            The next steps take about five minutes and cover the details a
-            scope is made from. Within 24 hours you&apos;ll have it in
-            writing — pages, features, a price range, and a timeline — rather
-            than a discovery call to schedule first.
-          </>
-        )}
-      </p>
-
-      {qualifiedTestimonial && (
-        <figure
-          className="mt-8 rounded-2xl border-l-2 bg-[var(--panel-input-bg)] p-6"
-          style={{ borderLeftColor: TEAL }}
-        >
-          <blockquote className="text-[15px] leading-relaxed text-ink">
-            &ldquo;{qualifiedTestimonial.quote}&rdquo;
-          </blockquote>
-          <figcaption className="mt-4 flex items-center gap-3">
-            <span
-              aria-hidden="true"
-              className="flex h-9 w-9 items-center justify-center rounded-full font-mono text-[11px]"
-              style={{ color: TEAL, backgroundColor: "rgba(22, 163, 148, 0.12)" }}
-            >
-              {qualifiedTestimonial.initials}
-            </span>
-            <span className="text-[13px] text-muted">
-              {qualifiedTestimonial.name} · {qualifiedTestimonial.business}
-            </span>
-          </figcaption>
-        </figure>
-      )}
-
-      <nav className="mt-9 flex items-center justify-between gap-4">
-        <button
-          type="button"
-          onClick={onBack}
-          className="font-mono text-xs uppercase tracking-widest text-faint transition-colors hover:text-ink"
-        >
-          ← Back
-        </button>
-        <ContinueButton onClick={onContinue} label="Let's scope it" />
-      </nav>
-    </section>
-  );
-}
-
 /* ---------------------------------------------------------------- success */
 
 function SuccessScreen({ name }: { name: string }) {
@@ -1137,21 +921,6 @@ function SuccessScreen({ name }: { name: string }) {
           </li>
         ))}
       </ol>
-
-      {foundingOffer.spotsRemaining > 0 && (
-        <div className="mt-10 rounded-2xl border border-gold/30 bg-gold/[0.06] p-6">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-gold">
-            {foundingOffer.spotsRemaining} of {foundingOffer.totalSpots} founding spots left
-          </p>
-          <p className="mt-2 text-[15px] leading-relaxed text-ink">
-            Founding Starter sites are{" "}
-            <span className="font-semibold text-gold">${foundingOffer.price.toLocaleString("en-US")}</span>{" "}
-            <span className="text-faint line-through">${foundingOffer.fullPrice.toLocaleString("en-US")}</span> in
-            exchange for a testimonial — ${foundingOffer.deposit} to start,
-            ${foundingOffer.balance} at launch.
-          </p>
-        </div>
-      )}
 
       <div className="mt-9 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest text-faint">
         <a href="https://mlinx.studio" className="text-ink/85 transition-colors hover:text-gold">
