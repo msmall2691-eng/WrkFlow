@@ -6,8 +6,8 @@ import IntegrationMapper from "./IntegrationMapper";
   WorkflowMap — a dedicated "here's what a workflow looks like" section.
   Small always-flowing node illustration on top says "this is the shape of
   it"; the interactive IntegrationMapper below lets a visitor pick their
-  own tools and see what unlocks. Sits between Services (what we build in
-  words) and the free-tools teaser (things to try).
+  own tools and see what unlocks. Lives at the top of the M Linx page
+  (moved off the homepage, which now hosts the free-tools kit instead).
 */
 export default function WorkflowMap() {
   return (
