@@ -50,17 +50,17 @@ const MAX_DESCRIPTION_LEN = 2000;
 */
 const PrefillSchema = z.object({
   bizName: z.string().nullable(),
+  currentSite: z.string().nullable(),
   whatYouDo: z.string().nullable(),
   idealCustomer: z.string().nullable(),
-  different: z.string().nullable(),
+  whyNow: z.string().nullable(),
+  frustration: z.string().nullable(),
   goals: z.array(z.string()),
   features: z.array(z.string()),
   pages: z.string().nullable(),
-  styleWords: z.array(z.string()),
+  loveSites: z.string().nullable(),
   brandColors: z.string().nullable(),
-  tools: z.array(z.string()),
-  painPoint: z.string().nullable(),
-  whyNow: z.string().nullable(),
+  timeline: z.string().nullable(),
 });
 
 /** Exact allowed option strings for a multi-select field in the schema. */
@@ -74,13 +74,15 @@ function allowedOptions(fieldId: string): string[] {
 
 const TEXT_CAPS: Record<string, number> = {
   bizName: 120,
+  currentSite: 200,
   whatYouDo: 400,
   idealCustomer: 200,
-  different: 300,
+  whyNow: 400,
+  frustration: 400,
   pages: 300,
+  loveSites: 300,
   brandColors: 120,
-  painPoint: 600,
-  whyNow: 300,
+  timeline: 120,
 };
 
 function buildSystemPrompt(): string {
@@ -92,10 +94,7 @@ Rules:
 - For each multi-select field, choose ONLY from its allowed values, verbatim:
   goals: ${JSON.stringify(allowedOptions("goals"))}
   features: ${JSON.stringify(allowedOptions("features"))}
-  styleWords: ${JSON.stringify(allowedOptions("styleWords"))}
-  tools: ${JSON.stringify(allowedOptions("tools"))}
-- "different" is what sets this business apart, one line, in plain words.
-- "painPoint" is what's currently broken or costing them time, if mentioned.
+- "frustration" is what bothers them about their current site or lack of one, if mentioned.
 - "whyNow" is why they're doing this now, if the description says.`;
 }
 
@@ -172,7 +171,7 @@ export async function POST(req: Request) {
       const v = parsed[key as keyof typeof parsed];
       if (typeof v === "string" && v.trim()) answers[key] = v.trim().slice(0, cap);
     }
-    for (const key of ["goals", "features", "styleWords", "tools"] as const) {
+    for (const key of ["goals", "features"] as const) {
       const allowed = new Set(allowedOptions(key === "features" ? "features" : key));
       const picked = parsed[key].filter((v) => allowed.has(v));
       if (picked.length) answers[key] = picked;

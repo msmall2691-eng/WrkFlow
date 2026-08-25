@@ -22,7 +22,6 @@ import { createRateLimiter, clientIp } from "@/lib/rateLimit";
 import {
   questionnaireSteps,
   questionnaireFields,
-  shouldRedirect,
   MAX_FIELD_LEN,
   type Answers,
 } from "@/lib/questionnaire";
@@ -180,14 +179,6 @@ export async function POST(req: Request) {
   const contactName = clean.contactName as string;
   const bizName = (clean.bizName as string) || "";
 
-  /*
-    Qualification tag, derived here from the same routing rule the form uses —
-    never taken from the client. A submission whose fit-check answers would
-    have routed to M Linx but which arrived anyway is exactly the
-    "redirected-continued" cohort worth tracking against close rates.
-  */
-  const tag = shouldRedirect(clean) ? "redirected-continued" : "qualified";
-
   if (!EMAIL_RE.test(contactEmail)) {
     return NextResponse.json({ ok: false, error: "That email doesn't look right." }, { status: 422 });
   }
@@ -217,7 +208,7 @@ export async function POST(req: Request) {
       from: `"M Studio Questionnaire" <${GMAIL_USER}>`,
       to,
       replyTo: contactEmail,
-      subject: `Intake [${tag}] — ${bizName || contactName}`,
+      subject: `Project questionnaire — ${bizName || contactName}`,
       text,
       html,
       attachments,
