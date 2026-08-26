@@ -4,10 +4,6 @@
 */
 import type { VisualType } from "@/components/ProjectVisual";
 
-/** "Who this is for" — names the buyer plainly. */
-export const whoIsItFor =
-  "Service companies, trades, property managers, short-term-rental operators, founders, or anyone with a project worth building right. Any size, any kind. A whole business or a single personal project, both work.";
-
 /*
   Founder note — the belief. Third person, stated as fact rather than
   "I believe" — the origin story (first person, but kept light on "I")
@@ -129,11 +125,9 @@ export type Service = {
   tagline: string;
   /** Concrete kinds we build in this discipline — shown as chips. */
   kinds: string[];
-  /** What it is. */
-  what: string;
-  /** The business pain it solves. */
+  /** The business pain it solves — ONE sentence; renders as a labeled box. */
   pain: string;
-  /** What changes after. */
+  /** What changes after — ONE sentence; renders as a labeled box. */
   outcome: string;
   /** A real example of this service in the wild. */
   example: ServiceExample;
@@ -146,12 +140,10 @@ export const services: Service[] = [
     title: "Websites & Web Apps",
     tagline: "A site or app that's actually yours—built, connected, and live.",
     kinds: ["Marketing sites", "Booking & scheduling", "Client portals", "Marketplaces", "Internal tools"],
-    what:
-      "Custom websites and web apps, designed and built from scratch—marketing sites, client portals, booking and scheduling. M Studio handles everything around them too: hosting, domain, analytics, and getting it live.",
     pain:
-      "Drag-and-drop builders look like everyone else and box you in the moment you need something specific. Agencies hand back a site you can't edit and don't really own. And almost nobody wires up the hosting, domain, and integrations so the thing just runs.",
+      "Builders box you in; agencies hand back a site you can't edit and don't really own.",
     outcome:
-      "A fast, custom site or app you own outright—fully set up, connected to the rest of your systems, and live. No monthly fee holding it over you, no logging a ticket just to change a word.",
+      "A fast custom site you own outright — connected, live, no monthly fee.",
     example: {
       client: "The Maine Cleaning Co.",
       built: "Custom marketing site with instant online quoting and booking, wired to the back-office system.",
@@ -165,12 +157,10 @@ export const services: Service[] = [
     title: "Workflow Automation & Integration",
     tagline: "Data moves itself. Nobody re-types anything.",
     kinds: ["Lead intake", "Follow-ups", "Scheduling", "Invoicing sync", "Notifications"],
-    what:
-      "M Studio connects the tools you already use and automates the repetitive handoffs between them, so the apps that never talked to each other finally do.",
     pain:
-      "Information gets copy-pasted between apps, re-keyed into spreadsheets, and dropped in the cracks between systems that were never meant to talk to each other.",
+      "Data gets copy-pasted between apps that were never meant to talk.",
     outcome:
-      "Records flow automatically from one system to the next. The double-entry disappears, the errors that came with it disappear, and your team gets the hours back.",
+      "Records move themselves — the double-entry and its errors disappear.",
     example: {
       client: "Booking → follow-up",
       built: "New booking fires a chain: customer confirmation, calendar hold, crew assignment, and a follow-up review request—untouched by hand.",
@@ -184,12 +174,10 @@ export const services: Service[] = [
     title: "Custom CRM & Database Design",
     tagline: "A system shaped to your business, not the other way around.",
     kinds: ["Customer records", "Job tracking", "Pipelines", "Owner reporting"],
-    what:
-      "Customer and operations databases, shaped around how your business really runs—with exactly the fields your work uses and nothing it doesn't.",
     pain:
-      "Off-the-shelf tools make you bend your process to fit their forms, then charge a per-seat fee every month on top. The data you actually need lives in the gaps their software never planned for.",
+      "Off-the-shelf tools bend your process to their forms — and charge per seat.",
     outcome:
-      "One source of truth you own outright. The right fields, the right relationships, no dead weight—and no per-seat fee that climbs every time you grow.",
+      "One source of truth you own: the right fields, no dead weight, no per-seat fee.",
     example: {
       client: "Owned CRM",
       built: "A custom customer + job database with exactly the fields the work uses—accessible from anywhere, owned outright.",
@@ -203,12 +191,10 @@ export const services: Service[] = [
     title: "AI Agent Implementation",
     tagline: "AI does the busywork. You keep the decisions.",
     kinds: ["Inbox triage", "Draft replies", "Summaries", "Smart intake"],
-    what:
-      "Practical AI, wired into the day-to-day—intake, follow-ups, drafting, summarizing, sorting. Everything is built draft-first, so nothing goes out without your sign-off.",
     pain:
-      "Generic AI tools either do too little to matter or too much to trust. The repetitive thinking work—reading, sorting, drafting the same replies—still eats hours every week.",
+      "The repetitive reading, sorting, and drafting still eats hours every week.",
     outcome:
-      "The routine handled in the background and surfaced for approval. Faster responses, less manual drafting, and a human firmly in control of every decision that counts.",
+      "Routine work handled in the background, surfaced for your one-click approval.",
     example: {
       client: "Instant Estimate",
       built: "An AI intake layer that reads inbound requests, drafts a quote and a reply, and queues both for one-click owner approval.",
@@ -222,12 +208,10 @@ export const services: Service[] = [
     title: "Operational Dashboards",
     tagline: "The numbers that matter, finally in one view.",
     kinds: ["Revenue & KPIs", "Occupancy", "Team & jobs", "Live pipeline"],
-    what:
-      "Your numbers, pulled from wherever they live into one live view—jobs, revenue, pipeline, team—so the metrics that run the business stop hiding in separate tabs.",
     pain:
-      "Answering a simple question—how's this month tracking?—means opening five tools, exporting three spreadsheets, and reconciling them by hand. By the time you know, it's old news.",
+      "“How's this month tracking?” shouldn't take five tools and three exports.",
     outcome:
-      "A live picture of the business at a glance. The right numbers, current, in one place—so decisions get made on what's happening now, not last month's export.",
+      "The numbers that run the business — live, current, in one view.",
     example: {
       client: "BrightBase",
       built: "An operations command center pulling jobs, revenue, occupancy, and crew into one live view—the same kind of dashboard demoed on this site.",
@@ -241,12 +225,10 @@ export const services: Service[] = [
     title: "Systems & Process Optimization",
     tagline: "Find what's slow, broken, or costing you—and fix it in order.",
     kinds: ["Tool audit", "Process mapping", "Fix-it roadmap"],
-    what:
-      "A close look at how your tools and processes actually run—where data's exposed, where things break quietly, where manual steps cost time and money—delivered as a plain-English plan, ranked by what to fix first.",
     pain:
-      "Most operations grow by accretion: tools bolted on over years, steps nobody remembers adding, integrations that fail without anyone noticing. The drag is invisible until it isn't.",
+      "Tools bolt on over years; the drag is invisible until it isn't.",
     outcome:
-      "A clear map of your systems and processes, and a ranked list of what to fix first. No jargon, no upselling—just the facts and a sensible order to work through them.",
+      "A ranked, plain-English fix-it list — biggest wins first.",
     example: {
       client: "Operations review",
       built: "A full walk-through of an operator's tools and handoffs—mapping where data leaked, where steps doubled up, and where time quietly vanished.",
@@ -260,12 +242,10 @@ export const services: Service[] = [
     title: "Legacy Software Migration",
     tagline: "Leave the platform. Keep the history.",
     kinds: ["Jobber / Housecall exit", "Data export", "Clean cutover"],
-    what:
-      "A clean break from rigid, pricey platforms—Jobber, Housecall Pro, and the like—onto a system you own, with your full history carried over cleanly and intact.",
     pain:
-      "You're locked in by years of accumulated data and the fear of losing it. Every month you stay, the subscription climbs and the software still doesn't fit.",
+      "Years of data lock you in while the subscription climbs.",
     outcome:
-      "A clean cutover to a system built around your real process, with your customers, jobs, and records carried over faithfully. The lock-in is gone for good.",
+      "A clean cutover to a system you own — customers, jobs, and history intact.",
     example: {
       client: "BrightBase turnovers",
       built: "Moved scheduling and turnover tracking off a rigid SaaS platform onto an owned system—full history migrated intact.",
@@ -279,12 +259,10 @@ export const services: Service[] = [
     title: "Data Cleanup & Consolidation",
     tagline: "One trustworthy source instead of five conflicting ones.",
     kinds: ["Dedupe", "Normalize", "Merge sources", "Validate"],
-    what:
-      "Messy, duplicated customer data, scattered across systems and merged into one clean, reliable record—deduplicated, consistent, and checked.",
     pain:
-      "The same customer exists three times with three spellings. Reports contradict each other. Every automation built on this foundation inherits the mess and quietly compounds it.",
+      "The same customer exists three times; every report contradicts the last.",
     outcome:
-      "Clean, consistent, deduplicated data in one place. Reports you can trust and automations that finally run on a foundation that's actually solid.",
+      "One clean, deduplicated source your reports and automations can trust.",
     example: {
       client: "Customer list cleanup",
       built: "Merged duplicate customer records across systems, normalized formats, and validated contact data into one reliable list.",

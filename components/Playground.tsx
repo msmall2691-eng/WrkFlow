@@ -122,12 +122,11 @@ export default function Playground() {
         </Reveal>
         <Reveal delay={80}>
           <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
-            Real tools from{" "}
+            The same{" "}
             <span className="inline-flex items-center gap-1.5 align-middle text-ink">
               <LinxMark className="h-3 w-auto" />M Linx
-            </span>, the same ones we build into client systems. Free to use here —
-            and when we set one up for you, it&apos;s tuned to your pricing,
-            branding, and workflow.
+            </span>{" "}
+            tools we build into client systems — free to use here.
           </p>
         </Reveal>
 
