@@ -32,8 +32,7 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-5 text-base leading-relaxed text-muted">
-              Client sites, our own company&apos;s, a product platform, and the
-              internal systems behind them — several embedded live below.
+              Client sites, products, and the systems behind them — live below.
             </p>
           </Reveal>
         </div>

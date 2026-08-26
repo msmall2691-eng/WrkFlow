@@ -44,13 +44,11 @@ export default function MarketplacePage() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
-                M Linx is our line of ready-to-run builds — the things we make
-                most often. Pick whatever fits where you&apos;re at:{" "}
+                Ready-to-run sites, tools, and automations —{" "}
                 <span className="text-ink">own one outright</span>,{" "}
-                <span className="text-ink">grab a tool for a few dollars a
-                month</span>, <span className="text-ink">start with the free
-                ones</span>, or <span className="text-ink">work together</span>{" "}
-                on something custom. Either way, we set it up around your business.
+                <span className="text-ink">rent a hosted tool</span>, or{" "}
+                <span className="text-ink">start free</span>. Set up around your
+                business either way.
               </p>
             </Reveal>
 
@@ -59,19 +57,19 @@ export default function MarketplacePage() {
               <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <ModelCard
                   tag={marketModelLabels.template}
-                  body="A starter site or app, set up for you and handed over. You own the code outright — no monthly, no lock-in."
+                  body="Set up for you, handed over. You own the code — no monthly."
                 />
                 <ModelCard
                   tag={marketModelLabels.embed}
-                  body="A hosted tool you drop into your site in one line. We run and update it — just a few dollars a month."
+                  body="Drops into your site in one line. A few dollars a month."
                 />
                 <ModelCard
                   tag={marketModelLabels.open}
-                  body="Free to use right now, with open-source starters on request. A no-pressure way to try the work."
+                  body="Free to use right now. Try the work, no pressure."
                 />
                 <ModelCard
                   tag="Work together"
-                  body="Want it tailored, or a hybrid of the above? We'll build something custom — one-time or a simple monthly."
+                  body="Tailored or hybrid — we'll build it custom."
                 />
               </div>
             </Reveal>

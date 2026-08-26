@@ -99,20 +99,28 @@ export default function Services() {
                   </button>
 
                   {isOpen && (
-                    <div className="grid gap-6 border-t border-line px-6 pb-6 pt-5 md:grid-cols-2">
-                      <div className="space-y-4 text-sm leading-relaxed text-muted">
-                        <p>
-                          <span className="font-semibold text-ink">What it is — </span>
-                          {s.what}
-                        </p>
-                        <p>
-                          <span className="font-semibold text-ink">The pain — </span>
-                          {s.pain}
-                        </p>
-                        <p>
-                          <span className="font-semibold text-ink">What changes — </span>
-                          {s.outcome}
-                        </p>
+                    <div className="grid gap-5 border-t border-line px-6 pb-6 pt-5 md:grid-cols-2">
+                      {/* Two labeled boxes, one sentence each — the visual
+                          example beside them carries the rest. */}
+                      <div className="grid content-start gap-3">
+                        <div className="rounded-xl border border-line bg-base/60 p-4">
+                          <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
+                            The problem
+                          </p>
+                          <p className="mt-2 text-sm leading-relaxed text-muted">{s.pain}</p>
+                        </div>
+                        <div className="rounded-xl border border-signal/30 bg-signal/[0.06] p-4">
+                          <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
+                            After
+                          </p>
+                          <p className="mt-2 text-sm leading-relaxed text-ink">{s.outcome}</p>
+                        </div>
+                        <a
+                          href="#contact"
+                          className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
+                        >
+                          Build this →
+                        </a>
                       </div>
                       <div className="overflow-hidden rounded-xl border border-line">
                         <div className="relative aspect-[4/3] bg-base">

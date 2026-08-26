@@ -78,10 +78,8 @@ export default function Contact() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 text-base leading-relaxed text-muted">
-                No pitch deck required. A few sentences about what you want to
-                build — or just the idea you&apos;re dreaming up. Every message
-                gets read personally and answered within a day, a real reply, not
-                a sales sequence.
+                A few sentences about what you want to build. Every message gets
+                a real reply within a day.
               </p>
             </Reveal>
             <Reveal delay={160}>
@@ -96,9 +94,8 @@ export default function Contact() {
                   Rather be asked than face a blank box?
                 </p>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                  The project questionnaire walks you through it — your business,
-                  your goals, what you already run on. About ten minutes, saved as
-                  you go, and none of it binding.
+                  The questionnaire walks you through it — ten minutes, saved as
+                  you go, nothing binding.
                 </p>
                 <a
                   href="/intake"
