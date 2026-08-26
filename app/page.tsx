@@ -6,7 +6,7 @@ import Playground from "@/components/Playground";
 import Approach from "@/components/Approach";
 import FAQ from "@/components/FAQ";
 import Pricing from "@/components/Pricing";
-import FounderNote from "@/components/FounderNote";
+import OperatorBand from "@/components/OperatorBand";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
@@ -19,11 +19,12 @@ export default function Home() {
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → founder → services → free tools → work → approach → pricing → contact.
-            The full free-tools kit lives here (per Meg — she uses them herself);
-            the workflow/integration-mapper section moved to the M Linx page. */}
+        {/* Hero → operator band (boxes + actions; full story on /about) →
+            services → free tools → work → approach → pricing → contact.
+            The full free-tools kit lives here (per Meg — she uses them
+            herself); the workflow section moved to the M Linx page. */}
         <Hero />
-        <FounderNote />
+        <OperatorBand />
         <Services />
         <Playground />
         <Deployments />
