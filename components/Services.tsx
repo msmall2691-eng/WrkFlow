@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import ProjectVisual from "./ProjectVisual";
-import { services, whoIsItFor } from "@/lib/content";
+import { services } from "@/lib/content";
 
 /*
   Services — every discipline M Studio works in, as an expandable list.
@@ -169,7 +169,6 @@ export default function Services() {
             <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
               Who it&apos;s for
             </p>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted">{whoIsItFor}</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {AUDIENCES.map((a) => (
                 <span
