@@ -1,5 +1,5 @@
 import Reveal from "./Reveal";
-import { founderNote, trustStats } from "@/lib/content";
+import { founderNote, studioStats } from "@/lib/content";
 
 /*
   OperatorBand — the homepage's compact replacement for the full founder
@@ -51,10 +51,10 @@ export default function OperatorBand() {
             </div>
           </Reveal>
 
-          {/* Stat tiles — the proof, no sentences */}
+          {/* Offer tiles — M Studio's own promises, not TMCC's history */}
           <Reveal delay={80}>
             <div className="grid h-full grid-cols-2 gap-3">
-              {trustStats.map((s) => (
+              {studioStats.map((s) => (
                 <div
                   key={s.label}
                   className="flex flex-col justify-center rounded-2xl border border-line bg-surface/40 p-5 backdrop-blur-sm"

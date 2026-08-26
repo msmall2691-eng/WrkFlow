@@ -20,7 +20,7 @@ export const founderNote = {
   headline: "Why M Studio.",
   headlineFollow: "Every business works differently.",
   paragraphs: [
-    "AI, automation, and custom software built around how your business already runs — fewer disconnected tools, less repetitive work.",
+    "Software, automation, and AI built around how your business already runs.",
   ],
 } as const;
 
@@ -90,16 +90,17 @@ export const foundingOffer = {
 } as const;
 
 /*
-  Trust stats — the proof numbers, shared by the homepage and the intake
-  form's trust strip so the two can never drift apart. Real operating
-  history, not marketing rounding: update here only when the underlying
-  facts change.
+  Studio stats — the homepage tiles. These are M STUDIO's own offer, not
+  operating history: the Maine Cleaning Co numbers (1,000+ customers,
+  7,000+ visits, …) belong to the proving-ground story on /about, where
+  they're attributed — per Meg, they shouldn't read as M Studio KPIs.
+  Every value here must stay true of what the site actually promises.
 */
-export const trustStats = [
-  { value: "10 yrs", label: "building systems" },
-  { value: "1,000+", label: "customers served" },
-  { value: "7,000+", label: "service visits" },
-  { value: "$1M+", label: "operations managed" },
+export const studioStats = [
+  { value: "24 hrs", label: "answers → written scope" },
+  { value: "3", label: "free concepts, from your answers" },
+  { value: "$0", label: "to scope · nothing binding" },
+  { value: "100%", label: "you own the code" },
 ] as const;
 
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
