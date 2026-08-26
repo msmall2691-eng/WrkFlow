@@ -93,7 +93,7 @@ export default function FounderNote() {
             </div>
             <figcaption className="mt-7 w-full">
               <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
-                Built from real business.
+                Built from real business — The Maine Cleaning Co.
               </p>
 
               {/* Operating stats — the proof, not a CV — plain dot-separated
