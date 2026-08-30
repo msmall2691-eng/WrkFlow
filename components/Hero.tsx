@@ -1,8 +1,15 @@
 import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
-import HeroWordmark from "./HeroWordmark";
 import LiveReadout from "./LiveReadout";
 
+/*
+  Hero — headline left, live instrument panel right (survey J-02, per Meg).
+  The giant M STUDIO background wordmark used to own the right half of the
+  viewport to repeat the name already in the nav; the genuinely unusual
+  thing on this site is the live Maine data driving the page, so the
+  readout panel takes that slot instead. On mobile the panel stacks under
+  the CTAs, same as before.
+*/
 export default function Hero() {
   return (
     <section
@@ -14,73 +21,72 @@ export default function Hero() {
       <ReactiveAurora />
       <div aria-hidden="true" className="hero-light-bg" />
 
-      {/* Brand wordmark — its own column on the right (desktop); lights up at the cursor */}
-      <div className="absolute inset-y-0 right-0 hidden w-[50%] overflow-hidden lg:block">
-        <HeroWordmark text="M STUDIO" size="text-[8.5vw]" />
-      </div>
-
-      {/* Diagonal scrim — keeps the bright swell on the text-free side.
+      {/* Diagonal scrim — keeps the bright swell behind the text readable.
           Uses the hero background color at partial opacity so it works in
           both themes. */}
       <div
         aria-hidden="true"
         className="hero-scrim pointer-events-none absolute inset-0"
       />
-      {/* Mobile: a ghost M STUDIO fills the empty lower space (desktop has its own column) */}
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-[32%] overflow-hidden opacity-80 lg:hidden">
-        <HeroWordmark text="M STUDIO" size="text-[16vw]" />
-      </div>
       {/* Bottom fade — long, soft dissolve of the hero into the page below */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[var(--hero-bg)]/80 to-[var(--color-base)]"
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-20 pt-24 sm:pb-0">
-        <p className="marker mb-6 flex items-center gap-2.5">
-          <span className="relative flex h-2 w-2" aria-hidden="true">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
-          </span>
-          Available for new projects
-        </p>
+      <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 px-6 pb-20 pt-24 sm:pb-16 lg:grid-cols-[1.15fr_0.85fr]">
+        <div>
+          <p className="marker mb-6 flex items-center gap-2.5">
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal/60 motion-reduce:hidden" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+            </span>
+            Available for new projects
+          </p>
 
-        <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
-          Technology that works{" "}
-          <span className="shimmer-text">the way your business does.</span>
-        </h1>
+          <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
+            Technology that works{" "}
+            <span className="shimmer-text">the way your business does.</span>
+          </h1>
 
-        <p className="hero-sub metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed">
-          Built from real operations. Designed for the way people actually work.
-        </p>
+          <p className="hero-sub metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed">
+            Built from real operations. Designed for the way people actually work.
+          </p>
 
-
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <Magnetic strength={0.35}>
-            <a
-              href="#contact"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
-            >
-              Start a Project
-              <span
-                aria-hidden="true"
-                className="transition-transform group-hover:translate-x-0.5"
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Magnetic strength={0.35}>
+              <a
+                href="#contact"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
-                →
-              </span>
+                Start a Project
+                <span
+                  aria-hidden="true"
+                  className="transition-transform group-hover:translate-x-0.5"
+                >
+                  →
+                </span>
+              </a>
+            </Magnetic>
+            <a
+              href="#work"
+              className="hero-outline inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-sm font-medium transition-all active:scale-[0.97]"
+            >
+              See the work.
             </a>
-          </Magnetic>
-          <a
-            href="#work"
-            className="hero-outline inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-sm font-medium transition-all active:scale-[0.97]"
-          >
-            See the work.
-          </a>
+          </div>
         </div>
 
-        {/* Live Portland, ME readout — the ambient data showcase */}
-        <div className="mt-10 max-w-md">
-          <LiveReadout />
+        {/* The instrument panel — live Portland data, promoted from a
+            footnote to the hero's visual. This page reacts to the world;
+            here's the proof, reading out in real time. */}
+        <div className="mt-2 w-full max-w-md lg:ml-auto lg:mt-0">
+          <div className="lg:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
+            <LiveReadout />
+          </div>
+          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
+            This data drives the page you&apos;re looking at.
+          </p>
         </div>
       </div>
 

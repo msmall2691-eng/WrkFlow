@@ -21,8 +21,9 @@ export default function Home() {
       <main>
         {/* Hero → operator band (boxes + actions; full story on /about) →
             services → free tools → work → approach → pricing → contact.
-            The full free-tools kit lives here (per Meg — she uses them
-            herself); the workflow section moved to the M Linx page. */}
+            Free tools sit at position 2 DELIBERATELY (survey J-01, decided):
+            Meg put the kit up top because it's the site's strongest hook and
+            she uses it herself — engagement beats narrative purity here. */}
         <Hero />
         <OperatorBand />
         <Services />
