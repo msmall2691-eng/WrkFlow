@@ -79,7 +79,9 @@ export default function Pricing() {
           </Reveal>
         )}
 
-        <div className="grid items-stretch gap-5 md:grid-cols-3 md:items-center">
+        {/* items-stretch on ALL breakpoints — the three cards must align so
+            the eye can compare offers across a horizontal line (survey M-04). */}
+        <div className="grid items-stretch gap-5 md:grid-cols-3">
           {/* Starter site */}
           <Reveal delay={60}>
             <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
@@ -115,12 +117,17 @@ export default function Pricing() {
                   </Reveal>
                 ))}
               </ul>
-              <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink">
-                Book a free 15-min call
+              {/* The card's one real button — the highest-intent element on
+                  the page gets the strongest treatment (per site survey). */}
+              <a
+                href="#contact"
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+              >
+                {foundingActive ? "Claim a founding spot" : "Get a Starter site"}
                 <span aria-hidden="true">→</span>
               </a>
-              <a href="#contact" className="mt-2 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
-                {foundingActive ? "Claim a founding spot" : "Get a Starter site"}
+              <a href="#contact" className="mt-3 inline-flex w-fit items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
+                or book a free 15-min call
                 <span aria-hidden="true">→</span>
               </a>
               {foundingActive && (
@@ -133,10 +140,7 @@ export default function Pricing() {
 
           {/* Care Plan — default, highlighted */}
           <Reveal delay={120}>
-            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99] md:scale-[1.03]">
-              <span className="absolute right-5 top-5 rounded-full border border-signal/40 bg-signal/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-signal shadow-[0_0_20px_-4px_rgba(22,163,148,0.6)]">
-                Most keep this
-              </span>
+            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Care Plan</p>
               <p className="mt-4 font-display text-3xl text-ink">
                 <CountUp value={49} prefix="$" />
@@ -149,7 +153,10 @@ export default function Pricing() {
                 Hosting, domain, security, and small edits — handled. The stuff
                 that keeps a site running, off your plate.
               </p>
-              <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
+              <a
+                href="#contact"
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-signal/50 px-6 py-3 text-sm font-semibold text-signal transition-colors hover:bg-signal/10"
+              >
                 Keep it running
                 <span aria-hidden="true">→</span>
               </a>
@@ -174,7 +181,10 @@ export default function Pricing() {
                   </Reveal>
                 ))}
               </ul>
-              <a href="#contact" className="mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink">
+              <a
+                href="#contact"
+                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-signal/50 px-6 py-3 text-sm font-semibold text-signal transition-colors hover:bg-signal/10"
+              >
                 Tell me what you need
                 <span aria-hidden="true">→</span>
               </a>

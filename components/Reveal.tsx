@@ -44,7 +44,14 @@ export default function Reveal({
     );
 
     observer.observe(node);
-    return () => observer.disconnect();
+    // Failsafe: a fast flick can outrun the observer, leaving a viewport of
+    // hidden content that reads as a broken page. Whatever happens, nothing
+    // stays invisible for more than a beat.
+    const failsafe = window.setTimeout(() => setVisible(true), 1200);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(failsafe);
+    };
   }, []);
 
   const Component = Tag as React.ElementType;

@@ -43,7 +43,7 @@ export default function OperatorBand() {
                 </a>
                 <a
                   href="/about"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
+                  className="inline-flex items-center gap-1.5 py-2.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
                 >
                   Meet the operator →
                 </a>
