@@ -86,11 +86,9 @@ export const foundingOffer = {
 } as const;
 
 /*
-  Studio stats — the homepage tiles. These are M STUDIO's own offer, not
-  operating history: the Maine Cleaning Co numbers (1,000+ customers,
-  7,000+ visits, …) belong to the proving-ground story on /about, where
-  they're attributed — per Meg, they shouldn't read as M Studio KPIs.
-  Every value here must stay true of what the site actually promises.
+  Offer stats — M STUDIO's own promises. Live beside the pricing cards
+  (risk-reversal belongs next to the price, per the site survey); every
+  value must stay true of what the site actually delivers.
 */
 export const studioStats = [
   { value: "24 hrs", label: "answers → written scope" },
@@ -98,6 +96,34 @@ export const studioStats = [
   { value: "$0", label: "to scope · nothing binding" },
   { value: "100%", label: "you own the code" },
 ] as const;
+
+/*
+  Proving ground — the operating history behind the studio, ATTRIBUTED.
+  These are The Maine Cleaning Co's numbers, not M Studio client KPIs
+  (per Meg), so the label naming the company renders wherever the tiles
+  do. They answer "has this person done this before" — the first question
+  a visitor asks — so they sit under the hero on the homepage.
+*/
+export const provingGround = {
+  label: "Built from real business — The Maine Cleaning Co.",
+  stats: [
+    { value: "10 yrs", label: "building systems" },
+    { value: "1,000+", label: "customers served" },
+    { value: "7,000+", label: "service visits" },
+    { value: "$1M+", label: "operations managed" },
+  ],
+} as const;
+
+/*
+  Client testimonial — renders under the Starter card in Pricing ONLY when
+  `quote` is non-empty. Paste TJ's real words here when they land; never
+  invent one. One specific sentence beats three vague ones.
+*/
+export const testimonial: { quote: string; name: string; business: string } = {
+  quote: "",
+  name: "",
+  business: "",
+};
 
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =

@@ -1,6 +1,6 @@
 import Reveal from "./Reveal";
 import CountUp from "./CountUp";
-import { foundingOffer } from "@/lib/content";
+import { foundingOffer, studioStats, testimonial } from "@/lib/content";
 
 /*
   Pricing — the "harbor at night" pricing section. Three honest ways to work
@@ -78,6 +78,24 @@ export default function Pricing() {
             </div>
           </Reveal>
         )}
+
+        {/* Offer tiles — the risk-reversal numbers, beside the price where
+            that question is actually asked (moved here from the hero band). */}
+        <Reveal delay={150}>
+          <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            {studioStats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-xl border border-line bg-surface/40 px-4 py-3.5"
+              >
+                <span className="display text-xl text-ink">{s.value}</span>
+                <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-widest text-faint">
+                  {s.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Reveal>
 
         {/* items-stretch on ALL breakpoints — the three cards must align so
             the eye can compare offers across a horizontal line (survey M-04). */}
@@ -191,6 +209,22 @@ export default function Pricing() {
             </article>
           </Reveal>
         </div>
+
+        {/* Client words — renders only when a REAL quote exists in
+            lib/content.ts (testimonial.quote). Never ship a fabricated one. */}
+        {testimonial.quote && (
+          <Reveal delay={200}>
+            <figure className="mt-8 rounded-2xl border border-gold/30 bg-gold/[0.05] p-6">
+              <blockquote className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink">
+                &ldquo;{testimonial.quote}&rdquo;
+              </blockquote>
+              <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
+                — {testimonial.name}
+                {testimonial.business ? ` · ${testimonial.business}` : ""}
+              </figcaption>
+            </figure>
+          </Reveal>
+        )}
       </div>
     </section>
   );

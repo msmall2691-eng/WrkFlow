@@ -1,5 +1,5 @@
 import Reveal from "./Reveal";
-import { founderNote, studioStats } from "@/lib/content";
+import { founderNote, provingGround } from "@/lib/content";
 
 /*
   OperatorBand — the homepage's compact replacement for the full founder
@@ -51,20 +51,27 @@ export default function OperatorBand() {
             </div>
           </Reveal>
 
-          {/* Offer tiles — M Studio's own promises, not TMCC's history */}
+          {/* Proving-ground tiles — TMCC's history, named as such. The
+              attribution line is load-bearing: without it these read as
+              M Studio client KPIs, which they are not. */}
           <Reveal delay={80}>
-            <div className="grid h-full grid-cols-2 gap-3">
-              {studioStats.map((s) => (
-                <div
-                  key={s.label}
-                  className="flex flex-col justify-center rounded-2xl border border-line bg-surface/40 p-5 backdrop-blur-sm"
-                >
-                  <span className="display text-2xl text-ink sm:text-3xl">{s.value}</span>
-                  <span className="mt-1 font-mono text-[10px] uppercase tracking-widest text-faint">
-                    {s.label}
-                  </span>
-                </div>
-              ))}
+            <div className="flex h-full flex-col gap-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
+                {provingGround.label}
+              </p>
+              <div className="grid flex-1 grid-cols-2 gap-3">
+                {provingGround.stats.map((s) => (
+                  <div
+                    key={s.label}
+                    className="flex flex-col justify-center rounded-2xl border border-line bg-surface/40 p-5 backdrop-blur-sm"
+                  >
+                    <span className="display text-2xl text-ink sm:text-3xl">{s.value}</span>
+                    <span className="mt-1 font-mono text-[10px] uppercase tracking-widest text-faint">
+                      {s.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>
