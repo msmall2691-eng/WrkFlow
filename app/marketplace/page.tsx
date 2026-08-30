@@ -10,7 +10,8 @@ import LinxMark from "@/components/LinxMark";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = {
-  title: "M Linx — Premade Tools, Sites & Plugins | M Studio",
+  // The root layout's title template appends "· M Studio" — no brand here.
+  title: "M Linx — Premade Tools, Sites & Plugins",
   description:
     "M Linx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
 };

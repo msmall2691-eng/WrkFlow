@@ -71,7 +71,7 @@ export default function Hero() {
             </a>
           </Magnetic>
           <a
-            href="#services"
+            href="#work"
             className="hero-outline inline-flex items-center justify-center gap-2 rounded-full border px-7 py-3.5 text-sm font-medium transition-all active:scale-[0.97]"
           >
             See the work.

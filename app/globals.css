@@ -16,7 +16,9 @@
   /* Text — off-white on navy */
   --color-ink: #eef2f4;
   --color-muted: #aebecb;
-  --color-faint: #8497a8;
+  /* Lifted from #8497a8 — that sat at 3.77:1 on the navy ground, under the
+     4.5:1 AA floor for the micro-labels that use it (site survey C-02). */
+  --color-faint: #97a9ba;
 
   /* Signal accent — default "Harbor" blue (the picker re-tunes it live) */
   --color-signal: #2f6df0;
@@ -200,6 +202,42 @@ html {
 /* Clear the fixed nav (h-16 / 64px) when jumping to a section anchor */
 :where(section[id], [id].scroll-target) {
   scroll-margin-top: 5rem;
+}
+
+/*
+  Mobile readability floor (site survey C-01) — the uppercase mono
+  micro-labels are set at 9–11px, which works at desktop reading distance
+  and is unreadable on a phone outdoors. Rather than touching dozens of
+  utility classes, lift every sub-12px arbitrary size to 12px under the
+  phone breakpoint. Desktop keeps the fine sizes.
+*/
+@media (max-width: 640px) {
+  [class*="text-[9px]"],
+  [class*="text-[10px]"],
+  [class*="text-[11px]"] {
+    font-size: 12px;
+  }
+}
+
+/*
+  Contrast (site survey C-02) — the harbor-blue signal (#2f6df0) is fine as
+  a BUTTON background under white text, but too dark as TEXT on the navy
+  ground (≈3.7:1). Lighten signal-colored text in dark mode only; buttons
+  and fills keep the brand blue. Light mode's cream ground doesn't need it.
+*/
+:root:not([data-theme="light"]) .text-signal {
+  color: #6b97f7;
+}
+
+/*
+  Touch targets (site survey C-03) — the free-tool chips and quote-calc
+  segmented controls are 28–37px tall, sized for a mouse. On coarse
+  pointers give every control in the tools section a 44px minimum.
+*/
+@media (pointer: coarse) {
+  #tools button {
+    min-height: 44px;
+  }
 }
 
 body {
