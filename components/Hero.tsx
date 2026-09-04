@@ -1,4 +1,5 @@
 import ReactiveAurora from "./ReactiveAurora";
+import WeatherLayer from "./WeatherLayer";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
 import OfferLink from "./OfferLink";
@@ -35,6 +36,12 @@ export default function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[var(--hero-bg)]/80 to-[var(--color-base)]"
       />
+
+      {/* The Portland sky. It has to sit AFTER every background layer —
+          .hero-light-bg paints an opaque cream gradient in daylight mode and
+          would bury the canvas entirely — but before the z-10 content, so it
+          never covers a word or eats a click. */}
+      <WeatherLayer />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 px-6 pb-20 pt-24 sm:pb-16 lg:grid-cols-[1.15fr_0.85fr]">
         <div>
