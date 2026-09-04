@@ -420,6 +420,7 @@ export const work: WorkItem[] = [
     title: "Turnover scheduling",
     blurb: "Internal board for STR turnovers—who, where, and when, at a glance.",
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
+    replaced: "A shared Google Calendar and text threads",
     status: "In daily production",
     shot: "/shots/brightbase-turnovers.png",
   },
