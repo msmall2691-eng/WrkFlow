@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { getSunTimes } from "@/lib/sun";
 
 /*
   Subdomain routing — intake.mlinx.studio serves the new-client project
@@ -90,12 +91,23 @@ export function middleware(request: NextRequest) {
   const rewriteUrl = questionnaireRewrite(request);
 
   /*
-    The intake previously defaulted to Daylight; per Meg it now opens in the
-    same dark "Harbor" theme as the rest of the site, so the questionnaire
-    reads as one continuous surface with mlinx.studio. The x-theme-default
-    plumbing in app/layout.tsx stays (absent header = dark), and a visitor
-    who explicitly chose a theme still keeps their choice.
+    Theme default, from the actual Portland sun.
+
+    The hero has always said "the daylight sets the theme" while nothing set
+    it: x-theme-default was read in app/layout.tsx but never sent by anyone,
+    so themeDefault was permanently "dark" and the entire Daylight palette
+    shipped dead. It now carries the one input it was built for.
+
+    Sunrise to sunset serves Daylight, the rest of the day serves Harbor. A
+    visitor who picked a theme still keeps it — the inline script in the
+    layout reads localStorage first and only falls back to this default.
+
+    getSunTimes is local math (no network, no Node APIs), so it is safe on the
+    Edge runtime this middleware runs on. The pages are server-rendered on
+    demand rather than statically cached, which is what keeps a night visitor
+    from being handed a daytime shell.
   */
+  requestHeaders.set("x-theme-default", isDaylightInMaine() ? "light" : "dark");
 
   const response = rewriteUrl
     ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
@@ -103,6 +115,24 @@ export function middleware(request: NextRequest) {
 
   response.headers.set("Content-Security-Policy", csp);
   return response;
+}
+
+/*
+  Is it currently between sunrise and sunset in Portland? Falls back to dark
+  if the sun math ever returns something unusable — a broken clock should not
+  hand a visitor a half-lit page.
+*/
+function isDaylightInMaine(now: Date = new Date()): boolean {
+  try {
+    const { sunrise, sunset } = getSunTimes(now);
+    const rise = sunrise.getTime();
+    const set = sunset.getTime();
+    if (!Number.isFinite(rise) || !Number.isFinite(set)) return false;
+    const t = now.getTime();
+    return t >= rise && t < set;
+  } catch {
+    return false;
+  }
 }
 
 export const config = {

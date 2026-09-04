@@ -74,7 +74,6 @@ export default function AccentSwitcher() {
     setLight(mode === "light");
     window.dispatchEvent(new Event("theme:change"));
   }, []);
-  const toggleTheme = () => applyTheme(light ? "dark" : "light");
 
   const applyColor = (a: Accent) => {
     const root = document.documentElement.style;
@@ -334,7 +333,10 @@ export default function AccentSwitcher() {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        aria-label="Change accent color"
+        /* Was "Change accent color", which is why the Harbor/Daylight switch
+           inside this panel was unfindable: the button that opens it claimed
+           to do something narrower than it does. */
+        aria-label="Appearance — light or dark theme, and accent colour"
         aria-expanded={open}
         className="inline-flex items-center gap-2 rounded-full border border-line bg-surface/90 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-muted shadow-lg backdrop-blur-md transition-colors hover:text-ink"
       >
@@ -342,7 +344,7 @@ export default function AccentSwitcher() {
           className="h-3.5 w-3.5 rounded-full ring-2 ring-offset-1 ring-offset-surface"
           style={{ backgroundColor: swatch.signal }}
         />
-        {auto ? "Maine daylight" : "Theme"}
+        {auto ? "Maine daylight" : light ? "Daylight" : "Harbor"}
       </button>
     </div>
   );
