@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useMaine } from "@/lib/useMaine";
 
 /*
@@ -18,8 +19,46 @@ import { useMaine } from "@/lib/useMaine";
 
 type Tile = { label: string; value: string; drives: string };
 
+/*
+  Why the page is the colour it is (brief A2.4). When the theme is on Auto the
+  claim above this line is doing real work, so it should show its reasoning —
+  and when someone has overridden it, saying "the daylight sets the theme"
+  without qualification would be false for them.
+*/
+function useThemeReason(sunset?: string) {
+  const [line, setLine] = useState<string | null>(null);
+
+  useEffect(() => {
+    const read = () => {
+      const root = document.documentElement;
+      const isLight = root.dataset.theme === "light";
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem("theme");
+      } catch {
+        /* ignore */
+      }
+      if (stored === "light" || stored === "dark") {
+        setLine(`${isLight ? "Daylight" : "Harbor"} because you chose it.`);
+        return;
+      }
+      setLine(
+        isLight
+          ? `Light because the sun is up in Portland${sunset ? ` — sunset ${sunset}` : ""}.`
+          : "Dark because the sun is down in Portland.",
+      );
+    };
+    read();
+    window.addEventListener("theme:change", read);
+    return () => window.removeEventListener("theme:change", read);
+  }, [sunset]);
+
+  return line;
+}
+
 export default function LiveReadout() {
   const d = useMaine();
+  const reason = useThemeReason(d?.sunset);
 
   const tiles: Tile[] = [];
   if (d) {
@@ -88,11 +127,18 @@ export default function LiveReadout() {
           true: middleware serves Daylight between sunrise and sunset, the
           accent follows the sun's phase through the day, and the aurora and
           water react to live weather and tide. */}
-      <p className="border-t border-[var(--panel-line)] px-4 py-2.5 text-[11px] leading-relaxed text-[color:var(--panel-muted)]">
-        This page reads the Maine coast in real time — the daylight sets the
-        theme and the accent, the weather sets the glow, the tide moves the
-        water.
-      </p>
+      <div className="border-t border-[var(--panel-line)] px-4 py-2.5">
+        <p className="text-[11px] leading-relaxed text-[color:var(--panel-muted)]">
+          This page reads the Maine coast in real time — the daylight sets the
+          theme and the accent, the weather sets the glow, the tide moves the
+          water.
+        </p>
+        {reason && (
+          <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-[color:var(--panel-faint)]">
+            {reason}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

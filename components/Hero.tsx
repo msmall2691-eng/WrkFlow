@@ -2,6 +2,7 @@ import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
 import OfferLink from "./OfferLink";
+import { appOffer, foundingOffer } from "@/lib/content";
 
 /*
   Hero — headline left, live instrument panel right (survey J-02, per Meg).
@@ -45,13 +46,17 @@ export default function Hero() {
             Available for new projects
           </p>
 
+          {/* Says what we sell, in the words the buyer already uses. "Web apps"
+              is the one term that has to be here; everything else is plain. */}
           <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
-            Technology that works{" "}
-            <span className="shimmer-text">the way your business does.</span>
+            We build websites and{" "}
+            <span className="shimmer-text">web apps</span> for small businesses.
           </h1>
 
           <p className="hero-sub metallic-text mt-6 max-w-xl text-[1rem] font-medium leading-relaxed">
-            Built from real operations. Designed for the way people actually work.
+            Booking, quoting, scheduling, customer records — and the site in
+            front of it. Built by someone who ran a service company for ten
+            years first.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -76,6 +81,21 @@ export default function Hero() {
               See the work.
             </a>
           </div>
+
+          {/* A price above the fold (brief A6). Pricing used to sit 73% down a
+              21-screen phone page, so someone deciding whether you were even
+              in their range had to travel a long way on faith. The app side
+              has no published number yet, so it advertises the free scope
+              rather than inventing one. */}
+          <p className="mt-7 text-sm text-muted">
+            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
+              Websites from ${foundingOffer.price}
+            </a>
+            <span className="mx-2 text-faint" aria-hidden="true">·</span>
+            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
+              Web apps from ${appOffer.price.toLocaleString("en-US")}
+            </a>
+          </p>
         </div>
 
         {/* The instrument panel — live Portland data, promoted from a

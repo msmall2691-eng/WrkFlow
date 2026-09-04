@@ -58,20 +58,26 @@ export default function AccentSwitcher() {
   const [auto, setAuto] = useState(false);
   const [phase, setPhase] = useState<Accent>(PHASES.day);
   const [light, setLight] = useState(false);
+  const [mode, setMode] = useState<"auto" | "dark" | "light">("auto");
   const activeRef = useRef(1);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Harbor (dark) / Daylight (light) — persists in localStorage. The flash-
-  // prevention script in layout.tsx reads the stored theme before first paint.
-  const applyTheme = useCallback((mode: "dark" | "light") => {
-    if (mode === "light") {
-      document.documentElement.dataset.theme = "light";
-      try { localStorage.setItem("theme", "light"); } catch { /* ignore */ }
-    } else {
-      delete document.documentElement.dataset.theme;
-      try { localStorage.setItem("theme", "dark"); } catch { /* ignore */ }
-    }
-    setLight(mode === "light");
+  /*
+    Auto / Daylight / Harbor — persists in localStorage; the pre-paint script
+    in layout.tsx reads it before anything renders. Auto hands the page back
+    to the Portland sun, which the same script recorded on the root element,
+    so switching back needs no reload and no second copy of the sun math.
+  */
+  const applyTheme = useCallback((mode: "auto" | "dark" | "light") => {
+    const bySun = document.documentElement.dataset.themeAuto === "light" ? "light" : "dark";
+    const effective = mode === "auto" ? bySun : mode;
+
+    if (effective === "light") document.documentElement.dataset.theme = "light";
+    else delete document.documentElement.dataset.theme;
+
+    try { localStorage.setItem("theme", mode); } catch { /* ignore */ }
+    setMode(mode);
+    setLight(effective === "light");
     window.dispatchEvent(new Event("theme:change"));
   }, []);
 
@@ -137,7 +143,15 @@ export default function AccentSwitcher() {
     if (saved === "auto") enableAuto(false);
     else if (saved != null && ACCENTS[Number(saved)]) selectManual(Number(saved), false);
     else selectManual(1, false); // default: Harbor
-    // Initialize the light-mode flag from whatever the flash script set.
+    // Initialize theme mode + light flag from whatever the pre-paint script
+    // already settled, so the control opens showing the truth.
+    let storedTheme: string | null = null;
+    try {
+      storedTheme = localStorage.getItem("theme");
+    } catch {
+      /* ignore */
+    }
+    setMode(storedTheme === "light" || storedTheme === "dark" ? storedTheme : "auto");
     setLight(document.documentElement.dataset.theme === "light");
     return stopTimer;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -219,12 +233,13 @@ export default function AccentSwitcher() {
               <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
                 Mode
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-3 gap-2">
                 {([
-                  { id: "dark", label: "Harbor", note: "Dark", glyph: "☾" },
+                  { id: "auto", label: "Auto", note: "Follows the sun", glyph: "◑" },
                   { id: "light", label: "Daylight", note: "Light", glyph: "☀" },
+                  { id: "dark", label: "Harbor", note: "Dark", glyph: "☾" },
                 ] as const).map((m) => {
-                  const on = m.id === (light ? "light" : "dark");
+                  const on = m.id === mode;
                   return (
                     <button
                       key={m.id}
@@ -344,7 +359,7 @@ export default function AccentSwitcher() {
           className="h-3.5 w-3.5 rounded-full ring-2 ring-offset-1 ring-offset-surface"
           style={{ backgroundColor: swatch.signal }}
         />
-        {auto ? "Maine daylight" : light ? "Daylight" : "Harbor"}
+        {mode === "auto" ? "Auto" : light ? "Daylight" : "Harbor"}
       </button>
     </div>
   );
