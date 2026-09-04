@@ -1,33 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMaine } from "@/lib/useMaine";
 
 /*
   TideKey — a small, quiet legend for the founder section's "water": tells you
   it's the live Portland tide and where it's headed. Explanatory, not a focal
-  point. Pulls from /api/maine (browser-cached, so it shares the same call).
+  point.
+
+  It used to fetch /api/maine itself, on the assumption the browser would
+  dedupe it against the shared call. It did not: a page load made two
+  identical requests. It reads the useMaine cache now, which is the thing
+  built to guarantee one fetch rather than hope for one.
 */
-type Data = {
-  tide?: "rising" | "falling" | null;
-  nextTide?: { type: string; time: string } | null;
-  tideLevel?: number | null;
-};
-
 export default function TideKey() {
-  const [d, setD] = useState<Data>({});
+  const d = useMaine();
 
-  useEffect(() => {
-    let on = true;
-    fetch("/api/maine")
-      .then((r) => r.json())
-      .then((j) => on && setD(j))
-      .catch(() => {});
-    return () => {
-      on = false;
-    };
-  }, []);
-
-  if (!d.tide) return null;
+  if (!d?.tide) return null;
   const pct = typeof d.tideLevel === "number" ? Math.round(d.tideLevel * 100) : null;
 
   return (
