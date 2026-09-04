@@ -399,13 +399,11 @@ export const work: WorkItem[] = [
     title: "Autopilot",
     blurb: "A complete CRM + field-service platform—scheduling, invoicing, and STR turnover automation—designed and built from scratch.",
     stack: ["Next.js", "Supabase", "Vercel"],
-    // O-03: *.mlinx.studio already points at Vercel — autopilot.mlinx.studio
-    // resolves but returns DEPLOYMENT_NOT_FOUND, so the domain still has to be
-    // added to the Autopilot project in Vercel. Once it is, change both lines
-    // below to autopilot.mlinx.studio and the vercel.app slug is gone from the
-    // page. Not flipped yet: a pretty label over a dead link is worse than an
-    // ugly one over a live link.
-    url: "https://autopilot-sooty.vercel.app",
+    // O-03 closed: the domain is attached to the Autopilot project in Vercel
+    // and serves, so the card's browser chrome now reads autopilot.mlinx.studio
+    // instead of the auto-generated vercel.app slug. The chrome label is derived
+    // from this URL, so there is nothing else to keep in sync.
+    url: "https://autopilot.mlinx.studio",
     live: true,
     shot: "/shots/autopilot.png",
   },
