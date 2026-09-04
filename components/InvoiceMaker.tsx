@@ -97,7 +97,7 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
           <div className="rounded-xl bg-white p-6 text-[#16293a] shadow-[0_18px_50px_-16px_rgba(0,0,0,0.4)]">
             <div className="flex items-start justify-between border-b-2 border-signal pb-3">
               <div>
-                <p className="text-base font-semibold">{biz || "Your Business"}</p>
+                <p className="text-[1rem] font-semibold">{biz || "Your Business"}</p>
                 <p className="text-xs text-[#6b7c89]">Invoice #{invNo}</p>
               </div>
               <div className="text-right">
@@ -123,7 +123,7 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
               {taxRate > 0 && (
                 <div className="flex justify-between py-0.5"><span className="text-[#6b7c89]">Tax ({taxRate}%)</span><span>{money(tax)}</span></div>
               )}
-              <div className="mt-1 flex justify-between border-t-2 border-[#16293a] pt-2 text-base font-bold">
+              <div className="mt-1 flex justify-between border-t-2 border-[#16293a] pt-2 text-[1rem] font-bold">
                 <span>Total</span><span>{money(total)}</span>
               </div>
             </div>

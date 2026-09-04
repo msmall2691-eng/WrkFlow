@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import { Label, Slider, Seg, Toggle } from "./KitUI";
+import { requestOffer } from "@/lib/offer";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { foundingOffer } from "@/lib/content";
@@ -218,8 +219,11 @@ export default function QuoteCalc() {
               <Line k={sizeSummary} v={money(sizeTotal)} />
               {addonTotal > 0 && <Line k="Add-ons" v={money(addonTotal)} />}
             </div>
+            {/* Carries the quote they just built into the contact box, rather
+                than dropping it at the anchor (site survey O-02). */}
             <a
               href="#contact"
+              onClick={() => requestOffer("quote", summary)}
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Request this quote →

@@ -56,7 +56,7 @@ export default function FAQ() {
           {QUESTIONS.map((item, i) => (
             <Reveal key={item.q} delay={i * 40}>
               <details className="group">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-base font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-[1rem] font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
                   <span>{item.q}</span>
                   <span
                     aria-hidden="true"
@@ -65,7 +65,7 @@ export default function FAQ() {
                     +
                   </span>
                 </summary>
-                <div className="px-5 pb-5 pt-0 text-sm leading-relaxed text-muted md:px-6 md:pb-6 md:text-base">
+                <div className="px-5 pb-5 pt-0 text-sm leading-relaxed text-muted md:px-6 md:pb-6 md:text-[1rem]">
                   {item.a}
                 </div>
               </details>

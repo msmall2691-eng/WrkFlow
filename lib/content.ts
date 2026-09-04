@@ -339,6 +339,13 @@ export type WorkItem = {
   stack?: string[];
   /** Live URL — Tier 1 & 2 only; Tier 3 has no link. */
   url?: string;
+  /**
+   * What the preview card's browser chrome should read, when the real host is
+   * not the one to show (site survey O-03). Leave undefined and the card shows
+   * the host from `url` — never set this to a domain that isn't actually
+   * serving the site, or the chrome starts lying about where the link goes.
+   */
+  displayDomain?: string;
   /** True if the site allows embedding (show a live iframe preview, not a shot). */
   live?: boolean;
   /** Screenshot for static/private cards. Live sites render via iframe, so they can omit it. */
@@ -392,6 +399,12 @@ export const work: WorkItem[] = [
     title: "Autopilot",
     blurb: "A complete CRM + field-service platform—scheduling, invoicing, and STR turnover automation—designed and built from scratch.",
     stack: ["Next.js", "Supabase", "Vercel"],
+    // O-03: *.mlinx.studio already points at Vercel — autopilot.mlinx.studio
+    // resolves but returns DEPLOYMENT_NOT_FOUND, so the domain still has to be
+    // added to the Autopilot project in Vercel. Once it is, change both lines
+    // below to autopilot.mlinx.studio and the vercel.app slug is gone from the
+    // page. Not flipped yet: a pretty label over a dead link is worse than an
+    // ugly one over a live link.
     url: "https://autopilot-sooty.vercel.app",
     live: true,
     shot: "/shots/autopilot.png",

@@ -23,8 +23,21 @@ type ContactPayload = {
   company?: string;
   phone?: string;
   message?: string;
+  // Which CTA sent them (site survey O-02) — "starter", "care", "custom",
+  // "quote", "call", "project". Absent when they came in cold.
+  offer?: string;
   // Honeypot: real users never see/fill this. Bots do. If present, we silently drop.
   botField?: string;
+};
+
+// Labels for the offer tag, so the inbox reads in English rather than slugs.
+const OFFER_LABELS: Record<string, string> = {
+  project: "Start a project (hero)",
+  starter: "Founding Starter spot",
+  care: "Care Plan",
+  custom: "Custom build",
+  call: "Free 15-min call",
+  quote: "Instant quote calculator",
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -52,6 +65,8 @@ export async function POST(req: Request) {
   const company = (body.company || "").trim();
   const phone = (body.phone || "").trim();
   const message = (body.message || "").trim();
+  const offerKey = (body.offer || "").trim();
+  const offer = OFFER_LABELS[offerKey] || "";
 
   // Honeypot tripped → pretend success so bots don't learn anything.
   if (body.botField && body.botField.trim() !== "") {
@@ -80,7 +95,7 @@ export async function POST(req: Request) {
 
   const transporter = createMailTransporter(GMAIL_USER, GMAIL_APP_PASSWORD);
   const to = CONTACT_TO || GMAIL_USER;
-  const subject = `New M Studio inquiry — ${name}${company ? ` (${company})` : ""}`;
+  const subject = `New M Studio inquiry${offer ? ` · ${offer}` : ""} — ${name}${company ? ` (${company})` : ""}`;
 
   const text = [
     `New inquiry from mlinx.studio`,
@@ -89,6 +104,7 @@ export async function POST(req: Request) {
     `Email:   ${email}`,
     company ? `Company: ${company}` : null,
     phone ? `Phone:   ${phone}` : null,
+    offer ? `Offer:   ${offer}` : null,
     ``,
     `What they're trying to solve:`,
     message,
@@ -103,6 +119,7 @@ export async function POST(req: Request) {
       <table style="border-collapse:collapse;font-size:14px;margin-bottom:16px;">
         <tr><td style="padding:2px 12px 2px 0;color:#64748b;">Email</td><td><a href="mailto:${escapeAttr(email)}">${escapeHtml(email)}</a></td></tr>
         ${phone ? `<tr><td style="padding:2px 12px 2px 0;color:#64748b;">Phone</td><td><a href="tel:${escapeAttr(phone)}">${escapeHtml(phone)}</a></td></tr>` : ""}
+        ${offer ? `<tr><td style="padding:2px 12px 2px 0;color:#64748b;">Offer</td><td><strong>${escapeHtml(offer)}</strong></td></tr>` : ""}
       </table>
       <p style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin:0 0 6px;">What they're trying to solve</p>
       <div style="white-space:pre-wrap;font-size:15px;background:#f1f5f9;border-radius:10px;padding:14px 16px;">${escapeHtml(message)}</div>

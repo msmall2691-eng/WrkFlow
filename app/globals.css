@@ -7,7 +7,17 @@
   (gold) accent. Accents are CSS variables so they re-tune in one place.
 */
 @theme {
-  /* Base surfaces — harbor navy page, lifted panels, hairline borders */
+  /*
+    Base surfaces — harbor navy page, lifted panels, hairline borders.
+
+    CAUTION: `--color-base` makes Tailwind generate `.text-base` as a COLOR
+    utility, which shadows the built-in `text-base` font size. The generated
+    rule is `.text-base { color: var(--color-base) }` — i.e. text painted the
+    same navy as the page, invisible, and with no font-size at all. It bit the
+    FAQ answers (`text-muted md:text-base`, where the responsive variant sorts
+    later and won). Write `text-[1rem]` for the size; `bg-base` and
+    `border-base` are unaffected.
+  */
   --color-base: #0b1722;
   --color-surface: #122231;
   --color-elevated: #16293a;
@@ -68,7 +78,11 @@
   --panel-line: rgba(238, 242, 244, 0.12);
   --panel-ink: #ffffff;
   --panel-muted: rgba(238, 242, 244, 0.75);
-  --panel-faint: rgba(238, 242, 244, 0.42);
+  /* Lifted from 0.42 (site survey O-05). At 42% over the hero ground this
+     composited to ~3.77:1 — the AIR/WATER/WIND/TIDE/SWELL labels on the
+     LiveReadout panel, which now sits in the hero. 55% clears 4.5:1 with
+     headroom for the aurora brightening the ground behind it. */
+  --panel-faint: rgba(238, 242, 244, 0.55);
   --panel-input-bg: rgba(238, 242, 244, 0.05);
 
   /* Giant background wordmark. Was hardcoded white, so it simply vanished
@@ -107,7 +121,8 @@
   --panel-line: rgba(11, 23, 34, 0.1);
   --panel-ink: #0b1722;
   --panel-muted: rgba(11, 23, 34, 0.68);
-  --panel-faint: rgba(11, 23, 34, 0.42);
+  /* Same lift as dark mode — 42% navy on the near-white panel was ~2.7:1. */
+  --panel-faint: rgba(11, 23, 34, 0.62);
   --panel-input-bg: rgba(11, 23, 34, 0.04);
 
   --aurora-deep-r: 0.96;
@@ -225,7 +240,8 @@ html {
   ground (≈3.7:1). Lighten signal-colored text in dark mode only; buttons
   and fills keep the brand blue. Light mode's cream ground doesn't need it.
 */
-:root:not([data-theme="light"]) .text-signal {
+:root:not([data-theme="light"]) .text-signal,
+:root:not([data-theme="light"]) .marker {
   color: #6b97f7;
 }
 
@@ -238,6 +254,54 @@ html {
   #tools button {
     min-height: 44px;
   }
+}
+
+/*
+  Slider hit area (site survey O-04) — the quote-calculator size sliders
+  measured 278x6 on a phone: the track IS the target, so the whole control
+  was 6px tall in a tool meant to be used standing on a jobsite. Keep the
+  6px bar visible, but give the input a 44px box and draw the bar inside it,
+  so anywhere in the 44px band starts a drag.
+*/
+.slider-touch {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 44px;
+  background: transparent;
+}
+.slider-touch::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-line);
+}
+.slider-touch::-moz-range-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-line);
+}
+.slider-touch::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  margin-top: -7px; /* centre the 20px thumb on the 6px track */
+  border: 0;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  cursor: pointer;
+}
+.slider-touch::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  cursor: pointer;
+}
+.slider-touch:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+  border-radius: 9999px;
 }
 
 body {

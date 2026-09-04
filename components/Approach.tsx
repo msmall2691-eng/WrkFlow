@@ -55,7 +55,7 @@ export default function Approach() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 text-base leading-relaxed text-muted">
+            <p className="mt-5 text-[1rem] leading-relaxed text-muted">
               You see it as it takes shape. You own it. No lock-in.
             </p>
           </Reveal>

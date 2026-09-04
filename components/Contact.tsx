@@ -1,15 +1,44 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
+import {
+  OFFER_EVENT,
+  isOfferKey,
+  prefillFor,
+  type OfferDetail,
+  type OfferKey,
+} from "@/lib/offer";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
+  /*
+    Which offer sent them here, and the message the box opens with
+    (site survey O-02). Two sources: a CTA click on this page, and
+    ?offer= on the URL so a shared or bookmarked link works the same.
+  */
+  const [offer, setOffer] = useState<OfferKey | null>(null);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const apply = ({ offer: key, text }: OfferDetail) => {
+      setOffer(key);
+      setMessage(prefillFor(key, text));
+      setStatus("idle");
+    };
+
+    const param = new URLSearchParams(window.location.search).get("offer");
+    if (isOfferKey(param)) apply({ offer: param });
+
+    const onOffer = (e: Event) => apply((e as CustomEvent<OfferDetail>).detail);
+    window.addEventListener(OFFER_EVENT, onOffer);
+    return () => window.removeEventListener(OFFER_EVENT, onOffer);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -33,6 +62,8 @@ export default function Contact() {
 
       setStatus("success");
       form.reset();
+      setMessage("");
+      setOffer(null);
     } catch (err) {
       setStatus("error");
       setError(
@@ -77,7 +108,7 @@ export default function Contact() {
               </h2>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 text-base leading-relaxed text-muted">
+              <p className="mt-6 text-[1rem] leading-relaxed text-muted">
                 A few sentences about what you want to build. Every message gets
                 a real reply within a day.
               </p>
@@ -154,6 +185,10 @@ export default function Contact() {
                     />
                   </div>
 
+                  {/* Which CTA produced this enquiry — travels with the email
+                      so an offer can be told from an idle click (survey O-02). */}
+                  {offer && <input type="hidden" name="offer" value={offer} />}
+
                   <div className="grid gap-6 sm:grid-cols-2">
                     <Field
                       label="Name"
@@ -195,6 +230,8 @@ export default function Contact() {
                       name="message"
                       required
                       rows={5}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
                       placeholder="The site you want, the plugin you need, the busywork eating your week…"
                       className="w-full resize-y rounded-lg border border-[var(--panel-line)] bg-[var(--panel-input-bg)] px-4 py-3 text-sm text-[color:var(--panel-ink)] placeholder:text-[color:var(--panel-faint)] focus:border-signal/70 focus:outline-none"
                     />
@@ -250,7 +287,7 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
         ✓
       </div>
       <h3 className="mt-5 font-display text-2xl text-ink">Got it.</h3>
-      <p className="mt-3 text-base leading-relaxed text-muted">
+      <p className="mt-3 text-[1rem] leading-relaxed text-muted">
         Every message is read personally, with a reply within a day.
       </p>
       <button
@@ -271,7 +308,9 @@ function FieldLabel({ htmlFor, label, optional }: { htmlFor: string; label: stri
       className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-[color:var(--panel-muted)]"
     >
       {label}
-      {optional && <span className="text-faint/60"> · optional</span>}
+      {/* Was text-faint/60 — 3.51:1 inside the form panel. Same class of
+          miss as O-05: use the panel's own faint token, which clears AA. */}
+      {optional && <span className="text-[color:var(--panel-faint)]"> · optional</span>}
     </label>
   );
 }

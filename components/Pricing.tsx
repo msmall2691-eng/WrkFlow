@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import OfferLink from "./OfferLink";
 import CountUp from "./CountUp";
 import { foundingOffer, studioStats, testimonial } from "@/lib/content";
 
@@ -54,7 +55,7 @@ export default function Pricing() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-4 text-base leading-relaxed text-muted">
+            <p className="mt-4 text-[1rem] leading-relaxed text-muted">
               Own it, keep it running, or scope something bigger.
             </p>
           </Reveal>
@@ -108,7 +109,7 @@ export default function Pricing() {
                 <>
                   <p className="mt-4 font-display text-3xl text-ink">
                     <CountUp value={foundingOffer.price} prefix="$" />
-                    <span className="ml-2 align-middle text-base text-faint line-through">${foundingOffer.fullPrice.toLocaleString("en-US")}</span>
+                    <span className="ml-2 align-middle text-[1rem] text-faint line-through">${foundingOffer.fullPrice.toLocaleString("en-US")}</span>
                   </p>
                   <p className="mt-1.5 text-sm text-muted">
                     ${foundingOffer.deposit} to start · ${foundingOffer.balance} at launch
@@ -137,22 +138,16 @@ export default function Pricing() {
               </ul>
               {/* The card's one real button — the highest-intent element on
                   the page gets the strongest treatment (per site survey). */}
-              <a
-                href="#contact"
+              {/* Every card ends on its button, so the three CTAs share one
+                  baseline (survey O-06). The call and the founding fine print
+                  moved to the strip under the whole row. */}
+              <OfferLink
+                offer="starter"
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
               >
                 {foundingActive ? "Claim a founding spot" : "Get a Starter site"}
                 <span aria-hidden="true">→</span>
-              </a>
-              <a href="#contact" className="mt-3 inline-flex w-fit items-center gap-1.5 text-sm text-muted transition-colors hover:text-ink">
-                or book a free 15-min call
-                <span aria-hidden="true">→</span>
-              </a>
-              {foundingActive && (
-                <p className="mt-3 text-xs leading-relaxed text-faint">
-                  Founding pricing includes a testimonial + permission to feature your site in our portfolio.
-                </p>
-              )}
+              </OfferLink>
             </article>
           </Reveal>
 
@@ -162,7 +157,7 @@ export default function Pricing() {
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Care Plan</p>
               <p className="mt-4 font-display text-3xl text-ink">
                 <CountUp value={49} prefix="$" />
-                <span className="text-base text-faint">/mo</span>
+                <span className="text-[1rem] text-faint">/mo</span>
               </p>
               <p className="mt-1.5 text-xs leading-relaxed text-faint">
                 Cancel anytime — your site keeps running, you just take over hosting.
@@ -171,13 +166,13 @@ export default function Pricing() {
                 Hosting, domain, security, and small edits — handled. The stuff
                 that keeps a site running, off your plate.
               </p>
-              <a
-                href="#contact"
+              <OfferLink
+                offer="care"
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-signal/50 px-6 py-3 text-sm font-semibold text-signal transition-colors hover:bg-signal/10"
               >
                 Keep it running
                 <span aria-hidden="true">→</span>
-              </a>
+              </OfferLink>
             </article>
           </Reveal>
 
@@ -199,16 +194,36 @@ export default function Pricing() {
                   </Reveal>
                 ))}
               </ul>
-              <a
-                href="#contact"
+              <OfferLink
+                offer="custom"
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-signal/50 px-6 py-3 text-sm font-semibold text-signal transition-colors hover:bg-signal/10"
               >
                 Tell me what you need
                 <span aria-hidden="true">→</span>
-              </a>
+              </OfferLink>
             </article>
           </Reveal>
         </div>
+
+        {/* Under-row strip — the softer second option and the founding terms,
+            lifted out of the Starter card so nothing sits below a button
+            (survey O-06). */}
+        <Reveal delay={220}>
+          <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-surface/40 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+            <OfferLink
+              offer="call"
+              className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"
+            >
+              Not ready to commit? Book a free 15-min call
+              <span aria-hidden="true">→</span>
+            </OfferLink>
+            {foundingActive && (
+              <p className="max-w-sm text-xs leading-relaxed text-faint">
+                Founding pricing includes a testimonial + permission to feature your site in our portfolio.
+              </p>
+            )}
+          </div>
+        </Reveal>
 
         {/* Client words — renders only when a REAL quote exists in
             lib/content.ts (testimonial.quote). Never ship a fabricated one. */}

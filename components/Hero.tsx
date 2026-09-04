@@ -1,6 +1,7 @@
 import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
+import OfferLink from "./OfferLink";
 
 /*
   Hero — headline left, live instrument panel right (survey J-02, per Meg).
@@ -49,14 +50,14 @@ export default function Hero() {
             <span className="shimmer-text">the way your business does.</span>
           </h1>
 
-          <p className="hero-sub metallic-text mt-6 max-w-xl text-base font-medium leading-relaxed">
+          <p className="hero-sub metallic-text mt-6 max-w-xl text-[1rem] font-medium leading-relaxed">
             Built from real operations. Designed for the way people actually work.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Magnetic strength={0.35}>
-              <a
-                href="#contact"
+              <OfferLink
+                offer="project"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
                 Start a Project
@@ -66,7 +67,7 @@ export default function Hero() {
                 >
                   →
                 </span>
-              </a>
+              </OfferLink>
             </Magnetic>
             <a
               href="#work"

@@ -30,7 +30,7 @@ export default function OperatorBand() {
                 <h2 className="display mt-3 text-2xl text-ink sm:text-3xl">
                   {founderNote.headlineFollow}
                 </h2>
-                <p className="mt-4 max-w-md text-base leading-relaxed text-muted">
+                <p className="mt-4 max-w-md text-[1rem] leading-relaxed text-muted">
                   {founderNote.paragraphs[0]}
                 </p>
               </div>
