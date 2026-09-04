@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Deployments from "@/components/Deployments";
+import Stack from "@/components/Stack";
 import Services from "@/components/Services";
 import Playground from "@/components/Playground";
 import Approach from "@/components/Approach";
@@ -20,7 +21,7 @@ export default function Home() {
       <WorkflowSpine />
       <main>
         {/* Hero → operator band (boxes + actions; full story on /about) →
-            services → free tools → work → approach → pricing → contact.
+            services → free tools → work → stack → approach → pricing → contact.
             Free tools sit at position 2 DELIBERATELY (survey J-01, decided):
             Meg put the kit up top because it's the site's strongest hook and
             she uses it herself — engagement beats narrative purity here. */}
@@ -29,6 +30,9 @@ export default function Home() {
         <Services />
         <Playground />
         <Deployments />
+        {/* Stack sits right after the work: you've just seen the systems, so
+            "what is it built with" is the next question a buyer asks. */}
+        <Stack />
         <Approach />
         <FAQ />
         <Pricing />

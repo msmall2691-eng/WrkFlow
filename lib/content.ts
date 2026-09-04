@@ -13,10 +13,16 @@ import type { VisualType } from "@/components/ProjectVisual";
   statement, not an essay. Edit here, not in the component.
 */
 export const founderNote = {
-  headline: "Why M Studio.",
-  headlineFollow: "Every business works differently.",
+  /*
+    This band answers "why is the software any good", not "what do we sell".
+    Same ten years, same numbers, doing better work: it stops reading as an
+    ops consultancy and starts reading as an engineer with an unfair
+    advantage. Shown on the homepage (OperatorBand) and /about (FounderNote).
+  */
+  headline: "Why the software is any good.",
+  headlineFollow: "Most developers have never had to run the business they're building for.",
   paragraphs: [
-    "Software, automation, and AI built around how your business already runs.",
+    "We did it for ten years first — so every pattern in your build has already been used at 6am with a crew waiting.",
   ],
 } as const;
 
@@ -350,11 +356,47 @@ export type WorkItem = {
   live?: boolean;
   /** Screenshot for static/private cards. Live sites render via iframe, so they can omit it. */
   shot?: string; // /shots/*.png
+  /** What this system displaced — the case for it, in one line. */
+  replaced?: string;
+  /** Production status, e.g. "In daily production since 2025". */
+  status?: string;
   /** Set for outside-client work so it gets a distinct accent. */
   client?: boolean;
   /** A single REAL outcome number (e.g. "0 double-bookings since launch"). Never fabricate—leave undefined until Meg confirms. */
   metric?: string;
 };
+
+/*
+  Stack — what the software is actually built with.
+
+  The site named no technology anywhere. For someone buying a website that is
+  fine; for someone commissioning software they will own and maintain, it is
+  the first thing they look for, and its absence reads as evasive.
+
+  Every entry below is in real use across mlinx.studio and BrightBase. Do not
+  add a technology here to look complete — this list is a promise about what a
+  client inherits, and it is the easiest thing on the site to be caught out on.
+*/
+export type StackColumn = { heading: string; items: string[] };
+
+export const stackColumns: StackColumn[] = [
+  {
+    heading: "Front end",
+    items: ["TypeScript", "React", "Next.js (App Router)", "Tailwind"],
+  },
+  {
+    heading: "Back end",
+    items: ["Python · FastAPI", "Node", "REST + typed clients", "Background jobs"],
+  },
+  {
+    heading: "Data & auth",
+    items: ["Postgres", "Supabase", "Row-level security", "Role-based access"],
+  },
+  {
+    heading: "Ship & run",
+    items: ["Vercel · Railway", "GitHub + CI", "Anthropic API", "Twilio"],
+  },
+];
 
 /*
   Selected work — three tiers: live websites (linked), a product demo (linked),
@@ -413,6 +455,9 @@ export const work: WorkItem[] = [
     tag: "Private system",
     title: "BrightBase — Command Center",
     blurb: "Jobs, revenue, occupancy & crew in one live view.",
+    stack: ["FastAPI", "Postgres", "React", "Railway"],
+    replaced: "4 spreadsheets and a group chat",
+    status: "In daily production since 2025",
     shot: "/shots/brightbase-dashboard.png",
   },
   {
@@ -420,6 +465,8 @@ export const work: WorkItem[] = [
     tag: "Private system",
     title: "Turnover scheduling",
     blurb: "Internal board for STR turnovers—who, where, and when, at a glance.",
+    stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
+    status: "In daily production",
     shot: "/shots/brightbase-turnovers.png",
   },
   {
@@ -427,6 +474,9 @@ export const work: WorkItem[] = [
     tag: "Private system",
     title: "Instant Estimate",
     blurb: "Reads requests, drafts a quote, and queues a reply for approval.",
+    stack: ["Next.js", "Anthropic API", "Postgres"],
+    replaced: "~20 min of manual quoting per lead",
+    status: "Production, approval-gated",
     shot: "/shots/instant-estimate.png",
   },
 ];
