@@ -31,7 +31,7 @@ export default function Deployments() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 text-base leading-relaxed text-muted">
+            <p className="mt-5 text-[1rem] leading-relaxed text-muted">
               Client sites, products, and the systems behind them — live below.
             </p>
           </Reveal>
@@ -148,7 +148,7 @@ function PrivateTile({ w }: { w: WorkItem }) {
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="font-mono text-[10px] uppercase tracking-widest text-faint">{w.tag}</p>
-        <h3 className="display-serif mt-2 text-base text-ink">{w.title}</h3>
+        <h3 className="display-serif mt-2 text-[1rem] text-ink">{w.title}</h3>
         <p className="mt-1.5 text-sm leading-relaxed text-muted">{w.blurb}</p>
       </div>
     </article>

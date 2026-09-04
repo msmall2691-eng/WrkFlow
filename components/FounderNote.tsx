@@ -147,7 +147,7 @@ export default function FounderNote() {
               {founderNote.paragraphs.map((para, i) => (
                 <p
                   key={i}
-                  className="[font-family:var(--font-serif)] text-base leading-relaxed text-ink md:text-lg"
+                  className="[font-family:var(--font-serif)] text-[1rem] leading-relaxed text-ink md:text-lg"
                 >
                   {para}
                 </p>
@@ -192,7 +192,7 @@ export default function FounderNote() {
               {founderBio.paragraphs.map((para, i) => (
                 <p
                   key={i}
-                  className="[font-family:var(--font-serif)] text-base leading-relaxed text-ink md:text-lg"
+                  className="[font-family:var(--font-serif)] text-[1rem] leading-relaxed text-ink md:text-lg"
                 >
                   {para}
                 </p>
@@ -236,7 +236,7 @@ export default function FounderNote() {
             <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
               {founderCta.headline}
             </p>
-            <p className="mt-3 max-w-md text-base leading-relaxed text-muted">
+            <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-muted">
               {founderCta.body}
             </p>
             <Magnetic strength={0.35}>

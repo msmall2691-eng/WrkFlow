@@ -10,28 +10,61 @@ export function Label({ children }: { children: React.ReactNode }) {
   );
 }
 
+/*
+  Slider (site survey O-04) — the bare range input was 6px tall, which made
+  the track the hit area and the control nearly impossible to use on a phone.
+  Two changes: the input now carries a 44px box with the 6px bar drawn inside
+  it (.slider-touch in globals.css), and there are -/+ steppers either side,
+  which are easier to hit than any slider and let someone tap to "4 bedrooms"
+  without dragging at all.
+*/
 export function Slider({
   label, value, min, max, step = 1, suffix = "", onChange,
 }: {
   label: string; value: number; min: number; max: number; step?: number; suffix?: string; onChange: (v: number) => void;
 }) {
+  const clamp = (v: number) => Math.min(max, Math.max(min, Number(v.toFixed(4))));
+  const nudge = (dir: 1 | -1) => onChange(clamp(value + dir * step));
+
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between">
         <span className="font-mono text-[10px] uppercase tracking-widest text-faint">{label}</span>
         <span className="font-mono text-[11px] text-muted">{value}{suffix}</span>
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(e) => onChange(Number(e.target.value))}
-        className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-line"
-        style={{ accentColor: "var(--color-signal)" }}
-      />
+      <div className="flex items-center gap-2">
+        <Step label={`Decrease ${label}`} onClick={() => nudge(-1)} disabled={value <= min}>&minus;</Step>
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          aria-label={label}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="slider-touch w-full cursor-pointer"
+        />
+        <Step label={`Increase ${label}`} onClick={() => nudge(1)} disabled={value >= max}>+</Step>
+      </div>
     </div>
+  );
+}
+
+function Step({
+  label, onClick, disabled, children,
+}: {
+  label: string; onClick: () => void; disabled: boolean; children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={label}
+      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-line bg-base text-[1rem] leading-none text-muted transition-colors hover:text-ink disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:text-muted"
+    >
+      {children}
+    </button>
   );
 }
 

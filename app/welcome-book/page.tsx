@@ -52,7 +52,7 @@ export default function WelcomeBookPage() {
                 </h1>
               </Reveal>
               <Reveal delay={120}>
-                <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
+                <p className="mt-6 max-w-xl text-[1rem] leading-relaxed text-muted">
                   {wb.hero.sub}
                 </p>
               </Reveal>
@@ -221,7 +221,7 @@ export default function WelcomeBookPage() {
               {wb.faqs.map((item, i) => (
                 <Reveal key={item.q} delay={i * 40}>
                   <details className="group">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-base font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-[1rem] font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
                       <span>{item.q}</span>
                       <span
                         aria-hidden="true"
@@ -230,7 +230,7 @@ export default function WelcomeBookPage() {
                         +
                       </span>
                     </summary>
-                    <div className="px-5 pb-5 pt-0 text-sm leading-relaxed text-muted md:px-6 md:pb-6 md:text-base">
+                    <div className="px-5 pb-5 pt-0 text-sm leading-relaxed text-muted md:px-6 md:pb-6 md:text-[1rem]">
                       {item.a}
                     </div>
                   </details>
@@ -254,7 +254,7 @@ export default function WelcomeBookPage() {
                 </h2>
               </Reveal>
               <Reveal delay={60}>
-                <p className="mx-auto mt-4 max-w-lg text-base leading-relaxed text-muted">
+                <p className="mx-auto mt-4 max-w-lg text-[1rem] leading-relaxed text-muted">
                   Founding price of ${wb.introPrice} for the first few — one-time,
                   no monthly app fee, and the book is yours to keep. Tell me about
                   your rental and I&apos;ll take it from there.

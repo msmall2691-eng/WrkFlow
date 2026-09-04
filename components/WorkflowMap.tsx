@@ -28,7 +28,7 @@ export default function WorkflowMap() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 text-base leading-relaxed text-muted">
+            <p className="mt-5 text-[1rem] leading-relaxed text-muted">
               Pick the tools you use, see what could connect to what.
             </p>
           </Reveal>

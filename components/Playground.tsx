@@ -121,7 +121,7 @@ export default function Playground() {
           </h2>
         </Reveal>
         <Reveal delay={80}>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+          <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-muted">
             The same{" "}
             <span className="inline-flex items-center gap-1.5 align-middle text-ink">
               <LinxMark className="h-3 w-auto" />M Linx

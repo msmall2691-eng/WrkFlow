@@ -574,7 +574,7 @@ function ContinueButton({
 /* ----------------------------------------------------------------- fields */
 
 const inputClass =
-  "w-full rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3.5 text-base leading-relaxed text-ink placeholder:text-faint focus:border-gold/70 focus:outline-none";
+  "w-full rounded-lg border border-line bg-[var(--panel-input-bg)] px-4 py-3.5 text-[1rem] leading-relaxed text-ink placeholder:text-faint focus:border-gold/70 focus:outline-none";
 
 function Field({
   field,

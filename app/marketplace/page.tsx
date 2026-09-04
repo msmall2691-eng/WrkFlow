@@ -44,7 +44,7 @@ export default function MarketplacePage() {
               </h1>
             </Reveal>
             <Reveal delay={120}>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted">
+              <p className="mt-6 max-w-2xl text-[1rem] leading-relaxed text-muted">
                 Ready-to-run sites, tools, and automations —{" "}
                 <span className="text-ink">own one outright</span>,{" "}
                 <span className="text-ink">rent a hosted tool</span>, or{" "}
@@ -105,7 +105,7 @@ export default function MarketplacePage() {
               </h2>
             </Reveal>
             <Reveal delay={60}>
-              <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted">
+              <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-relaxed text-muted">
                 Most of these started as a custom build. Share what you need, and
                 you&apos;ll get pointed to the closest starter—or the right thing
                 built from scratch.

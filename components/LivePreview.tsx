@@ -18,6 +18,8 @@ const SITES = work
     title: w.title,
     blurb: w.blurb,
     url: w.url as string,
+    // Chrome label — falls back to the real host (site survey O-03).
+    label: w.displayDomain ?? domain(w.url as string),
     shot: w.shot,
   }));
 
@@ -27,6 +29,15 @@ export default function LivePreview() {
   const [load, setLoad] = useState(false);
   const [active, setActive] = useState<number | null>(null);
   const [hoverable, setHoverable] = useState(false);
+  /*
+    Snap and indicators (site survey O-06). Snap points can't coexist with the
+    idle drift — the browser would keep yanking the rail back onto a card while
+    the rAF loop nudges it forward — so the first real swipe or wheel stops the
+    drift for good and hands the rail over to scroll-snap. Until then the dots
+    are still a live position readout.
+  */
+  const [taken, setTaken] = useState(false);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     setHoverable(matchMedia("(hover: hover)").matches);
@@ -45,9 +56,36 @@ export default function LivePreview() {
     return () => io.disconnect();
   }, []);
 
-  // Gentle ping-pong auto-scroll; paused on hover/touch and for reduced-motion.
+  // Track which card is centred, for the indicator dots.
   useEffect(() => {
-    if (!load) return;
+    const el = railRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const cards = Array.from(el.children).filter(
+        (c): c is HTMLElement => c instanceof HTMLElement && c.tagName === "ARTICLE",
+      );
+      if (!cards.length) return;
+      const mid = el.scrollLeft + el.clientWidth / 2;
+      let best = 0;
+      let bestGap = Infinity;
+      cards.forEach((c, i) => {
+        const gap = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
+        if (gap < bestGap) {
+          bestGap = gap;
+          best = i;
+        }
+      });
+      setIndex(best);
+    };
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [load]);
+
+  // Gentle one-way auto-scroll; paused on hover, and retired for good once the
+  // visitor takes the rail over themselves.
+  useEffect(() => {
+    if (!load || taken) return;
     const el = railRef.current;
     if (!el || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     let raf = 0;
@@ -61,7 +99,7 @@ export default function LivePreview() {
     };
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
-  }, [load]);
+  }, [load, taken]);
 
   if (!SITES.length) return null;
 
@@ -81,7 +119,16 @@ export default function LivePreview() {
           pausedRef.current = false;
           setActive(null);
         }}
-        className="flex gap-5 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        onPointerDown={() => setTaken(true)}
+        onWheel={(e) => {
+          // Only a sideways wheel/trackpad gesture is the visitor taking the
+          // rail over — a vertical wheel is just the page scrolling past it.
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) setTaken(true);
+        }}
+        onKeyDown={() => setTaken(true)}
+        className={`flex gap-5 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${
+          taken ? "snap-x snap-mandatory" : ""
+        }`}
       >
         {SITES.map((s, i) => (
           <article
@@ -95,7 +142,7 @@ export default function LivePreview() {
               <span className="h-2.5 w-2.5 rounded-full bg-line" />
               <span className="h-2.5 w-2.5 rounded-full bg-line" />
               <span className="ml-2 truncate rounded bg-surface px-2 py-0.5 font-mono text-[10px] text-faint">
-                {domain(s.url)}
+                {s.label}
               </span>
               <span className="ml-auto inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-signal">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal motion-reduce:animate-none" />
@@ -159,7 +206,7 @@ export default function LivePreview() {
             <div className="flex items-start justify-between gap-3 p-4">
               <div className="min-w-0">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-faint">{s.tag}</p>
-                <h3 className="display-serif mt-1 text-base text-ink">{s.title}</h3>
+                <h3 className="display-serif mt-1 text-[1rem] text-ink">{s.title}</h3>
               </div>
               <a
                 href={s.url}
@@ -174,6 +221,33 @@ export default function LivePreview() {
         ))}
         <div className="w-2 shrink-0" aria-hidden="true" />
       </div>
+
+      {/* Position indicator — 1240px of rail in a 327px window gave no sense of
+          how much was left (site survey O-06). Also a way to jump. */}
+      {SITES.length > 1 && (
+        <div className="mt-3 flex items-center justify-center gap-2">
+          {SITES.map((s, i) => (
+            <button
+              key={s.url}
+              type="button"
+              aria-label={`Show ${s.title}`}
+              aria-current={i === index}
+              onClick={() => {
+                setTaken(true);
+                const card = railRef.current?.children[i];
+                card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+              }}
+              className="group flex h-11 w-11 items-center justify-center"
+            >
+              <span
+                className={`h-1.5 rounded-full transition-all ${
+                  i === index ? "w-6 bg-signal" : "w-1.5 bg-line group-hover:bg-muted"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

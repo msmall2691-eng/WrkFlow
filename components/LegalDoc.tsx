@@ -39,7 +39,7 @@ export function LegalShell({
               Last updated · {updated}
             </p>
             {intro && (
-              <div className="mt-6 text-base leading-relaxed text-muted">{intro}</div>
+              <div className="mt-6 text-[1rem] leading-relaxed text-muted">{intro}</div>
             )}
           </div>
         </section>
