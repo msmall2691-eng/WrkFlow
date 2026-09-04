@@ -28,6 +28,13 @@ export default function TideLevel() {
   const level = Math.max(0, Math.min(1, d?.tideLevel ?? 0.4));
   const amp = override ?? Math.max(0, Math.min(1, d?.wave?.amp ?? 0.5));
   const dur = d?.tide === "rising" ? "11s" : d?.tide === "falling" ? "24s" : "16s";
+  /*
+    Direction, not just speed. The water used to drift the same way whichever
+    way the tide was running, which meant the one reading a Mainer would
+    actually check was the one thing the animation ignored. Flood pushes in,
+    ebb pulls back out.
+  */
+  const dir = d?.tide === "falling" ? "reverse" : "normal";
 
   const h = 10 + level * 15; // 10% (low) → 25% (high) — stays clear of text
   // Bumped so calm-day readings still show clear wave motion. Historic
@@ -48,7 +55,7 @@ export default function TideLevel() {
       {/* Drifting wave surface — a bit taller now so amplitude is legible */}
       <svg
         className="wave-x absolute inset-x-0 top-0 block h-8 w-[200%] md:h-12"
-        style={{ animationDuration: dur }}
+        style={{ animationDuration: dur, animationDirection: dir }}
         viewBox="0 0 2880 40"
         preserveAspectRatio="none"
       >

@@ -47,11 +47,17 @@ export default function AuroraSwell({
   accentVar = "--color-signal",
   intensity = 1,
   speed = 1,
+  warmth = 0,
+  depth = 0,
   className = "",
 }: {
   accentVar?: string;
   intensity?: number;
   speed?: number;
+  /** 0..1 — air temperature, pushing the highlight from cold blue to warm. */
+  warmth?: number;
+  /** 0..1 — water temperature, pushing the deep base darker as the sea cools. */
+  depth?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -94,6 +100,20 @@ export default function AuroraSwell({
       const cs = getComputedStyle(cv);
       mid = hexToRgb(cs.getPropertyValue(accentVar), [0.14, 0.38, 0.85]);
       hi = lighten(mid, 0.72);
+      /*
+        Air temperature warms the highlight. The panel has always claimed
+        "air → glow" while nothing read tempF; this is the reading arriving
+        where it was already advertised. A cold day keeps the accent's own
+        cool highlight, a warm one pushes it toward low sun.
+      */
+      if (warmth > 0) {
+        const w: [number, number, number] = [1.0, 0.82, 0.55];
+        hi = [
+          hi[0] + (w[0] - hi[0]) * warmth * 0.55,
+          hi[1] + (w[1] - hi[1]) * warmth * 0.55,
+          hi[2] + (w[2] - hi[2]) * warmth * 0.55,
+        ];
+      }
       // Deep base color follows the theme — dark harbor in dark, warm cream
       // in daylight. Values come from --aurora-deep-{r,g,b} CSS vars.
       const readVar = (k: string, fb: number) => {
@@ -101,6 +121,16 @@ export default function AuroraSwell({
         return Number.isFinite(v) ? v : fb;
       };
       deep = [readVar("--aurora-deep-r", 0.03), readVar("--aurora-deep-g", 0.08), readVar("--aurora-deep-b", 0.16)];
+      /*
+        Water temperature sets how deep the base reads — "water → depth", the
+        second claim nothing was implementing. Colder sea, darker floor. Held
+        to 35% so the theme still owns the base colour and daylight cream
+        never turns muddy.
+      */
+      if (depth > 0) {
+        const k = 1 - depth * 0.35;
+        deep = [deep[0] * k, deep[1] * k, deep[2] * k];
+      }
     };
     readAccent();
     const onTheme = () => readAccent();
@@ -137,7 +167,7 @@ export default function AuroraSwell({
     };
     raf = requestAnimationFrame(frame);
     return () => { cancelAnimationFrame(raf); clearInterval(at); window.removeEventListener("accentchange", readAccent); window.removeEventListener("theme:change", onTheme); ro.disconnect(); io.disconnect(); host.removeEventListener("pointermove", onMove); host.removeEventListener("pointerleave", onLeave); };
-  }, [accentVar, intensity, speed]);
+  }, [accentVar, intensity, speed, warmth, depth]);
 
   return <canvas ref={ref} aria-hidden="true" className={`aurora-canvas ${className}`}
     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0, display: "block" }} />;
