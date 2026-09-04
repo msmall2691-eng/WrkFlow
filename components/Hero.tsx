@@ -2,7 +2,7 @@ import ReactiveAurora from "./ReactiveAurora";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
 import OfferLink from "./OfferLink";
-import { foundingOffer } from "@/lib/content";
+import { appOffer, foundingOffer } from "@/lib/content";
 
 /*
   Hero — headline left, live instrument panel right (survey J-02, per Meg).
@@ -92,8 +92,8 @@ export default function Hero() {
               Websites from ${foundingOffer.price}
             </a>
             <span className="mx-2 text-faint" aria-hidden="true">·</span>
-            <a href="/intake" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
-              Web apps scoped free in 24 hours
+            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
+              Web apps from ${appOffer.price.toLocaleString("en-US")}
             </a>
           </p>
         </div>

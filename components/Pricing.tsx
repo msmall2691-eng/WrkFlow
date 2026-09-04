@@ -1,7 +1,7 @@
 import Reveal from "./Reveal";
 import OfferLink from "./OfferLink";
 import CountUp from "./CountUp";
-import { foundingOffer, studioStats, testimonial } from "@/lib/content";
+import { appOffer, foundingOffer, studioStats, testimonial } from "@/lib/content";
 
 /*
   Pricing — the "harbor at night" pricing section. Three honest ways to work
@@ -34,6 +34,7 @@ const CUSTOM_BULLETS = [
 export default function Pricing() {
   const spotsLeft = foundingOffer.spotsRemaining;
   const foundingActive = spotsLeft > 0;
+  const appFounding = appOffer.spotsRemaining > 0;
 
   return (
     <section
@@ -180,7 +181,30 @@ export default function Pricing() {
           <Reveal delay={180}>
             <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
               <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Custom build</p>
-              <p className="mt-4 font-display text-3xl text-ink">Let&apos;s scope it</p>
+              {/* Was "Let's scope it" — the only tier with no number, which
+                  meant every app enquiry anchored to the $749 website (brief
+                  A6). Founding rate for the first ten, same as the Starter. */}
+              {appFounding ? (
+                <>
+                  <p className="mt-4 font-display text-3xl text-ink">
+                    <CountUp value={appOffer.price} prefix="$" />
+                    <span className="ml-2 align-middle text-[1rem] text-faint line-through">
+                      ${appOffer.fullPrice.toLocaleString("en-US")}
+                    </span>
+                  </p>
+                  <p className="mt-1.5 text-sm text-muted">Starting price · scoped before you commit</p>
+                  <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-gold">
+                    Founding · {appOffer.spotsRemaining} of {appOffer.totalSpots} left
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="mt-4 font-display text-3xl text-ink">
+                    <CountUp value={appOffer.fullPrice} prefix="$" />
+                  </p>
+                  <p className="mt-1.5 text-sm text-muted">Starting price · scoped before you commit</p>
+                </>
+              )}
               <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-faint">
                 One-time · monthly · hybrid
               </p>

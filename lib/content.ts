@@ -92,6 +92,20 @@ export const foundingOffer = {
 } as const;
 
 /*
+  The same deal for web apps. Kept separate from foundingOffer because the two
+  ladders sell out independently — and because an app has to price above a
+  website, or the page says an application costs less than a marketing site.
+  `spotsRemaining` is maintained BY HAND here too; at 0 the card reverts to
+  `fullPrice` and the founding line stops rendering.
+*/
+export const appOffer = {
+  totalSpots: 10,
+  spotsRemaining: 10,
+  price: 1500,
+  fullPrice: 2500,
+} as const;
+
+/*
   Offer stats — M STUDIO's own promises. Live beside the pricing cards
   (risk-reversal belongs next to the price, per the site survey); every
   value must stay true of what the site actually delivers.
