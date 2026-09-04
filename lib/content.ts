@@ -399,13 +399,12 @@ export const work: WorkItem[] = [
     title: "Autopilot",
     blurb: "A complete CRM + field-service platform—scheduling, invoicing, and STR turnover automation—designed and built from scratch.",
     stack: ["Next.js", "Supabase", "Vercel"],
-    // O-03: *.mlinx.studio already points at Vercel — autopilot.mlinx.studio
-    // resolves but returns DEPLOYMENT_NOT_FOUND, so the domain still has to be
-    // added to the Autopilot project in Vercel. Once it is, change both lines
-    // below to autopilot.mlinx.studio and the vercel.app slug is gone from the
-    // page. Not flipped yet: a pretty label over a dead link is worse than an
-    // ugly one over a live link.
-    url: "https://autopilot-sooty.vercel.app",
+    // O-03 / C-05: the branded domain. HOLD this branch unmerged until
+    // autopilot.mlinx.studio serves the Autopilot app — Meg first attached
+    // the domain to the wrk-flow project, so it currently serves the
+    // M Studio site itself; merging early would link the card (and the
+    // live iframe) to a clone of this homepage.
+    url: "https://autopilot.mlinx.studio",
     live: true,
     shot: "/shots/autopilot.png",
   },
