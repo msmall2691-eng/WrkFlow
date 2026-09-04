@@ -128,7 +128,18 @@ function BigCard({ w }: { w: WorkItem }) {
   );
 }
 
+/*
+  PrivateTile — the internal systems.
+
+  These were the strongest evidence on the site that M Studio ships real
+  software, and they were presented as three screenshots behind a padlock.
+  The lock is now a production-status chip, and each tile carries what it is
+  built with, what it displaced, and whether it is running. A buyer does not
+  need the numbers inside; they need proof the thing exists and is used.
+  Still unlinked — these are internal, and the screenshots stay anonymized.
+*/
 function PrivateTile({ w }: { w: WorkItem }) {
+  const hasMeta = !!(w.stack?.length || w.replaced || w.status);
   return (
     <article className="group corner-accents flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-elevated">
       <div className="relative aspect-[16/10] overflow-hidden bg-surface">
@@ -142,15 +153,39 @@ function PrivateTile({ w }: { w: WorkItem }) {
           />
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <span className="absolute right-3 top-3 rounded-full border border-line bg-base/80 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-faint backdrop-blur">
-          🔒 Private
-        </span>
+        {w.status && (
+          <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-base/85 px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest text-signal backdrop-blur">
+            <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+            In production
+          </span>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-5">
         <p className="font-mono text-[10px] uppercase tracking-widest text-faint">{w.tag}</p>
         <h3 className="display-serif mt-2 text-[1rem] text-ink">{w.title}</h3>
         <p className="mt-1.5 text-sm leading-relaxed text-muted">{w.blurb}</p>
+
+        {hasMeta && (
+          <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
+            {w.stack?.length ? (
+              <MetaRow label="Stack">
+                <span className="font-mono text-xs text-signal">{w.stack.join(" · ")}</span>
+              </MetaRow>
+            ) : null}
+            {w.replaced && <MetaRow label="Replaced">{w.replaced}</MetaRow>}
+            {w.status && <MetaRow label="Status">{w.status}</MetaRow>}
+          </dl>
+        )}
       </div>
     </article>
+  );
+}
+
+function MetaRow({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="grid grid-cols-[68px_1fr] gap-3">
+      <dt className="pt-0.5 font-mono text-[10px] uppercase tracking-widest text-faint">{label}</dt>
+      <dd className="m-0 leading-snug text-muted">{children}</dd>
+    </div>
   );
 }
