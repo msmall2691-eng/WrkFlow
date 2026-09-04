@@ -46,9 +46,9 @@ const caveat = Caveat({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "Websites, apps, and the systems behind them — designed around how you actually work, then handed over, yours to keep. Built on the Maine coast.";
+  "Custom websites and web apps for service businesses — booking, quoting, scheduling and the systems behind them. Built by someone who ran the business first. Southern Maine, clients anywhere.";
 
-const TITLE = "M Studio — Custom Websites & Software";
+const TITLE = "M Studio — Websites & Web Apps for Small Businesses";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -115,7 +115,7 @@ const JSON_LD = {
       email: "contact@mlinx.studio",
       telephone: "+1-207-432-9492",
       description:
-        "Custom websites, apps, tools, and workflows for businesses and personal projects, built to own, not rent. Founded by an operator who ran the business first.",
+        "Custom websites and web apps for small businesses — booking, quoting, scheduling and the systems behind them. Built to own, not rent, by someone who ran a service business first.",
       slogan: "Everything, linked.",
       knowsAbout: [
         "Custom software development",
@@ -155,7 +155,7 @@ const JSON_LD = {
       jobTitle: "Founder & Software Developer",
       worksFor: { "@id": `${SITE_URL}/#studio` },
       description:
-        "Operator-turned-builder. Ran The Maine Cleaning Company, then learned to build the software it needed, now building owned systems for all kinds of businesses and personal projects.",
+        "Ran The Maine Cleaning Company for ten years, then learned to build the software it needed. Now builds websites and web apps for other small businesses.",
       alumniOf: {
         "@type": "CollegeOrUniversity",
         name: "University of Southern Maine",
@@ -210,7 +210,13 @@ export default async function RootLayout({
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html:
-              `try{var t=localStorage.getItem('theme');var d='${themeDefault}';if(t==='light'||(!t&&d==='light'))document.documentElement.dataset.theme='light';}catch(e){}`,
+              /*
+                 Three modes now (brief A2.3). "auto" and no stored value both
+                 defer to the sun; "light" and "dark" are the visitor's own
+                 call and always win. themeAuto records what the sun said, so
+                 the control can hand the page back to Auto without a reload.
+              */
+              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;try{var t=localStorage.getItem('theme');if(t==='light'||((!t||t==='auto')&&d==='light'))document.documentElement.dataset.theme='light';}catch(e){if(d==='light')document.documentElement.dataset.theme='light';}`,
           }}
         />
         <script

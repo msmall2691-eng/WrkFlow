@@ -14,9 +14,9 @@ import FounderNote from "@/components/FounderNote";
 export const metadata: Metadata = {
   // No "| M Studio" here — the root layout's title template appends the
   // brand already; doubling it renders "… | M Studio · M Studio".
-  title: "About — Built by an Operator",
+  title: "About — Built by someone who ran one",
   description:
-    "M Studio is run by an operator who rebuilt the systems behind a real service business — and now builds them for others.",
+    "M Studio is run by someone who rebuilt the systems behind a real service business — and now builds websites and web apps for others.",
   alternates: { canonical: "/about" },
 };
 

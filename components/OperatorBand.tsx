@@ -45,7 +45,7 @@ export default function OperatorBand() {
                   href="/about"
                   className="inline-flex items-center gap-1.5 py-2.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
                 >
-                  Meet the operator →
+                  Meet the person behind it →
                 </a>
               </div>
             </div>

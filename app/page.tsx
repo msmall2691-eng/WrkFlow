@@ -21,7 +21,7 @@ export default function Home() {
       <WorkflowSpine />
       <main>
         {/* Hero → operator band (boxes + actions; full story on /about) →
-            services → free tools → work → stack → approach → pricing → contact.
+            services → free tools → work → approach → pricing → stack → contact.
             Free tools sit at position 2 DELIBERATELY (survey J-01, decided):
             Meg put the kit up top because it's the site's strongest hook and
             she uses it herself — engagement beats narrative purity here. */}
@@ -30,12 +30,15 @@ export default function Home() {
         <Services />
         <Playground />
         <Deployments />
-        {/* Stack sits right after the work: you've just seen the systems, so
-            "what is it built with" is the next question a buyer asks. */}
-        <Stack />
         <Approach />
         <FAQ />
         <Pricing />
+        {/* Stack moved below pricing (brief A4). Above it, a four-column grid
+            reading "REST + typed clients" was the most intimidating thing on
+            the page, and a non-technical visitor hit it immediately before the
+            price. Down here it reassures the people who look for it instead of
+            frightening the people who don't. */}
+        <Stack />
         <Contact />
       </main>
       <Footer />

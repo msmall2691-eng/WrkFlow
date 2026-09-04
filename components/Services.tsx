@@ -17,7 +17,7 @@ const AUDIENCES = [
   "Service companies",
   "Trades",
   "Property managers",
-  "STR operators",
+  "Short-term rental owners",
   "Founders",
   "Organizations",
   "Personal projects",
@@ -27,16 +27,6 @@ const AUDIENCES = [
   Specific things we've built (or can build) — a quick-scan companion to the
   deeper per-service breakdown above, not a duplicate of it.
 */
-const CAPABILITIES = [
-  "Booking apps",
-  "CRMs",
-  "Client portals",
-  "Dashboards",
-  "Quote calculators",
-  "Workflow automations",
-  "AI agents",
-  "Stripe + payments",
-];
 
 export default function Services() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -152,24 +142,9 @@ export default function Services() {
           })}
         </div>
 
-        {/* Specifically — a wider chip cloud of concrete things we build */}
-        <Reveal delay={180}>
-          <div className="mt-10 border-t border-line pt-8">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
-              Specifically
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {CAPABILITIES.map((c) => (
-                <span
-                  key={c}
-                  className="rounded-full border border-line bg-base px-3 py-1.5 text-sm text-muted transition-colors hover:border-signal/40 hover:text-ink"
-                >
-                  {c}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Reveal>
+        {/* The "Specifically" chip cloud lived here. With three cards instead
+            of eight, the kinds chips inside each card already say the same
+            things in the place they belong (brief A3). */}
 
         {/* Who it's for — compact chip row */}
         <Reveal delay={220}>

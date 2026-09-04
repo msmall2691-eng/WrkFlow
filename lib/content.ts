@@ -46,7 +46,7 @@ export const whatWeBuild = [
 */
 export const founderBio = {
   kicker: "The story behind it",
-  heading: "Built by an Operator",
+  heading: "Built by someone who ran one",
   paragraphs: [
     "Running a business exposed the real problem — not the work, but the disconnected systems behind it. I rebuilt those systems, and now I build them for other businesses.",
   ],
@@ -166,140 +166,80 @@ export type Service = {
 };
 
 export const services: Service[] = [
+  /*
+    Three, not eight (brief A3). Eight equal-weight cards read as "I will do
+    anything", which reads as a freelancer with an empty calendar rather than a
+    studio with a specialty — and six of the eight argued against the headline
+    once it started saying websites and web apps. Nothing was thrown away: the
+    old cards 02–08 live on as the kinds chips under these three, and each of
+    these keeps a real example that actually shipped.
+  */
   {
-    id: "web",
+    id: "websites",
     index: "01",
-    title: "Websites & Web Apps",
-    tagline: "A site or app that's actually yours—built, connected, and live.",
-    kinds: ["Marketing sites", "Booking & scheduling", "Client portals", "Marketplaces", "Internal tools"],
+    title: "Websites",
+    tagline: "A site that takes the booking, not just the phone number.",
+    kinds: ["Marketing sites", "Booking & scheduling", "Instant quoting", "Intake forms", "Online payments"],
     pain:
-      "Builders box you in; agencies hand back a site you can't edit and don't really own.",
+      "Your site is a business card. Every enquiry still turns into a phone call, a text thread, and a quote you type by hand.",
     outcome:
-      "A fast custom site you own outright — connected, live, no monthly fee.",
+      "Customers book and get priced on the site itself, and it lands in the system you already use.",
     example: {
       client: "The Maine Cleaning Co.",
-      built: "Custom marketing site with instant online quoting and booking, wired to the back-office system.",
+      built:
+        "Custom marketing site with instant online quoting and booking, wired to the back-office system.",
       result: "Quote-to-booking handled on the site itself—no phone tag.",
       shot: "/shots/maineclean.png",
     },
   },
   {
-    id: "automation",
+    id: "apps",
     index: "02",
-    title: "Workflow Automation & Integration",
-    tagline: "Data moves itself. Nobody re-types anything.",
-    kinds: ["Lead intake", "Follow-ups", "Scheduling", "Invoicing sync", "Notifications"],
+    title: "Web apps & internal tools",
+    tagline: "The thing your team opens every morning.",
+    kinds: [
+      "Operations dashboards",
+      "Client portals",
+      "Scheduling & dispatch",
+      "Job tracking",
+      "Custom CRM",
+      "Moving off rented software",
+    ],
     pain:
-      "Data gets copy-pasted between apps that were never meant to talk.",
+      "The real work lives in four spreadsheets, a shared calendar and a group chat, and only one person knows where anything is.",
     outcome:
-      "Records move themselves — the double-entry and its errors disappear.",
-    example: {
-      client: "Booking → follow-up",
-      built: "New booking fires a chain: customer confirmation, calendar hold, crew assignment, and a follow-up review request—untouched by hand.",
-      result: "Recurring admin handled without anyone re-typing a thing.",
-      visual: "automation",
-    },
-  },
-  {
-    id: "crm",
-    index: "03",
-    title: "Custom CRM & Database Design",
-    tagline: "A system shaped to your business, not the other way around.",
-    kinds: ["Customer records", "Job tracking", "Pipelines", "Owner reporting"],
-    pain:
-      "Off-the-shelf tools bend your process to their forms — and charge per seat.",
-    outcome:
-      "One source of truth you own: the right fields, no dead weight, no per-seat fee.",
-    example: {
-      client: "Owned CRM",
-      built: "A custom customer + job database with exactly the fields the work uses—accessible from anywhere, owned outright.",
-      result: "One source of truth replacing scattered spreadsheets.",
-      visual: "database",
-    },
-  },
-  {
-    id: "ai-agents",
-    index: "04",
-    title: "AI Agent Implementation",
-    tagline: "AI does the busywork. You keep the decisions.",
-    kinds: ["Inbox triage", "Draft replies", "Summaries", "Smart intake"],
-    pain:
-      "The repetitive reading, sorting, and drafting still eats hours every week.",
-    outcome:
-      "Routine work handled in the background, surfaced for your one-click approval.",
-    example: {
-      client: "Instant Estimate",
-      built: "An AI intake layer that reads inbound requests, drafts a quote and a reply, and queues both for one-click owner approval.",
-      result: "Same-day replies, drafted automatically, approved by a human.",
-      shot: "/shots/instant-estimate.png",
-    },
-  },
-  {
-    id: "dashboards",
-    index: "05",
-    title: "Operational Dashboards",
-    tagline: "The numbers that matter, finally in one view.",
-    kinds: ["Revenue & KPIs", "Occupancy", "Team & jobs", "Live pipeline"],
-    pain:
-      "“How's this month tracking?” shouldn't take five tools and three exports.",
-    outcome:
-      "The numbers that run the business — live, current, in one view.",
+      "One place, live, built around how you already work — and yours to keep, not rented by the month.",
     example: {
       client: "BrightBase",
-      built: "An operations command center pulling jobs, revenue, occupancy, and crew into one live view—the same kind of dashboard demoed on this site.",
+      built:
+        "An operations command center pulling jobs, revenue, occupancy, and crew into one live view—the same system that runs the company day to day.",
       result: "The whole operation visible at a glance, in real time.",
       shot: "/shots/brightbase-dashboard.png",
     },
   },
   {
-    id: "audit",
-    index: "06",
-    title: "Systems & Process Optimization",
-    tagline: "Find what's slow, broken, or costing you—and fix it in order.",
-    kinds: ["Tool audit", "Process mapping", "Fix-it roadmap"],
+    id: "automation",
+    index: "03",
+    title: "The automation inside them",
+    tagline: "The busywork happens on its own. You still approve it.",
+    kinds: [
+      "Lead intake",
+      "Follow-ups & reminders",
+      "Invoicing sync",
+      "AI drafting & triage",
+      "Connecting tools you already pay for",
+      "Cleaning up the data first",
+    ],
     pain:
-      "Tools bolt on over years; the drag is invisible until it isn't.",
+      "The same information gets re-typed into three places, and the follow-up only happens when somebody remembers.",
     outcome:
-      "A ranked, plain-English fix-it list — biggest wins first.",
+      "Routine work handled in the background and surfaced for a one-click yes — never sent behind your back.",
     example: {
-      client: "Operations review",
-      built: "A full walk-through of an operator's tools and handoffs—mapping where data leaked, where steps doubled up, and where time quietly vanished.",
-      result: "A ranked, plain-English fix-it plan—biggest wins first.",
-      visual: "audit",
-    },
-  },
-  {
-    id: "migration",
-    index: "07",
-    title: "Legacy Software Migration",
-    tagline: "Leave the platform. Keep the history.",
-    kinds: ["Jobber / Housecall exit", "Data export", "Clean cutover"],
-    pain:
-      "Years of data lock you in while the subscription climbs.",
-    outcome:
-      "A clean cutover to a system you own — customers, jobs, and history intact.",
-    example: {
-      client: "BrightBase turnovers",
-      built: "Moved scheduling and turnover tracking off a rigid SaaS platform onto an owned system—full history migrated intact.",
-      result: "Off the monthly subscription, history kept in full.",
-      shot: "/shots/brightbase-turnovers.png",
-    },
-  },
-  {
-    id: "data-cleanup",
-    index: "08",
-    title: "Data Cleanup & Consolidation",
-    tagline: "One trustworthy source instead of five conflicting ones.",
-    kinds: ["Dedupe", "Normalize", "Merge sources", "Validate"],
-    pain:
-      "The same customer exists three times; every report contradicts the last.",
-    outcome:
-      "One clean, deduplicated source your reports and automations can trust.",
-    example: {
-      client: "Customer list cleanup",
-      built: "Merged duplicate customer records across systems, normalized formats, and validated contact data into one reliable list.",
-      result: "Duplicate records merged into one clean, reliable source.",
-      visual: "cleanup",
+      client: "Instant Estimate",
+      built:
+        "An AI intake layer that reads inbound requests, drafts a quote and a reply, and queues both for one-click owner approval.",
+      result: "Same-day replies, drafted automatically, approved by a human.",
+      shot: "/shots/instant-estimate.png",
     },
   },
 ];
