@@ -104,7 +104,9 @@ export default function Footer() {
               Terms
             </a>
           </div>
-          <span className="tracking-normal text-faint/80 [text-transform:none]">
+          {/* text-faint/80 landed at 3.53:1 on cream once Daylight actually
+              shipped. The build stamp is small print, not decoration. */}
+          <span className="tracking-normal text-faint [text-transform:none]">
             {sha ? `deployed ${built} · ${ref}@${sha}` : `built ${built} · live on Vercel`}
           </span>
           <span className="inline-flex items-center gap-1.5">

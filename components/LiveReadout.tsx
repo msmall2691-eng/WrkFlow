@@ -84,10 +84,14 @@ export default function LiveReadout() {
         })}
       </div>
 
-      {/* The point of the whole panel. */}
+      {/* The point of the whole panel. Every clause here is now literally
+          true: middleware serves Daylight between sunrise and sunset, the
+          accent follows the sun's phase through the day, and the aurora and
+          water react to live weather and tide. */}
       <p className="border-t border-[var(--panel-line)] px-4 py-2.5 text-[11px] leading-relaxed text-[color:var(--panel-muted)]">
         This page reads the Maine coast in real time — the daylight sets the
-        theme, the weather sets the glow, the tide moves the water.
+        theme and the accent, the weather sets the glow, the tide moves the
+        water.
       </p>
     </div>
   );

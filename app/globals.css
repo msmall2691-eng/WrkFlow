@@ -109,7 +109,14 @@
   --color-line: rgba(11, 23, 34, 0.1);
   --color-ink: #0b1722;
   --color-muted: #4a5563;
-  --color-faint: #7a8697;
+  /*
+    Was #7a8697, which is where 125 of the light theme's 187 contrast
+    failures came from — 2.85:1 at worst, on the pricing cards. The palette
+    was never audited because the theme never shipped. #5a6572 keeps the
+    slate hue and clears 4.5:1 on every ground the site actually paints,
+    including the darkest one (#e3e2e0) at 4.58.
+  */
+  --color-faint: #5a6572;
 
   --color-signal-glow: rgba(47, 109, 240, 0.14);
 
@@ -243,6 +250,44 @@ html {
 :root:not([data-theme="light"]) .text-signal,
 :root:not([data-theme="light"]) .marker {
   color: #6b97f7;
+}
+
+/*
+  Daylight needs the mirror of that fix. The harbor blue is a fine BUTTON
+  fill under white text, but as TEXT on cream it sits at 3.54–4.45:1. The
+  darker end of the same brand ramp (--color-signal-dim) clears 4.5:1 on
+  every light ground, and only text is touched — fills, borders and the
+  accent switcher's live overrides are left alone.
+
+  Gold has the same problem far worse: #d9a441 on the founding-offer tint is
+  1.62:1, effectively invisible. Same treatment, text only, so the brass
+  borders and 5%-alpha washes keep the warmth they were chosen for.
+*/
+:root[data-theme="light"] .text-signal,
+:root[data-theme="light"] .marker {
+  color: #1f54c9;
+}
+:root[data-theme="light"] .text-gold {
+  color: #7d5106;
+}
+
+/*
+  The gold shimmer was tuned for navy: #d9a441 → #f3d79a is gorgeous on
+  Harbor and all but vanishes on cream, where the light stops sit near
+  1.2:1. That text is the H1, so Daylight gets its own ramp — same sweep,
+  darker brass, 3.6:1 at the palest frame and 7.7:1 at the deepest, clear of
+  the 3:1 large-text floor throughout the animation. Only background-image is
+  overridden, so the 200% background-size and the sweep keyframes still apply.
+*/
+:root[data-theme="light"] .shimmer-text {
+  background-image: linear-gradient(
+    100deg,
+    #6b4405 10%,
+    #a8741a 35%,
+    #6b4405 60%,
+    #a8741a 85%,
+    #6b4405 100%
+  );
 }
 
 /*
