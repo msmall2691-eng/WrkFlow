@@ -92,7 +92,11 @@ export default function FounderNote() {
               </div>
             </div>
             <figcaption className="mt-7 w-full">
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint/80">
+              {/* --color-faint is tuned to land just over 4.5:1 at full
+                  strength, so any alpha modifier on it fails — these were
+                  3.53:1 on cream. Same fix already applied in Footer and
+                  Contact; /about was never in the audit's page list. */}
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
                 Built from real business — The Maine Cleaning Co.
               </p>
 
@@ -102,11 +106,11 @@ export default function FounderNote() {
                 {STATS.map((stat, i) => (
                   <li key={stat} className="flex items-center gap-2">
                     {i > 0 && (
-                      <span aria-hidden="true" className="text-faint/40">
+                      <span aria-hidden="true" className="text-faint">
                         ·
                       </span>
                     )}
-                    <span className="whitespace-nowrap font-mono text-[10px] leading-none text-faint/70">
+                    <span className="whitespace-nowrap font-mono text-[10px] leading-none text-faint">
                       {stat}
                     </span>
                   </li>
@@ -198,7 +202,7 @@ export default function FounderNote() {
                 </p>
               ))}
             </div>
-            <p className="mt-5 max-w-md font-mono text-[11px] leading-relaxed text-faint/70">
+            <p className="mt-5 max-w-md font-mono text-[11px] leading-relaxed text-faint">
               {founderBio.detail}
             </p>
             <p
