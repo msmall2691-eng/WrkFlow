@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useMaine } from "@/lib/useMaine";
+import DayScrubber from "./DayScrubber";
+import { maineTime } from "@/lib/daylight";
 
 /*
   LiveReadout — the hero's live-conditions panel.
@@ -25,7 +27,7 @@ type Tile = { label: string; value: string; drives: string };
   and when someone has overridden it, saying "the daylight sets the theme"
   without qualification would be false for them.
 */
-function useThemeReason(sunset?: string) {
+function useThemeReason(sunset: string | undefined, scrubbedTo: number | null) {
   const [line, setLine] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,6 +39,12 @@ function useThemeReason(sunset?: string) {
         stored = localStorage.getItem("theme");
       } catch {
         /* ignore */
+      }
+      // A scrub outranks both explanations below: whatever the page is showing
+      // right now, the reason is that the visitor dragged it there.
+      if (scrubbedTo != null) {
+        setLine(`Previewing ${maineTime(scrubbedTo)} in Portland.`);
+        return;
       }
       if (stored === "light" || stored === "dark") {
         setLine(`${isLight ? "Daylight" : "Harbor"} because you chose it.`);
@@ -51,14 +59,27 @@ function useThemeReason(sunset?: string) {
     read();
     window.addEventListener("theme:change", read);
     return () => window.removeEventListener("theme:change", read);
-  }, [sunset]);
+  }, [sunset, scrubbedTo]);
 
   return line;
 }
 
 export default function LiveReadout() {
   const d = useMaine();
-  const reason = useThemeReason(d?.sunset);
+  /*
+    Mirrors DayScrubber's preview so the panel never reads "Now" over a page
+    that is showing 7pm. The scrubber owns the value; this only listens.
+  */
+  const [scrubbedTo, setScrubbedTo] = useState<number | null>(null);
+  useEffect(() => {
+    const on = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { at: number } | null;
+      setScrubbedTo(detail ? detail.at : null);
+    };
+    window.addEventListener("daylight:scrub", on);
+    return () => window.removeEventListener("daylight:scrub", on);
+  }, []);
+  const reason = useThemeReason(d?.sunset, scrubbedTo);
 
   const tiles: Tile[] = [];
   if (d) {
@@ -98,8 +119,12 @@ export default function LiveReadout() {
             Live · {d?.place ?? "Portland, ME"}
           </span>
         </span>
-        <span className="font-mono text-[9px] uppercase tracking-widest text-[color:var(--panel-faint)]">
-          {loading ? "Reading…" : "Now"}
+        <span
+          className={`font-mono text-[9px] uppercase tracking-widest ${
+            scrubbedTo != null ? "text-signal" : "text-[color:var(--panel-faint)]"
+          }`}
+        >
+          {scrubbedTo != null ? maineTime(scrubbedTo) : loading ? "Reading…" : "Now"}
         </span>
       </div>
 
@@ -139,6 +164,9 @@ export default function LiveReadout() {
           </p>
         )}
       </div>
+
+      {/* The handle that makes all of the above checkable. */}
+      <DayScrubber />
     </div>
   );
 }

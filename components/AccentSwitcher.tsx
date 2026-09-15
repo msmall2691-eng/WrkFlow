@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { getSunTimes } from "@/lib/sun";
+import { PHASES, isDaylight, phaseAt, type Phase } from "@/lib/daylight";
 
 /*
   AccentSwitcher — a public "make it yours" accent picker, now tied to place.
@@ -12,7 +12,7 @@ import { getSunTimes } from "@/lib/sun";
   that drive buttons, links, markers, toggles, sliders, etc.
 */
 
-type Accent = { name: string; signal: string; dim: string };
+type Accent = Phase;
 
 const ACCENTS: Accent[] = [
   { name: "Sea Glass", signal: "#16a394", dim: "#0e8f86" },
@@ -23,32 +23,12 @@ const ACCENTS: Accent[] = [
   { name: "Rose", signal: "#f43f5e", dim: "#e11d48" },
 ];
 
-// Maine daylight phases — the accent's place-based arc through the day,
-// coloured to actual sky: warm sand at dawn, bright sky-blue at noon,
-// twilight purple at dusk, deep navy at night.
-const PHASES: Record<string, Accent> = {
-  dawn: { name: "dawn", signal: "#e0a85a", dim: "#c98f43" },
-  day: { name: "midday", signal: "#5eb2f0", dim: "#3a8fcf" },
-  dusk: { name: "dusk", signal: "#6f7fd6", dim: "#5566bd" },
-  night: { name: "night", signal: "#6b78c4", dim: "#5563aa" },
-};
-
 const KEY = "mstudio-accent";
 const TICK = 10 * 60 * 1000; // re-check the daylight phase every 10 min
 
 function hexToRgb(hex: string) {
   const h = hex.replace("#", "");
   return { r: parseInt(h.slice(0, 2), 16), g: parseInt(h.slice(2, 4), 16), b: parseInt(h.slice(4, 6), 16) };
-}
-
-function currentPhase(now = new Date()): Accent {
-  const { sunrise, sunset } = getSunTimes(now);
-  const t = now.getTime();
-  const hr = 3600000;
-  if (t < sunrise.getTime() - 0.5 * hr || t > sunset.getTime() + hr) return PHASES.night;
-  if (t < sunrise.getTime() + 1.5 * hr) return PHASES.dawn;
-  if (t > sunset.getTime() - 1.5 * hr) return PHASES.dusk;
-  return PHASES.day;
 }
 
 export default function AccentSwitcher() {
@@ -61,6 +41,11 @@ export default function AccentSwitcher() {
   const [mode, setMode] = useState<"auto" | "dark" | "light">("auto");
   const activeRef = useRef(1);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  // True while DayScrubber is previewing another time of day. `preview` is
+  // the phase it is showing, so the pill's swatch matches the page instead of
+  // advertising a saved accent that is not currently on screen.
+  const scrubbing = useRef(false);
+  const [preview, setPreview] = useState<Accent | null>(null);
 
   /*
     Auto / Daylight / Harbor — persists in localStorage; the pre-paint script
@@ -99,7 +84,7 @@ export default function AccentSwitcher() {
     setAuto(true);
     setActive(-1);
     activeRef.current = -1;
-    const p = currentPhase();
+    const p = phaseAt();
     setPhase(p);
     applyColor(p);
     if (persist) {
@@ -111,9 +96,9 @@ export default function AccentSwitcher() {
     }
     stopTimer();
     timer.current = setInterval(() => {
-      const np = currentPhase();
+      const np = phaseAt();
       setPhase(np);
-      applyColor(np);
+      if (!scrubbing.current) applyColor(np);
     }, TICK);
   };
 
@@ -178,6 +163,71 @@ export default function AccentSwitcher() {
   }, []);
 
   /*
+    DayScrubber preview. The scrubber asks "what would this page look like at
+    4pm?" and this is what answers: the same phase colours the auto accent
+    uses, applied live, and — only when the theme is on Auto — the same
+    sunrise/sunset flip middleware does on a real page load. Someone who has
+    explicitly chosen Daylight or Harbor keeps it; the scrub is a preview, not
+    a licence to overrule a stated preference.
+
+    Nothing here persists, and `scrubbing` parks the ten-minute auto tick so
+    it cannot overwrite a preview mid-drag. Releasing with `null` restores
+    whatever was actually true.
+  */
+  useEffect(() => {
+    const restore = () => {
+      scrubbing.current = false;
+      setPreview(null);
+      applyColor(activeRef.current === -1 ? phaseAt() : ACCENTS[activeRef.current] ?? PHASES.day);
+      const bySun = document.documentElement.dataset.themeAuto === "light" ? "light" : "dark";
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem("theme");
+      } catch {
+        /* ignore */
+      }
+      const effective = stored === "light" || stored === "dark" ? stored : bySun;
+      if (effective === "light") document.documentElement.dataset.theme = "light";
+      else delete document.documentElement.dataset.theme;
+      setLight(effective === "light");
+      window.dispatchEvent(new Event("theme:change"));
+    };
+
+    const onScrub = (e: Event) => {
+      const d = (e as CustomEvent).detail as { at: number } | null;
+      if (!d) {
+        restore();
+        return;
+      }
+      scrubbing.current = true;
+      const when = new Date(d.at);
+      const p = phaseAt(when);
+      setPreview(p);
+      applyColor(p);
+
+      let stored: string | null = null;
+      try {
+        stored = localStorage.getItem("theme");
+      } catch {
+        /* ignore */
+      }
+      if (stored === "light" || stored === "dark") return; // their call, not ours
+
+      const nextLight = isDaylight(when);
+      if (nextLight) document.documentElement.dataset.theme = "light";
+      else delete document.documentElement.dataset.theme;
+      setLight(nextLight);
+      window.dispatchEvent(new Event("theme:change"));
+    };
+
+    window.addEventListener("daylight:scrub", onScrub);
+    return () => {
+      window.removeEventListener("daylight:scrub", onScrub);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /*
     Dismissal. The panel opens above its own trigger, so "click the button
     again" means aiming at a target the panel is sitting on top of — the
     reason this felt hard to close. Escape and an outside click are the two
@@ -201,7 +251,7 @@ export default function AccentSwitcher() {
     };
   }, [open]);
 
-  const swatch = auto ? phase : ACCENTS[active] ?? PHASES.day;
+  const swatch = preview ?? (auto ? phase : ACCENTS[active] ?? PHASES.day);
 
   return (
     <div ref={shell} className="fixed bottom-5 right-5 z-40 flex flex-col items-end">

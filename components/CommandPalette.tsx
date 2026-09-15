@@ -110,6 +110,26 @@ export default function CommandPalette() {
         // Leave the palette open so Enter can cycle through accents quickly.
         run: () => window.dispatchEvent(new Event("accent:cycle")),
       },
+      {
+        id: "scrub",
+        label: "Scrub the Maine day",
+        hint: "☀",
+        group: "Actions",
+        keywords: "time day sun sunrise sunset daylight preview scrub clock hour night dusk dawn",
+        // Sends them to the handle rather than driving it from here: the
+        // point of the thing is the dragging.
+        run: () => {
+          close();
+          document.getElementById("top")?.scrollIntoView({ behavior: "smooth" });
+          // After the scroll settles, put focus on the slider so it responds
+          // to arrow keys immediately for anyone not using a pointer.
+          setTimeout(() => {
+            document
+              .querySelector<HTMLInputElement>('input[type="range"][data-day-scrubber]')
+              ?.focus();
+          }, 600);
+        },
+      },
     ];
   }, [close]);
 

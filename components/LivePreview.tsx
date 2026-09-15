@@ -38,6 +38,25 @@ export default function LivePreview() {
   */
   const [taken, setTaken] = useState(false);
   const [index, setIndex] = useState(0);
+  /*
+    Which embeds have actually arrived. The iframe used to be painted over the
+    poster the moment it was created, so the comment below ("what remains is
+    still a picture of the site") was not true of the rendered page: a slow,
+    offline or extension-blocked embed covered the screenshot with a broken
+    frame instead of falling back to it. Now the iframe stays transparent
+    until its own load event fires, and a card whose embed never arrives is
+    left showing the poster — or, where there is no poster, a plain panel
+    with the address on it rather than a browser error.
+
+    One case this can't catch: a site that answers with X-Frame-Options DENY
+    still fires `load` (on the browser's own refusal page), and a cross-origin
+    frame can't be inspected to tell the difference. Neither site in `work` is
+    flagged `live` unless it frames — if one starts refusing, drop its `live`
+    flag and it falls back to the poster card.
+  */
+  const [ready, setReady] = useState<Record<string, boolean>>({});
+  const [failed, setFailed] = useState<Record<string, boolean>>({});
+  const readyRef = useRef<Record<string, boolean>>({});
 
   useEffect(() => {
     setHoverable(matchMedia("(hover: hover)").matches);
@@ -100,6 +119,21 @@ export default function LivePreview() {
     raf = requestAnimationFrame(step);
     return () => cancelAnimationFrame(raf);
   }, [load, taken]);
+
+  // Nothing arrived in eight seconds → stop waiting and keep the fallback.
+  useEffect(() => {
+    if (!load) return;
+    const id = setTimeout(() => {
+      setFailed((f) => {
+        const next = { ...f };
+        SITES.forEach((s) => {
+          if (!readyRef.current[s.url]) next[s.url] = true;
+        });
+        return next;
+      });
+    }, 8000);
+    return () => clearTimeout(id);
+  }, [load]);
 
   if (!SITES.length) return null;
 
@@ -174,9 +208,14 @@ export default function LivePreview() {
                   src={s.url}
                   title={`${s.title} — live`}
                   loading="lazy"
-                  className="absolute left-0 top-0"
+                  onLoad={() => {
+                    readyRef.current[s.url] = true;
+                    setReady((r) => ({ ...r, [s.url]: true }));
+                  }}
+                  className="absolute left-0 top-0 transition-opacity duration-500 motion-reduce:transition-none"
                   style={{
                     border: 0,
+                    opacity: ready[s.url] ? 1 : 0,
                     // Render at 2x the card width, then scale down — shows the full
                     // desktop layout "zoomed out" instead of a cropped close-up.
                     width: "200%",
@@ -186,12 +225,14 @@ export default function LivePreview() {
                     pointerEvents: hoverable && active === i ? "auto" : "none",
                   }}
                 />
-              ) : (
-                !s.shot && (
-                  <div className="flex h-full items-center justify-center font-mono text-xs text-faint">
-                    Loading live site…
-                  </div>
-                )
+              ) : null}
+              {!s.shot && !ready[s.url] && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-base px-4 text-center">
+                  <span className="font-mono text-[11px] text-faint">{s.label}</span>
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-faint">
+                    {failed[s.url] ? "Open it in a new tab →" : "Loading live site…"}
+                  </span>
+                </div>
               )}
               {hoverable && active !== i && (
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-black/45 to-transparent p-2">
