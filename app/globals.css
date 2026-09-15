@@ -4,7 +4,8 @@
   M Studio — design tokens
   "Deep Harbor": a dark, luxe coastal-New-England identity. Harbor-navy
   surfaces, off-white text, a sea-glass teal signal accent + a warm brass
-  (gold) accent. Accents are CSS variables so they re-tune in one place.
+  (gold) accent. Accents are CSS variables so they re-tune in one place —
+  Daylight overrides the warm one to terracotta further down.
 */
 @theme {
   /*
@@ -98,12 +99,13 @@
 }
 
 /*
-  Daylight mode — warm cream palette with harbor-navy text. Same brand,
-  same signal/gold accents, same ambient features. Toggle lives in the
+  Daylight mode — warm paper with harbor-navy text. Same brand, same signal
+  accent, same ambient features; the warm accent re-tunes from brass to
+  terracotta because gold on cream reads as yellow. Toggle lives in the
   LiveReadout swatch row; preference persists in localStorage.
 */
 :root[data-theme="light"] {
-  --color-base: #f6f2ea;
+  --color-base: #f7f4ef;
   --color-surface: #ffffff;
   --color-elevated: #ffffff;
   --color-line: rgba(11, 23, 34, 0.1);
@@ -120,9 +122,20 @@
 
   --color-signal-glow: rgba(47, 109, 240, 0.14);
 
-  --hero-bg: #f6f2ea;
-  --section-alt-bg: #efe8d9;
-  --section-alt2-bg: #f2ebde;
+  --hero-bg: #f7f4ef;
+  --section-alt-bg: #ebe6df;
+  --section-alt2-bg: #f2efe9;
+
+  /*
+    Daylight's warm accent is terracotta, not brass. The dark theme keeps
+    the gold — it reads as brass on navy. On cream it reads as yellow, which
+    is the one note of this palette nobody liked. Same warm/cool pairing
+    against the harbor blue, weathered-buoy red instead of gold. Token names
+    stay `gold` so the ~30 component usages don't churn; only the value
+    changes, per theme. #d0764f carries the navy button label at 5.5:1.
+  */
+  --color-gold: #d0764f;
+  --color-gold-dim: #a85433;
 
   --panel-bg: rgba(255, 255, 255, 0.85);
   --panel-line: rgba(11, 23, 34, 0.1);
@@ -132,9 +145,9 @@
   --panel-faint: rgba(11, 23, 34, 0.62);
   --panel-input-bg: rgba(11, 23, 34, 0.04);
 
-  --aurora-deep-r: 0.96;
-  --aurora-deep-g: 0.94;
-  --aurora-deep-b: 0.88;
+  --aurora-deep-r: 0.97;
+  --aurora-deep-g: 0.955;
+  --aurora-deep-b: 0.935;
 
   --moon-disc: transparent;
   --moon-rim:  #0b1722;
@@ -192,9 +205,9 @@ html[data-theme="light"] { color-scheme: light; }
 :root[data-theme="light"] .hero-scrim {
   background: linear-gradient(
     105deg,
-    rgba(246, 242, 234, 0.7) 0%,
-    rgba(246, 242, 234, 0.3) 42%,
-    rgba(246, 242, 234, 0) 78%
+    rgba(247, 244, 239, 0.7) 0%,
+    rgba(247, 244, 239, 0.3) 42%,
+    rgba(247, 244, 239, 0) 78%
   );
 }
 
@@ -207,9 +220,9 @@ html[data-theme="light"] { color-scheme: light; }
   pointer-events: none;
   display: none;
   background:
-    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(217, 164, 65, 0.15), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(208, 118, 79, 0.13), transparent 60%),
     radial-gradient(ellipse 100% 80% at 25% 70%, rgba(47, 109, 240, 0.1), transparent 65%),
-    linear-gradient(180deg, #f9f4ea 0%, #efe6d0 100%);
+    linear-gradient(180deg, #faf7f2 0%, #ebe4da 100%);
 }
 :root[data-theme="light"] .hero-light-bg { display: block; }
 
@@ -259,34 +272,36 @@ html {
   every light ground, and only text is touched — fills, borders and the
   accent switcher's live overrides are left alone.
 
-  Gold has the same problem far worse: #d9a441 on the founding-offer tint is
-  1.62:1, effectively invisible. Same treatment, text only, so the brass
-  borders and 5%-alpha washes keep the warmth they were chosen for.
+  The warm accent has the same problem far worse: even Daylight's terracotta
+  (#d0764f) is a fill colour, not a text colour — it sits near 3:1 on the
+  founding-offer tint. Same treatment, text only, so the terracotta borders
+  and 5%-alpha washes keep the warmth they were chosen for.
 */
 :root[data-theme="light"] .text-signal,
 :root[data-theme="light"] .marker {
   color: #1f54c9;
 }
 :root[data-theme="light"] .text-gold {
-  color: #7d5106;
+  color: #8f3d1c;
 }
 
 /*
   The gold shimmer was tuned for navy: #d9a441 → #f3d79a is gorgeous on
   Harbor and all but vanishes on cream, where the light stops sit near
-  1.2:1. That text is the H1, so Daylight gets its own ramp — same sweep,
-  darker brass, 3.6:1 at the palest frame and 7.7:1 at the deepest, clear of
-  the 3:1 large-text floor throughout the animation. Only background-image is
-  overridden, so the 200% background-size and the sweep keyframes still apply.
+  1.2:1. That text is the H1, so Daylight gets its own ramp — same sweep, in
+  terracotta rather than brass: 4.4:1 at the palest frame and 8.2:1 at the
+  deepest, clear of the 3:1 large-text floor throughout the animation. Only
+  background-image is overridden, so the 200% background-size and the sweep
+  keyframes still apply.
 */
 :root[data-theme="light"] .shimmer-text {
   background-image: linear-gradient(
     100deg,
-    #6b4405 10%,
-    #a8741a 35%,
-    #6b4405 60%,
-    #a8741a 85%,
-    #6b4405 100%
+    #7a3416 10%,
+    #b05a30 35%,
+    #7a3416 60%,
+    #b05a30 85%,
+    #7a3416 100%
   );
 }
 
