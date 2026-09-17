@@ -44,7 +44,17 @@ export default function CommandPalette() {
     return [
       { id: "top", label: "Home", group: "Navigate", keywords: "hero start top", run: go("top") },
       { id: "services", label: "Services", group: "Navigate", keywords: "what we do offerings websites tools plugins", run: go("services") },
-      { id: "tools", label: "Free tools", group: "Navigate", keywords: "tools quote estimator email signature qr code website check lighthouse speed seo free try", run: go("tools") },
+      {
+        id: "tools",
+        label: "Free tools",
+        hint: "↗",
+        group: "Navigate",
+        keywords: "tools quote estimator email signature qr code website check lighthouse speed seo free try",
+        run: () => {
+          close();
+          window.location.href = "/tools";
+        },
+      },
       { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
       {
         id: "marketplace",
@@ -57,9 +67,29 @@ export default function CommandPalette() {
           window.location.href = "/marketplace";
         },
       },
-      { id: "approach", label: "Approach", group: "Navigate", keywords: "process method", run: go("approach") },
+      {
+        id: "approach",
+        label: "Approach",
+        hint: "↗",
+        group: "Navigate",
+        keywords: "process method how we work",
+        run: () => {
+          close();
+          window.location.href = "/about#approach";
+        },
+      },
       { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan starter site founding offer monthly", run: go("pricing") },
-      { id: "meg", label: "Meet Meg", hint: "☕", group: "Navigate", keywords: "founder meg about story who", run: go("founder") },
+      {
+        id: "meg",
+        label: "Meet Meg",
+        hint: "☕",
+        group: "Navigate",
+        keywords: "founder meg about story who",
+        run: () => {
+          close();
+          window.location.href = "/about";
+        },
+      },
       {
         id: "contact",
         label: "Start a conversation",
@@ -120,6 +150,10 @@ export default function CommandPalette() {
         // point of the thing is the dragging.
         run: () => {
           close();
+          if (!document.querySelector('input[data-day-scrubber]')) {
+            window.location.href = "/#top";
+            return;
+          }
           document.getElementById("top")?.scrollIntoView({ behavior: "smooth" });
           // After the scroll settles, put focus on the slider so it responds
           // to arrow keys immediately for anyone not using a pointer.

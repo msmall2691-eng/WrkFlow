@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { isDaylight } from "@/lib/daylight";
 
 /*
   Subdomain routing — intake.mlinx.studio serves the new-client project
@@ -91,25 +90,16 @@ export function middleware(request: NextRequest) {
   const rewriteUrl = questionnaireRewrite(request);
 
   /*
-    Theme default, from the actual Portland sun.
+    Theme default: Daylight, always.
 
-    The hero has always said "the daylight sets the theme" while nothing set
-    it: x-theme-default was read in app/layout.tsx but never sent by anyone,
-    so themeDefault was permanently "dark" and the entire Daylight palette
-    shipped dead. It now carries the one input it was built for.
-
-    Sunrise to sunset serves Daylight, the rest of the day serves Harbor. A
-    visitor who picked a theme still keeps it — the inline script in the
-    layout reads localStorage first and only falls back to this default.
-
-    isDaylight is local math (no network, no Node APIs), so it is safe on the
-    Edge runtime this middleware runs on. It is the same function DayScrubber
-    and AccentSwitcher call, so the theme a visitor is served and the theme a
-    scrub previews can never disagree about where sunrise is. The pages are
-    server-rendered on demand rather than statically cached, which is what
-    keeps a night visitor from being handed a daytime shell.
+    This used to follow the Portland sun — dark from sunset to sunrise — which
+    meant half the world's visitors met a near-black page and the studio read
+    as a night-time thing. Daylight is the brand now; Harbor is a preference
+    someone opts into, and the inline script in the layout still reads their
+    stored choice first. The sun math it replaced has not gone away: the hero's
+    day-scrubber still uses it to preview the accent's arc through a Maine day.
   */
-  requestHeaders.set("x-theme-default", isDaylight() ? "light" : "dark");
+  requestHeaders.set("x-theme-default", "light");
 
   const response = rewriteUrl
     ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })

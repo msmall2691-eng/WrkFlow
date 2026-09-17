@@ -32,18 +32,37 @@ npm start        # serve the production build
 ```
 app/
   layout.tsx            Fonts, metadata, Open Graph
-  page.tsx              Section assembly
+  page.tsx              Homepage assembly — five sections
+  about/page.tsx        Founder story, approach, stack
+  tools/page.tsx        The free M Linx tools
   globals.css           Design tokens + Tailwind
   opengraph-image.tsx   Dynamic OG image
   sitemap.ts / robots.ts
   api/contact/route.ts  Contact form handler
   intake/page.tsx       New-client questionnaire (intake.mlinx.studio)
   api/questionnaire/    Questionnaire handler
-components/             Hero, Shift, Services, Approach, Work, Contact, …
+components/             Hero, Services, Deployments (Work), Pricing, Contact, …
 lib/content.ts          Service copy + section content (single source)
+lib/daylight.ts         Sun phase colours + sunrise/sunset (single source)
 lib/questionnaire.ts    Questionnaire steps + fields (single source)
 supabase/schema.sql     contact_submissions table
 ```
+
+## Page structure
+
+The homepage is deliberately five sections — Hero, Services, Work, Pricing,
+Contact — and nothing else. It was ten, and roughly 8,800px tall. What moved:
+
+| Was on the homepage | Lives at |
+| --- | --- |
+| Free tools (8 of them) | `/tools` |
+| FAQ | inside the Pricing section |
+| Approach | `/about` |
+| Stack | `/about` |
+| OperatorBand | cut; its numbers are one line in Work |
+
+Before adding a sixth homepage section, consider whether it belongs on one of
+those pages instead.
 
 ## New-client questionnaire
 
@@ -103,18 +122,30 @@ Copy `.env.example` to `.env.local` and fill in what you want to use:
   `GMAIL_USER` and `GMAIL_APP_PASSWORD`. Notifications go to `CONTACT_NOTIFY_TO`
   (defaults to `GMAIL_USER`).
 
-## Design tokens
+## Design tokens & theme
 
 All theming lives in `app/globals.css` under `@theme`. The signal accent is a
-single variable (`--color-signal`, currently Ion Blue `#2563eb`) so it can be
-re-tuned in one place during iteration.
+single variable (`--color-signal`) so it can be re-tuned in one place.
+
+**Daylight is the default, always.** The site used to follow the Portland sun —
+light between sunrise and sunset, dark otherwise — which meant evening visitors
+only ever met a near-black page. `middleware.ts` now sends `x-theme-default:
+light` unconditionally, the pre-paint script in `app/layout.tsx` applies it
+unless the visitor has explicitly stored `dark`, and the appearance control
+offers exactly two modes.
+
+The sun math did not go away: `lib/daylight.ts` still drives the **accent**
+colour through dawn → midday → dusk → night, and the hero's day-scrubber
+previews that arc. The scrubber changes the accent only — never the theme.
 
 ## Iteration backlog
 
 - ~~Hero headline~~ — "Own the systems your business runs on."
 - ~~Logo / wordmark treatment~~ — `M Studio / Studios` monospace wordmark
-- **Accent color** — Ion Blue `#2563eb` is live; revisiting per v2 (cyan / lime / amber options)
-- **Hero motion** — confirm line-field vs. grid vs. subtler
+- **Accent color** — Harbor `#2f6df0` is the default swatch; the accent also
+  tracks the Maine daylight phase when set to auto
+- **OG image** — still a dark social card while the site ships light; worth
+  revisiting so a shared link matches the page it opens
 - **Domain** — `mlinx.studio` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up
 - **Founder reveal** — currently names The Maine Cleaning Company (Option A); toggle via `provingGroundCompany` in `lib/content.ts`
 - **Work repos** — confirm `autopilot`, `elite-service-suite`, `align`; decide if `BrightBase` is the flagship card

@@ -1,25 +1,40 @@
 import Image from "next/image";
 import { work, type WorkItem } from "@/lib/content";
 import Reveal from "./Reveal";
-import Tilt from "./Tilt";
-import LivePreview from "./LivePreview";
 
 const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
 /*
-  Deployments — "Work". A featured LIVE preview of the sites that allow framing
-  (Maine Cleaning, Autopilot), then static browser-framed cards for the rest
-  (the Remote Admin forbids embedding) and the private internal systems.
+  Work — six real screenshots, big.
+
+  This section used to open with a live-iframe rail (two sites embedded and
+  auto-scrolling) and then drop into a three-column grid of small cards, each
+  wearing fake browser chrome, a tilt-on-hover effect, a metric chip and a
+  three-row definition list of stack / replaced / status. The screenshots —
+  the only actual evidence on the page — were the smallest thing in it.
+
+  Now it is one grid, two columns, and the image is the card. The first item
+  runs full width because it is the flagship and it earns the room. Everything
+  that was competing with the pictures is gone: no iframes, no chrome, no tilt,
+  no metric chips, no spec table. What a buyer needs from this section is
+  "these are real and they shipped", and a large screenshot says that faster
+  than a caption can.
+
+  The stack/replaced/status detail did not move to another page; it is cut. It
+  was written for a reader who had already decided, and that reader is on
+  /about reading the approach.
 */
+
+/* One line of proof under the heading, folded in from the old founder band. */
+const PROOF = "10 yrs · 1,000+ customers · 7,000+ service visits · $1M+ managed";
+
 export default function Deployments() {
-  const hasLive = work.some((w) => w.url && w.live);
-  // Static cards: linked sites that can't go live + private systems.
-  const staticCards = work.filter((w) => (w.url && !w.live) || w.tier === "private");
+  const items = work.filter((w) => w.shot);
 
   return (
-    <section id="work" className="relative overflow-hidden border-t border-line py-20 md:py-24">
-      <div className="relative mx-auto max-w-5xl px-6">
-        <div className="mb-10 max-w-3xl">
+    <section id="work" className="relative border-t border-line py-20 md:py-28">
+      <div className="relative mx-auto max-w-6xl px-6">
+        <div className="mb-12 max-w-2xl">
           <Reveal>
             <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
               Work
@@ -31,161 +46,79 @@ export default function Deployments() {
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-5 text-[1rem] leading-relaxed text-muted">
-              Client sites, products, and the systems behind them — live below.
+            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+              {PROOF}
             </p>
           </Reveal>
         </div>
 
-        {/* Featured live preview */}
-        {hasLive && (
-          <Reveal>
-            <LivePreview />
-          </Reveal>
-        )}
-
-        {/* The rest — static browser-framed cards + private tiles */}
-        {staticCards.length > 0 && (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {staticCards.map((w, i) => (
-              <Reveal key={w.title} delay={i * 60}>
-                {w.url ? (
-                  <Tilt>
-                    <BigCard w={w} />
-                  </Tilt>
-                ) : (
-                  <PrivateTile w={w} />
-                )}
-              </Reveal>
-            ))}
-          </div>
-        )}
+        <div className="grid gap-6 md:grid-cols-2">
+          {items.map((w, i) => (
+            /* The span lives on Reveal, not on Card: Reveal renders the
+               element that is actually the grid item, so a col-span on the
+               card inside it does nothing. */
+            <Reveal
+              key={w.title}
+              delay={Math.min(i, 3) * 60}
+              className={i === 0 ? "md:col-span-2" : ""}
+            >
+              <Card w={w} feature={i === 0} />
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function BigCard({ w }: { w: WorkItem }) {
-  const cta = w.tier === "product" ? "View the demo" : "Visit site";
+function Card({ w, feature }: { w: WorkItem; feature?: boolean }) {
+  const live = !!w.url;
+  const Wrapper = live ? "a" : "div";
+
   return (
-    <article
-      className={`group corner-accents flex h-full flex-col overflow-hidden rounded-2xl border bg-elevated transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.7)] ${
-        w.client ? "border-gold/40 hover:border-gold/60" : "border-line hover:border-signal/50"
+    <Wrapper
+      {...(live
+        ? { href: w.url, target: "_blank", rel: "noopener noreferrer" }
+        : {})}
+      className={`group block overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-500 ${
+        live ? "hover:-translate-y-1 hover:border-signal/50 hover:shadow-[0_24px_60px_-34px_rgba(11,23,34,0.35)]" : ""
       }`}
     >
-      {/* Browser frame */}
-      <div className="bg-surface">
-        <div className="flex items-center gap-1.5 border-b border-line bg-base/60 px-3 py-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-line" />
-          <span className="h-2.5 w-2.5 rounded-full bg-line" />
-          <span className="h-2.5 w-2.5 rounded-full bg-line" />
-          {w.url && (
-            <span className="ml-2 truncate rounded bg-surface px-2 py-0.5 font-mono text-[10px] text-faint">
-              {domain(w.url)}
-            </span>
-          )}
-        </div>
-        <div className="relative aspect-[16/10] overflow-hidden">
-          {w.shot && (
-            <Image
-              src={w.shot}
-              alt={`${w.title} — preview`}
-              fill
-              sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw"
-              className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Caption */}
-      <div className="flex flex-1 flex-col p-5">
-        <p className={`font-mono text-[10px] uppercase tracking-widest ${w.client ? "text-gold" : "text-signal"}`}>
-          {w.tag}
-        </p>
-        <h3 className="display-serif mt-2 text-lg text-ink">{w.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted">{w.blurb}</p>
-
-        {w.metric && (
-          <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-signal/10 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-signal">
-            {w.metric}
-          </p>
-        )}
-
-        {w.url && (
-          <a
-            href={w.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-auto pt-4 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
-          >
-            {cta}
-            <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
-          </a>
-        )}
-      </div>
-    </article>
-  );
-}
-
-/*
-  PrivateTile — the internal systems.
-
-  These were the strongest evidence on the site that M Studio ships real
-  software, and they were presented as three screenshots behind a padlock.
-  The lock is now a production-status chip, and each tile carries what it is
-  built with, what it displaced, and whether it is running. A buyer does not
-  need the numbers inside; they need proof the thing exists and is used.
-  Still unlinked — these are internal, and the screenshots stay anonymized.
-*/
-function PrivateTile({ w }: { w: WorkItem }) {
-  const hasMeta = !!(w.stack?.length || w.replaced || w.status);
-  return (
-    <article className="group corner-accents flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-elevated">
-      <div className="relative aspect-[16/10] overflow-hidden bg-surface">
-        {w.shot && (
-          <Image
-            src={w.shot}
-            alt={`${w.title} — preview`}
-            fill
-            sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
-            className="object-cover object-top"
-          />
-        )}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        {w.status && (
-          <span className="absolute right-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-base/85 px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest text-signal backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+      <div className={`relative overflow-hidden bg-base ${feature ? "aspect-[2/1]" : "aspect-[16/10]"}`}>
+        <Image
+          src={w.shot as string}
+          alt={`${w.title} — screenshot`}
+          fill
+          /* The feature card is full-bleed across a 1152px container; the rest
+             are half of it. Getting these wrong is what makes a big screenshot
+             look soft, which would defeat the point of enlarging them. */
+          sizes={feature ? "(min-width: 1152px) 1104px, 100vw" : "(min-width: 768px) 540px, 100vw"}
+          priority={feature}
+          className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
+        />
+        {w.tier === "private" && (
+          <span className="absolute right-3 top-3 rounded-full border border-line bg-surface/90 px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest text-faint backdrop-blur">
             In production
           </span>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <p className="font-mono text-[10px] uppercase tracking-widest text-faint">{w.tag}</p>
-        <h3 className="display-serif mt-2 text-[1rem] text-ink">{w.title}</h3>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted">{w.blurb}</p>
 
-        {hasMeta && (
-          <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
-            {w.stack?.length ? (
-              <MetaRow label="Stack">
-                <span className="font-mono text-xs text-signal">{w.stack.join(" · ")}</span>
-              </MetaRow>
-            ) : null}
-            {w.replaced && <MetaRow label="Replaced">{w.replaced}</MetaRow>}
-            {w.status && <MetaRow label="Status">{w.status}</MetaRow>}
-          </dl>
+      <div className="flex items-baseline justify-between gap-4 p-5">
+        <div className="min-w-0">
+          <h3 className="display-serif text-[1.05rem] text-ink">{w.title}</h3>
+          <p className="mt-1 truncate font-mono text-[10px] uppercase tracking-widest text-faint">
+            {live ? domain(w.url as string) : w.tag}
+          </p>
+        </div>
+        {live && (
+          <span
+            aria-hidden="true"
+            className="shrink-0 text-sm font-semibold text-signal transition-transform group-hover:translate-x-0.5"
+          >
+            →
+          </span>
         )}
       </div>
-    </article>
-  );
-}
-
-function MetaRow({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="grid grid-cols-[68px_1fr] gap-3">
-      <dt className="pt-0.5 font-mono text-[10px] uppercase tracking-widest text-faint">{label}</dt>
-      <dd className="m-0 leading-snug text-muted">{children}</dd>
-    </div>
+    </Wrapper>
   );
 }

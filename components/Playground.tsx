@@ -109,26 +109,12 @@ export default function Playground() {
   }
 
   return (
-    <section id="tools" className="relative overflow-hidden border-t border-line py-14 md:py-20">
+    <section id="tools" className="relative overflow-hidden py-10 md:py-14">
       <div
         aria-hidden="true"
         className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
-        <Reveal>
-          <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Free tools. No signup. Built for trades.
-          </h2>
-        </Reveal>
-        <Reveal delay={80}>
-          <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-muted">
-            The same{" "}
-            <span className="inline-flex items-center gap-1.5 align-middle text-ink">
-              <LinxMark className="h-3 w-auto" />M Linx
-            </span>{" "}
-            tools we build into client systems — free to use here.
-          </p>
-        </Reveal>
 
         {/* Tabs — grouped; each tool is its own clean pill */}
         <Reveal delay={120}>

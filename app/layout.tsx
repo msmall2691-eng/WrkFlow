@@ -88,7 +88,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b1722",
+  themeColor: "#f7f4ef",
   width: "device-width",
   initialScale: 1,
 };
@@ -184,9 +184,12 @@ export default async function RootLayout({
   // 'unsafe-inline'.
   const hdrs = await headers();
   const nonce = hdrs.get("x-nonce") ?? undefined;
-  // Per-route default theme (middleware sets this for the questionnaire).
-  // Only applies when the visitor has made no explicit choice of their own.
-  const themeDefault = hdrs.get("x-theme-default") === "light" ? "light" : "dark";
+  /*
+    Per-route default theme. Middleware sends "light" for everything now —
+    Daylight is the default the site ships. A visitor's own stored choice
+    still wins over this; see the pre-paint script below.
+  */
+  const themeDefault = hdrs.get("x-theme-default") === "dark" ? "dark" : "light";
 
   return (
     <html
@@ -211,12 +214,14 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html:
               /*
-                 Three modes now (brief A2.3). "auto" and no stored value both
-                 defer to the sun; "light" and "dark" are the visitor's own
-                 call and always win. themeAuto records what the sun said, so
-                 the control can hand the page back to Auto without a reload.
+                 Daylight unless the visitor asked for Harbor. Only an explicit
+                 stored 'dark' turns the attribute off; everything else — no
+                 value, the legacy 'auto', a corrupt value, or localStorage
+                 throwing in a locked-down browser — lands on light, which is
+                 what the site ships. themeAuto records the route default so
+                 the appearance control knows what "reset" means.
               */
-              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;try{var t=localStorage.getItem('theme');if(t==='light'||((!t||t==='auto')&&d==='light'))document.documentElement.dataset.theme='light';}catch(e){if(d==='light')document.documentElement.dataset.theme='light';}`,
+              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t!=='dark')document.documentElement.dataset.theme='light';`,
           }}
         />
         <script

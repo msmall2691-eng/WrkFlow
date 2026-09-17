@@ -193,7 +193,7 @@ export const services: Service[] = [
     index: "01",
     title: "Websites",
     tagline: "A site that takes the booking, not just the phone number.",
-    kinds: ["Marketing sites", "Booking & scheduling", "Instant quoting", "Intake forms", "Online payments"],
+    kinds: ["Marketing sites", "Booking & scheduling", "Online payments"],
     pain:
       "Your site is a business card. Every enquiry still turns into a phone call, a text thread, and a quote you type by hand.",
     outcome:
@@ -211,14 +211,7 @@ export const services: Service[] = [
     index: "02",
     title: "Web apps & internal tools",
     tagline: "The thing your team opens every morning.",
-    kinds: [
-      "Operations dashboards",
-      "Client portals",
-      "Scheduling & dispatch",
-      "Job tracking",
-      "Custom CRM",
-      "Moving off rented software",
-    ],
+    kinds: ["Operations dashboards", "Scheduling & dispatch", "Custom CRM"],
     pain:
       "The real work lives in four spreadsheets, a shared calendar and a group chat, and only one person knows where anything is.",
     outcome:
@@ -236,14 +229,7 @@ export const services: Service[] = [
     index: "03",
     title: "The automation inside them",
     tagline: "The busywork happens on its own. You still approve it.",
-    kinds: [
-      "Lead intake",
-      "Follow-ups & reminders",
-      "Invoicing sync",
-      "AI drafting & triage",
-      "Connecting tools you already pay for",
-      "Cleaning up the data first",
-    ],
+    kinds: ["Lead intake", "Follow-ups & reminders", "AI drafting & triage"],
     pain:
       "The same information gets re-typed into three places, and the follow-up only happens when somebody remembers.",
     outcome:
