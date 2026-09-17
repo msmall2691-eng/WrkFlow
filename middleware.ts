@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { getSunTimes } from "@/lib/sun";
+import { isDaylight } from "@/lib/daylight";
 
 /*
   Subdomain routing — intake.mlinx.studio serves the new-client project
@@ -102,12 +102,14 @@ export function middleware(request: NextRequest) {
     visitor who picked a theme still keeps it — the inline script in the
     layout reads localStorage first and only falls back to this default.
 
-    getSunTimes is local math (no network, no Node APIs), so it is safe on the
-    Edge runtime this middleware runs on. The pages are server-rendered on
-    demand rather than statically cached, which is what keeps a night visitor
-    from being handed a daytime shell.
+    isDaylight is local math (no network, no Node APIs), so it is safe on the
+    Edge runtime this middleware runs on. It is the same function DayScrubber
+    and AccentSwitcher call, so the theme a visitor is served and the theme a
+    scrub previews can never disagree about where sunrise is. The pages are
+    server-rendered on demand rather than statically cached, which is what
+    keeps a night visitor from being handed a daytime shell.
   */
-  requestHeaders.set("x-theme-default", isDaylightInMaine() ? "light" : "dark");
+  requestHeaders.set("x-theme-default", isDaylight() ? "light" : "dark");
 
   const response = rewriteUrl
     ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
@@ -115,24 +117,6 @@ export function middleware(request: NextRequest) {
 
   response.headers.set("Content-Security-Policy", csp);
   return response;
-}
-
-/*
-  Is it currently between sunrise and sunset in Portland? Falls back to dark
-  if the sun math ever returns something unusable — a broken clock should not
-  hand a visitor a half-lit page.
-*/
-function isDaylightInMaine(now: Date = new Date()): boolean {
-  try {
-    const { sunrise, sunset } = getSunTimes(now);
-    const rise = sunrise.getTime();
-    const set = sunset.getTime();
-    if (!Number.isFinite(rise) || !Number.isFinite(set)) return false;
-    const t = now.getTime();
-    return t >= rise && t < set;
-  } catch {
-    return false;
-  }
 }
 
 export const config = {

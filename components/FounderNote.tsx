@@ -83,7 +83,18 @@ export default function FounderNote() {
               />
               {/* Big M Studio lockup — the section's whole visual lead, no photo */}
               <div className="relative flex items-center gap-3 rounded-2xl border border-signal/20 bg-surface/70 px-9 py-7 shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] sm:px-12 sm:py-9">
-                <span className="font-display text-6xl font-bold leading-none text-signal [text-shadow:0_0_34px_rgba(45,212,191,0.6),0_0_14px_rgba(45,212,191,0.45)] sm:text-7xl">
+                {/* The halo is mixed from --color-signal rather than frozen
+                    teal, which is what it used to be: the letter followed the
+                    accent and its glow didn't, so every non-teal accent — the
+                    default Harbor blue included — lit a blue M with a green
+                    halo. */}
+                <span
+                  className="font-display text-6xl font-bold leading-none text-signal sm:text-7xl"
+                  style={{
+                    textShadow:
+                      "0 0 34px color-mix(in srgb, var(--color-signal) 60%, transparent), 0 0 14px color-mix(in srgb, var(--color-signal) 45%, transparent)",
+                  }}
+                >
                   M
                 </span>
                 <span className="shimmer-text-signal font-mono text-3xl font-semibold tracking-[0.04em] sm:text-4xl">
@@ -141,9 +152,9 @@ export default function FounderNote() {
             reads as a philosophy, not a personal letter. */}
         <Reveal delay={80}>
           <div className="mt-10 flex flex-col items-center text-center">
-            <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+            <h1 className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
               {founderNote.headline}
-            </p>
+            </h1>
             <p className="mt-1 text-lg font-medium text-ink sm:text-xl">
               {founderNote.headlineFollow}
             </p>
@@ -164,9 +175,9 @@ export default function FounderNote() {
             Services.tsx further down has the full breakdown. */}
         <Reveal delay={110}>
           <div className="mt-12 flex flex-col items-center text-center">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
               What we build
-            </p>
+            </h2>
             <ul className="mt-4 flex flex-wrap justify-center gap-2">
               {whatWeBuild.map((item) => (
                 <li
@@ -189,9 +200,9 @@ export default function FounderNote() {
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
               {founderBio.kicker}
             </p>
-            <p className="mt-3 display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+            <h2 className="mt-3 display text-xl uppercase tracking-tight text-ink sm:text-2xl">
               {founderBio.heading}
-            </p>
+            </h2>
             <div className="mt-6 max-w-md space-y-4">
               {founderBio.paragraphs.map((para, i) => (
                 <p
@@ -218,9 +229,9 @@ export default function FounderNote() {
             small: a pull-quote, not another paragraph block. */}
         <Reveal delay={190}>
           <div className="mt-16 flex flex-col items-center border-t border-line pt-10 text-center">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
               {founderPhilosophy.heading}
-            </p>
+            </h2>
             <div className="mt-5 max-w-md space-y-4">
               {founderPhilosophy.lines.map((line, i) => (
                 <p
@@ -237,9 +248,9 @@ export default function FounderNote() {
         {/* CTA — closes the arc before handing off into Services below. */}
         <Reveal delay={230}>
           <div className="mt-14 flex flex-col items-center text-center">
-            <p className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+            <h2 className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
               {founderCta.headline}
-            </p>
+            </h2>
             <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-muted">
               {founderCta.body}
             </p>
