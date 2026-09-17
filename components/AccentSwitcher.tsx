@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { PHASES, isDaylight, phaseAt, type Phase } from "@/lib/daylight";
+import { PHASES, phaseAt, type Phase } from "@/lib/daylight";
 
 /*
   AccentSwitcher — a public "make it yours" accent picker, now tied to place.
@@ -38,7 +38,7 @@ export default function AccentSwitcher() {
   const [auto, setAuto] = useState(false);
   const [phase, setPhase] = useState<Accent>(PHASES.day);
   const [light, setLight] = useState(false);
-  const [mode, setMode] = useState<"auto" | "dark" | "light">("auto");
+  const [mode, setMode] = useState<"dark" | "light">("light");
   const activeRef = useRef(1);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   // True while DayScrubber is previewing another time of day. `preview` is
@@ -48,14 +48,12 @@ export default function AccentSwitcher() {
   const [preview, setPreview] = useState<Accent | null>(null);
 
   /*
-    Auto / Daylight / Harbor — persists in localStorage; the pre-paint script
-    in layout.tsx reads it before anything renders. Auto hands the page back
-    to the Portland sun, which the same script recorded on the root element,
-    so switching back needs no reload and no second copy of the sun math.
+    Daylight / Harbor — persists in localStorage; the pre-paint script in
+    layout.tsx reads it before anything renders, so a returning visitor never
+    sees a flash of the other theme.
   */
-  const applyTheme = useCallback((mode: "auto" | "dark" | "light") => {
-    const bySun = document.documentElement.dataset.themeAuto === "light" ? "light" : "dark";
-    const effective = mode === "auto" ? bySun : mode;
+  const applyTheme = useCallback((mode: "dark" | "light") => {
+    const effective = mode;
 
     if (effective === "light") document.documentElement.dataset.theme = "light";
     else delete document.documentElement.dataset.theme;
@@ -136,7 +134,9 @@ export default function AccentSwitcher() {
     } catch {
       /* ignore */
     }
-    setMode(storedTheme === "light" || storedTheme === "dark" ? storedTheme : "auto");
+    // A legacy stored "auto" (or nothing) now resolves to Daylight, matching
+    // what the pre-paint script already put on the element.
+    setMode(storedTheme === "dark" ? "dark" : "light");
     setLight(document.documentElement.dataset.theme === "light");
     return stopTimer;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -163,61 +163,32 @@ export default function AccentSwitcher() {
   }, []);
 
   /*
-    DayScrubber preview. The scrubber asks "what would this page look like at
-    4pm?" and this is what answers: the same phase colours the auto accent
-    uses, applied live, and — only when the theme is on Auto — the same
-    sunrise/sunset flip middleware does on a real page load. Someone who has
-    explicitly chosen Daylight or Harbor keeps it; the scrub is a preview, not
-    a licence to overrule a stated preference.
+    DayScrubber preview — accent only.
+
+    It used to flip the whole page to Harbor when you dragged past sunset,
+    which was the single most dramatic thing on the site and exactly the
+    wrong instinct: the page ships Daylight on purpose, and a control that
+    drops a visitor into a near-black screen undoes that in one gesture. The
+    accent still walks dawn → midday → dusk → night, so the arc is visible
+    without the page going dark underneath it.
 
     Nothing here persists, and `scrubbing` parks the ten-minute auto tick so
     it cannot overwrite a preview mid-drag. Releasing with `null` restores
-    whatever was actually true.
+    whatever accent was actually true.
   */
   useEffect(() => {
-    const restore = () => {
-      scrubbing.current = false;
-      setPreview(null);
-      applyColor(activeRef.current === -1 ? phaseAt() : ACCENTS[activeRef.current] ?? PHASES.day);
-      const bySun = document.documentElement.dataset.themeAuto === "light" ? "light" : "dark";
-      let stored: string | null = null;
-      try {
-        stored = localStorage.getItem("theme");
-      } catch {
-        /* ignore */
-      }
-      const effective = stored === "light" || stored === "dark" ? stored : bySun;
-      if (effective === "light") document.documentElement.dataset.theme = "light";
-      else delete document.documentElement.dataset.theme;
-      setLight(effective === "light");
-      window.dispatchEvent(new Event("theme:change"));
-    };
-
     const onScrub = (e: Event) => {
       const d = (e as CustomEvent).detail as { at: number } | null;
       if (!d) {
-        restore();
+        scrubbing.current = false;
+        setPreview(null);
+        applyColor(activeRef.current === -1 ? phaseAt() : ACCENTS[activeRef.current] ?? PHASES.day);
         return;
       }
       scrubbing.current = true;
-      const when = new Date(d.at);
-      const p = phaseAt(when);
+      const p = phaseAt(new Date(d.at));
       setPreview(p);
       applyColor(p);
-
-      let stored: string | null = null;
-      try {
-        stored = localStorage.getItem("theme");
-      } catch {
-        /* ignore */
-      }
-      if (stored === "light" || stored === "dark") return; // their call, not ours
-
-      const nextLight = isDaylight(when);
-      if (nextLight) document.documentElement.dataset.theme = "light";
-      else delete document.documentElement.dataset.theme;
-      setLight(nextLight);
-      window.dispatchEvent(new Event("theme:change"));
     };
 
     window.addEventListener("daylight:scrub", onScrub);
@@ -277,16 +248,18 @@ export default function AccentSwitcher() {
           </div>
 
           <div className="space-y-4 p-4">
-            {/* Mode — two explicit choices. The old single toggle made you read
-                a "tap for…" hint to work out which state you were in. */}
+            {/* Mode. Daylight is what the site ships and what most people
+                should see; Harbor is a preference, not half a rotation. The
+                old third option ("Auto — follows the sun") is gone: it served
+                a near-black page to every evening visitor, which read as the
+                studio being a night-time thing. */}
             <div>
               <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
                 Mode
               </p>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {([
-                  { id: "auto", label: "Auto", note: "Follows the sun", glyph: "◑" },
-                  { id: "light", label: "Daylight", note: "Light", glyph: "☀" },
+                  { id: "light", label: "Daylight", note: "Default", glyph: "☀" },
                   { id: "dark", label: "Harbor", note: "Dark", glyph: "☾" },
                 ] as const).map((m) => {
                   const on = m.id === mode;
@@ -409,7 +382,7 @@ export default function AccentSwitcher() {
           className="h-3.5 w-3.5 rounded-full ring-2 ring-offset-1 ring-offset-surface"
           style={{ backgroundColor: swatch.signal }}
         />
-        {mode === "auto" ? "Auto" : light ? "Daylight" : "Harbor"}
+        {light ? "Daylight" : "Harbor"}
       </button>
     </div>
   );

@@ -15,8 +15,10 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     scope: "/",
     display: "standalone",
-    background_color: "#0b1722",
-    theme_color: "#0b1722",
+    // Match the Daylight ground the site now ships; a navy splash in
+    // front of a cream page was a visible flash on install.
+    background_color: "#f7f4ef",
+    theme_color: "#f7f4ef",
     orientation: "portrait",
     categories: ["business", "productivity", "design"],
     icons: [

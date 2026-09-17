@@ -1,44 +1,40 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Deployments from "@/components/Deployments";
-import Stack from "@/components/Stack";
 import Services from "@/components/Services";
-import Playground from "@/components/Playground";
-import Approach from "@/components/Approach";
-import FAQ from "@/components/FAQ";
+import Deployments from "@/components/Deployments";
 import Pricing from "@/components/Pricing";
-import OperatorBand from "@/components/OperatorBand";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import CommandPalette from "@/components/CommandPalette";
 import WorkflowSpine from "@/components/WorkflowSpine";
 
+/*
+  Homepage — five sections: what we build, proof it exists, what it costs,
+  how to start.
+
+  It was ten, and ~8,800px on a laptop. Hero, founder band, services, eight
+  free tools, work, approach, FAQ, pricing, stack, contact — every one of them
+  defensible on its own and collectively far too much to land on. The cuts,
+  and where each thing went:
+
+    Free tools  → /tools      (eight forms is a product, not a section)
+    FAQ         → inside Pricing, where the objections it answers come up
+    Approach    → /about      (process belongs with the person)
+    Stack       → /about      (reassurance for the people who look for it)
+    OperatorBand→ cut         (its numbers now sit as one line in Work, and
+                               the story it teased already lives on /about)
+*/
 export default function Home() {
   return (
     <>
       <Nav />
       <WorkflowSpine />
       <main>
-        {/* Hero → operator band (boxes + actions; full story on /about) →
-            services → free tools → work → approach → pricing → stack → contact.
-            Free tools sit at position 2 DELIBERATELY (survey J-01, decided):
-            Meg put the kit up top because it's the site's strongest hook and
-            she uses it herself — engagement beats narrative purity here. */}
         <Hero />
-        <OperatorBand />
         <Services />
-        <Playground />
         <Deployments />
-        <Approach />
-        <FAQ />
         <Pricing />
-        {/* Stack moved below pricing (brief A4). Above it, a four-column grid
-            reading "REST + typed clients" was the most intimidating thing on
-            the page, and a non-technical visitor hit it immediately before the
-            price. Down here it reassures the people who look for it instead of
-            frightening the people who don't. */}
-        <Stack />
         <Contact />
       </main>
       <Footer />

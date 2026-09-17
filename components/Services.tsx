@@ -13,16 +13,6 @@ import { services } from "@/lib/content";
   what changes after, and a real example. One open at a time keeps the
   section from turning into a wall of text.
 */
-const AUDIENCES = [
-  "Service companies",
-  "Trades",
-  "Property managers",
-  "Short-term rental owners",
-  "Founders",
-  "Organizations",
-  "Personal projects",
-];
-
 /*
   Specific things we've built (or can build) — a quick-scan companion to the
   deeper per-service breakdown above, not a duplicate of it.
@@ -146,24 +136,11 @@ export default function Services() {
             of eight, the kinds chips inside each card already say the same
             things in the place they belong (brief A3). */}
 
-        {/* Who it's for — compact chip row */}
-        <Reveal delay={220}>
-          <div className="mt-8 border-t border-line pt-8">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
-              Who it&apos;s for
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {AUDIENCES.map((a) => (
-                <span
-                  key={a}
-                  className="rounded-full border border-line bg-base px-3 py-1.5 text-sm text-muted"
-                >
-                  {a}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Reveal>
+        {/* A "Who it's for" row of seven chips used to sit here — service
+            companies, trades, property managers, STR owners, founders,
+            organizations, personal projects. Between them they excluded
+            nobody, so they informed nobody, and they were seven more things
+            to read on the way to the price. */}
 
         <Reveal delay={240}>
           <p className="mt-8 text-sm text-muted">

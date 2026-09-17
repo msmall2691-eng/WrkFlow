@@ -1,6 +1,11 @@
 import Reveal from "./Reveal";
 
 /*
+  Renders inside the Pricing section rather than as a section of its own: the
+  questions here are all price objections ("how long", "do I own the code",
+  "what if I outgrow it"), and they do more work sitting under the numbers
+  than they did as a tenth stop on the homepage.
+
   FAQ — the objections a buyer has right before Pricing. Native <details>
   for accessibility + no-JS. Copy is written in the studio voice — direct,
   no hedges, no "please don't hesitate to reach out." Edit QUESTIONS below.
@@ -34,23 +39,12 @@ const QUESTIONS: { q: string; a: string }[] = [
 
 export default function FAQ() {
   return (
-    <section
-      id="faq"
-      className="relative overflow-hidden border-t border-line py-20 md:py-24"
-    >
-      <div className="relative mx-auto max-w-4xl px-6">
-        <div className="mb-10 max-w-3xl">
-          <Reveal>
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              FAQ
-            </p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Common questions.
-            </h2>
-          </Reveal>
-        </div>
+    <div id="faq" className="mt-14 scroll-mt-24">
+        <Reveal>
+          <h3 className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
+            Common questions
+          </h3>
+        </Reveal>
 
         <div className="divide-y divide-line rounded-2xl border border-line bg-surface/40">
           {QUESTIONS.map((item, i) => (
@@ -72,7 +66,6 @@ export default function FAQ() {
             </Reveal>
           ))}
         </div>
-      </div>
-    </section>
+    </div>
   );
 }

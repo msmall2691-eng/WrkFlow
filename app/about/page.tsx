@@ -3,12 +3,18 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
 import FounderNote from "@/components/FounderNote";
+import Approach from "@/components/Approach";
+import Stack from "@/components/Stack";
+import CommandPalette from "@/components/CommandPalette";
 
 /*
-  /about — the full founder story, moved off the homepage per Meg's call
-  ("less words, more boxes"). The homepage keeps a compact OperatorBand
-  with a "Meet the operator →" link here; anyone who wants the narrative
-  gets it on its own page instead of scrolling past it.
+  /about — the person, the process, the toolkit.
+
+  The founder story moved here first ("less words, more boxes"). Approach and
+  Stack have now joined it for the same reason: on the homepage they were two
+  more things between a visitor and the price, and both are things you go
+  looking for rather than things that should stop you. Read in order this page
+  answers who, how, and with what.
 */
 
 export const metadata: Metadata = {
@@ -26,9 +32,12 @@ export default function AboutPage() {
       <Nav />
       <main className="pt-16">
         <FounderNote />
+        <Approach />
+        <Stack />
       </main>
       <Footer />
       <AccentSwitcher />
+      <CommandPalette />
     </>
   );
 }

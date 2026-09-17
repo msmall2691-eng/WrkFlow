@@ -46,15 +46,13 @@ function useThemeReason(sunset: string | undefined, scrubbedTo: number | null) {
         setLine(`Previewing ${maineTime(scrubbedTo)} in Portland.`);
         return;
       }
-      if (stored === "light" || stored === "dark") {
+      if (stored === "dark" || stored === "light") {
         setLine(`${isLight ? "Daylight" : "Harbor"} because you chose it.`);
         return;
       }
-      setLine(
-        isLight
-          ? `Light because the sun is up in Portland${sunset ? ` — sunset ${sunset}` : ""}.`
-          : "Dark because the sun is down in Portland.",
-      );
+      // The theme no longer tracks the sun — the accent does. Say what is
+      // actually true rather than the old "light because the sun is up".
+      setLine(sunset ? `Accent follows the Portland sun — sunset ${sunset}.` : "Accent follows the Portland sun.");
     };
     read();
     window.addEventListener("theme:change", read);
@@ -84,8 +82,6 @@ export default function LiveReadout() {
   const tiles: Tile[] = [];
   if (d) {
     if (d.tempF != null) tiles.push({ label: "Air", value: `${d.tempF}°F`, drives: "glow" });
-    if (d.waterTempF != null)
-      tiles.push({ label: "Water", value: `${d.waterTempF}°F`, drives: "depth" });
     if (d.wind && d.wind.mph > 0)
       tiles.push({
         label: "Wind",
@@ -95,15 +91,13 @@ export default function LiveReadout() {
     if (d.conditions?.text)
       tiles.push({ label: d.fog ? "Fog" : "Sky", value: d.conditions.text, drives: "haze" });
     if (d.tide) tiles.push({ label: "Tide", value: d.tide, drives: "waves" });
-    if (d.wave && d.wave.m > 0)
-      tiles.push({ label: "Swell", value: `${d.wave.m.toFixed(1)}m`, drives: "swell" });
     if (d.light) tiles.push({ label: "Light", value: d.light.label, drives: "accent" });
     else if (d.sun) tiles.push({ label: d.sun.label, value: d.sun.time, drives: "accent" });
     if (d.night && d.moon)
       tiles.push({ label: "Moon", value: d.moon.phase.toLowerCase(), drives: "night" });
   }
 
-  const shown = tiles.slice(0, 6);
+  const shown = tiles.slice(0, 4);
   const loading = shown.length === 0;
 
   return (
@@ -129,8 +123,8 @@ export default function LiveReadout() {
       </div>
 
       {/* Readings — one box per measurement. */}
-      <div className="grid grid-cols-3 gap-px bg-[var(--panel-line)]">
-        {(loading ? Array.from({ length: 6 }) : shown).map((t, i) => {
+      <div className="grid grid-cols-2 gap-px bg-[var(--panel-line)]">
+        {(loading ? Array.from({ length: 4 }) : shown).map((t, i) => {
           const tile = t as Tile | undefined;
           return (
             <div key={tile?.label ?? i} className="bg-[var(--panel-bg)] px-3 py-2.5">
@@ -148,15 +142,15 @@ export default function LiveReadout() {
         })}
       </div>
 
-      {/* The point of the whole panel. Every clause here is now literally
-          true: middleware serves Daylight between sunrise and sunset, the
-          accent follows the sun's phase through the day, and the aurora and
-          water react to live weather and tide. */}
+      {/* One line, and it has to stay true. The theme no longer follows the
+          sun — the page ships Daylight — so the old three-clause version
+          ("the daylight sets the theme and the accent, the weather sets the
+          glow, the tide moves the water") now claims something the site
+          does not do. This says only what is still literally happening. */}
       <div className="border-t border-[var(--panel-line)] px-4 py-2.5">
         <p className="text-[11px] leading-relaxed text-[color:var(--panel-muted)]">
-          This page reads the Maine coast in real time — the daylight sets the
-          theme and the accent, the weather sets the glow, the tide moves the
-          water.
+          Live from the Maine coast — the weather and the sun are colouring
+          this page as you read it.
         </p>
         {reason && (
           <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-[color:var(--panel-faint)]">

@@ -163,8 +163,8 @@
   --wm-stroke: rgba(11, 23, 34, 0.20);
 }
 
-html { color-scheme: dark; }
-html[data-theme="light"] { color-scheme: light; }
+html { color-scheme: light; }
+html:not([data-theme="light"]) { color-scheme: dark; }
 
 /* Hero headline & subtitle — text-shadow only makes sense over the dark aurora,
    drop it in daylight. Metallic subline needs a warm-friendly gradient too. */

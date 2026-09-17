@@ -72,7 +72,7 @@ export default function WeatherLayer() {
 
     const seed = () => {
       const count =
-        mode === "rain" ? Math.round(w / 3.6) : mode === "snow" ? Math.round(w / 10) : 8;
+        mode === "rain" ? Math.round(w / 6) : mode === "snow" ? Math.round(w / 14) : 8;
       drops = Array.from({ length: count }, () => spawn(true));
     };
 
@@ -117,11 +117,20 @@ export default function WeatherLayer() {
     let tint = "226,236,244";
     let fogTint = "226,236,244";
     let fogAlpha = 0.075;
+    /*
+      Precipitation opacity is per-theme too, and the light value matters far
+      more than the dark one. Pale streaks on navy disappear into the aurora;
+      the same streaks as dark ink on cream are the highest-contrast thing on
+      the page, and a hero full of them reads as a scratched screen rather
+      than as weather. Daylight gets a third of the ink.
+    */
+    let wetAlpha = 0.32;
     const readTint = () => {
       const light = document.documentElement.dataset.theme === "light";
       tint = light ? "52,64,79" : "226,236,244";
       fogTint = light ? "168,184,201" : "226,236,244";
-      fogAlpha = light ? 0.2 : 0.085;
+      fogAlpha = light ? 0.14 : 0.085;
+      wetAlpha = light ? 0.11 : 0.32;
     };
     readTint();
     window.addEventListener("theme:change", readTint);
@@ -164,7 +173,7 @@ export default function WeatherLayer() {
       }
 
       if (mode === "snow") {
-        ctx.fillStyle = `rgba(${tint},0.5)`;
+        ctx.fillStyle = `rgba(${tint},${wetAlpha * 1.55})`;
         for (const p of drops) {
           p.y += p.speed;
           p.sway += 0.01;
@@ -180,8 +189,8 @@ export default function WeatherLayer() {
       /* Ambient, not a downpour: this sits behind a headline, and the
          first tuning pass was compensating for a layer that turned out to be
          painted over entirely. */
-      ctx.strokeStyle = `rgba(${tint},0.32)`;
-      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = `rgba(${tint},${wetAlpha})`;
+      ctx.lineWidth = 1;
       ctx.lineCap = "round";
       ctx.beginPath();
       for (const p of drops) {

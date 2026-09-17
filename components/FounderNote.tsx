@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Reveal from "./Reveal";
 import Magnetic from "./Magnetic";
 import TideLevel from "./TideLevel";
@@ -11,8 +12,8 @@ import {
 } from "@/lib/content";
 
 /*
-  FounderNote — the narrative arc, belief before proof: Belief (M Studio
-  lockup + stats + "why M Studio," no signature — reads as a conviction)
+  FounderNote — the narrative arc, belief before proof: Belief (Meg's
+  photograph + stats + "why M Studio," no signature — reads as a conviction)
   → What we build (a quick tag teaser; Services.tsx below has the deep
   dive) → Proof ("Built by an Operator," a short conversational bio that
   visibly steps into the conversation instead of continuing the pitch)
@@ -74,33 +75,34 @@ export default function FounderNote() {
       <div className="relative z-10 mx-auto max-w-2xl px-6">
         <Reveal>
           <figure className="flex flex-col items-center text-center">
+            {/* The real photograph, not the wordmark.
+
+                This slot held a big "M Studio" lockup with a note explaining
+                there was deliberately no photo. On a page whose whole argument
+                is "a person who ran a service business built this", a logo was
+                the one thing that could not make that argument. A face can.
+
+                Sized well above its display box so it stays sharp on a 3x
+                screen, and `priority` because it is the first thing on /about
+                and lazy-loading it just means a grey hole on arrival. */}
             <div className="relative inline-block">
-              {/* Soft teal glow behind the lockup — replaces the old bracket
-                  frame, which only made sense around a circular photo. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -inset-3 rounded-[28px] bg-signal/[0.12] blur-2xl"
+                className="pointer-events-none absolute -inset-4 rounded-full opacity-70 blur-2xl"
+                style={{
+                  background:
+                    "radial-gradient(closest-side, color-mix(in srgb, var(--color-signal) 22%, transparent), transparent)",
+                }}
               />
-              {/* Big M Studio lockup — the section's whole visual lead, no photo */}
-              <div className="relative flex items-center gap-3 rounded-2xl border border-signal/20 bg-surface/70 px-9 py-7 shadow-[0_18px_44px_-22px_rgba(0,0,0,0.7)] sm:px-12 sm:py-9">
-                {/* The halo is mixed from --color-signal rather than frozen
-                    teal, which is what it used to be: the letter followed the
-                    accent and its glow didn't, so every non-teal accent — the
-                    default Harbor blue included — lit a blue M with a green
-                    halo. */}
-                <span
-                  className="font-display text-6xl font-bold leading-none text-signal sm:text-7xl"
-                  style={{
-                    textShadow:
-                      "0 0 34px color-mix(in srgb, var(--color-signal) 60%, transparent), 0 0 14px color-mix(in srgb, var(--color-signal) 45%, transparent)",
-                  }}
-                >
-                  M
-                </span>
-                <span className="shimmer-text-signal font-mono text-3xl font-semibold tracking-[0.04em] sm:text-4xl">
-                  Studio
-                </span>
-              </div>
+              <Image
+                src="/meg.webp"
+                alt="Meg, founder of M Studio"
+                width={1047}
+                height={1290}
+                priority
+                sizes="(max-width: 640px) 10rem, 12rem"
+                className="relative h-40 w-40 rounded-full object-cover object-top ring-1 ring-line sm:h-48 sm:w-48"
+              />
             </div>
             <figcaption className="mt-7 w-full">
               {/* --color-faint is tuned to land just over 4.5:1 at full

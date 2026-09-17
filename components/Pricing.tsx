@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
 import CountUp from "./CountUp";
 import { appOffer, foundingOffer, studioStats, testimonial } from "@/lib/content";
@@ -264,6 +265,9 @@ export default function Pricing() {
             </figure>
           </Reveal>
         )}
+
+        {/* The objections these answer are all about the numbers above. */}
+        <FAQ />
       </div>
     </section>
   );

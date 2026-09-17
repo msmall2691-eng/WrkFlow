@@ -105,16 +105,14 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* The instrument panel — live Portland data, promoted from a
-            footnote to the hero's visual. This page reacts to the world;
-            here's the proof, reading out in real time. */}
+        {/* The instrument panel — live Portland data. It used to carry a
+            caption underneath ("This data drives the page you're looking
+            at") saying what the panel's own footer line already says; one
+            of the two had to go. */}
         <div className="mt-2 w-full max-w-md lg:ml-auto lg:mt-0">
           <div className="lg:shadow-[0_30px_80px_-40px_rgba(0,0,0,0.8)]">
             <LiveReadout />
           </div>
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
-            This data drives the page you&apos;re looking at.
-          </p>
         </div>
       </div>
 

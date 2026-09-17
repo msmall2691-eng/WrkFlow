@@ -6,13 +6,15 @@ import { dayWindow, isDaylight, maineTime, phaseAt, type DayWindow } from "@/lib
 /*
   DayScrubber — the handle that makes the hero's claim checkable.
 
-  The panel above this has always said "this page reads the Maine coast in
-  real time — the daylight sets the theme and the accent". True, and
+  The panel above says the sun is colouring this page in real time. True, and
   unfalsifiable from where the visitor is standing: they see one moment of one
   day and have to take the rest on faith. Drag this and the clock moves across
-  the Portland day — the accent walks dawn → midday → dusk → night and the
-  theme flips at sunrise and sunset, live, on the page they are already
-  looking at. It is the product demo and the proof in the same gesture.
+  the Portland day — the accent walks dawn → midday → dusk → night, live, on
+  the page they are already looking at.
+
+  It used to flip the theme at sunrise and sunset too. That went when the site
+  committed to Daylight: a control that drops someone into a near-black page
+  is not a demo, it is a trapdoor. The accent alone still makes the point.
 
   It previews; it never persists. Nothing here writes to localStorage, and
   releasing the handle leaves the page exactly where the scrub put it until
@@ -131,7 +133,7 @@ export default function DayScrubber() {
           </button>
         ) : (
           <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-widest text-[color:var(--panel-faint)]">
-            Drag<span className="hidden sm:inline"> — the page follows</span>
+            Drag<span className="hidden sm:inline"> — the accent follows</span>
           </span>
         )}
       </div>
