@@ -144,8 +144,8 @@ previews that arc. The scrubber changes the accent only — never the theme.
 - ~~Logo / wordmark treatment~~ — `M Studio / Studios` monospace wordmark
 - **Accent color** — Harbor `#2f6df0` is the default swatch; the accent also
   tracks the Maine daylight phase when set to auto
-- **OG image** — still a dark social card while the site ships light; worth
-  revisiting so a shared link matches the page it opens
+- ~~**OG image**~~ — now Daylight, using the light theme's own tokens, the
+  site's real H1, and `foundingOffer.price` rather than a hardcoded number
 - **Domain** — `mlinx.studio` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up
 - **Founder reveal** — currently names The Maine Cleaning Company (Option A); toggle via `provingGroundCompany` in `lib/content.ts`
 - **Work repos** — confirm `autopilot`, `elite-service-suite`, `align`; decide if `BrightBase` is the flagship card
