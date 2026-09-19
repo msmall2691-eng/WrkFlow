@@ -1,18 +1,39 @@
 import { ImageResponse } from "next/og";
+import { foundingOffer } from "@/lib/content";
 
 export const runtime = "edge";
-export const alt = "M Studio — custom websites & software, built on the Maine coast";
+export const alt = "M Studio — websites and web apps for small businesses";
 // Rendered at 2× (2400×1260) so it stays crisp on hi-res desktop feeds.
 export const size = { width: 2400, height: 1260 };
 export const contentType = "image/png";
 
-const GOLD = "linear-gradient(100deg, #d9a441, #f3d79a 50%, #d9a441)";
-const REACTS = [
-  ["weather", "glow"],
-  ["tide", "waves"],
-  ["daylight", "theme"],
-  ["sun", "sky"],
-];
+/*
+  The social card, in Daylight.
+
+  It was a near-black card for a site that now ships light, so a shared link
+  never looked like the page it opened. These are the light theme's own tokens
+  from globals.css — cream ground, harbor navy ink, Harbor blue signal,
+  terracotta warm accent — so the card and the page are the same object.
+
+  Two other things changed with it:
+
+  - The headline now matches the site's actual H1. It used to read "Websites
+    and workflows, custom-made for your projects", which is not a sentence
+    that appears anywhere on the site.
+  - The old live-data panel listed "daylight → theme". That stopped being true
+    when the site committed to Daylight; the sun drives the accent now. Rather
+    than correct four tiny rows that are illegible at feed size anyway, the
+    panel is one line, and the space it freed went to the price — the single
+    most useful thing a stranger can learn from a thumbnail.
+*/
+
+/* Light-theme tokens, copied from app/globals.css :root[data-theme="light"]. */
+const BASE = "#f7f4ef";
+const INK = "#0b1722";
+const MUTED = "#4a5563";
+const FAINT = "#5a6572";
+const SIGNAL = "#2f6df0";
+const TERRACOTTA = "#d0764f";
 
 export default async function OpengraphImage() {
   const [display, mono] = await Promise.all([
@@ -29,44 +50,36 @@ export default async function OpengraphImage() {
           height: "100%",
           display: "flex",
           overflow: "hidden",
-          background: "#08131d",
+          background: BASE,
           fontFamily: "Space Grotesk",
         }}
       >
-        {/* Faint tech grid */}
+        {/* Tech grid — navy at a whisper. On cream this has to be far fainter
+            than the white version was on navy, or it reads as graph paper. */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.035) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.035) 2px, transparent 2px)",
+              "linear-gradient(rgba(11,23,34,0.035) 2px, transparent 2px), linear-gradient(90deg, rgba(11,23,34,0.035) 2px, transparent 2px)",
             backgroundSize: "120px 120px",
           }}
         />
-        {/* Aurora — Harbor-blue swell */}
+
+        {/* Daylight wash — the warm paper gradient the hero uses, plus a cool
+            pool on the right where the wordmark sits. */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
             backgroundImage:
-              "radial-gradient(58% 80% at 82% 74%, rgba(47,109,240,0.55), transparent 60%), radial-gradient(50% 64% at 86% 8%, rgba(217,164,65,0.22), transparent 60%), radial-gradient(54% 64% at 6% 26%, rgba(47,109,240,0.20), transparent 70%), radial-gradient(40% 50% at 70% 92%, rgba(111,211,198,0.16), transparent 70%)",
+              "radial-gradient(60% 78% at 84% 72%, rgba(47,109,240,0.14), transparent 62%), radial-gradient(48% 60% at 88% 6%, rgba(208,118,79,0.10), transparent 62%), radial-gradient(56% 66% at 4% 22%, rgba(47,109,240,0.07), transparent 70%)",
           }}
         />
-        {/* Glow pool behind the wordmark */}
-        <div
-          style={{
-            position: "absolute",
-            right: -120,
-            top: 140,
-            width: 1280,
-            height: 1000,
-            display: "flex",
-            backgroundImage: "radial-gradient(circle at 52% 50%, rgba(47,109,240,0.34), transparent 70%)",
-          }}
-        />
-        {/* Ghost M STUDIO — faint white, like the hero, with a soft glow */}
+
+        {/* Ghost M STUDIO — navy at the same alpha the site's watermark uses. */}
         <div
           style={{
             position: "absolute",
@@ -77,72 +90,89 @@ export default async function OpengraphImage() {
             flexDirection: "column",
             alignItems: "flex-end",
             justifyContent: "center",
-            color: "#eef2f4",
-            opacity: 0.15,
+            color: INK,
+            opacity: 0.11,
           }}
         >
-          <div style={{ display: "flex", fontSize: 500, fontWeight: 700, lineHeight: 0.8, letterSpacing: -16, textShadow: "0 0 80px rgba(47,109,240,0.6)" }}>M</div>
+          <div style={{ display: "flex", fontSize: 500, fontWeight: 700, lineHeight: 0.8, letterSpacing: -16 }}>M</div>
           <div style={{ display: "flex", fontSize: 148, fontWeight: 700, letterSpacing: 4 }}>STUDIO</div>
         </div>
-        {/* Scrim — keeps the left text crisp */}
+
+        {/* Scrim — cream over the wordmark so the headline stays crisp. */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             display: "flex",
-            backgroundImage: "linear-gradient(105deg, rgba(8,19,29,0.94) 0%, rgba(8,19,29,0.6) 52%, rgba(8,19,29,0) 84%)",
+            backgroundImage:
+              "linear-gradient(105deg, rgba(247,244,239,0.97) 0%, rgba(247,244,239,0.72) 54%, rgba(247,244,239,0) 86%)",
           }}
         />
 
         {/* Foreground */}
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", justifyContent: "center", gap: 44, padding: 152, width: "70%" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 24, color: "#9db8f5", fontSize: 40, letterSpacing: 8, textTransform: "uppercase", fontFamily: "JetBrains Mono" }}>
-            <div style={{ width: 20, height: 20, borderRadius: 9999, background: "#2f6df0", display: "flex" }} />
-            Available for new projects
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", fontSize: 108, fontWeight: 700, lineHeight: 1.04, letterSpacing: -3 }}>
-            <span style={{ color: "#f4f8fa" }}>Websites and workflows,</span>
-            <span style={{ backgroundImage: GOLD, backgroundClip: "text", WebkitBackgroundClip: "text", color: "transparent" }}>
-              custom-made for your projects.
-            </span>
-          </div>
-
-          <div style={{ display: "flex", color: "#c2d0da", fontSize: 44, letterSpacing: -0.6 }}>
-            Built by someone who ran the business first — then built the software it needed.
-          </div>
-
-          {/* Fuller live-data panel — what the site does with live Maine data */}
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 46,
+            padding: 152,
+            width: "72%",
+          }}
+        >
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              gap: 18,
-              alignSelf: "flex-start",
-              marginTop: 8,
-              padding: "26px 34px",
-              borderRadius: 28,
-              border: "2px solid rgba(255,255,255,0.14)",
-              background: "rgba(8,19,29,0.62)",
+              alignItems: "center",
+              gap: 24,
+              color: SIGNAL,
+              fontSize: 38,
+              letterSpacing: 8,
+              textTransform: "uppercase",
               fontFamily: "JetBrains Mono",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: 18, fontSize: 30, color: "#aebecb" }}>
-              <div style={{ width: 16, height: 16, borderRadius: 9999, background: "#2f6df0", display: "flex" }} />
-              <span style={{ color: "#9db8f5" }}>LIVE</span>
-              <span>This site runs on live Portland, Maine data</span>
+            <div style={{ width: 20, height: 20, borderRadius: 9999, background: SIGNAL, display: "flex" }} />
+            Available for new projects
+          </div>
+
+          {/* The site's actual headline, with the same word picked out. */}
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 112, fontWeight: 700, lineHeight: 1.03, letterSpacing: -3 }}>
+            <span style={{ display: "flex", color: INK }}>We build websites and</span>
+            <span style={{ display: "flex" }}>
+              <span style={{ color: TERRACOTTA }}>web apps</span>
+              <span style={{ color: INK }}>&nbsp;for small</span>
+            </span>
+            <span style={{ display: "flex", color: INK }}>businesses.</span>
+          </div>
+
+          <div style={{ display: "flex", color: MUTED, fontSize: 44, letterSpacing: -0.6 }}>
+            Built by someone who ran a service company for ten years first.
+          </div>
+
+          {/* The price, and the one live-data line that is still true. */}
+          <div style={{ display: "flex", alignItems: "center", gap: 28, marginTop: 6, fontFamily: "JetBrains Mono" }}>
+            <div
+              style={{
+                display: "flex",
+                padding: "20px 34px",
+                borderRadius: 9999,
+                background: SIGNAL,
+                color: "#ffffff",
+                fontSize: 36,
+                letterSpacing: 1,
+              }}
+            >
+              Sites from ${foundingOffer.price}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 28, fontSize: 28, color: "#8da0b0" }}>
-              {REACTS.map(([from, to]) => (
-                <span key={from} style={{ display: "flex" }}>
-                  <span style={{ color: "#6fb6ff" }}>{from}</span>
-                  &nbsp;→ {to}
-                </span>
-              ))}
+            <div style={{ display: "flex", alignItems: "center", gap: 16, color: FAINT, fontSize: 32 }}>
+              <div style={{ width: 14, height: 14, borderRadius: 9999, background: SIGNAL, display: "flex" }} />
+              Live Portland, Maine data colours this page
             </div>
           </div>
 
-          <div style={{ display: "flex", marginTop: 2, color: "#8497a8", fontSize: 42, fontFamily: "JetBrains Mono", letterSpacing: 2 }}>
+          <div style={{ display: "flex", marginTop: 2, color: FAINT, fontSize: 42, fontFamily: "JetBrains Mono", letterSpacing: 2 }}>
             mlinx.studio
           </div>
         </div>
