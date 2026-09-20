@@ -17,38 +17,35 @@ export const founderNote = {
     This band answers "why is the software any good", not "what do we sell".
     Same ten years, same numbers, doing better work: it stops reading as an
     ops consultancy and starts reading as an engineer with an unfair
-    advantage. Shown on the homepage (OperatorBand) and /about (FounderNote).
+    advantage. Shown on /about, in FounderNote.
   */
   headline: "Why the software is any good.",
   headlineFollow: "Most developers have never had to run the business they're building for.",
   paragraphs: [
-    "We did it for ten years first — so every pattern in your build has already been used at 6am with a crew waiting.",
+    "I did, for ten years. So every pattern in your build has already been used at 6am with a crew waiting.",
   ],
 } as const;
 
-/** "What we build" — a quick, tag-only teaser up top; Services.tsx below has the deep dive. */
-export const whatWeBuild = [
-  "AI Workflows",
-  "Custom Software",
-  "Internal Tools",
-  "Automation",
-  "Dashboards",
-  "Operations Systems",
-] as const;
-
 /*
-  Founder bio — the proof: an operator's story, not a résumé. Leads with
-  the problem-solving instinct, not the company name — the Maine Cleaning
-  Company is mentioned once, in passing, as a footnote detail rather than
-  the headline. Education is left out entirely per Meg's call. Kept to a
-  single "I" — enough to read as a person, not a pitch. Signature lives
-  here — this is the personal letter, not the belief statement.
+  Founder bio — the proof: an operator's story, not a résumé.
+
+  Education is in now. It was deliberately left out before ("per Meg's call"),
+  and she reversed that: a Business Analytics and AI degree with a CS minor is
+  the other half of the argument this page makes, not a credential to be shy
+  about. The last paragraph is not filler either — people hire a person, and
+  the kids and the dog and the water are the reason the 6am crew story is
+  believable in the first place.
+
+  Kept to three short paragraphs. Signature lives here; this is the personal
+  letter, not the belief statement.
 */
 export const founderBio = {
   kicker: "The story behind it",
   heading: "Built by someone who ran one",
   paragraphs: [
-    "Running a business exposed the real problem — not the work, but the disconnected systems behind it. I rebuilt those systems, and now I build them for other businesses.",
+    "Running a business showed me the real problem, and it wasn't the work. It was the disconnected systems behind it — four spreadsheets, a shared calendar, and a group chat holding a whole company together. I rebuilt all of it, and now I build it for other people.",
+    "I'm finishing a Business Analytics and AI degree at the University of Southern Maine with a minor in Computer Science. Day to day that looks like business systems and workflows, web apps, database schemas, and whatever a project actually needs.",
+    "Outside of it I'm with my kids and our dog, usually near the water. Fishing if the day allows.",
   ],
   detail:
     "Built while running internal systems for a service business that grew past 1,000 customers and 7,000+ service visits.",

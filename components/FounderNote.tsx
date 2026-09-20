@@ -5,21 +5,24 @@ import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 import {
   founderNote,
-  whatWeBuild,
   founderBio,
   founderPhilosophy,
   founderCta,
 } from "@/lib/content";
 
 /*
-  FounderNote — the narrative arc, belief before proof: Belief (Meg's
-  photograph + stats + "why M Studio," no signature — reads as a conviction)
-  → What we build (a quick tag teaser; Services.tsx below has the deep
-  dive) → Proof ("Built by an Operator," a short conversational bio that
-  visibly steps into the conversation instead of continuing the pitch)
-  → Philosophy (the short manifesto that caps it) → CTA, handing off into
-  the rest of the page. Copy lives in `lib/content.ts` so voice edits are
-  one file, not one component.
+  FounderNote — belief, then the person, then the ask.
+
+  Photograph + operating stats → the belief ("why the software is any good")
+  → the bio, which is now where the real content is: what she ran, what she
+  is studying, what she builds, and what she does when she is not building.
+  Philosophy rides under the signature as two quiet lines → CTA.
+
+  Two blocks came out on the way: a "What we build" chip row that repeated
+  the homepage's Services section, and the philosophy's own kicker + border
+  + heading, which was a lot of furniture around one and a half sentences.
+  Copy lives in `lib/content.ts` so voice edits are one file, not one
+  component.
 
   Edit STATS + SOCIALS below to change the top row; edit lib/content.ts to
   change any of the arc's copy.
@@ -173,25 +176,10 @@ export default function FounderNote() {
           </div>
         </Reveal>
 
-        {/* What we build — a quick tag teaser, not another paragraph.
-            Services.tsx further down has the full breakdown. */}
-        <Reveal delay={110}>
-          <div className="mt-12 flex flex-col items-center text-center">
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              What we build
-            </h2>
-            <ul className="mt-4 flex flex-wrap justify-center gap-2">
-              {whatWeBuild.map((item) => (
-                <li
-                  key={item}
-                  className="rounded-full border border-line bg-surface/60 px-3.5 py-1.5 text-sm text-muted"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
+        {/* A "What we build" row of six chips sat here — AI Workflows,
+            Custom Software, Internal Tools, Automation, Dashboards,
+            Operations Systems. Services on the homepage already says all of
+            it, in more detail, and this is the page about the person. */}
 
         {/* The proof — visually distinct from the belief above (its own
             kicker + headline weight) so it reads as stepping into the
@@ -227,23 +215,19 @@ export default function FounderNote() {
           </div>
         </Reveal>
 
-        {/* Philosophy — the short manifesto that caps the arc. Deliberately
-            small: a pull-quote, not another paragraph block. */}
-        <Reveal delay={190}>
-          <div className="mt-16 flex flex-col items-center border-t border-line pt-10 text-center">
-            <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              {founderPhilosophy.heading}
-            </h2>
-            <div className="mt-5 max-w-md space-y-4">
-              {founderPhilosophy.lines.map((line, i) => (
-                <p
-                  key={i}
-                  className="[font-family:var(--font-serif)] text-lg italic leading-relaxed text-ink md:text-xl"
-                >
-                  {line}
-                </p>
-              ))}
-            </div>
+        {/* Philosophy — two lines. It used to get its own kicker, its own
+            border-top and its own block, which is a lot of furniture for one
+            sentence and a half. It rides quietly under the signature now. */}
+        <Reveal delay={170}>
+          <div className="mt-12 flex flex-col items-center gap-1.5 text-center">
+            {founderPhilosophy.lines.map((line) => (
+              <p
+                key={line}
+                className="[font-family:var(--font-serif)] text-[1rem] italic leading-relaxed text-muted"
+              >
+                {line}
+              </p>
+            ))}
           </div>
         </Reveal>
 
