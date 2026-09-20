@@ -211,20 +211,118 @@ html:not([data-theme="light"]) { color-scheme: dark; }
   );
 }
 
-/* Aurora canvas — pause WebGL work in light mode, show a soft warm gradient
-   instead. The canvas element still exists so it can resume on toggle. */
+/* Aurora canvas — pause WebGL work in light mode. ReactiveAurora unmounts
+   itself there too; this covers any other canvas wearing the class. */
 :root[data-theme="light"] .aurora-canvas { display: none; }
-.hero-light-bg {
+
+/*
+  The Daylight sky (components/DaylightSky.tsx).
+
+  Everything that moves here is a custom property set from React: the colours
+  come from the sun's altitude and the cloud cover, the pool's position from
+  the time of day, the drift duration from the wind. Registering them with
+  @property is what makes that smooth — an unregistered custom property is a
+  string, so the gradient would snap between states instead of easing, and
+  dragging the day scrubber would strobe. Browsers without @property still get
+  the right colours, just stepped.
+*/
+@property --sky-top {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #cfdcea;
+}
+@property --sky-horizon {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #efeae3;
+}
+@property --sky-pool {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f6e6c8;
+}
+@property --sky-pool-x {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 62%;
+}
+@property --sky-pool-y {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 32%;
+}
+
+/* Harbor gets the aurora instead. DaylightSky unmounts itself there, but the
+   server has no way to know which theme this visitor stored, so it renders
+   the markup either way — and an opaque cream gradient over the dark hero for
+   the length of a hydration is exactly the flash the pre-paint script exists
+   to prevent. This hides it before the first paint; React then removes it. */
+:root:not([data-theme="light"]) .daylight-sky { display: none; }
+
+.daylight-sky {
   position: absolute;
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
-  display: none;
-  background:
-    radial-gradient(ellipse 80% 60% at 70% 30%, rgba(208, 118, 79, 0.13), transparent 60%),
-    radial-gradient(ellipse 100% 80% at 25% 70%, rgba(47, 109, 240, 0.1), transparent 65%),
-    linear-gradient(180deg, #faf7f2 0%, #ebe4da 100%);
+  background: linear-gradient(
+    180deg,
+    var(--sky-top) 0%,
+    var(--sky-horizon) 58%,
+    var(--color-base) 100%
+  );
+  transition:
+    --sky-top 500ms linear,
+    --sky-horizon 500ms linear;
 }
-:root[data-theme="light"] .hero-light-bg { display: block; }
+
+/* The sun (or, after dark, the moon). */
+.daylight-sky-pool {
+  position: absolute;
+  inset: 0;
+  opacity: var(--sky-pool-alpha, 0.3);
+  background: radial-gradient(
+    ellipse 54% 62% at var(--sky-pool-x) var(--sky-pool-y),
+    var(--sky-pool),
+    transparent 64%
+  );
+  transition:
+    --sky-pool 500ms linear,
+    --sky-pool-x 500ms linear,
+    --sky-pool-y 500ms linear,
+    opacity 500ms linear;
+}
+
+/*
+  The cloud deck. Wider than the hero and translated by a third of its own
+  width, so the loop point lands mid-band and never shows a seam.
+*/
+.daylight-sky-deck {
+  position: absolute;
+  top: -12%;
+  left: -50%;
+  width: 300%;
+  height: 78%;
+  opacity: calc(var(--sky-cloud, 0.45) * 0.5);
+  background:
+    radial-gradient(ellipse 13% 42% at 8% 34%, rgba(126, 143, 162, 0.55), transparent 70%),
+    radial-gradient(ellipse 9% 30% at 21% 62%, rgba(126, 143, 162, 0.4), transparent 70%),
+    radial-gradient(ellipse 15% 48% at 37% 24%, rgba(126, 143, 162, 0.5), transparent 70%),
+    radial-gradient(ellipse 11% 34% at 52% 58%, rgba(126, 143, 162, 0.45), transparent 70%),
+    radial-gradient(ellipse 14% 44% at 69% 30%, rgba(126, 143, 162, 0.52), transparent 70%),
+    radial-gradient(ellipse 10% 32% at 86% 56%, rgba(126, 143, 162, 0.42), transparent 70%);
+  filter: blur(22px);
+  animation: sky-drift var(--sky-drift, 180s) linear infinite;
+  transition: opacity 500ms linear;
+}
+
+@keyframes sky-drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(33.333%, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .daylight-sky-deck { animation: none; }
+}
 
 * {
   border-color: var(--color-line);

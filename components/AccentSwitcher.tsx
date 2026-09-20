@@ -4,12 +4,20 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PHASES, phaseAt, type Phase } from "@/lib/daylight";
 
 /*
-  AccentSwitcher — a public "make it yours" accent picker, now tied to place.
+  AccentSwitcher — theme mode plus a "make it yours" accent picker.
 
-  By default the accent follows the actual Maine daylight: dawn sand → midday
-  teal → dusk navy → night. Pick a swatch to override (saved per device);
-  "Maine daylight" puts it back on auto. Updates the --color-signal variables
-  that drive buttons, links, markers, toggles, sliders, etc.
+  The accent ships as Harbor blue and stays there until someone changes it.
+  Following the Maine daylight automatically is offered as an option rather
+  than being the default, and the reason is contrast: --color-signal is the
+  background of every primary button on the site, under white text, and the
+  midday phase colour (#5eb2f0) carries white at about 2:1. Harbor clears
+  4.5:1. What does follow the sun by default is the hero backdrop —
+  DaylightSky and ReactiveAurora — where nothing has to stay legible on top
+  of it.
+
+  Pick a swatch to override (saved per device); "Maine daylight" switches to
+  auto. Updates the --color-signal variables that drive buttons, links,
+  markers, toggles, sliders, etc.
 */
 
 type Accent = Phase;
@@ -115,7 +123,7 @@ export default function AccentSwitcher() {
     }
   };
 
-  // Restore saved preference (default: Maine daylight auto).
+  // Restore saved preference (default: Harbor — see the note up top).
   useEffect(() => {
     let saved: string | null = null;
     try {
