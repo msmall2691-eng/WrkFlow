@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
 
 /*
-  PWA icon — 512x512. Same design as the 192, scaled up for splash + high-DPI.
+  PWA icon — 512x512. Same faceted gradient "M" badge as the 192, apple-touch
+  icon, and favicon, scaled up for splash + high-DPI.
 */
 export const runtime = "edge";
 
@@ -13,19 +14,63 @@ export async function GET() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 26,
-          background: "#0b1722",
-          backgroundImage:
-            "radial-gradient(circle at 50% 28%, rgba(22,163,148,0.32), transparent 60%)",
+          position: "relative",
+          background: "linear-gradient(135deg, #0f2130 0%, #16293a 55%, #123a35 100%)",
         }}
       >
-        <div style={{ fontSize: 316, fontWeight: 800, color: "#eef2f4", fontFamily: "Arial, sans-serif", lineHeight: 1 }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            background: "radial-gradient(circle at 32% 24%, rgba(255,255,255,0.22), transparent 58%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            display: "flex",
+            fontSize: 316,
+            fontWeight: 800,
+            fontFamily: "Arial, sans-serif",
+            lineHeight: 1,
+            color: "#d9a441",
+            opacity: 0.55,
+            transform: "translate(16px, 16px)",
+          }}
+        >
           M
         </div>
-        <div style={{ width: 148, height: 16, borderRadius: 8, background: "#16a394" }} />
+        <div
+          style={{
+            display: "flex",
+            fontSize: 316,
+            fontWeight: 800,
+            fontFamily: "Arial, sans-serif",
+            lineHeight: 1,
+            backgroundImage: "linear-gradient(135deg, #7fe9dc 0%, #2dd4bf 45%, #d9a441 100%)",
+            backgroundClip: "text",
+            WebkitBackgroundClip: "text",
+            color: "transparent",
+          }}
+        >
+          M
+        </div>
+        <div
+          style={{
+            position: "absolute",
+            top: 62,
+            right: 68,
+            display: "flex",
+            width: 38,
+            height: 38,
+            borderRadius: 9999,
+            background: "#d9a441",
+            boxShadow: "0 0 26px 6px rgba(217,164,65,0.75)",
+          }}
+        />
       </div>
     ),
     { width: 512, height: 512, headers: { "Cache-Control": "public, max-age=31536000, immutable" } },
