@@ -14,7 +14,11 @@ import { dayWindow, isDaylight, maineTime, phaseAt, type DayWindow } from "@/lib
 
   It used to flip the theme at sunrise and sunset too. That went when the site
   committed to Daylight: a control that drops someone into a near-black page
-  is not a demo, it is a trapdoor. The accent alone still makes the point.
+  is not a demo, it is a trapdoor. For one release what was left was the
+  accent — dragging a whole day to recolour a button, which is not a demo
+  either. It drives the sky now: DaylightSky reads the same scrub event, so
+  the hero walks dawn → midday → dusk → night behind the headline while the
+  page stays perfectly readable.
 
   It previews; it never persists. Nothing here writes to localStorage, and
   releasing the handle leaves the page exactly where the scrub put it until
@@ -133,7 +137,7 @@ export default function DayScrubber() {
           </button>
         ) : (
           <span className="whitespace-nowrap font-mono text-[9px] uppercase tracking-widest text-[color:var(--panel-faint)]">
-            Drag<span className="hidden sm:inline"> — the accent follows</span>
+            Drag<span className="hidden sm:inline"> — the sky follows</span>
           </span>
         )}
       </div>

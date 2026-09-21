@@ -134,16 +134,42 @@ light` unconditionally, the pre-paint script in `app/layout.tsx` applies it
 unless the visitor has explicitly stored `dark`, and the appearance control
 offers exactly two modes.
 
-The sun math did not go away: `lib/daylight.ts` still drives the **accent**
-colour through dawn → midday → dusk → night, and the hero's day-scrubber
-previews that arc. The scrubber changes the accent only — never the theme.
+### What the live Portland data actually drives
+
+The hero's readout panel prints an arrow under each reading naming the thing it
+changes, so every one of those arrows has to be real. They are computed per
+theme in `components/LiveReadout.tsx`, and a reading with nothing to drive gets
+no arrow rather than a decorative one.
+
+| Reading | Daylight | Harbor |
+| --- | --- | --- |
+| Cloud cover | cloud deck + how far the sky greys | aurora intensity and speed, or fog/precip haze |
+| Sun position | the sky's colour and where the sun pool sits | — |
+| Wind | how fast the cloud deck crosses | how hard rain and snow lean |
+| Air temp | warm or cool lean, scaled by sun altitude | aurora glow |
+| Moon | pool brightness after dark | how black the night swell goes |
+
+Two components split the work: `ReactiveAurora` (WebGL swell, Harbor only) and
+`DaylightSky` (layered CSS gradients, Daylight only), with `WeatherLayer`
+(precipitation and fog) over both. The colour maths for the Daylight sky is in
+`lib/sky.ts` — pure functions on an instant plus the readings, which is what
+lets the day-scrubber ask "what would 6pm look like?" and get the same answer
+the clock will give at 6pm.
+
+The **accent** is deliberately not on that list by default. `lib/daylight.ts`
+can drive it through dawn → midday → dusk → night, and the appearance panel
+offers that as "Maine daylight", but the shipped default is the fixed Harbor
+blue: `--color-signal` is the background of every primary button under white
+text, and the midday phase colour fails contrast there. The scrubber changes
+the sky and the accent — never the theme.
 
 ## Iteration backlog
 
 - ~~Hero headline~~ — "Own the systems your business runs on."
 - ~~Logo / wordmark treatment~~ — `M Studio / Studios` monospace wordmark
 - **Accent color** — Harbor `#2f6df0` is the default swatch; the accent also
-  tracks the Maine daylight phase when set to auto
+  tracks the Maine daylight phase when set to auto (opt-in, for contrast
+  reasons — see above)
 - ~~**OG image**~~ — now Daylight, using the light theme's own tokens, the
   site's real H1, and `foundingOffer.price` rather than a hardcoded number
 - **Domain** — `mlinx.studio` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up

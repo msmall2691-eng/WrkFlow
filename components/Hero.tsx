@@ -1,4 +1,5 @@
 import ReactiveAurora from "./ReactiveAurora";
+import DaylightSky from "./DaylightSky";
 import WeatherLayer from "./WeatherLayer";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
@@ -19,10 +20,12 @@ export default function Hero() {
       id="top"
       className="relative flex min-h-[88vh] items-center overflow-hidden bg-[var(--hero-bg)]"
     >
-      {/* Aurora Swell — calm ocean backdrop, tuned to live Portland weather.
-          Hidden in daylight mode via CSS; a soft warm gradient replaces it. */}
+      {/* The backdrop, one per theme, each reading the same live feed.
+          Harbor gets the aurora swell; Daylight gets the Portland sky —
+          which used to be a fixed cream gradient that ignored the weather
+          the panel in front of it was busy reporting. */}
       <ReactiveAurora />
-      <div aria-hidden="true" className="hero-light-bg" />
+      <DaylightSky />
 
       {/* Diagonal scrim — keeps the bright swell behind the text readable.
           Uses the hero background color at partial opacity so it works in
@@ -37,10 +40,9 @@ export default function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-b from-transparent via-[var(--hero-bg)]/80 to-[var(--color-base)]"
       />
 
-      {/* The Portland sky. It has to sit AFTER every background layer —
-          .hero-light-bg paints an opaque cream gradient in daylight mode and
-          would bury the canvas entirely — but before the z-10 content, so it
-          never covers a word or eats a click. */}
+      {/* Precipitation and fog. After every background layer — DaylightSky
+          paints an opaque gradient and would bury the canvas — but before the
+          z-10 content, so it never covers a word or eats a click. */}
       <WeatherLayer />
 
       <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 px-6 pb-20 pt-24 sm:pb-16 lg:grid-cols-[1.15fr_0.85fr]">
