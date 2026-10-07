@@ -109,8 +109,9 @@ export default function Contact() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 text-[1rem] leading-relaxed text-muted">
-                A few sentences about what you want to build. Every message gets
-                a real reply within a day.
+                Tell me what you use now, what you&apos;re tired of doing manually,
+                and what you wish worked better. You don&apos;t need a technical
+                plan to get started.
               </p>
             </Reveal>
             <Reveal delay={160}>
@@ -232,7 +233,7 @@ export default function Contact() {
                       rows={5}
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      placeholder="The site you want, the plugin you need, the busywork eating your week…"
+                      placeholder="What tools do you use? What are you entering by hand, tracking in spreadsheets, or wishing your website could do?"
                       className="w-full resize-y rounded-lg border border-[var(--panel-line)] bg-[var(--panel-input-bg)] px-4 py-3 text-sm text-[color:var(--panel-ink)] placeholder:text-[color:var(--panel-faint)] focus:border-signal/70 focus:outline-none"
                     />
                   </div>
@@ -344,3 +345,4 @@ function Field({
     </div>
   );
 }
+

@@ -12,6 +12,14 @@ import Reveal from "./Reveal";
 */
 const QUESTIONS: { q: string; a: string }[] = [
   {
+    q: "Can you connect the systems I already use?",
+    a: "Yes — that is a big part of what I do. Tell me which tools you use and what you want to happen between them. I will check their APIs, calendar feeds, and other connection options before we agree on a scope.",
+  },
+  {
+    q: "Do I need a whole new website or app?",
+    a: "Not always. Your project might be one integration, a booking form, a client portal, or an improvement to an existing workflow. We start with what is working and what you need help with.",
+  },
+  {
     q: "How long does a Starter site take?",
     a: "Usually 2-3 weeks from kickoff to launch. Bigger builds get scoped first, then a timeline.",
   },
@@ -29,7 +37,7 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "How is this different from Squarespace or Wix?",
-    a: "Templated builders can only do what they were shipped with. A Starter site is built from scratch — shaped to whatever you actually need.",
+    a: "Squarespace and Wix can be a good fit for a simple site. A custom build gives us more control over your design, features, and connections to other systems. We will talk through what your business needs before choosing the approach.",
   },
   {
     q: "What if I outgrow the Care Plan?",
@@ -69,3 +77,4 @@ export default function FAQ() {
     </div>
   );
 }
+

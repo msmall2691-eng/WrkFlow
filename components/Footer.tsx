@@ -24,9 +24,10 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Websites and web apps for small businesses — booking, quoting,
-              scheduling, customer records, and the site in front of them.
-              Yours to own, not rent. Working with clients anywhere.
+              Custom websites, business software, and integrations that connect
+              the tools you already use. Less manual work, clearer systems,
+              and tools built around your business. Based in Maine, working
+              with clients anywhere.
             </p>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
               Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere
@@ -118,3 +119,4 @@ export default function Footer() {
     </footer>
   );
 }
+

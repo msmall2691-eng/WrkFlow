@@ -242,7 +242,7 @@ export default function FounderNote() {
             </p>
             <Magnetic strength={0.35}>
               <a
-                href="#contact"
+                href="/#contact"
                 className="group mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
                 {founderCta.buttonLabel}
@@ -262,3 +262,4 @@ export default function FounderNote() {
     </section>
   );
 }
+

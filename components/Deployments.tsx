@@ -26,7 +26,7 @@ const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "
 */
 
 /* One line of proof under the heading, folded in from the old founder band. */
-const PROOF = "10 yrs · 1,000+ customers · 7,000+ service visits · $1M+ managed";
+const PROOF = "The Maine Cleaning Co. · 10 yrs · 1,000+ customers · 7,000+ service visits · $1M+ managed";
 
 export default function Deployments() {
   const items = work.filter((w) => w.shot);
@@ -106,6 +106,7 @@ function Card({ w, feature }: { w: WorkItem; feature?: boolean }) {
       <div className="flex items-baseline justify-between gap-4 p-5">
         <div className="min-w-0">
           <h3 className="display-serif text-[1.05rem] text-ink">{w.title}</h3>
+          <p className="mt-2 text-sm leading-relaxed text-muted">{w.blurb}</p>
           <p className="mt-1 truncate font-mono text-[10px] uppercase tracking-widest text-faint">
             {live ? domain(w.url as string) : w.tag}
           </p>
@@ -122,3 +123,4 @@ function Card({ w, feature }: { w: WorkItem; feature?: boolean }) {
     </Wrapper>
   );
 }
+

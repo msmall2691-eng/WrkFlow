@@ -20,9 +20,9 @@ import CommandPalette from "@/components/CommandPalette";
 export const metadata: Metadata = {
   // No "| M Studio" here — the root layout's title template appends the
   // brand already; doubling it renders "… | M Studio · M Studio".
-  title: "About — Built by someone who ran one",
+  title: "About — Meet Meg",
   description:
-    "M Studio is run by someone who rebuilt the systems behind a real service business — and now builds websites and web apps for others.",
+    "Meet Meg, founder of M Studio. I build custom websites, business software and integrations, drawing on ten years of running The Maine Cleaning Company.",
   alternates: { canonical: "/about" },
 };
 
@@ -41,3 +41,4 @@ export default function AboutPage() {
     </>
   );
 }
+

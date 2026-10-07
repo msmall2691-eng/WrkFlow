@@ -19,10 +19,10 @@ export const founderNote = {
     ops consultancy and starts reading as an engineer with an unfair
     advantage. Shown on /about, in FounderNote.
   */
-  headline: "Why the software is any good.",
-  headlineFollow: "Most developers have never had to run the business they're building for.",
+  headline: "Built from real business.",
+  headlineFollow: "I know what it feels like to be the person keeping everything connected.",
   paragraphs: [
-    "I did, for ten years. So every pattern in your build has already been used at 6am with a crew waiting.",
+    "Running my own cleaning company led me to building the tools I needed. Now I love helping other business owners make their websites and systems work better together.",
   ],
 } as const;
 
@@ -41,10 +41,10 @@ export const founderNote = {
 */
 export const founderBio = {
   kicker: "The story behind it",
-  heading: "Built by someone who ran one",
+  heading: "Hi, I'm Meg.",
   paragraphs: [
-    "Running a business showed me the real problem, and it wasn't the work. It was the disconnected systems behind it — four spreadsheets, a shared calendar, and a group chat holding a whole company together. I rebuilt all of it, and now I build it for other people.",
-    "I'm finishing a Business Analytics and AI degree at the University of Southern Maine with a minor in Computer Science. Day to day that looks like business systems and workflows, web apps, database schemas, and whatever a project actually needs.",
+    "I started building software to solve the everyday problems in my own cleaning business: booking, quoting, scheduling, and keeping customer information in one place. Connecting those pieces became the work I loved most.",
+    "Through M Studio, I build websites, custom business tools, and integrations that help other owners spend less time moving information by hand. I especially enjoy working with cleaning companies and vacation rental owners, and I work with businesses of all kinds. I'm also finishing a Business Analytics and AI degree at the University of Southern Maine with a minor in Computer Science.",
     "Outside of it I'm with my kids and our dog, usually near the water. Fishing if the day allows.",
   ],
   detail:
@@ -177,66 +177,49 @@ export type Service = {
 };
 
 export const services: Service[] = [
-  /*
-    Three, not eight (brief A3). Eight equal-weight cards read as "I will do
-    anything", which reads as a freelancer with an empty calendar rather than a
-    studio with a specialty — and six of the eight argued against the headline
-    once it started saying websites and web apps. Nothing was thrown away: the
-    old cards 02–08 live on as the kinds chips under these three, and each of
-    these keeps a real example that actually shipped.
-  */
   {
     id: "websites",
     index: "01",
-    title: "Websites",
-    tagline: "A site that takes the booking, not just the phone number.",
-    kinds: ["Marketing sites", "Booking & scheduling", "Online payments"],
-    pain:
-      "Your site is a business card. Every enquiry still turns into a phone call, a text thread, and a quote you type by hand.",
-    outcome:
-      "Customers book and get priced on the site itself, and it lands in the system you already use.",
+    title: "Custom websites",
+    tagline: "A website that looks like your business and helps you run it.",
+    kinds: ["Business websites", "Quotes & booking", "Client portals"],
+    pain: "Customers need an easier way to learn about your business, request a quote, or book with you.",
+    outcome: "A clear, easy-to-use site with the forms, booking tools, and system connections your business needs.",
     example: {
       client: "The Maine Cleaning Co.",
-      built:
-        "Custom marketing site with instant online quoting and booking, wired to the back-office system.",
-      result: "Quote-to-booking handled on the site itself—no phone tag.",
+      built: "A custom cleaning website with instant estimates, online booking, and a connected client portal.",
+      result: "Customers can get an estimate and book online.",
       shot: "/shots/maineclean.png",
     },
   },
   {
     id: "apps",
     index: "02",
-    title: "Web apps & internal tools",
-    tagline: "The thing your team opens every morning.",
-    kinds: ["Operations dashboards", "Scheduling & dispatch", "Custom CRM"],
-    pain:
-      "The real work lives in four spreadsheets, a shared calendar and a group chat, and only one person knows where anything is.",
-    outcome:
-      "One place, live, built around how you already work — and yours to keep, not rented by the month.",
+    title: "Custom business software",
+    tagline: "Tools built around the way you and your team actually work.",
+    kinds: ["Dashboards & reporting", "Scheduling tools", "Customer management"],
+    pain: "Important information is spread across spreadsheets, calendars, and messages, making it hard to see what needs attention.",
+    outcome: "A dashboard, client portal, or internal tool that brings the right information together and makes daily work easier.",
     example: {
-      client: "BrightBase",
-      built:
-        "An operations command center pulling jobs, revenue, occupancy, and crew into one live view—the same system that runs the company day to day.",
-      result: "The whole operation visible at a glance, in real time.",
+      client: "Cleaning operations dashboard",
+      built: "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
+      result: "The business owner can see daily operations in one place.",
       shot: "/shots/brightbase-dashboard.png",
     },
   },
   {
     id: "automation",
     index: "03",
-    title: "The automation inside them",
-    tagline: "The busywork happens on its own. You still approve it.",
-    kinds: ["Lead intake", "Follow-ups & reminders", "AI drafting & triage"],
-    pain:
-      "The same information gets re-typed into three places, and the follow-up only happens when somebody remembers.",
-    outcome:
-      "Routine work handled in the background and surfaced for a one-click yes — never sent behind your back.",
+    title: "Integrations & automations",
+    tagline: "Connect the tools you already use and cut down on manual work.",
+    kinds: ["API connections", "Booking & calendar sync", "Workflow automation"],
+    pain: "You are copying the same details between systems or updating the schedule every time a new booking comes in.",
+    outcome: "Your systems share the information they need, with connections scoped around what each tool supports.",
     example: {
-      client: "Instant Estimate",
-      built:
-        "An AI intake layer that reads inbound requests, drafts a quote and a reply, and queues both for one-click owner approval.",
-      result: "Same-day replies, drafted automatically, approved by a human.",
-      shot: "/shots/instant-estimate.png",
+      client: "Vacation rental booking sync",
+      built: "Rental bookings automatically appear on our cleaning schedule, connecting reservations with turnover planning.",
+      result: "One less booking to enter by hand.",
+      shot: "/shots/brightbase-turnovers.png",
     },
   },
 ];
@@ -390,7 +373,7 @@ export const work: WorkItem[] = [
   {
     tier: "private",
     tag: "Private system",
-    title: "BrightBase — Command Center",
+    title: "Cleaning operations dashboard",
     blurb: "Jobs, revenue, occupancy & crew in one live view.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "4 spreadsheets and a group chat",
@@ -401,7 +384,7 @@ export const work: WorkItem[] = [
     tier: "private",
     tag: "Private system",
     title: "Turnover scheduling",
-    blurb: "Internal board for STR turnovers—who, where, and when, at a glance.",
+    blurb: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
     replaced: "A shared Google Calendar and text threads",
     status: "In daily production",
@@ -637,3 +620,4 @@ export const welcomeBook = {
     },
   ],
 } as const;
+

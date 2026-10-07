@@ -36,8 +36,12 @@ export default function Services() {
           </Reveal>
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              What M Studio can build.
+              What I can help you with.
             </h2>
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              For business owners, cleaning companies, and vacation rental hosts.
+              We can improve what you already use, connect it, or build something new.
+            </p>
           </Reveal>
         </div>
 
@@ -99,7 +103,7 @@ export default function Services() {
                           href="#contact"
                           className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
                         >
-                          Build this →
+                          Talk through your idea →
                         </a>
                       </div>
                       <div className="overflow-hidden rounded-xl border border-line">
@@ -154,3 +158,4 @@ export default function Services() {
     </section>
   );
 }
+

@@ -46,9 +46,9 @@ const caveat = Caveat({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "Custom websites and web apps for service businesses — booking, quoting, scheduling and the systems behind them. Built by someone who ran the business first. Southern Maine, clients anywhere.";
+  "Custom websites, business software, API integrations and automations that connect the tools you already use. For business owners, cleaning companies and vacation rental hosts. Based in Maine, clients anywhere.";
 
-const TITLE = "M Studio — Websites & Web Apps for Small Businesses";
+const TITLE = "M Studio — Websites, Software & Integrations";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -115,7 +115,7 @@ const JSON_LD = {
       email: "contact@mlinx.studio",
       telephone: "+1-207-432-9492",
       description:
-        "Custom websites and web apps for small businesses — booking, quoting, scheduling and the systems behind them. Built to own, not rent, by someone who ran a service business first.",
+        "Custom websites, business software, integrations and automations built around the way your business works. Connect existing tools and reduce manual work.",
       slogan: "Everything, linked.",
       knowsAbout: [
         "Custom software development",
@@ -155,7 +155,7 @@ const JSON_LD = {
       jobTitle: "Founder & Software Developer",
       worksFor: { "@id": `${SITE_URL}/#studio` },
       description:
-        "Ran The Maine Cleaning Company for ten years, then learned to build the software it needed. Now builds websites and web apps for other small businesses.",
+        "Ran The Maine Cleaning Company for ten years, then learned to build the software it needed. Now builds websites, business software and integrations for other business owners.",
       alumniOf: {
         "@type": "CollegeOrUniversity",
         name: "University of Southern Maine",
@@ -245,3 +245,4 @@ export default async function RootLayout({
     </html>
   );
 }
+

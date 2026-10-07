@@ -58,14 +58,15 @@ export default function Hero() {
           {/* Says what we sell, in the words the buyer already uses. "Web apps"
               is the one term that has to be here; everything else is plain. */}
           <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
-            We build websites and{" "}
-            <span className="shimmer-text">web apps</span> for small businesses.
+            Websites, software &amp;{" "}
+            <span className="shimmer-text">integrations</span> that work together.
           </h1>
 
           <p className="hero-sub metallic-text mt-6 max-w-xl text-[1rem] font-medium leading-relaxed">
-            Booking, quoting, scheduling, customer records — and the site in
-            front of it. Built by someone who ran a service company for ten
-            years first.
+            I help business owners connect the tools they already use and build
+            what&apos;s missing — from a custom website to bookings that land
+            automatically on your schedule. Built from ten years of running
+            my own service business.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -74,7 +75,7 @@ export default function Hero() {
                 offer="project"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
-                Start a Project
+                Tell me what you need
                 <span
                   aria-hidden="true"
                   className="transition-transform group-hover:translate-x-0.5"
@@ -127,3 +128,4 @@ export default function Hero() {
     </section>
   );
 }
+
