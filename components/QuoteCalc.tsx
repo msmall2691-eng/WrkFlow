@@ -6,7 +6,6 @@ import { Label, Slider, Seg, Toggle } from "./KitUI";
 import { requestOffer } from "@/lib/offer";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
-import { foundingOffer } from "@/lib/content";
 import { trackTool } from "@/lib/track";
 
 /*
@@ -229,15 +228,17 @@ export default function QuoteCalc() {
               Request this quote →
             </a>
             <SaveResult summary={summary} filename="instant-quote" tool="quote" toolLabel="Instant quote" />
-            {foundingOffer.spotsRemaining > 0 && (
-              <a
-                href="/#pricing"
-                className="mt-4 block text-center text-xs leading-relaxed text-muted transition-colors hover:text-ink"
-              >
-                Just getting started? {foundingOffer.spotsRemaining} of {foundingOffer.totalSpots} founding spots left for a full Starter site at{" "}
-                <span className="text-signal">${foundingOffer.price}</span> →
-              </a>
-            )}
+            {/* A founding-price promo used to sit here, pointing at
+                /#pricing. Both the section and the number are gone from the
+                site, so this points at the conversation instead — which is
+                where the number comes from now. */}
+            <a
+              href="/#contact"
+              className="mt-4 block text-center text-xs leading-relaxed text-muted transition-colors hover:text-ink"
+            >
+              Want this quoting tool on your own site, tuned to your pricing?{" "}
+              <span className="text-signal">Let&apos;s talk →</span>
+            </a>
           </div>
         </div>
       </Reveal>

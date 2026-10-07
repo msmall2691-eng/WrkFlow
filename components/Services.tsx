@@ -11,11 +11,11 @@ import { services } from "@/lib/content";
   Collapsed, each row is scannable (title, tagline, concrete "kinds" chips).
   Expanded, it shows the full case for it: what it is, the pain it solves,
   what changes after, and a real example. One open at a time keeps the
-  section from turning into a wall of text.
-*/
-/*
-  Specific things we've built (or can build) — a quick-scan companion to the
-  deeper per-service breakdown above, not a duplicate of it.
+  section from turning into a wall of text — which is the whole reason the
+  list can be eight rows long without reading as eight rows long.
+
+  The list itself (and the rule that nothing goes in it without a real
+  example) lives in lib/content.ts.
 */
 
 export default function Services() {
@@ -38,6 +38,13 @@ export default function Services() {
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
               What M Studio can build.
             </h2>
+          </Reveal>
+          <Reveal delay={80}>
+            <p className="mt-4 text-[1rem] leading-relaxed text-muted">
+              Eight disciplines, and most projects use three or four of them.
+              Open any one to see the problem it solves and something real
+              that was built with it.
+            </p>
           </Reveal>
         </div>
 
@@ -132,9 +139,9 @@ export default function Services() {
           })}
         </div>
 
-        {/* The "Specifically" chip cloud lived here. With three cards instead
-            of eight, the kinds chips inside each card already say the same
-            things in the place they belong (brief A3). */}
+        {/* A "Specifically" chip cloud used to live here, repeating in one
+            flat list what the kinds chips inside each row already say in the
+            place they belong. */}
 
         {/* A "Who it's for" row of seven chips used to sit here — service
             companies, trades, property managers, STR owners, founders,

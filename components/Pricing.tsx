@@ -1,10 +1,18 @@
 import Reveal from "./Reveal";
-import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
 import CountUp from "./CountUp";
 import { appOffer, foundingOffer, studioStats, testimonial } from "@/lib/content";
 
 /*
+  NOT CURRENTLY MOUNTED. Pricing came off the site (Meg's call) — every number
+  now arrives in a written scope instead of on a card, and the FAQ answers
+  "what does it cost" without one. The section is kept intact rather than
+  deleted because the decision is a reversible one: put <Pricing /> back into
+  app/page.tsx, restore the "Pricing" link in Nav.tsx, and it returns exactly
+  as it was. Two things left when it was unmounted and should NOT be put back
+  by hand: <FAQ /> is now its own homepage section, and the studioStats tiles
+  moved there with it.
+
   Pricing — the "harbor at night" pricing section. Three honest ways to work
   together (own a Starter site, keep it running on the Care Plan, or scope
   something custom) plus the founding offer. Collaborative you + we voice.
@@ -265,9 +273,6 @@ export default function Pricing() {
             </figure>
           </Reveal>
         )}
-
-        {/* The objections these answer are all about the numbers above. */}
-        <FAQ />
       </div>
     </section>
   );

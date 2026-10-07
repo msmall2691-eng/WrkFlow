@@ -3,6 +3,12 @@
   screenshots for disciplines we don't have a true matching capture of (CRM,
   automation, audit, cleanup). Each reads as the kind of system it represents
   and carries a little movement. Decorative (aria-hidden).
+
+  The placeholder bars are painted with `bg-ink/*`, not `bg-white/*`. These
+  were written against the dark Harbor theme, where white at 10-35% reads as
+  a dim data row; in Daylight the panel behind them is near-white, so white on
+  white rendered them invisible and the card looked empty. `ink` flips with the
+  theme, so the same opacities read correctly in both.
 */
 
 export type VisualType = "database" | "automation" | "audit" | "cleanup";
@@ -32,8 +38,8 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
             {rows.map(([a, b], i) => (
               <div key={i} className="flex items-center gap-2.5">
                 <span className="h-2 w-2 shrink-0 rounded-full bg-signal/70" />
-                <span className={`h-1.5 rounded-full bg-white/25 ${a}`} />
-                <span className={`ml-auto h-1.5 rounded-full bg-white/10 ${b}`} />
+                <span className={`h-1.5 rounded-full bg-ink/25 ${a}`} />
+                <span className={`ml-auto h-1.5 rounded-full bg-ink/15 ${b}`} />
               </div>
             ))}
           </div>
@@ -85,7 +91,7 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
               <div key={i} className="flex items-center gap-2.5">
                 <span className="w-2 font-mono text-[9px] text-faint">{i + 1}</span>
                 <span className="h-3 w-1 rounded-full" style={{ backgroundColor: r.sev }} />
-                <span className={`h-1.5 rounded-full bg-white/20 ${r.w}`} />
+                <span className={`h-1.5 rounded-full bg-ink/20 ${r.w}`} />
                 <span className="ml-auto text-[10px] text-signal/70">✓</span>
               </div>
             ))}
@@ -106,8 +112,8 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
               className="flex animate-pulse items-center gap-2 opacity-50"
               style={{ animationDelay: `${i * 0.25}s` }}
             >
-              <span className="h-2 w-2 rounded-full bg-white/20" />
-              <span className="h-1.5 w-28 rounded-full bg-white/12" />
+              <span className="h-2 w-2 rounded-full bg-ink/20" />
+              <span className="h-1.5 w-28 rounded-full bg-ink/15" />
               <span className="ml-auto font-mono text-[8px] uppercase tracking-widest text-faint">dup</span>
             </div>
           ))}
@@ -115,7 +121,7 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
         <div className="text-center text-sm text-faint">↓</div>
         <div className="flex items-center gap-2 rounded-lg border border-signal/40 bg-signal/10 px-3 py-2">
           <span className="h-2 w-2 rounded-full bg-signal" />
-          <span className="h-1.5 w-28 rounded-full bg-white/35" />
+          <span className="h-1.5 w-28 rounded-full bg-ink/35" />
           <span className="ml-auto font-mono text-[8px] uppercase tracking-widest text-signal">merged</span>
         </div>
       </div>

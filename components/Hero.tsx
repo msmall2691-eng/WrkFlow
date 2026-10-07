@@ -4,7 +4,7 @@ import WeatherLayer from "./WeatherLayer";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
 import OfferLink from "./OfferLink";
-import { appOffer, foundingOffer } from "@/lib/content";
+import { hero } from "@/lib/content";
 
 /*
   Hero — headline left, live instrument panel right (survey J-02, per Meg).
@@ -55,17 +55,22 @@ export default function Hero() {
             Available for new projects
           </p>
 
-          {/* Says what we sell, in the words the buyer already uses. "Web apps"
-              is the one term that has to be here; everything else is plain. */}
+          {/* Headline, highlight and sub all live in lib/content.ts, where the
+              reasoning for this wording is written down and where the next
+              iteration is a one-line edit. */}
           <h1 className="display hero-heading max-w-3xl text-balance text-[2rem] text-ink sm:text-5xl md:text-[3.4rem]">
-            We build websites and{" "}
-            <span className="shimmer-text">web apps</span> for small businesses.
+            {hero.lead}{" "}
+            {/* Second sentence on its own line — the highlight is a phrase,
+                and a shimmer that starts mid-line and wraps reads as a
+                rendering accident rather than emphasis. */}
+            <span className="block">
+              <span className="shimmer-text">{hero.highlight}</span>
+              {hero.tail}
+            </span>
           </h1>
 
           <p className="hero-sub metallic-text mt-6 max-w-xl text-[1rem] font-medium leading-relaxed">
-            Booking, quoting, scheduling, customer records — and the site in
-            front of it. Built by someone who ran a service company for ten
-            years first.
+            {hero.sub}
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -91,20 +96,25 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* A price above the fold (brief A6). Pricing used to sit 73% down a
-              21-screen phone page, so someone deciding whether you were even
-              in their range had to travel a long way on faith. The app side
-              has no published number yet, so it advertises the free scope
-              rather than inventing one. */}
-          <p className="mt-7 text-sm text-muted">
-            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
-              Websites from ${foundingOffer.price}
-            </a>
-            <span className="mx-2 text-faint" aria-hidden="true">·</span>
-            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
-              Web apps from ${appOffer.price.toLocaleString("en-US")}
-            </a>
-          </p>
+          {/* Two prices used to sit here. Pricing came off the site — every
+              number now arrives in a written scope — so the line that replaces
+              them carries what someone actually needs before they'll write in:
+              it costs nothing to find out, and nothing here is rented. */}
+          <ul className="mt-7 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+            {hero.reassurance.map((item, i) => (
+              <li key={item} className="flex items-center gap-2">
+                <span>{item}</span>
+                {/* Separator trails its item rather than leading the next one.
+                    On a phone this list wraps, and a leading dot put a stray
+                    "· " at the start of the second line. */}
+                {i < hero.reassurance.length - 1 && (
+                  <span className="text-faint" aria-hidden="true">
+                    ·
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* The instrument panel — live Portland data. It used to carry a

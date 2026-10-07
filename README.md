@@ -41,7 +41,7 @@ app/
   api/contact/route.ts  Contact form handler
   intake/page.tsx       New-client questionnaire (intake.mlinx.studio)
   api/questionnaire/    Questionnaire handler
-components/             Hero, Services, Deployments (Work), Pricing, Contact, …
+components/             Hero, Services, Deployments (Work), FAQ, Contact, …
 lib/content.ts          Service copy + section content (single source)
 lib/daylight.ts         Sun phase colours + sunrise/sunset (single source)
 lib/questionnaire.ts    Questionnaire steps + fields (single source)
@@ -50,19 +50,52 @@ supabase/schema.sql     contact_submissions table
 
 ## Page structure
 
-The homepage is deliberately five sections — Hero, Services, Work, Pricing,
+The homepage is deliberately five sections — Hero, Services, Work, FAQ,
 Contact — and nothing else. It was ten, and roughly 8,800px tall. What moved:
 
 | Was on the homepage | Lives at |
 | --- | --- |
 | Free tools (8 of them) | `/tools` |
-| FAQ | inside the Pricing section |
 | Approach | `/about` |
 | Stack | `/about` |
 | OperatorBand | cut; its numbers are one line in Work |
+| Pricing | off the site; see below |
 
 Before adding a sixth homepage section, consider whether it belongs on one of
 those pages instead.
+
+### Pricing is off the site
+
+There is no pricing section, and no price on the homepage, in the hero, in
+the nav, in the command palette or on the social card. Every number for studio
+work now arrives in a written scope after a conversation, and the FAQ answers
+"what does it cost?" without one. `components/Pricing.tsx` is kept
+intact but unmounted, so the decision reverses by putting `<Pricing />` back
+into `app/page.tsx` and restoring the nav link — but do NOT also re-nest
+`<FAQ />` inside it or re-add the `studioStats` tiles, which both now live in
+the FAQ section.
+
+`foundingOffer` and `appOffer` in `lib/content.ts` are still the source of
+truth for what the deals are; nothing public reads them while pricing is off.
+
+Two pages are deliberately NOT covered by this, because on both of them the
+price is the product rather than a quote for custom work:
+
+| Page | Still shows |
+| --- | --- |
+| `/marketplace` | the `marketItems` price labels (M Linx is a catalogue) |
+| `/welcome-book` | the Digital Welcome Book's intro and regular price |
+
+If studio pricing should come off those too, they're a `lib/content.ts` edit —
+but decide it deliberately, because a catalogue with no prices on it is a
+different thing from a studio that quotes per project.
+
+### Hero copy
+
+The `<h1>`, the highlighted phrase inside it, the sub and the reassurance line
+all live in `hero` in `lib/content.ts`, together with the alternates that were
+considered. The social card builds its headline from the same three strings,
+so the two can't drift.
 
 ## New-client questionnaire
 
@@ -165,13 +198,13 @@ the sky and the accent — never the theme.
 
 ## Iteration backlog
 
-- ~~Hero headline~~ — "Own the systems your business runs on."
+- ~~Hero headline~~ — "Your website takes the booking. The system behind it runs everything after." (`hero` in `lib/content.ts`)
 - ~~Logo / wordmark treatment~~ — `M Studio / Studios` monospace wordmark
 - **Accent color** — Harbor `#2f6df0` is the default swatch; the accent also
   tracks the Maine daylight phase when set to auto (opt-in, for contrast
   reasons — see above)
-- ~~**OG image**~~ — now Daylight, using the light theme's own tokens, the
-  site's real H1, and `foundingOffer.price` rather than a hardcoded number
+- ~~**OG image**~~ — now Daylight, using the light theme's own tokens and the
+  site's real H1, built word-by-word from `hero` so it can't go stale
 - **Domain** — `mlinx.studio` (`.com`/`.studio` were taken); canonical/OG URLs use the Vercel URL until DNS is wired up
 - **Founder reveal** — currently names The Maine Cleaning Company (Option A); toggle via `provingGroundCompany` in `lib/content.ts`
 - **Work repos** — confirm `autopilot`, `elite-service-suite`, `align`; decide if `BrightBase` is the flagship card

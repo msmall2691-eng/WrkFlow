@@ -30,8 +30,7 @@ const LABELS: Record<string, string> = {
   work: "Work",
   stack: "Stack",
   approach: "Approach",
-  faq: "FAQ",
-  pricing: "Pricing",
+  faq: "Questions",
   contact: "Contact",
 };
 

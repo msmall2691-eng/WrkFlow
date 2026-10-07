@@ -78,7 +78,10 @@ export default function CommandPalette() {
           window.location.href = "/about#approach";
         },
       },
-      { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan starter site founding offer monthly", run: go("pricing") },
+      /* Pricing is no longer a section on the site, but "price" is still the
+         word people type. It lands on the FAQ, where "What does it cost?" is
+         the first question — a real answer rather than a dead query. */
+      { id: "faq", label: "Common questions", group: "Navigate", keywords: "faq questions pricing cost price how long own the code changes squarespace wix", run: go("faq") },
       {
         id: "meg",
         label: "Meet Meg",

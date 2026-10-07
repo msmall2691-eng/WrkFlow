@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { foundingOffer } from "@/lib/content";
+import { hero } from "@/lib/content";
 
 export const runtime = "edge";
 export const alt = "M Studio — websites and web apps for small businesses";
@@ -19,12 +19,16 @@ export const contentType = "image/png";
 
   - The headline now matches the site's actual H1. It used to read "Websites
     and workflows, custom-made for your projects", which is not a sentence
-    that appears anywhere on the site.
+    that appears anywhere on the site. It is no longer retyped here either:
+    it is built word by word from `hero` in lib/content.ts and wrapped, so a
+    headline edit can't leave the social card quoting last month's one.
   - The old live-data panel listed "daylight → theme". That stopped being true
     when the site committed to Daylight; the sun drives the accent now. Rather
     than correct four tiny rows that are illegible at feed size anyway, the
-    panel is one line, and the space it freed went to the price — the single
-    most useful thing a stranger can learn from a thumbnail.
+    panel is one line.
+  - The pill next to it used to carry the starting price. Pricing came off the
+    site, so it carries the first of the hero's reassurances instead — which
+    is the thing a stranger most needs to know before clicking.
 */
 
 /* Light-theme tokens, copied from app/globals.css :root[data-theme="light"]. */
@@ -34,6 +38,16 @@ const MUTED = "#4a5563";
 const FAINT = "#5a6572";
 const SIGNAL = "#2f6df0";
 const TERRACOTTA = "#d0764f";
+
+/*
+  The headline, word by word, each tagged with the colour it renders in. Built
+  from the same three strings the <h1> uses, so the two cannot drift apart.
+*/
+const headlineWords: { word: string; color: string }[] = [
+  ...hero.lead.split(" ").map((word) => ({ word, color: INK })),
+  ...hero.highlight.split(" ").map((word) => ({ word, color: TERRACOTTA })),
+  ...hero.tail.trim().split(" ").map((word) => ({ word, color: INK })),
+];
 
 export default async function OpengraphImage() {
   const [display, mono] = await Promise.all([
@@ -137,25 +151,43 @@ export default async function OpengraphImage() {
             Available for new projects
           </div>
 
-          {/* The site's actual headline, with the same word picked out. */}
-          <div style={{ display: "flex", flexDirection: "column", fontSize: 112, fontWeight: 700, lineHeight: 1.03, letterSpacing: -3 }}>
-            <span style={{ display: "flex", color: INK }}>We build websites and</span>
-            <span style={{ display: "flex" }}>
-              <span style={{ color: TERRACOTTA }}>web apps</span>
-              <span style={{ color: INK }}>&nbsp;for small</span>
-            </span>
-            <span style={{ display: "flex", color: INK }}>businesses.</span>
+          {/* The site's actual headline, with the same phrase picked out.
+              One span per word inside a wrapping flex row: satori has no
+              inline text flow, so hand-split lines were the only way to get a
+              multi-colour headline — and hand-split lines are exactly what
+              goes stale the first time the copy changes length. */}
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              columnGap: 26,
+              rowGap: 2,
+              fontSize: 96,
+              fontWeight: 700,
+              lineHeight: 1.03,
+              letterSpacing: -3,
+            }}
+          >
+            {headlineWords.map(({ word, color }, i) => (
+              <span key={`${word}-${i}`} style={{ display: "flex", color }}>
+                {word}
+              </span>
+            ))}
           </div>
 
           <div style={{ display: "flex", color: MUTED, fontSize: 44, letterSpacing: -0.6 }}>
             Built by someone who ran a service company for ten years first.
           </div>
 
-          {/* The price, and the one live-data line that is still true. */}
+          {/* The promise, and the one live-data line that is still true. */}
           <div style={{ display: "flex", alignItems: "center", gap: 28, marginTop: 6, fontFamily: "JetBrains Mono" }}>
             <div
               style={{
                 display: "flex",
+                flexShrink: 0,
+                /* The pill is a label, not a paragraph — without this it
+                   wraps to two lines and stops reading as a button. */
+                whiteSpace: "nowrap",
                 padding: "20px 34px",
                 borderRadius: 9999,
                 background: SIGNAL,
@@ -164,7 +196,7 @@ export default async function OpengraphImage() {
                 letterSpacing: 1,
               }}
             >
-              Sites from ${foundingOffer.price}
+              {hero.reassurance[0]}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 16, color: FAINT, fontSize: 32 }}>
               <div style={{ width: 14, height: 14, borderRadius: 9999, background: SIGNAL, display: "flex" }} />

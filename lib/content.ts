@@ -5,6 +5,45 @@
 import type { VisualType } from "@/components/ProjectVisual";
 
 /*
+  Hero copy — the headline, the highlighted phrase inside it, and the line
+  underneath. Lives here so the headline is a one-file edit (which is what
+  this file exists for) instead of a hunt through Hero.tsx.
+
+  The old line — "We build websites and web apps for small businesses." —
+  was true and said nothing: it named the deliverable and stopped there, which
+  is the same sentence every template shop and freelancer opens with. This one
+  names what happens after the deliverable is live, which is the part a
+  template shop cannot sell at all.
+
+  `highlight` must be a phrase the shimmer treatment can carry on its own —
+  it renders as its own span between `lead` and `tail`, so keep the three
+  pieces reading as one sentence with ordinary spacing.
+
+  Alternates kept deliberately, so swapping is a one-line change rather than a
+  rewrite. All three were live candidates:
+
+    · lead "Your business outgrew the spreadsheets."
+      highlight "We build what replaces them"  tail "."
+    · lead "Websites that take the booking."
+      highlight "Software that runs the rest"  tail "."
+    · lead "The site out front," highlight "the system behind it"
+      tail " — both built here."
+*/
+export const hero = {
+  lead: "Your website takes the booking.",
+  highlight: "The system behind it",
+  tail: " runs everything after.",
+  sub: "Websites, web apps, and the automation between them — booking, quoting, scheduling, invoicing, customer records. Built by someone who ran a service company for ten years first.",
+  /*
+    The line under the CTAs. It used to be two prices. Pricing came off the
+    site (every number now arrives in a written scope instead), so this says
+    the three things that survive a price being absent: scoping costs
+    nothing, the code is yours, and nothing is rented by the month.
+  */
+  reassurance: ["Free scope, nothing binding", "You own the code", "No monthly lock-in"],
+} as const;
+
+/*
   Founder note — the belief. Third person, stated as fact rather than
   "I believe" — the origin story (first person, but kept light on "I")
   comes later, in founderBio. Beat order: Belief → What we build → Proof
@@ -178,19 +217,28 @@ export type Service = {
 
 export const services: Service[] = [
   /*
-    Three, not eight (brief A3). Eight equal-weight cards read as "I will do
-    anything", which reads as a freelancer with an empty calendar rather than a
-    studio with a specialty — and six of the eight argued against the headline
-    once it started saying websites and web apps. Nothing was thrown away: the
-    old cards 02–08 live on as the kinds chips under these three, and each of
-    these keeps a real example that actually shipped.
+    Eight, not three.
+
+    The list was cut to three on the argument that eight equal-weight cards
+    read as "I will do anything". That holds for eight cards sitting open on
+    the page at once; it does not hold for this component, which ships them
+    collapsed, one line each, one open at a time. What the cut actually did
+    was hide five things the studio genuinely builds and has shipped —
+    booking, quoting and invoicing, CRM, migrations, site health — behind
+    three chips that only hinted at them, so a visitor looking for "does she
+    do invoicing" had to infer it.
+
+    The rule that still stands: nothing goes in this list that has not been
+    built. Every entry below carries a real example, and five of the eight
+    carry a real screenshot. If a service ever needs a made-up example to
+    fill its card, it does not belong here yet.
   */
   {
     id: "websites",
     index: "01",
     title: "Websites",
     tagline: "A site that takes the booking, not just the phone number.",
-    kinds: ["Marketing sites", "Booking & scheduling", "Online payments"],
+    kinds: ["Marketing sites", "Landing pages", "Copy + design", "Mobile-first"],
     pain:
       "Your site is a business card. Every enquiry still turns into a phone call, a text thread, and a quote you type by hand.",
     outcome:
@@ -208,7 +256,7 @@ export const services: Service[] = [
     index: "02",
     title: "Web apps & internal tools",
     tagline: "The thing your team opens every morning.",
-    kinds: ["Operations dashboards", "Scheduling & dispatch", "Custom CRM"],
+    kinds: ["Operations dashboards", "Admin panels", "Field & crew tools", "Role-based access"],
     pain:
       "The real work lives in four spreadsheets, a shared calendar and a group chat, and only one person knows where anything is.",
     outcome:
@@ -222,11 +270,47 @@ export const services: Service[] = [
     },
   },
   {
-    id: "automation",
+    id: "booking",
     index: "03",
-    title: "The automation inside them",
+    title: "Booking & scheduling",
+    tagline: "Who's going where, settled before the morning starts.",
+    kinds: ["Online booking", "Dispatch boards", "Recurring jobs", "Calendar & iCal sync"],
+    pain:
+      "The schedule lives in a shared calendar, a booking platform and someone's head, and they disagree by Tuesday.",
+    outcome:
+      "One schedule everything else reads from — crews, customers and calendars all seeing the same day.",
+    example: {
+      client: "Turnover scheduling",
+      built:
+        "An internal board for short-term-rental turnovers, fed by the booking platforms' own iCal feeds and pushed back out to Google Calendar.",
+      result: "Every turnover on one board, in daily production.",
+      shot: "/shots/brightbase-turnovers.png",
+    },
+  },
+  {
+    id: "quoting",
+    index: "04",
+    title: "Quoting, invoicing & payments",
+    tagline: "From the price you quoted to the money in the account.",
+    kinds: ["Instant quotes", "Estimates → invoices", "Stripe payments", "Payment reminders"],
+    pain:
+      "Quotes get typed from scratch every time, invoices go out late, and chasing payment is its own part-time job.",
+    outcome:
+      "A quote becomes a job becomes an invoice without anyone re-typing it, and the follow-up sends itself.",
+    example: {
+      client: "Autopilot",
+      built:
+        "A full CRM and field-service platform—scheduling, invoicing and turnover automation—designed and built from scratch.",
+      result: "Quote, job and invoice living in one system instead of three.",
+      shot: "/shots/autopilot.png",
+    },
+  },
+  {
+    id: "automation",
+    index: "05",
+    title: "Automation & AI",
     tagline: "The busywork happens on its own. You still approve it.",
-    kinds: ["Lead intake", "Follow-ups & reminders", "AI drafting & triage"],
+    kinds: ["Lead intake", "Follow-ups & reminders", "AI drafting & triage", "SMS & email"],
     pain:
       "The same information gets re-typed into three places, and the follow-up only happens when somebody remembers.",
     outcome:
@@ -237,6 +321,60 @@ export const services: Service[] = [
         "An AI intake layer that reads inbound requests, drafts a quote and a reply, and queues both for one-click owner approval.",
       result: "Same-day replies, drafted automatically, approved by a human.",
       shot: "/shots/instant-estimate.png",
+    },
+  },
+  {
+    id: "crm",
+    index: "06",
+    title: "Customer records & CRM",
+    tagline: "Everything you know about a customer, in one record.",
+    kinds: ["Client & property records", "Job history", "Access details & notes", "Permissions"],
+    pain:
+      "Gate codes are in a text thread, the job history is in an invoice folder, and the one person who remembers the rest is on vacation.",
+    outcome:
+      "One record per customer — history, properties, access, notes — and controls over who can see which parts of it.",
+    example: {
+      client: "BrightBase — client records",
+      built:
+        "Client and property records holding contacts, access details, visit history and the rules for who's allowed to see them.",
+      result: "A decade of customers and service visits in one searchable place.",
+      visual: "database",
+    },
+  },
+  {
+    id: "integrations",
+    index: "07",
+    title: "Integrations & data migration",
+    tagline: "Getting out of the spreadsheets without losing the last ten years.",
+    kinds: ["Spreadsheet migration", "API integrations", "Data cleanup", "Tool-to-tool sync"],
+    pain:
+      "Moving to a real system means moving a decade of messy history with it, and nobody wants to be the one who loses it.",
+    outcome:
+      "The history comes across cleaned and deduplicated, and the tools you keep using talk to the new system instead of around it.",
+    example: {
+      client: "The Maine Cleaning Co.",
+      built:
+        "Ten years of customers, properties and visit history lifted out of spreadsheets into one database, with the calendar, SMS and booking feeds wired into it.",
+      result: "Four spreadsheets and a group chat, retired.",
+      visual: "cleanup",
+    },
+  },
+  {
+    id: "care",
+    index: "08",
+    title: "Site health & care",
+    tagline: "Launched is not finished. Someone has to keep it running.",
+    kinds: ["Speed & SEO", "Accessibility", "Hosting & domains", "Ongoing edits"],
+    pain:
+      "The site went live two years ago, nobody has looked at it since, and it's slow, half-indexed, or quietly broken on a phone.",
+    outcome:
+      "Hosting, updates and small edits handled, with speed, SEO and accessibility checked rather than assumed.",
+    example: {
+      client: "Site Check",
+      built:
+        "The free site check on this site — speed, SEO and accessibility graded in about a minute, with the specific things to fix.",
+      result: "You find out what's slow before a customer does.",
+      visual: "audit",
     },
   },
 ];
