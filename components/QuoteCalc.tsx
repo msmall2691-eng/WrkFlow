@@ -6,7 +6,6 @@ import { Label, Slider, Seg, Toggle } from "./KitUI";
 import { requestOffer } from "@/lib/offer";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
-import { foundingOffer } from "@/lib/content";
 import { trackTool } from "@/lib/track";
 
 /*
@@ -220,24 +219,17 @@ export default function QuoteCalc() {
               {addonTotal > 0 && <Line k="Add-ons" v={money(addonTotal)} />}
             </div>
             {/* Carries the quote they just built into the contact box, rather
-                than dropping it at the anchor (site survey O-02). */}
+                than dropping it at the anchor (site survey O-02). The tools
+                live on /tools, which has no contact section, so this goes to
+                the homepage form; requestOffer stashes the quote for it. */}
             <a
-              href="#contact"
+              href="/?offer=quote#contact"
               onClick={() => requestOffer("quote", summary)}
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
             >
               Request this quote →
             </a>
             <SaveResult summary={summary} filename="instant-quote" tool="quote" toolLabel="Instant quote" />
-            {foundingOffer.spotsRemaining > 0 && (
-              <a
-                href="/#pricing"
-                className="mt-4 block text-center text-xs leading-relaxed text-muted transition-colors hover:text-ink"
-              >
-                Just getting started? {foundingOffer.spotsRemaining} of {foundingOffer.totalSpots} founding spots left for a full Starter site at{" "}
-                <span className="text-signal">${foundingOffer.price}</span> →
-              </a>
-            )}
           </div>
         </div>
       </Reveal>

@@ -8,6 +8,7 @@ import {
   OFFER_EVENT,
   isOfferKey,
   prefillFor,
+  takeStashedOffer,
   type OfferDetail,
   type OfferKey,
 } from "@/lib/offer";
@@ -33,7 +34,7 @@ export default function Contact() {
     };
 
     const param = new URLSearchParams(window.location.search).get("offer");
-    if (isOfferKey(param)) apply({ offer: param });
+    if (isOfferKey(param)) apply({ offer: param, text: takeStashedOffer(param) });
 
     const onOffer = (e: Event) => apply((e as CustomEvent<OfferDetail>).detail);
     window.addEventListener(OFFER_EVENT, onOffer);

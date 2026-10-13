@@ -11,7 +11,7 @@
   it two ways:
 
     · in-page  — the CTA sets `data-offer`, Contact picks it up on click
-    · deep link — `mlinx.studio/?offer=starter#contact` prefills on load,
+    · deep link — `mlinx.studio/?offer=custom#contact` prefills on load,
                   which is what the CTA also writes into the address bar, so a
                   copied URL keeps the context
 
@@ -22,7 +22,8 @@
 
 export const OFFERS = {
   project: "I'd like to start a project.",
-  starter: "I'd like to claim a founding Starter spot.",
+  // Kept so old shared ?offer=starter links still prefill; no CTA uses it.
+  starter: "I'd like a new website.",
   care: "I'd like to get the Care Plan set up.",
   custom: "I've got something custom in mind:",
   call: "I'd like to book a free 15-minute call.",
@@ -32,6 +33,13 @@ export const OFFERS = {
 export type OfferKey = keyof typeof OFFERS;
 
 export const OFFER_EVENT = "mstudio:offer";
+
+/*
+  Cross-page handoff. A CTA on /tools links to the homepage form, so the
+  in-page event never reaches it; the offer and its text ride along in
+  sessionStorage and Contact picks them up on load (see takeStashedOffer).
+*/
+const STASH_KEY = "mstudio:offer-stash";
 
 export type OfferDetail = {
   offer: OfferKey;
@@ -59,10 +67,33 @@ export function requestOffer(offer: OfferKey, text?: string) {
     new CustomEvent<OfferDetail>(OFFER_EVENT, { detail: { offer, text } }),
   );
   try {
+    window.sessionStorage.setItem(STASH_KEY, JSON.stringify({ offer, text }));
+  } catch {
+    /* Storage can be blocked (private mode); the ?offer= param still works. */
+  }
+  try {
     const url = new URL(window.location.href);
     url.searchParams.set("offer", offer);
     window.history.replaceState(null, "", `${url.pathname}${url.search}#contact`);
   } catch {
     /* URL rewriting is a nicety — never let it break the click. */
+  }
+}
+
+/*
+  Read (and clear) the text a CTA on another page stashed for this offer.
+  Only returns text when the stash matches the offer in the URL, so a stale
+  stash from an earlier click can't prefill the wrong message.
+*/
+export function takeStashedOffer(offer: OfferKey): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  try {
+    const raw = window.sessionStorage.getItem(STASH_KEY);
+    window.sessionStorage.removeItem(STASH_KEY);
+    if (!raw) return undefined;
+    const parsed = JSON.parse(raw) as Partial<OfferDetail>;
+    return parsed.offer === offer && typeof parsed.text === "string" ? parsed.text : undefined;
+  } catch {
+    return undefined;
   }
 }

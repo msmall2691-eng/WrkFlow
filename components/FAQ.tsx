@@ -20,7 +20,7 @@ const QUESTIONS: { q: string; a: string }[] = [
     a: "Not always. Your project might be one integration, a booking form, a client portal, or an improvement to an existing workflow. We start with what is working and what you need help with.",
   },
   {
-    q: "How long does a Starter site take?",
+    q: "How long does a website take?",
     a: "Usually 2-3 weeks from kickoff to launch. Bigger builds get scoped first, then a timeline.",
   },
   {

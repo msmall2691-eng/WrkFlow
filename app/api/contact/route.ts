@@ -33,7 +33,7 @@ type ContactPayload = {
 // Labels for the offer tag, so the inbox reads in English rather than slugs.
 const OFFER_LABELS: Record<string, string> = {
   project: "Start a project (hero)",
-  starter: "Founding Starter spot",
+  starter: "Website (old Starter link)",
   care: "Care Plan",
   custom: "Custom build",
   call: "Free 15-min call",

@@ -58,7 +58,7 @@ export default function ToolEmailCapture({
     return (
       <p className={`text-xs leading-relaxed text-signal ${className}`}>
         Sent! Want this tuned to your business?{" "}
-        <a href="#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
+        <a href="/#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
           →
         </a>
       </p>

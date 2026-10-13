@@ -97,7 +97,7 @@ export default function AutomationCost() {
             </p>
 
             <a
-              href="#contact"
+              href="/#contact"
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
               Let&apos;s recover this →

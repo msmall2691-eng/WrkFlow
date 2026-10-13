@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { LegalShell, H2, P, UL, Disclaimer } from "@/components/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Terms of Service",
-  description:
-    "The terms for using the M Studio website and its free tools.",
+  ...pageMeta({
+    title: "Terms of Service",
+    description:
+      "The terms for using the M Studio website and its free tools.",
+    path: "/terms",
+  }),
   robots: { index: true, follow: true },
 };
 

@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import { LegalShell, H2, P, UL, Disclaimer } from "@/components/LegalDoc";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "How M Studio collects, uses, and protects the information you share through this website.",
+  ...pageMeta({
+    title: "Privacy Policy",
+    description:
+      "How M Studio collects, uses, and protects the information you share through this website.",
+    path: "/privacy",
+  }),
   robots: { index: true, follow: true },
 };
 

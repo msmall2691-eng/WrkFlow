@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
@@ -11,18 +12,16 @@ import { welcomeBook } from "@/lib/content";
 const wb = welcomeBook;
 const demoDomain = wb.demoUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
-export const metadata: Metadata = {
-  title: "Digital Welcome Book for Short-Term Rentals | M Studio",
+export const metadata: Metadata = pageMeta({
+  // The root template appends " · M Studio"; this used to add "| M Studio" too.
+  title: "Digital Welcome Book for Short-Term Rentals",
   description:
     "A digital welcome book your Airbnb guests actually open — check-in, WiFi, house manual, and your local picks on one link, plus a printable QR code. Built for you, yours to keep. Founding price $99.",
-  alternates: { canonical: "/welcome-book" },
-  openGraph: {
-    title: "Digital Welcome Book for Short-Term Rentals",
-    description:
-      "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks — built for you, yours to keep.",
-    url: "/welcome-book",
-  },
-};
+  path: "/welcome-book",
+  ogTitle: "Digital Welcome Book for Short-Term Rentals",
+  ogDescription:
+    "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks — built for you, yours to keep.",
+});
 
 export default function WelcomeBookPage() {
   return (

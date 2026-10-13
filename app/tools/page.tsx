@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
@@ -19,12 +20,12 @@ import Playground from "@/components/Playground";
   is one click away rather than three screens down.
 */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   title: "Free tools — quotes, invoices, QR codes & more",
   description:
     "Free tools for service businesses: instant quotes, invoices, email signatures, digital cards, QR codes, tracked links and a website health check. No signup.",
-  alternates: { canonical: "/tools" },
-};
+  path: "/tools",
+});
 
 export default function ToolsPage() {
   return (

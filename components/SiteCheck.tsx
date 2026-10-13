@@ -211,7 +211,7 @@ export default function SiteCheck() {
               <>
                 Scores from Google Lighthouse (0–100). Want these all green?
                 That&apos;s exactly the kind of thing we handle.{" "}
-                <a href="#contact" className="text-signal hover:opacity-80">Let&apos;s talk</a>.
+                <a href="/#contact" className="text-signal hover:opacity-80">Let&apos;s talk</a>.
               </>
             )}
           </p>
