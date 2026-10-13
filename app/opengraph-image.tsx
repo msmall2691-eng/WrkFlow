@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { foundingOffer } from "@/lib/content";
+import { appOffer } from "@/lib/content";
 
 export const runtime = "edge";
 export const alt = "M Studio — websites and web apps for small businesses";
@@ -164,7 +164,7 @@ export default async function OpengraphImage() {
                 letterSpacing: 1,
               }}
             >
-              Sites from ${foundingOffer.price}
+              Sites & apps from ${appOffer.price.toLocaleString("en-US")}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 16, color: FAINT, fontSize: 32 }}>
               <div style={{ width: 14, height: 14, borderRadius: 9999, background: SIGNAL, display: "flex" }} />

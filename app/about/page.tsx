@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AccentSwitcher from "@/components/AccentSwitcher";
@@ -17,14 +18,14 @@ import CommandPalette from "@/components/CommandPalette";
   answers who, how, and with what.
 */
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMeta({
   // No "| M Studio" here — the root layout's title template appends the
   // brand already; doubling it renders "… | M Studio · M Studio".
   title: "About — Meet Meg",
   description:
     "Meet Meg, founder of M Studio. I build custom websites, business software and integrations, drawing on ten years of running The Maine Cleaning Company.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (

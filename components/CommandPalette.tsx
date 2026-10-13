@@ -78,7 +78,7 @@ export default function CommandPalette() {
           window.location.href = "/about#approach";
         },
       },
-      { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan starter site founding offer monthly", run: go("pricing") },
+      { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan custom build website web app founding offer monthly", run: go("pricing") },
       {
         id: "meg",
         label: "Meet Meg",

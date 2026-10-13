@@ -73,27 +73,11 @@ export const founderCta = {
 } as const;
 
 /*
-  Founding offer — the real, current state of the first-10-businesses deal.
+  Founding offer for custom builds (websites, web apps, tools) — the studio's
+  entry price since the $749 Starter site tier was retired (Oct 2026).
   `spotsRemaining` is maintained BY HAND (decrement it as each founding spot
-  sells). It is never computed or animated from fake activity — Pricing.tsx
-  reads it as-is. When it hits 0, the Starter card auto-reverts to
-  `fullPrice` and the founding banner stops rendering.
-*/
-export const foundingOffer = {
-  totalSpots: 10,
-  spotsRemaining: 8,
-  price: 749,
-  deposit: 375,
-  balance: 374,
-  fullPrice: 1200,
-} as const;
-
-/*
-  The same deal for web apps. Kept separate from foundingOffer because the two
-  ladders sell out independently — and because an app has to price above a
-  website, or the page says an application costs less than a marketing site.
-  `spotsRemaining` is maintained BY HAND here too; at 0 the card reverts to
-  `fullPrice` and the founding line stops rendering.
+  sells); never computed or animated from fake activity. At 0 the card reverts
+  to `fullPrice` and the founding line stops rendering.
 */
 export const appOffer = {
   totalSpots: 10,
@@ -132,7 +116,7 @@ export const provingGround = {
 } as const;
 
 /*
-  Client testimonial — renders under the Starter card in Pricing ONLY when
+  Client testimonial — renders under the pricing cards ONLY when
   `quote` is non-empty. Paste TJ's real words here when they land; never
   invent one. One specific sentence beats three vague ones.
 */

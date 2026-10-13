@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 import Questionnaire from "@/components/Questionnaire";
 import Logo from "@/components/Logo";
 import MaineReadout from "@/components/MaineReadout";
@@ -14,10 +15,12 @@ import MaineReadout from "@/components/MaineReadout";
 */
 
 export const metadata: Metadata = {
-  title: "Project Questionnaire",
-  description:
-    "A few questions about your business, how it runs, and your goals, so our first conversation starts from something real. Ten minutes or so, and nothing here is binding.",
-  alternates: { canonical: "/intake" },
+  ...pageMeta({
+    title: "Project Questionnaire",
+    description:
+      "A few questions about your business, how it runs, and your goals, so our first conversation starts from something real. Ten minutes or so, and nothing here is binding.",
+    path: "/intake",
+  }),
   // Intake, not marketing — it shouldn't compete with the main site in
   // search, and it's reachable on two hostnames, which is a duplicate-content
   // trap if indexed.

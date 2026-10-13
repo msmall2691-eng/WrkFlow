@@ -4,7 +4,7 @@ import WeatherLayer from "./WeatherLayer";
 import Magnetic from "./Magnetic";
 import LiveReadout from "./LiveReadout";
 import OfferLink from "./OfferLink";
-import { appOffer, foundingOffer } from "@/lib/content";
+import { appOffer } from "@/lib/content";
 
 /*
   Hero — headline left, live instrument panel right (survey J-02, per Meg).
@@ -96,14 +96,11 @@ export default function Hero() {
               21-screen phone page, so someone deciding whether you were even
               in their range had to travel a long way on faith. The app side
               has no published number yet, so it advertises the free scope
-              rather than inventing one. */}
+              rather than inventing one. One number since the $749 Starter
+              tier was retired: websites and apps share the custom-build ladder. */}
           <p className="mt-7 text-sm text-muted">
             <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
-              Websites from ${foundingOffer.price}
-            </a>
-            <span className="mx-2 text-faint" aria-hidden="true">·</span>
-            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
-              Web apps from ${appOffer.price.toLocaleString("en-US")}
+              Websites &amp; web apps from ${appOffer.price.toLocaleString("en-US")}
             </a>
           </p>
         </div>
