@@ -21,7 +21,7 @@ The current roadmap is `docs/NEXT-LEVEL-HANDOFF.md`. Start there.
 
 ## Design and motion
 - Show the work. Every section either shows something real she built, lets the visitor use it, or asks them to start a project.
-- Build to the approved canvas (link and tokens in the handoff, Phase 2). Two type families: Space Grotesk (display/UI) and Instrument Sans (body). One accent, Lamplight `#F4B740`. JetBrains Mono only for real code or data.
+- Build to the redesign canvas once Meg signs off (link and tokens in the handoff, Phase 2). Two type families: Space Grotesk (display/UI) and Instrument Sans (body). One accent, Lamplight `#F4B740`. JetBrains Mono only for real code or data.
 - Motion either demonstrates a system working or responds to the visitor. One orchestrated moment per page; no fade-up on every section.
 - Animate only `transform` and `opacity`; 150ms toggles, 250–350ms panels, 600ms max hero; one easing curve.
 - Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state. Loops pause off-screen and on hover/focus.

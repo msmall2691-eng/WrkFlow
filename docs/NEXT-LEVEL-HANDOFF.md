@@ -35,7 +35,7 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 
 ## Phase 2: Make the work the hero (layout + pages)
 
-**Design reference.** The approved visual direction is the "mlinx.studio Redesign" canvas: https://claude.ai/artifact/Lbzi9TAcJt4vTrd6bvgesm (homepage desktop and phone, The Maine Cleaning Co. case study, and the "watch it connect" motion board). Build to it. Its tokens:
+**Design reference.** The proposed visual direction (build to it once Meg signs off on it) is the "mlinx.studio Redesign" canvas: https://claude.ai/artifact/Lbzi9TAcJt4vTrd6bvgesm (homepage desktop and phone, The Maine Cleaning Co. case study, and the "watch it connect" motion board). Its tokens:
 
 | Token | Hex | Use |
 |---|---|---|
@@ -113,7 +113,7 @@ Next: "Want something like this?" → contact
 ### 2.5 Typography
 `app/layout.tsx` loads five families: Space Grotesk, Inter, JetBrains Mono, Fraunces, Caveat. That's why pages feel busy. Pick two:
 - **Display + UI:** Space Grotesk (already the strongest, most "built" feeling face).
-- **Body:** Instrument Sans (matches the approved mockup; Inter reads as a template default).
+- **Body:** Instrument Sans (matches the redesign canvas; Inter reads as a template default).
 - Drop Fraunces (serif body on About/cards) and use JetBrains Mono only for genuine code/data, not labels. Keep Caveat only for the signature, or replace the signature with an SVG.
 - Replace the tracked-out ALL-CAPS mono eyebrow labels above every section ("SERVICES", "WORK", "PRICING"…). They repeat what the heading already says. Section headings carry the job alone.
 - Accept: no more than 2 font families requested in the network tab (plus the signature asset).
