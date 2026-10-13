@@ -342,16 +342,14 @@ export const work: WorkItem[] = [
   {
     tier: "product",
     tag: "Product · designed & built by M Studio",
-    title: "Autopilot",
-    blurb: "A complete CRM + field-service platform—scheduling, invoicing, and STR turnover automation—designed and built from scratch.",
-    stack: ["Next.js", "Supabase", "Vercel"],
-    // O-03 closed: the domain is attached to the Autopilot project in Vercel
-    // and serves, so the card's browser chrome now reads autopilot.mlinx.studio
-    // instead of the auto-generated vercel.app slug. The chrome label is derived
-    // from this URL, so there is nothing else to keep in sync.
-    url: "https://autopilot.mlinx.studio",
-    live: true,
-    shot: "/shots/autopilot.png",
+    title: "linx",
+    blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+    stack: ["Python", "Stripe Connect", "Railway"],
+    // Replaced the Autopilot demo (Oct 2026), whose page carried invented
+    // stats, testimonials and contact details. linx is a real, launched
+    // product. Swap `url` for a custom domain once one is attached.
+    url: "https://linx-production-6edf.up.railway.app",
+    shot: "/shots/linx.png",
   },
   // Tier 3 — private internal/client systems (no links)
   {
@@ -516,7 +514,6 @@ export const marketItems: MarketItem[] = [
       "Tuned to your tools",
     ],
     price: "from $150 setup + $19/mo",
-    shot: "/shots/autopilot.png",
   },
   {
     id: "calc-kit",

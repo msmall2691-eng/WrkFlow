@@ -77,7 +77,7 @@ export function middleware(request: NextRequest) {
     `font-src 'self'`,
     `connect-src 'self'`,
     `manifest-src 'self'`,
-    `frame-src https://the-remote-admin.com https://*.the-remote-admin.com https://maineclean.co https://*.maineclean.co https://autopilot.mlinx.studio`,
+    `frame-src https://the-remote-admin.com https://*.the-remote-admin.com https://maineclean.co https://*.maineclean.co`,
     `upgrade-insecure-requests`,
   ].join("; ");
 
