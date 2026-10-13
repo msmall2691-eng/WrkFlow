@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
+import BookCall from "./BookCall";
 import CountUp from "./CountUp";
 import { appOffer, studioStats, testimonial } from "@/lib/content";
 
@@ -153,13 +154,13 @@ export default function Pricing() {
             kept out of the cards so nothing sits below a button (survey O-06). */}
         <Reveal delay={220}>
           <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-surface/40 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-            <OfferLink
-              offer="call"
+            <BookCall
+              where="pricing"
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"
             >
               Not ready to commit? Book a free 15-min call
               <span aria-hidden="true">→</span>
-            </OfferLink>
+            </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
                 Founding pricing includes a testimonial + permission to feature your site in our portfolio.

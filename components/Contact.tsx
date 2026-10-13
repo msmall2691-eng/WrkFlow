@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Reveal from "./Reveal";
 import AuroraSwell from "./AuroraSwell";
 import Magnetic from "./Magnetic";
+import BookCall from "./BookCall";
+import { trackLead } from "@/lib/track";
 import {
   OFFER_EVENT,
   isOfferKey,
@@ -62,6 +64,9 @@ export default function Contact() {
       }
 
       setStatus("success");
+      // Recorded before the offer is cleared, so the event keeps the CTA
+      // that produced the lead (lib/track.ts).
+      trackLead("contact", offer ?? undefined);
       form.reset();
       setMessage("");
       setOffer(null);
@@ -160,6 +165,15 @@ export default function Contact() {
                   </a>
                 </p>
               </div>
+            </Reveal>
+            <Reveal delay={240}>
+              <BookCall
+                where="contact"
+                className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-signal transition-opacity hover:opacity-75"
+              >
+                Book a free 15-min call
+                <span aria-hidden="true">→</span>
+              </BookCall>
             </Reveal>
           </div>
 

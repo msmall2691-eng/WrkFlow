@@ -8,6 +8,7 @@ import {
   type QuestionField,
   type CardOption,
 } from "@/lib/questionnaire";
+import { trackLead, trackQuestionnaire } from "@/lib/track";
 
 /*
   Questionnaire — the intake behind intake.mlinx.studio.
@@ -280,6 +281,8 @@ export default function Questionnaire({
       } catch {
         /* ignore */
       }
+      trackQuestionnaire("completed");
+      trackLead("questionnaire");
       setStatus("idle");
       goTo({ screen: "success" });
     } catch (err) {
@@ -342,7 +345,10 @@ export default function Questionnaire({
         <Intro
           headingRef={headingRef}
           aiEnabled={previewEnabled}
-          onStart={() => goTo({ screen: "step", index: 0 })}
+          onStart={() => {
+            trackQuestionnaire("started");
+            goTo({ screen: "step", index: 0 });
+          }}
         />
       )}
 
