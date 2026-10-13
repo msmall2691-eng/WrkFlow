@@ -35,19 +35,7 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 
 ## Phase 2: Make the work the hero (layout + pages)
 
-**Design reference.** The proposed visual direction (build to it once Meg signs off on it) is the "mlinx.studio Redesign" canvas: https://claude.ai/artifact/Lbzi9TAcJt4vTrd6bvgesm (homepage desktop and phone, The Maine Cleaning Co. case study, and the "watch it connect" motion board). Its tokens:
-
-| Token | Hex | Use |
-|---|---|---|
-| Spruce | `#0F2E29` | Hero, dark sections, primary dark buttons |
-| Spruce deep | `#0A211D` | Footer, phone frames |
-| Fog | `#EEF2EF` | Page ground, light sections |
-| Ink | `#13231F` | Body text on light |
-| Muted | `#4C625C` (light) / `#9DB5AE`, `#C6D6D0` (on spruce) | Secondary text |
-| Rule | `#CBD7D2` | Borders, dividers |
-| Lamplight | `#F4B740` | The one accent: primary CTA on dark, active states, focus ring |
-
-Radii: 10px controls, 12px CTAs, 14px screenshots, 18px panels. Screens always sit in a browser or phone frame with a soft shadow.
+**Keep the current look.** Meg prefers the existing visual identity: its colors, type, the live Maine daylight/weather theming and overall feel stay. Every change in Phases 2 and 3 is structural (what's shown, in what order, how it moves), built in the site's existing tokens and components. Do not restyle the site. (An alternate direction was explored on the "mlinx.studio Redesign" canvas and set aside; don't build from it.)
 
 **The core problem.** The most prominent thing on the homepage is a Portland weather widget (`components/LiveReadout.tsx`, `DaylightSky`, `WeatherLayer`, `ReactiveAurora` in `components/Hero.tsx`). It is clever, but it proves you can read a weather API, not that you can build a business's website or app. On a phone it fills an entire screen before Services, and the Work section doesn't appear until roughly the third screen. A prospect deciding in 5 seconds sees fog and wind speed, not your work.
 
@@ -73,12 +61,12 @@ Radii: 10px controls, 12px CTAs, 14px screenshots, 18px panels. Screens always s
 ```
 
 Tasks:
-- **2.1a Hero proof reel.** Replace the right-hand `LiveReadout` panel in `components/Hero.tsx` with a framed browser/phone mockup that crossfades between 3–4 real screenshots from `public/shots/` (add new captures as needed), each with a one-line caption ("Booking site + back office for a 1,000-customer cleaning company"). Pause on hover; respect reduced motion (show one static frame). Keep the live Maine data as a *small* signature detail (e.g. the page tint and a one-line footer readout), not the hero.
-  - Accept: on a 390px phone the first screen shows headline, CTA and at least one real screenshot. No weather data above the fold.
+- **2.1a Hero proof reel.** **Needs Meg** (see below): either replace the right-hand `LiveReadout` panel in `components/Hero.tsx`, or keep it and add below/beside it, a framed browser/phone mockup that crossfades between 3–4 real screenshots from `public/shots/` (add new captures as needed), each with a one-line caption ("Booking site + back office for a 1,000-customer cleaning company"). Pause on hover; respect reduced motion (show one static frame). Match the existing card styling of the LiveReadout panel so it looks native to the current design.
+  - Accept: on a 390px phone the first screen shows headline, CTA and at least one real screenshot.
 - **2.1b Proof strip** directly under the hero: the operating numbers (already in `lib/content.ts` as `provingGround`, attributed to The Maine Cleaning Co.) plus client name marks. Real only; never invent.
 - **2.1c Move Work above Services.** In `app/page.tsx`, order: Hero, Proof, Work, Try it, Services, Process, Pricing, Contact.
 - **2.1d Services section** (`components/Services.tsx`) currently leaves most of the desktop width empty (narrow accordion on the left). Rebuild as three wide rows, each with a real example screenshot on one side and 3 bullets + "See an example" link on the other. Order: Websites, Web apps, Integrations.
-- **2.1e Remove floating chrome** that competes with content: the "DAYLIGHT" pill (`AccentSwitcher`) overlaps content on every page and on phones sits on top of cards; the left `WorkflowSpine` dots; the ⌘K button in the nav (keep the palette, drop the button). Visitors don't need a theme switcher to hire a developer.
+- **2.1e Floating chrome:** the "DAYLIGHT" pill (`AccentSwitcher`) sits on top of cards on phones. Keep it, but move it so it never covers content (e.g. into the footer or nav on small screens). Ask Meg before removing `WorkflowSpine` or the ⌘K button.
 
 ### 2.2 Case study pages (new): the biggest proof-of-work upgrade
 
@@ -110,13 +98,10 @@ Next: "Want something like this?" → contact
 - Digital Welcome Book card shows an empty "LIVE PREVIEW" area; M Linx Tools card shows a plain "Tool" placeholder. Give every card a real screenshot or a designed illustration.
 - Replace the em dash in the heading ("M Linx—premade tools…") and fix the pricing conflicts noted in Phase 1.
 
-### 2.5 Typography
-`app/layout.tsx` loads five families: Space Grotesk, Inter, JetBrains Mono, Fraunces, Caveat. That's why pages feel busy. Pick two:
-- **Display + UI:** Space Grotesk (already the strongest, most "built" feeling face).
-- **Body:** Instrument Sans (matches the redesign canvas; Inter reads as a template default).
-- Drop Fraunces (serif body on About/cards) and use JetBrains Mono only for genuine code/data, not labels. Keep Caveat only for the signature, or replace the signature with an SVG.
-- Replace the tracked-out ALL-CAPS mono eyebrow labels above every section ("SERVICES", "WORK", "PRICING"…). They repeat what the heading already says. Section headings carry the job alone.
-- Accept: no more than 2 font families requested in the network tab (plus the signature asset).
+### 2.5 Typography (light touch, same look)
+Keep the current typefaces and feel. Two small cleanups only:
+- Fraunces (serif) is used for some body paragraphs on About; check with Meg before changing it.
+- The tracked-out ALL-CAPS label above every section ("SERVICES", "WORK", "PRICING") repeats the heading below it. Keep it where it adds information; drop it where it only repeats the heading.
 
 ## Phase 3: Motion that shows the work (actions + movement)
 
@@ -134,7 +119,6 @@ Build these, in this order:
 
 Remove or reduce:
 - `Reveal` on every section → keep it on at most the Work cards and case study blocks; remove elsewhere.
-- Background aurora/sky drift on the hero once the proof reel is in.
 - `ScrollProgress`, `KonamiEgg`, `ConsoleGreeting` (fun, but not for prospects; keep ConsoleGreeting if desired, it's invisible to them).
 - `CountUp` on prices (numbers that animate make prices feel like a gimmick).
 
