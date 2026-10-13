@@ -35,6 +35,20 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 
 ## Phase 2: Make the work the hero (layout + pages)
 
+**Design reference.** The approved visual direction is the "mlinx.studio Redesign" canvas: https://claude.ai/artifact/Lbzi9TAcJt4vTrd6bvgesm (homepage desktop and phone, The Maine Cleaning Co. case study, and the "watch it connect" motion board). Build to it. Its tokens:
+
+| Token | Hex | Use |
+|---|---|---|
+| Spruce | `#0F2E29` | Hero, dark sections, primary dark buttons |
+| Spruce deep | `#0A211D` | Footer, phone frames |
+| Fog | `#EEF2EF` | Page ground, light sections |
+| Ink | `#13231F` | Body text on light |
+| Muted | `#4C625C` (light) / `#9DB5AE`, `#C6D6D0` (on spruce) | Secondary text |
+| Rule | `#CBD7D2` | Borders, dividers |
+| Lamplight | `#F4B740` | The one accent: primary CTA on dark, active states, focus ring |
+
+Radii: 10px controls, 12px CTAs, 14px screenshots, 18px panels. Screens always sit in a browser or phone frame with a soft shadow.
+
 **The core problem.** The most prominent thing on the homepage is a Portland weather widget (`components/LiveReadout.tsx`, `DaylightSky`, `WeatherLayer`, `ReactiveAurora` in `components/Hero.tsx`). It is clever, but it proves you can read a weather API, not that you can build a business's website or app. On a phone it fills an entire screen before Services, and the Work section doesn't appear until roughly the third screen. A prospect deciding in 5 seconds sees fog and wind speed, not your work.
 
 **The principle for every page:** show, don't tell. Every section should either show a real thing Meg built, let the visitor *use* a real thing she built, or ask them to start a project. Anything else gets cut or moved.
@@ -99,7 +113,7 @@ Next: "Want something like this?" → contact
 ### 2.5 Typography
 `app/layout.tsx` loads five families: Space Grotesk, Inter, JetBrains Mono, Fraunces, Caveat. That's why pages feel busy. Pick two:
 - **Display + UI:** Space Grotesk (already the strongest, most "built" feeling face).
-- **Body:** Inter.
+- **Body:** Instrument Sans (matches the approved mockup; Inter reads as a template default).
 - Drop Fraunces (serif body on About/cards) and use JetBrains Mono only for genuine code/data, not labels. Keep Caveat only for the signature, or replace the signature with an SVG.
 - Replace the tracked-out ALL-CAPS mono eyebrow labels above every section ("SERVICES", "WORK", "PRICING"…). They repeat what the heading already says. Section headings carry the job alone.
 - Accept: no more than 2 font families requested in the network tab (plus the signature asset).
