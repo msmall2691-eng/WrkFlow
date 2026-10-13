@@ -5,7 +5,7 @@ The current roadmap is `docs/NEXT-LEVEL-HANDOFF.md`. Start there.
 ## Shipping
 - Next.js 15 App Router, TypeScript, Tailwind. Deploys to mlinx.studio via Vercel on merge to `main`.
 - One task per branch and PR; squash-merge. Never push to `main` directly.
-- Before a PR: `npx tsc --noEmit` and `npx next build` pass. For visual changes, run `next start` and screenshot affected pages at 1440px and 390px, and look at them.
+- Before a PR: `npx tsc --noEmit` and `npx next build` pass. For visual changes, run `npm run build && npm run start` and screenshot affected pages at 1440px and 390px, and look at them.
 - Commit as Megan Small with the GitHub noreply address already used in history (personal emails are rejected by push protection).
 
 ## Never invent proof
