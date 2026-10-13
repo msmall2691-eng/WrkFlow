@@ -149,6 +149,7 @@ Ranked by lead impact:
 
 ## Needs Meg (collect before or during the work)
 
+- Hero: keep the live Maine weather panel and add the proof reel beside or below it, or swap the panel for the proof reel.
 - Booking page URL (Cal.com or Google appointment schedule).
 - Supabase project (or approval to use an existing one) for lead storage.
 - 2–3 real testimonials with name and business (Karen / The Remote Admin first).
