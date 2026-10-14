@@ -110,7 +110,7 @@ export default function Contact() {
             </Reveal>
             <Reveal delay={120}>
               <p className="mt-6 text-[1rem] leading-relaxed text-muted">
-                Tell me what you use now, what you&apos;re tired of doing manually,
+                Share what you use now, what you&apos;re tired of doing manually,
                 and what you wish worked better. You don&apos;t need a technical
                 plan to get started.
               </p>

@@ -13,10 +13,10 @@ import type { VisualType } from "@/components/ProjectVisual";
   statement, not an essay. Edit here, not in the component.
 */
 export const founderNote = {
-  headline: "I love figuring out how things work.",
+  headline: "A business background. A love of building.",
   headlineFollow: "And making them work better for the people using them.",
   paragraphs: [
-    "Give me a platform to learn, a process to untangle, or an idea to build. I like getting into the details, finding what is possible, and bringing the pieces together.",
+    "M Studio brings hands-on business experience to websites and systems. Every project starts with understanding the work, the tools already in place, and what could run more smoothly.",
   ],
 } as const;
 
@@ -24,17 +24,17 @@ export const founderBio = {
   kicker: "The person behind M Studio",
   heading: "Hi, I'm Meg.",
   paragraphs: [
-    "I run The Maine Cleaning Company, and that is where this started. Managing customers, bookings, schedules, and a team made me curious about how much better the systems behind a business could work.",
-    "I tried different service platforms, learned my way around them, and started building what I needed. That grew into websites, CRMs, dashboards, and connections between tools. I have exported Jobber data and moved records into other systems, built a Jobber-to-Airtable integration project, and developed an extension for Twenty CRM.",
-    "The part I enjoy most is figuring it all out: learning a platform, organizing the information, and making something useful out of it. Through M Studio, I help business owners with websites, software setup, data migrations, integrations, and custom tools. You might need a new system, or just help getting more out of what you already have.",
-    "I am based in Maine and work remotely with businesses anywhere. I am also studying Business Analytics and AI at the University of Southern Maine with a minor in Computer Science. Outside of work and school, I am with my kids and our dog, usually near the water. Fishing if the day allows.",
+    "Running The Maine Cleaning Company is where this started. Managing customers, bookings, schedules, and a team made me curious about how much better the systems behind a business could work.",
+    "Trying different platforms turned into learning every corner of them, moving data, connecting tools, and building what was missing. That work now includes websites, CRMs, dashboards, a Jobber-to-Airtable integration project, and an extension for Twenty CRM.",
+    "I love figuring things out: learning a platform, organizing the information, and turning an idea into something useful. M Studio grew from that interest and now helps businesses with websites, platform setup, migrations, integrations, and custom tools.",
+    "M Studio is based in Maine and works remotely with businesses anywhere. Alongside the studio, I am studying Business Analytics and AI at the University of Southern Maine with a minor in Computer Science. Outside of work and school, you will usually find me with the kids and our dog, near the water. Fishing if the day allows.",
   ],
-  detail: "The Maine Cleaning Company is where I first put this work into practice: 1,000+ customers and 7,000+ service visits.",
+  detail: "The Maine Cleaning Company is the proving ground: 1,000+ customers and 7,000+ service visits.",
   signature: "— Meg",
 } as const;
 
 export const founderPhilosophy = {
-  heading: "How I approach it",
+  heading: "The approach",
   lines: [
     "Understand the business and the people using it.",
     "Then make the everyday work easier.",
@@ -43,7 +43,7 @@ export const founderPhilosophy = {
 
 export const founderCta = {
   headline: "What do you wish worked better?",
-  body: "Tell me what you use now and where you are getting stuck. We can start there.",
+  body: "Share what you use now and where you are getting stuck. That is a good place to start.",
   buttonLabel: "Talk through your project",
 } as const;
 
@@ -188,7 +188,7 @@ export const services: Service[] = [
     "outcome": "An agreed set of records cleaned, mapped, and imported, with checks before the handover.",
     "example": {
       "client": "Jobber data migration",
-      "built": "Exported Jobber data and moved records into other systems for my own business.",
+      "built": "Exported Jobber data and moved records into other systems for The Maine Cleaning Company.",
       "result": "Practical experience with the move from one platform to another.",
       "visual": "cleanup"
     }
@@ -602,12 +602,12 @@ export const welcomeBook = {
   steps: [
     {
       n: "01",
-      title: "Send me the details",
-      body: "Share your listing and the basics — check-in, WiFi, rules, your favorite local spots. A short form is all it takes; I'll pull the rest together.",
+      title: "Share the details",
+      body: "Share your listing and the basics — check-in, WiFi, rules, your favorite local spots. A short form is all it takes to get started.",
     },
     {
       n: "02",
-      title: "I build your book",
+      title: "Your book takes shape",
       body: "You get a custom welcome book matched to your place, usually within a few days. One round of tweaks is included, so it reads exactly how you'd say it.",
     },
     {
@@ -619,7 +619,7 @@ export const welcomeBook = {
   faqs: [
     {
       q: "Do I need any tech skills?",
-      a: "None. You send the info, I build it, and you get a link plus a printable QR code. That's the whole job on your end.",
+      a: "None. Share the information and receive a finished book, a link, and a printable QR code. That's the whole job on your end.",
     },
     {
       q: "Does it work for VRBO, Booking.com, or direct bookings?",
@@ -631,7 +631,7 @@ export const welcomeBook = {
     },
     {
       q: "What does it cost?",
-      a: "$99 for the first few (a founding price while I gather reviews), then $149. One-time — no monthly app fee, and the book is yours.",
+      a: "$99 for the first few books at the founding price, then $149. One-time — no monthly app fee, and the book is yours.",
     },
     {
       q: "How long does it take?",
@@ -639,7 +639,7 @@ export const welcomeBook = {
     },
     {
       q: "Do you only work with Maine rentals?",
-      a: "No — anywhere. The Keystone House is my own place here in Maine, but the welcome book works for any short-term rental.",
+      a: "No — anywhere. The Keystone House in Maine is one example, but the welcome book works for any short-term rental.",
     },
   ],
 } as const;

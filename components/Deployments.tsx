@@ -47,7 +47,7 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Work for other businesses, products I have built, and the tools I use in my own company.
+              Business websites, original products, and systems built for The Maine Cleaning Company.
             </p>
             <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
               {PROOF}

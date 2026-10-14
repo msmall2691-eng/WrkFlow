@@ -117,7 +117,7 @@ export default function Pricing() {
                 offer="custom"
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
               >
-                Tell me what you need
+                Talk through your project
                 <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
@@ -153,7 +153,7 @@ export default function Pricing() {
           <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-5 sm:p-7">
             <h3 className="display-serif text-xl text-ink">Smaller projects</h3>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-              You can hire me for one piece of the work. These are estimates for a focused project;
+              Start with one piece of the work. These are estimates for a focused project;
               larger refreshes, complex data, and multiple connections get their own quote.
             </p>
             <div className="mt-5 grid gap-4 sm:grid-cols-2">

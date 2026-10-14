@@ -13,11 +13,11 @@ import Reveal from "./Reveal";
 const QUESTIONS: { q: string; a: string }[] = [
   {
     q: "Can you help me switch platforms or move my data?",
-    a: "Yes. We start by looking at the export from your current platform and the import options in the new one. I agree with you on which records will move, how the fields match, and what needs cleaning up, then check a sample before the full import and handover.",
+    a: "Yes. Each migration starts with the export from your current platform and the import options in the new one. The scope covers which records will move, how the fields match, and what needs cleaning up, with a sample checked before the full import and handover.",
   },
   {
     q: "Do you only work with cleaning companies?",
-    a: "No. My own cleaning business is where this started, but I work with businesses in different industries. What matters is the website, system, or workflow you need help with.",
+    a: "No. M Studio grew out of hands-on experience running a cleaning business, but projects span different industries. What matters is the website, system, or workflow you need help with.",
   },
   {
     q: "Can I hire you for a small project?",
@@ -25,7 +25,7 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "Can you connect the systems I already use?",
-    a: "Yes — that is a big part of what I do. Tell me which tools you use and what you want to happen between them. I will check their APIs, calendar feeds, and other connection options before we agree on a scope.",
+    a: "Yes. Share which tools you use and what you want to happen between them. Their APIs, calendar feeds, and other connection options are checked before the project is scoped.",
   },
   {
     q: "Do I need a whole new website or app?",

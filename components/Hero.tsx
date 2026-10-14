@@ -63,9 +63,9 @@ export default function Hero() {
           </h1>
 
           <p className="hero-sub metallic-text mt-6 max-w-xl text-[1rem] font-medium leading-relaxed">
-            I build websites and custom business tools, set up CRMs, move data
-            between platforms, and connect the software you already use.
-            I love learning how a system works and making it easier to use.
+            Custom websites, business tools, CRM setup, data migrations,
+            and integrations — built around how your business works.
+            Get more out of the tools you use, or build what&apos;s missing.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -74,7 +74,7 @@ export default function Hero() {
                 offer="project"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
-                Tell me what you need
+                Talk through your project
                 <span
                   aria-hidden="true"
                   className="transition-transform group-hover:translate-x-0.5"

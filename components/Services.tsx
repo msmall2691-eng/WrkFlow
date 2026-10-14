@@ -36,7 +36,7 @@ export default function Services() {
           </Reveal>
           <Reveal>
             <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              What I can help you with.
+              What M Studio can help with.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted">
               For small businesses, independent professionals, and teams.
