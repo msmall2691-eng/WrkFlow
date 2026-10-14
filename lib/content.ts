@@ -14,7 +14,7 @@ import type { VisualType } from "@/components/ProjectVisual";
 */
 export const founderNote = {
   headline: "A business background. A love of building.",
-  headlineFollow: "And making them work better for the people using them.",
+  headlineFollow: "Websites and systems shaped around the people using them.",
   paragraphs: [
     "M Studio brings hands-on business experience to websites and systems. Every project starts with understanding the work, the tools already in place, and what could run more smoothly.",
   ],
