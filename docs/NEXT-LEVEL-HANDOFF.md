@@ -145,6 +145,9 @@ Ranked by lead impact:
 5. **Short screen recordings** (8–15s, muted, looped, with poster image) of linx and the BrightBase dashboard in use. Real product in motion beats any CSS effect. Meg records; Claude Code adds a `<VideoShot>` component with lazy-loading, poster and reduced-motion fallback to the poster.
 6. **Testimonials block** wired to `lib/content.ts` `testimonial` (already renders nothing when empty). Meg collects 2–3 real quotes.
 
+7. **"Try it with your town."** A small input on the live hero panel: a visitor types their town or ZIP and the sky, temperature, daylight and tide (where coastal) switch to their location, with a "Back to Maine" reset. Reuse the existing weather/daylight code behind `app/api/maine`; add a geocoding lookup and cache responses. Rate-limit the endpoint. Reduced motion: switch instantly. Track `hero_town_tried`.
+8. **"Live local" add-on for clients.** Package the live panel as a product: weather, daylight, business hours or wait times on a client's homepage (The Remote Admin already has a live Amherst panel). Add it to the M Linx catalog in `lib/content.ts` with The Remote Admin as the real example. **Needs Meg:** price.
+
 ## Phase 5: Polish and measure
 
 - **Accessibility pass:** visible focus ring on every interactive element; color contrast on the small mono labels (several are light grey on cream); `alt` text on every work screenshot describing what the screen shows; form errors announced (`aria-live`). Run axe on each page; fix all serious/critical issues.
@@ -153,6 +156,8 @@ Ranked by lead impact:
 - **Measure:** after launch, compare weekly `lead_submitted` events and booking clicks against the four weeks before.
 
 ## Needs Meg (collect before or during the work)
+
+- Price for the "Live local" add-on (Phase 4, item 8).
 
 - Booking page URL (Cal.com or Google appointment schedule).
 - Supabase project (or approval to use an existing one) for lead storage.
