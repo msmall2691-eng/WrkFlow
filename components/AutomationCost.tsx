@@ -1,6 +1,4 @@
 "use client";
-
-import Reveal from "./Reveal";
 import { Label, Slider } from "./KitUI";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
@@ -61,10 +59,9 @@ export default function AutomationCost() {
   return (
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
       {/* Result card */}
-      <Reveal>
-        <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
+              <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:order-2 md:sticky md:top-24">
           <div className="rounded-2xl bg-[#0e1c28] p-7 text-white shadow-[0_18px_50px_-16px_rgba(0,0,0,0.35)]">
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-white/40">
+            <p className="text-sm text-white/60">
               Manual work is costing you
             </p>
             <p className="mt-2 font-display text-4xl tracking-tight">
@@ -106,12 +103,10 @@ export default function AutomationCost() {
             <SaveResult summary={summary} filename="mstudio-automation-cost" tool="cost" toolLabel="Cost of busywork" />
           </div>
         </div>
-      </Reveal>
 
       {/* Controls */}
-      <Reveal delay={80}>
-        <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
-          <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">Your numbers</p>
+              <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
+          <p className="mb-5 text-sm font-semibold text-ink">Your numbers</p>
           <div className="space-y-5">
             <Slider label="People doing the task" value={people} min={1} max={20} onChange={setPeople} />
             <Slider label="Hours/week each (repetitive work)" value={hours} min={1} max={40} suffix=" hrs" onChange={setHours} />
@@ -120,7 +115,6 @@ export default function AutomationCost() {
             <MoneyInput label="Automation setup (one-time)" value={invest} step={500} suffix="" onChange={setInvest} />
           </div>
         </div>
-      </Reveal>
     </div>
   );
 }

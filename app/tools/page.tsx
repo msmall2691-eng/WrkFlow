@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import AccentSwitcher from "@/components/AccentSwitcher";
 import CommandPalette from "@/components/CommandPalette";
 import Playground from "@/components/Playground";
 
@@ -34,10 +33,7 @@ export default function ToolsPage() {
       <main className="pt-16">
         <section className="border-b border-line py-14 md:py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              Free tools
-            </p>
-            <h1 className="display max-w-3xl text-balance text-[1.9rem] text-ink sm:text-4xl md:text-5xl">
+            <h1 className="display max-w-3xl text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
               Free tools. No signup.
             </h1>
             <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-muted">
@@ -49,7 +45,10 @@ export default function ToolsPage() {
         <Playground />
       </main>
       <Footer />
-      <AccentSwitcher />
+        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+            every page and on a phone sat on top of the cards. The theme
+            toggle is now a command in the ⌘K palette (lib/theme.ts), so
+            nobody who picked Harbor is stranded in it. */}
       <CommandPalette />
     </>
   );

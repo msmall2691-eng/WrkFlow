@@ -268,6 +268,12 @@ export type WorkItem = {
   client?: boolean;
   /** A single REAL outcome number (e.g. "0 double-bookings since launch"). Never fabricate—leave undefined until Meg confirms. */
   metric?: string;
+  /**
+   * Slug of the `caseStudies` entry that expands this card. Set it and the
+   * card links INWARD to the case study; the external "visit live site" link
+   * then lives on that page, not on the card. One card, one destination.
+   */
+  caseStudy?: string;
 };
 
 /*
@@ -312,6 +318,7 @@ export const work: WorkItem[] = [
     tier: "site",
     tag: "Website + system · our own company",
     title: "The Maine Cleaning Co.",
+    caseStudy: "maine-cleaning-co",
     blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
     stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
     url: "https://maineclean.co",
@@ -331,6 +338,7 @@ export const work: WorkItem[] = [
     tier: "site",
     tag: "Client work",
     title: "The Remote Admin",
+    caseStudy: "the-remote-admin",
     blurb: "Full marketing site for a Southern-NH admin-services business—designed, built, and shipped end to end.",
     stack: ["Next.js", "Vercel"],
     url: "https://the-remote-admin.com",
@@ -343,6 +351,7 @@ export const work: WorkItem[] = [
     tier: "product",
     tag: "Product · designed & built by M Studio",
     title: "linx",
+    caseStudy: "linx",
     blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
     stack: ["Python", "Stripe Connect", "Railway"],
     // Replaced the Autopilot demo (Oct 2026), whose page carried invented
@@ -381,6 +390,204 @@ export const work: WorkItem[] = [
     replaced: "~20 min of manual quoting per lead",
     status: "Production, approval-gated",
     shot: "/shots/instant-estimate.png",
+  },
+];
+
+/*
+  Case studies — the deep version of a Work card, at /work/[slug].
+
+  The site could say it builds things but never showed one project all the
+  way through, which is the single biggest gap between "looks capable" and
+  "has done this". A Work card now links here, and the external "visit live
+  site" link moved onto this page: one card, one destination, and the deeper
+  page is the better first click.
+
+  Two blocks are deliberately EMPTY and render NOTHING while empty, exactly
+  as `testimonial` above does: `results` and `quote`. There is not one
+  confirmed client outcome number on this site — `WorkItem.metric` is unset
+  on all seven items, and `provingGround` is explicitly The Maine Cleaning
+  Co's own operating history, not client KPIs. A case study is the easiest
+  place in the world to get caught inventing a number, so these stay empty
+  until Meg confirms real words. The page is complete without them.
+
+  `problem` is the same: empty until she writes it in her own voice.
+
+  Everything non-empty below is lifted from copy already shipping in this
+  file, not newly written claims. Note the absence of `as const` — it would
+  narrow "" and [] to literal types and make every `{x && ...}` gate dead
+  code, which is why `testimonial` is annotated rather than asserted too.
+*/
+
+/** A real capture in /public/shots. There are no video assets in the repo. */
+export type CaseStudyShot = {
+  src: string;
+  /** What the screen actually shows, for someone who cannot see it. */
+  alt: string;
+};
+
+/**
+ * One "What I built" bullet. Drives the pinned scroll sequence: each bullet
+ * swaps the pinned screen. `shot` is optional — a bullet with no capture yet
+ * reads as text, and the sequence falls back to a plain stack.
+ */
+export type CaseStudyBuild = {
+  label: string;
+  body: string;
+  shot?: CaseStudyShot;
+};
+
+/** One tile in the Result block. REAL, CONFIRMED numbers only. */
+export type CaseStudyResult = {
+  value: string;
+  label: string;
+  /** Whose number it is, when that isn't self-evident. Mirrors `provingGround.label`. */
+  attribution?: string;
+};
+
+/** A node in the "How it works" chain. Same shape WorkflowDemo takes. */
+export type CaseStudyFlowNode = { icon: string; label: string };
+
+export type CaseStudy = {
+  /** URL segment, and the key a Work card points at. */
+  slug: string;
+  /** Matches the `WorkItem.title` it expands on. */
+  title: string;
+  /** Eyebrow — same vocabulary as `WorkItem.tag`. */
+  tag: string;
+  /** One line. No numbers unless they are real. */
+  outcome: string;
+  /** Live URL. The external link moved off the Work card and onto this page. */
+  url?: string;
+  hero: CaseStudyShot;
+  /** 2-3 sentences in Meg's words. "" until she writes it; the block is skipped. */
+  problem: string;
+  built: CaseStudyBuild[];
+  /** What connects to what, left to right. [] renders no diagram. */
+  flow: CaseStudyFlowNode[];
+  /** Reuse strings from `stackColumns` or the card's own `stack`. */
+  stack: string[];
+  /** REAL numbers only. [] until Meg confirms — the block renders nothing. */
+  results: CaseStudyResult[];
+  /** Owner's words. Renders nothing while `quote` is "". */
+  quote: { quote: string; name: string; business: string };
+};
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: "maine-cleaning-co",
+    title: "The Maine Cleaning Co.",
+    tag: "Website + system · our own company",
+    outcome: "Customers can get an estimate and book online.",
+    url: "https://maineclean.co",
+    hero: {
+      src: "/shots/maineclean.png",
+      alt: "The maineclean.co home page: a cleaning company site with instant estimate and online booking.",
+    },
+    problem: "", // TODO(Meg) — 2-3 sentences, your words. Renders nothing while empty.
+    built: [
+      {
+        label: "Marketing and booking site",
+        body: "Marketing and booking site, wired straight into the back-office system that runs the company.",
+        shot: {
+          src: "/shots/maineclean.png",
+          alt: "The public site, with the quote request and booking flow.",
+        },
+      },
+      {
+        label: "Instant estimate",
+        body: "Reads requests, drafts a quote, and queues a reply for approval.",
+        shot: {
+          src: "/shots/instant-estimate.png",
+          alt: "The instant estimate screen, showing a drafted quote awaiting approval.",
+        },
+      },
+      {
+        label: "Operations dashboard",
+        body: "Jobs, revenue, occupancy and crew in one live view.",
+        shot: {
+          src: "/shots/brightbase-dashboard.png",
+          alt: "The operations dashboard: jobs, revenue, occupancy and crew together on one screen.",
+        },
+      },
+      {
+        label: "Turnover scheduling",
+        body: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
+        shot: {
+          src: "/shots/brightbase-turnovers.png",
+          alt: "The turnover schedule, with rental bookings mapped onto cleaning assignments.",
+        },
+      },
+    ],
+    flow: [
+      { icon: "🌐", label: "Site" },
+      { icon: "🗂️", label: "Back office" },
+      { icon: "📅", label: "Schedule" },
+      { icon: "💬", label: "Customer" },
+    ],
+    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
+    results: [], // TODO(Meg) — real, confirmed numbers only.
+    quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+  },
+  {
+    slug: "linx",
+    title: "linx",
+    tag: "Product · designed & built by M Studio",
+    outcome:
+      "Hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+    url: "https://linx-production-6edf.up.railway.app",
+    hero: {
+      src: "/shots/linx.png",
+      alt: "The linx marketplace: a cleaning marketplace for Southern Maine.",
+    },
+    problem: "", // TODO(Meg)
+    built: [
+      {
+        label: "Post a turnover",
+        body: "A host posts a turnover and vetted local cleaners bid on it.",
+        // TODO(Meg) — capture needed. Reads as text until then.
+      },
+      {
+        label: "Payment through Stripe",
+        body: "Payment releases through Stripe Connect once the job is done.",
+      },
+    ],
+    flow: [
+      { icon: "🏠", label: "Host posts" },
+      { icon: "🧹", label: "Cleaners bid" },
+      { icon: "✅", label: "Job done" },
+      { icon: "💳", label: "Stripe releases" },
+    ],
+    stack: ["Python", "Stripe Connect", "Railway"],
+    results: [], // TODO(Meg)
+    quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+  },
+  {
+    slug: "the-remote-admin",
+    title: "The Remote Admin",
+    tag: "Client work",
+    outcome:
+      "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+    url: "https://the-remote-admin.com",
+    hero: {
+      src: "/shots/remote-admin.png",
+      alt: "The the-remote-admin.com home page: a marketing site for an admin-services business.",
+    },
+    problem: "", // TODO(Meg)
+    built: [
+      {
+        label: "Designed, built and shipped",
+        body: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+        shot: {
+          src: "/shots/remote-admin.png",
+          alt: "The Remote Admin home page.",
+        },
+      },
+    ],
+    flow: [], // No integration story here; the section is skipped.
+    stack: ["Next.js", "Vercel"],
+    results: [], // TODO(Meg)
+    // An outside client, so any quote here needs their sign-off as well as hers.
+    quote: { quote: "", name: "", business: "" }, // TODO(Meg)
   },
 ];
 

@@ -35,7 +35,7 @@ export default function CopyLink({
         type="button"
         onClick={copy}
         aria-label={`Copy ${label ?? value}`}
-        className="font-mono text-[10px] uppercase tracking-widest text-faint opacity-0 transition-opacity hover:text-signal focus-visible:opacity-100 group-hover:opacity-100"
+        className="text-xs font-medium text-faint opacity-0 transition-opacity hover:text-signal focus-visible:opacity-100 group-hover:opacity-100"
       >
         {copied ? "copied" : "copy"}
       </button>

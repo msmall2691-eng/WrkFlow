@@ -320,12 +320,12 @@ export default function Questionnaire({
       <div className="sticky top-0 z-20 -mx-6 mb-10 bg-[var(--color-base)] px-6 pb-4 pt-5">
         <div className="h-1 w-full overflow-hidden rounded-full bg-line">
           <div
-            className="h-full rounded-full bg-gold transition-[width] duration-300 ease-out motion-reduce:transition-none"
-            style={{ width: `${progress}%` }}
+            className="h-full w-full origin-left bg-gold transition-transform duration-300 ease-out motion-reduce:transition-none"
+            style={{ transform: `scaleX(${progress / 100})` }}
           />
         </div>
         <div className="mt-2.5 flex items-baseline justify-between">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
+          <p className="text-xs text-faint">
             <span className="text-ink">M Studio</span>
             {phaseLabel ? ` · ${phaseLabel}` : " · Project intake"}
           </p>
@@ -418,7 +418,7 @@ function Intro({
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <div ref={headingRef} tabIndex={-1} className="outline-none">
-        <h2 className="display-serif text-3xl leading-[1.12] text-ink sm:text-4xl">
+        <h2 className="display text-[2rem] leading-[1.12] text-balance text-ink sm:text-4xl">
           Let&apos;s scope your website.
         </h2>
       </div>
@@ -436,7 +436,7 @@ function Intro({
           </>
         )}
       </p>
-      <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
+      <p className="mt-3 text-xs text-faint">
         About 10 minutes · answers save on this device · nothing is binding
       </p>
 
@@ -491,12 +491,12 @@ function StepScreen({
         </p>
       )}
 
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
+      <p className="mb-3 text-xs font-medium text-gold">
         {step.kicker}
-        <span className="ml-2 normal-case tracking-normal text-faint">· {step.timeHint}</span>
+        <span className="ml-2 font-normal text-faint">· {step.timeHint}</span>
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
-        <h2 className="display-serif text-2xl text-ink sm:text-3xl">{step.title}</h2>
+        <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">{step.title}</h2>
       </div>
       {step.intro && (
         <p className="mt-3 text-[15px] leading-relaxed text-muted">{step.intro}</p>
@@ -533,7 +533,7 @@ function StepScreen({
         <button
           type="button"
           onClick={onBack}
-          className="font-mono text-xs uppercase tracking-widest text-faint transition-colors hover:text-ink"
+          className="text-sm font-medium text-faint transition-colors hover:text-ink"
         >
           ← Back
         </button>
@@ -788,7 +788,7 @@ function OptionCard({
           </span>
           {option.badge && (
             <span
-              className="rounded-full px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest"
+              className="rounded-full px-2 py-0.5 text-xs font-medium"
               style={{ color: TEAL, backgroundColor: "rgba(22, 163, 148, 0.12)" }}
             >
               {option.badge}
@@ -895,10 +895,7 @@ function SuccessScreen({ name }: { name: string }) {
 
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em]" style={{ color: TEAL }}>
-        All set
-      </p>
-      <h2 className="display-serif text-3xl text-ink">
+      <h2 className="display text-[2rem] text-balance text-ink sm:text-4xl">
         {first ? `Thanks, ${first}.` : "Thanks — that's everything."}
       </h2>
       <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
@@ -928,7 +925,7 @@ function SuccessScreen({ name }: { name: string }) {
         ))}
       </ol>
 
-      <div className="mt-9 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest text-faint">
+      <div className="mt-9 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-faint">
         <a href="https://mlinx.studio" className="text-ink/85 transition-colors hover:text-gold">
           mlinx.studio →
         </a>
@@ -1057,7 +1054,7 @@ function FastFill({
         <button
           type="button"
           onClick={() => setState({ phase: "closed" })}
-          className="font-mono text-[10px] uppercase tracking-widest text-faint transition-colors hover:text-ink"
+          className="text-xs font-medium text-faint transition-colors hover:text-ink"
         >
           Never mind
         </button>
@@ -1125,12 +1122,12 @@ function PreviewScreen({
 
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
-      <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
+      <p className="mb-3 text-xs font-medium text-gold">
         First look
-        <span className="ml-2 normal-case tracking-normal text-faint">· about a minute</span>
+        <span className="ml-2 font-normal text-faint">· about a minute</span>
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
-        <h2 className="display-serif text-2xl text-ink sm:text-3xl">
+        <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
           Your first look is building now.
         </h2>
       </div>
@@ -1163,7 +1160,7 @@ function PreviewScreen({
           <button
             type="button"
             onClick={onRetry}
-            className="mt-2 font-mono text-[10px] uppercase tracking-widest text-gold transition-opacity hover:opacity-75"
+            className="mt-2 text-xs font-medium text-gold transition-opacity hover:opacity-75"
           >
             Try again →
           </button>
@@ -1191,7 +1188,7 @@ function PreviewScreen({
                     <button
                       type="button"
                       onClick={() => setExpanded(isOpen ? null : c.key)}
-                      className="rounded-full border border-line px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-widest text-muted transition-colors hover:text-ink"
+                      className="rounded-full border border-line px-3.5 py-1.5 text-xs font-medium text-muted transition-colors hover:text-ink"
                     >
                       {isOpen ? "Collapse" : "Expand"}
                     </button>
@@ -1199,7 +1196,7 @@ function PreviewScreen({
                       type="button"
                       onClick={() => onChoose(selected ? "" : c.title)}
                       aria-pressed={selected}
-                      className={`rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-widest transition-colors ${
+                      className={`rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
                         selected
                           ? "bg-gold text-[#0b1722]"
                           : "border border-gold/40 text-gold hover:bg-gold/10"
@@ -1228,7 +1225,7 @@ function PreviewScreen({
         <button
           type="button"
           onClick={onBack}
-          className="font-mono text-xs uppercase tracking-widest text-faint transition-colors hover:text-ink"
+          className="text-sm font-medium text-faint transition-colors hover:text-ink"
         >
           ← Back
         </button>

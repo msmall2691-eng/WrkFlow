@@ -72,7 +72,7 @@ export default function SaveResult({
           Download .txt
         </button>
         <ToolEmailCapture tool={tool} toolLabel={toolLabel} summary={stamped} />
-        <span className="font-mono text-[10px] uppercase tracking-widest text-faint">
+        <span className="text-xs text-faint">
           Saved automatically
         </span>
       </div>

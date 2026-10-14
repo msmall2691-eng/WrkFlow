@@ -26,16 +26,16 @@ export default function Lab() {
         {/* Top: brand + readout */}
         <div className="flex items-start justify-between gap-4">
           <div className="rounded-2xl border border-white/15 bg-black/30 px-5 py-4 backdrop-blur-md">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/60">
+            <p className="text-xs text-white/60">
               M Studio · Lab
             </p>
-            <h1 className="mt-2 font-mono text-lg font-semibold uppercase tracking-[0.22em]">
+            <h1 className="display mt-2 text-2xl">
               Liquid Chrome
             </h1>
           </div>
 
           <div className="hidden rounded-2xl border border-white/15 bg-black/30 px-5 py-4 text-right backdrop-blur-md sm:block">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/60">
+            <p className="text-xs text-white/60">
               Interactive shader wallpaper
             </p>
             <p className="mt-2 max-w-xs text-sm text-white/80">
@@ -47,7 +47,7 @@ export default function Lab() {
 
         {/* Center hint */}
         <div className="pointer-events-none mx-auto max-w-md text-center">
-          <p className="rounded-full border border-white/15 bg-black/30 px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.25em] text-white/80 backdrop-blur-md">
+          <p className="rounded-full border border-white/15 bg-black/30 px-5 py-2.5 text-xs text-white/80 backdrop-blur-md">
             Move · Click · Fidget
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function Lab() {
                   key={p.id}
                   type="button"
                   onClick={() => setPalette(p.id)}
-                  className={`rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors ${
+                  className={`rounded-full px-4 py-2 text-xs font-medium transition-colors ${
                     active
                       ? "bg-white text-black"
                       : "text-white/70 hover:text-white"
@@ -77,7 +77,7 @@ export default function Lab() {
 
           {/* Intensity slider */}
           <div className="flex items-center gap-3 self-start rounded-full border border-white/15 bg-black/30 px-5 py-3 backdrop-blur-md md:self-end">
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/60">
+            <span className="text-xs text-white/60">
               Flow
             </span>
             <input

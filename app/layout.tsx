@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces, Caveat } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
-import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
-import ConsoleGreeting from "@/components/ConsoleGreeting";
-import KonamiEgg from "@/components/KonamiEgg";
 import RegisterSW from "@/components/RegisterSW";
 import { Analytics } from "@vercel/analytics/next";
 import { getFog } from "@/lib/fog";
@@ -16,14 +13,18 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-// Editorial serif — used to give the Services section its own distinct voice.
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
-  display: "swap",
-  axes: ["SOFT", "opsz"],
-});
+/*
+  Two families, plus mono for genuine data.
 
+  This loaded five: Space Grotesk, Inter, JetBrains Mono, Fraunces and
+  Caveat. Fraunces was an editorial serif carrying 20 headings and some
+  centered body copy; Caveat drew exactly one signature. Between them they
+  were the reason every page felt busy, and Fraunces' variable axes made it
+  the heaviest payload of the five. Space Grotesk already does the "built by
+  someone who ships" job better than a serif can, so it does all of it now.
+  JetBrains Mono stays for numeric readouts, time axes and keyboard keys —
+  never for labels.
+*/
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -33,13 +34,6 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
-// Handwritten face — used sparingly for the founder-note "— Meg" signature.
-const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-caveat",
   display: "swap",
 });
 
@@ -195,7 +189,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-fog={fog ? "1" : undefined}
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable} ${caveat.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body>
         {/*
@@ -234,11 +228,15 @@ export default async function RootLayout({
         <noscript>
           <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
         </noscript>
-        <ScrollProgress />
+        {/*
+          Gone from here: ScrollProgress (a fixed bar that re-rendered React
+          on every scroll event, site-wide, to report what the browser's own
+          scrollbar already says), KonamiEgg (a keydown listener always live
+          on every page for an easter egg no buyer will ever find) and
+          ConsoleGreeting (a client-component boundary for a console.log).
+        */}
         {children}
         <BackToTop />
-        <ConsoleGreeting />
-        <KonamiEgg />
         <RegisterSW />
         <Analytics />
       </body>

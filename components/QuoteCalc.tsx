@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Reveal from "./Reveal";
 import { Label, Slider, Seg, Toggle } from "./KitUI";
 import { requestOffer } from "@/lib/offer";
 import SaveResult from "./SaveResult";
@@ -154,8 +153,7 @@ export default function QuoteCalc() {
   return (
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
       {/* Controls — left: adjust the job */}
-      <Reveal>
-        <div className="rounded-2xl border border-line bg-surface p-6">
+              <div className="rounded-2xl border border-line bg-surface p-6">
           <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">The job</p>
           <div className="space-y-5">
             <Seg
@@ -197,11 +195,9 @@ export default function QuoteCalc() {
             </div>
           </div>
         </div>
-      </Reveal>
 
       {/* Result — right: the live price */}
-      <Reveal delay={80}>
-        <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:sticky md:top-24">
+              <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:sticky md:top-24">
           <div className="rounded-2xl border border-line bg-elevated p-7 text-ink shadow-[0_18px_50px_-16px_rgba(11,23,34,0.25)]">
             <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-faint">Estimated price</p>
             <p className="mt-2 font-display text-4xl tracking-tight">
@@ -232,7 +228,6 @@ export default function QuoteCalc() {
             <SaveResult summary={summary} filename="instant-quote" tool="quote" toolLabel="Instant quote" />
           </div>
         </div>
-      </Reveal>
     </div>
   );
 }

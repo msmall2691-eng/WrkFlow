@@ -4,7 +4,7 @@
 
 export function Label({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-2 font-mono text-[10px] uppercase tracking-widest text-faint">
+    <p className="mb-2 text-xs font-medium text-faint">
       {children}
     </p>
   );
@@ -29,7 +29,7 @@ export function Slider({
   return (
     <div>
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-faint">{label}</span>
+        <span className="text-xs font-medium text-faint">{label}</span>
         <span className="font-mono text-[11px] text-muted">{value}{suffix}</span>
       </div>
       <div className="flex items-center gap-2">

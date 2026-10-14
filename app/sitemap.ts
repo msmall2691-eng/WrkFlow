@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { caseStudies } from "@/lib/content";
 
 const SITE_URL = "https://mlinx.studio";
 
@@ -17,6 +18,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.6,
     },
+    /* Case studies — the deepest proof pages on the site, so they outrank
+       the utility pages. Driven by lib/content.ts, so a new study ships with
+       its sitemap entry. `as const` is required: a mapped string widens and
+       fails MetadataRoute.Sitemap. */
+    ...caseStudies.map((cs) => ({
+      url: `${SITE_URL}/work/${cs.slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: `${SITE_URL}/tools`,
       lastModified: now,

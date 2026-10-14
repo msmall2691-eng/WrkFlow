@@ -1,126 +1,147 @@
 import Image from "next/image";
+import Link from "next/link";
 import { work, type WorkItem } from "@/lib/content";
 import Reveal from "./Reveal";
 
-const domain = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-
 /*
-  Work — six real screenshots, big.
+  Work — the proof, and now a way into it.
 
-  This section used to open with a live-iframe rail (two sites embedded and
-  auto-scrolling) and then drop into a three-column grid of small cards, each
-  wearing fake browser chrome, a tilt-on-hover effect, a metric chip and a
-  three-row definition list of stack / replaced / status. The screenshots —
-  the only actual evidence on the page — were the smallest thing in it.
+  The cards used to link straight out to the live site, which meant the best
+  thing on the page sent people away from it. The three projects that have a
+  case study now link INWARD to /work/[slug]; the "visit live site" link
+  lives on that page. One card, one destination.
 
-  Now it is one grid, two columns, and the image is the card. The first item
-  runs full width because it is the flagship and it earns the room. Everything
-  that was competing with the pictures is gone: no iframes, no chrome, no tilt,
-  no metric chips, no spec table. What a buyer needs from this section is
-  "these are real and they shipped", and a large screenshot says that faster
-  than a caption can.
+  The caption had to change with it. A card linking to /work/maine-cleaning-co
+  while printing "maineclean.co" underneath is the chrome lying about where
+  the click goes, which is the thing lib/content.ts `displayDomain` exists to
+  forbid.
 
-  The stack/replaced/status detail did not move to another page; it is cut. It
-  was written for a reader who had already decided, and that reader is on
-  /about reading the approach.
+  The three private systems keep their old behaviour — no link, screenshot
+  only — but sit in a smaller second row. They are real production software
+  and worth showing; they are just not the first click.
+
+  `Reveal` survives here and on the marketplace cards only. It was on 83
+  elements across 18 files, which is the generic template default and reads
+  as one. These cards are the one place on the page where content arriving as
+  you reach it is the point.
 */
 
-/* One line of proof under the heading, folded in from the old founder band. */
-const PROOF = "The Maine Cleaning Co. · 10 yrs · 1,000+ customers · 7,000+ service visits · $1M+ managed";
-
 export default function Deployments() {
-  const items = work.filter((w) => w.shot);
+  const featured = work.filter((w) => w.shot && w.caseStudy);
+  const alsoRunning = work.filter((w) => w.shot && !w.caseStudy);
 
   return (
     <section id="work" className="relative border-t border-line py-20 md:py-28">
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-2xl">
-          <Reveal>
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              Work
-            </p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Built and shipped.
-            </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
-              {PROOF}
-            </p>
-          </Reveal>
+          <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+            Built and shipped.
+          </h2>
+          {/* The proof numbers that used to be hand-copied into a mono
+              micro-label here now render from `provingGround` in ProofStrip,
+              one section up. Repeating them two sections apart is the kind of
+              thing a visitor notices. */}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {items.map((w, i) => (
-            /* The span lives on Reveal, not on Card: Reveal renders the
-               element that is actually the grid item, so a col-span on the
-               card inside it does nothing. */
-            <Reveal
-              key={w.title}
-              delay={Math.min(i, 3) * 60}
-              className={i === 0 ? "md:col-span-2" : ""}
-            >
-              <Card w={w} feature={i === 0} />
+        <div className="grid gap-8">
+          {featured.map((w, i) => (
+            <Reveal key={w.title} delay={Math.min(i, 3) * 60}>
+              <FeatureCard w={w} />
             </Reveal>
           ))}
         </div>
+
+        {alsoRunning.length > 0 && (
+          <>
+            <h3 className="mt-16 text-sm font-semibold text-ink">
+              Also running in production
+            </h3>
+            <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {alsoRunning.map((w) => (
+                <article
+                  key={w.title}
+                  className="overflow-hidden rounded-2xl border border-line bg-surface"
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden bg-base">
+                    <Image
+                      src={w.shot as string}
+                      alt={`${w.title} — ${w.blurb}`}
+                      fill
+                      sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+                      className="object-cover object-top"
+                    />
+                    <span className="absolute right-3 top-3 rounded-full border border-line bg-surface/90 px-2.5 py-1 text-xs text-faint backdrop-blur">
+                      In production
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <h4 className="display text-lg text-ink">{w.title}</h4>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">
+                      {w.blurb}
+                    </p>
+                    {w.replaced && (
+                      <p className="mt-2.5 text-xs text-faint">
+                        {/* The `replaced` values are written as standalone
+                            phrases ("A shared Google Calendar and text
+                            threads"), so they need lowering to read as a
+                            clause here. */}
+                        Replaced{" "}
+                        {w.replaced.charAt(0).toLowerCase() + w.replaced.slice(1)}
+                      </p>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
 }
 
-function Card({ w, feature }: { w: WorkItem; feature?: boolean }) {
-  const live = !!w.url;
-  const Wrapper = live ? "a" : "div";
-
+function FeatureCard({ w }: { w: WorkItem }) {
   return (
-    <Wrapper
-      {...(live
-        ? { href: w.url, target: "_blank", rel: "noopener noreferrer" }
-        : {})}
-      className={`group block overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-500 ${
-        live ? "hover:-translate-y-1 hover:border-signal/50 hover:shadow-[0_24px_60px_-34px_rgba(11,23,34,0.35)]" : ""
-      }`}
+    <Link
+      href={`/work/${w.caseStudy}`}
+      className="group grid overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-500 hover:-translate-y-1 hover:border-signal/50 hover:shadow-[0_24px_60px_-34px_rgba(11,23,34,0.35)] lg:grid-cols-2"
     >
-      <div className={`relative overflow-hidden bg-base ${feature ? "aspect-[2/1]" : "aspect-[16/10]"}`}>
+      <div className="relative aspect-[16/10] overflow-hidden bg-base lg:aspect-auto lg:min-h-[320px]">
         <Image
           src={w.shot as string}
-          alt={`${w.title} — screenshot`}
+          alt={`${w.title} — ${w.blurb}`}
           fill
-          /* The feature card is full-bleed across a 1152px container; the rest
-             are half of it. Getting these wrong is what makes a big screenshot
-             look soft, which would defeat the point of enlarging them. */
-          sizes={feature ? "(min-width: 1152px) 1104px, 100vw" : "(min-width: 768px) 540px, 100vw"}
-          priority={feature}
-          className="object-cover object-top transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
+          sizes="(min-width: 1024px) 576px, 100vw"
+          className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
         />
-        {w.tier === "private" && (
-          <span className="absolute right-3 top-3 rounded-full border border-line bg-surface/90 px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest text-faint backdrop-blur">
-            In production
-          </span>
-        )}
       </div>
 
-      <div className="flex items-baseline justify-between gap-4 p-5">
-        <div className="min-w-0">
-          <h3 className="display-serif text-[1.05rem] text-ink">{w.title}</h3>
-          <p className="mt-2 text-sm leading-relaxed text-muted">{w.blurb}</p>
-          <p className="mt-1 truncate font-mono text-[10px] uppercase tracking-widest text-faint">
-            {live ? domain(w.url as string) : w.tag}
-          </p>
-        </div>
-        {live && (
+      <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
+        <p className="text-xs text-faint">{w.tag}</p>
+        <h3 className="display text-xl text-ink md:text-2xl">{w.title}</h3>
+        <p className="text-sm leading-relaxed text-muted">{w.blurb}</p>
+        {w.stack && (
+          <div className="mt-1 flex flex-wrap gap-1.5">
+            {w.stack.map((t) => (
+              <span
+                key={t}
+                className="rounded-full border border-line bg-base px-2.5 py-1 text-xs text-faint"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
+        <span className="mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-signal">
+          Read the case study
           <span
             aria-hidden="true"
-            className="shrink-0 text-sm font-semibold text-signal transition-transform group-hover:translate-x-0.5"
+            className="transition-transform group-hover:translate-x-0.5"
           >
             →
           </span>
-        )}
+        </span>
       </div>
-    </Wrapper>
+    </Link>
   );
 }
-

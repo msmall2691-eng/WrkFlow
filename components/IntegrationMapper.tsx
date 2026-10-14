@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import Reveal from "./Reveal";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 
@@ -98,8 +97,7 @@ export default function IntegrationMapper() {
   return (
     <div className="rounded-2xl border border-line bg-surface p-6 md:p-8">
       {/* Tool picker */}
-      <Reveal>
-        <p className="mb-3 font-mono text-[11px] uppercase tracking-widest text-faint">
+              <p className="mb-3 text-sm text-muted">
           Which of these do you use?
         </p>
         <div className="flex flex-wrap gap-2">
@@ -123,12 +121,10 @@ export default function IntegrationMapper() {
             );
           })}
         </div>
-      </Reveal>
 
       <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-center">
         {/* The map */}
-        <Reveal>
-          <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_40%,var(--color-elevated)_0%,var(--color-base)_75%)] p-4">
+                  <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_40%,var(--color-elevated)_0%,var(--color-base)_75%)] p-4">
             <svg
               viewBox={`0 0 ${size} ${size}`}
               className="mx-auto block h-auto w-full max-w-[360px]"
@@ -177,12 +173,10 @@ export default function IntegrationMapper() {
               )}
             </svg>
           </div>
-        </Reveal>
 
         {/* Resulting automations */}
-        <Reveal delay={80}>
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-widest text-signal">
+                  <div>
+            <p className="text-sm font-medium text-signal">
               What becomes possible
               {automations.length > 0 && (
                 <span className="text-faint"> · {automations.length}</span>
@@ -206,7 +200,6 @@ export default function IntegrationMapper() {
 
             <SaveResult summary={summary} filename="mstudio-integration-map" tool="workflow-map" toolLabel="Workflow map" />
           </div>
-        </Reveal>
       </div>
     </div>
   );

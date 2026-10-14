@@ -44,7 +44,7 @@ export default function UTMBuilder() {
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
       {/* Result */}
       <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-6 md:order-2 md:sticky md:top-24">
-        <p className="mb-3 font-mono text-[11px] uppercase tracking-widest text-faint">Tracked link</p>
+        <p className="mb-3 text-sm font-semibold text-ink">Tracked link</p>
         <div className="break-all rounded-xl border border-line bg-[#0e1c28] p-4 text-sm text-[#6fd3c6]">
           {built}
         </div>
@@ -55,7 +55,7 @@ export default function UTMBuilder() {
         >
           {copied ? "Copied ✓" : "Copy link"}
         </button>
-        <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-widest text-faint">
+        <p className="mt-3 text-center text-xs text-faint">
           Paste into emails, ads, or bios to see what works
         </p>
       </div>

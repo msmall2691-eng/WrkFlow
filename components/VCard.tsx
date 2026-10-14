@@ -85,14 +85,14 @@ export default function VCard() {
         >
           Download contact card (.vcf)
         </button>
-        <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-widest text-faint">
+        <p className="mt-3 text-center text-xs text-faint">
           Scan the QR to save — works in any signature or on a card
         </p>
       </div>
 
       {/* Controls */}
       <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
-        <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">Your details</p>
+        <p className="mb-5 text-sm font-semibold text-ink">Your details</p>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Name" value={name} onChange={setName} />
           <Field label="Title" value={title} onChange={setTitle} />

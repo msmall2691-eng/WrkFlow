@@ -4,6 +4,7 @@ import CopyLink from "./CopyLink";
 import LinxMark from "./LinxMark";
 import SelfScore from "./SelfScore";
 import MoonPhase from "./MoonPhase";
+import MaineReadout from "./MaineReadout";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -29,21 +30,20 @@ export default function Footer() {
               and tools built around your business. Based in Maine, working
               with clients anywhere.
             </p>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
-              Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere
+            <p className="mt-4 text-xs text-faint">
+              Custom software and web design &middot; Southern Maine &middot; clients anywhere
             </p>
             <SelfScore />
-            <p className="mt-4 flex items-center gap-2 text-[11px] leading-relaxed text-faint">
-              <MoonPhase size={14} className="inline-block shrink-0 align-[-2px]" />
-              <span>This site runs on live Maine data — daylight, weather &amp; tide.</span>
-            </p>
+            {/* Was a sentence asserting the site runs on live Maine data,
+                which asserted it without showing it. Now that the hero no
+                longer carries the readout panel, this is the signature: the
+                real feed, on one line, rendering nothing when it is down. */}
+            <MaineReadout className="mt-4 text-faint" />
           </div>
 
           <div className="flex gap-10 sm:gap-16">
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-widest text-faint">
-                Studio
-              </p>
+              <p className="text-sm font-semibold text-ink">Studio</p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <a href="/#services" className="text-muted transition-colors hover:text-ink">
@@ -75,9 +75,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="font-mono text-[11px] uppercase tracking-widest text-faint">
-                Connect
-              </p>
+              <p className="text-sm font-semibold text-ink">Connect</p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
                   <CopyLink href="mailto:contact@mlinx.studio" value="contact@mlinx.studio" label="email" />
@@ -95,7 +93,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-line pt-6 font-mono text-[11px] uppercase tracking-widest text-faint sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© {year} M Studio</span>
           <div className="flex items-center gap-5">
             <a href="/privacy" className="transition-colors hover:text-ink">
@@ -105,10 +103,16 @@ export default function Footer() {
               Terms
             </a>
           </div>
-          {/* text-faint/80 landed at 3.53:1 on cream once Daylight actually
-              shipped. The build stamp is small print, not decoration. */}
-          <span className="tracking-normal text-faint [text-transform:none]">
-            {sha ? `deployed ${built} · ${ref}@${sha}` : `built ${built} · live on Vercel`}
+          {/* The deploy stamp used to print `deployed <date> · main@<sha>` on
+              every public page. A git ref and a commit hash are internal
+              plumbing; nobody deciding whether to hire a developer needs
+              them, and they date the site the moment a deploy goes quiet.
+              Kept in the DOM as a comment for debugging a live deploy. */}
+          <span
+            className="text-faint"
+            title={sha ? `${ref}@${sha}` : undefined}
+          >
+            Built {built}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <MoonPhase size={12} className="align-[-2px]" />

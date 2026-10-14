@@ -2,16 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Logo from "./Logo";
-import Magnetic from "./Magnetic";
 
+/* Mirrors the homepage order, and leads with Work for the same reason the
+   page does. "Intake" came out: it is the Contact panel's own CTA, and seven
+   links is more than a nav can carry at 1440px without turning into a list. */
 const links = [
-  { href: "/#services", label: "Services" },
   { href: "/#work", label: "Work" },
-  { href: "/tools", label: "Tools" },
+  { href: "/#services", label: "Services" },
   { href: "/#pricing", label: "Pricing" },
-  { href: "/about", label: "About" },
+  { href: "/tools", label: "Tools" },
   { href: "/marketplace", label: "M Linx" },
-  { href: "/intake", label: "Intake" },
+  { href: "/about", label: "About" },
 ];
 
 export default function Nav() {
@@ -44,7 +45,7 @@ export default function Nav() {
             <a
               key={link.href}
               href={link.href}
-              className={`font-mono text-xs uppercase tracking-widest transition-colors ${
+              className={`text-sm font-medium transition-colors ${
                 scrolled ? "text-muted hover:text-ink" : "text-[color:var(--nav-hero-ink)] hover:text-[color:var(--nav-hero-ink2)]"
               }`}
             >
@@ -54,50 +55,20 @@ export default function Nav() {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Search: opens the ⌘K command palette (desktop shows a fake input,
-              mobile shows a compact icon button). */}
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
-            aria-label="Open command menu"
-            className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1.5 font-mono text-[11px] transition-all active:scale-[0.96] md:inline-flex ${
+          {/* The two ⌘K buttons lived here — a fake search input on
+              desktop and an icon button on mobile — to advertise a shortcut
+              that is not what anyone came to this site to use. The palette
+              and its real ⌘K / Ctrl-K hotkey are untouched. */}
+          <a
+            href="/#contact"
+            className={`hidden rounded-full border px-4 py-2 text-sm font-semibold transition-all active:scale-[0.96] sm:inline-block ${
               scrolled
-                ? "border-line bg-surface/80 text-muted hover:text-ink"
-                : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink)] hover:border-[color:var(--nav-hero-line2)] hover:text-[color:var(--nav-hero-ink2)]"
+                ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
+                : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink2)] hover:bg-[color:var(--nav-hero-line)]/40"
             }`}
           >
-            <span aria-hidden="true">⌕</span>
-            <kbd
-              className={`rounded border px-1.5 text-[10px] tracking-normal ${
-                scrolled ? "border-line bg-base text-faint" : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink)]"
-              }`}
-            >
-              ⌘K
-            </kbd>
-          </button>
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new Event("cmdk:open"))}
-            aria-label="Open search"
-            className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-all active:scale-[0.94] md:hidden ${
-              solid ? "border-line text-ink" : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink2)]"
-            }`}
-          >
-            <span aria-hidden="true">⌕</span>
-          </button>
-
-          <Magnetic strength={0.4} className="hidden sm:inline-block">
-            <a
-              href="/#contact"
-              className={`inline-block rounded-full border px-4 py-2 font-mono text-xs uppercase tracking-widest transition-all active:scale-[0.96] ${
-                scrolled
-                  ? "border-signal/40 bg-signal/10 text-signal hover:bg-signal/20"
-                  : "border-[color:var(--nav-hero-line)] text-[color:var(--nav-hero-ink2)] hover:bg-[color:var(--nav-hero-line)]/40"
-              }`}
-            >
-              Start
-            </a>
-          </Magnetic>
+            Start
+          </a>
 
           {/* Mobile menu toggle */}
           <button
@@ -129,7 +100,7 @@ export default function Nav() {
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
                   style={{ animationDelay: `${i * 60}ms` }}
-                  className="animate-menu-item border-b border-line/60 py-3 font-mono text-sm uppercase tracking-widest text-muted opacity-0 transition-colors hover:text-ink active:text-signal"
+                  className="animate-menu-item border-b border-line/60 py-3 text-base font-medium text-muted opacity-0 transition-colors hover:text-ink active:text-signal"
                 >
                   {link.label}
                 </a>

@@ -41,7 +41,7 @@ export default function StartPage() {
         </a>
         <a
           href="https://mlinx.studio"
-          className="font-mono text-[11px] uppercase tracking-widest text-faint transition-colors hover:text-ink"
+          className="font-mono text-xs text-faint transition-colors hover:text-ink"
         >
           mlinx.studio
         </a>
@@ -57,7 +57,7 @@ export default function StartPage() {
         <div className="border-t border-line pt-6 opacity-70">
           {/* One quiet line — proof, not a pitch. */}
           <MaineReadout className="text-faint" />
-          <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
+          <p className="mt-4 text-xs text-faint">
             © {new Date().getFullYear()} M Studio · <a href="https://mlinx.studio" className="transition-colors hover:text-ink">mlinx.studio</a> · Built on the Maine coast
           </p>
         </div>

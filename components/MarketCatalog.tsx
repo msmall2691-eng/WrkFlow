@@ -78,24 +78,24 @@ function ProductCard({
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-elevated)_0%,var(--color-base)_75%)]">
-            <span className="display-serif text-2xl text-muted">{item.category}</span>
+            <span className="display text-2xl text-muted">{item.category}</span>
           </div>
         )}
         <span className="absolute left-3 top-3 z-10 font-mono text-[11px] text-white/70">
           {String(n).padStart(2, "0")}
         </span>
         <span
-          className={`absolute right-3 top-3 rounded-full border px-2.5 py-1 font-mono text-[9px] uppercase tracking-widest backdrop-blur ${modelBadge[item.model]}`}
+          className={`absolute right-3 top-3 rounded-full border px-2.5 py-1 text-xs font-medium backdrop-blur ${modelBadge[item.model]}`}
         >
           {marketModelLabels[item.model]}
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-faint">
+        <span className="text-xs text-faint">
           {item.category}
         </span>
-        <h3 className="display-serif mt-2 flex items-center gap-2 text-xl text-ink">
+        <h3 className="display mt-2 flex items-center gap-2 text-lg text-ink md:text-xl">
           <LinxMark className="h-3 w-auto shrink-0" />
           {item.name}
         </h3>
@@ -188,7 +188,7 @@ function LiveThumb({ url, title }: { url: string; title: string }) {
           Loading live preview…
         </div>
       )}
-      <span className="absolute bottom-2 left-2 z-10 inline-flex items-center gap-1.5 rounded-full bg-base/70 px-2 py-0.5 font-mono text-[9px] uppercase tracking-widest text-signal backdrop-blur">
+      <span className="absolute bottom-2 left-2 z-10 inline-flex items-center gap-1.5 rounded-full bg-base/70 px-2 py-0.5 text-xs font-medium text-signal backdrop-blur">
         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal motion-reduce:animate-none" />
         Live preview
       </span>
@@ -246,10 +246,10 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
       <div className="relative my-auto max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl border border-line bg-base shadow-2xl">
         <div className="flex items-start justify-between gap-4 border-b border-line p-6">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
+            <p className="text-xs font-medium text-signal">
               {marketModelLabels[item.model]} · {item.price}
             </p>
-            <h3 className="display-serif mt-1 text-xl text-ink">{item.name}</h3>
+            <h3 className="display mt-1 text-lg text-ink md:text-xl">{item.name}</h3>
           </div>
           <button
             type="button"

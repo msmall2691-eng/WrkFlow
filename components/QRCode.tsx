@@ -66,7 +66,7 @@ export default function QRMaker() {
         >
           Download PNG
         </a>
-        <p className="mt-3 text-center font-mono text-[10px] uppercase tracking-widest text-faint">
+        <p className="mt-3 text-center text-xs text-faint">
           {mode === "wifi" ? "Guests scan to join your WiFi" : "Scans on any phone camera"}
         </p>
         {dataUrl && (

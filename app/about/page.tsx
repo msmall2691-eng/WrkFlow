@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import AccentSwitcher from "@/components/AccentSwitcher";
 import FounderNote from "@/components/FounderNote";
 import Approach from "@/components/Approach";
 import Stack from "@/components/Stack";
@@ -37,7 +36,10 @@ export default function AboutPage() {
         <Stack />
       </main>
       <Footer />
-      <AccentSwitcher />
+        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+            every page and on a phone sat on top of the cards. The theme
+            toggle is now a command in the ⌘K palette (lib/theme.ts), so
+            nobody who picked Harbor is stranded in it. */}
       <CommandPalette />
     </>
   );
