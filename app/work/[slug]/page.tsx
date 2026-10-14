@@ -216,13 +216,13 @@ export default async function CaseStudyPage({ params }: Props) {
               Tell me what you are trying to solve. You don&apos;t need a
               technical plan to get started.
             </p>
-            <a
+            <Link
               href="/?offer=custom#contact"
               className="mt-8 inline-flex items-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
             >
               Start a project
               <span aria-hidden="true">→</span>
-            </a>
+            </Link>
           </div>
         </section>
       </main>

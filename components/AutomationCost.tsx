@@ -1,5 +1,6 @@
 "use client";
 import { Label, Slider } from "./KitUI";
+import Link from "next/link";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 
@@ -93,12 +94,12 @@ export default function AutomationCost() {
               {money(rate)}/hr, with {automatable}% of it automatable.
             </p>
 
-            <a
+            <Link
               href="/#contact"
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
             >
               Let&apos;s recover this →
-            </a>
+            </Link>
 
             <SaveResult summary={summary} filename="mstudio-automation-cost" tool="cost" toolLabel="Cost of busywork" />
           </div>

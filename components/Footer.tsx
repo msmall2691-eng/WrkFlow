@@ -1,4 +1,5 @@
 import Logo from "./Logo";
+import Link from "next/link";
 import FooterWordmark from "./FooterWordmark";
 import CopyLink from "./CopyLink";
 import LinxMark from "./LinxMark";
@@ -45,30 +46,30 @@ export default function Footer() {
               <p className="text-sm font-semibold text-ink">Studio</p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <a href="/#services" className="text-muted transition-colors hover:text-ink">
+                  <Link href="/#services" className="text-muted transition-colors hover:text-ink">
                     Services
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/marketplace" className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink">
+                  <Link href="/marketplace" className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink">
                     <LinxMark className="h-2.5 w-auto" />
                     M Linx marketplace
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/about#approach" className="text-muted transition-colors hover:text-ink">
+                  <Link href="/about#approach" className="text-muted transition-colors hover:text-ink">
                     Approach
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/#work" className="text-muted transition-colors hover:text-ink">
+                  <Link href="/#work" className="text-muted transition-colors hover:text-ink">
                     Work
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/intake" className="text-muted transition-colors hover:text-ink">
+                  <Link href="/intake" className="text-muted transition-colors hover:text-ink">
                     Project questionnaire
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -83,9 +84,9 @@ export default function Footer() {
                   <CopyLink href="tel:+12074329492" value="(207) 432-9492" label="phone number" />
                 </li>
                 <li>
-                  <a href="/#contact" className="text-signal transition-opacity hover:opacity-80">
+                  <Link href="/#contact" className="text-signal transition-opacity hover:opacity-80">
                     Start a conversation
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -95,12 +96,12 @@ export default function Footer() {
         <div className="mt-12 flex flex-col gap-4 border-t border-line pt-6 text-xs text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© {year} M Studio</span>
           <div className="flex items-center gap-5">
-            <a href="/privacy" className="transition-colors hover:text-ink">
+            <Link href="/privacy" className="transition-colors hover:text-ink">
               Privacy
-            </a>
-            <a href="/terms" className="transition-colors hover:text-ink">
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-ink">
               Terms
-            </a>
+            </Link>
           </div>
           {/* The deploy stamp used to print `deployed <date> · main@<sha>` on
               every public page. A git ref and a commit hash are internal

@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   questionnaireSteps,
-  questionnaireFields,
   type Answers,
   type QuestionField,
   type CardOption,

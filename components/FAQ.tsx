@@ -64,8 +64,8 @@ export default function FAQ() {
         <h3 className="display mb-5 text-xl text-ink">Common questions</h3>
 
         <div className="divide-y divide-line rounded-2xl border border-line bg-surface/40">
-          {QUESTIONS.map((item, i) => (
-                          <details className="group">
+          {QUESTIONS.map((item) => (
+            <details key={item.q} className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-[1rem] font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
                   <span>{item.q}</span>
                   <span

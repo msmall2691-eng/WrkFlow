@@ -131,7 +131,7 @@ export default function WelcomeBookPage() {
                 </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {wb.includes.map((inc, i) => (
+              {wb.includes.map((inc) => (
                 <div key={inc} className="flex h-full items-start gap-3 rounded-xl border border-line bg-surface p-5">
                     <span
                       aria-hidden="true"
@@ -155,7 +155,7 @@ export default function WelcomeBookPage() {
                 </h2>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
-              {wb.steps.map((step, i) => (
+              {wb.steps.map((step) => (
                 <div key={step.n} className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6">
                     <span className="font-mono text-sm text-signal">{step.n}</span>
                     <h3 className="display mt-3 text-lg text-ink md:text-xl">{step.title}</h3>
@@ -175,7 +175,7 @@ export default function WelcomeBookPage() {
                 </h2>
             </div>
             <div className="divide-y divide-line rounded-2xl border border-line bg-surface/40">
-              {wb.faqs.map((item, i) => (
+              {wb.faqs.map((item) => (
                 <details key={item.q} className="group">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-[1rem] font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
                       <span>{item.q}</span>

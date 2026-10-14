@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Logo from "./Logo";
 
 /* Mirrors the homepage order, and leads with Work for the same reason the
@@ -36,9 +37,9 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="/#top" aria-label="M Studio — back to top" onClick={() => setMenuOpen(false)}>
+        <Link href="/#top" aria-label="M Studio — back to top" onClick={() => setMenuOpen(false)}>
           <Logo tone={solid ? "dark" : "light"} />
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
@@ -59,7 +60,7 @@ export default function Nav() {
               desktop and an icon button on mobile — to advertise a shortcut
               that is not what anyone came to this site to use. The palette
               and its real ⌘K / Ctrl-K hotkey are untouched. */}
-          <a
+          <Link
             href="/#contact"
             className={`hidden rounded-full border px-4 py-2 text-sm font-semibold transition-all active:scale-[0.96] sm:inline-block ${
               scrolled
@@ -68,7 +69,7 @@ export default function Nav() {
             }`}
           >
             Start
-          </a>
+          </Link>
 
           {/* Mobile menu toggle */}
           <button
@@ -105,14 +106,14 @@ export default function Nav() {
                   {link.label}
                 </a>
               ))}
-              <a
+              <Link
                 href="/#contact"
                 onClick={() => setMenuOpen(false)}
                 style={{ animationDelay: `${links.length * 60}ms` }}
                 className="animate-menu-item mt-4 inline-flex items-center justify-center rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white opacity-0 transition-transform active:scale-[0.97]"
               >
                 Start a conversation →
-              </a>
+              </Link>
             </div>
           </div>
         </div>

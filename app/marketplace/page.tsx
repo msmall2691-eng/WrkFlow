@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -96,12 +97,12 @@ export default function MarketplacePage() {
                 you&apos;ll get pointed to the closest starter—or the right thing
                 built from scratch.
               </p>
-                          <a
+                          <Link
                 href="/#contact"
                 className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
               >
                 Start a conversation →
-              </a>
+              </Link>
           </div>
         </section>
       </main>

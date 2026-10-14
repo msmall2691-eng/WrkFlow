@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { trackTool, trackLead } from "@/lib/track";
 
 /*
@@ -61,9 +62,9 @@ export default function ToolEmailCapture({
     return (
       <p className={`text-xs leading-relaxed text-signal ${className}`}>
         Sent! Want this tuned to your business?{" "}
-        <a href="/#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
+        <Link href="/#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
           →
-        </a>
+        </Link>
       </p>
     );
   }

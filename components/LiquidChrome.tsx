@@ -243,8 +243,6 @@ export default function LiquidChrome({
     const uRipples = gl.getUniformLocation(prog, "u_ripples");
     const uRippleCount = gl.getUniformLocation(prog, "u_rippleCount");
 
-    let width = 0;
-    let height = 0;
     let dpr = 1;
     let raf = 0;
     let running = true;
@@ -263,8 +261,6 @@ export default function LiquidChrome({
       const w = parent?.clientWidth ?? window.innerWidth;
       const h = parent?.clientHeight ?? window.innerHeight;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      width = w;
-      height = h;
       canvas.width = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
       canvas.style.width = `${w}px`;

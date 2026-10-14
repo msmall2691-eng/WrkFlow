@@ -22,7 +22,7 @@ export default function Stack() {
         </div>
 
         <div className="mt-7 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
-          {stackColumns.map((col, i) => (
+          {stackColumns.map((col) => (
             <div key={col.heading}>
                 <h3 className="text-sm font-semibold text-ink">
                   {col.heading}

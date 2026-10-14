@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 import {
@@ -239,7 +240,7 @@ export default function FounderNote() {
             <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-muted">
               {founderCta.body}
             </p>
-            <a
+            <Link
                 href="/#contact"
                 className="group mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
@@ -247,7 +248,7 @@ export default function FounderNote() {
                 <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
                   →
                 </span>
-              </a>
+              </Link>
           </div>
 
         {/* Quiet key down by the water it labels */}
