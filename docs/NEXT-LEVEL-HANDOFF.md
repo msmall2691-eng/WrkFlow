@@ -46,7 +46,7 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 ```
 ┌ Nav: Work · Services · Pricing · About ·  [Start a project]
 ├ HERO  left: headline + 1 line + 2 CTAs + price line
-│       right: the live Maine weather/tide/daylight panel (kept, Meg's signature)
+│       right: the live Maine weather/daylight panel (kept, Meg's signature)
 │              + one caption tying it to client work
 ├ PROOF REEL  cycling real shipped screens directly under the hero
 │              (maineclean.co → linx → Remote Admin → BrightBase dashboard)
@@ -63,15 +63,15 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 ```
 
 Tasks:
-- **2.1a Keep the live weather hero, and make it sell.** Decided by Meg: the `LiveReadout` panel and the live daylight/weather/tide theming stay in the hero. They are proof she can wire a site to live data. Add one caption under the panel in Meg's voice, e.g. "This page is reading live Maine weather, tide and daylight right now. I connect client sites to their own live data the same way: bookings, inventory, schedules." Link it to the "How this site works" section (2.1f).
-  - **Phone:** on screens under 640px, show the panel as a compact one-line strip (sky, temperature, tide) that expands on tap, so the hero plus the first real screenshot fit within about two screens instead of three.
+- **2.1a Keep the live weather hero, and make it sell.** Decided by Meg: the `LiveReadout` panel and the live daylight/weather theming stay in the hero. They are proof she can wire a site to live data. Add one caption under the panel in Meg's voice, e.g. "This page is reading live Maine weather and daylight right now. I connect client sites to their own live data the same way: bookings, inventory, schedules." Link it to the "How this site works" section (2.1f).
+  - **Phone:** on screens under 640px, show the panel as a compact one-line strip (sky, temperature, sunset) that expands on tap, so the hero plus the first real screenshot fit within about two screens instead of three.
   - Accept: at 1440px the panel and caption sit beside the headline as today; at 390px the strip is one line, tapping it opens the full panel, and the proof reel starts on the second screen.
 - **2.1a-2 Proof reel directly under the hero.** A full-width band with a framed browser and phone mockup that crossfades between 3–4 real screenshots from `public/shots/` (add new captures as needed), each with a one-line caption ("Booking site + back office for a 1,000-customer cleaning company"). Pause on hover/focus and off-screen; reduced motion shows one static frame. Match the LiveReadout card styling so it looks native.
 - **2.1b Proof strip** directly under the proof reel: the operating numbers (already in `lib/content.ts` as `provingGround`, attributed to The Maine Cleaning Co.) plus client name marks. Real only; never invent.
 - **2.1c Move Work above Services.** In `app/page.tsx`, order: Hero, Proof, Work, Try it, Services, Process, Pricing, Contact.
 - **2.1d Services section** (`components/Services.tsx`) currently leaves most of the desktop width empty (narrow accordion on the left). Rebuild as three wide rows, each with a real example screenshot on one side and 3 bullets + "See an example" link on the other. Order: Websites, Web apps, Integrations.
 - **2.1e Floating chrome:** the "DAYLIGHT" pill (`AccentSwitcher`) sits on top of cards on phones. Keep it, but move it so it never covers content (e.g. into the footer or nav on small screens). Ask Meg before removing `WorkflowSpine` or the ⌘K button.
-- **2.1f "How this site works" (new, short).** A small section (or a panel opened from the hero caption) that explains the live sky as a case study: a 4-box diagram of weather, tide and sun data → `app/api/maine` → page theme, plus two sentences on why it matters for a business ("the same pattern puts your bookings, stock levels or job statuses on your site in real time"). Uses existing components; no new styling.
+- **2.1f "How this site works" (new, short).** A small section (or a panel opened from the hero caption) that explains the live sky as a case study: a 4-box diagram of weather and sun data → `app/api/maine` → page theme (tide drives only the TideLevel graphic on /about, so leave it out of the hero claims), plus two sentences on why it matters for a business ("the same pattern puts your bookings, stock levels or job statuses on your site in real time"). Uses existing components; no new styling.
 
 ### 2.2 Case study pages (new): the biggest proof-of-work upgrade
 
@@ -131,7 +131,7 @@ Motion system rules (put these in a comment at the top of `globals.css` and foll
 - Durations: 150ms for hovers/toggles, 250–350ms for panels and reveals, 600ms max for the hero sequence. One easing curve, e.g. `cubic-bezier(.2,.7,.2,1)`.
 - Animate only `transform` and `opacity`.
 - Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state.
-- Nothing loops forever except the proof reel, and it pauses when off-screen (IntersectionObserver) and on hover/focus.
+- Only two things loop: the proof reel and the existing live sky in the hero (`DaylightSky` drift, `WeatherLayer`, `AuroraSwell`). Both pause when off-screen (IntersectionObserver) and when the tab is hidden; the proof reel also pauses on hover/focus. Under `prefers-reduced-motion: reduce` the sky shows a static frame of the current conditions. Nothing else loops.
 - Accept: on a mid-range phone, scrolling the homepage stays smooth (no long tasks over 50ms from animation code in the Performance panel).
 
 ## Phase 4: New things to build (level up)
@@ -145,7 +145,7 @@ Ranked by lead impact:
 5. **Short screen recordings** (8–15s, muted, looped, with poster image) of linx and the BrightBase dashboard in use. Real product in motion beats any CSS effect. Meg records; Claude Code adds a `<VideoShot>` component with lazy-loading, poster and reduced-motion fallback to the poster.
 6. **Testimonials block** wired to `lib/content.ts` `testimonial` (already renders nothing when empty). Meg collects 2–3 real quotes.
 
-7. **"Try it with your town."** A small input on the live hero panel: a visitor types their town or ZIP and the sky, temperature, daylight and tide (where coastal) switch to their location, with a "Back to Maine" reset. Reuse the existing weather/daylight code behind `app/api/maine`; add a geocoding lookup and cache responses. Rate-limit the endpoint. Reduced motion: switch instantly. Track `hero_town_tried`.
+7. **"Try it with your town."** A small input on the live hero panel: a visitor types their town or ZIP and the sky, temperature and daylight switch to their location, with a "Back to Maine" reset. Reuse the existing weather/daylight code behind `app/api/maine`; add a geocoding lookup and cache responses. Rate-limit the endpoint. Reduced motion: switch instantly. Track `hero_town_tried`.
 8. **"Live local" add-on for clients.** Package the live panel as a product: weather, daylight, business hours or wait times on a client's homepage (The Remote Admin already has a live Amherst panel). Add it to the M Linx catalog in `lib/content.ts` with The Remote Admin as the real example. **Needs Meg:** price.
 
 ## Phase 5: Polish and measure
