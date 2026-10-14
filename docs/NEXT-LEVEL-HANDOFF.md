@@ -46,7 +46,9 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 ```
 ┌ Nav: Work · Services · Pricing · About ·  [Start a project]
 ├ HERO  left: headline + 1 line + 2 CTAs + price line
-│       right: a live, cycling "proof reel" of real shipped screens
+│       right: the live Maine weather/tide/daylight panel (kept, Meg's signature)
+│              + one caption tying it to client work
+├ PROOF REEL  cycling real shipped screens directly under the hero
 │              (maineclean.co → linx → Remote Admin → BrightBase dashboard)
 ├ PROOF STRIP  "10 yrs running a service company · 1,000+ customers · 7,000+ visits"
 │              + client logos (The Maine Cleaning Co., The Remote Admin, linx)
@@ -61,12 +63,15 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 ```
 
 Tasks:
-- **2.1a Hero proof reel.** **Needs Meg** (see below): either replace the right-hand `LiveReadout` panel in `components/Hero.tsx`, or keep it and add below/beside it, a framed browser/phone mockup that crossfades between 3–4 real screenshots from `public/shots/` (add new captures as needed), each with a one-line caption ("Booking site + back office for a 1,000-customer cleaning company"). Pause on hover; respect reduced motion (show one static frame). Match the existing card styling of the LiveReadout panel so it looks native to the current design.
-  - Accept: on a 390px phone the first screen shows headline, CTA and at least one real screenshot.
-- **2.1b Proof strip** directly under the hero: the operating numbers (already in `lib/content.ts` as `provingGround`, attributed to The Maine Cleaning Co.) plus client name marks. Real only; never invent.
+- **2.1a Keep the live weather hero, and make it sell.** Decided by Meg: the `LiveReadout` panel and the live daylight/weather/tide theming stay in the hero. They are proof she can wire a site to live data. Add one caption under the panel in Meg's voice, e.g. "This page is reading live Maine weather, tide and daylight right now. I connect client sites to their own live data the same way: bookings, inventory, schedules." Link it to the "How this site works" section (2.1f).
+  - **Phone:** on screens under 640px, show the panel as a compact one-line strip (sky, temperature, tide) that expands on tap, so the hero plus the first real screenshot fit within about two screens instead of three.
+  - Accept: at 1440px the panel and caption sit beside the headline as today; at 390px the strip is one line, tapping it opens the full panel, and the proof reel starts on the second screen.
+- **2.1a-2 Proof reel directly under the hero.** A full-width band with a framed browser and phone mockup that crossfades between 3–4 real screenshots from `public/shots/` (add new captures as needed), each with a one-line caption ("Booking site + back office for a 1,000-customer cleaning company"). Pause on hover/focus and off-screen; reduced motion shows one static frame. Match the LiveReadout card styling so it looks native.
+- **2.1b Proof strip** directly under the proof reel: the operating numbers (already in `lib/content.ts` as `provingGround`, attributed to The Maine Cleaning Co.) plus client name marks. Real only; never invent.
 - **2.1c Move Work above Services.** In `app/page.tsx`, order: Hero, Proof, Work, Try it, Services, Process, Pricing, Contact.
 - **2.1d Services section** (`components/Services.tsx`) currently leaves most of the desktop width empty (narrow accordion on the left). Rebuild as three wide rows, each with a real example screenshot on one side and 3 bullets + "See an example" link on the other. Order: Websites, Web apps, Integrations.
 - **2.1e Floating chrome:** the "DAYLIGHT" pill (`AccentSwitcher`) sits on top of cards on phones. Keep it, but move it so it never covers content (e.g. into the footer or nav on small screens). Ask Meg before removing `WorkflowSpine` or the ⌘K button.
+- **2.1f "How this site works" (new, short).** A small section (or a panel opened from the hero caption) that explains the live sky as a case study: a 4-box diagram of weather, tide and sun data → `app/api/maine` → page theme, plus two sentences on why it matters for a business ("the same pattern puts your bookings, stock levels or job statuses on your site in real time"). Uses existing components; no new styling.
 
 ### 2.2 Case study pages (new): the biggest proof-of-work upgrade
 
@@ -111,7 +116,7 @@ Keep the current typefaces and feel. Two small cleanups only:
 
 Build these, in this order:
 
-1. **Hero proof reel** (2.1a): screens crossfade with a subtle device-frame scroll inside each screenshot (the page "scrolls" inside the frame), 4–5s per screen. Pauses on hover/focus. This is the one ambient animation on the homepage.
+1. **Proof reel** (2.1a-2): screens crossfade with a subtle device-frame scroll inside each screenshot (the page "scrolls" inside the frame), 4–5s per screen. Pauses on hover/focus and off-screen. Together with the live sky in the hero, this is the homepage's ambient motion; nothing else loops.
 2. **"Watch it connect" sequence** (replaces the static Integrations copy): a scroll-scrubbed diagram where a booking is made on a website → appears in the CRM → lands on a calendar → triggers a text, each step lighting up as the visitor scrolls. Reuse the existing `components/WorkflowDemo.tsx` / `WorkflowMap.tsx` logic (currently only on `/marketplace`) and the real Maine Cleaning flow as the example. Scrubbed by scroll position, not on a timer.
 3. **Case study scrollytelling** (2.2): the hero screenshot stays pinned while the "What I built" bullets scroll past; each bullet swaps the pinned screen to the matching view. CSS `position: sticky` + IntersectionObserver; no heavy library needed.
 4. **Interactive "Try it" block** on the homepage: the instant-quote calculator from `/tools` (`components/QuoteCalc.tsx`) in a compact form. Moving a slider updates the price live with a number tween. This is motion caused by the visitor and is direct proof.
@@ -149,7 +154,6 @@ Ranked by lead impact:
 
 ## Needs Meg (collect before or during the work)
 
-- Hero: keep the live Maine weather panel and add the proof reel beside or below it, or swap the panel for the proof reel.
 - Booking page URL (Cal.com or Google appointment schedule).
 - Supabase project (or approval to use an existing one) for lead storage.
 - 2–3 real testimonials with name and business (Karen / The Remote Admin first).
