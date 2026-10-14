@@ -139,16 +139,16 @@ export default async function OpengraphImage() {
 
           {/* The site's actual headline, with the same word picked out. */}
           <div style={{ display: "flex", flexDirection: "column", fontSize: 112, fontWeight: 700, lineHeight: 1.03, letterSpacing: -3 }}>
-            <span style={{ display: "flex", color: INK }}>We build websites and</span>
+            <span style={{ display: "flex", color: INK }}>Websites, software &amp;</span>
             <span style={{ display: "flex" }}>
-              <span style={{ color: TERRACOTTA }}>web apps</span>
-              <span style={{ color: INK }}>&nbsp;for small</span>
+              <span style={{ color: TERRACOTTA }}>integrations</span>
+              <span style={{ color: INK }}>&nbsp;that</span>
             </span>
-            <span style={{ display: "flex", color: INK }}>businesses.</span>
+            <span style={{ display: "flex", color: INK }}>work together.</span>
           </div>
 
           <div style={{ display: "flex", color: MUTED, fontSize: 44, letterSpacing: -0.6 }}>
-            Built by someone who ran a service company for ten years first.
+            CRM setup, data migration, and tools that make work easier.
           </div>
 
           {/* The price, and the one live-data line that is still true. */}
@@ -164,7 +164,7 @@ export default async function OpengraphImage() {
                 letterSpacing: 1,
               }}
             >
-              Sites & apps from ${appOffer.price.toLocaleString("en-US")}
+              Custom builds from ${appOffer.price.toLocaleString("en-US")}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 16, color: FAINT, fontSize: 32 }}>
               <div style={{ width: 14, height: 14, borderRadius: 9999, background: SIGNAL, display: "flex" }} />

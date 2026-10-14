@@ -58,12 +58,14 @@ export default function Hero() {
             Websites, software &amp; integrations that work together.
           </h1>
 
-          {/* One sentence. It was four, and `.metallic-text` on top — a
+          {/* One sentence. It was four, with `.metallic-text` on top — a
               gradient the Daylight theme already neutralises, so it only ever
-              showed in Harbor. */}
-          <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-relaxed text-muted">
-            For small businesses, built from ten years of running my own
-            service company.
+              showed in Harbor. Positioning is main's (CRM setup and
+              migrations now lead alongside the builds); the em dash went per
+              CLAUDE.md. */}
+          <p className="mt-5 max-w-[52ch] text-[1.0625rem] leading-relaxed text-muted">
+            Custom websites, business tools, CRM setup and integrations, built
+            around how your business works.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -71,7 +73,7 @@ export default function Hero() {
               offer="project"
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
             >
-              Tell me what you need
+              Talk through your project
               <span
                 aria-hidden="true"
                 className="transition-transform group-hover:translate-x-0.5"
@@ -89,15 +91,22 @@ export default function Hero() {
 
           {/* A price above the fold (brief A6). Pricing used to sit 73% down a
               21-screen phone page, so someone deciding whether you were even
-              in their range had to travel a long way on faith. One number
-              since the $749 Starter tier was retired: websites and apps share
-              the custom-build ladder. */}
+              in their range had to travel a long way on faith. Two numbers
+              now: the custom-build ladder, and the smaller fixed-scope work
+              main added alongside it. */}
           <p className="mt-6 text-sm text-muted">
             <a
               href="#pricing"
               className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal"
             >
-              Websites &amp; web apps from ${appOffer.price.toLocaleString("en-US")}
+              Custom builds from ${appOffer.price.toLocaleString("en-US")}
+            </a>
+            <span className="mx-2 text-faint" aria-hidden="true">·</span>
+            <a
+              href="#pricing"
+              className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal"
+            >
+              Smaller projects from $250
             </a>
           </p>
         </div>

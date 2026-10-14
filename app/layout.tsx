@@ -40,7 +40,7 @@ const jetbrainsMono = JetBrains_Mono({
 // Canonical/OG base — the live brand domain.
 const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
-  "Custom websites, business software, API integrations and automations that connect the tools you already use. For business owners, cleaning companies and vacation rental hosts. Based in Maine, clients anywhere.";
+  "Websites, custom CRMs, platform setup, data migration and integrations for small businesses. Improve the tools you use or build what is missing. Based in Maine, clients anywhere.";
 
 const TITLE = "M Studio — Websites, Software & Integrations";
 
@@ -59,6 +59,9 @@ export const metadata: Metadata = {
     "custom software",
     "AI agents",
     "business systems",
+    "CRM setup",
+    "data migration",
+    "platform setup",
     "Maine web design",
   ],
   authors: [{ name: "M Studio" }],
@@ -109,7 +112,7 @@ const JSON_LD = {
       email: "contact@mlinx.studio",
       telephone: "+1-207-432-9492",
       description:
-        "Custom websites, business software, integrations and automations built around the way your business works. Connect existing tools and reduce manual work.",
+        "Websites, custom business tools, CRM setup, data migrations, and integrations built around the way your business works.",
       slogan: "Everything, linked.",
       knowsAbout: [
         "Custom software development",
@@ -127,6 +130,8 @@ const JSON_LD = {
         itemListElement: [
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Websites & web apps", description: "Custom marketing sites, booking, and client portals." } },
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom tools & dashboards", description: "Booking apps, CRMs, dashboards, and quoting tools, built around how you run." } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM & platform setup", description: "CRM fields, views, configuration, and workflow improvements." } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Data migration & cleanup", description: "Exports, imports, field mapping, and record checks when switching platforms." } },
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Systems integration & automation", description: "Connecting the tools you already use, with workflow automation and practical AI." } },
         ],
       },

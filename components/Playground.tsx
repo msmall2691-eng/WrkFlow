@@ -111,7 +111,7 @@ export default function Playground() {
     <section id="tools" className="relative overflow-hidden py-10 md:py-14">
       <div
         aria-hidden="true"
-        className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
+        className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
 

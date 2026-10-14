@@ -74,7 +74,7 @@ export default function MarketplacePage() {
         <section className="relative overflow-hidden py-14 md:py-20">
           <div
             aria-hidden="true"
-            className="floaty-slow pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
+            className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
           />
           <div className="relative mx-auto max-w-6xl px-6">
             <MarketCatalog />
@@ -85,7 +85,7 @@ export default function MarketplacePage() {
         <section className="relative overflow-hidden border-t border-line py-16">
           <div
             aria-hidden="true"
-            className="floaty pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
           />
           <div className="relative mx-auto max-w-3xl px-6 text-center">
                           <h2 className="display text-xl text-ink sm:text-2xl">

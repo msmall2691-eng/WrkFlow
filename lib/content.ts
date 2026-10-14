@@ -13,63 +13,38 @@ import type { VisualType } from "@/components/ProjectVisual";
   statement, not an essay. Edit here, not in the component.
 */
 export const founderNote = {
-  /*
-    This band answers "why is the software any good", not "what do we sell".
-    Same ten years, same numbers, doing better work: it stops reading as an
-    ops consultancy and starts reading as an engineer with an unfair
-    advantage. Shown on /about, in FounderNote.
-  */
-  headline: "Built from real business.",
-  headlineFollow: "I know what it feels like to be the person keeping everything connected.",
+  headline: "A business background. A love of building.",
+  headlineFollow: "Websites and systems shaped around the people using them.",
   paragraphs: [
-    "Running my own cleaning company led me to building the tools I needed. Now I love helping other business owners make their websites and systems work better together.",
+    "M Studio brings hands-on business experience to websites and systems. Every project starts with understanding the work, the tools already in place, and what could run more smoothly.",
   ],
 } as const;
 
-/*
-  Founder bio — the proof: an operator's story, not a résumé.
-
-  Education is in now. It was deliberately left out before ("per Meg's call"),
-  and she reversed that: a Business Analytics and AI degree with a CS minor is
-  the other half of the argument this page makes, not a credential to be shy
-  about. The last paragraph is not filler either — people hire a person, and
-  the kids and the dog and the water are the reason the 6am crew story is
-  believable in the first place.
-
-  Kept to three short paragraphs. Signature lives here; this is the personal
-  letter, not the belief statement.
-*/
 export const founderBio = {
-  kicker: "The story behind it",
+  kicker: "The person behind M Studio",
   heading: "Hi, I'm Meg.",
   paragraphs: [
-    "I started building software to solve the everyday problems in my own cleaning business: booking, quoting, scheduling, and keeping customer information in one place. Connecting those pieces became the work I loved most.",
-    "Through M Studio, I build websites, custom business tools, and integrations that help other owners spend less time moving information by hand. I especially enjoy working with cleaning companies and vacation rental owners, and I work with businesses of all kinds. I'm also finishing a Business Analytics and AI degree at the University of Southern Maine with a minor in Computer Science.",
-    "Outside of it I'm with my kids and our dog, usually near the water. Fishing if the day allows.",
+    "Running The Maine Cleaning Company is where this started. Managing customers, bookings, schedules, and a team made me curious about how much better the systems behind a business could work.",
+    "Trying different platforms turned into learning every corner of them, moving data, connecting tools, and building what was missing. That work now includes websites, CRMs, dashboards, a Jobber-to-Airtable integration project, and an extension for Twenty CRM.",
+    "I love figuring things out: learning a platform, organizing the information, and turning an idea into something useful. M Studio grew from that interest and now helps businesses with websites, platform setup, migrations, integrations, and custom tools.",
+    "M Studio is based in Maine and works remotely with businesses anywhere. Alongside the studio, I am studying Business Analytics and AI at the University of Southern Maine with a minor in Computer Science. Outside of work and school, you will usually find me with the kids and our dog, near the water. Fishing if the day allows.",
   ],
-  detail:
-    "Built while running internal systems for a service business that grew past 1,000 customers and 7,000+ service visits.",
-  signature: "— Megan",
+  detail: "The Maine Cleaning Company is the proving ground: 1,000+ customers and 7,000+ service visits.",
+  signature: "— Meg",
 } as const;
 
-/*
-  Philosophy — the short manifesto that caps the narrative arc, right
-  before the CTA. Kept deliberately small; this is a pull-quote, not
-  another paragraph block.
-*/
 export const founderPhilosophy = {
-  heading: "My Philosophy",
+  heading: "The approach",
   lines: [
-    "Good software disappears.",
-    "Understand the business first. Technology comes second.",
+    "Understand the business and the people using it.",
+    "Then make the everyday work easier.",
   ],
 } as const;
 
-/** CTA that closes the founder section's arc before handing off to Services. */
 export const founderCta = {
-  headline: "Let's build something that actually fits.",
-  body: "Replacing spreadsheets, connecting tools, or starting from scratch — let's talk.",
-  buttonLabel: "Start a Project",
+  headline: "What do you wish worked better?",
+  body: "Share what you use now and where you are getting stuck. That is a good place to start.",
+  buttonLabel: "Talk through your project",
 } as const;
 
 /*
@@ -108,7 +83,7 @@ export const studioStats = [
 export const provingGround = {
   label: "Built from real business — The Maine Cleaning Co.",
   stats: [
-    { value: "10 yrs", label: "building systems" },
+    { value: "10 yrs", label: "running a business" },
     { value: "1,000+", label: "customers served" },
     { value: "7,000+", label: "service visits" },
     { value: "$1M+", label: "operations managed" },
@@ -162,51 +137,109 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    id: "websites",
-    index: "01",
-    title: "Custom websites",
-    tagline: "A website that looks like your business and helps you run it.",
-    kinds: ["Business websites", "Quotes & booking", "Client portals"],
-    pain: "Customers need an easier way to learn about your business, request a quote, or book with you.",
-    outcome: "A clear, easy-to-use site with the forms, booking tools, and system connections your business needs.",
-    example: {
-      client: "The Maine Cleaning Co.",
-      built: "A custom cleaning website with instant estimates, online booking, and a connected client portal.",
-      result: "Customers can get an estimate and book online.",
-      shot: "/shots/maineclean.png",
-    },
+    "id": "websites",
+    "index": "01",
+    "title": "Websites & website improvements",
+    "tagline": "A new site, a better page, or the feature your website is missing.",
+    "kinds": [
+      "Business websites",
+      "Quotes & booking",
+      "Existing site updates"
+    ],
+    "pain": "Your website is outdated, hard to use, or missing a way for customers to take the next step.",
+    "outcome": "A clear, useful website with the pages, forms, and features your business needs.",
+    "example": {
+      "client": "The Remote Admin",
+      "built": "A complete website for an administrative services business in New Hampshire.",
+      "result": "Services, business details, and a clear way to get in touch.",
+      "shot": "/shots/remote-admin.png"
+    }
   },
   {
-    id: "apps",
-    index: "02",
-    title: "Custom business software",
-    tagline: "Tools built around the way you and your team actually work.",
-    kinds: ["Dashboards & reporting", "Scheduling tools", "Customer management"],
-    pain: "Important information is spread across spreadsheets, calendars, and messages, making it hard to see what needs attention.",
-    outcome: "A dashboard, client portal, or internal tool that brings the right information together and makes daily work easier.",
-    example: {
-      client: "Cleaning operations dashboard",
-      built: "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
-      result: "The business owner can see daily operations in one place.",
-      shot: "/shots/brightbase-dashboard.png",
-    },
+    "id": "platforms",
+    "index": "02",
+    "title": "CRM & platform setup",
+    "tagline": "Get your software organized around how your business actually runs.",
+    "kinds": [
+      "CRM setup",
+      "Fields & workflows",
+      "Platform cleanup"
+    ],
+    "pain": "You have a platform, but the records, settings, and workflow are not set up the way you need them.",
+    "outcome": "A clearer setup with useful fields, views, and a walkthrough of how to use it.",
+    "example": {
+      "client": "Twenty CRM extension",
+      "built": "An extension for Twenty CRM with recurring service plans, a dispatch board, and a shared inbox.",
+      "result": "A general-purpose CRM adapted to a specific business workflow.",
+      "visual": "database"
+    }
   },
   {
-    id: "automation",
-    index: "03",
-    title: "Integrations & automations",
-    tagline: "Connect the tools you already use and cut down on manual work.",
-    kinds: ["API connections", "Booking & calendar sync", "Workflow automation"],
-    pain: "You are copying the same details between systems or updating the schedule every time a new booking comes in.",
-    outcome: "Your systems share the information they need, with connections scoped around what each tool supports.",
-    example: {
-      client: "Vacation rental booking sync",
-      built: "Rental bookings automatically appear on our cleaning schedule, connecting reservations with turnover planning.",
-      result: "One less booking to enter by hand.",
-      shot: "/shots/brightbase-turnovers.png",
-    },
+    "id": "migration",
+    "index": "03",
+    "title": "Data migration & cleanup",
+    "tagline": "Move your information into a new system and make it easier to use.",
+    "kinds": [
+      "Exports & imports",
+      "Field mapping",
+      "Record cleanup"
+    ],
+    "pain": "You want to switch platforms, but your customer and job information is still in the old system or scattered across files.",
+    "outcome": "An agreed set of records cleaned, mapped, and imported, with checks before the handover.",
+    "example": {
+      "client": "Jobber data migration",
+      "built": "Exported Jobber data and moved records into other systems for The Maine Cleaning Company.",
+      "result": "Practical experience with the move from one platform to another.",
+      "visual": "cleanup"
+    }
   },
+  {
+    "id": "automation",
+    "index": "04",
+    "title": "Integrations & automations",
+    "tagline": "Connect your tools and cut down on entering the same information twice.",
+    "kinds": [
+      "API connections",
+      "Calendar sync",
+      "Workflow automation"
+    ],
+    "pain": "You are copying details between systems or updating a schedule by hand whenever something changes.",
+    "outcome": "A connection built around what your platforms support and checked against the workflow you need.",
+    "example": {
+      "client": "Vacation rental booking sync",
+      "built": "Rental bookings automatically appear on our cleaning schedule for turnover planning.",
+      "result": "One less booking to enter by hand.",
+      "shot": "/shots/brightbase-turnovers.png"
+    }
+  },
+  {
+    "id": "apps",
+    "index": "05",
+    "title": "Custom CRMs & business tools",
+    "tagline": "Build the dashboard, portal, or small app you cannot find off the shelf.",
+    "kinds": [
+      "Custom CRMs",
+      "Dashboards & reporting",
+      "Client & team portals"
+    ],
+    "pain": "The tools you have do not quite fit, and important work still lives in spreadsheets and messages.",
+    "outcome": "A focused tool built around your process, with the features and handover agreed before work starts.",
+    "example": {
+      "client": "Cleaning operations dashboard",
+      "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
+      "result": "Daily operations brought into one view.",
+      "shot": "/shots/brightbase-dashboard.png"
+    }
+  }
 ];
+
+// Estimates for a single, agreed piece of work; final quotes follow review.
+export const smallProjects = [
+  { title: "Website updates & forms", price: "$250–$500", scope: "One page improvement, quote form, or booking feature on an existing site.", offer: "website" },
+  { title: "CRM & platform setup", price: "$300–$750", scope: "A focused setup or cleanup: fields, views, settings, and one workflow.", offer: "platform" },
+  { title: "Data migration", price: "$400–$900", scope: "One export and import, with agreed record types, field mapping, and checks.", offer: "migration" },
+  { title: "One integration", price: "$300–$750", scope: "One supported connection, such as a booking feed or form-to-CRM workflow.", offer: "integration" },
+] as const;
 
 export type ApproachStep = {
   index: string;
@@ -345,6 +378,15 @@ export const work: WorkItem[] = [
     live: true,
     shot: "/shots/remote-admin.png",
     client: true,
+  },
+  {
+    tier: "site",
+    tag: "Website project · construction",
+    title: "Nash Construction",
+    blurb: "A construction company website with service pages, a project portfolio, and a consultation form.",
+    stack: ["Next.js", "Vercel"],
+    url: "https://nash-alpha.vercel.app/",
+    shot: "/shots/nash.jpg",
   },
   // Tier 2 — product we built
   {
@@ -767,12 +809,12 @@ export const welcomeBook = {
   steps: [
     {
       n: "01",
-      title: "Send me the details",
-      body: "Share your listing and the basics — check-in, WiFi, rules, your favorite local spots. A short form is all it takes; I'll pull the rest together.",
+      title: "Share the details",
+      body: "Share your listing and the basics — check-in, WiFi, rules, your favorite local spots. A short form is all it takes to get started.",
     },
     {
       n: "02",
-      title: "I build your book",
+      title: "Your book takes shape",
       body: "You get a custom welcome book matched to your place, usually within a few days. One round of tweaks is included, so it reads exactly how you'd say it.",
     },
     {
@@ -784,7 +826,7 @@ export const welcomeBook = {
   faqs: [
     {
       q: "Do I need any tech skills?",
-      a: "None. You send the info, I build it, and you get a link plus a printable QR code. That's the whole job on your end.",
+      a: "None. Share the information and receive a finished book, a link, and a printable QR code. That's the whole job on your end.",
     },
     {
       q: "Does it work for VRBO, Booking.com, or direct bookings?",
@@ -796,7 +838,7 @@ export const welcomeBook = {
     },
     {
       q: "What does it cost?",
-      a: "$99 for the first few (a founding price while I gather reviews), then $149. One-time — no monthly app fee, and the book is yours.",
+      a: "$99 for the first few books at the founding price, then $149. One-time — no monthly app fee, and the book is yours.",
     },
     {
       q: "How long does it take?",
@@ -804,7 +846,7 @@ export const welcomeBook = {
     },
     {
       q: "Do you only work with Maine rentals?",
-      a: "No — anywhere. The Keystone House is my own place here in Maine, but the welcome book works for any short-term rental.",
+      a: "No — anywhere. The Keystone House in Maine is one example, but the welcome book works for any short-term rental.",
     },
   ],
 } as const;

@@ -199,7 +199,7 @@ export default function WelcomeBookPage() {
         <section id="reserve" className="relative overflow-hidden py-16 md:py-24">
           <div
             aria-hidden="true"
-            className="floaty pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
           />
           <div className="relative mx-auto max-w-2xl px-6">
             <div className="mb-8 text-center">

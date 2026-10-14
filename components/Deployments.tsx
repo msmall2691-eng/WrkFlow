@@ -35,8 +35,12 @@ export default function Deployments() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-2xl">
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Built and shipped.
+            Websites, products &amp; systems.
           </h2>
+          <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
+            Business websites, original products, and systems built for The
+            Maine Cleaning Company.
+          </p>
           {/* The proof numbers that used to be hand-copied into a mono
               micro-label here now render from `provingGround` in ProofStrip,
               one section up. Repeating them two sections apart is the kind of

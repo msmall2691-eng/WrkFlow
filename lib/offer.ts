@@ -22,6 +22,10 @@
 
 export const OFFERS = {
   project: "I'd like to start a project.",
+  website: "I'd like help improving my existing website or adding a form:",
+  platform: "I'd like help setting up or organizing my CRM or platform:",
+  migration: "I'd like help moving my data into another system:",
+  integration: "I'd like to connect two tools or automate a workflow:",
   // Kept so old shared ?offer=starter links still prefill; no CTA uses it.
   starter: "I'd like a new website.",
   care: "I'd like to get the Care Plan set up.",

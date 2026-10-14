@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ProjectVisual from "./ProjectVisual";
 import { services } from "@/lib/content";
 
 /*
@@ -33,10 +34,12 @@ export default function Services() {
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
             What I can help you with.
           </h2>
+          {/* main's newer, broader audience line, kept in first person per
+              CLAUDE.md. */}
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
-            For business owners, cleaning companies, and vacation rental hosts.
-            I can improve what you already use, connect it, or build something
-            new.
+            For small businesses, independent professionals, and teams. A new
+            website, a platform switch, or one process that needs to work
+            better.
           </p>
         </div>
 
@@ -53,13 +56,22 @@ export default function Services() {
               >
                 <div className="overflow-hidden rounded-2xl border border-line bg-base shadow-[0_24px_60px_-34px_rgba(11,23,34,0.35)]">
                   <div className="relative aspect-[16/10]">
-                    <Image
-                      src={s.example.shot as string}
-                      alt={`${s.example.client} — ${s.example.built}`}
-                      fill
-                      sizes="(min-width: 1024px) 660px, 100vw"
-                      className="object-cover object-top"
-                    />
+                    {/* Not every service has a capture yet — CRM setup and
+                        data migration are real work with nothing photogenic
+                        to screenshot, so they fall back to the designed
+                        panel rather than an empty frame. Never substitute
+                        someone else's screen for a missing one. */}
+                    {s.example.shot ? (
+                      <Image
+                        src={s.example.shot}
+                        alt={`${s.example.client} — ${s.example.built}`}
+                        fill
+                        sizes="(min-width: 1024px) 660px, 100vw"
+                        className="object-cover object-top"
+                      />
+                    ) : (
+                      <ProjectVisual type={s.example.visual!} />
+                    )}
                   </div>
                 </div>
                 <p className="mt-3 text-xs text-faint">{s.example.client}</p>

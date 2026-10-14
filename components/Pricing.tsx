@@ -1,7 +1,7 @@
 import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
 import BookCall from "./BookCall";
-import { appOffer, studioStats, testimonial } from "@/lib/content";
+import { appOffer, smallProjects, studioStats, testimonial } from "@/lib/content";
 
 /*
   Pricing — the "harbor at night" pricing section. Two ways to work together:
@@ -38,8 +38,11 @@ export default function Pricing() {
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
             Pricing that fits where you&apos;re at.
           </h2>
+          {/* main's newer framing, which now has to cover the small
+              fixed-scope tier as well as the custom build. */}
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
-            Build it, then keep it running.
+            Start with one useful improvement or a custom build. I agree the
+            scope and price with you before work begins.
           </p>
         </div>
 
@@ -93,7 +96,7 @@ export default function Pricing() {
                 One-time · monthly · hybrid
               </p>
               <p className="mt-4 text-sm leading-relaxed text-muted">
-                Websites, apps, tools, and workflows — built around how you run.
+                A new custom website, CRM, dashboard, or business app, scoped around what you need.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {CUSTOM_BULLETS.map((b) => (
@@ -106,7 +109,7 @@ export default function Pricing() {
                 offer="custom"
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
               >
-                Tell me what you need
+                Talk through your project
                 <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
@@ -135,9 +138,33 @@ export default function Pricing() {
             </article>
         </div>
 
+        <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-5 sm:p-7">
+            <h3 className="display text-xl text-ink">Smaller projects</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+              Start with one piece of the work. These are estimates for a focused project;
+              larger refreshes, complex data, and multiple connections get their own quote.
+            </p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {smallProjects.map((project) => (
+                <article key={project.offer} className="flex flex-col rounded-xl border border-line bg-base/60 p-5">
+                  <h4 className="text-sm font-semibold text-ink">{project.title}</h4>
+                  <p className="mt-2 font-display text-2xl text-signal">{project.price}</p>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{project.scope}</p>
+                  <OfferLink offer={project.offer} className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-signal hover:text-ink">
+                    Ask about this <span aria-hidden="true">→</span>
+                  </OfferLink>
+                </article>
+              ))}
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-faint">
+              Platform subscriptions, paid plugins, and other third-party costs are quoted separately.
+              The Care Plan covers website upkeep; software and integration support are scoped separately.
+            </p>
+        </div>
+
         {/* Under-row strip — the softer second option and the founding terms,
             kept out of the cards so nothing sits below a button (survey O-06). */}
-                  <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-surface/40 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-surface/40 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
             <BookCall
               where="pricing"
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"

@@ -41,6 +41,10 @@ type ContactPayload = {
 // Labels for the offer tag, so the inbox reads in English rather than slugs.
 const OFFER_LABELS: Record<string, string> = {
   project: "Start a project (hero)",
+  website: "Website updates & forms",
+  platform: "CRM & platform setup",
+  migration: "Data migration",
+  integration: "One integration",
   starter: "Website (old Starter link)",
   care: "Care Plan",
   custom: "Custom build",
