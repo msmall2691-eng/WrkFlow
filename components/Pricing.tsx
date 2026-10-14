@@ -2,7 +2,7 @@ import Reveal from "./Reveal";
 import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
 import CountUp from "./CountUp";
-import { appOffer, studioStats, testimonial } from "@/lib/content";
+import { appOffer, smallProjects, studioStats, testimonial } from "@/lib/content";
 
 /*
   Pricing — the "harbor at night" pricing section. Two ways to work together:
@@ -46,7 +46,7 @@ export default function Pricing() {
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-4 text-[1rem] leading-relaxed text-muted">
-              Build it, then keep it running.
+              Start with one useful improvement or a custom build. We agree on the scope and price before work begins.
             </p>
           </Reveal>
         </div>
@@ -104,7 +104,7 @@ export default function Pricing() {
                 One-time · monthly · hybrid
               </p>
               <p className="mt-4 text-sm leading-relaxed text-muted">
-                Websites, apps, tools, and workflows — built around how you run.
+                A new custom website, CRM, dashboard, or business app, scoped around what you need.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {CUSTOM_BULLETS.map((b, i) => (
@@ -148,6 +148,32 @@ export default function Pricing() {
             </article>
           </Reveal>
         </div>
+
+        <Reveal delay={180}>
+          <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-5 sm:p-7">
+            <h3 className="display-serif text-xl text-ink">Smaller projects</h3>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
+              You can hire me for one piece of the work. These are estimates for a focused project;
+              larger refreshes, complex data, and multiple connections get their own quote.
+            </p>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              {smallProjects.map((project) => (
+                <article key={project.offer} className="flex flex-col rounded-xl border border-line bg-base/60 p-5">
+                  <h4 className="text-sm font-semibold text-ink">{project.title}</h4>
+                  <p className="mt-2 font-display text-2xl text-signal">{project.price}</p>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{project.scope}</p>
+                  <OfferLink offer={project.offer} className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-signal hover:text-ink">
+                    Ask about this <span aria-hidden="true">→</span>
+                  </OfferLink>
+                </article>
+              ))}
+            </div>
+            <p className="mt-4 text-xs leading-relaxed text-faint">
+              Platform subscriptions, paid plugins, and other third-party costs are quoted separately.
+              The Care Plan covers website upkeep; software and integration support are scoped separately.
+            </p>
+          </div>
+        </Reveal>
 
         {/* Under-row strip — the softer second option and the founding terms,
             kept out of the cards so nothing sits below a button (survey O-06). */}

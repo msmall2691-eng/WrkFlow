@@ -86,7 +86,7 @@ const TEXT_CAPS: Record<string, number> = {
 };
 
 function buildSystemPrompt(): string {
-  return `You extract structured intake answers from a small-business owner's free-form description of their business and website project.
+  return `You extract structured intake answers from a small-business owner's free-form description of their website, platform setup, data migration, integration, or custom business-tool project.
 
 Rules:
 - Only extract what the description actually says or clearly implies. Leave a field null (or an empty array) rather than guessing — an empty field the client fills themselves beats a wrong one they have to notice and fix.
@@ -94,7 +94,7 @@ Rules:
 - For each multi-select field, choose ONLY from its allowed values, verbatim:
   goals: ${JSON.stringify(allowedOptions("goals"))}
   features: ${JSON.stringify(allowedOptions("features"))}
-- "frustration" is what bothers them about their current site or lack of one, if mentioned.
+- "frustration" is what bothers them about their current website, software, records, or process, if mentioned.
 - "whyNow" is why they're doing this now, if the description says.`;
 }
 

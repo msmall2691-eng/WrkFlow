@@ -24,10 +24,9 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Custom websites, business software, and integrations that connect
-              the tools you already use. Less manual work, clearer systems,
-              and tools built around your business. Based in Maine, working
-              with clients anywhere.
+              Websites, CRMs, platform setup, data migrations, and integrations.
+              Help with the systems behind your business, from one improvement
+              to a custom build. Based in Maine, working with clients anywhere.
             </p>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-faint">
               Custom software &amp; web design &middot; Southern Maine / New England &middot; clients anywhere

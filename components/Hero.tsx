@@ -63,10 +63,9 @@ export default function Hero() {
           </h1>
 
           <p className="hero-sub metallic-text mt-6 max-w-xl text-[1rem] font-medium leading-relaxed">
-            I help business owners connect the tools they already use and build
-            what&apos;s missing — from a custom website to bookings that land
-            automatically on your schedule. Built from ten years of running
-            my own service business.
+            I build websites and custom business tools, set up CRMs, move data
+            between platforms, and connect the software you already use.
+            I love learning how a system works and making it easier to use.
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
@@ -100,7 +99,11 @@ export default function Hero() {
               tier was retired: websites and apps share the custom-build ladder. */}
           <p className="mt-7 text-sm text-muted">
             <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
-              Websites &amp; web apps from ${appOffer.price.toLocaleString("en-US")}
+              Custom builds from ${appOffer.price.toLocaleString("en-US")}
+            </a>
+            <span className="mx-2 text-faint" aria-hidden="true">·</span>
+            <a href="#pricing" className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal">
+              Smaller projects from $250
             </a>
           </p>
         </div>

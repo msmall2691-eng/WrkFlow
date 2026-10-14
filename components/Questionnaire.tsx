@@ -413,14 +413,14 @@ function Intro({
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <div ref={headingRef} tabIndex={-1} className="outline-none">
         <h2 className="display-serif text-3xl leading-[1.12] text-ink sm:text-4xl">
-          Let&apos;s scope your website.
+          Let&apos;s scope your project.
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
         {aiEnabled ? (
           <>
             A few questions so we understand your business and goals before we
-            talk — then we design three concepts of your site from your
+            talk — then we draft three visual concepts from your
             answers, while you watch.
           </>
         ) : (
@@ -877,7 +877,7 @@ function SuccessScreen({ name }: { name: string }) {
     { title: "Answers received", detail: "Done.", done: true },
     {
       title: "Within 24 hours: your rough scope",
-      detail: "Pages, features, price range, timeline.",
+      detail: "Scope, features, price range, timeline.",
       done: false,
     },
     {
@@ -1030,8 +1030,8 @@ function FastFill({
         Describe the business and what you want, in your own words
       </label>
       <p className="mt-1 text-[13px] leading-relaxed text-muted">
-        A few sentences is plenty — what you do, who for, what the site should
-        handle, anything that bugs you today. We&apos;ll draft the form&apos;s
+        A few sentences is plenty — what you do, which tools you use, what needs
+        to work better, and anything that bugs you today. We&apos;ll draft the form&apos;s
         answers from it; you review everything before it goes anywhere.
       </p>
       <textarea

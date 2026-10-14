@@ -42,11 +42,14 @@ export default function Deployments() {
           </Reveal>
           <Reveal delay={60}>
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Built and shipped.
+              Websites, products & systems.
             </h2>
           </Reveal>
           <Reveal delay={120}>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+            <p className="mt-4 text-sm leading-relaxed text-muted">
+              Work for other businesses, products I have built, and the tools I use in my own company.
+            </p>
+            <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
               {PROOF}
             </p>
           </Reveal>

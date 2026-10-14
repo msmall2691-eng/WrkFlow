@@ -23,7 +23,7 @@ export const metadata: Metadata = pageMeta({
   // brand already; doubling it renders "… | M Studio · M Studio".
   title: "About — Meet Meg",
   description:
-    "Meet Meg, founder of M Studio. I build custom websites, business software and integrations, drawing on ten years of running The Maine Cleaning Company.",
+    "Meet Meg, founder of M Studio. Websites, CRMs, platform setup, data migration and integrations, built from hands-on business experience and a love of figuring out systems.",
   path: "/about",
 });
 

@@ -125,18 +125,18 @@ export const questionnaireSteps: QuestionStep[] = [
     id: "whynow",
     kicker: "02 — Why Now",
     timeHint: "~1 min",
-    title: "What's prompting this?",
+    title: "What do you need help with?",
     fields: [
       {
         kind: "textarea",
         id: "whyNow",
-        label: "What's driving the redesign — or the new site?",
-        hint: "Outdated look, no site yet, not getting leads, doesn't work on mobile…",
+        label: "What is prompting the project?",
+        hint: "A new website, a platform switch, messy records, a CRM setup, or tools that do not connect…",
       },
       {
         kind: "textarea",
         id: "frustration",
-        label: "What frustrates you most about your current site — or the lack of one?",
+        label: "What frustrates you most about your website, software, or current process?",
       },
     ],
   },
@@ -144,7 +144,7 @@ export const questionnaireSteps: QuestionStep[] = [
     id: "goals",
     kicker: "03 — Goals",
     timeHint: "~30 sec",
-    title: "What should this site do for you?",
+    title: "What should this project do for you?",
     intro: "Check everything that applies.",
     fields: [
       {
@@ -158,6 +158,10 @@ export const questionnaireSteps: QuestionStep[] = [
           "Show off my work or portfolio",
           "Collect leads and quote requests",
           "Build credibility and look professional",
+          "Set up or organize my CRM / platform",
+          "Move data into a different system",
+          "Connect tools and reduce manual work",
+          "Build a custom dashboard or business tool",
         ],
       },
       {
@@ -171,13 +175,13 @@ export const questionnaireSteps: QuestionStep[] = [
     id: "scope",
     kicker: "04 — Scope",
     timeHint: "~40 sec",
-    title: "What's on the site?",
+    title: "What needs to be included?",
     fields: [
       {
         kind: "text",
         id: "pages",
-        label: "Roughly how many pages, and which ones?",
-        hint: "e.g. Home, About, Services, Contact.",
+        label: "What pages, systems, or workflows are involved?",
+        hint: "For a website: Home, About, Services, Contact. For a system: which platforms, records, or workflows need attention?",
       },
       {
         kind: "chips",
@@ -238,12 +242,12 @@ export const questionnaireSteps: QuestionStep[] = [
     id: "look",
     kicker: "06 — Look & Feel",
     timeHint: "~40 sec",
-    title: "What's the vibe?",
+    title: "Any preferences or examples?",
     fields: [
       {
         kind: "textarea",
         id: "loveSites",
-        label: "Sites you love — yours or competitors' — links welcome",
+        label: "Sites or tools you like — links welcome",
       },
       {
         kind: "textarea",

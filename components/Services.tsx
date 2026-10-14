@@ -39,8 +39,8 @@ export default function Services() {
               What I can help you with.
             </h2>
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              For business owners, cleaning companies, and vacation rental hosts.
-              We can improve what you already use, connect it, or build something new.
+              For small businesses, independent professionals, and teams.
+              A new website, a platform switch, or one process that needs to work better.
             </p>
           </Reveal>
         </div>
