@@ -31,7 +31,7 @@ export function LegalShell({
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-72"
           />
           <div className="relative z-10 mx-auto max-w-3xl px-6">
-            <h1 className="display text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
+            <h1 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
               {title}
             </h1>
             <p className="mt-5 text-xs text-faint">

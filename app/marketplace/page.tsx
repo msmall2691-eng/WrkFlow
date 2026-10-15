@@ -34,7 +34,7 @@ export default function MarketplacePage() {
                 <LinxMark className="h-4 w-auto" />
                 <span className="font-display text-sm font-semibold">M Linx</span>
               </div>
-                          <h1 className="display max-w-3xl text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
+                          <h1 className="display-serif max-w-3xl text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
                 M Linx—premade tools and sites you can put to work today.
               </h1>
                           <p className="mt-6 max-w-2xl text-[1rem] leading-relaxed text-muted">

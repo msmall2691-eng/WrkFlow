@@ -78,7 +78,7 @@ function ProductCard({
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-elevated)_0%,var(--color-base)_75%)]">
-            <span className="display text-2xl text-muted">{item.category}</span>
+            <span className="display-serif text-2xl text-muted">{item.category}</span>
           </div>
         )}
         <span className="absolute left-3 top-3 z-10 font-mono text-[11px] text-white/70">
@@ -95,7 +95,7 @@ function ProductCard({
         <span className="text-xs text-faint">
           {item.category}
         </span>
-        <h3 className="display mt-2 flex items-center gap-2 text-lg text-ink md:text-xl">
+        <h3 className="display-serif mt-2 flex items-center gap-2 text-lg text-ink md:text-xl">
           <LinxMark className="h-3 w-auto shrink-0" />
           {item.name}
         </h3>
@@ -249,7 +249,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
             <p className="text-xs font-medium text-signal">
               {marketModelLabels[item.model]} · {item.price}
             </p>
-            <h3 className="display mt-1 text-lg text-ink md:text-xl">{item.name}</h3>
+            <h3 className="display-serif mt-1 text-lg text-ink md:text-xl">{item.name}</h3>
           </div>
           <button
             type="button"

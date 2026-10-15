@@ -183,7 +183,7 @@ export default function Pricing() {
             lib/content.ts (testimonial.quote). Never ship a fabricated one. */}
         {testimonial.quote && (
                       <figure className="mt-8 rounded-2xl border border-gold/30 bg-gold/[0.05] p-6">
-              <blockquote className="text-lg leading-relaxed text-ink">
+              <blockquote className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink">
                 &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-3 text-xs text-faint">

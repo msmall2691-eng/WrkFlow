@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import BackToTop from "@/components/BackToTop";
@@ -14,17 +14,21 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 /*
-  Two families, plus mono for genuine data.
+  Three families: Space Grotesk for UI, Inter for body, Fraunces for the
+  editorial headings, plus JetBrains Mono for genuine data.
 
-  This loaded five: Space Grotesk, Inter, JetBrains Mono, Fraunces and
-  Caveat. Fraunces was an editorial serif carrying 20 headings and some
-  centered body copy; Caveat drew exactly one signature. Between them they
-  were the reason every page felt busy, and Fraunces' variable axes made it
-  the heaviest payload of the five. Space Grotesk already does the "built by
-  someone who ships" job better than a serif can, so it does all of it now.
-  JetBrains Mono stays for numeric readouts, time axes and keyboard keys —
-  never for labels.
+  Fraunces was briefly dropped when this page loaded five families, on the
+  roadmap's "pick two" line. Meg wants it kept, which is also what CLAUDE.md
+  says about the site's typefaces, so it is back on exactly the headings it
+  had before. Caveat stayed retired: it existed for one signature, which is
+  now set as a plain sign-off.
 */
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+  axes: ["SOFT", "opsz"],
+});
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -194,7 +198,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-fog={fog ? "1" : undefined}
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
         {/*

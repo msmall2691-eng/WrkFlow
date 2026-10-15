@@ -31,7 +31,7 @@ export default function Services() {
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-14 max-w-3xl">
-          <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+          <h2 className="display-serif text-2xl text-ink sm:text-3xl md:text-4xl">
             What I can help you with.
           </h2>
           {/* main's newer, broader audience line, kept in first person per
@@ -79,7 +79,7 @@ export default function Services() {
 
               <div className="lg:col-span-5">
                 <p className="font-mono text-xs text-faint">{s.index}</p>
-                <h3 className="display mt-2 text-xl text-ink md:text-2xl">
+                <h3 className="display-serif mt-2 text-xl text-ink md:text-2xl">
                   {s.title}
                 </h3>
                 <p className="mt-3 text-[1rem] leading-relaxed text-muted">

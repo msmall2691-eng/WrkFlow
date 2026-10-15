@@ -73,7 +73,7 @@ export default function Approach() {
                     <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-base font-mono text-xs text-faint transition-all duration-300 group-hover:border-signal group-hover:bg-signal/10 group-hover:text-signal">
                       {step.index}
                     </span>
-                    <h3 className="display mt-5 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
+                    <h3 className="display-serif mt-5 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
                       {step.title}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">

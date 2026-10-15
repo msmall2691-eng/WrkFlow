@@ -38,7 +38,7 @@ export default function WelcomeBookPage() {
                               <div className="mb-5 flex items-center text-ink">
                   <LinxMark className="h-4 w-auto" />
                 </div>
-                              <h1 className="display text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
+                              <h1 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
                   {wb.hero.headline}
                 </h1>
                               <p className="mt-6 max-w-xl text-[1rem] leading-relaxed text-muted">
@@ -158,7 +158,7 @@ export default function WelcomeBookPage() {
               {wb.steps.map((step) => (
                 <div key={step.n} className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6">
                     <span className="font-mono text-sm text-signal">{step.n}</span>
-                    <h3 className="display mt-3 text-lg text-ink md:text-xl">{step.title}</h3>
+                    <h3 className="display-serif mt-3 text-lg text-ink md:text-xl">{step.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">{step.body}</p>
                   </div>
               ))}

@@ -96,6 +96,7 @@
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
 
   /* Motion */
   /* The one curve. Changing this value changes every transition on the
@@ -534,8 +535,15 @@ body {
   line-height: 1.02;
 }
 
-/* .display-serif lived here — Fraunces, on 20 headings. Space Grotesk
-   (.display) does all of it now; see the font note in app/layout.tsx. */
+/* The editorial heading face. Paired with .display (Space Grotesk), which
+   keeps the hero and the UI. */
+.display-serif {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+  line-height: 1.04;
+}
 
 /* Soft elevation for cards on the light surface — hairline + faint lift */
 .elevate {

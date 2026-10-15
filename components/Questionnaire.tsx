@@ -417,7 +417,7 @@ function Intro({
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <div ref={headingRef} tabIndex={-1} className="outline-none">
-        <h2 className="display text-[2rem] leading-[1.12] text-balance text-ink sm:text-4xl">
+        <h2 className="display-serif text-[2rem] leading-[1.12] text-balance text-ink sm:text-4xl">
           Let&apos;s scope your project.
         </h2>
       </div>
@@ -495,7 +495,7 @@ function StepScreen({
         <span className="ml-2 font-normal text-faint">· {step.timeHint}</span>
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
-        <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">{step.title}</h2>
+        <h2 className="display-serif text-2xl text-ink sm:text-3xl md:text-4xl">{step.title}</h2>
       </div>
       {step.intro && (
         <p className="mt-3 text-[15px] leading-relaxed text-muted">{step.intro}</p>
@@ -894,7 +894,7 @@ function SuccessScreen({ name }: { name: string }) {
 
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
-      <h2 className="display text-[2rem] text-balance text-ink sm:text-4xl">
+      <h2 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl">
         {first ? `Thanks, ${first}.` : "Thanks — that's everything."}
       </h2>
       <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
@@ -1126,7 +1126,7 @@ function PreviewScreen({
         <span className="ml-2 font-normal text-faint">· about a minute</span>
       </p>
       <div ref={headingRef} tabIndex={-1} className="outline-none" aria-live="polite">
-        <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+        <h2 className="display-serif text-2xl text-ink sm:text-3xl md:text-4xl">
           Your first look is building now.
         </h2>
       </div>

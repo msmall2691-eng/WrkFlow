@@ -57,9 +57,10 @@ export default function Deployments() {
 
         {alsoRunning.length > 0 && (
           <>
-            <h3 className="mt-16 text-sm font-semibold text-ink">
-              Also running in production
-            </h3>
+            {/* Neutral heading: this row mixes client sites with private
+                internal systems, so it can't claim one thing about all of
+                them. The per-card label does that job instead. */}
+            <h3 className="mt-16 text-sm font-semibold text-ink">More work</h3>
             <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {alsoRunning.map((w) => (
                 <article
@@ -74,12 +75,17 @@ export default function Deployments() {
                       sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
                       className="object-cover object-top"
                     />
-                    <span className="absolute right-3 top-3 rounded-full border border-line bg-surface/90 px-2.5 py-1 text-xs text-faint backdrop-blur">
-                      In production
-                    </span>
+                    {w.tier === "private" && (
+                      <span className="absolute right-3 top-3 rounded-full border border-line bg-surface/90 px-2.5 py-1 text-xs text-faint backdrop-blur">
+                        In production
+                      </span>
+                    )}
                   </div>
                   <div className="p-5">
-                    <h4 className="display text-lg text-ink">{w.title}</h4>
+                    <p className="text-xs text-faint">{w.tag}</p>
+                    <h4 className="display-serif mt-1.5 text-lg text-ink">
+                      {w.title}
+                    </h4>
                     <p className="mt-2 text-sm leading-relaxed text-muted">
                       {w.blurb}
                     </p>
@@ -122,7 +128,7 @@ function FeatureCard({ w }: { w: WorkItem }) {
 
       <div className="flex flex-col justify-center gap-3 p-6 md:p-8">
         <p className="text-xs text-faint">{w.tag}</p>
-        <h3 className="display text-xl text-ink md:text-2xl">{w.title}</h3>
+        <h3 className="display-serif text-xl text-ink md:text-2xl">{w.title}</h3>
         <p className="text-sm leading-relaxed text-muted">{w.blurb}</p>
         {w.stack && (
           <div className="mt-1 flex flex-wrap gap-1.5">

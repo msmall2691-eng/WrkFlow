@@ -163,7 +163,7 @@ export default function FounderNote() {
               {founderNote.paragraphs.map((para, i) => (
                 <p
                   key={i}
-                  className="text-[1.0625rem] leading-[1.7] text-ink"
+                  className="[font-family:var(--font-serif)] text-[1.0625rem] leading-[1.7] text-ink"
                 >
                   {para}
                 </p>
@@ -191,7 +191,7 @@ export default function FounderNote() {
               {founderBio.paragraphs.map((para, i) => (
                 <p
                   key={i}
-                  className="text-[1.0625rem] leading-[1.7] text-ink"
+                  className="[font-family:var(--font-serif)] text-[1.0625rem] leading-[1.7] text-ink"
                 >
                   {para}
                 </p>
@@ -225,7 +225,7 @@ export default function FounderNote() {
             {founderPhilosophy.lines.map((line) => (
               <p
                 key={line}
-                className="text-[1rem] italic leading-relaxed text-muted"
+                className="[font-family:var(--font-serif)] text-[1rem] italic leading-relaxed text-muted"
               >
                 {line}
               </p>
