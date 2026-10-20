@@ -33,6 +33,21 @@ const host = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "")
 
 export default function ProofReel() {
   const [index, setIndex] = useState(0);
+  /*
+    Which frames exist in the DOM.
+
+    All of them used to, stacked and crossfaded by opacity, which meant the
+    first paint of the homepage waited behind seven screenshots instead of
+    one. Lighthouse called 81 KiB of that waste and it also cost six image
+    decodes on the main thread during hydration, which is exactly when the
+    hero is trying to paint.
+
+    So frames mount as they are needed and then stay: the set only grows,
+    because a frame that has been shown has to remain for the crossfade out
+    of it, and by the time the reel has cycled the visitor has been here
+    long enough that nothing is competing with load.
+  */
+  const [shown, setShown] = useState<readonly number[]>([0]);
   /* Paused covers all three stop conditions; `reduced` disables the timer
      outright so a reduced-motion visitor never gets a hard cut. */
   const [paused, setPaused] = useState(false);
@@ -46,6 +61,21 @@ export default function ProofReel() {
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
   }, []);
+
+  /*
+    Keep the mounted set one frame ahead of what is showing, so a crossfade
+    never waits on a download. The first pass of this effect adds frame two
+    after hydration rather than during it.
+  */
+  useEffect(() => {
+    if (FRAMES.length < 2) return;
+    const next = (index + 1) % FRAMES.length;
+    setShown((prev) =>
+      prev.includes(index) && prev.includes(next)
+        ? prev
+        : [...new Set([...prev, index, next])],
+    );
+  }, [index]);
 
   /* Off-screen means off. A hero that keeps crossfading while the visitor
      reads the pricing section is just burning their battery. */
@@ -96,7 +126,8 @@ export default function ProofReel() {
         </div>
 
         <div className="relative aspect-[16/10]">
-          {FRAMES.map((w, i) => (
+          {FRAMES.map((w, i) =>
+            !shown.includes(i) ? null : (
             <Image
               key={w.shot}
               src={w.shot as string}
@@ -109,7 +140,8 @@ export default function ProofReel() {
                 i === index ? "opacity-100" : "opacity-0"
               }`}
             />
-          ))}
+            ),
+          )}
         </div>
       </div>
 

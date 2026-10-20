@@ -1,6 +1,7 @@
 import Logo from "./Logo";
 import Link from "next/link";
 import FooterWordmark from "./FooterWordmark";
+import WhenNear from "./WhenNear";
 import CopyLink from "./CopyLink";
 import LinxMark from "./LinxMark";
 import SelfScore from "./SelfScore";
@@ -20,7 +21,12 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-line py-16 md:py-20">
       {/* Giant M STUDIO the swell reveals through — fills the dead middle */}
-      <FooterWordmark />
+      {/* 2D canvas glow clipped to the letterforms. Same reasoning as the
+          aurora: it is the last thing on the page, so it has no business
+          running during the first paint. */}
+      <WhenNear>
+        <FooterWordmark />
+      </WhenNear>
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">

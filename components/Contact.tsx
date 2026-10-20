@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AuroraSwell from "./AuroraSwell";
+import WhenNear from "./WhenNear";
 import BookCall from "./BookCall";
 import { trackLead } from "@/lib/track";
 import { resumeUrl } from "@/lib/content";
@@ -82,8 +83,15 @@ export default function Contact() {
       id="contact"
       className="relative overflow-hidden border-t border-line bg-[var(--hero-bg)] py-16 md:py-24"
     >
-      {/* Aurora Swell closer — same swell as the hero, bookending the page */}
-      <AuroraSwell intensity={0.85} speed={0.85} />
+      {/*
+        Aurora Swell closer. Mounted only once the visitor is near it: it is
+        a WebGL shader behind a 72%-opaque overlay at the very bottom of the
+        page, and compiling it during hydration delayed the hero's paint at
+        the top. Unchanged once on screen.
+      */}
+      <WhenNear>
+        <AuroraSwell intensity={0.85} speed={0.85} />
+      </WhenNear>
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[var(--hero-bg)]/72"

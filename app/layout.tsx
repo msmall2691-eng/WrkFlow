@@ -29,7 +29,7 @@ const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   display: "swap",
-  axes: ["SOFT", "opsz"],
+  axes: ["opsz"],
 });
 const inter = Inter({
   subsets: ["latin"],
