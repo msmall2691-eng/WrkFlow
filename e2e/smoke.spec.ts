@@ -170,3 +170,61 @@ test("the portfolio claims a named person who made the work", async ({ page }) =
       `${w.name} should credit her as creator`,
     ).toBe(person?.["@id"]);
 });
+
+/*
+  The analytics beacons.
+
+  This exists because the site shipped for months with `<Analytics />`
+  mounted, four tracked events wired up, and zero data collected. That
+  failure was at the Vercel project level, not in the code, but the code has
+  a failure mode that looks exactly the same from the outside: `script-src`
+  carries 'strict-dynamic', which makes the browser ignore `'self'`, so a
+  same-origin src is NOT what allows these scripts. They are allowed only by
+  inheriting trust from the nonce-allowed bundle that appends them. Change
+  the CSP, or how Next emits its own scripts, and the beacons stop loading
+  while every page still renders perfectly.
+
+  So the assertion is "the browser was willing to fetch them". Locally and
+  in CI `/_vercel/*` has no handler and returns HTML, so the scripts cannot
+  execute — that is expected and is not what this guards. A CSP block is
+  different in kind: it stops the request before it is made and fires a
+  securitypolicyviolation naming script-src.
+*/
+test("the analytics beacons are not blocked by the CSP", async ({ page }) => {
+  const attempted: string[] = [];
+  page.on("request", (r) => {
+    if (r.url().includes("/_vercel/")) attempted.push(new URL(r.url()).pathname);
+  });
+
+  await page.addInitScript(() => {
+    (window as unknown as { __cspv: unknown[] }).__cspv = [];
+    document.addEventListener("securitypolicyviolation", (e) =>
+      (window as unknown as { __cspv: unknown[] }).__cspv.push({
+        blocked: e.blockedURI,
+        directive: e.violatedDirective,
+      }),
+    );
+  });
+
+  await page.goto("/");
+  /* Both components inject on mount, after hydration. */
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          document.querySelectorAll('script[src*="/_vercel/"]').length,
+      ),
+    )
+    .toBe(2);
+
+  expect(
+    attempted.sort(),
+    "both beacons should be fetched, not blocked before the request",
+  ).toEqual(["/_vercel/insights/script.js", "/_vercel/speed-insights/script.js"]);
+
+  const violations = await page.evaluate(
+    () => (window as unknown as { __cspv: { blocked: string; directive: string }[] }).__cspv,
+  );
+  const scriptBlocks = violations.filter((v) => v.directive.startsWith("script-src"));
+  expect(scriptBlocks, "the CSP should not block the analytics beacons").toEqual([]);
+});

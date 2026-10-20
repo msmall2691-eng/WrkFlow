@@ -5,6 +5,7 @@ import "./globals.css";
 import BackToTop from "@/components/BackToTop";
 import RegisterSW from "@/components/RegisterSW";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getFog } from "@/lib/fog";
 import { siteGraph, SITE_URL } from "@/lib/schema";
 
@@ -174,7 +175,26 @@ export default async function RootLayout({
         {children}
         <BackToTop />
         <RegisterSW />
+        {/*
+          Web Analytics (pageviews + the four tracked events in lib/track.ts)
+          and Speed Insights (real-visitor Core Web Vitals).
+
+          Both inject their beacon from `document.createElement` inside the
+          client bundle rather than as a tag we render, so neither takes a
+          `nonce` prop. Under this site's `script-src … 'strict-dynamic'`
+          that is fine, and only because of it: 'strict-dynamic' makes the
+          browser ignore `'self'`, so a same-origin src is not what permits
+          these — inheriting trust from the nonce-allowed bundle that
+          appends them is. An e2e test asserts both load without a CSP
+          violation, because the failure mode here is silence: a blocked
+          beacon collects nothing and reports nothing, which is how this
+          site ran with analytics code and no analytics data.
+
+          The code is only half of it. Each needs enabling on the Vercel
+          project too, or these components post to a 404.
+        */}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
