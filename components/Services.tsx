@@ -1,161 +1,137 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
-import Reveal from "./Reveal";
 import ProjectVisual from "./ProjectVisual";
 import { services } from "@/lib/content";
 
 /*
-  Services — every discipline M Studio works in, as an expandable list.
-  Collapsed, each row is scannable (title, tagline, concrete "kinds" chips).
-  Expanded, it shows the full case for it: what it is, the pain it solves,
-  what changes after, and a real example. One open at a time keeps the
-  section from turning into a wall of text.
-*/
-/*
-  Specific things we've built (or can build) — a quick-scan companion to the
-  deeper per-service breakdown above, not a duplicate of it.
-*/
+  Services — three wide rows, each led by a real screenshot.
 
+  This was an accordion: a narrow list on the left with roughly 700px of
+  empty space beside it at 1440px, and the screenshot — the only evidence in
+  the whole section — hidden behind a click, then rendered at 400px wide on a
+  1440px screen. One row open at a time meant at most one of the three
+  services was ever visible.
+
+  Now all three are open by default and the evidence leads. That costs
+  vertical space and is worth it: the old collapsed state was shorter because
+  it showed nothing. No `useState`, so this is a server component again.
+
+  Order is deliberate — websites, then software, then integrations. It used
+  to lead with integrations, which is the thing the fewest visitors arrive
+  looking for.
+*/
 export default function Services() {
-  const [openId, setOpenId] = useState<string | null>(null);
-
   return (
-    <section id="services" className="relative overflow-hidden border-t border-line py-20 md:py-24">
+    <section
+      id="services"
+      className="relative overflow-hidden border-t border-line py-20 md:py-24"
+    >
       <div
         aria-hidden="true"
         className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
       />
       <div className="relative mx-auto max-w-6xl px-6">
-        <div className="mb-12 max-w-3xl">
-          <Reveal>
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              Services
-            </p>
-          </Reveal>
-          <Reveal>
-            <h2 className="display-serif text-[1.6rem] text-ink sm:text-3xl md:text-4xl">
-              What M Studio can help with.
-            </h2>
-            <p className="mt-4 text-sm leading-relaxed text-muted">
-              For small businesses, independent professionals, and teams.
-              A new website, a platform switch, or one process that needs to work better.
-            </p>
-          </Reveal>
-        </div>
-
-        <div className="space-y-3">
-          {services.map((s, i) => {
-            const isOpen = openId === s.id;
-            return (
-              <Reveal key={s.id} delay={i * 40}>
-                <article className="overflow-hidden rounded-2xl border border-line bg-surface/60 transition-colors duration-300 hover:border-signal/40">
-                  <button
-                    type="button"
-                    onClick={() => setOpenId(isOpen ? null : s.id)}
-                    aria-expanded={isOpen}
-                    className="flex w-full items-start gap-4 p-6 text-left"
-                  >
-                    <span className="mt-0.5 shrink-0 font-mono text-xs text-faint">{s.index}</span>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-4">
-                        <h3 className="display-serif text-lg text-ink md:text-xl">{s.title}</h3>
-                        <span
-                          aria-hidden="true"
-                          className={`shrink-0 text-lg text-signal transition-transform duration-300 ${isOpen ? "rotate-45" : ""}`}
-                        >
-                          +
-                        </span>
-                      </div>
-                      <p className="mt-1 text-sm leading-relaxed text-muted">{s.tagline}</p>
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {s.kinds.map((k) => (
-                          <span
-                            key={k}
-                            className="rounded-full border border-line bg-base px-2.5 py-1 text-xs text-faint"
-                          >
-                            {k}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </button>
-
-                  {isOpen && (
-                    <div className="grid gap-5 border-t border-line px-6 pb-6 pt-5 md:grid-cols-2">
-                      {/* Two labeled boxes, one sentence each — the visual
-                          example beside them carries the rest. */}
-                      <div className="grid content-start gap-3">
-                        <div className="rounded-xl border border-line bg-base/60 p-4">
-                          <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
-                            The problem
-                          </p>
-                          <p className="mt-2 text-sm leading-relaxed text-muted">{s.pain}</p>
-                        </div>
-                        <div className="rounded-xl border border-signal/30 bg-signal/[0.06] p-4">
-                          <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
-                            After
-                          </p>
-                          <p className="mt-2 text-sm leading-relaxed text-ink">{s.outcome}</p>
-                        </div>
-                        <a
-                          href="#contact"
-                          className="mt-1 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
-                        >
-                          Talk through your idea →
-                        </a>
-                      </div>
-                      <div className="overflow-hidden rounded-xl border border-line">
-                        <div className="relative aspect-[4/3] bg-base">
-                          {s.example.shot ? (
-                            <Image
-                              src={s.example.shot}
-                              alt={s.example.client}
-                              fill
-                              sizes="(min-width: 768px) 400px, 100vw"
-                              className="object-cover object-top"
-                            />
-                          ) : (
-                            <ProjectVisual type={s.example.visual!} />
-                          )}
-                        </div>
-                        <div className="p-4">
-                          <p className="font-mono text-[10px] uppercase tracking-widest text-faint">
-                            {s.example.client}
-                          </p>
-                          <p className="mt-1.5 text-sm text-muted">{s.example.built}</p>
-                          <p className="mt-2 text-sm font-medium text-signal">{s.example.result}</p>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </article>
-              </Reveal>
-            );
-          })}
-        </div>
-
-        {/* The "Specifically" chip cloud lived here. With three cards instead
-            of eight, the kinds chips inside each card already say the same
-            things in the place they belong (brief A3). */}
-
-        {/* A "Who it's for" row of seven chips used to sit here — service
-            companies, trades, property managers, STR owners, founders,
-            organizations, personal projects. Between them they excluded
-            nobody, so they informed nobody, and they were seven more things
-            to read on the way to the price. */}
-
-        <Reveal delay={240}>
-          <p className="mt-8 text-sm text-muted">
-            Or start from{" "}
-            <a href="/marketplace" className="text-signal transition-opacity hover:opacity-80">
-              M Linx, the premade line →
-            </a>
+        <div className="mb-14 max-w-3xl">
+          <h2 className="display-serif text-2xl text-ink sm:text-3xl md:text-4xl">
+            What I can help you with.
+          </h2>
+          {/* main's newer, broader audience line, kept in first person per
+              CLAUDE.md. */}
+          <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
+            For small businesses, independent professionals, and teams. A new
+            website, a platform switch, or one process that needs to work
+            better.
           </p>
-        </Reveal>
+        </div>
+
+        <div className="flex flex-col gap-14 md:gap-20">
+          {services.map((s, i) => (
+            <article
+              key={s.id}
+              className="grid items-center gap-6 lg:grid-cols-12 lg:gap-12"
+            >
+              {/* The evidence. Alternates side at lg so three rows stay
+                  scannable without needing dividers between them. */}
+              <div
+                className={`lg:col-span-7 ${i % 2 ? "lg:order-last" : ""}`}
+              >
+                <div className="overflow-hidden rounded-2xl border border-line bg-base shadow-[0_24px_60px_-34px_rgba(11,23,34,0.35)]">
+                  <div className="relative aspect-[16/10]">
+                    {/* Not every service has a capture yet — CRM setup and
+                        data migration are real work with nothing photogenic
+                        to screenshot, so they fall back to the designed
+                        panel rather than an empty frame. Never substitute
+                        someone else's screen for a missing one. */}
+                    {s.example.shot ? (
+                      <Image
+                        src={s.example.shot}
+                        alt={`${s.example.client} — ${s.example.built}`}
+                        fill
+                        sizes="(min-width: 1024px) 660px, 100vw"
+                        className="object-cover object-top"
+                      />
+                    ) : (
+                      <ProjectVisual type={s.example.visual!} />
+                    )}
+                  </div>
+                </div>
+                <p className="mt-3 text-xs text-faint">{s.example.client}</p>
+              </div>
+
+              <div className="lg:col-span-5">
+                <p className="font-mono text-xs text-faint">{s.index}</p>
+                <h3 className="display-serif mt-2 text-xl text-ink md:text-2xl">
+                  {s.title}
+                </h3>
+                <p className="mt-3 text-[1rem] leading-relaxed text-muted">
+                  {s.tagline}
+                </p>
+
+                {/* Was two bordered, labeled boxes ("The problem" / "After") —
+                    four extra lines of chrome for two sentences. Same two
+                    sentences, a third of the vertical cost. */}
+                <p className="mt-5 text-sm leading-relaxed text-muted">
+                  {s.pain}
+                </p>
+                <p className="mt-3 border-l-2 border-signal/50 pl-4 text-sm leading-relaxed text-ink">
+                  {s.outcome}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-1.5">
+                  {s.kinds.map((k) => (
+                    <span
+                      key={k}
+                      className="rounded-full border border-line bg-base px-2.5 py-1 text-xs text-faint"
+                    >
+                      {k}
+                    </span>
+                  ))}
+                </div>
+
+                <p className="mt-5 text-sm font-medium text-signal">
+                  {s.example.result}
+                </p>
+                <a
+                  href="#work"
+                  className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
+                >
+                  See an example
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-16 text-sm text-muted">
+          Or start from{" "}
+          <a
+            href="/marketplace"
+            className="text-signal transition-opacity hover:opacity-80"
+          >
+            M Linx, the premade line →
+          </a>
+        </p>
       </div>
     </section>
   );
 }
-

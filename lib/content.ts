@@ -29,7 +29,7 @@ export const founderBio = {
     "I love figuring things out: learning a platform, organizing the information, and turning an idea into something useful. M Studio grew from that interest and now helps businesses with websites, platform setup, migrations, integrations, and custom tools.",
     "M Studio is based in Maine and works remotely with businesses anywhere. Alongside the studio, I am studying Business Analytics and AI at the University of Southern Maine with a minor in Computer Science. Outside of work and school, you will usually find me with the kids and our dog, near the water. Fishing if the day allows.",
   ],
-  detail: "The Maine Cleaning Company is the proving ground: 1,000+ customers and 7,000+ service visits.",
+  detail: "The Maine Cleaning Company is the proving ground: $1M+ collected and 4,900+ service visits since 2023.",
   signature: "— Meg",
 } as const;
 
@@ -83,10 +83,13 @@ export const studioStats = [
 export const provingGround = {
   label: "Built from real business — The Maine Cleaning Co.",
   stats: [
-    { value: "10 yrs", label: "running a business" },
-    { value: "1,000+", label: "customers served" },
-    { value: "7,000+", label: "service visits" },
-    { value: "$1M+", label: "operations managed" },
+    // Verified Oct 2026 against Jobber invoices and visit exports
+    // (Mar 2023 – Oct 2026). Pre-2023 years are not in any system, so
+    // nothing here counts them. Founded 2018.
+    { value: "8 yrs", label: "running the business" },
+    { value: "$1M+", label: "collected since 2023" },
+    { value: "4,900+", label: "service visits since 2023" },
+    { value: "63%", label: "of clients rebooked" },
   ],
 } as const;
 
@@ -100,6 +103,30 @@ export const testimonial: { quote: string; name: string; business: string } = {
   name: "",
   business: "",
 };
+
+/*
+  Downloadable résumé.
+
+  Set this to the public path once the PDF is in /public, e.g.
+  "/megan-small-resume.pdf". While it is "", every résumé link on the site
+  renders nothing at all rather than 404ing — the same gate the testimonial
+  and the case-study results use.
+*/
+export const resumeUrl = "";
+
+/*
+  Meg's own public profiles, for `sameAs` on the Person node in structured
+  data. An answer engine asked "who is Megan Small" needs at least one
+  corroborating profile to bind this site to a real person; with none, the
+  Person node is just an assertion the site makes about itself.
+
+  TODO(Meg) — paste the full https URLs of any you want linked, e.g.
+  "https://www.linkedin.com/in/…", "https://github.com/…". While this is
+  empty no `sameAs` is emitted at all, rather than a guessed URL: a wrong
+  profile link is worse than none, because it points a reader at someone
+  who is not you.
+*/
+export const profiles: readonly string[] = [];
 
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =
@@ -209,7 +236,7 @@ export const services: Service[] = [
       "client": "Vacation rental booking sync",
       "built": "Rental bookings automatically appear on our cleaning schedule for turnover planning.",
       "result": "One less booking to enter by hand.",
-      "shot": "/shots/brightbase-turnovers.png"
+      "shot": "/shots/brightbase-crew-schedule.png"
     }
   },
   {
@@ -227,8 +254,7 @@ export const services: Service[] = [
     "example": {
       "client": "Cleaning operations dashboard",
       "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
-      "result": "Daily operations brought into one view.",
-      "shot": "/shots/brightbase-dashboard.png"
+      "result": "Daily operations brought into one view."
     }
   }
 ];
@@ -301,6 +327,12 @@ export type WorkItem = {
   client?: boolean;
   /** A single REAL outcome number (e.g. "0 double-bookings since launch"). Never fabricate—leave undefined until Meg confirms. */
   metric?: string;
+  /**
+   * Slug of the `caseStudies` entry that expands this card. Set it and the
+   * card links INWARD to the case study; the external "visit live site" link
+   * then lives on that page, not on the card. One card, one destination.
+   */
+  caseStudy?: string;
 };
 
 /*
@@ -345,8 +377,9 @@ export const work: WorkItem[] = [
     tier: "site",
     tag: "Website + system · our own company",
     title: "The Maine Cleaning Co.",
+    caseStudy: "maine-cleaning-co",
     blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
-    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
+    stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
     url: "https://maineclean.co",
     live: true,
     shot: "/shots/maineclean.png",
@@ -364,6 +397,7 @@ export const work: WorkItem[] = [
     tier: "site",
     tag: "Client work",
     title: "The Remote Admin",
+    caseStudy: "the-remote-admin",
     blurb: "Full marketing site for a Southern-NH admin-services business—designed, built, and shipped end to end.",
     stack: ["Next.js", "Vercel"],
     url: "https://the-remote-admin.com",
@@ -385,6 +419,7 @@ export const work: WorkItem[] = [
     tier: "product",
     tag: "Product · designed & built by M Studio",
     title: "linx",
+    caseStudy: "linx",
     blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
     stack: ["Python", "Stripe Connect", "Railway"],
     // Replaced the Autopilot demo (Oct 2026), whose page carried invented
@@ -401,8 +436,7 @@ export const work: WorkItem[] = [
     blurb: "Jobs, revenue, occupancy & crew in one live view.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "4 spreadsheets and a group chat",
-    status: "In daily production since 2025",
-    shot: "/shots/brightbase-dashboard.png",
+    status: "In daily production since 2026",
   },
   {
     tier: "private",
@@ -412,7 +446,7 @@ export const work: WorkItem[] = [
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
     replaced: "A shared Google Calendar and text threads",
     status: "In daily production",
-    shot: "/shots/brightbase-turnovers.png",
+    shot: "/shots/brightbase-crew-schedule.png",
   },
   {
     tier: "private",
@@ -423,6 +457,275 @@ export const work: WorkItem[] = [
     replaced: "~20 min of manual quoting per lead",
     status: "Production, approval-gated",
     shot: "/shots/instant-estimate.png",
+  },
+];
+
+/*
+  Case studies — the deep version of a Work card, at /work/[slug].
+
+  The site could say it builds things but never showed one project all the
+  way through, which is the single biggest gap between "looks capable" and
+  "has done this". A Work card now links here, and the external "visit live
+  site" link moved onto this page: one card, one destination, and the deeper
+  page is the better first click.
+
+  Two blocks are deliberately EMPTY and render NOTHING while empty, exactly
+  as `testimonial` above does: `results` and `quote`. There is not one
+  confirmed client outcome number on this site — `WorkItem.metric` is unset
+  on all seven items, and `provingGround` is explicitly The Maine Cleaning
+  Co's own operating history, not client KPIs. A case study is the easiest
+  place in the world to get caught inventing a number, so these stay empty
+  until Meg confirms real words. The page is complete without them.
+
+  `problem` is the same: empty until she writes it in her own voice.
+
+  Everything non-empty below is lifted from copy already shipping in this
+  file, not newly written claims. Note the absence of `as const` — it would
+  narrow "" and [] to literal types and make every `{x && ...}` gate dead
+  code, which is why `testimonial` is annotated rather than asserted too.
+*/
+
+/** A real capture in /public/shots. There are no video assets in the repo. */
+export type CaseStudyShot = {
+  src: string;
+  /** What the screen actually shows, for someone who cannot see it. */
+  alt: string;
+};
+
+/**
+ * One "What I built" bullet. Drives the pinned scroll sequence: each bullet
+ * swaps the pinned screen. `shot` is optional — a bullet with no capture yet
+ * reads as text, and the sequence falls back to a plain stack.
+ */
+export type CaseStudyBuild = {
+  label: string;
+  body: string;
+  shot?: CaseStudyShot;
+};
+
+/** One tile in the Result block. REAL, CONFIRMED numbers only. */
+export type CaseStudyResult = {
+  value: string;
+  label: string;
+  /** Whose number it is, when that isn't self-evident. Mirrors `provingGround.label`. */
+  attribution?: string;
+};
+
+/** A node in the "How it works" chain. Same shape WorkflowDemo takes. */
+export type CaseStudyFlowNode = { icon: string; label: string };
+
+/**
+ * A measured Lighthouse run against the live site. REAL RUNS ONLY — generated
+ * by `npm run measure`, never typed by hand. `when` and `tool` render next to
+ * the scores so a reader can see how old they are and reproduce them, which
+ * is the entire reason they are worth showing.
+ */
+export type CaseStudyMeasured = {
+  url: string;
+  /** ISO date of the run. */
+  when: string;
+  /** e.g. "Lighthouse 12.8.2 · mobile". */
+  tool: string;
+  performance: number;
+  accessibility: number;
+  bestPractices: number;
+  seo: number;
+};
+
+/** One phase of how the work actually ran. */
+export type CaseStudyPhase = { phase: string; body: string };
+
+export type CaseStudy = {
+  /** URL segment, and the key a Work card points at. */
+  slug: string;
+  /** Matches the `WorkItem.title` it expands on. */
+  title: string;
+  /** Eyebrow — same vocabulary as `WorkItem.tag`. */
+  tag: string;
+  /** One line. No numbers unless they are real. */
+  outcome: string;
+  /** Live URL. The external link moved off the Work card and onto this page. */
+  url?: string;
+  hero: CaseStudyShot;
+  /** 2-3 sentences in Meg's words. "" until she writes it; the block is skipped. */
+  problem: string;
+  built: CaseStudyBuild[];
+  /** What connects to what, left to right. [] renders no diagram. */
+  flow: CaseStudyFlowNode[];
+  /** Reuse strings from `stackColumns` or the card's own `stack`. */
+  stack: string[];
+  /** REAL numbers only. [] until Meg confirms — the block renders nothing. */
+  results: CaseStudyResult[];
+  /** Owner's words. Renders nothing while `quote` is "". */
+  quote: { quote: string; name: string; business: string };
+  /**
+   * What Meg owned on this project, in one line. A hiring manager reads this
+   * before anything else: it is the difference between "a site exists" and
+   * "this person took it from request to launch".
+   */
+  role: string;
+  /** How the work ran, in order. [] renders nothing. */
+  process: CaseStudyPhase[];
+  /*
+    What this thing IS, in schema.org's vocabulary, for the CreativeWork node
+    on the case study page. "WebSite" for a site, "WebApplication" for
+    something a user logs into and operates. Keep it accurate: claiming an
+    app where there is a brochure site is the structured-data version of
+    inventing a number.
+  */
+  schemaKind: "WebSite" | "WebApplication";
+};
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: "maine-cleaning-co",
+    title: "The Maine Cleaning Co.",
+    tag: "Website + system · our own company",
+    outcome: "Customers can get an estimate and book online.",
+    url: "https://maineclean.co",
+    hero: {
+      src: "/shots/maineclean.png",
+      alt: "The maineclean.co home page: a cleaning company site with instant estimate and online booking.",
+    },
+    // Drafted from Meg's own cover-letter wording and approved by her (Oct 2026).
+    // Public-safe on purpose: no revenue, spend, client or staff details.
+    problem:
+      "Running the cleaning company, I was paying for a dozen tools that didn't talk to each other: one for quotes and invoices, another for the crew schedule and time clock, others for the phone, booking and automation. Every handoff between them was done by hand. I mapped how a job actually moves from request to paid, and built one system around it.",
+    built: [
+      {
+        label: "Marketing and booking site",
+        body: "Marketing and booking site, wired straight into the back-office system that runs the company.",
+        shot: {
+          src: "/shots/maineclean.png",
+          alt: "The public site, with the quote request and booking flow.",
+        },
+      },
+      {
+        label: "Instant estimate",
+        body: "Reads requests, drafts a quote, and queues a reply for approval.",
+        shot: {
+          src: "/shots/instant-estimate.png",
+          alt: "The instant estimate screen, showing a drafted quote awaiting approval.",
+        },
+      },
+      {
+        label: "Crew workspace",
+        body: "A phone workspace for the crew, separate from the office: today's work, cleaning tips, availability, time off, paperwork and what each person is owed.",
+        shot: {
+          src: "/shots/brightbase-crew-tools.png",
+          alt: "The crew's Today screen with a cleaning tip, and the Me screen with availability, time off, paperwork and payouts. Names are blurred.",
+        },
+      },
+      {
+        label: "Turnover scheduling",
+        body: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
+        shot: {
+          src: "/shots/brightbase-crew-schedule.png",
+          alt: "The crew's phone view: an open turnover to request, and the month schedule. Addresses and pay are blurred.",
+        },
+      },
+    ],
+    flow: [
+      { icon: "🌐", label: "Site" },
+      { icon: "🗂️", label: "Back office" },
+      { icon: "📅", label: "Schedule" },
+      { icon: "💬", label: "Customer" },
+    ],
+    stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
+    // Confirmed Oct 2026: 12 paid tools covered (bank records), 4,028 tests
+    // counted in the BrightBase repo. Business financials stay off the site.
+    results: [
+      { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
+      { value: "4,000+", label: "automated tests run on every change" },
+      { value: "Daily", label: "in use by the office and field crews since 2026" },
+    ],
+    quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+    role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",
+    schemaKind: "WebSite",
+    process: [
+      { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
+      { phase: "Requirements", body: "Mapped every step from request to paid, documented where each tool fell short, and wrote the requirements and acceptance criteria before building." },
+      { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
+      { phase: "Build", body: "React front end on a Node API for the public site, a Python · FastAPI back office on Postgres, Stripe for payment and Twilio for messaging." },
+      { phase: "Phased rollout", body: "Shipped in small, tested steps while the old tools kept running. The crew app went out in five phases, each in use before the next began." },
+      { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2026." },
+    ],
+  },
+  {
+    slug: "linx",
+    title: "linx",
+    tag: "Product · designed & built by M Studio",
+    outcome:
+      "Hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+    url: "https://linx-production-6edf.up.railway.app",
+    hero: {
+      src: "/shots/linx.png",
+      alt: "The linx marketplace: a cleaning marketplace for Southern Maine.",
+    },
+    problem: "", // TODO(Meg)
+    built: [
+      {
+        label: "Post a turnover",
+        body: "A host posts a turnover and vetted local cleaners bid on it.",
+        // TODO(Meg) — capture needed. Reads as text until then.
+      },
+      {
+        label: "Payment through Stripe",
+        body: "Payment releases through Stripe Connect once the job is done.",
+      },
+    ],
+    flow: [
+      { icon: "🏠", label: "Host posts" },
+      { icon: "🧹", label: "Cleaners bid" },
+      { icon: "✅", label: "Job done" },
+      { icon: "💳", label: "Stripe releases" },
+    ],
+    stack: ["Python", "Stripe Connect", "Railway"],
+    results: [], // TODO(Meg)
+    quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+    role: "Product design and build: the marketplace, the bidding flow, and the Stripe Connect payout path.",
+    schemaKind: "WebApplication",
+    process: [
+      { phase: "Discovery", body: "The turnover problem came out of scheduling cleaners for short-term rentals week after week." },
+      { phase: "Design", body: "Two sides of a marketplace: hosts posting work, cleaners bidding on it, each needing a different view of the same job." },
+      { phase: "Build", body: "Python service on Railway, with Stripe Connect holding payment until the job is done." },
+    ],
+  },
+  {
+    slug: "the-remote-admin",
+    title: "The Remote Admin",
+    tag: "Client work",
+    outcome:
+      "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+    url: "https://the-remote-admin.com",
+    hero: {
+      src: "/shots/remote-admin.png",
+      alt: "The the-remote-admin.com home page: a marketing site for an admin-services business.",
+    },
+    problem: "", // TODO(Meg)
+    built: [
+      {
+        label: "Designed, built and shipped",
+        body: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+        shot: {
+          src: "/shots/remote-admin.png",
+          alt: "The Remote Admin home page.",
+        },
+      },
+    ],
+    flow: [], // No integration story here; the section is skipped.
+    stack: ["Next.js", "Vercel"],
+    results: [], // TODO(Meg)
+    // An outside client, so any quote here needs their sign-off as well as hers.
+    quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+    role: "Sole designer and developer: discovery, design, build, launch and handover for an outside client.",
+    schemaKind: "WebSite",
+    process: [
+      { phase: "Discovery", body: "" },
+      { phase: "Design", body: "" },
+      { phase: "Build", body: "Next.js on Vercel." },
+      { phase: "Launch", body: "" },
+    ],
   },
 ];
 
@@ -511,7 +814,6 @@ export const marketItems: MarketItem[] = [
       "Connects to your existing tools",
     ],
     price: "from $1,200 one-time",
-    shot: "/shots/brightbase-turnovers.png",
   },
   {
     id: "quote-widget",
@@ -541,7 +843,6 @@ export const marketItems: MarketItem[] = [
       "Built to extend later",
     ],
     price: "from $1,000 one-time",
-    shot: "/shots/brightbase-dashboard.png",
   },
   {
     id: "automation-pack",

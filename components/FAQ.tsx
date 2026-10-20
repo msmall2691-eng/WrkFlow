@@ -1,4 +1,3 @@
-import Reveal from "./Reveal";
 
 /*
   Renders inside the Pricing section rather than as a section of its own: the
@@ -60,16 +59,13 @@ const QUESTIONS: { q: string; a: string }[] = [
 export default function FAQ() {
   return (
     <div id="faq" className="mt-14 scroll-mt-24">
-        <Reveal>
-          <h3 className="mb-5 font-mono text-[10px] uppercase tracking-[0.2em] text-faint">
-            Common questions
-          </h3>
-        </Reveal>
+        {/* This was a 10px mono-caps eyebrow, but it is the section's actual
+            heading — nothing else names this block. Promoted to read as one. */}
+        <h3 className="display mb-5 text-xl text-ink">Common questions</h3>
 
         <div className="divide-y divide-line rounded-2xl border border-line bg-surface/40">
-          {QUESTIONS.map((item, i) => (
-            <Reveal key={item.q} delay={i * 40}>
-              <details className="group">
+          {QUESTIONS.map((item) => (
+            <details key={item.q} className="group">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-left text-[1rem] font-medium text-ink transition-colors hover:text-signal md:p-6 md:text-lg [&::-webkit-details-marker]:hidden">
                   <span>{item.q}</span>
                   <span
@@ -83,7 +79,6 @@ export default function FAQ() {
                   {item.a}
                 </div>
               </details>
-            </Reveal>
           ))}
         </div>
     </div>

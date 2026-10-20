@@ -19,6 +19,7 @@
 import { NextResponse } from "next/server";
 import { createMailTransporter, getMailEnv } from "@/lib/mailer";
 import { createRateLimiter, clientIp } from "@/lib/rateLimit";
+import { storeLead } from "@/lib/leads";
 import {
   questionnaireSteps,
   questionnaireFields,
@@ -183,81 +184,105 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "That email doesn't look right." }, { status: 422 });
   }
 
-  const { GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO } = getMailEnv();
-  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-    console.error("Questionnaire: missing GMAIL_USER or GMAIL_APP_PASSWORD env vars.");
-    return NextResponse.json({ ok: false, error: "Server email is not configured." }, { status: 500 });
-  }
-
-  const transporter = createMailTransporter(GMAIL_USER, GMAIL_APP_PASSWORD);
-  const to = CONTACT_TO || GMAIL_USER;
   const concepts = sanitizeConcepts(body.concepts);
   const text = renderText(clean, concepts.length);
   const html = renderHtml(clean);
-  // Attached to Meg's brief only — the visitor already saw them live, and
-  // the client copy stays light.
-  const attachments = concepts.map((c, i) => ({
-    filename: `concept-${i + 1}-${c.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.html`,
-    content: c.html,
-    contentType: "text/html",
-  }));
 
-  try {
-    // 1. The brief, to Meg. replyTo is the client so hitting Reply just works.
-    await transporter.sendMail({
-      from: `"M Studio Questionnaire" <${GMAIL_USER}>`,
-      to,
-      replyTo: contactEmail,
-      subject: `Project questionnaire — ${bizName || contactName}`,
-      text,
-      html,
-      attachments,
-    });
+  /*
+    Record it first. A questionnaire is ten minutes of a prospect's work — by
+    far the most expensive lead on the site to lose to an SMTP blip. The full
+    rendered brief goes in `message`, and the validated answers in `details`
+    so nothing the visitor typed is only ever an email attachment.
+  */
+  const stored = await storeLead({
+    source: "questionnaire",
+    name: contactName,
+    email: contactEmail,
+    company: bizName || undefined,
+    message: text,
+    details: { answers: clean, concepts: concepts.map((c) => c.title) },
+  });
+
+  const { GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO } = getMailEnv();
+  let notified = false;
+
+  if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+    console.error("Questionnaire: missing GMAIL_USER or GMAIL_APP_PASSWORD env vars.");
+  } else {
+    const transporter = createMailTransporter(GMAIL_USER, GMAIL_APP_PASSWORD);
+    const to = CONTACT_TO || GMAIL_USER;
+    // Attached to Meg's brief only — the visitor already saw them live, and
+    // the client copy stays light.
+    const attachments = concepts.map((c, i) => ({
+      filename: `concept-${i + 1}-${c.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.html`,
+      content: c.html,
+      contentType: "text/html",
+    }));
+
+    try {
+      // 1. The brief, to Meg. replyTo is the client so hitting Reply just works.
+      await transporter.sendMail({
+        from: `"M Studio Questionnaire" <${GMAIL_USER}>`,
+        to,
+        replyTo: contactEmail,
+        subject: `Project questionnaire — ${bizName || contactName}`,
+        text: stored ? text : `(NOT saved to the database — this email is the only copy.)\n\n${text}`,
+        html,
+        attachments,
+      });
+      notified = true;
+    } catch (err) {
+      console.error("Questionnaire: sendMail failed", err);
+    }
 
     // 2. A copy back to the client. Sent second and non-fatally: if this one
     //    fails, Meg still has the brief, and the client shouldn't be told to
     //    resubmit work that already landed.
-    try {
-      await transporter.sendMail({
-        from: `"M Studio" <${GMAIL_USER}>`,
-        to: contactEmail,
-        replyTo: to,
-        subject: `Your project scope request — M Studio`,
-        text: [
-          `Thanks — your answers are in. Here's your copy.`,
-          ``,
-          `Within 24 hours you'll get a personal reply with a rough scope:`,
-          `pages, features, a price range, and a timeline. A real person reads`,
-          `all of this first — no autoresponder, no sales sequence. If anything`,
-          `else comes to mind, just reply to this email.`,
-          ``,
-          `— M Studio · mlinx.studio`,
-          ``,
-          `--------------------------------`,
-          ``,
-          text,
-        ].join("\n"),
-        html: `
-          <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.6;">
-            <p style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#b9842b;margin:0 0 6px;">M Studio</p>
-            <h2 style="margin:0 0 14px;font-size:20px;">Thanks — your answers are in.</h2>
-            <p style="font-size:15px;margin:0 0 10px;">Within 24 hours you'll get a personal reply with a rough scope: pages, features, a price range, and a timeline. A real person reads all of this first.</p>
-            <p style="font-size:15px;margin:0 0 24px;">If anything else comes to mind, just reply to this email.</p>
-            ${html}
-          </div>`,
-      });
-    } catch (err) {
-      console.error("Questionnaire: client confirmation copy failed", err);
+    if (notified) {
+      try {
+        await transporter.sendMail({
+          from: `"M Studio" <${GMAIL_USER}>`,
+          to: contactEmail,
+          replyTo: to,
+          subject: `Your project scope request — M Studio`,
+          text: [
+            `Thanks — your answers are in. Here's your copy.`,
+            ``,
+            `Within 24 hours you'll get a personal reply with a rough scope:`,
+            `pages, features, a price range, and a timeline. A real person reads`,
+            `all of this first — no autoresponder, no sales sequence. If anything`,
+            `else comes to mind, just reply to this email.`,
+            ``,
+            `— M Studio · mlinx.studio`,
+            ``,
+            `--------------------------------`,
+            ``,
+            text,
+          ].join("\n"),
+          html: `
+            <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.6;">
+              <p style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#b9842b;margin:0 0 6px;">M Studio</p>
+              <h2 style="margin:0 0 14px;font-size:20px;">Thanks — your answers are in.</h2>
+              <p style="font-size:15px;margin:0 0 10px;">Within 24 hours you'll get a personal reply with a rough scope: pages, features, a price range, and a timeline. A real person reads all of this first.</p>
+              <p style="font-size:15px;margin:0 0 24px;">If anything else comes to mind, just reply to this email.</p>
+              ${html}
+            </div>`,
+        });
+      } catch (err) {
+        console.error("Questionnaire: client confirmation copy failed", err);
+      }
     }
+  }
 
-    return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("Questionnaire: sendMail failed", err);
+  /* Only a total loss is reported as a failure to the visitor. */
+  if (!stored && !notified) {
     return NextResponse.json(
       { ok: false, error: "Couldn't send right now. Please try again." },
       { status: 502 },
     );
   }
+
+  return NextResponse.json({ ok: true });
 }
 
 /* ------------------------------------------------------------ rendering */

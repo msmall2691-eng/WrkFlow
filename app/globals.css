@@ -1,6 +1,58 @@
 @import "tailwindcss";
 
 /*
+  ───────────────────────────────────────────────────────────────────────────
+  MOTION SYSTEM — read this before adding an animation.
+
+  Motion here has to earn its place. It qualifies on one of two grounds and
+  no others:
+
+    (a) it DEMONSTRATES A SYSTEM WORKING — data moving between the tools the
+        visitor just picked, a workflow connecting, a real screen loading; or
+    (b) it RESPONDS TO THE VISITOR — a hover, a tap, a drag, a panel opening,
+        a form step advancing.
+
+  Ambient decoration is not a third ground. Drifting orbs, shimmering
+  headlines, forever-sweeping backgrounds and scroll-reveal-on-everything all
+  read as a template, which is the one thing this site cannot afford to look
+  like. ONE orchestrated moment per page. If a second animation wants in, one
+  of the two is wrong.
+
+  DURATION BUDGET
+    150ms        hovers, toggles, button presses, focus rings
+    250–350ms    panels, menus, disclosure, step transitions, reveals
+    600ms        ceiling, and only for a page's one sequence, counted
+                 end to end including stagger delays
+
+  EASING — one curve, site-wide: --ease-out-expo (below). Never ease-in-out,
+  never a second bespoke bezier. The curve is part of the brand.
+
+  ANIMATE ONLY `transform` AND `opacity`. They are the only two properties
+  the compositor can animate without layout or paint. Do NOT animate width,
+  height, top/left/right/bottom, margin, padding, background-position,
+  box-shadow, filter, or SVG geometry. Need a bar to grow? scaleX() with a
+  transform-origin. Need a dot to travel? translateX(), not `left`.
+
+  REDUCED MOTION IS NOT OPTIONAL. Every animation ships with its own
+  `prefers-reduced-motion: reduce` rule leaving the element in its FINAL,
+  VISIBLE, CORRECTLY-POSITIONED state. The blanket `animation-duration:
+  .001ms` rule further down is a seatbelt, not a fallback: it parks each
+  animation on its last keyframe, so anything whose 100% frame is
+  `opacity: 0` or an off-screen transform DISAPPEARS for the people who asked
+  for less motion. Write the explicit rule. Same in JS — check
+  `matchMedia("(prefers-reduced-motion: reduce)").matches` before any rAF
+  loop, programmatic smooth scroll, or inline transform write.
+
+  NOTHING LOOPS FOREVER. The single exception is the hero proof reel, and it
+  is allowed only because it shows real work AND it stops: an
+  IntersectionObserver pauses it off-screen, hover and focus-within pause it,
+  and under reduced motion it shows frame one and never advances. Any other
+  `infinite` in this file is a bug.
+  ───────────────────────────────────────────────────────────────────────────
+*/
+
+
+/*
   M Studio — design tokens
   "Deep Harbor": a dark, luxe coastal-New-England identity. Harbor-navy
   surfaces, off-white text, a sea-glass teal signal accent + a warm brass
@@ -45,10 +97,11 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
   --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-hand: var(--font-caveat), "Segoe Script", cursive;
 
   /* Motion */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  /* The one curve. Changing this value changes every transition on the
+     site, which is the point. */
+  --ease-out-expo: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /*
@@ -392,17 +445,6 @@ html {
   background-image is overridden, so the 200% background-size and the sweep
   keyframes still apply.
 */
-:root[data-theme="light"] .shimmer-text {
-  background-image: linear-gradient(
-    100deg,
-    #7a3416 10%,
-    #b05a30 35%,
-    #7a3416 60%,
-    #b05a30 85%,
-    #7a3416 100%
-  );
-}
-
 /*
   Touch targets (site survey C-03) — the free-tool chips and quote-calc
   segmented controls are 28–37px tall, sized for a mouse. On coarse
@@ -493,7 +535,8 @@ body {
   line-height: 1.02;
 }
 
-/* Editorial serif headline — gives the Services section its own voice */
+/* The editorial heading face. Paired with .display (Space Grotesk), which
+   keeps the hero and the UI. */
 .display-serif {
   font-family: var(--font-serif);
   font-weight: 500;
@@ -532,15 +575,6 @@ body {
   transform: none;
 }
 
-/* Sliding showcase marquee */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   /* Blanket safety: near-instant motion, never hide content behind animation */
@@ -597,30 +631,9 @@ body {
 
 /* ---- Movement utilities (mobile-friendly, all CSS) ---- */
 
-/* Shimmer sweep across accent words */
-@keyframes shimmer { to { background-position: 200% center; } }
-.shimmer-text {
-  background: linear-gradient(100deg, var(--color-gold) 10%, #f3d79a 35%, var(--color-gold) 60%, #f3d79a 85%, var(--color-gold) 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: shimmer 7s linear infinite;
-}
-
-/* Signal-teal shimmer — same sweep as .shimmer-text, in the brand's primary
-   teal instead of gold (gold stays reserved for pricing/founding-offer
-   emphasis). Used for the "M Studio" wordmark. */
-.shimmer-text-signal {
-  background: linear-gradient(100deg, var(--color-signal) 10%, #99f6e4 35%, var(--color-signal) 60%, #99f6e4 85%, var(--color-signal) 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: shimmer 7s linear infinite;
-}
+/* The infinite gold shimmer that swept across one word of the H1 lived here,
+   along with an unused teal twin. It animated `background-position` (a paint
+   property) forever, on the most important text on the site. Both gone. */
 
 /* Brushed-metal / chrome text — for the hero subline */
 .metallic-text {
@@ -638,14 +651,6 @@ body {
   color: transparent;
 }
 
-/* Giant background wordmark — slow horizontal drift */
-@keyframes wmDrift {
-  0%, 100% { transform: translate(-50%, -50%) translateX(-2.5%); }
-  50% { transform: translate(-50%, -50%) translateX(2.5%); }
-}
-.wm {
-  animation: wmDrift 22s ease-in-out infinite;
-}
 
 /* Intake form — selection "pop" (a quick scale bounce on check). Kept under
    300ms and disabled entirely for prefers-reduced-motion. */
@@ -659,13 +664,6 @@ body {
   .check-pop { animation: none; }
 }
 
-/* Gentle floating for accent glow orbs */
-@keyframes floaty {
-  0%, 100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(4%, -6%, 0); }
-}
-.floaty { animation: floaty 16s ease-in-out infinite; }
-.floaty-slow { animation: floaty 24s ease-in-out infinite; }
 
 /* Vertical scan line for the database / audit project visuals */
 @keyframes scanY {
@@ -676,7 +674,55 @@ body {
 }
 .scan-line { animation: scanY 3.6s ease-in-out infinite; }
 
-/* Pulse traveling along the automation flow */
+/* Pulse traveling along a workflow connector — data moving down the
+   pipeline. This is the clearest case of motion demonstrating a system
+   working, so it stays.
+
+   `.flow-pulse` is the transform-only version used by WorkflowDemo. The
+   element is a zero-height bar spanning exactly the travel distance, and the
+   dot rides its leading edge as a ::before — so `translateX(100%)` moves the
+   dot one bar-width without ever touching a layout property, and without
+   needing to know the track width in pixels.
+
+   It pauses when the diagram is hovered or focused, and
+   `.flow-track:not(.is-live)` parks it when the diagram is off-screen. */
+@keyframes flowPulse {
+  0% { transform: translateX(0); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+.flow-pulse {
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  width: 88%;
+  height: 0;
+  animation: flowPulse 2.8s ease-in-out infinite;
+}
+.flow-pulse::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 0.5rem;
+  width: 0.5rem;
+  margin-top: -0.25rem;
+  border-radius: 9999px;
+  background: var(--color-signal);
+  box-shadow: 0 0 10px 2px var(--color-signal-glow);
+}
+.flow-track:hover .flow-pulse,
+.flow-track:focus-within .flow-pulse,
+.flow-track:not(.is-live) .flow-pulse { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .flow-pulse { animation: none; opacity: 0; }
+}
+
+/* The original `left`-animating version. Its only consumer is
+   ProjectVisual, which no current data reaches (no `services` entry sets
+   `example.visual`), so it costs nothing at runtime today. Convert it to
+   `.flow-pulse` if that component ever renders again. */
 @keyframes travelX {
   0% { left: 6%; opacity: 0; }
   12% { opacity: 1; }
@@ -685,39 +731,15 @@ body {
 }
 .travel-dot { animation: travelX 2.8s ease-in-out infinite; }
 
-/* Nautical depth-contour soundings — very slow drift + breathe */
-@keyframes contourDrift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(1.5%, -2%, 0) scale(1.06); }
-}
-.contour-drift {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: contourDrift 28s ease-in-out infinite;
-}
 
-/* Drifting ocean wave divider */
-@keyframes waveX {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.wave-x { animation: waveX 16s linear infinite; }
 
-/* Konami "lighthouse beam" — a slow sweep across the screen */
-@keyframes beamSweep {
-  0% { transform: translate(-50%, -50%) rotate(-40deg); opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translate(-50%, -50%) rotate(400deg); opacity: 0; }
-}
-.beam { animation: beamSweep 4.5s ease-in-out forwards; }
 
 @media (prefers-reduced-motion: reduce) {
-  .shimmer-text, .shimmer-text-signal, .wm, .floaty, .floaty-slow, .scan-line, .travel-dot, .wave-x, .contour-drift {
+  /* These three end on `opacity: 0` or an off-screen transform, so the
+     blanket rule below would make them vanish rather than settle. */
+  .scan-line, .travel-dot {
     animation: none !important;
   }
-  .shimmer-text { -webkit-text-fill-color: var(--color-gold); color: var(--color-gold); }
-  .shimmer-text-signal { -webkit-text-fill-color: var(--color-signal); color: var(--color-signal); }
 }
 
 /*
@@ -760,14 +782,14 @@ body {
 .workflow-flow .workflow-fill {
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 1.8s var(--ease-out-expo);
+  transition: transform 600ms var(--ease-out-expo);
 }
 .workflow-flow.is-drawing .workflow-fill { transform: scaleX(1); }
 
 .workflow-flow .workflow-fill-v {
   transform: scaleY(0);
   transform-origin: top;
-  transition: transform 0.9s var(--ease-out-expo);
+  transition: transform 350ms var(--ease-out-expo);
 }
 .workflow-flow.is-drawing .workflow-fill-v { transform: scaleY(1); }
 
@@ -821,28 +843,3 @@ html[data-fog="1"] .elevate {
     0 8px 24px -12px rgba(24, 24, 27, 0.05);
 }
 
-/* Chromatic aurora drift — shared backdrop for dark sections */
-.aurora-blob {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(70px);
-  mix-blend-mode: screen;
-  will-change: transform;
-}
-@keyframes auroraA {
-  0%, 100% { transform: translate3d(-12%, -8%, 0) scale(1); }
-  50% { transform: translate3d(8%, 6%, 0) scale(1.25); }
-}
-@keyframes auroraB {
-  0%, 100% { transform: translate3d(10%, -6%, 0) scale(1.1); }
-  50% { transform: translate3d(-8%, 8%, 0) scale(0.9); }
-}
-@keyframes auroraC {
-  0%, 100% { transform: translate3d(-6%, 10%, 0) scale(1); }
-  50% { transform: translate3d(6%, -8%, 0) scale(1.2); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .aurora-blob {
-    animation: none !important;
-  }
-}

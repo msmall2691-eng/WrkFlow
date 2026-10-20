@@ -1,14 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces, Caveat } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
-import ScrollProgress from "@/components/ScrollProgress";
 import BackToTop from "@/components/BackToTop";
-import ConsoleGreeting from "@/components/ConsoleGreeting";
-import KonamiEgg from "@/components/KonamiEgg";
 import RegisterSW from "@/components/RegisterSW";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getFog } from "@/lib/fog";
+import { siteGraph, SITE_URL } from "@/lib/schema";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -16,14 +15,22 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
-// Editorial serif — used to give the Services section its own distinct voice.
+/*
+  Three families: Space Grotesk for UI, Inter for body, Fraunces for the
+  editorial headings, plus JetBrains Mono for genuine data.
+
+  Fraunces was briefly dropped when this page loaded five families, on the
+  roadmap's "pick two" line. Meg wants it kept, which is also what CLAUDE.md
+  says about the site's typefaces, so it is back on exactly the headings it
+  had before. Caveat stayed retired: it existed for one signature, which is
+  now set as a plain sign-off.
+*/
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-fraunces",
   display: "swap",
-  axes: ["SOFT", "opsz"],
+  axes: ["opsz"],
 });
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -36,15 +43,6 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-// Handwritten face — used sparingly for the founder-note "— Meg" signature.
-const caveat = Caveat({
-  subsets: ["latin"],
-  variable: "--font-caveat",
-  display: "swap",
-});
-
-// Canonical/OG base — the live brand domain.
-const SITE_URL = "https://mlinx.studio";
 const DESCRIPTION =
   "Websites, custom CRMs, platform setup, data migration and integrations for small businesses. Improve the tools you use or build what is missing. Based in Maine, clients anywhere.";
 
@@ -97,85 +95,13 @@ export const viewport: Viewport = {
 };
 
 /*
-  Structured data — feeds rich results + AI answer engines. The legal entity is
-  M Studio (M Linx is the product line, not a co-equal brand), founded by Meg.
+  Structured data now lives in lib/schema.ts, which builds it from
+  lib/content.ts: the site, the studio, Meg as a named person, and a
+  CreativeWork for every case study, all cross-referenced by `@id`. It moved
+  out of this file when it stopped being one object and became a graph two
+  routes contribute to.
 */
-const JSON_LD = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": `${SITE_URL}/#website`,
-      url: SITE_URL,
-      name: "M Studio",
-      publisher: { "@id": `${SITE_URL}/#studio` },
-    },
-    {
-      "@type": "ProfessionalService",
-      "@id": `${SITE_URL}/#studio`,
-      name: "M Studio",
-      url: SITE_URL,
-      email: "contact@mlinx.studio",
-      telephone: "+1-207-432-9492",
-      description:
-        "Websites, custom business tools, CRM setup, data migrations, and integrations built around the way your business works.",
-      slogan: "Everything, linked.",
-      knowsAbout: [
-        "Custom software development",
-        "Web design and development",
-        "Web applications",
-        "Systems integration",
-        "Data modeling",
-        "Workflow automation",
-        "Business analytics",
-        "Artificial intelligence",
-      ],
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: "Services",
-        itemListElement: [
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Websites & web apps", description: "Custom marketing sites, booking, and client portals." } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom tools & dashboards", description: "Booking apps, CRMs, dashboards, and quoting tools, built around how you run." } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM & platform setup", description: "CRM fields, views, configuration, and workflow improvements." } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Data migration & cleanup", description: "Exports, imports, field mapping, and record checks when switching platforms." } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Systems integration & automation", description: "Connecting the tools you already use, with workflow automation and practical AI." } },
-        ],
-      },
-      areaServed: [
-        { "@type": "State", name: "Maine" },
-        { "@type": "Place", name: "New England" },
-        { "@type": "Place", name: "Worldwide (remote)" },
-      ],
-      founder: { "@id": `${SITE_URL}/#meg` },
-      address: {
-        "@type": "PostalAddress",
-        addressRegion: "ME",
-        addressCountry: "US",
-      },
-    },
-    {
-      "@type": "Person",
-      "@id": `${SITE_URL}/#meg`,
-      name: "Meg",
-      jobTitle: "Founder & Software Developer",
-      worksFor: { "@id": `${SITE_URL}/#studio` },
-      description:
-        "Ran The Maine Cleaning Company for ten years, then learned to build the software it needed. Now builds websites, business software and integrations for other business owners.",
-      alumniOf: {
-        "@type": "CollegeOrUniversity",
-        name: "University of Southern Maine",
-      },
-      knowsAbout: [
-        "Business Analytics",
-        "Artificial Intelligence",
-        "Computer Science",
-        "Backend development",
-        "Data modeling",
-        "Systems integration",
-      ],
-    },
-  ],
-};
+const JSON_LD = siteGraph();
 
 export default async function RootLayout({
   children,
@@ -200,7 +126,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-fog={fog ? "1" : undefined}
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable} ${caveat.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
         {/*
@@ -239,13 +165,36 @@ export default async function RootLayout({
         <noscript>
           <style>{`.reveal{opacity:1 !important;transform:none !important}`}</style>
         </noscript>
-        <ScrollProgress />
+        {/*
+          Gone from here: ScrollProgress (a fixed bar that re-rendered React
+          on every scroll event, site-wide, to report what the browser's own
+          scrollbar already says), KonamiEgg (a keydown listener always live
+          on every page for an easter egg no buyer will ever find) and
+          ConsoleGreeting (a client-component boundary for a console.log).
+        */}
         {children}
         <BackToTop />
-        <ConsoleGreeting />
-        <KonamiEgg />
         <RegisterSW />
+        {/*
+          Web Analytics (pageviews + the four tracked events in lib/track.ts)
+          and Speed Insights (real-visitor Core Web Vitals).
+
+          Both inject their beacon from `document.createElement` inside the
+          client bundle rather than as a tag we render, so neither takes a
+          `nonce` prop. Under this site's `script-src … 'strict-dynamic'`
+          that is fine, and only because of it: 'strict-dynamic' makes the
+          browser ignore `'self'`, so a same-origin src is not what permits
+          these — inheriting trust from the nonce-allowed bundle that
+          appends them is. An e2e test asserts both load without a CSP
+          violation, because the failure mode here is silence: a blocked
+          beacon collects nothing and reports nothing, which is how this
+          site ran with analytics code and no analytics data.
+
+          The code is only half of it. Each needs enabling on the Vercel
+          project too, or these components post to a 404.
+        */}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Reveal from "./Reveal";
+import Link from "next/link";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
 import { trackTool } from "@/lib/track";
@@ -119,8 +119,7 @@ export default function SiteCheck() {
 
   return (
     <div className="rounded-2xl border border-line bg-surface p-6 md:p-8">
-      <Reveal>
-        <form onSubmit={run} className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <form onSubmit={run} className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="flex flex-1 items-center gap-2 rounded-lg border border-line bg-base px-4 py-3">
             <span aria-hidden="true" className="text-faint">⌕</span>
             <input
@@ -154,11 +153,13 @@ export default function SiteCheck() {
             {loading ? "Checking…" : "Check site"}
           </button>
         </form>
-      </Reveal>
 
       {loading && (
         <p className="mt-5 flex items-center gap-2 text-sm text-muted">
-          <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-line border-t-signal" />
+          <span
+            aria-hidden="true"
+            className="inline-block h-3 w-3 shrink-0 animate-spin rounded-full border-2 border-line border-t-signal motion-reduce:animate-none"
+          />
           Running a live Lighthouse audit—this can take 20–40 seconds.
         </p>
       )}
@@ -171,7 +172,7 @@ export default function SiteCheck() {
 
       {result && (
         <div className="mt-7">
-          <p className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-faint">
+          <p className="flex flex-wrap items-center gap-2 font-mono text-xs text-faint">
             {isSample && (
               <span className="rounded-full border border-gold/40 bg-gold/10 px-2 py-0.5 text-gold">
                 Example
@@ -194,7 +195,7 @@ export default function SiteCheck() {
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
             {metrics.map(([label, value]) => (
               <div key={label} className="rounded-lg border border-line bg-base px-3 py-2.5">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-faint">{label}</p>
+                <p className="text-xs text-faint">{label}</p>
                 <p className="mt-1 text-sm text-ink">{value ?? "—"}</p>
               </div>
             ))}
@@ -211,7 +212,7 @@ export default function SiteCheck() {
               <>
                 Scores from Google Lighthouse (0–100). Want these all green?
                 That&apos;s exactly the kind of thing we handle.{" "}
-                <a href="/#contact" className="text-signal hover:opacity-80">Let&apos;s talk</a>.
+                <Link href="/#contact" className="text-signal hover:opacity-80">Let&apos;s talk</Link>.
               </>
             )}
           </p>

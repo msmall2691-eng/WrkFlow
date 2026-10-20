@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { approachSteps } from "@/lib/content";
-import Reveal from "./Reveal";
-import Watermark from "./Watermark";
 
 /*
   Approach — the four-step process, rendered as small connected cards.
@@ -41,24 +39,17 @@ export default function Approach() {
       id="approach"
       className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-20 md:py-24"
     >
-      <Watermark text="M STUDIO" />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
-          <Reveal>
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+                      <p className="mb-3 text-xs font-medium text-signal">
               Approach
             </p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+                      <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               No black boxes. You steer the whole build.
             </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mt-5 text-[1rem] leading-relaxed text-muted">
+                      <p className="mt-5 text-[1rem] leading-relaxed text-muted">
               You see it as it takes shape. You own it. No lock-in.
             </p>
-          </Reveal>
         </div>
 
         {/* Connected stepper */}
@@ -78,8 +69,7 @@ export default function Approach() {
           <div className="flex flex-col md:grid md:grid-cols-4 md:gap-5">
             {approachSteps.map((step, i) => (
               <div key={step.index}>
-                <Reveal delay={i * 80}>
-                  <div className="group corner-accents relative rounded-2xl border border-line bg-surface/40 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-signal/40 hover:bg-surface/70 hover:shadow-[0_20px_50px_-30px_rgba(22,163,148,0.5)] active:scale-[0.99] md:h-full">
+                                  <div className="group corner-accents relative rounded-2xl border border-line bg-surface/40 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-signal/40 hover:bg-surface/70 hover:shadow-[0_20px_50px_-30px_rgba(22,163,148,0.5)] active:scale-[0.99] md:h-full">
                     <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-base font-mono text-xs text-faint transition-all duration-300 group-hover:border-signal group-hover:bg-signal/10 group-hover:text-signal">
                       {step.index}
                     </span>
@@ -90,7 +80,6 @@ export default function Approach() {
                       {step.body}
                     </p>
                   </div>
-                </Reveal>
                 {/* Mobile vertical connector between cards + signal fill */}
                 {i < approachSteps.length - 1 && (
                   <div

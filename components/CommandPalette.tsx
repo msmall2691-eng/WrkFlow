@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { toggleTheme } from "@/lib/theme";
 
 /*
   CommandPalette — a ⌘K / Ctrl-K launcher.
@@ -132,37 +133,14 @@ export default function CommandPalette() {
         },
       },
       {
-        id: "accent",
-        label: "Toggle accent color",
+        id: "theme",
+        label: "Switch between Daylight and Harbor",
         hint: "◑",
         group: "Actions",
-        keywords: "theme color accent palette signal recolor make it yours",
-        // Leave the palette open so Enter can cycle through accents quickly.
-        run: () => window.dispatchEvent(new Event("accent:cycle")),
-      },
-      {
-        id: "scrub",
-        label: "Scrub the Maine day",
-        hint: "☀",
-        group: "Actions",
-        keywords: "time day sun sunrise sunset daylight preview scrub clock hour night dusk dawn",
-        // Sends them to the handle rather than driving it from here: the
-        // point of the thing is the dragging.
-        run: () => {
-          close();
-          if (!document.querySelector('input[data-day-scrubber]')) {
-            window.location.href = "/#top";
-            return;
-          }
-          document.getElementById("top")?.scrollIntoView({ behavior: "smooth" });
-          // After the scroll settles, put focus on the slider so it responds
-          // to arrow keys immediately for anyone not using a pointer.
-          setTimeout(() => {
-            document
-              .querySelector<HTMLInputElement>('input[type="range"][data-day-scrubber]')
-              ?.focus();
-          }, 600);
-        },
+        keywords: "theme dark light mode daylight harbor appearance contrast night",
+        /* The theme toggle used to be a floating pill on every page. This is
+           where it lives now. Left open so it can be flipped back and forth. */
+        run: () => toggleTheme(),
       },
     ];
   }, [close]);

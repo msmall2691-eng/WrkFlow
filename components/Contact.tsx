@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Reveal from "./Reveal";
 import AuroraSwell from "./AuroraSwell";
-import Magnetic from "./Magnetic";
+import WhenNear from "./WhenNear";
+import BookCall from "./BookCall";
+import { trackLead } from "@/lib/track";
+import { resumeUrl } from "@/lib/content";
 import {
   OFFER_EVENT,
   isOfferKey,
@@ -62,6 +64,9 @@ export default function Contact() {
       }
 
       setStatus("success");
+      // Recorded before the offer is cleared, so the event keeps the CTA
+      // that produced the lead (lib/track.ts).
+      trackLead("contact", offer ?? undefined);
       form.reset();
       setMessage("");
       setOffer(null);
@@ -78,8 +83,15 @@ export default function Contact() {
       id="contact"
       className="relative overflow-hidden border-t border-line bg-[var(--hero-bg)] py-16 md:py-24"
     >
-      {/* Aurora Swell closer — same swell as the hero, bookending the page */}
-      <AuroraSwell intensity={0.85} speed={0.85} />
+      {/*
+        Aurora Swell closer. Mounted only once the visitor is near it: it is
+        a WebGL shader behind a 72%-opaque overlay at the very bottom of the
+        page, and compiling it during hydration delayed the hero's paint at
+        the top. Unchanged once on screen.
+      */}
+      <WhenNear>
+        <AuroraSwell intensity={0.85} speed={0.85} />
+      </WhenNear>
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[var(--hero-bg)]/72"
@@ -98,32 +110,20 @@ export default function Contact() {
       <div className="relative z-10 mx-auto max-w-6xl px-6">
         <div className="grid gap-10 md:grid-cols-12 md:gap-14">
           <div className="md:col-span-5">
-            <Reveal>
-              <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-                Contact
-              </p>
-            </Reveal>
-            <Reveal delay={60}>
-              <h2 className="display hero-heading text-2xl text-ink sm:text-3xl md:text-4xl">
+                          <h2 className="display hero-heading text-2xl text-ink sm:text-3xl md:text-4xl">
                 Let&apos;s start with what you&apos;re trying to solve.
               </h2>
-            </Reveal>
-            <Reveal delay={120}>
-              <p className="mt-6 text-[1rem] leading-relaxed text-muted">
+                          <p className="mt-6 text-[1rem] leading-relaxed text-muted">
                 Share what you use now, what you&apos;re tired of doing manually,
                 and what you wish worked better. You don&apos;t need a technical
                 plan to get started.
               </p>
-            </Reveal>
-            <Reveal delay={160}>
-              <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-signal/30 bg-signal/[0.06] px-4 py-2 font-mono text-[11px] uppercase tracking-widest text-signal">
+                          <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-signal/30 bg-signal/[0.06] px-4 py-2 text-sm font-semibold text-signal">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
                 Currently available for new projects
               </p>
-            </Reveal>
-            <Reveal delay={180}>
-              <div className="mt-8 rounded-xl border border-line bg-surface/40 p-5">
-                <p className="font-mono text-[10px] uppercase tracking-widest text-gold">
+                          <div className="mt-8 rounded-xl border border-line bg-surface/40 p-5">
+                <p className="text-sm font-medium text-gold">
                   Rather be asked than face a blank box?
                 </p>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
@@ -132,15 +132,13 @@ export default function Contact() {
                 </p>
                 <a
                   href="/intake"
-                  className="mt-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-signal transition-opacity hover:opacity-75"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
                 >
                   Start the questionnaire
                   <span aria-hidden="true">→</span>
                 </a>
               </div>
-            </Reveal>
-            <Reveal delay={220}>
-              <div className="mt-8 space-y-2.5 font-mono text-xs uppercase tracking-widest text-faint">
+                          <div className="mt-8 space-y-2.5 text-sm text-faint">
                 <p>
                   Email ·{" "}
                   <a
@@ -160,12 +158,29 @@ export default function Contact() {
                   </a>
                 </p>
               </div>
-            </Reveal>
+                          {/* Résumé, for the other kind of visitor. Renders nothing
+                  until `resumeUrl` points at a real file in /public, so the
+                  link can never 404. */}
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
+                >
+                  Download résumé (PDF)
+                  <span aria-hidden="true">↓</span>
+                </a>
+              )}
+              <BookCall
+                where="contact"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
+              >
+                Book a free 15-min call
+                <span aria-hidden="true">→</span>
+              </BookCall>
           </div>
 
           <div className="md:col-span-7">
-            <Reveal delay={100}>
-              {status === "success" ? (
+                          {status === "success" ? (
                 <SuccessPanel onReset={() => setStatus("idle")} />
               ) : (
                 <form
@@ -248,8 +263,7 @@ export default function Contact() {
                     </p>
                   )}
 
-                  <Magnetic strength={0.3}>
-                    <button
+                  <button
                       type="submit"
                       disabled={status === "submitting"}
                       className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
@@ -258,8 +272,7 @@ export default function Contact() {
                       {status !== "submitting" && (
                         <span aria-hidden="true">→</span>
                       )}
-                    </button>
-                  </Magnetic>
+                  </button>
 
                   <p className="text-xs leading-relaxed text-[color:var(--panel-faint)]">
                     By sending this, you agree we can use your details to reply.
@@ -274,7 +287,6 @@ export default function Contact() {
                   </p>
                 </form>
               )}
-            </Reveal>
           </div>
         </div>
       </div>
@@ -288,14 +300,14 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
       <div className="flex h-10 w-10 items-center justify-center rounded-full border border-signal/40 text-signal">
         ✓
       </div>
-      <h3 className="mt-5 font-display text-2xl text-ink">Got it.</h3>
+      <h3 className="mt-5 display text-2xl text-ink">Got it.</h3>
       <p className="mt-3 text-[1rem] leading-relaxed text-muted">
         Every message is read personally, with a reply within a day.
       </p>
       <button
         type="button"
         onClick={onReset}
-        className="mt-6 font-mono text-xs uppercase tracking-widest text-signal transition-opacity hover:opacity-80"
+        className="mt-6 text-sm font-semibold text-signal transition-opacity hover:opacity-80"
       >
         Send another →
       </button>
@@ -307,7 +319,7 @@ function FieldLabel({ htmlFor, label, optional }: { htmlFor: string; label: stri
   return (
     <label
       htmlFor={htmlFor}
-      className="mb-2 block font-mono text-[11px] uppercase tracking-widest text-[color:var(--panel-muted)]"
+      className="mb-2 block text-xs font-medium text-[color:var(--panel-muted)]"
     >
       {label}
       {/* Was text-faint/60 — 3.51:1 inside the form panel. Same class of

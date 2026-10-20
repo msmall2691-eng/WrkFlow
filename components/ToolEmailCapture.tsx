@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { trackTool } from "@/lib/track";
+import Link from "next/link";
+import { trackTool, trackLead } from "@/lib/track";
 
 /*
   ToolEmailCapture — "Email me this →" for the free Playground tools.
@@ -48,6 +49,9 @@ export default function ToolEmailCapture({
       }
       setStatus("sent");
       trackTool(tool, "emailed");
+      // Same lead_submitted event as the contact form, so free-tool leads
+      // sit next to form leads in one funnel (lib/track.ts).
+      trackLead("tool", tool);
     } catch (err) {
       setStatus("error");
       setError(err instanceof Error ? err.message : "Couldn't send. Try again.");
@@ -58,9 +62,9 @@ export default function ToolEmailCapture({
     return (
       <p className={`text-xs leading-relaxed text-signal ${className}`}>
         Sent! Want this tuned to your business?{" "}
-        <a href="/#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
+        <Link href="/#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
           →
-        </a>
+        </Link>
       </p>
     );
   }

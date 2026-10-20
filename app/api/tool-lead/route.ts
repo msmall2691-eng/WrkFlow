@@ -15,6 +15,7 @@
 import { NextResponse } from "next/server";
 import { createMailTransporter, getMailEnv } from "@/lib/mailer";
 import { createRateLimiter, clientIp } from "@/lib/rateLimit";
+import { storeLead } from "@/lib/leads";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -100,6 +101,19 @@ export async function POST(req: Request) {
   if (summary.length > MAX_SUMMARY_LEN) {
     return NextResponse.json({ ok: false, error: "That result is too large to email." }, { status: 422 });
   }
+
+  /*
+    Record the lead before sending anything (lib/leads.ts). Unlike the contact
+    form, the email here IS what the visitor asked for, so a send failure is
+    still reported to them below — but the lead itself is safe either way.
+  */
+  await storeLead({
+    source: "tool",
+    email,
+    message: summary || undefined,
+    offer: toolLabel,
+    details: { tool: toolLabel },
+  });
 
   const { GMAIL_USER, GMAIL_APP_PASSWORD, CONTACT_TO } = getMailEnv();
   if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {

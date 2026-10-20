@@ -79,7 +79,7 @@ export default function SignatureMaker() {
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
       {/* Preview */}
       <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-6 md:order-2 md:sticky md:top-24">
-        <p className="mb-3 font-mono text-[11px] uppercase tracking-widest text-faint">Preview</p>
+        <p className="mb-3 text-sm font-semibold text-ink">Preview</p>
         <div className="rounded-xl bg-white p-6">
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </div>
@@ -99,7 +99,7 @@ export default function SignatureMaker() {
             {copied === "html" ? "Copied ✓" : "Copy HTML"}
           </button>
         </div>
-        <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-faint">
+        <p className="mt-3 text-xs text-faint">
           Paste into Gmail or Outlook settings
         </p>
         <div className="mt-4">
@@ -113,7 +113,7 @@ export default function SignatureMaker() {
 
       {/* Controls */}
       <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
-        <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">Your details</p>
+        <p className="mb-5 text-sm font-semibold text-ink">Your details</p>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Name" value={name} onChange={setName} />
           <Field label="Title" value={title} onChange={setTitle} />

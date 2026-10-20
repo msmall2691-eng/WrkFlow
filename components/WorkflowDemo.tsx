@@ -1,4 +1,6 @@
-import { Fragment } from "react";
+"use client";
+
+import { Fragment, useEffect, useRef, useState } from "react";
 
 /*
   WorkflowDemo — a small always-looping node illustration that says "this
@@ -7,31 +9,70 @@ import { Fragment } from "react";
   data moving down the pipeline. Uses the existing .flow-line and
   .travel-dot animations from globals.css, both already reduced-motion aware.
 */
-const STAGES = [
+export type WorkflowStage = { icon: string; label: string };
+
+const STAGES: WorkflowStage[] = [
   { icon: "📝", label: "Form" },
   { icon: "🗂️", label: "CRM" },
   { icon: "📧", label: "Email" },
   { icon: "🔔", label: "Notify" },
 ];
 
-export default function WorkflowDemo() {
+/* `stages` lets a case study pass its own chain for "How it works" — the
+   generic Form/CRM/Email/Notify default stays for the marketplace page. */
+export default function WorkflowDemo({
+  stages = STAGES,
+}: {
+  stages?: WorkflowStage[];
+}) {
+  /*
+    The pulse loops, so it has to stop. `is-live` is what un-pauses it (see
+    `.flow-track:not(.is-live)` in globals.css): off-screen, the diagram is
+    parked rather than compositing forever behind the fold. Default false, so
+    a visitor who never scrolls here never pays for it.
+  */
+  const ref = useRef<HTMLDivElement>(null);
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    /* No IO means no way to pause it, so leave it running rather than
+       shipping a diagram that is permanently frozen. */
+    if (typeof IntersectionObserver === "undefined") {
+      setLive(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => setLive(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="corner-accents rounded-2xl border border-line bg-surface/60 p-6 md:p-8">
+    <div
+      ref={ref}
+      className="corner-accents rounded-2xl border border-line bg-surface/60 p-6 md:p-8"
+    >
       <div className="flex items-center justify-between gap-2 md:gap-4">
-        {STAGES.map((stage, i) => {
-          const isLast = i === STAGES.length - 1;
+        {stages.map((stage, i) => {
+          const isLast = i === stages.length - 1;
           return (
             <Fragment key={stage.label}>
               <div className="flex shrink-0 flex-col items-center">
                 <span className="flex h-12 w-12 items-center justify-center rounded-full border border-signal/40 bg-base text-xl shadow-[inset_0_0_18px_-4px_var(--color-signal-glow)] md:h-14 md:w-14 md:text-2xl">
                   {stage.icon}
                 </span>
-                <span className="mt-2 font-mono text-[10px] uppercase tracking-widest text-faint">
+                <span className="mt-2 text-xs text-faint">
                   {stage.label}
                 </span>
               </div>
               {!isLast && (
-                <div className="relative h-px flex-1">
+                <div
+                  className={`flow-track relative h-px flex-1 ${live ? "is-live" : ""}`}
+                >
                   <svg
                     aria-hidden="true"
                     className="absolute inset-0 h-full w-full"
@@ -52,7 +93,7 @@ export default function WorkflowDemo() {
                   </svg>
                   <span
                     aria-hidden="true"
-                    className="travel-dot absolute top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-signal shadow-[0_0_10px_2px_var(--color-signal-glow)]"
+                    className="flow-pulse"
                     style={{ animationDelay: `${i * 0.7}s` }}
                   />
                 </div>

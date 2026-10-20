@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
-import AccentSwitcher from "./AccentSwitcher";
 
 /*
   Shared shell for the legal pages (Privacy, Terms). Keeps both documents
@@ -9,12 +8,13 @@ import AccentSwitcher from "./AccentSwitcher";
   gives them readable, narrow body type.
 */
 export function LegalShell({
-  kicker,
   title,
   updated,
   intro,
   children,
 }: {
+  /* Still accepted (both legal pages pass it) but no longer rendered —
+     the mono-caps "// kicker" eyebrow retired with the rest of them. */
   kicker: string;
   title: string;
   updated: string;
@@ -31,11 +31,10 @@ export function LegalShell({
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-72"
           />
           <div className="relative z-10 mx-auto max-w-3xl px-6">
-            <p className="marker">// {kicker}</p>
-            <h1 className="display-serif mt-4 text-3xl text-ink sm:text-4xl md:text-5xl">
+            <h1 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
               {title}
             </h1>
-            <p className="mt-5 font-mono text-xs uppercase tracking-widest text-faint">
+            <p className="mt-5 text-xs text-faint">
               Last updated · {updated}
             </p>
             {intro && (
@@ -49,7 +48,10 @@ export function LegalShell({
         </section>
       </main>
       <Footer />
-      <AccentSwitcher />
+        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+            every page and on a phone sat on top of the cards. The theme
+            toggle is now a command in the ⌘K palette (lib/theme.ts), so
+            nobody who picked Harbor is stranded in it. */}
     </>
   );
 }

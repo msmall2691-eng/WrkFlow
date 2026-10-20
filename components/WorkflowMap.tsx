@@ -1,4 +1,3 @@
-import Reveal from "./Reveal";
 import WorkflowDemo from "./WorkflowDemo";
 import IntegrationMapper from "./IntegrationMapper";
 
@@ -17,31 +16,18 @@ export default function WorkflowMap() {
     >
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-10 max-w-3xl">
-          <Reveal>
-            <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
-              Workflow
-            </p>
-          </Reveal>
-          <Reveal delay={60}>
-            <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+                      <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               Your tools, wired into one workflow.
             </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mt-5 text-[1rem] leading-relaxed text-muted">
+                      <p className="mt-5 text-[1rem] leading-relaxed text-muted">
               Pick the tools you use, see what could connect to what.
             </p>
-          </Reveal>
         </div>
 
-        <Reveal delay={160}>
-          <WorkflowDemo />
-        </Reveal>
+                  <WorkflowDemo />
 
         <div className="mt-6">
-          <Reveal delay={200}>
-            <IntegrationMapper />
-          </Reveal>
+                      <IntegrationMapper />
         </div>
       </div>
     </section>

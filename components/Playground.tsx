@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Reveal from "./Reveal";
 import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
 import SignatureMaker from "./SignatureMaker";
@@ -10,7 +9,6 @@ import QuoteCalc from "./QuoteCalc";
 import InvoiceMaker from "./InvoiceMaker";
 import VCard from "./VCard";
 import UTMBuilder from "./UTMBuilder";
-import LinxMark from "./LinxMark";
 import { trackTool } from "@/lib/track";
 
 /*
@@ -112,17 +110,16 @@ export default function Playground() {
     <section id="tools" className="relative overflow-hidden py-10 md:py-14">
       <div
         aria-hidden="true"
-        className="floaty-slow pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
+        className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
 
         {/* Tabs — grouped; each tool is its own clean pill */}
-        <Reveal delay={120}>
-          <div className="mt-8 flex flex-col gap-5">
+                  <div className="mt-8 flex flex-col gap-5">
             <div className="grid gap-5 sm:grid-cols-3">
               {GROUPS.map((g) => (
                 <div key={g} className="flex flex-col gap-2.5">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-faint">{g}</span>
+                  <span className="text-xs font-medium text-faint">{g}</span>
                   <div className="flex flex-wrap gap-2">
                     {TOOLS.filter((t) => t.group === g).map((t) => (
                       <button
@@ -142,9 +139,8 @@ export default function Playground() {
                 </div>
               ))}
             </div>
-            <p className="font-mono text-xs text-faint">{activeTool.blurb}</p>
+            <p className="text-sm text-muted">{activeTool.blurb}</p>
           </div>
-        </Reveal>
 
         <div className="mt-8">
           {tool === "sitecheck" && <SiteCheck />}
@@ -158,8 +154,7 @@ export default function Playground() {
         </div>
 
         {/* Soft funnel — one-sentence bridge from free tool → the paid work */}
-        <Reveal>
-          <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm">
+                  <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-line bg-surface/60 px-4 py-3 text-sm">
             <span className="text-muted">{activeTool.nudge.line}</span>
             <a
               href={activeTool.nudge.href}
@@ -168,7 +163,6 @@ export default function Playground() {
               {activeTool.nudge.cta} →
             </a>
           </div>
-        </Reveal>
       </div>
     </section>
   );

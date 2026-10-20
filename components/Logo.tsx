@@ -25,13 +25,13 @@ export default function Logo({
       {/* Glowing "M" monogram — the brand letter, accent-aware */}
       <span
         aria-hidden="true"
-        className="font-display text-[20px] font-bold leading-none text-signal [text-shadow:0_0_15px_rgba(45,212,191,0.5),0_0_6px_rgba(45,212,191,0.35)]"
+        className="font-display text-[20px] font-bold leading-none text-signal [text-shadow:0_0_15px_var(--color-signal-glow)]"
       >
         M
       </span>
-      <span className={`font-mono text-[16px] font-semibold tracking-[0.04em] ${wordColor}`}>Studio</span>
+      <span className={`font-display text-[17px] font-semibold tracking-[-0.01em] ${wordColor}`}>Studio</span>
       {tag && (
-        <span className={`hidden font-mono text-[11px] uppercase tracking-[0.22em] sm:inline ${tagColor}`}>
+        <span className={`hidden text-xs sm:inline ${tagColor}`}>
           &middot; Maine
         </span>
       )}

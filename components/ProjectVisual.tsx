@@ -27,7 +27,7 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
       <Frame>
         <div className="scan-line absolute inset-x-3 top-9 h-7 rounded-lg bg-signal/10" />
         <div className="relative p-4">
-          <p className="mb-3 font-mono text-[9px] uppercase tracking-widest text-faint">customers · linked</p>
+          <p className="mb-3 text-xs text-faint">customers · linked</p>
           <div className="space-y-2.5">
             {rows.map(([a, b], i) => (
               <div key={i} className="flex items-center gap-2.5">
@@ -59,7 +59,7 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
                 >
                   {icon}
                 </span>
-                <span className="font-mono text-[8px] uppercase tracking-widest text-faint">{label}</span>
+                <span className="text-xs text-faint">{label}</span>
               </div>
             ))}
           </div>
@@ -79,7 +79,7 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
       <Frame>
         <div className="scan-line absolute inset-x-3 top-9 h-7 rounded-lg bg-gold/10" />
         <div className="relative p-4">
-          <p className="mb-3 font-mono text-[9px] uppercase tracking-widest text-faint">prioritized fixes</p>
+          <p className="mb-3 text-xs text-faint">prioritized fixes</p>
           <div className="space-y-2.5">
             {rows.map((r, i) => (
               <div key={i} className="flex items-center gap-2.5">
@@ -103,12 +103,12 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
           {[0, 1, 2].map((i) => (
             <div
               key={i}
-              className="flex animate-pulse items-center gap-2 opacity-50"
+              className="flex animate-pulse items-center gap-2 opacity-50 motion-reduce:animate-none"
               style={{ animationDelay: `${i * 0.25}s` }}
             >
               <span className="h-2 w-2 rounded-full bg-white/20" />
               <span className="h-1.5 w-28 rounded-full bg-white/12" />
-              <span className="ml-auto font-mono text-[8px] uppercase tracking-widest text-faint">dup</span>
+              <span className="ml-auto text-xs text-faint">dup</span>
             </div>
           ))}
         </div>
@@ -116,7 +116,7 @@ export default function ProjectVisual({ type }: { type: VisualType }) {
         <div className="flex items-center gap-2 rounded-lg border border-signal/40 bg-signal/10 px-3 py-2">
           <span className="h-2 w-2 rounded-full bg-signal" />
           <span className="h-1.5 w-28 rounded-full bg-white/35" />
-          <span className="ml-auto font-mono text-[8px] uppercase tracking-widest text-signal">merged</span>
+          <span className="ml-auto text-xs text-signal">merged</span>
         </div>
       </div>
     </Frame>

@@ -1,7 +1,6 @@
-import Reveal from "./Reveal";
 import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
-import CountUp from "./CountUp";
+import BookCall from "./BookCall";
 import { appOffer, smallProjects, studioStats, testimonial } from "@/lib/content";
 
 /*
@@ -32,85 +31,78 @@ export default function Pricing() {
     >
       <div
         aria-hidden="true"
-        className="floaty-slow pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
+        className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
       />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-8 max-w-3xl">
-          <Reveal>
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">Pricing</p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h2 className="mt-3 display text-2xl text-ink sm:text-3xl md:text-4xl">
-              Pricing that fits where you&apos;re at.
-            </h2>
-          </Reveal>
-          <Reveal delay={120}>
-            <p className="mt-4 text-[1rem] leading-relaxed text-muted">
-              Start with one useful improvement or a custom build. We agree on the scope and price before work begins.
-            </p>
-          </Reveal>
+          <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+            Pricing that fits where you&apos;re at.
+          </h2>
+          {/* main's newer framing, which now has to cover the small
+              fixed-scope tier as well as the custom build. */}
+          <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
+            Start with one useful improvement or a custom build. I agree the
+            scope and price with you before work begins.
+          </p>
         </div>
 
 
         {/* Offer tiles — the risk-reversal numbers, beside the price where
             that question is actually asked (moved here from the hero band). */}
-        <Reveal delay={150}>
-          <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+                  <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
             {studioStats.map((s) => (
               <div
                 key={s.label}
                 className="rounded-xl border border-line bg-surface/40 px-4 py-3.5"
               >
                 <span className="display text-xl text-ink">{s.value}</span>
-                <span className="mt-0.5 block font-mono text-[10px] uppercase tracking-widest text-faint">
+                <span className="mt-0.5 block text-xs text-faint">
                   {s.label}
                 </span>
               </div>
             ))}
           </div>
-        </Reveal>
 
         {/* items-stretch on ALL breakpoints — the cards must align so the eye
             can compare offers across a horizontal line (survey M-04). */}
         <div className="grid items-stretch gap-5 md:grid-cols-2">
           {/* Custom build — the primary offer, highlighted */}
-          <Reveal delay={60}>
-            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99]">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Custom build</p>
+                      <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99]">
+              <p className="text-xs text-faint">Custom build</p>
               {/* Was "Let's scope it" — the only tier with no number (brief A6).
                   Founding rate for the first ten. */}
               {appFounding ? (
                 <>
                   <p className="mt-4 font-display text-3xl text-ink">
-                    <CountUp value={appOffer.price} prefix="$" />
+                    ${appOffer.price.toLocaleString("en-US")}
                     <span className="ml-2 align-middle text-[1rem] text-faint line-through">
                       ${appOffer.fullPrice.toLocaleString("en-US")}
                     </span>
                   </p>
                   <p className="mt-1.5 text-sm text-muted">Starting price · scoped before you commit</p>
-                  <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-gold">
+                  <p className="mt-2 text-xs font-medium text-gold">
                     Founding · {appOffer.spotsRemaining} of {appOffer.totalSpots} left
                   </p>
                 </>
               ) : (
                 <>
                   <p className="mt-4 font-display text-3xl text-ink">
-                    <CountUp value={appOffer.fullPrice} prefix="$" />
+                    ${appOffer.fullPrice.toLocaleString("en-US")}
                   </p>
                   <p className="mt-1.5 text-sm text-muted">Starting price · scoped before you commit</p>
                 </>
               )}
-              <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-faint">
+              <p className="mt-1 text-xs text-faint">
                 One-time · monthly · hybrid
               </p>
               <p className="mt-4 text-sm leading-relaxed text-muted">
                 A new custom website, CRM, dashboard, or business app, scoped around what you need.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
-                {CUSTOM_BULLETS.map((b, i) => (
-                  <Reveal key={b} delay={240 + i * 60} as="li">
+                {CUSTOM_BULLETS.map((b) => (
+                  <li key={b}>
                     <Bullet>{b}</Bullet>
-                  </Reveal>
+                  </li>
                 ))}
               </ul>
               <OfferLink
@@ -121,14 +113,12 @@ export default function Pricing() {
                 <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
-          </Reveal>
 
           {/* Care Plan */}
-          <Reveal delay={120}>
-            <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(22,163,148,0.4)] active:scale-[0.99]">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-faint">Care Plan</p>
+                      <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(11,23,34,0.35)] active:scale-[0.99]">
+              <p className="text-xs text-faint">Care Plan</p>
               <p className="mt-4 font-display text-3xl text-ink">
-                <CountUp value={49} prefix="$" />
+                $49
                 <span className="text-[1rem] text-faint">/mo</span>
               </p>
               <p className="mt-1.5 text-xs leading-relaxed text-faint">
@@ -146,12 +136,10 @@ export default function Pricing() {
                 <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
-          </Reveal>
         </div>
 
-        <Reveal delay={180}>
-          <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-5 sm:p-7">
-            <h3 className="display-serif text-xl text-ink">Smaller projects</h3>
+        <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-5 sm:p-7">
+            <h3 className="display text-xl text-ink">Smaller projects</h3>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
               Start with one piece of the work. These are estimates for a focused project;
               larger refreshes, complex data, and multiple connections get their own quote.
@@ -172,42 +160,37 @@ export default function Pricing() {
               Platform subscriptions, paid plugins, and other third-party costs are quoted separately.
               The Care Plan covers website upkeep; software and integration support are scoped separately.
             </p>
-          </div>
-        </Reveal>
+        </div>
 
         {/* Under-row strip — the softer second option and the founding terms,
             kept out of the cards so nothing sits below a button (survey O-06). */}
-        <Reveal delay={220}>
-          <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-surface/40 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
-            <OfferLink
-              offer="call"
+        <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-line bg-surface/40 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+            <BookCall
+              where="pricing"
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"
             >
               Not ready to commit? Book a free 15-min call
               <span aria-hidden="true">→</span>
-            </OfferLink>
+            </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
                 Founding pricing includes a testimonial + permission to feature your site in our portfolio.
               </p>
             )}
           </div>
-        </Reveal>
 
         {/* Client words — renders only when a REAL quote exists in
             lib/content.ts (testimonial.quote). Never ship a fabricated one. */}
         {testimonial.quote && (
-          <Reveal delay={200}>
-            <figure className="mt-8 rounded-2xl border border-gold/30 bg-gold/[0.05] p-6">
+                      <figure className="mt-8 rounded-2xl border border-gold/30 bg-gold/[0.05] p-6">
               <blockquote className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink">
                 &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
-              <figcaption className="mt-3 font-mono text-[11px] uppercase tracking-widest text-faint">
+              <figcaption className="mt-3 text-xs text-faint">
                 — {testimonial.name}
                 {testimonial.business ? ` · ${testimonial.business}` : ""}
               </figcaption>
             </figure>
-          </Reveal>
         )}
 
         {/* The objections these answer are all about the numbers above. */}
@@ -218,7 +201,7 @@ export default function Pricing() {
 }
 
 function Bullet({ children }: { children: React.ReactNode }) {
-  // No wrapping element here — the parent <Reveal as="li"> is already the
+  // No wrapping element here — the parent <li> is already the
   // real <li>; this used to render its own nested <li>, which is invalid
   // HTML and was causing a hydration mismatch.
   return (

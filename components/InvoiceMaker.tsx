@@ -1,6 +1,4 @@
 "use client";
-
-import Reveal from "./Reveal";
 import { Label, Slider } from "./KitUI";
 import SaveResult from "./SaveResult";
 import { useLocalStorage } from "@/lib/useLocalStorage";
@@ -92,8 +90,7 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
   return (
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
       {/* Preview */}
-      <Reveal>
-        <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-6 md:order-2 md:sticky md:top-24">
+              <div className="order-1 rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-6 md:order-2 md:sticky md:top-24">
           <div className="rounded-xl bg-white p-6 text-[#16293a] shadow-[0_18px_50px_-16px_rgba(0,0,0,0.4)]">
             <div className="flex items-start justify-between border-b-2 border-signal pb-3">
               <div>
@@ -138,12 +135,10 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
           </button>
           <SaveResult summary={summary} filename={`invoice-${invNo}`} tool="invoice" toolLabel="Invoice maker" />
         </div>
-      </Reveal>
 
       {/* Controls */}
-      <Reveal delay={80}>
-        <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
-          <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">Details</p>
+              <div className="order-2 rounded-2xl border border-line bg-surface p-6 md:order-1">
+          <p className="mb-5 text-sm font-semibold text-ink">Details</p>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Your business" value={biz} onChange={setBiz} />
             <Field label="Client" value={client} onChange={setClient} />
@@ -155,7 +150,7 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
             </div>
           </div>
 
-          <p className="mb-3 mt-6 font-mono text-[11px] uppercase tracking-widest text-faint">Line items</p>
+          <p className="mb-3 mt-6 text-sm font-semibold text-ink">Line items</p>
           <div className="space-y-2">
             {items.map((it, i) => (
               <div key={i} className="flex items-center gap-2">
@@ -213,7 +208,6 @@ ${notes ? `<div class="notes">${esc(notes)}</div>` : ""}</body></html>`;
             />
           </div>
         </div>
-      </Reveal>
     </div>
   );
 }

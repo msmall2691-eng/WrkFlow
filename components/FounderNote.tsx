@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Reveal from "./Reveal";
-import Magnetic from "./Magnetic";
+import Link from "next/link";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 import {
@@ -28,7 +27,7 @@ import {
   change any of the arc's copy.
 */
 
-const STATS = ["10 yrs building systems", "1,000+ customers", "7,000+ service visits", "$1M+ operations managed"];
+const STATS = ["8 yrs running a business", "$1M+ collected since 2023", "4,900+ service visits", "63% of clients rebooked"];
 
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -73,11 +72,10 @@ export default function FounderNote() {
       </div>
       <div
         aria-hidden="true"
-        className="floaty-slow pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
+        className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
       />
       <div className="relative z-10 mx-auto max-w-2xl px-6">
-        <Reveal>
-          <figure className="flex flex-col items-center text-center">
+                  <figure className="flex flex-col items-center text-center">
             {/* The real photograph, not the wordmark.
 
                 This slot held a big "M Studio" lockup with a note explaining
@@ -112,7 +110,7 @@ export default function FounderNote() {
                   strength, so any alpha modifier on it fails — these were
                   3.53:1 on cream. Same fix already applied in Footer and
                   Contact; /about was never in the audit's page list. */}
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
+              <p className="text-sm text-muted">
                 Built from real business — The Maine Cleaning Co.
               </p>
 
@@ -126,7 +124,7 @@ export default function FounderNote() {
                         ·
                       </span>
                     )}
-                    <span className="whitespace-nowrap font-mono text-[10px] leading-none text-faint">
+                    <span className="whitespace-nowrap text-xs leading-none text-faint">
                       {stat}
                     </span>
                   </li>
@@ -151,30 +149,27 @@ export default function FounderNote() {
               </div>
             </figcaption>
           </figure>
-        </Reveal>
 
         {/* The mission — the "why this exists" story. No signature: this
             reads as a philosophy, not a personal letter. */}
-        <Reveal delay={80}>
-          <div className="mt-10 flex flex-col items-center text-center">
-            <h1 className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+                  <div className="mt-10 flex flex-col items-start text-left">
+            <h1 className="display text-[2rem] text-balance text-ink sm:text-4xl">
               {founderNote.headline}
             </h1>
             <p className="mt-1 text-lg font-medium text-ink sm:text-xl">
               {founderNote.headlineFollow}
             </p>
-            <div className="mt-6 space-y-5">
+            <div className="mt-6 max-w-[62ch] space-y-5">
               {founderNote.paragraphs.map((para, i) => (
                 <p
                   key={i}
-                  className="[font-family:var(--font-serif)] text-[1rem] leading-relaxed text-ink md:text-lg"
+                  className="[font-family:var(--font-serif)] text-[1.0625rem] leading-[1.7] text-ink"
                 >
                   {para}
                 </p>
               ))}
             </div>
           </div>
-        </Reveal>
 
         {/* A "What we build" row of six chips sat here — AI Workflows,
             Custom Software, Internal Tools, Automation, Dashboards,
@@ -185,41 +180,48 @@ export default function FounderNote() {
             kicker + headline weight) so it reads as stepping into the
             conversation, not a continuation of the pitch. Company name is
             a footnote detail, not the headline. */}
-        <Reveal delay={150}>
-          <div className="mt-16 flex flex-col items-center border-t border-line pt-10 text-center">
-            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-signal">
+                  <div className="mt-16 flex flex-col items-start border-t border-line pt-10 text-left">
+            <p className="text-xs font-medium text-signal">
               {founderBio.kicker}
             </p>
-            <h2 className="mt-3 display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+            <h2 className="display text-2xl text-ink sm:text-3xl">
               {founderBio.heading}
             </h2>
-            <div className="mt-6 max-w-md space-y-4">
+            <div className="mt-6 max-w-[62ch] space-y-4">
               {founderBio.paragraphs.map((para, i) => (
                 <p
                   key={i}
-                  className="[font-family:var(--font-serif)] text-[1rem] leading-relaxed text-ink md:text-lg"
+                  className="[font-family:var(--font-serif)] text-[1.0625rem] leading-[1.7] text-ink"
                 >
                   {para}
                 </p>
               ))}
             </div>
-            <p className="mt-5 max-w-md font-mono text-[11px] leading-relaxed text-faint">
+            <p className="mt-5 max-w-[62ch] text-sm leading-relaxed text-muted">
               {founderBio.detail}
             </p>
-            <p
-              className="mt-6 text-4xl leading-none text-signal"
-              style={{ fontFamily: "var(--font-hand)" }}
-            >
+            {/*
+              This was the only use of Caveat — a whole webfont for one line.
+              Dropped rather than kept, since the type system is now two
+              families plus mono for data.
+
+              It is deliberately NOT a hand-drawn SVG path: an approximated
+              signature reads as a scribble, which is worse than no signature
+              at all. Set as a sign-off instead, honestly.
+
+              TODO(Meg): if you want your real signature here, scan it, trace
+              it to a single-path SVG, drop it in /public, and swap this <p>
+              for an <Image> or inline <svg> with aria-label="Megan".
+            */}
+            <p className="display mt-6 text-2xl italic text-signal">
               {founderBio.signature}
             </p>
           </div>
-        </Reveal>
 
         {/* Philosophy — two lines. It used to get its own kicker, its own
             border-top and its own block, which is a lot of furniture for one
             sentence and a half. It rides quietly under the signature now. */}
-        <Reveal delay={170}>
-          <div className="mt-12 flex flex-col items-center gap-1.5 text-center">
+                  <div className="mt-12 flex flex-col items-center gap-1.5 text-center">
             {founderPhilosophy.lines.map((line) => (
               <p
                 key={line}
@@ -229,19 +231,16 @@ export default function FounderNote() {
               </p>
             ))}
           </div>
-        </Reveal>
 
         {/* CTA — closes the arc before handing off into Services below. */}
-        <Reveal delay={230}>
-          <div className="mt-14 flex flex-col items-center text-center">
-            <h2 className="display text-xl uppercase tracking-tight text-ink sm:text-2xl">
+                  <div className="mt-14 flex flex-col items-center text-center">
+            <h2 className="display text-2xl text-ink sm:text-3xl">
               {founderCta.headline}
             </h2>
             <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-muted">
               {founderCta.body}
             </p>
-            <Magnetic strength={0.35}>
-              <a
+            <Link
                 href="/#contact"
                 className="group mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
               >
@@ -249,10 +248,8 @@ export default function FounderNote() {
                 <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
                   →
                 </span>
-              </a>
-            </Magnetic>
+              </Link>
           </div>
-        </Reveal>
 
         {/* Quiet key down by the water it labels */}
         <div className="mt-12 flex justify-center">

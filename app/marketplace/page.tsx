@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import AccentSwitcher from "@/components/AccentSwitcher";
-import Reveal from "@/components/Reveal";
 import MarketCatalog from "@/components/MarketCatalog";
 import WorkflowMap from "@/components/WorkflowMap";
 import HeroWordmark from "@/components/HeroWordmark";
@@ -31,33 +30,23 @@ export default function MarketplacePage() {
           />
           <HeroWordmark text="M LINX" />
           <div className="relative z-10 mx-auto max-w-6xl px-6">
-            <Reveal>
-              <div className="mb-5 flex items-center gap-2.5 text-ink">
+                          <div className="mb-5 flex items-center gap-2.5 text-ink">
                 <LinxMark className="h-4 w-auto" />
-                <span className="font-mono text-sm font-semibold tracking-wide">M Linx</span>
-                <span className="font-mono text-xs uppercase tracking-widest text-faint">
-                  · the marketplace
-                </span>
+                <span className="font-display text-sm font-semibold">M Linx</span>
               </div>
-            </Reveal>
-            <Reveal delay={60}>
-              <h1 className="display-serif max-w-3xl text-3xl text-ink sm:text-4xl md:text-5xl">
+                          <h1 className="display-serif max-w-3xl text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
                 M Linx—premade tools and sites you can put to work today.
               </h1>
-            </Reveal>
-            <Reveal delay={120}>
-              <p className="mt-6 max-w-2xl text-[1rem] leading-relaxed text-muted">
+                          <p className="mt-6 max-w-2xl text-[1rem] leading-relaxed text-muted">
                 Ready-to-run sites, tools, and automations —{" "}
                 <span className="text-ink">own one outright</span>,{" "}
                 <span className="text-ink">rent a hosted tool</span>, or{" "}
                 <span className="text-ink">start free</span>. Set up around your
                 business either way.
               </p>
-            </Reveal>
 
             {/* How it works — four flexible ways in */}
-            <Reveal delay={160}>
-              <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <ModelCard
                   tag={marketModelLabels.template}
                   body="Set up for you, handed over. You own the code — no monthly."
@@ -75,7 +64,6 @@ export default function MarketplacePage() {
                   body="Tailored or hybrid — we'll build it custom."
                 />
               </div>
-            </Reveal>
           </div>
         </section>
 
@@ -87,7 +75,7 @@ export default function MarketplacePage() {
         <section className="relative overflow-hidden py-14 md:py-20">
           <div
             aria-hidden="true"
-            className="floaty-slow pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
+            className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
           />
           <div className="relative mx-auto max-w-6xl px-6">
             <MarketCatalog />
@@ -98,34 +86,31 @@ export default function MarketplacePage() {
         <section className="relative overflow-hidden border-t border-line py-16">
           <div
             aria-hidden="true"
-            className="floaty pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
           />
           <div className="relative mx-auto max-w-3xl px-6 text-center">
-            <Reveal>
-              <h2 className="display text-xl text-ink sm:text-2xl">
+                          <h2 className="display text-xl text-ink sm:text-2xl">
                 Don&apos;t see your exact fit?
               </h2>
-            </Reveal>
-            <Reveal delay={60}>
-              <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-relaxed text-muted">
+                          <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-relaxed text-muted">
                 Most of these started as a custom build. Share what you need, and
                 you&apos;ll get pointed to the closest starter—or the right thing
                 built from scratch.
               </p>
-            </Reveal>
-            <Reveal delay={120}>
-              <a
+                          <Link
                 href="/#contact"
                 className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
               >
                 Start a conversation →
-              </a>
-            </Reveal>
+              </Link>
           </div>
         </section>
       </main>
       <Footer />
-      <AccentSwitcher />
+        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+            every page and on a phone sat on top of the cards. The theme
+            toggle is now a command in the ⌘K palette (lib/theme.ts), so
+            nobody who picked Harbor is stranded in it. */}
     </>
   );
 }
@@ -133,7 +118,7 @@ export default function MarketplacePage() {
 function ModelCard({ tag, body }: { tag: string; body: string }) {
   return (
     <div className="rounded-xl border border-line bg-surface p-5">
-      <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
+      <p className="text-xs font-medium text-signal">
         {tag}
       </p>
       <p className="mt-3 text-sm leading-relaxed text-muted">{body}</p>

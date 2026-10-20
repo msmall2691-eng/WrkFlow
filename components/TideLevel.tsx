@@ -44,26 +44,41 @@ export default function TideLevel() {
   const crest = 22 - a;
   const path = `M0 22 Q180 ${crest} 360 22 T720 22 T1080 22 T1440 22 T1800 22 T2160 22 T2520 22 T2880 22`;
 
+  /*
+    The tide height used to live on this element's `height`, transitioned over
+    a full second — i.e. a second of layout and paint on every new reading.
+    Same live height, now carried by transforms the compositor can do on its
+    own: the body scales up from the bottom, and the wave surface is
+    translated down to sit on the new water line rather than scaled with it
+    (scaling would squash its 32/48px crest to a few pixels at low tide).
+  */
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden transition-[height] duration-1000 ease-out motion-reduce:transition-none"
-      style={{ height: `${h}%` }}
+      className="pointer-events-none absolute inset-0 overflow-hidden"
     >
       {/* Water body — deep accent glow rising from the bottom */}
-      <div className="absolute inset-0 bg-gradient-to-t from-signal/25 via-signal/[0.10] to-transparent" />
+      <div
+        className="absolute inset-x-0 bottom-0 h-full origin-bottom bg-gradient-to-t from-signal/25 via-signal/[0.10] to-transparent transition-transform duration-1000 ease-out motion-reduce:transition-none"
+        style={{ transform: `scaleY(${h / 100})` }}
+      />
       {/* Drifting wave surface — a bit taller now so amplitude is legible */}
-      <svg
-        className="wave-x absolute inset-x-0 top-0 block h-8 w-[200%] md:h-12"
-        style={{ animationDuration: dur, animationDirection: dir }}
-        viewBox="0 0 2880 40"
-        preserveAspectRatio="none"
+      <div
+        className="absolute inset-x-0 top-0 h-full transition-transform duration-1000 ease-out motion-reduce:transition-none"
+        style={{ transform: `translateY(${100 - h}%)` }}
       >
-        <path d={`${path} V40 H0 Z`} fill="var(--color-signal)" fillOpacity="0.2" />
-        <path d={path} stroke="var(--color-signal)" strokeWidth="2.5" strokeOpacity="0.65" fill="none" />
-        {/* Faint crest highlight — a little shimmer */}
-        <path d={path} stroke="#dff3ef" strokeWidth="1" strokeOpacity="0.35" fill="none" />
-      </svg>
+        <svg
+          className="wave-x absolute inset-x-0 top-0 block h-8 w-[200%] md:h-12"
+          style={{ animationDuration: dur, animationDirection: dir }}
+          viewBox="0 0 2880 40"
+          preserveAspectRatio="none"
+        >
+          <path d={`${path} V40 H0 Z`} fill="var(--color-signal)" fillOpacity="0.2" />
+          <path d={path} stroke="var(--color-signal)" strokeWidth="2.5" strokeOpacity="0.65" fill="none" />
+          {/* Faint crest highlight — a little shimmer */}
+          <path d={path} stroke="#dff3ef" strokeWidth="1" strokeOpacity="0.35" fill="none" />
+        </svg>
+      </div>
     </div>
   );
 }

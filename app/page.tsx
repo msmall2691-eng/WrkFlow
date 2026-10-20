@@ -1,44 +1,42 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Services from "@/components/Services";
+import ProofStrip from "@/components/ProofStrip";
 import Deployments from "@/components/Deployments";
-import Pricing from "@/components/Pricing";
+import Capabilities from "@/components/Capabilities";
+import TryIt from "@/components/TryIt";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import AccentSwitcher from "@/components/AccentSwitcher";
 import CommandPalette from "@/components/CommandPalette";
-import WorkflowSpine from "@/components/WorkflowSpine";
 
 /*
-  Homepage — five sections: what we build, proof it exists, what it costs,
-  how to start.
+  Homepage — a portfolio first, a studio second.
 
-  It was ten, and ~8,800px on a laptop. Hero, founder band, services, eight
-  free tools, work, approach, FAQ, pricing, stack, contact — every one of them
-  defensible on its own and collectively far too much to land on. The cuts,
-  and where each thing went:
+    Hero          headline + real shipped screens, cycling
+    Proof         the operating numbers, attributed
+    Work          the case studies, the main argument of the page
+    What I do     the five capabilities, compact, no prices
+    Try it        a working tool, not a description of one
+    Contact       the form, a calendar link, and the résumé
 
-    Free tools  → /tools      (eight forms is a product, not a section)
-    FAQ         → inside Pricing, where the objections it answers come up
-    Approach    → /about      (process belongs with the person)
-    Stack       → /about      (reassurance for the people who look for it)
-    OperatorBand→ cut         (its numbers now sit as one line in Work, and
-                               the story it teased already lives on /about)
+  Services detail and every price moved to /services. Both used to sit here,
+  which meant the first thing anyone read about the work was what it cost.
+  That is right for a visitor shopping for a website and wrong for anyone
+  judging the work itself, and one page cannot lead with both. So this page
+  leads with the work and /services answers the money question in full.
 */
 export default function Home() {
   return (
     <>
       <Nav />
-      <WorkflowSpine />
       <main>
         <Hero />
-        <Services />
+        <ProofStrip />
         <Deployments />
-        <Pricing />
+        <Capabilities />
+        <TryIt />
         <Contact />
       </main>
       <Footer />
-      <AccentSwitcher />
       <CommandPalette />
     </>
   );
