@@ -236,7 +236,7 @@ export const services: Service[] = [
       "client": "Vacation rental booking sync",
       "built": "Rental bookings automatically appear on our cleaning schedule for turnover planning.",
       "result": "One less booking to enter by hand.",
-      "shot": "/shots/brightbase-turnovers.png"
+      "shot": "/shots/brightbase-crew-schedule.png"
     }
   },
   {
@@ -254,8 +254,7 @@ export const services: Service[] = [
     "example": {
       "client": "Cleaning operations dashboard",
       "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
-      "result": "Daily operations brought into one view.",
-      "shot": "/shots/brightbase-dashboard.png"
+      "result": "Daily operations brought into one view."
     }
   }
 ];
@@ -438,7 +437,6 @@ export const work: WorkItem[] = [
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "4 spreadsheets and a group chat",
     status: "In daily production since 2026",
-    shot: "/shots/brightbase-dashboard.png",
   },
   {
     tier: "private",
@@ -448,7 +446,7 @@ export const work: WorkItem[] = [
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
     replaced: "A shared Google Calendar and text threads",
     status: "In daily production",
-    shot: "/shots/brightbase-turnovers.png",
+    shot: "/shots/brightbase-crew-schedule.png",
   },
   {
     tier: "private",
@@ -611,19 +609,19 @@ export const caseStudies: CaseStudy[] = [
         },
       },
       {
-        label: "Operations dashboard",
-        body: "Jobs, revenue, occupancy and crew in one live view.",
+        label: "Crew workspace",
+        body: "A phone workspace for the crew, separate from the office: today's work, cleaning tips, availability, time off, paperwork and what each person is owed.",
         shot: {
-          src: "/shots/brightbase-dashboard.png",
-          alt: "The operations dashboard: jobs, revenue, occupancy and crew together on one screen.",
+          src: "/shots/brightbase-crew-tools.png",
+          alt: "The crew's Today screen with a cleaning tip, and the Me screen with availability, time off, paperwork and payouts. Names are blurred.",
         },
       },
       {
         label: "Turnover scheduling",
         body: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
         shot: {
-          src: "/shots/brightbase-turnovers.png",
-          alt: "The turnover schedule, with rental bookings mapped onto cleaning assignments.",
+          src: "/shots/brightbase-crew-schedule.png",
+          alt: "The crew's phone view: an open turnover to request, and the month schedule. Addresses and pay are blurred.",
         },
       },
     ],
@@ -816,7 +814,6 @@ export const marketItems: MarketItem[] = [
       "Connects to your existing tools",
     ],
     price: "from $1,200 one-time",
-    shot: "/shots/brightbase-turnovers.png",
   },
   {
     id: "quote-widget",
@@ -846,7 +843,6 @@ export const marketItems: MarketItem[] = [
       "Built to extend later",
     ],
     price: "from $1,000 one-time",
-    shot: "/shots/brightbase-dashboard.png",
   },
   {
     id: "automation-pack",
