@@ -589,7 +589,10 @@ export const caseStudies: CaseStudy[] = [
       src: "/shots/maineclean.png",
       alt: "The maineclean.co home page: a cleaning company site with instant estimate and online booking.",
     },
-    problem: "", // TODO(Meg) — 2-3 sentences, your words. Renders nothing while empty.
+    // Drafted from Meg's own cover-letter wording and approved by her (Oct 2026).
+    // Public-safe on purpose: no revenue, spend, client or staff details.
+    problem:
+      "Running the cleaning company, I was paying for a dozen tools that didn't talk to each other: one for quotes and invoices, another for the crew schedule and time clock, others for the phone, booking and automation. Every handoff between them was done by hand. I mapped how a job actually moves from request to paid, and built one system around it.",
     built: [
       {
         label: "Marketing and booking site",
@@ -631,14 +634,22 @@ export const caseStudies: CaseStudy[] = [
       { icon: "💬", label: "Customer" },
     ],
     stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
-    results: [], // TODO(Meg) — real, confirmed numbers only.
+    // Confirmed Oct 2026: 12 paid tools covered (bank records), 4,028 tests
+    // counted in the BrightBase repo. Business financials stay off the site.
+    results: [
+      { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
+      { value: "4,000+", label: "automated tests run on every change" },
+      { value: "Daily", label: "in use by the office and field crews since 2026" },
+    ],
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",
     schemaKind: "WebSite",
     process: [
       { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
+      { phase: "Requirements", body: "Mapped every step from request to paid, documented where each tool fell short, and wrote the requirements and acceptance criteria before building." },
       { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
       { phase: "Build", body: "React front end on a Node API for the public site, a Python · FastAPI back office on Postgres, Stripe for payment and Twilio for messaging." },
+      { phase: "Phased rollout", body: "Shipped in small, tested steps while the old tools kept running. The crew app went out in five phases, each in use before the next began." },
       { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2026." },
     ],
   },
