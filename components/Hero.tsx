@@ -1,7 +1,7 @@
+import Link from "next/link";
 import DaylightSky from "./DaylightSky";
 import ProofReel from "./ProofReel";
 import OfferLink from "./OfferLink";
-import { appOffer } from "@/lib/content";
 
 /*
   Hero — headline left, real shipped screens right.
@@ -89,25 +89,18 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* A price above the fold (brief A6). Pricing used to sit 73% down a
-              21-screen phone page, so someone deciding whether you were even
-              in their range had to travel a long way on faith. Two numbers
-              now: the custom-build ladder, and the smaller fixed-scope work
-              main added alongside it. */}
+          {/* The hero used to carry two prices. Above the fold that is the
+              right opening for someone shopping for a website and the wrong
+              one for anyone judging the work, and this page now leads with
+              the work. The numbers did not disappear — /services carries
+              both ladders in full, one quiet link away. */}
           <p className="mt-6 text-sm text-muted">
-            <a
-              href="#pricing"
+            <Link
+              href="/services"
               className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal"
             >
-              Custom builds from ${appOffer.price.toLocaleString("en-US")}
-            </a>
-            <span className="mx-2 text-faint" aria-hidden="true">·</span>
-            <a
-              href="#pricing"
-              className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal"
-            >
-              Smaller projects from $250
-            </a>
+              Services &amp; pricing
+            </Link>
           </p>
         </div>
 

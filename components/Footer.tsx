@@ -46,7 +46,7 @@ export default function Footer() {
               <p className="text-sm font-semibold text-ink">Studio</p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <Link href="/#services" className="text-muted transition-colors hover:text-ink">
+                  <Link href="/services" className="text-muted transition-colors hover:text-ink">
                     Services
                   </Link>
                 </li>

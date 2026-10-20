@@ -11,6 +11,8 @@ const PAGES = [
   { path: "/", name: "home" },
   { path: "/about", name: "about" },
   { path: "/tools", name: "tools" },
+  // Services and pricing moved off the homepage onto their own page.
+  { path: "/services", name: "services" },
   { path: "/marketplace", name: "marketplace" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here

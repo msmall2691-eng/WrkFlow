@@ -9,7 +9,7 @@ import Logo from "./Logo";
    links is more than a nav can carry at 1440px without turning into a list. */
 const links = [
   { href: "/#work", label: "Work" },
-  { href: "/#services", label: "Services" },
+  { href: "/services", label: "Services" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/tools", label: "Tools" },
   { href: "/marketplace", label: "M Linx" },

@@ -101,6 +101,16 @@ export const testimonial: { quote: string; name: string; business: string } = {
   business: "",
 };
 
+/*
+  Downloadable résumé.
+
+  Set this to the public path once the PDF is in /public, e.g.
+  "/megan-small-resume.pdf". While it is "", every résumé link on the site
+  renders nothing at all rather than 404ing — the same gate the testimonial
+  and the case-study results use.
+*/
+export const resumeUrl = "";
+
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =
   "Made with the free tools at mlinx.studio — get one tuned to your business.";
@@ -489,6 +499,27 @@ export type CaseStudyResult = {
 /** A node in the "How it works" chain. Same shape WorkflowDemo takes. */
 export type CaseStudyFlowNode = { icon: string; label: string };
 
+/**
+ * A measured Lighthouse run against the live site. REAL RUNS ONLY — generated
+ * by `npm run measure`, never typed by hand. `when` and `tool` render next to
+ * the scores so a reader can see how old they are and reproduce them, which
+ * is the entire reason they are worth showing.
+ */
+export type CaseStudyMeasured = {
+  url: string;
+  /** ISO date of the run. */
+  when: string;
+  /** e.g. "Lighthouse 12.8.2 · mobile". */
+  tool: string;
+  performance: number;
+  accessibility: number;
+  bestPractices: number;
+  seo: number;
+};
+
+/** One phase of how the work actually ran. */
+export type CaseStudyPhase = { phase: string; body: string };
+
 export type CaseStudy = {
   /** URL segment, and the key a Work card points at. */
   slug: string;
@@ -512,6 +543,14 @@ export type CaseStudy = {
   results: CaseStudyResult[];
   /** Owner's words. Renders nothing while `quote` is "". */
   quote: { quote: string; name: string; business: string };
+  /**
+   * What Meg owned on this project, in one line. A hiring manager reads this
+   * before anything else: it is the difference between "a site exists" and
+   * "this person took it from request to launch".
+   */
+  role: string;
+  /** How the work ran, in order. [] renders nothing. */
+  process: CaseStudyPhase[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -569,6 +608,13 @@ export const caseStudies: CaseStudy[] = [
     stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
     results: [], // TODO(Meg) — real, confirmed numbers only.
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+    role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",
+    process: [
+      { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
+      { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
+      { phase: "Build", body: "Next.js front end, Supabase behind it, Stripe for payment and Twilio for messaging." },
+      { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2025." },
+    ],
   },
   {
     slug: "linx",
@@ -602,6 +648,12 @@ export const caseStudies: CaseStudy[] = [
     stack: ["Python", "Stripe Connect", "Railway"],
     results: [], // TODO(Meg)
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+    role: "Product design and build: the marketplace, the bidding flow, and the Stripe Connect payout path.",
+    process: [
+      { phase: "Discovery", body: "The turnover problem came out of scheduling cleaners for short-term rentals week after week." },
+      { phase: "Design", body: "Two sides of a marketplace: hosts posting work, cleaners bidding on it, each needing a different view of the same job." },
+      { phase: "Build", body: "Python service on Railway, with Stripe Connect holding payment until the job is done." },
+    ],
   },
   {
     slug: "the-remote-admin",
@@ -630,6 +682,13 @@ export const caseStudies: CaseStudy[] = [
     results: [], // TODO(Meg)
     // An outside client, so any quote here needs their sign-off as well as hers.
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
+    role: "Sole designer and developer: discovery, design, build, launch and handover for an outside client.",
+    process: [
+      { phase: "Discovery", body: "" },
+      { phase: "Design", body: "" },
+      { phase: "Build", body: "Next.js on Vercel." },
+      { phase: "Launch", body: "" },
+    ],
   },
 ];
 

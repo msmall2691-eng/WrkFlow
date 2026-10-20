@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AuroraSwell from "./AuroraSwell";
 import BookCall from "./BookCall";
 import { trackLead } from "@/lib/track";
+import { resumeUrl } from "@/lib/content";
 import {
   OFFER_EVENT,
   isOfferKey,
@@ -149,7 +150,19 @@ export default function Contact() {
                   </a>
                 </p>
               </div>
-                          <BookCall
+                          {/* Résumé, for the other kind of visitor. Renders nothing
+                  until `resumeUrl` points at a real file in /public, so the
+                  link can never 404. */}
+              {resumeUrl && (
+                <a
+                  href={resumeUrl}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
+                >
+                  Download résumé (PDF)
+                  <span aria-hidden="true">↓</span>
+                </a>
+              )}
+              <BookCall
                 where="contact"
                 className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
               >
