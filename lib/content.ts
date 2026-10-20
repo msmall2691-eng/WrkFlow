@@ -111,6 +111,20 @@ export const testimonial: { quote: string; name: string; business: string } = {
 */
 export const resumeUrl = "";
 
+/*
+  Meg's own public profiles, for `sameAs` on the Person node in structured
+  data. An answer engine asked "who is Megan Small" needs at least one
+  corroborating profile to bind this site to a real person; with none, the
+  Person node is just an assertion the site makes about itself.
+
+  TODO(Meg) — paste the full https URLs of any you want linked, e.g.
+  "https://www.linkedin.com/in/…", "https://github.com/…". While this is
+  empty no `sameAs` is emitted at all, rather than a guessed URL: a wrong
+  profile link is worse than none, because it points a reader at someone
+  who is not you.
+*/
+export const profiles: readonly string[] = [];
+
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =
   "Made with the free tools at mlinx.studio — get one tuned to your business.";
@@ -551,6 +565,14 @@ export type CaseStudy = {
   role: string;
   /** How the work ran, in order. [] renders nothing. */
   process: CaseStudyPhase[];
+  /*
+    What this thing IS, in schema.org's vocabulary, for the CreativeWork node
+    on the case study page. "WebSite" for a site, "WebApplication" for
+    something a user logs into and operates. Keep it accurate: claiming an
+    app where there is a brochure site is the structured-data version of
+    inventing a number.
+  */
+  schemaKind: "WebSite" | "WebApplication";
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -609,6 +631,7 @@ export const caseStudies: CaseStudy[] = [
     results: [], // TODO(Meg) — real, confirmed numbers only.
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",
+    schemaKind: "WebSite",
     process: [
       { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
       { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
@@ -649,6 +672,7 @@ export const caseStudies: CaseStudy[] = [
     results: [], // TODO(Meg)
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Product design and build: the marketplace, the bidding flow, and the Stripe Connect payout path.",
+    schemaKind: "WebApplication",
     process: [
       { phase: "Discovery", body: "The turnover problem came out of scheduling cleaners for short-term rentals week after week." },
       { phase: "Design", body: "Two sides of a marketplace: hosts posting work, cleaners bidding on it, each needing a different view of the same job." },
@@ -683,6 +707,7 @@ export const caseStudies: CaseStudy[] = [
     // An outside client, so any quote here needs their sign-off as well as hers.
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Sole designer and developer: discovery, design, build, launch and handover for an outside client.",
+    schemaKind: "WebSite",
     process: [
       { phase: "Discovery", body: "" },
       { phase: "Design", body: "" },

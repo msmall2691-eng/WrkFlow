@@ -89,3 +89,84 @@ test("a failed submit tells the visitor instead of silently dropping it", async 
     "Couldn't send right now.",
   );
 });
+
+/*
+  Structured data.
+
+  This is the one thing on the site that a human reviewing a page will never
+  notice is broken: it is invisible, and the failure mode is silent. A node
+  renaming its `@id` leaves every reference to it pointing at nothing, and
+  the page still looks perfect. So the test is not "is there markup" but
+  "does every reference resolve" — which is the invariant lib/schema.ts
+  exists to hold.
+
+  Scoped to in-document resolution on purpose: a bare {"@id": …} is a promise
+  that this page's own markup describes that node. Anything a consumer would
+  have to fetch over HTTP to make sense of should carry its `@type` inline
+  instead, which also takes it out of this check. The first run of this test
+  caught exactly that — `mainEntityOfPage` on a work node pointed at a page
+  node defined only in that one page's HTML.
+*/
+test("the structured data graph has no dangling @id references", async ({ page }) => {
+  const dangling: string[] = [];
+  const defined = new Set<string>();
+  const referenced: { id: string; from: string }[] = [];
+
+  for (const path of ["/", "/work/linx"]) {
+    await page.goto(path);
+    const blocks = await page
+      .locator('script[type="application/ld+json"]')
+      .allTextContents();
+    expect(blocks.length, `${path} should carry structured data`).toBeGreaterThan(0);
+
+    for (const raw of blocks) {
+      /* Throws, and fails the test, if we ever emit invalid JSON. */
+      const parsed = JSON.parse(raw);
+      for (const node of parsed["@graph"] ?? [parsed]) {
+        if (node["@id"]) defined.add(node["@id"]);
+        /* A bare {"@id": …} is a reference; anything else is a definition. */
+        const walk = (v: unknown) => {
+          if (!v || typeof v !== "object") return;
+          if (Array.isArray(v)) return v.forEach(walk);
+          const o = v as Record<string, unknown>;
+          if (typeof o["@id"] === "string" && Object.keys(o).length === 1) {
+            referenced.push({ id: o["@id"] as string, from: String(node["@type"]) });
+            return;
+          }
+          Object.values(o).forEach(walk);
+        };
+        for (const [k, v] of Object.entries(node)) if (k !== "@id") walk(v);
+      }
+    }
+  }
+
+  for (const r of referenced)
+    if (!defined.has(r.id)) dangling.push(`${r.from} → ${r.id}`);
+  expect(dangling, "every @id reference should resolve to a defined node").toEqual([]);
+});
+
+test("the portfolio claims a named person who made the work", async ({ page }) => {
+  await page.goto("/");
+  const raw = await page
+    .locator('script[type="application/ld+json"]')
+    .first()
+    .textContent();
+  const graph = JSON.parse(raw ?? "{}")["@graph"] as Record<string, unknown>[];
+
+  /*
+    The point of the whole graph. An answer engine asked who built these
+    things needs a full name, not "Meg", and each work needs to credit her.
+  */
+  const person = graph.find((n) => n["@type"] === "Person");
+  expect(person?.name, "the Person node should carry her full name").toBe("Megan Small");
+
+  const works = graph.filter(
+    (n) => typeof n["@id"] === "string" && (n["@id"] as string).includes("/work/"),
+  );
+  expect(works.length, "every case study should have a CreativeWork node").toBe(3);
+  for (const w of works)
+    expect(
+      (w.creator as { "@id": string } | undefined)?.["@id"],
+      `${w.name} should credit her as creator`,
+    ).toBe(person?.["@id"]);
+});
