@@ -27,7 +27,7 @@ import {
   change any of the arc's copy.
 */
 
-const STATS = ["10 yrs building systems", "1,000+ customers", "7,000+ service visits", "$1M+ operations managed"];
+const STATS = ["8 yrs running a business", "$1M+ collected since 2023", "4,900+ service visits", "63% of clients rebooked"];
 
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {

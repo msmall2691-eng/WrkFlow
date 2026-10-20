@@ -62,7 +62,7 @@ function person() {
     email: "contact@mlinx.studio",
     worksFor: { "@id": ID.studio },
     description:
-      "Ran The Maine Cleaning Company for ten years, then learned to build the software it needed. Now designs and builds websites, business software and integrations for other business owners.",
+      "Has run The Maine Cleaning Company since 2018, then learned to build the software it needed. Now designs and builds websites, business software and integrations for other business owners.",
     alumniOf: {
       "@type": "CollegeOrUniversity",
       name: "University of Southern Maine",

@@ -29,7 +29,7 @@ export const founderBio = {
     "I love figuring things out: learning a platform, organizing the information, and turning an idea into something useful. M Studio grew from that interest and now helps businesses with websites, platform setup, migrations, integrations, and custom tools.",
     "M Studio is based in Maine and works remotely with businesses anywhere. Alongside the studio, I am studying Business Analytics and AI at the University of Southern Maine with a minor in Computer Science. Outside of work and school, you will usually find me with the kids and our dog, near the water. Fishing if the day allows.",
   ],
-  detail: "The Maine Cleaning Company is the proving ground: 1,000+ customers and 7,000+ service visits.",
+  detail: "The Maine Cleaning Company is the proving ground: $1M+ collected and 4,900+ service visits since 2023.",
   signature: "— Meg",
 } as const;
 
@@ -83,10 +83,13 @@ export const studioStats = [
 export const provingGround = {
   label: "Built from real business — The Maine Cleaning Co.",
   stats: [
-    { value: "10 yrs", label: "running a business" },
-    { value: "1,000+", label: "customers served" },
-    { value: "7,000+", label: "service visits" },
-    { value: "$1M+", label: "operations managed" },
+    // Verified Oct 2026 against Jobber invoices and visit exports
+    // (Mar 2023 – Oct 2026). Pre-2023 years are not in any system, so
+    // nothing here counts them. Founded 2018.
+    { value: "8 yrs", label: "running the business" },
+    { value: "$1M+", label: "collected since 2023" },
+    { value: "4,900+", label: "service visits since 2023" },
+    { value: "63%", label: "of clients rebooked" },
   ],
 } as const;
 
@@ -377,7 +380,7 @@ export const work: WorkItem[] = [
     title: "The Maine Cleaning Co.",
     caseStudy: "maine-cleaning-co",
     blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
-    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
+    stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
     url: "https://maineclean.co",
     live: true,
     shot: "/shots/maineclean.png",
@@ -434,7 +437,7 @@ export const work: WorkItem[] = [
     blurb: "Jobs, revenue, occupancy & crew in one live view.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "4 spreadsheets and a group chat",
-    status: "In daily production since 2025",
+    status: "In daily production since 2026",
     shot: "/shots/brightbase-dashboard.png",
   },
   {
@@ -627,7 +630,7 @@ export const caseStudies: CaseStudy[] = [
       { icon: "📅", label: "Schedule" },
       { icon: "💬", label: "Customer" },
     ],
-    stack: ["Next.js", "Supabase", "Vercel", "Twilio", "Stripe"],
+    stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
     results: [], // TODO(Meg) — real, confirmed numbers only.
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",
@@ -635,8 +638,8 @@ export const caseStudies: CaseStudy[] = [
     process: [
       { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
       { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
-      { phase: "Build", body: "Next.js front end, Supabase behind it, Stripe for payment and Twilio for messaging." },
-      { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2025." },
+      { phase: "Build", body: "React front end on a Node API for the public site, a Python · FastAPI back office on Postgres, Stripe for payment and Twilio for messaging." },
+      { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2026." },
     ],
   },
   {
