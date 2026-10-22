@@ -145,7 +145,7 @@ export default function ProofReel() {
         </div>
       </div>
 
-      <div className="mt-3 flex items-start justify-between gap-4">
+      <div className="mt-3 flex flex-col items-start gap-1.5 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         {/* aria-live so the caption is announced as the reel advances rather
             than silently changing under a screen reader. */}
         <p className="text-xs leading-snug text-faint" aria-live="polite">
@@ -154,7 +154,21 @@ export default function ProofReel() {
           {current.tag}
         </p>
         {FRAMES.length > 1 && (
-          <div className="flex shrink-0 gap-1.5 pt-0.5">
+          /*
+            The dot is the look; the button is the target.
+
+            These used to be 6px buttons, which is a fine dot and a bad
+            touch target: WCAG 2.5.8 asks for 24px, and Lighthouse scored
+            the homepage down for it. So the button is 24x24 with
+            transparent padding and the span inside keeps the exact dot it
+            always had. Nothing moves visually.
+
+            The row stacks under the caption below `sm`. Seven 24px targets
+            are 168px wide, which would otherwise squeeze the caption into
+            four lines on a phone and make the hero taller than leaving the
+            dots their own line does.
+          */
+          <div className="-mx-1.5 flex shrink-0">
             {FRAMES.map((w, i) => (
               <button
                 key={w.shot}
@@ -162,10 +176,16 @@ export default function ProofReel() {
                 onClick={() => setIndex(i)}
                 aria-label={`Show ${w.title}`}
                 aria-current={i === index}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === index ? "w-5 bg-signal" : "w-1.5 bg-faint/40 hover:bg-faint"
-                }`}
-              />
+                className="group flex h-6 w-6 items-center justify-center"
+              >
+                <span
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === index
+                      ? "w-5 bg-signal"
+                      : "w-1.5 bg-faint/40 group-hover:bg-faint"
+                  }`}
+                />
+              </button>
             ))}
           </div>
         )}

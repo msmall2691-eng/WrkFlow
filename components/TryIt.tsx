@@ -1,3 +1,4 @@
+import Link from "next/link";
 import QuoteCalc from "./QuoteCalc";
 
 /*
@@ -35,12 +36,17 @@ export default function TryIt() {
         </div>
         <p className="mt-8 text-sm text-muted">
           Seven more, free and no signup, on{" "}
-          <a
+          {/* Underlined, not just coloured: colour alone is the only thing
+              distinguishing a link inside a paragraph here, which fails
+              WCAG 1.4.1 and cost the homepage its accessibility score.
+              `underline underline-offset-2` is what inline links already
+              use in Contact, Questionnaire and ToolEmailCapture. */}
+          <Link
             href="/tools"
-            className="text-signal transition-opacity hover:opacity-80"
+            className="text-signal underline underline-offset-2 transition-opacity hover:opacity-80"
           >
             the tools page →
-          </a>
+          </Link>
         </p>
       </div>
     </section>

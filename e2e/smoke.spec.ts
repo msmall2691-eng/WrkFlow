@@ -228,3 +228,31 @@ test("the analytics beacons are not blocked by the CSP", async ({ page }) => {
   const scriptBlocks = violations.filter((v) => v.directive.startsWith("script-src"));
   expect(scriptBlocks, "the CSP should not block the analytics beacons").toEqual([]);
 });
+
+/*
+  Touch target size on the hero reel controls.
+
+  These shipped at 6x6 CSS px — a fine-looking dot and a target a quarter
+  the 24px minimum (WCAG 2.5.8). It cost the live homepage its accessibility
+  score, and nobody saw it, because a too-small button looks exactly like a
+  correctly-sized one: the dot is the same either way. The only signal was
+  a Lighthouse run after it was already merged.
+
+  So the assertion is on the rendered box, not the markup. Restyling the
+  dot is fine; shrinking what a thumb has to hit is not.
+*/
+test("the reel controls are big enough to hit", async ({ page }) => {
+  await page.goto("/");
+  const dots = page.locator('[aria-label^="Show "]');
+  const n = await dots.count();
+  expect(n, "the hero reel should render its controls").toBeGreaterThan(1);
+
+  const tooSmall: string[] = [];
+  for (let i = 0; i < n; i++) {
+    const box = await dots.nth(i).boundingBox();
+    const label = await dots.nth(i).getAttribute("aria-label");
+    if (!box || box.width < 24 || box.height < 24)
+      tooSmall.push(`${label}: ${Math.round(box?.width ?? 0)}x${Math.round(box?.height ?? 0)}`);
+  }
+  expect(tooSmall, "every reel control should be at least 24x24").toEqual([]);
+});

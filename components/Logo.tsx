@@ -29,6 +29,16 @@ export default function Logo({
       >
         M
       </span>
+      {/*
+        A real space between the two halves of the wordmark. Without it the
+        link's text reads "MStudio" to a tool computing visible text, which
+        no accessible name can match: a speech-recognition user saying
+        "click M Studio" hits nothing, and axe flags the mismatch.
+
+        It costs no layout. This is an inline-flex container, and whitespace
+        between flex items is discarded, so the `gap-2` still draws the gap
+        and the space only exists in the text.
+      */}{" "}
       <span className={`font-display text-[17px] font-semibold tracking-[-0.01em] ${wordColor}`}>Studio</span>
       {tag && (
         <span className={`hidden text-xs sm:inline ${tagColor}`}>
