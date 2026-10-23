@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import ProofBand from "@/components/ProofBand";
 import ProofStrip from "@/components/ProofStrip";
 import Deployments from "@/components/Deployments";
 import Capabilities from "@/components/Capabilities";
@@ -11,7 +12,8 @@ import CommandPalette from "@/components/CommandPalette";
 /*
   Homepage — a portfolio first, a studio second.
 
-    Hero          headline + real shipped screens, cycling
+    Hero          headline + the live Maine conditions panel
+    Proof reel    real shipped screens, cycling, in their own band
     Proof         the operating numbers, attributed
     Work          the case studies, the main argument of the page
     What I do     the five capabilities, compact, no prices
@@ -30,6 +32,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
+        <ProofBand />
         <ProofStrip />
         <Deployments />
         <Capabilities />

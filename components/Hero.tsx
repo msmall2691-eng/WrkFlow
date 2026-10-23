@@ -1,23 +1,26 @@
 import Link from "next/link";
 import DaylightSky from "./DaylightSky";
-import ProofReel from "./ProofReel";
+import HeroLivePanel from "./HeroLivePanel";
 import OfferLink from "./OfferLink";
 
 /*
-  Hero — headline left, real shipped screens right.
+  Hero — headline left, the live Maine panel right.
 
-  The right column used to hold a live Portland weather panel, and the
-  backdrop carried a WebGL aurora plus a precipitation canvas. Clever, but it
-  proved we can read a weather API rather than build a business a website —
-  and on a phone `min-h-[88vh]` plus that panel meant the first screen was
-  entirely decoration and the Work section didn't start until roughly the
-  third. So: the proof reel takes the slot, and the live Maine data survives
-  as the signature it should always have been — DaylightSky still tints the
-  page from the real Portland sky, the fog veil still rolls in from the feed
-  (app/layout.tsx `data-fog`), and the readout itself now sits in the footer.
+  This slot has been argued over twice in the repo's history, so the result
+  is written down. #109 replaced the live weather panel with the proof reel,
+  on the reasoning that the panel proved we can read a weather API rather
+  than build a business a website. #110 recorded Meg's decision the other
+  way: the panel stays as her signature and as proof she wires sites to live
+  data, with the proof reel directly beneath the hero as its own band. #109
+  merged after #110 and took the panel out anyway. The decision wins.
+
+  What #109 was right about is kept: the panel now carries a caption saying
+  what the live data is proof of, and under 640px it collapses to a one-line
+  strip, so the hero does not spend a whole phone screen on conditions. See
+  HeroLivePanel.
 
   The viewport lock is `lg:` only. At 390px the hero ends at its natural
-  height, so the proof strip below is already peeking above the fold.
+  height, so the proof reel below is already peeking above the fold.
 */
 export default function Hero() {
   return (
@@ -104,11 +107,10 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Real shipped screens, cycling. Below lg this sits under the CTAs,
-            so the first phone screen still carries actual work. */}
-        <div className="w-full lg:ml-auto">
-          <ProofReel />
-        </div>
+        {/* The live conditions panel and the sentence that justifies it.
+            Below lg this sits under the CTAs; below sm it is a one-line
+            strip until the visitor opens it. */}
+        <HeroLivePanel />
       </div>
     </section>
   );
