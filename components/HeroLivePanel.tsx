@@ -99,15 +99,23 @@ export default function HeroLivePanel() {
         This is the whole justification for the panel being in the hero: it
         names what the live data is proof OF.
 
-        TODO(2.1f) — the roadmap wants this linked to a short "How this site
-        works" section (weather and sun data → /api/maine → page theme). That
-        section does not exist yet, so the sentence stands on its own rather
-        than linking nowhere.
+        The link is the other half (2.1f): the sentence makes a claim, and
+        "How this site works" is where a visitor goes to check it. Underlined
+        rather than coloured alone, which is the rule a link inside a
+        paragraph has to follow (WCAG 1.4.1) and the one the /tools link
+        broke in #111.
       */}
       <p className="mt-3 max-w-md text-xs leading-relaxed text-muted sm:mt-4 sm:text-sm">
         This page is reading live Maine weather and daylight right now. I
         connect client sites to their own live data the same way: bookings,
-        inventory, schedules.
+        inventory, schedules.{" "}
+        <a
+          href="#how-it-works"
+          className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal"
+        >
+          See how it works
+        </a>
+        .
       </p>
     </div>
   );

@@ -5,6 +5,7 @@ import ProofStrip from "@/components/ProofStrip";
 import Deployments from "@/components/Deployments";
 import Capabilities from "@/components/Capabilities";
 import TryIt from "@/components/TryIt";
+import HowThisWorks from "@/components/HowThisWorks";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
@@ -18,6 +19,7 @@ import CommandPalette from "@/components/CommandPalette";
     Work          the case studies, the main argument of the page
     What I do     the five capabilities, compact, no prices
     Try it        a working tool, not a description of one
+    How it works  the live sky explained, as a small case study
     Contact       the form, a calendar link, and the résumé
 
   Services detail and every price moved to /services. Both used to sit here,
@@ -37,6 +39,10 @@ export default function Home() {
         <Deployments />
         <Capabilities />
         <TryIt />
+        {/* Sits beside Try it on purpose: both are a system working in
+            front of the visitor rather than a claim about one. The hero
+            caption links down here. */}
+        <HowThisWorks />
         <Contact />
       </main>
       <Footer />
