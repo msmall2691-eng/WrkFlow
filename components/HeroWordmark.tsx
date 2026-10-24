@@ -10,9 +10,18 @@ import { useEffect, useRef } from "react";
 export default function HeroWordmark({
   text = "M STUDIO",
   size = "text-[13vw]",
+  /*
+    Where the word sits inside its section. The default fills the section,
+    which is right when the section's text is narrow enough to clear it. On
+    /marketplace it was not: the headline and intro paragraph ran straight
+    through the middle of the letters and the paragraph became hard to read.
+    Pages with wide text pass a box that holds only empty space.
+  */
+  position = "inset-0",
 }: {
   text?: string;
   size?: string;
+  position?: string;
 }) {
   const wrap = useRef<HTMLDivElement>(null);
   const reveal = useRef<HTMLDivElement>(null);
@@ -65,7 +74,7 @@ export default function HeroWordmark({
     <div
       ref={wrap}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden"
+      className={`pointer-events-none absolute overflow-hidden ${position}`}
     >
       {/* Faint base — the word always sits in the fog */}
       <div className="absolute inset-0 flex items-center justify-center">

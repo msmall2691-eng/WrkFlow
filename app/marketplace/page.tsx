@@ -11,9 +11,9 @@ import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = pageMeta({
   // The root layout's title template appends "· M Studio" — no brand here.
-  title: "M Linx — Premade Tools, Sites & Plugins",
+  title: "M Linx. Premade Tools, Sites and Plugins",
   description:
-    "M Linx is M Studio's line of premade websites, web apps, tools, and automations—buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
+    "M Linx is M Studio's line of premade websites, web apps, tools and automations. Buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
   path: "/marketplace",
 });
 
@@ -28,18 +28,29 @@ export default function MarketplacePage() {
             aria-hidden="true"
             className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
           />
-          <HeroWordmark text="M LINX" />
+          {/*
+            Parked top-right. At full-section size the word ran straight
+            through the headline and intro paragraph (see HeroWordmark's
+            `position` note); this box is the empty space to the right of
+            the text column, so the identity survives and the copy is
+            readable. Hidden below `lg`, where there is no spare column.
+          */}
+          <HeroWordmark
+            text="M LINX"
+            size="text-[9vw]"
+            position="right-[-4%] top-0 hidden h-1/2 w-[46%] lg:block"
+          />
           <div className="relative z-10 mx-auto max-w-6xl px-6">
                           <div className="mb-5 flex items-center gap-2.5 text-ink">
                 <LinxMark className="h-4 w-auto" />
                 <span className="font-display text-sm font-semibold">M Linx</span>
               </div>
                           <h1 className="display-serif max-w-3xl text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
-                M Linx—premade tools and sites you can put to work today.
+                Premade tools and sites you can put to work today.
               </h1>
                           <p className="mt-6 max-w-2xl text-[1rem] leading-relaxed text-muted">
-                Ready-to-run sites, tools, and automations —{" "}
-                <span className="text-ink">own one outright</span>,{" "}
+                Ready-to-run sites, tools and automations.{" "}
+                <span className="text-ink">Own one outright</span>,{" "}
                 <span className="text-ink">rent a hosted tool</span>, or{" "}
                 <span className="text-ink">start free</span>. Set up around your
                 business either way.
@@ -49,7 +60,7 @@ export default function MarketplacePage() {
                           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <ModelCard
                   tag={marketModelLabels.template}
-                  body="Set up for you, handed over. You own the code — no monthly."
+                  body="Set up for you, handed over. You own the code, no monthly."
                 />
                 <ModelCard
                   tag={marketModelLabels.embed}
@@ -61,7 +72,7 @@ export default function MarketplacePage() {
                 />
                 <ModelCard
                   tag="Work together"
-                  body="Tailored or hybrid — we'll build it custom."
+                  body="Tailored or hybrid. I'll build it custom."
                 />
               </div>
           </div>
@@ -94,7 +105,7 @@ export default function MarketplacePage() {
               </h2>
                           <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-relaxed text-muted">
                 Most of these started as a custom build. Share what you need, and
-                you&apos;ll get pointed to the closest starter—or the right thing
+                you&apos;ll get pointed to the closest starter, or the right thing
                 built from scratch.
               </p>
                           <Link
