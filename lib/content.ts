@@ -758,6 +758,12 @@ export type MarketItem = {
    * allow framing. Takes precedence over `shot`.
    */
   liveUrl?: string;
+  /**
+   * A drawn diagram to use as the preview where no real capture exists.
+   * Deliberately not a screenshot: it reads as a diagram, so it cannot be
+   * mistaken for a product shot of something that was never built.
+   */
+  illustration?: "flow";
   /** True for the highlighted / recommended card. */
   featured?: boolean;
 };
@@ -774,12 +780,12 @@ export const marketItems: MarketItem[] = [
     name: "Digital Welcome Book",
     model: "template",
     category: "Guest experience",
-    tagline: "The printed check-in binder, reborn as one link guests actually open — house guide, WiFi, and local picks for your short-term rental.",
+    tagline: "The printed check-in binder, reborn as one link guests actually open: house guide, WiFi and local picks for your short-term rental.",
     includes: [
       "Check-in steps, WiFi & the full house manual",
       "Local food, beaches & things-to-do picks",
       "House rules + a checkout checklist",
-      "Your own link & QR code — yours to own",
+      "Your own link & QR code, yours to own",
     ],
     price: "$99 intro · reg. $149",
     liveUrl: "https://keystonestay.maineclean.co",
@@ -790,7 +796,7 @@ export const marketItems: MarketItem[] = [
     name: "M Linx Site",
     model: "template",
     category: "Website",
-    tagline: "A fast, custom marketing site for trades and service companies—yours to own.",
+    tagline: "A fast, custom marketing site for trades and service companies, yours to own.",
     includes: [
       "Custom design + copy structure",
       "Instant-quote + contact forms wired up",
@@ -814,6 +820,10 @@ export const marketItems: MarketItem[] = [
       "Connects to your existing tools",
     ],
     price: "from $1,200 one-time",
+    // The turnover scheduler running in daily production: the owner calendar
+    // and the confirm step this card sells. Same capture the Work section
+    // uses for "Turnover scheduling"; the address and pay are redacted in it.
+    shot: "/shots/brightbase-crew-schedule.png",
   },
   {
     id: "quote-widget",
@@ -825,7 +835,7 @@ export const marketItems: MarketItem[] = [
       "Embeddable estimate calculator",
       "Configured to your pricing + branding",
       "Leads emailed straight to you on submit",
-      "One line of code to install — we set it up, you go live",
+      "One line of code to install. I set it up, you go live",
     ],
     price: "$150 setup + $15/mo",
     shot: "/shots/instant-estimate.png",
@@ -839,16 +849,27 @@ export const marketItems: MarketItem[] = [
     includes: [
       "Live KPIs, jobs & revenue views",
       "Connected to your data sources",
-      "Hosted or self-hosted—your call",
+      "Hosted or self-hosted, your call",
       "Built to extend later",
     ],
     price: "from $1,000 one-time",
+    /*
+      TODO(Meg): a capture of the real operations dashboard (the one listed
+      in `deployments` as "Cleaning operations dashboard", in daily
+      production since 2026) with customer names, addresses and figures
+      redacted, as brightbase-crew-*.png already are. It is the only card
+      here selling something no screenshot exists for. Until then the card
+      shows the drawn fallback rather than a stand-in from another system:
+      the crew app's numbers are real, but they are not a command center,
+      and using them here would promise the wrong screen.
+    */
   },
   {
     id: "automation-pack",
     name: "M Linx Flows",
     model: "embed",
     category: "Automation",
+    illustration: "flow",
     tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
     includes: [
       "Confirmation + reminder flows",
@@ -863,14 +884,16 @@ export const marketItems: MarketItem[] = [
     name: "M Linx Tools",
     model: "open",
     category: "Tool",
-    tagline: "The free calculators on this site—use them, or take the source.",
+    tagline: "The free calculators on this site. Use them, or take the source.",
     includes: [
       "Quote, rate & signature tools",
       "Free to use, right now",
-      "Open-source starter on request — calculators only; hosted tools (Quote, Flows) stay set-up-by-us",
+      "Open-source starter on request: calculators only. Hosted tools (Quote, Flows) stay set up by me",
       "A friendly way to say hello",
     ],
     price: "Free",
+    // A real capture of this site's own /tools page, calculator and all.
+    shot: "/shots/tools.png",
   },
 ];
 

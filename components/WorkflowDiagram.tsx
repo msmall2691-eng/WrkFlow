@@ -25,21 +25,49 @@ export default function WorkflowDiagram({
     two looping animations on the site and both are already spent.
   */
   live,
+  /*
+    Sizes the diagram for a narrow container, such as a catalogue card.
+
+    The default sizing uses `md:` variants, and those are viewport media
+    queries, not container queries: inside a ~320px card on a 1440px screen
+    they still fire, so four 56px stage columns plus six 16px gaps consume
+    the whole row and the `flex-1` connector tracks are left zero width.
+    The lines then draw correctly into nothing. Compact drops the `md:`
+    upscaling and shrinks the labels, which leaves the tracks room to grow.
+  */
+  compact = false,
 }: {
   stages: WorkflowStage[];
   live: boolean | "still";
+  compact?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-2 md:gap-4">
+    <div
+      className={`flex items-center justify-between ${
+        compact ? "gap-1.5" : "gap-2 md:gap-4"
+      }`}
+    >
       {stages.map((stage, i) => {
         const isLast = i === stages.length - 1;
         return (
           <Fragment key={stage.label}>
             <div className="flex shrink-0 flex-col items-center">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full border border-signal/40 bg-base text-xl shadow-[inset_0_0_18px_-4px_var(--color-signal-glow)] md:h-14 md:w-14 md:text-2xl">
+              <span
+                className={`flex items-center justify-center rounded-full border border-signal/40 bg-base shadow-[inset_0_0_18px_-4px_var(--color-signal-glow)] ${
+                  compact
+                    ? "h-9 w-9 text-base"
+                    : "h-12 w-12 text-xl md:h-14 md:w-14 md:text-2xl"
+                }`}
+              >
                 {stage.icon}
               </span>
-              <span className="mt-2 text-xs text-faint">{stage.label}</span>
+              <span
+                className={`text-faint ${
+                  compact ? "mt-1.5 text-[10px]" : "mt-2 text-xs"
+                }`}
+              >
+                {stage.label}
+              </span>
             </div>
             {!isLast && (
               <div

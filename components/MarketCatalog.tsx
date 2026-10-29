@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Reveal from "./Reveal";
 import LinxMark from "./LinxMark";
+import WorkflowDiagram from "./WorkflowDiagram";
 import {
   marketItems,
   marketModelLabels,
@@ -38,7 +39,7 @@ export default function MarketCatalog() {
       <Reveal>
         <p className="mt-10 text-sm leading-relaxed text-faint">
           Pricing is indicative. Every setup is tuned to your business, so the
-          final number depends on scope. Reserve one and we&apos;ll send a fixed
+          final number depends on scope. Reserve one and I&apos;ll send a fixed
           quote.
         </p>
       </Reveal>
@@ -71,17 +72,42 @@ function ProductCard({
         ) : item.shot ? (
           <Image
             src={item.shot}
-            alt={`${item.name} — preview`}
+            alt={`Preview of ${item.name}`}
             fill
             sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
             className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
           />
+        ) : item.illustration === "flow" ? (
+          <FlowThumb />
         ) : (
-          <div className="flex h-full items-center justify-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-elevated)_0%,var(--color-base)_75%)]">
-            <span className="display-serif text-2xl text-muted">{item.category}</span>
+          /*
+            No capture exists for this one yet. It used to render the bare
+            category word ("Dashboard") centred in a gradient, which read as
+            a broken image rather than a deliberate blank. This says what the
+            card is and marks it as drawn, so nobody mistakes it for a
+            screenshot of something that was never built.
+          */
+          <div className="flex h-full flex-col items-center justify-center gap-2 bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-elevated)_0%,var(--color-base)_75%)]">
+            <LinxMark className="h-4 w-auto opacity-70" />
+            <span className="display-serif text-xl text-muted">{item.category}</span>
+            {/* Not font-mono: CLAUDE.md keeps JetBrains Mono for real code or
+                data, and this is a label. Much of the site breaks that rule
+                already, but a new label need not add to it. */}
+            <span className="text-[10px] uppercase tracking-wider text-faint">
+              Built to order
+            </span>
           </div>
         )}
-        <span className="absolute left-3 top-3 z-10 font-mono text-[11px] text-white/70">
+        {/*
+          The index sat as white/70 directly on the thumbnail, which works
+          over a dark screenshot and fails over a light one: Lighthouse
+          measured 1.06:1 on the cards whose preview is pale. (Pre-existing,
+          confirmed by measuring this page before this change; fixed here
+          because this change gives more cards a light preview.) The chip is
+          the same translucent treatment the "Live preview" badge already
+          uses, so the number reads on any thumbnail.
+        */}
+        <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/75 px-1.5 py-0.5 font-mono text-[11px] text-white backdrop-blur-sm">
           {String(n).padStart(2, "0")}
         </span>
         <span
@@ -140,6 +166,41 @@ function ProductCard({
 }
 
 /*
+  FlowThumb — the preview for M Linx Flows, which is a set of automations and
+  so has no screen to screenshot. WorkflowDiagram is the same diagram the
+  homepage and the case studies draw, rendered `still` (no travelling pulse:
+  CLAUDE.md allows two looping animations on the site and the proof reel and
+  the live hero sky already spend both). It holds no state and no effects,
+  so it adds markup and no behaviour; being imported here it rides along in
+  this component's client bundle, which is why it stays this small.
+*/
+function FlowThumb() {
+  return (
+    <div className="flex h-full items-center bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-elevated)_0%,var(--color-base)_75%)] px-4">
+      {/*
+        w-full matters: this wrapper is a flex container (to centre the
+        diagram vertically), so without it the diagram is a content-sized
+        flex item. Its connector tracks are `flex-1` with a zero basis, so
+        they add nothing to that intrinsic width, and the whole row shrank
+        to the four stage columns with no room left for the lines.
+      */}
+      <div className="w-full">
+        <WorkflowDiagram
+          stages={[
+            { icon: "\u{1F4C5}", label: "Booking" },
+            { icon: "\u2709\uFE0F", label: "Confirm" },
+            { icon: "\u{1F514}", label: "Remind" },
+            { icon: "\u2B50", label: "Review" },
+          ]}
+          live="still"
+          compact
+        />
+      </div>
+    </div>
+  );
+}
+
+/*
   LiveThumb — an always-current preview of a real site, embedded as a scaled,
   non-interactive iframe (the page renders at 2x the card width, then scales to
   0.5, so the full desktop layout shows "zoomed out"). Lazy: nothing loads until
@@ -171,7 +232,7 @@ function LiveThumb({ url, title }: { url: string; title: string }) {
       {load ? (
         <iframe
           src={url}
-          title={`${title} — live preview`}
+          title={`Live preview of ${title}`}
           loading="lazy"
           className="absolute left-0 top-0"
           style={{
@@ -230,7 +291,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
         setState("done");
       }
     } catch {
-      setError("Couldn't send—check your connection and try again.");
+      setError("Couldn't send, check your connection and try again.");
       setState("error");
     }
   }
@@ -268,7 +329,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
             </div>
             <p className="mt-4 font-display text-lg text-ink">You&apos;re on the list.</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              We&apos;ll be in touch about <span className="text-ink">{item.name}</span> with
+              I&apos;ll be in touch about <span className="text-ink">{item.name}</span> with
               a fixed quote and next steps.
             </p>
             <button
@@ -282,7 +343,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
         ) : (
           <form onSubmit={submit} className="p-6">
             <p className="mb-4 text-sm leading-relaxed text-muted">
-              Reserve your spot. Drop your details and we&apos;ll follow up with a
+              Reserve your spot. Drop your details and I&apos;ll follow up with a
               fixed quote. No payment now.
             </p>
             {/* Honeypot */}
