@@ -256,3 +256,41 @@ test("the reel controls are big enough to hit", async ({ page }) => {
   }
   expect(tooSmall, "every reel control should be at least 24x24").toEqual([]);
 });
+
+/*
+  The lead endpoints are not open relays.
+
+  /api/contact mails Meg and sends an auto-reply to whatever address the
+  caller typed. It shipped with no origin check while every other endpoint
+  that mails anyone had one, so a script could POST it directly, from
+  anywhere, as fast as it liked: her inbox filled with junk inquiries, and
+  her domain sent auto-replies to strangers on someone else's say-so.
+
+  The protection is a header check, so nothing on the page shows whether it
+  is there, and the form keeps working either way. That is exactly the kind
+  of thing that goes missing in a refactor without anyone noticing, which is
+  why it is asserted here rather than left to a reviewer to remember.
+
+  A browser always sends Origin on a cross-origin POST, so this is the
+  request a bot makes, not one a visitor can make by accident.
+*/
+test("the lead endpoints refuse requests from outside the site", async ({ request }) => {
+  const payload = {
+    name: "Spam Bot",
+    email: "bot@example.com",
+    message: "hello",
+    url: "https://example.com",
+    to: "someone@example.com",
+  };
+
+  for (const path of ["/api/contact", "/api/tool-lead", "/api/questionnaire"]) {
+    const noOrigin = await request.post(path, { data: payload });
+    expect(noOrigin.status(), `${path} should reject a request with no Origin`).toBe(403);
+
+    const foreign = await request.post(path, {
+      data: payload,
+      headers: { origin: "https://evil.example" },
+    });
+    expect(foreign.status(), `${path} should reject a foreign Origin`).toBe(403);
+  }
+});
