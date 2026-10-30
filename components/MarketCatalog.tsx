@@ -106,8 +106,15 @@ function ProductCard({
           because this change gives more cards a light preview.) The chip is
           the same translucent treatment the "Live preview" badge already
           uses, so the number reads on any thumbnail.
+
+          The scrim is a literal colour, not `bg-ink`. `--color-ink` flips
+          with the theme: it is near-white in Harbor, which is the default,
+          so `bg-ink/75` made a near-white chip under white text and was
+          worse than what it replaced. The chip has to stay dark in both
+          themes because the thumbnail under it does not follow the theme
+          at all, so this is one of the few places a fixed value is right.
         */}
-        <span className="absolute left-3 top-3 z-10 rounded-full bg-ink/75 px-1.5 py-0.5 font-mono text-[11px] text-white backdrop-blur-sm">
+        <span className="absolute left-3 top-3 z-10 rounded-full bg-[#0b1722]/75 px-1.5 py-0.5 font-mono text-[11px] text-white backdrop-blur-sm">
           {String(n).padStart(2, "0")}
         </span>
         <span
