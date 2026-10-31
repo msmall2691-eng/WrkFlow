@@ -54,11 +54,53 @@ const OFFER_LABELS: Record<string, string> = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-// At most 5 submissions per IP within 10 minutes.
-const rateLimited = createRateLimiter({ windowMs: 10 * 60 * 1000, maxHits: 5 });
+/*
+  Caps on every field, not just the message.
+
+  A field with no cap is free storage and free space in an email for anyone
+  who finds the endpoint, and these are all short in real use: a name that
+  needs more than 200 characters is not a name.
+*/
+const MAX = { name: 200, email: 320, company: 200, phone: 50, offer: 80, message: 5000 } as const;
+
+/*
+  Per-IP, and a global cap beside it.
+
+  The per-IP limiter alone counts for very little here: it is in-memory, so
+  it resets with the serverless instance and is not shared between them, and
+  an abuser spreading requests over many IPs never trips it at all. The
+  global cap is what actually bounds how much mail this route can send in an
+  hour, however many addresses the traffic comes from.
+*/
+const rateLimitedByIp = createRateLimiter({ windowMs: 10 * 60 * 1000, maxHits: 5 });
+const rateLimitedGlobally = createRateLimiter({ windowMs: 60 * 60 * 1000, maxHits: 200 });
+
+/*
+  Same-origin gate, matching /api/tool-lead, /api/questionnaire, /api/prefill
+  and /api/preview, which all had one already.
+
+  This route was the only lead endpoint without it, and it was the one that
+  most needed it: it mails Meg AND sends an auto-reply to whatever address
+  the caller typed. Reachable from anywhere, that is a form that spams her
+  inbox and a relay that sends mail to strangers on her domain, which costs
+  her Gmail quota and her sender reputation. A browser always sends Origin
+  on a cross-origin POST, so this blocks scripted callers without touching
+  anyone filling in the real form.
+*/
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (origin === "https://mlinx.studio") return true;
+  if (/^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin)) return true; // preview deployments
+  if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return true; // local dev
+  return false;
+}
 
 export async function POST(req: Request) {
-  if (rateLimited(clientIp(req))) {
+  if (!isAllowedOrigin(req.headers.get("origin"))) {
+    return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
+  }
+
+  if (rateLimitedByIp(clientIp(req)) || rateLimitedGlobally("global")) {
     return NextResponse.json(
       { ok: false, error: "Too many messages just now. Please try again in a few minutes." },
       { status: 429 },
@@ -95,8 +137,15 @@ export async function POST(req: Request) {
   if (!EMAIL_RE.test(email)) {
     return NextResponse.json({ ok: false, error: "That email doesn't look right." }, { status: 422 });
   }
-  if (message.length > 5000) {
-    return NextResponse.json({ ok: false, error: "Message is too long." }, { status: 422 });
+  if (
+    name.length > MAX.name ||
+    email.length > MAX.email ||
+    company.length > MAX.company ||
+    phone.length > MAX.phone ||
+    offerKey.length > MAX.offer ||
+    message.length > MAX.message
+  ) {
+    return NextResponse.json({ ok: false, error: "That is longer than this form accepts." }, { status: 422 });
   }
 
   /* 1. Record it. Never throws — a storage problem must not cost us the lead. */

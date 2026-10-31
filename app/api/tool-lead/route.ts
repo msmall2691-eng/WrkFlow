@@ -61,9 +61,11 @@ function isAllowedOrigin(origin: string | null): boolean {
 }
 
 export async function POST(req: Request) {
-  // Same-origin gate — this route sends to a caller-chosen recipient, so
-  // (unlike /api/contact) it must not be directly reachable from anywhere
-  // that isn't our own site.
+  // Same-origin gate — this route sends to a caller-chosen recipient, so it
+  // must not be directly reachable from anywhere that isn't our own site.
+  // This used to read "(unlike /api/contact)", which stopped being true when
+  // the contact form gained a visitor auto-reply: that route mails a
+  // caller-chosen address too, and now gates itself the same way.
   if (!isAllowedOrigin(req.headers.get("origin"))) {
     return NextResponse.json({ ok: false, error: "Request not allowed." }, { status: 403 });
   }
