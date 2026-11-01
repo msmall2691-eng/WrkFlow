@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { caseStudies, provingGround } from "@/lib/content";
+import { caseStudies } from "@/lib/content";
 import BookCall from "./BookCall";
 import WeatherLayer from "./WeatherLayer";
 import PanelStage from "./panel/PanelStage";
@@ -16,7 +16,7 @@ import PaletteButton from "./panel/PaletteButton";
 
     header      logo · nav · ⌘K · book a call
     storm       only while NWS has an active alert for Portland
-    hero        headline, one line, two CTAs, the Maine Cleaning Co. numbers
+    hero        headline, one line saying what I build, two CTAs
     window      real shipped screens, one tab per system
     work        the case studies, outcome first
     tools       free tools, deep-linked into /tools
@@ -25,6 +25,9 @@ import PaletteButton from "./panel/PaletteButton";
   Nov 1 follow-up: Meg found the first cut too busy. One call-to-action
   (header + hero), no ticker, no duplicate CTA tile, plain tile headings and
   more space. Add something here only by taking something else away.
+  Also: the Maine Cleaning Co. numbers left the homepage. To a stranger they
+  read as "this is a cleaning company". They live on /about and the case
+  study, where the story explains them.
 
   Everything deeper (full case studies, all tools, services, pricing, about)
   lives on its own page, reachable from the nav and ⌘K. The contact form
@@ -47,6 +50,11 @@ const TOOLS = [
   { id: "quote", label: "Instant quote", blurb: "Service + size → a live price range you can send a customer." },
   { id: "cost", label: "Cost of manual work", blurb: "Hours + people → the yearly cost, and how fast automation pays." },
 ] as const;
+
+// Client work leads; my own company's case study comes after it.
+const WORK = [...caseStudies].sort(
+  (a, b) => Number(b.tag === "Client work") - Number(a.tag === "Client work"),
+);
 
 const Arrow = () => (
   <span aria-hidden="true" className="text-[color:var(--cp-faint)] transition-transform duration-150 group-hover:translate-x-1">
@@ -114,7 +122,7 @@ export default function ControlPanel() {
             Software that runs <span className="cp-grad">real businesses.</span>
           </h1>
           <p className="m-0 max-w-[30em] text-[17px] leading-relaxed text-[color:var(--cp-muted)]">
-            Websites, web apps and full-stack builds for small businesses, proven inside a service company I have run for eight years.
+            I design and build websites, web apps and custom tools for small businesses.
           </p>
           <div className="flex flex-wrap gap-3">
             <BookCall
@@ -130,19 +138,6 @@ export default function ControlPanel() {
               See the work
             </a>
           </div>
-          <div className="flex flex-col gap-2">
-            <dl className="m-0 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {provingGround.stats.map((s) => (
-                <div key={s.label} className="flex flex-col-reverse gap-0.5">
-                  <dt className="text-[12px] leading-snug text-[color:var(--cp-faint)]">{s.label}</dt>
-                  <dd className="m-0 font-display text-[26px] font-semibold tracking-[-0.02em] text-[color:var(--cp-ink)] [font-variant-numeric:tabular-nums]">
-                    {s.value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <p className="m-0 text-[12px] text-[color:var(--cp-faint)]">The Maine Cleaning Co., my own company, runs on systems I built.</p>
-          </div>
         </section>
 
         {/* Real shipped screens */}
@@ -153,7 +148,7 @@ export default function ControlPanel() {
         {/* Work */}
         <section id="work" aria-labelledby="cp-work" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
           <h2 id="cp-work" className="m-0 mb-2 px-2.5 text-[13px] font-medium text-[color:var(--cp-soft)]">My work</h2>
-          {caseStudies.map((c) => (
+          {WORK.map((c) => (
             <Link
               key={c.slug}
               href={`/work/${c.slug}`}

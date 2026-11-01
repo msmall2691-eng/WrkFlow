@@ -21,7 +21,9 @@ import { work, type WorkItem } from "@/lib/content";
     · the frame tilts toward the pointer through --px/--py from PanelStage
 */
 
-const PICK = ["The Maine Cleaning Co.", "Turnover scheduling", "Instant Estimate", "linx"];
+// Client work first: a stranger's first frame should be a site I built for
+// someone else, not my own cleaning company (Meg, Nov 1).
+const PICK = ["The Remote Admin", "Nash Construction", "linx", "Instant Estimate"];
 const FRAMES: WorkItem[] = PICK.map((t) => work.find((w) => w.title === t)).filter(
   (w): w is WorkItem => Boolean(w?.shot),
 );
