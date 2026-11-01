@@ -335,3 +335,47 @@ test("the contact form is not gated by an unconfigured Turnstile", async ({ page
     "no widget should render without NEXT_PUBLIC_TURNSTILE_SITE_KEY",
   ).toBe(0);
 });
+
+/*
+  Owner blocks are not stays.
+
+  A platform's iCal export is not a list of reservations, it is a list of
+  nights the property is unavailable: a host's own blocked dates and
+  preparation time sit in the same feed as real bookings, labelled only by
+  their summary. Counting those as stays invents a cleaning on the day a
+  block ends, and a block that starts on a checkout day fakes a same-day
+  turnaround, which is the one thing the tool exists to flag.
+
+  The feed below is the shape that breaks it: a real stay checking out on the
+  14th, an "Airbnb (Not available)" block starting that same day, another
+  block, and a second real stay. Two cleanings, no same-day turnaround.
+  Before the filter this answered four and one.
+*/
+test("the turnover planner ignores blocked dates", async ({ request }) => {
+  const ics = [
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Airbnb Inc//EN",
+    "BEGIN:VEVENT", "DTSTART;VALUE=DATE:20270410", "DTEND;VALUE=DATE:20270414", "SUMMARY:Reserved", "END:VEVENT",
+    "BEGIN:VEVENT", "DTSTART;VALUE=DATE:20270414", "DTEND;VALUE=DATE:20270418", "SUMMARY:Airbnb (Not available)", "END:VEVENT",
+    "BEGIN:VEVENT", "DTSTART;VALUE=DATE:20270422", "DTEND;VALUE=DATE:20270425", "SUMMARY:Blocked", "END:VEVENT",
+    "BEGIN:VEVENT", "DTSTART;VALUE=DATE:20270501", "DTEND;VALUE=DATE:20270503", "SUMMARY:Reserved - Dana", "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+
+  const res = await request.post("/api/turnover", {
+    data: { ics },
+    headers: { origin: "https://mlinx.studio" },
+  });
+  expect(res.status()).toBe(200);
+  const data = await res.json();
+
+  expect(data.bookings, "only the two real stays count").toBe(2);
+  expect(data.blocked, "the two owner blocks are reported, not hidden").toBe(2);
+  expect(data.turnovers.map((t: { date: string }) => t.date)).toEqual([
+    "2027-04-14",
+    "2027-05-03",
+  ]);
+  expect(
+    data.sameDay,
+    "a block starting on a checkout day is not a same-day turnaround",
+  ).toBe(0);
+});

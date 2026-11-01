@@ -73,14 +73,24 @@ export async function POST(req: Request) {
   const url = (body.url ?? "").trim();
 
   if (!ics && url) {
+    /*
+      webcal:// is what the platforms hand you, and it is https underneath, so
+      it is swapped before the URL is parsed rather than after.
+
+      Assigning `parsed.protocol = "https:"` looks like it does this and does
+      not: the WHATWG setter refuses to move a non-special scheme like webcal
+      to a special one, silently, leaving the value as it was. The https check
+      below then rejected every webcal link, so the path this route claimed to
+      support never worked.
+    */
+    const normalized = url.replace(/^webcal:\/\//i, "https://");
+
     let parsed: URL;
     try {
-      parsed = new URL(url);
+      parsed = new URL(normalized);
     } catch {
       return NextResponse.json({ ok: false, error: "That doesn't look like a link." }, { status: 422 });
     }
-    /* webcal:// is what the platforms hand you; it is https in a trenchcoat. */
-    if (parsed.protocol === "webcal:") parsed.protocol = "https:";
     if (parsed.protocol !== "https:") {
       return NextResponse.json(
         { ok: false, error: "The link has to be https." },
@@ -139,12 +149,16 @@ export async function POST(req: Request) {
     );
   }
 
-  const bookings = parseBookings(ics);
-  const turnovers = planTurnovers(bookings);
+  const events = parseBookings(ics);
+  const stays = events.filter((e) => e.kind === "stay");
+  const turnovers = planTurnovers(events);
 
   return NextResponse.json({
     ok: true,
-    bookings: bookings.length,
+    bookings: stays.length,
+    /* Surfaced, not hidden: the stay-or-block call is a guess at wording, so
+       the visitor gets to notice when it looks wrong for their calendar. */
+    blocked: events.length - stays.length,
     turnovers,
     sameDay: turnovers.filter((t) => t.sameDay).length,
   });

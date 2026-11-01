@@ -18,7 +18,35 @@ export type Booking = {
   end: string;
   /** Whatever the platform called it: "Reserved", a guest name, a code. */
   summary: string;
+  /**
+   * Whether anybody actually stayed.
+   *
+   * These feeds are not a list of reservations, they are a list of nights the
+   * property is unavailable, and an owner's own blocked dates are in there
+   * alongside real bookings: Airbnb exports "Airbnb (Not available)" for a
+   * manual block, Vrbo "Blocked", Booking.com "CLOSED - Not available".
+   * Treating those as stays invents a cleaning on the day a block ends, and a
+   * preparation block beginning on a checkout day fakes a same-day
+   * turnaround. Both are wrong in the direction that costs someone money.
+   */
+  kind: "stay" | "block";
 };
+
+/*
+  Which summaries mean "nobody is coming".
+
+  A guess at wording, which is all the feeds give: there is no field that says
+  reservation or block, so the summary is the signal every tool in this space
+  uses. It will not be perfect across every platform, so the count of what was
+  skipped is surfaced rather than hidden, and anything unrecognised is treated
+  as a stay: a cleaning that should not be there is easier to spot and delete
+  than one that is silently missing.
+*/
+const BLOCK_WORDS = /\b(not available|unavailable|blocked?|closed|owner|maintenance|prep(?:aration)?)\b/i;
+
+function classify(summary: string): "stay" | "block" {
+  return BLOCK_WORDS.test(summary) ? "block" : "stay";
+}
 
 /*
   Unfold first. RFC 5545 wraps long lines by starting the continuation with a
@@ -97,7 +125,8 @@ export function parseBookings(ics: string): Booking[] {
 
     if (name === "END" && propValue(line).trim().toUpperCase() === "VEVENT") {
       if (start && end && end > start) {
-        bookings.push({ start, end, summary: summary || "Booked" });
+        const text = summary || "Booked";
+        bookings.push({ start, end, summary: text, kind: classify(text) });
       }
       inEvent = false;
       continue;
@@ -133,10 +162,14 @@ export type Turnover = {
  * turnaround, which is the thing worth flagging.
  */
 export function planTurnovers(bookings: Booking[]): Turnover[] {
-  const startsOn = new Map<string, Booking>();
-  for (const b of bookings) if (!startsOn.has(b.start)) startsOn.set(b.start, b);
+  /* Blocks are not stays: they imply no cleaning, and they must not make a
+     checkout look like a same-day turnaround either. */
+  const stays = bookings.filter((b) => b.kind === "stay");
 
-  return bookings
+  const startsOn = new Map<string, Booking>();
+  for (const b of stays) if (!startsOn.has(b.start)) startsOn.set(b.start, b);
+
+  return stays
     .map((b) => {
       const next = startsOn.get(b.end);
       return { date: b.end, out: b, in: next, sameDay: Boolean(next) };

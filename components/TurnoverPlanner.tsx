@@ -21,6 +21,8 @@ type State = "idle" | "working" | "done" | "error";
 
 type Result = {
   bookings: number;
+  /** Owner blocks and prep time in the feed, which imply no cleaning. */
+  blocked: number;
   turnovers: Turnover[];
   sameDay: number;
 };
@@ -68,7 +70,12 @@ export default function TurnoverPlanner() {
       });
       const data = await res.json().catch(() => null);
       if (!res.ok || !data?.ok) throw new Error(data?.error ?? "Something went wrong.");
-      setResult({ bookings: data.bookings, turnovers: data.turnovers, sameDay: data.sameDay });
+      setResult({
+        bookings: data.bookings,
+        blocked: data.blocked ?? 0,
+        turnovers: data.turnovers,
+        sameDay: data.sameDay,
+      });
       setState("done");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -185,6 +192,14 @@ export default function TurnoverPlanner() {
             <Stat n={result.turnovers.length} label="cleanings" />
             <Stat n={result.sameDay} label="same-day turnarounds" accent={result.sameDay > 0} />
           </div>
+
+          {result.blocked > 0 && (
+            <p className="mt-4 text-sm text-muted">
+              {result.blocked} blocked {result.blocked === 1 ? "date" : "dates"} in
+              the feed, skipped. Platforms export your own blocks and prep time
+              alongside real bookings, and those need no cleaning.
+            </p>
+          )}
 
           {result.turnovers.length === 0 ? (
             <p className="mt-5 text-sm text-muted">
