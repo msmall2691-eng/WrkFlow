@@ -75,9 +75,14 @@ export function middleware(request: NextRequest) {
     `style-src 'self' 'unsafe-inline'`,
     `img-src 'self' data: blob:`,
     `font-src 'self'`,
-    `connect-src 'self'`,
+    /* challenges.cloudflare.com: the Turnstile widget. Its script loads
+       under the nonce (strict-dynamic ignores host allowlists in script-src,
+       so listing it there would do nothing), but its iframe and its calls
+       home need naming here. Harmless while the keys are unset: nothing
+       requests it until the widget renders. */
+    `connect-src 'self' https://challenges.cloudflare.com`,
     `manifest-src 'self'`,
-    `frame-src https://the-remote-admin.com https://*.the-remote-admin.com https://maineclean.co https://*.maineclean.co`,
+    `frame-src https://challenges.cloudflare.com https://the-remote-admin.com https://*.the-remote-admin.com https://maineclean.co https://*.maineclean.co`,
     `upgrade-insecure-requests`,
   ].join("; ");
 

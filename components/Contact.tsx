@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import TurnstileWidget from "./TurnstileWidget";
 import AuroraSwell from "./AuroraSwell";
 import WhenNear from "./WhenNear";
 import BookCall from "./BookCall";
@@ -262,6 +263,11 @@ export default function Contact() {
                       {error}
                     </p>
                   )}
+
+                  {/* Renders nothing until the Turnstile keys are set. It
+                      writes its token into this form as a hidden input, which
+                      the FormData payload above picks up unchanged. */}
+                  <TurnstileWidget />
 
                   <button
                       type="submit"
