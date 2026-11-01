@@ -97,7 +97,20 @@ export default function Playground() {
   // Track the default tool as "opened" once on mount, then again on every
   // tab switch — so Meg can see which free tools get looked at.
   useEffect(() => {
-    trackTool(tool, "opened");
+    // /tools?tool=sitecheck opens that tool directly — the homepage panel and
+    // ⌘K link straight to a tool rather than to the top of this page.
+    let start: Tool = tool;
+    try {
+      const q = new URLSearchParams(window.location.search).get("tool");
+      const hit = TOOLS.find((t) => t.id === q);
+      if (hit) {
+        start = hit.id;
+        setTool(hit.id);
+      }
+    } catch {
+      /* ignore */
+    }
+    trackTool(start, "opened");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

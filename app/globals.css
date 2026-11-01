@@ -47,7 +47,8 @@
   is allowed only because it shows real work AND it stops: an
   IntersectionObserver pauses it off-screen, hover and focus-within pause it,
   and under reduced motion it shows frame one and never advances. Any other
-  `infinite` in this file is a bug.
+  `infinite` in this file is a bug, except the V2 homepage sky, which
+  follows the same stop rules (see the `.cp` block at the end).
   ───────────────────────────────────────────────────────────────────────────
 */
 
@@ -843,3 +844,164 @@ html[data-fog="1"] .elevate {
     0 8px 24px -12px rgba(24, 24, 27, 0.05);
 }
 
+
+/*
+  ───────────────────────────────────────────────────────────────────────────
+  V2 HOMEPAGE — "control panel" (Meg, Nov 1 2026). Scoped to `.cp`.
+
+  Near-black ground with a violet / teal / pink aurora. `.cp` also remaps the
+  shared tokens (--color-*, --panel-*, --hero-bg …) so Contact and Footer,
+  rendered inside it, take the same palette without per-component restyling.
+  The dark palette is fixed here on purpose: the panel is one visual world, so
+  the Daylight theme does not apply inside it.
+
+  Loops in here, and how each one stops (see MOTION SYSTEM at the top):
+    · .cp-aurora   the homepage sky. transform only. Pauses off-screen.
+    · PanelWindow  the shipped-screens reel (JS timer, same rules as ProofReel).
+  Both are still under reduced motion.
+  ───────────────────────────────────────────────────────────────────────────
+*/
+.cp {
+  color-scheme: dark;
+  background: #08070c;
+  color: #f2f0f7;
+
+  --cp-ink: #f2f0f7;
+  --cp-soft: #cfcadf;
+  --cp-muted: #a8a4b8;
+  --cp-faint: #8f8ba0;
+  --cp-line: rgba(255, 255, 255, 0.08);
+  --cp-violet: #8b5cf6;
+  --cp-violet-ink: #b9a2ff;
+  --cp-violet-line: rgba(185, 162, 255, 0.4);
+  --cp-violet-wash: rgba(139, 92, 246, 0.16);
+  --cp-teal: #2dd4bf;
+  --cp-pink: #f472b6;
+  --cp-amber: #fbbf24;
+  --cp-amber-line: rgba(251, 191, 36, 0.3);
+
+  --color-base: #08070c;
+  --color-surface: #12101a;
+  --color-elevated: #17141f;
+  --color-line: rgba(255, 255, 255, 0.09);
+  --color-ink: #f2f0f7;
+  --color-muted: #b4b0c2;
+  --color-faint: #9a96aa;
+  /* #7547f0 carries white button labels at 5.4:1; #8b5cf6 only manages 4.2. */
+  --color-signal: #7547f0;
+  --color-signal-dim: #6d4be0;
+  --color-signal-glow: rgba(139, 92, 246, 0.18);
+  --color-gold: #2dd4bf;
+  --color-gold-dim: #14b8a6;
+  --hero-bg: #08070c;
+  --section-alt-bg: #0d0b13;
+  --section-alt2-bg: #0a0910;
+  --panel-bg: rgba(18, 16, 26, 0.62);
+  --panel-line: rgba(255, 255, 255, 0.1);
+  --panel-ink: #ffffff;
+  --panel-muted: rgba(242, 240, 247, 0.75);
+  --panel-faint: rgba(242, 240, 247, 0.6);
+  --panel-input-bg: rgba(255, 255, 255, 0.05);
+  --nav-hero-ink: rgba(255, 255, 255, 0.75);
+  --nav-hero-ink2: #ffffff;
+  --nav-hero-line: rgba(255, 255, 255, 0.28);
+  --nav-hero-line2: rgba(255, 255, 255, 0.5);
+  --moon-disc: #08070c;
+  --moon-rim: #e4daff;
+  --moon-lit: #b9a2ff;
+  --wm-ink: rgba(255, 255, 255, 0.12);
+  --wm-stroke: rgba(255, 255, 255, 0.18);
+}
+body:has(.cp) { background: #08070c; }
+.cp a:focus-visible, .cp button:focus-visible, .cp [tabindex]:focus-visible {
+  outline: 2px solid var(--cp-teal);
+  outline-offset: 3px;
+}
+
+.cp-tile {
+  position: relative;
+  border-radius: 20px;
+  border: 1px solid var(--cp-line);
+  background: rgba(18, 16, 26, 0.62);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  transition: border-color 150ms var(--ease-out-expo);
+}
+.cp-tile:hover { border-color: rgba(185, 162, 255, 0.32); }
+.cp-tile-cta {
+  background: linear-gradient(160deg, rgba(139, 92, 246, 0.3), rgba(244, 114, 182, 0.12) 70%, rgba(18, 16, 26, 0.6));
+}
+.cp-row { transition: background-color 150ms var(--ease-out-expo), transform 150ms var(--ease-out-expo); }
+.cp-row:hover { background: rgba(139, 92, 246, 0.1); transform: translateX(3px); }
+
+.cp-mark { background: linear-gradient(135deg, #8b5cf6, #2dd4bf 60%, #f472b6); }
+.cp-grad {
+  background: linear-gradient(90deg, #b9a2ff, #2dd4bf 55%, #f472b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.cp-cta {
+  background: linear-gradient(135deg, #7c4dff, #6d4be0);
+  box-shadow: 0 12px 34px -10px rgba(139, 92, 246, 0.85);
+}
+.cp-kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cp-soft);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+.cp-stripes {
+  background-image: repeating-linear-gradient(-45deg, rgba(251, 191, 36, 0.12) 0 10px, transparent 10px 20px);
+}
+
+/* The sky */
+.cp-aurora {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+.cp-a1 { width: 620px; height: 620px; top: -220px; left: 18%; background: rgba(139, 92, 246, 0.42); animation: cp-a1 22s var(--ease-out-expo) infinite alternate; }
+.cp-a2 { width: 560px; height: 560px; top: 120px; right: -160px; background: rgba(45, 212, 191, 0.24); animation: cp-a2 26s var(--ease-out-expo) infinite alternate; }
+.cp-a3 { width: 520px; height: 520px; bottom: -260px; left: -120px; background: rgba(244, 114, 182, 0.2); animation: cp-a3 30s var(--ease-out-expo) infinite alternate; }
+@keyframes cp-a1 { to { transform: translate3d(220px, 120px, 0) scale(1.25); } }
+@keyframes cp-a2 { to { transform: translate3d(-260px, -80px, 0) scale(1.15); } }
+@keyframes cp-a3 { to { transform: translate3d(160px, -140px, 0) scale(1.3); } }
+.cp-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 560px;
+  height: 560px;
+  margin: -280px 0 0 -280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(185, 162, 255, 0.12), transparent 62%);
+  transform: translate3d(calc(var(--px, 0) * 1200px), calc(var(--py, 0) * 800px), 0);
+}
+
+/* Product window: leans toward the pointer (PanelStage writes --px/--py). */
+.cp-tilt {
+  transform: perspective(1400px) rotateY(calc(var(--px, 0) * -5deg)) rotateX(calc(var(--py, 0) * 4deg));
+  transition: transform 300ms var(--ease-out-expo), border-color 150ms var(--ease-out-expo);
+}
+.cp-progress {
+  background: linear-gradient(90deg, #8b5cf6, #2dd4bf, #f472b6);
+  transform-origin: left;
+  transform: scaleX(1);
+}
+.cp-progress.is-running { animation: cp-fill 5s linear both; }
+@keyframes cp-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Off-screen: stop the sky. */
+.cp-stage[data-off] .cp-aurora { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-aurora, .cp-progress.is-running { animation: none !important; }
+  .cp-progress { transform: scaleX(1) !important; }
+  .cp-tilt, .cp-glow { transform: none !important; }
+  .cp-row:hover { transform: none; }
+}

@@ -20,33 +20,14 @@ The current roadmap is `docs/NEXT-LEVEL-HANDOFF.md`. Start there.
 - Lead with websites, web apps and full-stack builds; integrations and automation come second.
 
 ## Design and motion
-
-Meg changed this direction on Nov 1, 2026. The old rules said keep the current
-identity and do not restyle, and capped the site at one orchestrated moment per
-page and two looping animations. She wants the opposite now: richer, more
-futuristic, far more movement, and live data visibly moving. The taste rules
-below are gone. The physics rules are not, because they are what keeps motion
-from being jank, and the site is at 100 on accessibility.
-
-- Show the work. Every section either shows something real she built, lets the
-  visitor use it, or asks them to start a project. This one does not change: it
-  is why the site exists, and "futuristic" is not a licence to add decoration
-  that proves nothing.
-- Restyling is allowed, and wanted. Colors, type scale, weight, density and
-  layout are all open. Keep the live Maine daylight/weather theming, which is
-  Meg's signature, and keep both themes working: a colour that must follow the
-  theme is a token, never a hardcoded value. That rule has bitten twice now
-  (#115 and the /services illustrations in #118), in both directions.
-- Motion is encouraged, including ambient motion and loops. It should still
-  mean something: a system working, data arriving, or a response to the
-  visitor.
-- Animate `transform` and `opacity` by preference, because they are the two the
-  compositor can do cheaply. Reach for anything else only when the effect needs
-  it, and check the frame cost.
-- Every animation still needs a `prefers-reduced-motion: reduce` fallback that
-  shows the end state, and anything that loops still pauses off-screen and when
-  the tab is hidden. These are not style choices.
-- Watch the budget rather than a rule: keep Lighthouse accessibility at 100 and
-  report mobile performance honestly in the PR, before and after. If an effect
-  costs real points, say what it cost and let Meg decide.
-- JetBrains Mono only for real code or data.
+- Show the work. Every section either shows something real she built, lets the visitor use it, or asks them to start a project.
+- Nov 1, 2026: Meg chose a new direction, "V2": a one-screen control-panel homepage, near-black with a violet/teal/pink aurora, scoped to `.cp` in `app/globals.css` (see `components/ControlPanel.tsx`). This replaces the Oct "keep the current look" rule for the homepage. Inner pages keep the current look until each gets its own V2 pass; build those in the `.cp` palette and tokens, not a third style. JetBrains Mono only for real code or data.
+- Motion either demonstrates a system working or responds to the visitor. One orchestrated moment per page; no fade-up on every section.
+- Animate only `transform` and `opacity`; 150ms toggles, 250–350ms panels, 600ms max hero; one easing curve.
+- Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state. Only the proof reel and the live hero sky (V2: the aurora) loop; both pause off-screen. Keep the V2 homepage calm: Meg found the first cut too busy.
+- A colour that must follow the theme is a token, never a hardcoded value, and
+  a change gets looked at in both themes before it ships. This has broken in
+  both directions: #115, a chip hardcoded dark that rendered white-on-white in
+  Harbor, and #118, illustrations drawn in white that vanished when the site
+  moved to a light default. Neither showed up in a build, a test or a
+  Lighthouse run; both were only visible by looking.
