@@ -48,8 +48,18 @@ export async function verifyTurnstile(
   token: unknown,
   ip?: string,
 ): Promise<TurnstileResult> {
-  const secret = process.env.TURNSTILE_SECRET_KEY?.trim();
-  if (!secret) return { ok: true, skipped: true };
+  /*
+    Both keys, not just the secret.
+
+    Checking only TURNSTILE_SECRET_KEY meant that setting the secret first
+    and the site key second — the obvious order, since the secret is the one
+    that feels urgent — put the site in a state where the server demanded a
+    token and TurnstileWidget rendered nothing to produce one. Every real
+    submission would have failed with a 403 and no visible cause. This is
+    what turnstileConfigured() was for; it was written and then not used.
+  */
+  if (!turnstileConfigured()) return { ok: true, skipped: true };
+  const secret = process.env.TURNSTILE_SECRET_KEY!.trim();
 
   if (typeof token !== "string" || token.length === 0) {
     return { ok: false, reason: "missing-token" };

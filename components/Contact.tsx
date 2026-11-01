@@ -20,6 +20,14 @@ type Status = "idle" | "submitting" | "success" | "error";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
+  /*
+    Bumped on every failed submit so the Turnstile widget fetches a fresh
+    token. The one already in the form has been spent by the attempt that
+    just failed, and Cloudflare rejects a reused token, so without this a
+    visitor who hits a transient 502 cannot send the form again without
+    reloading the page.
+  */
+  const [challengeNonce, setChallengeNonce] = useState(0);
   const [error, setError] = useState<string | null>(null);
   /*
     Which offer sent them here, and the message the box opens with
@@ -76,6 +84,13 @@ export default function Contact() {
       setError(
         err instanceof Error ? err.message : "Something went wrong. Try again.",
       );
+      /*
+        The submission consumed its Turnstile token whether or not the rest
+        of the request worked, so the one left in the form is spent. Ask for
+        a fresh one, or the retry this error message invites would fail on
+        the challenge rather than on whatever actually went wrong.
+      */
+      setChallengeNonce((n) => n + 1);
     }
   }
 
@@ -267,7 +282,7 @@ export default function Contact() {
                   {/* Renders nothing until the Turnstile keys are set. It
                       writes its token into this form as a hidden input, which
                       the FormData payload above picks up unchanged. */}
-                  <TurnstileWidget />
+                  <TurnstileWidget resetSignal={challengeNonce} />
 
                   <button
                       type="submit"
