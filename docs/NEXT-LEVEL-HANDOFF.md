@@ -35,6 +35,8 @@ Meg wants mlinx.studio to win website, web-app and full-stack projects from smal
 
 ## Phase 2: Make the work the hero (layout + pages)
 
+> **Update, Nov 1 2026.** Meg replaced the "keep the current look" decision below for the homepage. The homepage is now "V2", a one-screen control panel (black + violet/teal/pink aurora) in `components/ControlPanel.tsx`, styled under `.cp` in `app/globals.css`. It keeps the principles of this phase (real work first, real numbers only, one way to start) but not the old layout or palette. Next up: inner pages (`/tools`, `/work/[slug]`, `/marketplace`, `/about`, `/services`) in the same V2 palette.
+
 **Keep the current look.** Meg prefers the existing visual identity: its colors, type, the live Maine daylight/weather theming and overall feel stay. Every change in Phases 2 and 3 is structural (what's shown, in what order, how it moves), built in the site's existing tokens and components. Do not restyle the site. (An alternate direction was explored on the "mlinx.studio Redesign" canvas and set aside; don't build from it.)
 
 **The core problem.** The most prominent thing on the homepage is a Portland weather widget (`components/LiveReadout.tsx`, `DaylightSky`, `WeatherLayer`, `ReactiveAurora` in `components/Hero.tsx`). It is clever, but it proves you can read a weather API, not that you can build a business's website or app. On a phone it fills an entire screen before Services, and the Work section doesn't appear until roughly the third screen. A prospect deciding in 5 seconds sees fog and wind speed, not your work.

@@ -159,6 +159,44 @@ async function fetchTide(now: number): Promise<TideOut> {
   return out;
 }
 
+/*
+  Active NWS alert for Portland — drives the homepage "storm mode" strip.
+  Only the single most severe alert is returned, and only what the strip
+  shows: the event name and when it ends. No alert, no strip.
+*/
+type AlertOut = { event: string; severity: string; ends: string | null } | null;
+const SEVERITY: Record<string, number> = { Extreme: 4, Severe: 3, Moderate: 2, Minor: 1 };
+const fmtWhen = (d: Date) =>
+  d.toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", hour: "numeric", minute: "2-digit" });
+async function fetchAlert(): Promise<AlertOut> {
+  try {
+    const r = await fetch(
+      `https://api.weather.gov/alerts/active?point=${PORTLAND_ME.lat},${PORTLAND_ME.lng}`,
+      {
+        headers: { "User-Agent": "mlinx.studio (contact@mlinx.studio)", Accept: "application/geo+json" },
+        next: { revalidate: 600 },
+      },
+    );
+    if (!r.ok) return null;
+    type P = { event?: unknown; severity?: unknown; ends?: unknown; expires?: unknown };
+    const props: P[] = ((await r.json())?.features ?? []).map((f: { properties?: P }) => f?.properties ?? {});
+    const best = props
+      .filter((p) => typeof p.event === "string" && p.event)
+      .sort((a, b) => (SEVERITY[String(b.severity)] ?? 0) - (SEVERITY[String(a.severity)] ?? 0))[0];
+    if (!best) return null;
+    const endRaw = typeof best.ends === "string" ? best.ends : typeof best.expires === "string" ? best.expires : null;
+    const end = endRaw ? new Date(endRaw) : null;
+    return {
+      event: String(best.event),
+      severity: typeof best.severity === "string" ? best.severity : "Unknown",
+      ends: end && !Number.isNaN(end.getTime()) ? fmtWhen(end) : null,
+    };
+  } catch {
+    /* fail soft */
+  }
+  return null;
+}
+
 export async function GET() {
   const now = new Date();
   const t = now.getTime();
@@ -179,11 +217,12 @@ export async function GET() {
 
   // Four upstream fetches, in parallel — response time is bounded by the
   // slowest one, not the sum. Each helper fails soft into its own null.
-  const [weather, waterTempF, wave, tide] = await Promise.all([
+  const [weather, waterTempF, wave, tide, alert] = await Promise.all([
     fetchWeather(),
     fetchWaterTemp(),
     fetchWave(t),
     fetchTide(t),
+    fetchAlert(),
   ]);
 
   const fog = weather.conditions ? isFog(weather.conditions.text) : false;
@@ -206,6 +245,7 @@ export async function GET() {
       night,
       sunrise: fmtTime(sun.sunrise),
       sunset: fmtTime(sun.sunset),
+      alert,
     },
     { headers: { "Cache-Control": "public, max-age=300, s-maxage=600, stale-while-revalidate=1800" } },
   );

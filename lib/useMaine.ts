@@ -26,6 +26,8 @@ export type MaineData = {
   night: boolean;
   sunrise: string;
   sunset: string;
+  /** Most severe active NWS alert for Portland, if any. */
+  alert?: { event: string; severity: string; ends: string | null } | null;
 };
 
 let cached: Promise<MaineData | null> | null = null;

@@ -20,8 +20,27 @@ type Command = {
   run: () => void;
 };
 
+/*
+  Where a section lives when it is not on the current page. The homepage is
+  a one-screen panel now, so most of these sections are their own pages; a
+  command should still land somewhere real instead of doing nothing.
+*/
+const ELSEWHERE: Record<string, string> = {
+  services: "/services",
+  pricing: "/services",
+  approach: "/services",
+  meg: "/about",
+  marketplace: "/marketplace",
+};
+
 function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const el = document.getElementById(id);
+  if (el) {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    return;
+  }
+  window.location.href = ELSEWHERE[id] ?? `/#${id}`;
 }
 
 export default function CommandPalette() {
@@ -129,7 +148,7 @@ export default function CommandPalette() {
         keywords: "lighthouse speed audit performance seo accessibility site check pagespeed tool",
         run: () => {
           close();
-          window.location.href = "/marketplace";
+          window.location.href = "/tools?tool=sitecheck";
         },
       },
       {

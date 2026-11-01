@@ -1,52 +1,34 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import ProofBand from "@/components/ProofBand";
-import ProofStrip from "@/components/ProofStrip";
-import Deployments from "@/components/Deployments";
-import Capabilities from "@/components/Capabilities";
-import TryIt from "@/components/TryIt";
-import HowThisWorks from "@/components/HowThisWorks";
+import ControlPanel from "@/components/ControlPanel";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 
 /*
-  Homepage — a portfolio first, a studio second.
+  Homepage — V2, the one-screen control panel (Meg, Nov 1 2026).
 
-    Hero          headline + the live Maine conditions panel
-    Proof reel    real shipped screens, cycling, in their own band
-    Proof         the operating numbers, attributed
-    Work          the case studies, the main argument of the page
-    What I do     the five capabilities, compact, no prices
-    Try it        a working tool, not a description of one
-    How it works  the live sky explained, as a small case study
-    Contact       the form, a calendar link, and the résumé
+    ControlPanel  the whole first screen: headline, real shipped screens,
+                  case studies, free tools, live Portland conditions, a call
+                  CTA, and a live NWS + NOAA ticker
+    Contact       the form, directly below, so no lead depends on a second page
+    Footer
 
-  Services detail and every price moved to /services. Both used to sit here,
-  which meant the first thing anyone read about the work was what it cost.
-  That is right for a visitor shopping for a website and wrong for anyone
-  judging the work itself, and one page cannot lead with both. So this page
-  leads with the work and /services answers the money question in full.
+  Everything the long homepage used to carry has a page of its own:
+  /work/[slug] for case studies, /tools for every free tool, /services for
+  scope and pricing, /about for Meg. The panel links to each, and ⌘K reaches
+  all of them.
+
+  `.cp` scopes the V2 palette (black + aurora) to this page. It also remaps
+  the site's shared tokens, so Contact and Footer pick up the same colors
+  without being restyled one by one. Inner pages keep the current look until
+  their own V2 pass.
 */
 export default function Home() {
   return (
-    <>
-      <Nav />
-      <main>
-        <Hero />
-        <ProofBand />
-        <ProofStrip />
-        <Deployments />
-        <Capabilities />
-        <TryIt />
-        {/* Sits beside Try it on purpose: both are a system working in
-            front of the visitor rather than a claim about one. The hero
-            caption links down here. */}
-        <HowThisWorks />
-        <Contact />
-      </main>
+    <div className="cp">
+      <ControlPanel />
+      <Contact />
       <Footer />
       <CommandPalette />
-    </>
+    </div>
   );
 }
