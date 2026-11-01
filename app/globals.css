@@ -47,8 +47,8 @@
   is allowed only because it shows real work AND it stops: an
   IntersectionObserver pauses it off-screen, hover and focus-within pause it,
   and under reduced motion it shows frame one and never advances. Any other
-  `infinite` in this file is a bug, except the V2 homepage sky and live
-  ticker, which follow the same stop rules (see the `.cp` block at the end).
+  `infinite` in this file is a bug, except the V2 homepage sky, which
+  follows the same stop rules (see the `.cp` block at the end).
   ───────────────────────────────────────────────────────────────────────────
 */
 
@@ -857,10 +857,8 @@ html[data-fog="1"] .elevate {
 
   Loops in here, and how each one stops (see MOTION SYSTEM at the top):
     · .cp-aurora   the homepage sky. transform only. Pauses off-screen.
-    · .cp-marquee  live NWS/NOAA ticker. transform only. Pauses off-screen,
-                   on hover and on focus.
     · PanelWindow  the shipped-screens reel (JS timer, same rules as ProofReel).
-  All three are still under reduced motion.
+  Both are still under reduced motion.
   ───────────────────────────────────────────────────────────────────────────
 */
 .cp {
@@ -956,12 +954,6 @@ body:has(.cp) { background: #08070c; }
   border-radius: 6px;
   padding: 1px 6px;
 }
-.cp-dots {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 28px 28px;
-  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 80%);
-  mask-image: radial-gradient(ellipse at 50% 40%, #000 30%, transparent 80%);
-}
 .cp-stripes {
   background-image: repeating-linear-gradient(-45deg, rgba(251, 191, 36, 0.12) 0 10px, transparent 10px 20px);
 }
@@ -1004,26 +996,12 @@ body:has(.cp) { background: #08070c; }
 .cp-progress.is-running { animation: cp-fill 5s linear both; }
 @keyframes cp-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
-/* Ticker */
-.cp-ticker-mask {
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-}
-.cp-marquee { animation: cp-marq 60s linear infinite; }
-.cp-ticker-mask:hover .cp-marquee,
-.cp-ticker-mask:focus-within .cp-marquee,
-.cp-ticker-mask:focus .cp-marquee { animation-play-state: paused; }
-@keyframes cp-marq { to { transform: translate3d(-50%, 0, 0); } }
-
-/* Off-screen: stop the sky and the ticker. */
-.cp-stage[data-off] .cp-aurora,
-.cp-stage[data-off] .cp-marquee { animation-play-state: paused; }
+/* Off-screen: stop the sky. */
+.cp-stage[data-off] .cp-aurora { animation-play-state: paused; }
 
 @media (prefers-reduced-motion: reduce) {
-  .cp-aurora, .cp-marquee, .cp-progress.is-running { animation: none !important; }
+  .cp-aurora, .cp-progress.is-running { animation: none !important; }
   .cp-progress { transform: scaleX(1) !important; }
   .cp-tilt, .cp-glow { transform: none !important; }
   .cp-row:hover { transform: none; }
-  .cp-ticker-mask { overflow-x: auto; }
-  .cp-marquee > [aria-hidden="true"] { display: none; }
 }
