@@ -40,9 +40,6 @@ const H2 = ({ id, children }: { id?: string; children: React.ReactNode }) => (
 );
 
 export default function BrightBasePage() {
-  const office = brightbase.roles.find((r) => r.id === "office");
-  const heroShot = office?.shot ?? brightbase.roles.find((r) => r.shot)?.shot;
-  const heroPhone = !office?.shot;
 
   return (
     <div className="cp">
@@ -57,8 +54,8 @@ export default function BrightBasePage() {
 
         <main className="relative z-10 mx-auto flex max-w-[1240px] flex-col gap-24 px-6 pb-24 pt-8 lg:px-10">
           {/* Hero */}
-          <section className="grid grid-cols-12 items-center gap-10">
-            <div className="col-span-12 flex flex-col gap-6 lg:col-span-6">
+          <section className="grid grid-cols-12 items-center gap-y-10 lg:gap-x-10">
+            <div className="min-w-0 col-span-12 flex flex-col gap-6 lg:col-span-6">
               <Eyebrow tone="teal">BrightBase · in daily use</Eyebrow>
               <h1 className="m-0 font-display text-[clamp(2.5rem,4.6vw,4rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
                 The system I built to <span className="cp-grad">run my cleaning company.</span>
@@ -79,8 +76,8 @@ export default function BrightBasePage() {
                 </a>
               </div>
             </div>
-            <div className="col-span-12 lg:col-span-6">
-              <Frame shot={heroShot} phone={heroPhone} />
+            <div className="min-w-0 col-span-12 lg:col-span-6">
+              <Frame shot={brightbase.hero} />
             </div>
           </section>
 

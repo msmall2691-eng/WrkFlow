@@ -11,8 +11,9 @@ import { brightbase, type Role, type Shot } from "@/lib/brightbase";
   150ms color transition, which `transition-colors` already respects.
 */
 
-export function Frame({ shot, phone }: { shot?: Shot; phone?: boolean }) {
+export function Frame({ shot }: { shot?: Shot }) {
   if (!shot) return null;
+  const phone = Boolean(shot.phone);
   return (
     <figure className={`m-0 flex flex-col gap-2 ${phone ? "mx-auto w-full max-w-[300px]" : "w-full"}`}>
       <div
@@ -66,9 +67,14 @@ export function Pipeline() {
           );
         })}
       </div>
-      <p id="bb-step" role="tabpanel" className="m-0 max-w-[62ch] text-[16px] leading-relaxed text-[color:var(--cp-soft)]">
-        {steps[i].body}
-      </p>
+      <div id="bb-step" role="tabpanel" className="grid grid-cols-12 items-center gap-y-6 lg:gap-x-6">
+        <p className="min-w-0 col-span-12 m-0 max-w-[40ch] text-[18px] leading-relaxed text-[color:var(--cp-soft)] lg:col-span-4">
+          {steps[i].body}
+        </p>
+        <div className="min-w-0 col-span-12 lg:col-span-8">
+          <Frame key={steps[i].step} shot={steps[i].shot} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -76,7 +82,11 @@ export function Pipeline() {
 export function Roles() {
   const roles = brightbase.roles as Role[];
   const [id, setId] = useState<Role["id"]>("office");
+  const [pick, setPick] = useState(0);
   const role = roles.find((r) => r.id === id) ?? roles[0];
+  // The screen follows the feature the visitor picked; a feature with no
+  // capture of its own falls back to the first one in its role that has one.
+  const shot = role.features[pick]?.shot ?? role.features.find((f) => f.shot)?.shot ?? role.shot;
   return (
     <div className="flex flex-col gap-6">
       <div role="tablist" aria-label="Who uses it" className="flex flex-wrap gap-2">
@@ -89,7 +99,10 @@ export function Roles() {
               role="tab"
               aria-selected={on}
               aria-controls="bb-role"
-              onClick={() => setId(r.id)}
+              onClick={() => {
+                setId(r.id);
+                setPick(0);
+              }}
               className={`min-h-11 rounded-full border px-5 py-2.5 text-[14px] font-medium transition-colors duration-150 ${
                 on
                   ? "border-[color:var(--cp-ink)] bg-[color:var(--cp-ink)] text-[#08070c]"
@@ -102,23 +115,35 @@ export function Roles() {
         })}
       </div>
 
-      <div id="bb-role" role="tabpanel" className="grid grid-cols-12 items-start gap-6">
-        <div className={`col-span-12 flex flex-col gap-4 ${role.shot ? "lg:col-span-6" : ""}`}>
+      <div id="bb-role" role="tabpanel" className="grid grid-cols-12 items-start gap-y-6 lg:gap-x-6">
+        <div className={`min-w-0 col-span-12 flex flex-col gap-3 ${shot?.phone ? "lg:col-span-7" : "lg:col-span-5"}`}>
           <p className="m-0 text-[14px] text-[color:var(--cp-faint)]">{role.who}</p>
-          <ul className={`m-0 grid list-none gap-3 p-0 ${role.shot ? "" : "md:grid-cols-2"}`}>
-            {role.features.map((f) => (
-              <li key={f.title} className="cp-tile p-4">
-                <span className="block text-[15.5px] font-semibold text-[color:var(--cp-ink)]">{f.title}</span>
-                <span className="mt-1 block text-[14px] leading-relaxed text-[color:var(--cp-muted)]">{f.body}</span>
-              </li>
-            ))}
+          <ul className="m-0 flex list-none flex-col gap-2 p-0">
+            {role.features.map((f, n) => {
+              const on = n === pick;
+              return (
+                <li key={f.title}>
+                  <button
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => setPick(n)}
+                    className={`w-full rounded-2xl border p-4 text-left transition-colors duration-150 ${
+                      on
+                        ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)]"
+                        : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-white/20"
+                    }`}
+                  >
+                    <span className="block text-[15.5px] font-semibold text-[color:var(--cp-ink)]">{f.title}</span>
+                    <span className="mt-1 block text-[14px] leading-relaxed text-[color:var(--cp-muted)]">{f.body}</span>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
-        {role.shot ? (
-          <div className="col-span-12 lg:col-span-6 lg:sticky lg:top-6">
-            <Frame shot={role.shot} phone={role.phone} />
-          </div>
-        ) : null}
+        <div className={`min-w-0 col-span-12 lg:sticky lg:top-6 ${shot?.phone ? "lg:col-span-5" : "lg:col-span-7"}`}>
+          <Frame key={shot?.src} shot={shot} />
+        </div>
       </div>
     </div>
   );
