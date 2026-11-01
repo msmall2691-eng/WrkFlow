@@ -398,7 +398,7 @@ export const work: WorkItem[] = [
     tag: "Client work",
     title: "The Remote Admin",
     caseStudy: "the-remote-admin",
-    blurb: "Full marketing site for a Southern-NH admin-services business—designed, built, and shipped end to end.",
+    blurb: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
     stack: ["Next.js", "Vercel"],
     url: "https://the-remote-admin.com",
     live: true,
