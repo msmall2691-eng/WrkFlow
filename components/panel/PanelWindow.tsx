@@ -79,10 +79,6 @@ export default function PanelWindow() {
           <span className="ml-3 min-w-0 flex-1 truncate rounded-md bg-white/[0.04] px-2.5 py-1 font-mono text-[11px] text-[color:var(--cp-faint)]">
             {address}
           </span>
-          <span className="flex shrink-0 items-center gap-1.5 font-mono text-[10.5px] tracking-[0.08em] text-[color:var(--cp-teal)]">
-            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[color:var(--cp-teal)]" />
-            {active.status ? "IN PRODUCTION" : active.tag.toUpperCase()}
-          </span>
         </div>
 
         <div className="relative aspect-[16/10] w-full bg-black/40 lg:aspect-auto lg:h-[clamp(200px,calc(100svh-610px),360px)]">

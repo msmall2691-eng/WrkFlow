@@ -5,7 +5,6 @@ import WeatherLayer from "./WeatherLayer";
 import PanelStage from "./panel/PanelStage";
 import PanelWindow from "./panel/PanelWindow";
 import LiveTile from "./panel/LiveTile";
-import LiveTicker from "./panel/LiveTicker";
 import StormStrip from "./panel/StormStrip";
 import PaletteButton from "./panel/PaletteButton";
 
@@ -22,8 +21,10 @@ import PaletteButton from "./panel/PaletteButton";
     work        the case studies, outcome first
     tools       free tools, deep-linked into /tools
     live        Portland conditions, read as advice
-    contact     book a call
-    ticker      live NWS + NOAA readings
+
+  Nov 1 follow-up: Meg found the first cut too busy. One call-to-action
+  (header + hero), no ticker, no duplicate CTA tile, plain tile headings and
+  more space. Add something here only by taking something else away.
 
   Everything deeper (full case studies, all tools, services, pricing, about)
   lives on its own page, reachable from the nav and ⌘K. The contact form
@@ -63,11 +64,10 @@ export default function ControlPanel() {
         <span className="cp-aurora cp-a3" />
         <span className="cp-glow" />
       </div>
-      <div aria-hidden="true" className="cp-dots pointer-events-none absolute inset-0" />
       <WeatherLayer ink="light" />
 
       {/* Header */}
-      <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-4 lg:px-7">
+      <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
         <Link href="/" className="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.01em] text-[color:var(--cp-ink)] no-underline">
           <span aria-hidden="true" className="cp-mark grid h-8 w-8 place-items-center rounded-[9px] font-display text-[16px] font-bold text-white">
             M
@@ -90,7 +90,6 @@ export default function ControlPanel() {
               <circle cx="11" cy="11" r="7" />
               <path d="M20 20l-3.5-3.5" />
             </svg>
-            <span className="hidden sm:inline">Search or run a tool</span>
             <kbd className="cp-kbd">⌘K</kbd>
           </PaletteButton>
           <BookCall
@@ -107,13 +106,10 @@ export default function ControlPanel() {
       </div>
 
       {/* The panel */}
-      <main className="relative z-10 grid flex-1 grid-cols-12 content-start gap-3.5 px-6 py-3.5 lg:px-7" id="top">
+      <main className="relative z-10 grid flex-1 grid-cols-12 content-center gap-5 px-6 pb-8 pt-4 lg:px-10" id="top">
         {/* Hero */}
         <section className="col-span-12 flex min-w-0 flex-col justify-center gap-5 py-3 lg:col-span-5 lg:gap-4 lg:py-1 lg:pr-4">
-          <span className="flex items-center gap-2 self-start rounded-full border border-white/[0.14] bg-white/[0.03] px-3 py-1.5 font-mono text-[11px] tracking-[0.1em] text-[color:var(--cp-soft)]">
-            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[color:var(--cp-teal)]" />
-            SOUTHERN MAINE · CLIENTS ANYWHERE
-          </span>
+          <span className="text-[14px] text-[color:var(--cp-soft)]">Southern Maine · clients anywhere</span>
           <h1 className="m-0 font-display text-[clamp(2.6rem,4.4vw,4.1rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
             Software that runs <span className="cp-grad">real businesses.</span>
           </h1>
@@ -145,9 +141,7 @@ export default function ControlPanel() {
                 </div>
               ))}
             </dl>
-            <p className="m-0 font-mono text-[10.5px] tracking-[0.06em] text-[color:var(--cp-faint)]">
-              THE MAINE CLEANING CO. · MY OWN COMPANY, RUN ON SYSTEMS I BUILT
-            </p>
+            <p className="m-0 text-[12px] text-[color:var(--cp-faint)]">The Maine Cleaning Co., my own company, runs on systems I built.</p>
           </div>
         </section>
 
@@ -158,9 +152,7 @@ export default function ControlPanel() {
 
         {/* Work */}
         <section id="work" aria-labelledby="cp-work" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
-          <h2 id="cp-work" className="m-0 mb-1.5 font-mono text-[11px] font-normal tracking-[0.1em] text-[color:var(--cp-violet-ink)]">
-            SHIPPED &amp; RUNNING
-          </h2>
+          <h2 id="cp-work" className="m-0 mb-2 px-2.5 text-[13px] font-medium text-[color:var(--cp-soft)]">My work</h2>
           {caseStudies.map((c) => (
             <Link
               key={c.slug}
@@ -178,10 +170,8 @@ export default function ControlPanel() {
 
         {/* Tools */}
         <section aria-labelledby="cp-tools" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
-          <div className="mb-1.5 flex items-center justify-between">
-            <h2 id="cp-tools" className="m-0 font-mono text-[11px] font-normal tracking-[0.1em] text-[color:var(--cp-teal)]">
-              FREE TOOLS · NO SIGNUP
-            </h2>
+          <div className="mb-2 flex items-center justify-between px-2.5">
+            <h2 id="cp-tools" className="m-0 text-[13px] font-medium text-[color:var(--cp-soft)]">Free tools to try</h2>
             <Link href="/tools" className="text-[13px] text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
               All 8 →
             </Link>
@@ -199,45 +189,15 @@ export default function ControlPanel() {
               <Arrow />
             </Link>
           ))}
-          <Link
-            href="/marketplace"
-            className="cp-row group mt-1 flex items-center justify-between gap-3 rounded-[10px] border border-dashed border-[color:var(--cp-violet-line)] px-2.5 py-1.5 text-[color:var(--cp-ink)] no-underline"
-          >
-            <span className="flex min-w-0 flex-col gap-0.5">
-              <span className="text-[14.5px] font-semibold">M Linx</span>
-              <span className="line-clamp-1 text-[12.5px] text-[color:var(--cp-muted)]">Ready-made tools, sites and guest guides</span>
-            </span>
-            <Arrow />
-          </Link>
         </section>
 
         {/* Live conditions */}
-        <div className="col-span-12 flex min-w-0 md:col-span-6 lg:col-span-2 [&>*]:flex-1">
+        <div className="col-span-12 flex min-w-0 md:col-span-12 lg:col-span-4 [&>*]:flex-1">
           <LiveTile />
         </div>
 
-        {/* Contact */}
-        <section aria-labelledby="cp-cta" className="cp-tile cp-tile-cta col-span-12 flex min-w-0 flex-col justify-between gap-4 p-[18px] md:col-span-6 lg:col-span-2">
-          <h2 id="cp-cta" className="m-0 font-display text-[21px] font-semibold leading-tight tracking-[-0.02em] text-[color:var(--cp-ink)]">
-            Got a messy process? Let&apos;s fix it.
-          </h2>
-          <div className="flex flex-col gap-2.5">
-            <BookCall
-              where="panel"
-              className="rounded-[10px] bg-[color:var(--cp-ink)] px-3.5 py-3 text-center text-[14px] font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5"
-            >
-              Book 15 min
-            </BookCall>
-            <a href="#contact" className="text-center text-[13px] text-[color:var(--cp-soft)] no-underline hover:text-[color:var(--cp-ink)]">
-              or send a message ↓
-            </a>
-          </div>
-        </section>
       </main>
 
-      <div className="relative z-10">
-        <LiveTicker />
-      </div>
     </PanelStage>
   );
 }
