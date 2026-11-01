@@ -25,3 +25,9 @@ The current roadmap is `docs/NEXT-LEVEL-HANDOFF.md`. Start there.
 - Motion either demonstrates a system working or responds to the visitor. One orchestrated moment per page; no fade-up on every section.
 - Animate only `transform` and `opacity`; 150ms toggles, 250–350ms panels, 600ms max hero; one easing curve.
 - Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state. Only the proof reel and the live hero sky (V2: the aurora) loop; both pause off-screen. Keep the V2 homepage calm: Meg found the first cut too busy.
+- A colour that must follow the theme is a token, never a hardcoded value, and
+  a change gets looked at in both themes before it ships. This has broken in
+  both directions: #115, a chip hardcoded dark that rendered white-on-white in
+  Harbor, and #118, illustrations drawn in white that vanished when the site
+  moved to a light default. Neither showed up in a build, a test or a
+  Lighthouse run; both were only visible by looking.
