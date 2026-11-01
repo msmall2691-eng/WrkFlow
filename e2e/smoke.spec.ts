@@ -18,6 +18,7 @@ const PAGES = [
   // Added with the case studies: a dynamic route is the easiest thing here
   // to break without noticing, since nothing links to it at build time.
   { path: "/work/maine-cleaning-co", name: "case study" },
+  { path: "/brightbase", name: "brightbase" },
 ];
 
 for (const { path, name } of PAGES) {
