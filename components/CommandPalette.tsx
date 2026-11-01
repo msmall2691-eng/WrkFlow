@@ -77,6 +77,17 @@ export default function CommandPalette() {
       },
       { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
       {
+        id: "brightbase",
+        label: "BrightBase",
+        hint: "↗",
+        group: "Navigate",
+        keywords: "brightbase crm operations app cleaning scheduling crew invoicing stripe demo software product",
+        run: () => {
+          close();
+          window.location.href = "/brightbase";
+        },
+      },
+      {
         id: "marketplace",
         label: "M Linx marketplace",
         hint: "↗",

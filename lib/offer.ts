@@ -32,6 +32,7 @@ export const OFFERS = {
   custom: "I've got something custom in mind:",
   call: "I'd like to book a free 15-minute call.",
   quote: "I built a quote on your calculator and I'd like to talk it through.",
+  brightbase: "I'd like a demo of BrightBase for my business:",
 } as const;
 
 export type OfferKey = keyof typeof OFFERS;
