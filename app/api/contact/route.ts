@@ -21,6 +21,7 @@ import { createRateLimiter, clientIp } from "@/lib/rateLimit";
 import { storeLead } from "@/lib/leads";
 import { BOOKING_URL } from "@/lib/booking";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { isOfferKey, type OfferKey } from "@/lib/offer";
 
 // Force the Node.js runtime — Nodemailer (SMTP) does not run on the Edge runtime.
 export const runtime = "nodejs";
@@ -48,7 +49,9 @@ type ContactPayload = {
 };
 
 // Labels for the offer tag, so the inbox reads in English rather than slugs.
-const OFFER_LABELS: Record<string, string> = {
+// Typed by OfferKey so a new offer in lib/offer.ts fails the type check until
+// it has a label here; otherwise its leads silently lose their attribution.
+const OFFER_LABELS: Record<OfferKey, string> = {
   project: "Start a project (hero)",
   website: "Website updates & forms",
   platform: "CRM & platform setup",
@@ -59,6 +62,7 @@ const OFFER_LABELS: Record<string, string> = {
   custom: "Custom build",
   call: "Free 15-min call",
   quote: "Instant quote calculator",
+  brightbase: "BrightBase demo",
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -132,7 +136,7 @@ export async function POST(req: Request) {
   const phone = (body.phone || "").trim();
   const message = (body.message || "").trim();
   const offerKey = (body.offer || "").trim();
-  const offer = OFFER_LABELS[offerKey] || "";
+  const offer = isOfferKey(offerKey) ? OFFER_LABELS[offerKey] : "";
 
   // Honeypot tripped → pretend success so bots don't learn anything.
   if (body.botField && body.botField.trim() !== "") {
