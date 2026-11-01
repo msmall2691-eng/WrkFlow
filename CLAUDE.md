@@ -21,7 +21,7 @@ The current roadmap is `docs/NEXT-LEVEL-HANDOFF.md`. Start there.
 
 ## Design and motion
 - Show the work. Every section either shows something real she built, lets the visitor use it, or asks them to start a project.
-- Keep the site's current visual identity (colors, typefaces, live Maine daylight/weather theming). Changes are structural, built in existing tokens and components; do not restyle. JetBrains Mono only for real code or data.
+- Nov 1, 2026: Meg chose a new direction, "V2": a one-screen control-panel homepage, near-black with a violet/teal/pink aurora, scoped to `.cp` in `app/globals.css` (see `components/ControlPanel.tsx`). This replaces the Oct "keep the current look" rule for the homepage. Inner pages keep the current look until each gets its own V2 pass; build those in the `.cp` palette and tokens, not a third style. JetBrains Mono only for real code or data.
 - Motion either demonstrates a system working or responds to the visitor. One orchestrated moment per page; no fade-up on every section.
 - Animate only `transform` and `opacity`; 150ms toggles, 250–350ms panels, 600ms max hero; one easing curve.
-- Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state. Only the proof reel and the live hero sky loop; both pause off-screen.
+- Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state. Only the proof reel, the live hero sky (V2: the aurora) and the V2 live NWS/NOAA ticker loop; all pause off-screen.

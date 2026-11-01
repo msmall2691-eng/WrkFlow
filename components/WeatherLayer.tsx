@@ -36,7 +36,10 @@ function modeFrom(text: string | undefined, fog: boolean): Mode {
 
 type Drop = { x: number; y: number; len: number; speed: number; sway: number; r: number };
 
-export default function WeatherLayer() {
+export default function WeatherLayer({ ink = "auto" }: {
+  /** "auto" follows the site theme; "light" always paints pale marks (for always-dark surfaces like the homepage panel). */
+  ink?: "auto" | "light";
+} = {}) {
   const d = useMaine();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [override, setOverride] = useState<Mode | null>(null);
@@ -126,7 +129,7 @@ export default function WeatherLayer() {
     */
     let wetAlpha = 0.32;
     const readTint = () => {
-      const light = document.documentElement.dataset.theme === "light";
+      const light = ink === "auto" && document.documentElement.dataset.theme === "light";
       tint = light ? "52,64,79" : "226,236,244";
       fogTint = light ? "168,184,201" : "226,236,244";
       fogAlpha = light ? 0.14 : 0.085;
@@ -209,7 +212,7 @@ export default function WeatherLayer() {
       ro.disconnect();
       window.removeEventListener("theme:change", readTint);
     };
-  }, [mode, windMph]);
+  }, [mode, windMph, ink]);
 
   if (mode === "none") return null;
 
