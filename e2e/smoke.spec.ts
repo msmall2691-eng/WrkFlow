@@ -294,3 +294,44 @@ test("the lead endpoints refuse requests from outside the site", async ({ reques
     expect(foreign.status(), `${path} should reject a foreign Origin`).toBe(403);
   }
 });
+
+/*
+  The Turnstile challenge stays inert until it is configured.
+
+  lib/turnstile.ts lets a submission through when TURNSTILE_SECRET_KEY is
+  unset, because a half-configured challenge that rejects real visitors is
+  worse than the spam it was added for. That default is the whole reason it
+  was safe to merge before Meg has the keys, and it is one edit away from
+  being lost: make verification required and the live contact form starts
+  turning real people away with a 403, silently, on a site with no keys set.
+
+  CI runs without the keys, so that is exactly the state under test here. A
+  same-origin submission must fail at mail or storage (502) or succeed, and
+  must not be refused as a failed challenge. The widget must also be absent
+  from the page, since rendering an unconfigured one would show visitors a
+  checkbox that can never be satisfied.
+*/
+test("the contact form is not gated by an unconfigured Turnstile", async ({ page, request }) => {
+  /*
+    The origin has to be one the gate accepts, or the 403 under test would be
+    the origin check rather than the challenge. Note it cannot be Playwright's
+    own baseURL: that is http://127.0.0.1, and isAllowedOrigin lists localhost
+    but not the loopback IP, so a request from it is refused. Harmless in
+    production, where the origin is the real domain, but worth knowing if a
+    future test or a local browser session reaches the site that way.
+  */
+  const res = await request.post("/api/contact", {
+    data: { name: "Real Person", email: "someone@example.com", message: "Hello there." },
+    headers: { origin: "https://mlinx.studio" },
+  });
+  expect(
+    res.status(),
+    "an allowed-origin submission must not be refused while Turnstile is unconfigured",
+  ).not.toBe(403);
+
+  await page.goto("/");
+  expect(
+    await page.locator(".cf-turnstile").count(),
+    "no widget should render without NEXT_PUBLIC_TURNSTILE_SITE_KEY",
+  ).toBe(0);
+});

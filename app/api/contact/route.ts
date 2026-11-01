@@ -20,6 +20,7 @@ import { createMailTransporter, getMailEnv } from "@/lib/mailer";
 import { createRateLimiter, clientIp } from "@/lib/rateLimit";
 import { storeLead } from "@/lib/leads";
 import { BOOKING_URL } from "@/lib/booking";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 // Force the Node.js runtime — Nodemailer (SMTP) does not run on the Edge runtime.
 export const runtime = "nodejs";
@@ -36,6 +37,14 @@ type ContactPayload = {
   offer?: string;
   // Honeypot: real users never see/fill this. Bots do. If present, we silently drop.
   botField?: string;
+  /*
+    The Turnstile token. Cloudflare's widget names its hidden input
+    `cf-turnstile-response`, and the form posts FormData verbatim, so that is
+    the key that actually arrives; `turnstileToken` is accepted too for any
+    caller that sends it under the tidier name.
+  */
+  "cf-turnstile-response"?: string;
+  turnstileToken?: string;
 };
 
 // Labels for the offer tag, so the inbox reads in English rather than slugs.
@@ -64,13 +73,16 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX = { name: 200, email: 320, company: 200, phone: 50, offer: 80, message: 5000 } as const;
 
 /*
-  Per-IP, and a global cap beside it.
+  Per-IP, and a per-instance ceiling beside it.
 
-  The per-IP limiter alone counts for very little here: it is in-memory, so
-  it resets with the serverless instance and is not shared between them, and
-  an abuser spreading requests over many IPs never trips it at all. The
-  global cap is what actually bounds how much mail this route can send in an
-  hour, however many addresses the traffic comes from.
+  Both are in-memory (lib/rateLimit.ts keeps a Map in the closure), so both
+  reset on a cold start and neither is shared between instances. The second
+  one was described as a global cap when it was added, which was wrong: two
+  warm instances will each allow their own 200, so it bounds one instance's
+  mail per hour, not the route's. It still blunts a single fast attacker,
+  and it is cheap, so it stays — but Turnstile below is what actually makes
+  the endpoint hard to abuse, and a real global cap would need shared
+  storage (Vercel KV, Upstash, or the Supabase project once it is running).
 */
 const rateLimitedByIp = createRateLimiter({ windowMs: 10 * 60 * 1000, maxHits: 5 });
 const rateLimitedGlobally = createRateLimiter({ windowMs: 60 * 60 * 1000, maxHits: 200 });
@@ -146,6 +158,24 @@ export async function POST(req: Request) {
     message.length > MAX.message
   ) {
     return NextResponse.json({ ok: false, error: "That is longer than this form accepts." }, { status: 422 });
+  }
+
+  /*
+    Turnstile, before anything is stored or sent.
+
+    The Origin check above stops a script that sends no Origin, which is most
+    of what hits this endpoint, but Origin is just a request header and any
+    client can set it to this site's. This is the check a forged header
+    cannot pass. It is inert until TURNSTILE_SECRET_KEY is set, so the form
+    behaves exactly as before until then; see lib/turnstile.ts.
+  */
+  const challenge = await verifyTurnstile(body.turnstileToken ?? body["cf-turnstile-response"], clientIp(req));
+  if (!challenge.ok) {
+    console.warn("Contact form: Turnstile rejected a submission", challenge.reason);
+    return NextResponse.json(
+      { ok: false, error: "Couldn't verify that you're human. Please try again." },
+      { status: 403 },
+    );
   }
 
   /* 1. Record it. Never throws — a storage problem must not cost us the lead. */
