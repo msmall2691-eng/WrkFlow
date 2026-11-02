@@ -380,3 +380,50 @@ test("the turnover planner ignores blocked dates", async ({ request }) => {
     "a block starting on a checkout day is not a same-day turnaround",
   ).toBe(0);
 });
+
+/*
+  "See the work" goes to the work.
+
+  The hero's secondary button, the nav and footer Work links, and every
+  /#work from an inner page all target one id. That id sat on the small
+  "My work" tile inside the control panel, so the one button whose entire
+  job is "show me what she built" scrolled a few hundred pixels to four
+  one-line rows of project names. It now sits on the work section below.
+
+  This is asserted rather than left to a reviewer because both failure modes
+  are invisible: a duplicate id renders two perfect-looking sections while
+  every link silently resolves to the first one, and a renamed id leaves
+  four live-looking links that scroll nowhere at all. Neither shows up in a
+  build, a type check or a Lighthouse run.
+*/
+test('the work anchor is unique and lands on the case studies', async ({ page }) => {
+  await page.goto("/");
+
+  const anchors = page.locator("#work");
+  expect(
+    await anchors.count(),
+    'exactly one element may carry id="work"',
+  ).toBe(1);
+
+  /* The target is the section that shows the work, not a list of its names. */
+  const section = anchors.first();
+  await expect(
+    section.getByRole("heading", { level: 2 }),
+    "the anchor should land on the work section's own heading",
+  ).toContainText(/running right now/i);
+
+  const cards = section.locator("ul > li a[href^='/work/']");
+  expect(
+    await cards.count(),
+    "every case study should be a card here",
+  ).toBe(3);
+  for (const img of await section.locator("img").all())
+    expect(
+      await img.evaluate((el: HTMLImageElement) => el.naturalWidth > 0),
+      "each card should lead with a real screenshot that loaded",
+    ).toBe(true);
+
+  /* And the button that promises it actually reaches it. */
+  await page.getByRole("link", { name: /see the work/i }).click();
+  await expect(section).toBeInViewport();
+});
