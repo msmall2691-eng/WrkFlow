@@ -8,6 +8,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import { Frame, Pipeline, Roles } from "@/components/brightbase/Showcase";
+import DataModel from "@/components/brightbase/DataModel";
 
 /*
   /brightbase — the showcase for the operations app Meg built and runs her
@@ -97,6 +98,20 @@ export default function BrightBasePage() {
               <H2 id="bb-roles">Three apps in one: the office, the crew, and your customers.</H2>
             </div>
             <Roles />
+          </section>
+
+          {/* Data model */}
+          <section id="data" aria-labelledby="bb-data" className="flex scroll-mt-8 flex-col gap-6">
+            <div className="flex flex-col gap-3">
+              <Eyebrow tone="pink">The data model</Eyebrow>
+              <H2 id="bb-data">Built around the client, not around screens.</H2>
+              <p className="m-0 max-w-[62ch] text-[16px] leading-relaxed text-[color:var(--cp-muted)]">
+                Most small-business tools keep leads in one place, jobs in another and messages in a third. In BrightBase every record
+                points back to one client, and a client is found by any email or phone number they have ever used. Pick a record to
+                see how it connects.
+              </p>
+            </div>
+            <DataModel />
           </section>
 
           {/* Integrations */}

@@ -21,9 +21,10 @@ import { work, type WorkItem } from "@/lib/content";
     · the frame tilts toward the pointer through --px/--py from PanelStage
 */
 
-// Client work first: a stranger's first frame should be a site I built for
-// someone else, not my own cleaning company (Meg, Nov 1).
-const PICK = ["The Remote Admin", "Nash Construction", "linx", "Instant Estimate"];
+// BrightBase leads (Meg, Nov 1): it is the product, and it reads as software,
+// not as a cleaning company. Client sites follow, so the first screens are
+// things I built, not the cleaning company's own marketing site.
+const PICK = ["BrightBase", "The Remote Admin", "Nash Construction", "linx"];
 const FRAMES: WorkItem[] = PICK.map((t) => work.find((w) => w.title === t)).filter(
   (w): w is WorkItem => Boolean(w?.shot),
 );
@@ -112,12 +113,12 @@ export default function PanelWindow() {
               {active.replaced ?? active.blurb}
             </span>
           </span>
-          {active.caseStudy ? (
+          {active.page || active.caseStudy ? (
             <Link
-              href={`/work/${active.caseStudy}`}
+              href={active.page ?? `/work/${active.caseStudy}`}
               className="shrink-0 text-[13px] font-medium text-[color:var(--cp-violet-ink)] transition-opacity duration-150 hover:opacity-80"
             >
-              Case study →
+              {active.page ? `See ${active.title} →` : "Case study →"}
             </Link>
           ) : null}
         </figcaption>

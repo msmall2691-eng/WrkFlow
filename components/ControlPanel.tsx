@@ -108,6 +108,16 @@ export default function ControlPanel() {
         {/* Work */}
         <section id="work" aria-labelledby="cp-work" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
           <h2 id="cp-work" className="m-0 mb-2 px-2.5 text-[13px] font-medium text-[color:var(--cp-soft)]">My work</h2>
+          <Link
+            href="/brightbase"
+            className="cp-row group flex items-center justify-between gap-3 rounded-[10px] px-2.5 py-1.5 text-[color:var(--cp-ink)] no-underline"
+          >
+            <span className="flex min-w-0 flex-col gap-0.5">
+              <span className="text-[14.5px] font-semibold">BrightBase</span>
+              <span className="line-clamp-1 text-[12.5px] text-[color:var(--cp-muted)]">The operations app I built and run my cleaning company on.</span>
+            </span>
+            <Arrow />
+          </Link>
           {WORK.map((c) => (
             <Link
               key={c.slug}
