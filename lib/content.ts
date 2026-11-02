@@ -252,7 +252,7 @@ export const services: Service[] = [
     "pain": "The tools you have do not quite fit, and important work still lives in spreadsheets and messages.",
     "outcome": "A focused tool built around your process, with the features and handover agreed before work starts.",
     "example": {
-      "client": "Cleaning operations dashboard",
+      "client": "BrightBase",
       "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
       "result": "Daily operations brought into one view."
     }
@@ -333,6 +333,8 @@ export type WorkItem = {
    * then lives on that page, not on the card. One card, one destination.
    */
   caseStudy?: string;
+  /** An internal page that tells this item's full story (e.g. "/brightbase"). */
+  page?: string;
 };
 
 /*
@@ -431,12 +433,15 @@ export const work: WorkItem[] = [
   // Tier 3 — private internal/client systems (no links)
   {
     tier: "private",
-    tag: "Private system",
-    title: "Cleaning operations dashboard",
-    blurb: "Jobs, revenue, occupancy & crew in one live view.",
+    tag: "Product · in daily use",
+    title: "BrightBase",
+    blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
-    replaced: "4 spreadsheets and a group chat",
+    replaced: "12 overlapping tools, now one system",
     status: "In daily production since 2026",
+    // A real capture of the app on demo data (a fictional company), see lib/brightbase.ts.
+    shot: "/shots/brightbase/home-dark.webp",
+    page: "/brightbase",
   },
   {
     tier: "private",
@@ -854,15 +859,11 @@ export const marketItems: MarketItem[] = [
     ],
     price: "from $1,000 one-time",
     /*
-      TODO(Meg): a capture of the real operations dashboard (the one listed
-      in `deployments` as "Cleaning operations dashboard", in daily
-      production since 2026) with customer names, addresses and figures
-      redacted, as brightbase-crew-*.png already are. It is the only card
-      here selling something no screenshot exists for. Until then the card
-      shows the drawn fallback rather than a stand-in from another system:
-      the crew app's numbers are real, but they are not a command center,
-      and using them here would promise the wrong screen.
+      A real capture of BrightBase's owner dashboard running on demo data (a
+      fictional company with made-up figures), so no customer or business
+      numbers are exposed. Same screen the office uses daily.
     */
+    shot: "/shots/brightbase/owner-dashboard.webp",
   },
   {
     id: "automation-pack",
