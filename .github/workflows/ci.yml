@@ -17,7 +17,9 @@ concurrency:
 jobs:
   check:
     name: Typecheck, lint, smoke tests
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04, where the installed Playwright has
+    # no Chromium build ("Playwright does not support chromium on ubuntu26.04").
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:

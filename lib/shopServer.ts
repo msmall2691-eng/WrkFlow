@@ -18,9 +18,17 @@ export function priceIdFor(product: ShopProduct): string | undefined {
   return v && v.startsWith("price_") ? v : undefined;
 }
 
-/** True only when a sale could actually complete. */
+function hasSigningSecret() {
+  return (process.env.SHOP_DOWNLOAD_SECRET?.length ?? 0) >= 32;
+}
+
+/**
+ * True only when a sale could actually complete, including handing over the
+ * file: without a signing secret the thanks page can't mint a link, so a buyer
+ * would pay and get nothing.
+ */
 export function isForSale(product: ShopProduct): boolean {
-  return Boolean(process.env.STRIPE_SECRET_KEY && priceIdFor(product));
+  return Boolean(process.env.STRIPE_SECRET_KEY && priceIdFor(product) && hasSigningSecret());
 }
 
 /** On unless explicitly turned off with STRIPE_MANAGED_PAYMENTS=0. */

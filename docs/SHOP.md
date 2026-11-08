@@ -14,7 +14,7 @@ Digital templates sold on `/marketplace#downloads`. Pay with Stripe, download ri
 | The files themselves (never public) | `private/downloads/` |
 | Product previews (real captures of the files) | `public/shots/shop/` |
 
-A product only shows **Buy & download** when `STRIPE_SECRET_KEY` and its price id are both set. Otherwise it shows **Coming soon · ask me**.
+A product only shows **Buy & download** when `STRIPE_SECRET_KEY`, its price id and `SHOP_DOWNLOAD_SECRET` (32+ characters) are all set. Otherwise it shows **Coming soon · ask me**.
 
 ## Turning it on (Meg)
 
