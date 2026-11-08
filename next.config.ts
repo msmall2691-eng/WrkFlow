@@ -32,6 +32,11 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Purchased files are read from disk by the download route; make sure the
+  // serverless bundle carries them (they are not in /public on purpose).
+  outputFileTracingIncludes: {
+    "/api/shop/download": ["./private/downloads/**"],
+  },
   poweredByHeader: false,
   async headers() {
     return [
