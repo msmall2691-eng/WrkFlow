@@ -1,4 +1,5 @@
 import ControlPanel from "@/components/ControlPanel";
+import WorkBelow from "@/components/panel/WorkBelow";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
@@ -26,6 +27,7 @@ export default function Home() {
   return (
     <div className="cp">
       <ControlPanel />
+      <WorkBelow />
       <Contact />
       <Footer />
       <CommandPalette />

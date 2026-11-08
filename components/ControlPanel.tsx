@@ -105,8 +105,22 @@ export default function ControlPanel() {
           <PanelWindow />
         </section>
 
-        {/* Work */}
-        <section id="work" aria-labelledby="cp-work" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
+        {/*
+          Work.
+
+          This tile used to carry id="work", which made it the target of the
+          hero's "See the work" button, the nav's Work link, the footer's and
+          every /#work from an inner page. So the one button whose whole job is
+          "show me what she built" scrolled a few hundred pixels to four
+          one-line rows of project names. The id now lives on the work section
+          below (components/panel/WorkBelow.tsx), which is the thing those
+          links promise. Two elements cannot share it: keeping both made the
+          document invalid and sent every link back to this tile.
+
+          The tile stays, because it is the only route to BrightBase, which is
+          not in `caseStudies` and so is not one of the cards below.
+        */}
+        <section aria-labelledby="cp-work" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
           <h2 id="cp-work" className="m-0 mb-2 px-2.5 text-[13px] font-medium text-[color:var(--cp-soft)]">My work</h2>
           <Link
             href="/brightbase"

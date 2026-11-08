@@ -380,3 +380,75 @@ test("the turnover planner ignores blocked dates", async ({ request }) => {
     "a block starting on a checkout day is not a same-day turnaround",
   ).toBe(0);
 });
+
+/*
+  "See the work" goes to the work.
+
+  The hero's secondary button, the nav and footer Work links, and every
+  /#work from an inner page all target one id. That id sat on the small
+  "My work" tile inside the control panel, so the one button whose entire
+  job is "show me what she built" scrolled a few hundred pixels to four
+  one-line rows of project names. It now sits on the work section below.
+
+  This is asserted rather than left to a reviewer because both failure modes
+  are invisible: a duplicate id renders two perfect-looking sections while
+  every link silently resolves to the first one, and a renamed id leaves
+  four live-looking links that scroll nowhere at all. Neither shows up in a
+  build, a type check or a Lighthouse run.
+*/
+test('the work anchor is unique and lands on the case studies', async ({ page }) => {
+  await page.goto("/");
+
+  const anchors = page.locator("#work");
+  expect(
+    await anchors.count(),
+    'exactly one element may carry id="work"',
+  ).toBe(1);
+
+  /* The target is the section that shows the work, not a list of its names. */
+  const section = anchors.first();
+  await expect(
+    section.getByRole("heading", { level: 2 }),
+    "the anchor should land on the work section's own heading",
+  ).toContainText(/running right now/i);
+
+  const cards = section.locator("ul > li a[href^='/work/']");
+  expect(
+    await cards.count(),
+    "every case study should be a card here",
+  ).toBe(3);
+
+  /*
+    Scroll to the cards before asking whether their screenshots loaded, and
+    let the check retry.
+
+    These <Image>s are loading="lazy", so nothing fetches them until they
+    approach the viewport, and `goto` resolves on `load`. The first version
+    of this read naturalWidth once, straight after goto, with no retry. It
+    passed, but only by coincidence: the section lands about 500px below the
+    fold at this viewport, inside the distance at which Chromium starts a
+    lazy image early, so `load` waited for them. Nothing asserts that
+    distance. Grow the panel above, or let Chromium judge the connection
+    slow, and the images fall outside that window: the snapshot then reads 0
+    and fails a page that is perfectly fine. Scrolling makes the fetch
+    certain and polling makes a cold image-optimization response a wait
+    rather than a failure.
+  */
+  await section.scrollIntoViewIfNeeded();
+  const shots = section.locator("img");
+  await expect(shots).toHaveCount(3);
+  for (let i = 0; i < 3; i++)
+    await expect
+      .poll(
+        () => shots.nth(i).evaluate((el: HTMLImageElement) => el.naturalWidth),
+        { message: `card ${i + 1} should lead with a real screenshot that loaded` },
+      )
+      .toBeGreaterThan(0);
+
+  /* And the button that promises it actually reaches it. Back to the top
+     first, or the assertion below passes on the scroll this test just did. */
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect(section).not.toBeInViewport();
+  await page.getByRole("link", { name: /see the work/i }).click();
+  await expect(section).toBeInViewport();
+});

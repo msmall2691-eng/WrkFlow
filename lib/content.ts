@@ -81,7 +81,8 @@ export const studioStats = [
   a visitor asks — so they sit under the hero on the homepage.
 */
 export const provingGround = {
-  label: "Built from real business — The Maine Cleaning Co.",
+  /* No em dash: house rule is commas or periods in user-facing copy. */
+  label: "Built from real business. The Maine Cleaning Co.",
   stats: [
     // Verified Oct 2026 against Jobber invoices and visit exports
     // (Mar 2023 – Oct 2026). Pre-2023 years are not in any system, so
