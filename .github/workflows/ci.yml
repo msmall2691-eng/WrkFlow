@@ -17,7 +17,17 @@ concurrency:
 jobs:
   check:
     name: Typecheck, lint, smoke tests
-    runs-on: ubuntu-latest
+    # Pinned, not `ubuntu-latest`. GitHub rolled that label to Ubuntu 26.04
+    # between Nov 2 and Nov 8 2026, and `playwright install` then refuses the
+    # image outright: "Playwright does not support chromium on
+    # ubuntu26.04-x64". The job died at the install step, before a single test
+    # ran, on a commit that had passed 18/18 on the same workflow six days
+    # earlier. 24.04 is the image every green run on this repo actually used.
+    #
+    # This is a pin, so it is a debt: @playwright/test is on 1.56 and 1.65 is
+    # current. Upgrading is the real fix and wants its own PR and a real CI
+    # run. Do that before 24.04 is retired, then drop this line.
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
 
     steps:
