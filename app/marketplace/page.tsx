@@ -7,6 +7,7 @@ import MarketCatalog from "@/components/MarketCatalog";
 import WorkflowMap from "@/components/WorkflowMap";
 import HeroWordmark from "@/components/HeroWordmark";
 import LinxMark from "@/components/LinxMark";
+import ShopDownloads from "@/components/ShopDownloads";
 import { marketModelLabels } from "@/lib/content";
 
 export const metadata: Metadata = pageMeta({
@@ -77,6 +78,8 @@ export default function MarketplacePage() {
               </div>
           </div>
         </section>
+
+        <ShopDownloads />
 
         {/* Workflow / integration mapper — moved here from the homepage: "see
             what could connect to what" is the M Linx pitch in miniature. */}
