@@ -438,6 +438,47 @@ html {
 }
 
 /*
+  …and the V2 panel is neither ground, so neither branch above belongs in it.
+
+  Both were measured against the theme they were written for: #6b97f7 on
+  Harbor's navy, #1f54c9 on Daylight's cream. `.cp` is a fixed near-black
+  world (#08070c) that does NOT follow the theme, so whichever branch happens
+  to match the visitor's theme lands on a ground nobody checked it against.
+
+  Daylight is the practical default (middleware sends x-theme-default: light
+  on every route), so #1f54c9 is what actually ships inside `.cp`, at 3.03:1
+  against the 4.5 floor. Harbor's #6b97f7 clears it at 7.07:1, which is why
+  looking at the panel in dark mode never showed this. Measured on /services
+  wrapped in `.cp`: 32 .text-signal nodes at 3.03:1 and 2 .text-gold at
+  2.73:1. The five color-contrast nodes Lighthouse already reported on the
+  homepage are the same bug in the contact section.
+
+  Dropping the overrides inside `.cp` is NOT enough: the bare utility would
+  then resolve to --color-signal, which `.cp` sets to #7547f0, and that is
+  3.74:1 here. #7547f0 is a button fill carrying white text, not text on a
+  dark ground, exactly as the note above says of harbor blue. The ink tokens
+  are the ones chosen for this ground: --cp-violet-ink at 9.25:1 and
+  --cp-teal at 10.78:1, and they are on the V2 palette, where harbor blue is
+  not.
+
+  Each branch is answered at its own weight rather than with !important:
+  the branches are (0,3,0) and set `color` directly, so a plain
+  `.cp .text-signal` at (0,2,0) would lose. Adding `.cp` makes it (0,4,0).
+
+  .text-gold needs only the Daylight branch answered: in Harbor the utility
+  already resolves to `.cp`'s own --color-gold, which is the teal.
+*/
+:root:not([data-theme="light"]) .cp .text-signal,
+:root:not([data-theme="light"]) .cp .marker,
+:root[data-theme="light"] .cp .text-signal,
+:root[data-theme="light"] .cp .marker {
+  color: var(--cp-violet-ink);
+}
+:root[data-theme="light"] .cp .text-gold {
+  color: var(--cp-teal);
+}
+
+/*
   The gold shimmer was tuned for navy: #d9a441 → #f3d79a is gorgeous on
   Harbor and all but vanishes on cream, where the light stops sit near
   1.2:1. That text is the H1, so Daylight gets its own ramp — same sweep, in
