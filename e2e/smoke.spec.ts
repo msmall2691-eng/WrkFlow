@@ -533,7 +533,10 @@ test("the case study's build screenshot stays pinned while the steps scroll", as
   adds the next page: a call CTA pointing at a bare #contact is only allowed
   on a page that has one.
 */
-for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/work/maine-cleaning-co"]) {
+/* /marketplace joined this list when its V2 pass gave it PanelHeader. It
+   renders no Contact either, so it is exactly the shape this test exists to
+   catch, and it was not covered while it still ran the old <Nav>. */
+for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/marketplace", "/work/maine-cleaning-co"]) {
   test(`${path} has no dead-end booking CTA`, async ({ page }) => {
     await page.goto(path);
 

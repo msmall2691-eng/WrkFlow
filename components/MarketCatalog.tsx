@@ -23,13 +23,20 @@ const modelBadge: Record<MarketItem["model"], string> = {
   open: "text-muted border-line bg-white/[0.04]",
 };
 
-export default function MarketCatalog() {
+export default function MarketCatalog({ exclude = [] }: { exclude?: string[] }) {
   const [active, setActive] = useState<MarketItem | null>(null);
+  /*
+    `exclude` lets a page render one item somewhere else and keep it out of
+    the grid. /marketplace uses it for the welcome book, which now has its
+    own band above this. The numbering follows the filtered list, so the
+    grid still reads 01, 02, 03 with no gap where the excluded card was.
+  */
+  const items = marketItems.filter((m) => !exclude.includes(m.id));
 
   return (
     <>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {marketItems.map((item, i) => (
+        {items.map((item, i) => (
           <Reveal key={item.id} delay={i * 50}>
             <ProductCard item={item} n={i + 1} onReserve={() => setActive(item)} />
           </Reveal>
@@ -134,7 +141,15 @@ function ProductCard({
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-muted">{item.tagline}</p>
 
-        <ul className="mt-5 space-y-2 border-t border-line pt-5">
+        {/*
+          flex-1 so the price and the Reserve button pin to the bottom of
+          every card instead of floating directly under the last bullet.
+          Nothing inside this column grew to fill it before, so a card with
+          one extra bullet (or one that wraps) pushed its own footer down and
+          the row of buttons came out ragged. For a grid whose job is to let
+          somebody compare prices, the prices have to line up.
+        */}
+        <ul className="mt-5 flex-1 space-y-2 border-t border-line pt-5">
           {item.includes.map((inc) => (
             <li key={inc} className="flex items-start gap-2.5 text-sm text-muted">
               <span

@@ -742,6 +742,14 @@ export const caseStudies: CaseStudy[] = [
     • "embed"     — a hosted widget you drop into an existing site (small monthly).
     • "open"      — free / open-source starter, kept as a lead-in.
   Pricing here is indicative; CTAs route to contact rather than live checkout.
+
+  ORDER MATTERS. The array is the funnel, cheapest and most plug-and-play
+  first: free tools, then the $99 welcome book, then the hosted embeds, then
+  the builds you own outright. /marketplace renders it in this order and
+  pulls the welcome book out into its own band above the grid, so a visitor
+  meets the thing they can buy today before the thing that needs a scope
+  call. Add a new item at the rung its price and setup effort put it on,
+  not at the end.
 */
 export type MarketItemModel = "template" | "embed" | "open";
 
@@ -795,7 +803,57 @@ export const marketItems: MarketItem[] = [
     ],
     price: "$99 intro · reg. $149",
     liveUrl: "https://keystonestay.maineclean.co",
-    featured: true,
+    /*
+      No `featured` flag: /marketplace now gives the welcome book its own
+      band above the grid, so the highlighted-card treatment would be a
+      second, competing emphasis on the same product.
+    */
+  },
+  {
+    id: "calc-kit",
+    name: "M Linx Tools",
+    model: "open",
+    category: "Tool",
+    tagline: "The free calculators on this site. Use them, or take the source.",
+    includes: [
+      "Quote, rate & signature tools",
+      "Free to use, right now",
+      "Source available on request, calculators only",
+      "A friendly way to say hello",
+    ],
+    price: "Free",
+    // A real capture of this site's own /tools page, calculator and all.
+    shot: "/shots/tools.png",
+  },
+  {
+    id: "quote-widget",
+    name: "M Linx Quote",
+    model: "embed",
+    category: "Tool",
+    tagline: "Drop the live quoting tool from this site straight into your own.",
+    includes: [
+      "Embeddable estimate calculator",
+      "Configured to your pricing + branding",
+      "Leads emailed straight to you on submit",
+      "One line of code to install. I set it up, you go live",
+    ],
+    price: "$150 setup + $15/mo",
+    shot: "/shots/instant-estimate.png",
+  },
+  {
+    id: "automation-pack",
+    name: "M Linx Flows",
+    model: "embed",
+    category: "Automation",
+    illustration: "flow",
+    tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
+    includes: [
+      "Confirmation + reminder flows",
+      "Review-request follow-ups",
+      "Lead-to-CRM sync",
+      "Tuned to your tools",
+    ],
+    price: "from $150 setup + $19/mo",
   },
   {
     id: "service-site",
@@ -814,6 +872,26 @@ export const marketItems: MarketItem[] = [
     featured: true,
   },
   {
+    id: "dashboard-starter",
+    name: "M Linx Dashboard",
+    model: "template",
+    category: "Dashboard",
+    tagline: "The command-center dashboard, set up around your numbers.",
+    includes: [
+      "Live KPIs, jobs & revenue views",
+      "Connected to your data sources",
+      "Hosted for you, or run it on your own server",
+      "Room to grow into",
+    ],
+    price: "from $1,000 one-time",
+    /*
+      A real capture of BrightBase's owner dashboard running on demo data (a
+      fictional company with made-up figures), so no customer or business
+      numbers are exposed. Same screen the office uses daily.
+    */
+    shot: "/shots/brightbase/owner-dashboard.webp",
+  },
+  {
     id: "booking-app",
     name: "M Linx Booking",
     model: "template",
@@ -830,72 +908,6 @@ export const marketItems: MarketItem[] = [
     // and the confirm step this card sells. Same capture the Work section
     // uses for "Turnover scheduling"; the address and pay are redacted in it.
     shot: "/shots/brightbase-crew-schedule.png",
-  },
-  {
-    id: "quote-widget",
-    name: "M Linx Quote",
-    model: "embed",
-    category: "Tool",
-    tagline: "Drop the live quoting tool from this site straight into your own.",
-    includes: [
-      "Embeddable estimate calculator",
-      "Configured to your pricing + branding",
-      "Leads emailed straight to you on submit",
-      "One line of code to install. I set it up, you go live",
-    ],
-    price: "$150 setup + $15/mo",
-    shot: "/shots/instant-estimate.png",
-  },
-  {
-    id: "dashboard-starter",
-    name: "M Linx Dashboard",
-    model: "template",
-    category: "Dashboard",
-    tagline: "The command-center dashboard, set up around your numbers.",
-    includes: [
-      "Live KPIs, jobs & revenue views",
-      "Connected to your data sources",
-      "Hosted or self-hosted, your call",
-      "Built to extend later",
-    ],
-    price: "from $1,000 one-time",
-    /*
-      A real capture of BrightBase's owner dashboard running on demo data (a
-      fictional company with made-up figures), so no customer or business
-      numbers are exposed. Same screen the office uses daily.
-    */
-    shot: "/shots/brightbase/owner-dashboard.webp",
-  },
-  {
-    id: "automation-pack",
-    name: "M Linx Flows",
-    model: "embed",
-    category: "Automation",
-    illustration: "flow",
-    tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
-    includes: [
-      "Confirmation + reminder flows",
-      "Review-request follow-ups",
-      "Lead-to-CRM sync",
-      "Tuned to your tools",
-    ],
-    price: "from $150 setup + $19/mo",
-  },
-  {
-    id: "calc-kit",
-    name: "M Linx Tools",
-    model: "open",
-    category: "Tool",
-    tagline: "The free calculators on this site. Use them, or take the source.",
-    includes: [
-      "Quote, rate & signature tools",
-      "Free to use, right now",
-      "Open-source starter on request: calculators only. Hosted tools (Quote, Flows) stay set up by me",
-      "A friendly way to say hello",
-    ],
-    price: "Free",
-    // A real capture of this site's own /tools page, calculator and all.
-    shot: "/shots/tools.png",
   },
 ];
 
