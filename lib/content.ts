@@ -423,7 +423,7 @@ export const work: WorkItem[] = [
     tag: "Product · designed & built by M Studio",
     title: "linx",
     caseStudy: "linx",
-    blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+    blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and you pay when the job is done.",
     stack: ["Python", "Stripe Connect", "Railway"],
     // Replaced the Autopilot demo (Oct 2026), whose page carried invented
     // stats, testimonials and contact details. linx is a real, launched
@@ -642,7 +642,7 @@ export const caseStudies: CaseStudy[] = [
     // counted in the BrightBase repo. Business financials stay off the site.
     results: [
       { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
-      { value: "4,000+", label: "automated tests run on every change" },
+      { value: "4,000+", label: "automated checks run before any change goes live" },
       { value: "Daily", label: "in use by the office and field crews since 2026" },
     ],
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
@@ -652,7 +652,7 @@ export const caseStudies: CaseStudy[] = [
       { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
       { phase: "Requirements", body: "Mapped every step from request to paid, documented where each tool fell short, and wrote the requirements and acceptance criteria before building." },
       { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
-      { phase: "Build", body: "React front end on a Node API for the public site, a Python · FastAPI back office on Postgres, Stripe for payment and Twilio for messaging." },
+      { phase: "Build", body: "Built the public site and the back office as one system, so a quote someone requests on the website becomes a scheduled, invoiced job without anybody retyping it." },
       { phase: "Phased rollout", body: "Shipped in small, tested steps while the old tools kept running. The crew app went out in five phases, each in use before the next began." },
       { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2026." },
     ],
@@ -662,7 +662,7 @@ export const caseStudies: CaseStudy[] = [
     title: "linx",
     tag: "Product · designed & built by M Studio",
     outcome:
-      "Hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+      "Hosts post a turnover, vetted local cleaners bid, and you pay when the job is done.",
     url: "https://linx-production-6edf.up.railway.app",
     hero: {
       src: "/shots/linx.png",
@@ -677,7 +677,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Payment through Stripe",
-        body: "Payment releases through Stripe Connect once the job is done.",
+        body: "Nobody pays up front. The money is held until the cleaner marks the job complete, which is the part both sides need to trust.",
       },
     ],
     flow: [
@@ -694,7 +694,7 @@ export const caseStudies: CaseStudy[] = [
     process: [
       { phase: "Discovery", body: "The turnover problem came out of scheduling cleaners for short-term rentals week after week." },
       { phase: "Design", body: "Two sides of a marketplace: hosts posting work, cleaners bidding on it, each needing a different view of the same job." },
-      { phase: "Build", body: "Python service on Railway, with Stripe Connect holding payment until the job is done." },
+      { phase: "Build", body: "Built both sides and the payment path between them, so a host can hand a key to somebody they have not met and still know the money is safe." },
     ],
   },
   {

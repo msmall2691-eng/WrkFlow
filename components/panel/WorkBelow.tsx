@@ -41,8 +41,8 @@ export default function WorkBelow() {
           Things I built that are <span className="cp-grad">running right now</span>.
         </h2>
         <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[var(--cp-muted)]">
-          Real businesses use each of these every day. Open one to see what the
-          problem was and how it was put together.
+          Real businesses use each of these every day. Open one to see what it
+          does and what it replaced.
         </p>
 
         <ul className="mt-10 grid gap-6 md:grid-cols-3">
