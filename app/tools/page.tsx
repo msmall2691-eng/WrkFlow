@@ -36,7 +36,7 @@ export default function ToolsPage() {
         </div>
 
         <div className="relative z-10">
-          <PanelHeader current="/tools" />
+          <PanelHeader current="/tools" bookHref="/?offer=call#contact" />
         </div>
 
         {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}

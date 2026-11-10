@@ -36,7 +36,7 @@ export default function AboutPage() {
         </div>
 
         <div className="relative z-10">
-          <PanelHeader current="/about" />
+          <PanelHeader current="/about" bookHref="/?offer=call#contact" />
         </div>
 
         {/* No hero band here: FounderNote opens the page, and it carries its

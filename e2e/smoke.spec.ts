@@ -512,3 +512,45 @@ test("the case study's build screenshot stays pinned while the steps scroll", as
   });
   expect(clipper, "no ancestor of the sticky screen may clip its overflow").toBeNull();
 });
+
+/*
+  No "Book a free call" button is a dead end.
+
+  With no NEXT_PUBLIC_BOOKING_URL — which is the live configuration, and what
+  the TODO in lib/booking.ts is about — BookCall falls back to an anchor
+  instead of a scheduler. That anchor has to land on a form that exists.
+
+  The V2 pass broke this. It put PanelHeader, which carries the header's
+  primary call to action, on /tools, /about and /work/[slug], none of which
+  render Contact, while the old <Nav> it replaced had always linked to
+  `/#contact` with the leading slash. So the button went from reaching the
+  homepage form to changing the hash and doing nothing. lib/booking.ts even
+  promises "no dead ends either way", which stopped being true.
+
+  Nothing about it looks wrong: the button renders, the styles are right, the
+  click is tracked, and the URL changes. Only the visitor notices, by being
+  stuck. So the invariant is asserted per route rather than left to whoever
+  adds the next page: a call CTA pointing at a bare #contact is only allowed
+  on a page that has one.
+*/
+for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/work/maine-cleaning-co"]) {
+  test(`${path} has no dead-end booking CTA`, async ({ page }) => {
+    await page.goto(path);
+
+    const local = page.locator('a[data-offer="call"][href="#contact"]');
+    const count = await local.count();
+    if (count > 0) {
+      await expect(
+        page.locator("#contact"),
+        `${path} has ${count} call CTA(s) pointing at an in-page #contact, so it must render one ` +
+          '— give PanelHeader bookHref="/?offer=call#contact" on a page without the form',
+      ).toHaveCount(1);
+    }
+
+    /* And every call CTA must point somewhere, in-page or not. */
+    for (const cta of await page.locator('a[data-offer="call"]').all()) {
+      const href = await cta.getAttribute("href");
+      expect(href, `a call CTA on ${path} has no href`).toBeTruthy();
+    }
+  });
+}

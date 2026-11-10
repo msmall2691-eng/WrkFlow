@@ -122,7 +122,7 @@ export default async function CaseStudyPage({ params }: Props) {
         </div>
 
         <div className="relative z-10">
-          <PanelHeader />
+          <PanelHeader bookHref="/?offer=call#contact" />
         </div>
 
         {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
