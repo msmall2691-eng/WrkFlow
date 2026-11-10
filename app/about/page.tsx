@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import Nav from "@/components/Nav";
+import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import FounderNote from "@/components/FounderNote";
 import Approach from "@/components/Approach";
@@ -28,20 +28,32 @@ export const metadata: Metadata = pageMeta({
 
 export default function AboutPage() {
   return (
-    <>
-      <Nav />
-      <main className="pt-16">
-        <FounderNote />
-        <Approach />
-        <Stack />
-      </main>
+    <div className="cp">
+      <div className="relative overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cp-aurora cp-a1" />
+          <span className="cp-aurora cp-a2" />
+        </div>
+
+        <div className="relative z-10">
+          <PanelHeader current="/about" />
+        </div>
+
+        {/* No hero band here: FounderNote opens the page, and it carries its
+            own heading. No pt-16 either, since PanelHeader is in flow. */}
+        <main className="relative z-10">
+          <FounderNote />
+          <Approach />
+          <Stack />
+        </main>
+      </div>
       <Footer />
-        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
-            every page and on a phone sat on top of the cards. The theme
-            toggle is now a command in the ⌘K palette (lib/theme.ts), so
-            nobody who picked Harbor is stranded in it. */}
+      {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+          every page and on a phone sat on top of the cards. The theme
+          toggle is now a command in the ⌘K palette (lib/theme.ts), so
+          nobody who picked Harbor is stranded in it. */}
       <CommandPalette />
-    </>
+    </div>
   );
 }
 

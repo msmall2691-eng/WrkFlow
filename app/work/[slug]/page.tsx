@@ -7,7 +7,7 @@ import { pageMeta } from "@/lib/seo";
 import { caseStudyGraph } from "@/lib/schema";
 import { caseStudies } from "@/lib/content";
 import { measured } from "@/lib/measured";
-import Nav from "@/components/Nav";
+import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import BuildScroller from "@/components/BuildScroller";
@@ -83,10 +83,36 @@ export default async function CaseStudyPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudyGraph(cs)) }}
       />
-      <Nav />
-      <main className="pt-16">
+      {/*
+        V2 pass. The homepage cards land here, so before this a visitor left
+        the near-black panel and arrived somewhere that looked like a
+        different site. That jump is most of what this conversion is for.
+
+        A wrapper, not a rewrite: `.cp` redefines --color-base, --color-ink,
+        --color-muted, --color-line and --section-alt-bg inside its own
+        scope, so this page's sections, BuildScroller and WorkflowDemo take
+        the V2 palette untouched. Typography is deliberately left alone; see
+        the note on the h1 in app/services/page.tsx.
+
+        `current` is not set: /work/[slug] is not one of PanelHeader's five
+        links, so there is no nav item to mark, and passing the slug would
+        match nothing.
+      */}
+      <div className="cp">
+      <div className="relative overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cp-aurora cp-a1" />
+          <span className="cp-aurora cp-a2" />
+        </div>
+
+        <div className="relative z-10">
+          <PanelHeader />
+        </div>
+
+        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        <main className="relative z-10">
         {/* Title + the live link */}
-        <section className="border-b border-line bg-[var(--section-alt-bg)] py-14 md:py-20">
+        <section className="border-b border-[var(--cp-line)] bg-[var(--section-alt-bg)] py-14 md:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <Link
               href="/#work"
@@ -330,9 +356,11 @@ export default async function CaseStudyPage({ params }: Props) {
             </Link>
           </div>
         </section>
-      </main>
+        </main>
+      </div>
       <Footer />
       <CommandPalette />
+      </div>
     </>
   );
 }
