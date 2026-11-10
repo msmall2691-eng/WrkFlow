@@ -99,7 +99,23 @@ export default async function CaseStudyPage({ params }: Props) {
         match nothing.
       */}
       <div className="cp">
-      <div className="relative overflow-hidden">
+      {/*
+        `relative`, and deliberately NOT `overflow-hidden`.
+
+        BuildScroller pins its screenshot with `position: sticky`, and a
+        clipped ancestor becomes the sticky element's scroll container, so the
+        screen scrolls away instead of staying put while the build steps go
+        past. The warning is in BuildScroller's own header and was already in
+        the comment above this function, and the first cut of this conversion
+        put overflow-hidden here anyway: measured, the pinned screen moved
+        from 1607px to 731px under a 1200px scroll rather than holding near
+        96px, with this div named as the nearest clipping ancestor.
+
+        Nothing is lost by dropping it: the aurora lobes are clipped by their
+        own `absolute inset-0 overflow-hidden` layer just below, which is
+        what keeps them from widening the page.
+      */}
+      <div className="relative">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
           <span className="cp-aurora cp-a1" />
           <span className="cp-aurora cp-a2" />

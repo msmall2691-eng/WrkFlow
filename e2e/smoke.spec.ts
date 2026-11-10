@@ -452,3 +452,63 @@ test('the work anchor is unique and lands on the case studies', async ({ page })
   await page.getByRole("link", { name: /see the work/i }).click();
   await expect(section).toBeInViewport();
 });
+
+/*
+  The case-study screenshot stays pinned while the build steps scroll.
+
+  BuildScroller's whole effect is one `position: sticky` screen that holds
+  still while four steps move past it. Sticky dies inside a clipped
+  ancestor, because the clipped box becomes its scroll container, and this
+  repo puts `overflow-hidden` on almost every section wrapper. Both
+  BuildScroller's header and the comment above the case-study page say so in
+  plain words.
+
+  It happened anyway: the V2 pass wrapped the page in
+  `relative overflow-hidden` for the aurora, and the pinned screen started
+  scrolling away. Nothing caught it. The page renders, every colour is
+  right, there is no console error and no layout shift, and a screenshot of
+  the top of the page looks perfect. You only see it by scrolling.
+
+  So the invariant gets a test rather than a third comment: scroll past the
+  sticky element and assert it is still near its `top-24` offset.
+*/
+test("the case study's build screenshot stays pinned while the steps scroll", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/work/maine-cleaning-co");
+
+  const sticky = page.locator(".sticky.top-24").first();
+  await expect(sticky, "the case study should render BuildScroller").toBeAttached();
+
+  await sticky.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(200);
+
+  /*
+    Pinned means it does not move WITH the page, so measure the travel rather
+    than the final offset. An absolute "is it near 96px" check is not enough:
+    depending on where the scroll lands, a broken sticky can still happen to
+    sit near the top, and the first version of this test passed that way with
+    the bug present. Travel is the invariant: scroll 900px, and a pinned
+    element should barely move while an unpinned one rides the full distance.
+  */
+  const before = await sticky.evaluate((el) => el.getBoundingClientRect().top);
+  await page.evaluate(() => window.scrollBy(0, 900));
+  await page.waitForTimeout(300);
+  const after = await sticky.evaluate((el) => el.getBoundingClientRect().top);
+  const travelled = Math.round(before - after);
+  expect(
+    travelled,
+    `the pinned screen moved ${travelled}px against a 900px scroll; pinned should be near 0 ` +
+      "— check for an overflow-hidden ancestor",
+  ).toBeLessThan(200);
+
+  /* And name the cause directly, so a failure says what to fix. */
+  const clipper = await sticky.evaluate((el) => {
+    let n = el.parentElement;
+    while (n && n !== document.documentElement) {
+      if (getComputedStyle(n).overflow !== "visible") return n.className;
+      n = n.parentElement;
+    }
+    return null;
+  });
+  expect(clipper, "no ancestor of the sticky screen may clip its overflow").toBeNull();
+});
