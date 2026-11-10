@@ -452,3 +452,105 @@ test('the work anchor is unique and lands on the case studies', async ({ page })
   await page.getByRole("link", { name: /see the work/i }).click();
   await expect(section).toBeInViewport();
 });
+
+/*
+  The case-study screenshot stays pinned while the build steps scroll.
+
+  BuildScroller's whole effect is one `position: sticky` screen that holds
+  still while four steps move past it. Sticky dies inside a clipped
+  ancestor, because the clipped box becomes its scroll container, and this
+  repo puts `overflow-hidden` on almost every section wrapper. Both
+  BuildScroller's header and the comment above the case-study page say so in
+  plain words.
+
+  It happened anyway: the V2 pass wrapped the page in
+  `relative overflow-hidden` for the aurora, and the pinned screen started
+  scrolling away. Nothing caught it. The page renders, every colour is
+  right, there is no console error and no layout shift, and a screenshot of
+  the top of the page looks perfect. You only see it by scrolling.
+
+  So the invariant gets a test rather than a third comment: scroll past the
+  sticky element and assert it is still near its `top-24` offset.
+*/
+test("the case study's build screenshot stays pinned while the steps scroll", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/work/maine-cleaning-co");
+
+  const sticky = page.locator(".sticky.top-24").first();
+  await expect(sticky, "the case study should render BuildScroller").toBeAttached();
+
+  await sticky.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(200);
+
+  /*
+    Pinned means it does not move WITH the page, so measure the travel rather
+    than the final offset. An absolute "is it near 96px" check is not enough:
+    depending on where the scroll lands, a broken sticky can still happen to
+    sit near the top, and the first version of this test passed that way with
+    the bug present. Travel is the invariant: scroll 900px, and a pinned
+    element should barely move while an unpinned one rides the full distance.
+  */
+  const before = await sticky.evaluate((el) => el.getBoundingClientRect().top);
+  await page.evaluate(() => window.scrollBy(0, 900));
+  await page.waitForTimeout(300);
+  const after = await sticky.evaluate((el) => el.getBoundingClientRect().top);
+  const travelled = Math.round(before - after);
+  expect(
+    travelled,
+    `the pinned screen moved ${travelled}px against a 900px scroll; pinned should be near 0 ` +
+      "— check for an overflow-hidden ancestor",
+  ).toBeLessThan(200);
+
+  /* And name the cause directly, so a failure says what to fix. */
+  const clipper = await sticky.evaluate((el) => {
+    let n = el.parentElement;
+    while (n && n !== document.documentElement) {
+      if (getComputedStyle(n).overflow !== "visible") return n.className;
+      n = n.parentElement;
+    }
+    return null;
+  });
+  expect(clipper, "no ancestor of the sticky screen may clip its overflow").toBeNull();
+});
+
+/*
+  No "Book a free call" button is a dead end.
+
+  With no NEXT_PUBLIC_BOOKING_URL — which is the live configuration, and what
+  the TODO in lib/booking.ts is about — BookCall falls back to an anchor
+  instead of a scheduler. That anchor has to land on a form that exists.
+
+  The V2 pass broke this. It put PanelHeader, which carries the header's
+  primary call to action, on /tools, /about and /work/[slug], none of which
+  render Contact, while the old <Nav> it replaced had always linked to
+  `/#contact` with the leading slash. So the button went from reaching the
+  homepage form to changing the hash and doing nothing. lib/booking.ts even
+  promises "no dead ends either way", which stopped being true.
+
+  Nothing about it looks wrong: the button renders, the styles are right, the
+  click is tracked, and the URL changes. Only the visitor notices, by being
+  stuck. So the invariant is asserted per route rather than left to whoever
+  adds the next page: a call CTA pointing at a bare #contact is only allowed
+  on a page that has one.
+*/
+for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/work/maine-cleaning-co"]) {
+  test(`${path} has no dead-end booking CTA`, async ({ page }) => {
+    await page.goto(path);
+
+    const local = page.locator('a[data-offer="call"][href="#contact"]');
+    const count = await local.count();
+    if (count > 0) {
+      await expect(
+        page.locator("#contact"),
+        `${path} has ${count} call CTA(s) pointing at an in-page #contact, so it must render one ` +
+          '— give PanelHeader bookHref="/?offer=call#contact" on a page without the form',
+      ).toHaveCount(1);
+    }
+
+    /* And every call CTA must point somewhere, in-page or not. */
+    for (const cta of await page.locator('a[data-offer="call"]').all()) {
+      const href = await cta.getAttribute("href");
+      expect(href, `a call CTA on ${path} has no href`).toBeTruthy();
+    }
+  });
+}

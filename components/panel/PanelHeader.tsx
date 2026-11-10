@@ -15,7 +15,19 @@ const NAV = [
   { href: "/about", label: "About" },
 ];
 
-export default function PanelHeader({ current }: { current?: string }) {
+export default function PanelHeader({
+  current,
+  bookHref,
+}: {
+  current?: string;
+  /*
+    Where the header's "Book a free call" goes when no scheduler is set.
+    Pages that render Contact leave it alone and keep the in-page scroll;
+    /tools, /about and /work/[slug] have no form, so they pass
+    "/?offer=call#contact" and the click reaches the homepage one.
+  */
+  bookHref?: string;
+}) {
   return (
     <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
       <Link href="/" className="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.01em] text-[color:var(--cp-ink)] no-underline">
@@ -51,6 +63,7 @@ export default function PanelHeader({ current }: { current?: string }) {
         </PaletteButton>
         <BookCall
           where="nav"
+          fallbackHref={bookHref}
           className="rounded-[10px] bg-[color:var(--cp-ink)] px-4 py-2.5 text-[14px] font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5"
         >
           Book a free call

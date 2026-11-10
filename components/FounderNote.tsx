@@ -3,6 +3,7 @@ import Link from "next/link";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
 import {
+  provingGround,
   founderNote,
   founderBio,
   founderPhilosophy,
@@ -23,11 +24,27 @@ import {
   Copy lives in `lib/content.ts` so voice edits are one file, not one
   component.
 
-  Edit STATS + SOCIALS below to change the top row; edit lib/content.ts to
-  change any of the arc's copy.
+  Edit SOCIALS below to change the icon row; edit lib/content.ts for the
+  arc's copy and for `provingGround`, which now feeds the stats line.
 */
 
-const STATS = ["8 yrs running a business", "$1M+ collected since 2023", "4,900+ service visits", "63% of clients rebooked"];
+/*
+  Derived from `provingGround`, not hand-copied.
+
+  These four were a literal array here, and they had already drifted from
+  lib/content.ts: "running a business" against "running the business", and
+  "4,900+ service visits" with the "since 2023" dropped. That last one
+  matters. content.ts states plainly that the figures were verified against
+  Jobber for Mar 2023 to Oct 2026 and that "pre-2023 years are not in any
+  system, so nothing here counts them", so a bare "4,900+ service visits"
+  beside "8 yrs running the business" reads as eight years of visits and
+  claims more than was checked.
+
+  The caption below drifted the same way, keeping an em dash that the source
+  no longer has. One array, one source, and the next edit to content.ts
+  reaches this page too. Same reasoning as the comment in ProofStrip.
+*/
+const STATS = provingGround.stats.map((s) => `${s.value} ${s.label}`);
 
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -110,9 +127,7 @@ export default function FounderNote() {
                   strength, so any alpha modifier on it fails — these were
                   3.53:1 on cream. Same fix already applied in Footer and
                   Contact; /about was never in the audit's page list. */}
-              <p className="text-sm text-muted">
-                Built from real business — The Maine Cleaning Co.
-              </p>
+              <p className="text-sm text-muted">{provingGround.label}</p>
 
               {/* Operating stats — the proof, not a CV — plain dot-separated
                   footnote so the wordmark stays the visual lead */}
