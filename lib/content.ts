@@ -423,7 +423,7 @@ export const work: WorkItem[] = [
     tag: "Product · designed & built by M Studio",
     title: "linx",
     caseStudy: "linx",
-    blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+    blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and you pay when the job is done.",
     stack: ["Python", "Stripe Connect", "Railway"],
     // Replaced the Autopilot demo (Oct 2026), whose page carried invented
     // stats, testimonials and contact details. linx is a real, launched
@@ -642,7 +642,7 @@ export const caseStudies: CaseStudy[] = [
     // counted in the BrightBase repo. Business financials stay off the site.
     results: [
       { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
-      { value: "4,000+", label: "automated tests run on every change" },
+      { value: "4,000+", label: "automated checks run before any change goes live" },
       { value: "Daily", label: "in use by the office and field crews since 2026" },
     ],
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
@@ -652,7 +652,7 @@ export const caseStudies: CaseStudy[] = [
       { phase: "Discovery", body: "Ran the cleaning company day to day, so the requirements came from doing the work rather than from a brief." },
       { phase: "Requirements", body: "Mapped every step from request to paid, documented where each tool fell short, and wrote the requirements and acceptance criteria before building." },
       { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
-      { phase: "Build", body: "React front end on a Node API for the public site, a Python · FastAPI back office on Postgres, Stripe for payment and Twilio for messaging." },
+      { phase: "Build", body: "Built the public site and the back office as one system, so a quote someone requests on the website becomes a scheduled, invoiced job without anybody retyping it." },
       { phase: "Phased rollout", body: "Shipped in small, tested steps while the old tools kept running. The crew app went out in five phases, each in use before the next began." },
       { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2026." },
     ],
@@ -662,7 +662,7 @@ export const caseStudies: CaseStudy[] = [
     title: "linx",
     tag: "Product · designed & built by M Studio",
     outcome:
-      "Hosts post a turnover, vetted local cleaners bid, and payment releases through Stripe when the job is done.",
+      "Hosts post a turnover, vetted local cleaners bid, and you pay when the job is done.",
     url: "https://linx-production-6edf.up.railway.app",
     hero: {
       src: "/shots/linx.png",
@@ -677,7 +677,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         label: "Payment through Stripe",
-        body: "Payment releases through Stripe Connect once the job is done.",
+        body: "Nobody pays up front. The money is held until the cleaner marks the job complete, which is the part both sides need to trust.",
       },
     ],
     flow: [
@@ -694,7 +694,7 @@ export const caseStudies: CaseStudy[] = [
     process: [
       { phase: "Discovery", body: "The turnover problem came out of scheduling cleaners for short-term rentals week after week." },
       { phase: "Design", body: "Two sides of a marketplace: hosts posting work, cleaners bidding on it, each needing a different view of the same job." },
-      { phase: "Build", body: "Python service on Railway, with Stripe Connect holding payment until the job is done." },
+      { phase: "Build", body: "Built both sides and the payment path between them, so a host can hand a key to somebody they have not met and still know the money is safe." },
     ],
   },
   {
@@ -742,6 +742,14 @@ export const caseStudies: CaseStudy[] = [
     • "embed"     — a hosted widget you drop into an existing site (small monthly).
     • "open"      — free / open-source starter, kept as a lead-in.
   Pricing here is indicative; CTAs route to contact rather than live checkout.
+
+  ORDER MATTERS. The array is the funnel, cheapest and most plug-and-play
+  first: free tools, then the $99 welcome book, then the hosted embeds, then
+  the builds you own outright. /marketplace renders it in this order and
+  pulls the welcome book out into its own band above the grid, so a visitor
+  meets the thing they can buy today before the thing that needs a scope
+  call. Add a new item at the rung its price and setup effort put it on,
+  not at the end.
 */
 export type MarketItemModel = "template" | "embed" | "open";
 
@@ -795,7 +803,57 @@ export const marketItems: MarketItem[] = [
     ],
     price: "$99 intro · reg. $149",
     liveUrl: "https://keystonestay.maineclean.co",
-    featured: true,
+    /*
+      No `featured` flag: /marketplace now gives the welcome book its own
+      band above the grid, so the highlighted-card treatment would be a
+      second, competing emphasis on the same product.
+    */
+  },
+  {
+    id: "calc-kit",
+    name: "M Linx Tools",
+    model: "open",
+    category: "Tool",
+    tagline: "The free calculators on this site. Use them, or take the source.",
+    includes: [
+      "Quote, rate & signature tools",
+      "Free to use, right now",
+      "Source available on request, calculators only",
+      "A friendly way to say hello",
+    ],
+    price: "Free",
+    // A real capture of this site's own /tools page, calculator and all.
+    shot: "/shots/tools.png",
+  },
+  {
+    id: "quote-widget",
+    name: "M Linx Quote",
+    model: "embed",
+    category: "Tool",
+    tagline: "Drop the live quoting tool from this site straight into your own.",
+    includes: [
+      "Embeddable estimate calculator",
+      "Configured to your pricing + branding",
+      "Leads emailed straight to you on submit",
+      "One line of code to install. I set it up, you go live",
+    ],
+    price: "$150 setup + $15/mo",
+    shot: "/shots/instant-estimate.png",
+  },
+  {
+    id: "automation-pack",
+    name: "M Linx Flows",
+    model: "embed",
+    category: "Automation",
+    illustration: "flow",
+    tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
+    includes: [
+      "Confirmation + reminder flows",
+      "Review-request follow-ups",
+      "Lead-to-CRM sync",
+      "Tuned to your tools",
+    ],
+    price: "from $150 setup + $19/mo",
   },
   {
     id: "service-site",
@@ -814,6 +872,26 @@ export const marketItems: MarketItem[] = [
     featured: true,
   },
   {
+    id: "dashboard-starter",
+    name: "M Linx Dashboard",
+    model: "template",
+    category: "Dashboard",
+    tagline: "The command-center dashboard, set up around your numbers.",
+    includes: [
+      "Live KPIs, jobs & revenue views",
+      "Connected to your data sources",
+      "Hosted for you, or run it on your own server",
+      "Room to grow into",
+    ],
+    price: "from $1,000 one-time",
+    /*
+      A real capture of BrightBase's owner dashboard running on demo data (a
+      fictional company with made-up figures), so no customer or business
+      numbers are exposed. Same screen the office uses daily.
+    */
+    shot: "/shots/brightbase/owner-dashboard.webp",
+  },
+  {
     id: "booking-app",
     name: "M Linx Booking",
     model: "template",
@@ -830,72 +908,6 @@ export const marketItems: MarketItem[] = [
     // and the confirm step this card sells. Same capture the Work section
     // uses for "Turnover scheduling"; the address and pay are redacted in it.
     shot: "/shots/brightbase-crew-schedule.png",
-  },
-  {
-    id: "quote-widget",
-    name: "M Linx Quote",
-    model: "embed",
-    category: "Tool",
-    tagline: "Drop the live quoting tool from this site straight into your own.",
-    includes: [
-      "Embeddable estimate calculator",
-      "Configured to your pricing + branding",
-      "Leads emailed straight to you on submit",
-      "One line of code to install. I set it up, you go live",
-    ],
-    price: "$150 setup + $15/mo",
-    shot: "/shots/instant-estimate.png",
-  },
-  {
-    id: "dashboard-starter",
-    name: "M Linx Dashboard",
-    model: "template",
-    category: "Dashboard",
-    tagline: "The command-center dashboard, set up around your numbers.",
-    includes: [
-      "Live KPIs, jobs & revenue views",
-      "Connected to your data sources",
-      "Hosted or self-hosted, your call",
-      "Built to extend later",
-    ],
-    price: "from $1,000 one-time",
-    /*
-      A real capture of BrightBase's owner dashboard running on demo data (a
-      fictional company with made-up figures), so no customer or business
-      numbers are exposed. Same screen the office uses daily.
-    */
-    shot: "/shots/brightbase/owner-dashboard.webp",
-  },
-  {
-    id: "automation-pack",
-    name: "M Linx Flows",
-    model: "embed",
-    category: "Automation",
-    illustration: "flow",
-    tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
-    includes: [
-      "Confirmation + reminder flows",
-      "Review-request follow-ups",
-      "Lead-to-CRM sync",
-      "Tuned to your tools",
-    ],
-    price: "from $150 setup + $19/mo",
-  },
-  {
-    id: "calc-kit",
-    name: "M Linx Tools",
-    model: "open",
-    category: "Tool",
-    tagline: "The free calculators on this site. Use them, or take the source.",
-    includes: [
-      "Quote, rate & signature tools",
-      "Free to use, right now",
-      "Open-source starter on request: calculators only. Hosted tools (Quote, Flows) stay set up by me",
-      "A friendly way to say hello",
-    ],
-    price: "Free",
-    // A real capture of this site's own /tools page, calculator and all.
-    shot: "/shots/tools.png",
   },
 ];
 

@@ -1,138 +1,291 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
-import Nav from "@/components/Nav";
+import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
+import CommandPalette from "@/components/CommandPalette";
 import MarketCatalog from "@/components/MarketCatalog";
 import WorkflowMap from "@/components/WorkflowMap";
-import HeroWordmark from "@/components/HeroWordmark";
 import LinxMark from "@/components/LinxMark";
-import { marketModelLabels } from "@/lib/content";
+import { marketItems, welcomeBook } from "@/lib/content";
+
+/*
+  M Linx — the premade tools, sites and automations, on their own page.
+
+  ───────────────────────────────────────────────────────────────────────────
+  Restructured around the funnel (Nov 2026), on Meg's call.
+
+  Before this the page was a flat grid of seven cards in the order they were
+  written, led by four abstract cards explaining the three commercial models.
+  So the first thing a visitor read was a taxonomy ("Buy & own", "Embed /
+  hosted", "Free / open-source") rather than a thing they could have today,
+  and the $99 product that needs no scope call sat in the same visual slot as
+  the $1,200 one that does.
+
+  It now reads as a ladder, which is also the order `marketItems` is stored
+  in (see the note above it):
+
+    1. The welcome book, in its own band. $99, one link, nothing to learn.
+       This is the plug-and-play rung and the only product here somebody can
+       decide on without talking to anybody, so it goes first and alone.
+    2. The grid: free tools, then the hosted embeds, then the builds you own.
+    3. BrightBase, as the destination. Deliberately with NO price and no
+       buy path: Meg's call is that it stays a demo, so this band links to
+       /brightbase and its "book a demo" CTA and claims nothing else. Do not
+       add a price here without her number; see the `results` gate in
+       lib/content.ts for why invented ones are the thing to avoid.
+    4. Custom work, last, for the people none of the rungs fit.
+
+  V2 pass, same wrapper as /services and /tools: `.cp` redefines the old
+  token names in its own scope, so MarketCatalog and WorkflowMap take the V2
+  palette without being touched.
+
+  Two things the conversion dropped. The four ModelCards that explained the
+  commercial models are gone: the models are legible from the cards' own
+  badges and prices, and leading with a taxonomy is what this restructure is
+  getting away from. The parked "M LINX" HeroWordmark is gone too, because
+  no other V2 hero has one, and the wordmark's own `position` note records
+  that it had already been shoved into the right-hand gutter to stop it
+  running through the copy. The M Linx mark and name still head the section.
+
+  One thing this page does NOT fix: PanelHeader has no M Linx link. The old
+  <Nav> did, so converting the rest of the site to V2 quietly cut the
+  marketplace's front door. PanelHeader's own comment records "Five links,
+  ⌘K, one call to action ... (Meg: keep it calm)", so a sixth link is her
+  call rather than something to slip in here. Today the page is reached from
+  the footer, from Services, from the ⌘K palette and from the nudges in
+  Playground on /tools. If the marketplace is meant to be the way in, that
+  is the next thing to settle.
+*/
 
 export const metadata: Metadata = pageMeta({
   // The root layout's title template appends "· M Studio" — no brand here.
   title: "M Linx. Premade Tools, Sites and Plugins",
   description:
-    "M Linx is M Studio's line of premade websites, web apps, tools and automations. Buy and own them outright, embed a hosted widget, or start free. Set up for you, by the studio that built them.",
+    "M Linx is M Studio's line of premade websites, web apps, tools and automations. Start free, buy one outright, or add a hosted tool to the site you already have. Set up for you.",
   path: "/marketplace",
 });
 
 export default function MarketplacePage() {
+  const book = marketItems.find((m) => m.id === "welcome-book");
+
   return (
-    <>
-      <Nav />
-      <main className="pt-16">
-        {/* Header */}
-        <section className="relative overflow-hidden border-b border-line py-16 md:py-24">
-          <div
-            aria-hidden="true"
-            className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
-          />
-          {/*
-            Parked top-right. At full-section size the word ran straight
-            through the headline and intro paragraph (see HeroWordmark's
-            `position` note); this box is the empty space to the right of
-            the text column, so the identity survives and the copy is
-            readable. Hidden below `lg`, where there is no spare column.
-          */}
-          <HeroWordmark
-            text="M LINX"
-            size="text-[9vw]"
-            position="right-[-4%] top-0 hidden h-1/2 w-[46%] lg:block"
-          />
-          <div className="relative z-10 mx-auto max-w-6xl px-6">
-                          <div className="mb-5 flex items-center gap-2.5 text-ink">
+    <div className="cp">
+      <div className="relative overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cp-aurora cp-a1" />
+          <span className="cp-aurora cp-a2" />
+        </div>
+
+        <div className="relative z-10">
+          <PanelHeader bookHref="/?offer=call#contact" />
+        </div>
+
+        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        <main className="relative z-10">
+          {/* Header */}
+          <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
+            <div className="mx-auto max-w-6xl px-6">
+              <div className="mb-5 flex items-center gap-2.5 text-[color:var(--cp-ink)]">
                 <LinxMark className="h-4 w-auto" />
                 <span className="font-display text-sm font-semibold">M Linx</span>
               </div>
-                          <h1 className="display-serif max-w-3xl text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
-                Premade tools and sites you can put to work today.
+              {/*
+                `display`, not `display-serif`. /services keeps Fraunces
+                because every heading under it comes from Services, Pricing
+                and Contact and is set in Fraunces too. Nothing on this page
+                is: MarketCatalog's card titles are the only serif here, and
+                they are 18px. So this h1 follows the panel's own face, the
+                way /tools does.
+              */}
+              <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
+                Ready to use. <span className="cp-grad">Nothing to learn.</span>
               </h1>
-                          <p className="mt-6 max-w-2xl text-[1rem] leading-relaxed text-muted">
-                Ready-to-run sites, tools and automations.{" "}
-                <span className="text-ink">Own one outright</span>,{" "}
-                <span className="text-ink">rent a hosted tool</span>, or{" "}
-                <span className="text-ink">start free</span>. Set up around your
-                business either way.
+              <p className="mt-5 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                Start with something free, buy one thing outright, or add a
+                hosted tool to the site you already have. I set it up either
+                way, so there is nothing for you to wire together.
               </p>
+            </div>
+          </section>
 
-            {/* How it works — four flexible ways in */}
-                          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <ModelCard
-                  tag={marketModelLabels.template}
-                  body="Set up for you, handed over. You own the code, no monthly."
-                />
-                <ModelCard
-                  tag={marketModelLabels.embed}
-                  body="Drops into your site in one line. A few dollars a month."
-                />
-                <ModelCard
-                  tag={marketModelLabels.open}
-                  body="Free to use right now. Try the work, no pressure."
-                />
-                <ModelCard
-                  tag="Work together"
-                  body="Tailored or hybrid. I'll build it custom."
-                />
+          {/*
+            The entry point, on its own.
+
+            A live iframe of the real thing, not a screenshot: this is Meg's
+            own Maine rental, it is the demo the /welcome-book page already
+            embeds, and a guest-facing page is the one product here whose
+            whole argument is "open it on your phone and see".
+          */}
+          {book && (
+            <section className="border-b border-[var(--cp-line)] bg-[var(--color-base)] py-14 md:py-20">
+              <div className="mx-auto max-w-6xl px-6">
+                <p className="text-xs uppercase tracking-wider text-[var(--cp-faint)]">
+                  Start here
+                </p>
+                <div className="mt-6 grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
+                  <div>
+                    <h2 className="text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-3xl">
+                      {book.name}
+                    </h2>
+                    <p className="mt-4 text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                      {book.tagline}
+                    </p>
+                    <ul className="mt-6 space-y-2.5">
+                      {book.includes.map((inc) => (
+                        <li
+                          key={inc}
+                          className="flex items-start gap-2.5 text-sm leading-relaxed text-[color:var(--cp-muted)]"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="mt-[0.45rem] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--cp-teal)]"
+                          />
+                          <span>{inc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-8 flex flex-wrap items-center gap-4">
+                      <Link
+                        href="/welcome-book"
+                        className="inline-flex items-center gap-2 rounded-full bg-[color:var(--cp-ink)] px-6 py-3 text-sm font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                      >
+                        See it and get one
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                      <span className="text-sm font-medium text-[color:var(--cp-ink)]">
+                        {book.price}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/*
+                    aspect-[16/10] and a border, matching the case-study hero
+                    frames on /work/[slug]. The iframe is inert: pointer
+                    events off, and the whole frame is not a link, so the
+                    buttons above stay the only targets.
+                  */}
+                  <div className="overflow-hidden rounded-2xl border border-[var(--cp-line)] bg-[var(--color-base)]">
+                    <div className="relative aspect-[16/10]">
+                      <iframe
+                        src={welcomeBook.demoUrl}
+                        title={`Live preview of ${welcomeBook.demoName}`}
+                        loading="lazy"
+                        className="absolute left-0 top-0"
+                        style={{
+                          border: 0,
+                          width: "200%",
+                          height: "200%",
+                          transform: "scale(0.5)",
+                          transformOrigin: "top left",
+                          pointerEvents: "none",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
               </div>
-          </div>
-        </section>
+            </section>
+          )}
 
-        {/* Workflow / integration mapper — moved here from the homepage: "see
-            what could connect to what" is the M Linx pitch in miniature. */}
-        <WorkflowMap />
-
-        {/* Catalog */}
-        <section className="relative overflow-hidden py-14 md:py-20">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
-          />
-          <div className="relative mx-auto max-w-6xl px-6">
-            <MarketCatalog />
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="relative overflow-hidden border-t border-line py-16">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/[0.05] blur-[130px]"
-          />
-          <div className="relative mx-auto max-w-3xl px-6 text-center">
-                          <h2 className="display text-xl text-ink sm:text-2xl">
-                Don&apos;t see your exact fit?
-              </h2>
-                          <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-relaxed text-muted">
-                Most of these started as a custom build. Share what you need, and
-                you&apos;ll get pointed to the closest starter, or the right thing
-                built from scratch.
+          {/* Catalog — the welcome book is the band above, so it is excluded. */}
+          <section className="border-b border-[var(--cp-line)] bg-[var(--color-base)] py-14 md:py-20">
+            <div className="mx-auto max-w-6xl px-6">
+              <p className="text-xs uppercase tracking-wider text-[var(--cp-faint)]">
+                Everything else
               </p>
-                          <Link
-                href="/#contact"
-                className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
-              >
-                Start a conversation →
-              </Link>
-          </div>
-        </section>
-      </main>
-      <Footer />
-        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
-            every page and on a phone sat on top of the cards. The theme
-            toggle is now a command in the ⌘K palette (lib/theme.ts), so
-            nobody who picked Harbor is stranded in it. */}
-    </>
-  );
-}
+              <h2 className="mt-3 text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-3xl">
+                Free first, then the rest.
+              </h2>
+              <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                Cheapest and quickest at the top. Reserve anything and
+                you&apos;ll get a fixed quote back, with no payment up front.
+              </p>
+              <div className="mt-10">
+                <MarketCatalog exclude={["welcome-book"]} />
+              </div>
+            </div>
+          </section>
 
-function ModelCard({ tag, body }: { tag: string; body: string }) {
-  return (
-    <div className="rounded-xl border border-line bg-surface p-5">
-      <p className="text-xs font-medium text-signal">
-        {tag}
-      </p>
-      <p className="mt-3 text-sm leading-relaxed text-muted">{body}</p>
+          {/*
+            BrightBase — the destination.
+
+            NO price and no buy button, on Meg's call: it stays a demo.
+            Everything stated here is already on /brightbase or in
+            lib/content.ts; nothing about availability or cost is added.
+          */}
+          <section className="border-b border-[var(--cp-line)] bg-[var(--color-base)] py-14 md:py-20">
+            <div className="mx-auto max-w-6xl px-6">
+              <p className="text-xs uppercase tracking-wider text-[var(--cp-faint)]">
+                When one tool is not enough
+              </p>
+              <h2 className="mt-3 max-w-2xl text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-3xl">
+                The whole thing, <span className="cp-grad">running a real company</span>.
+              </h2>
+              <p className="mt-4 max-w-[62ch] text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                BrightBase is the operations system I built to run my own
+                cleaning company: leads, quotes, scheduling, a crew phone app,
+                a customer portal, invoicing and payouts in one place. It is in
+                daily use. If the tools above are pieces of a system, this is
+                what the finished one looks like.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/brightbase"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.2] px-6 py-3 text-sm font-semibold text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:bg-white/[0.05]"
+                >
+                  Take a look at BrightBase
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/*
+            The integration mapper, moved below the catalog.
+
+            It used to sit directly under the header, so "see what could
+            connect to what" was the second thing on the page. That is the
+            systems argument, and it only means anything once you have seen
+            the pieces, which is why it now follows them and the BrightBase
+            band rather than leading.
+          */}
+          <WorkflowMap />
+
+          {/* Custom work, last. */}
+          <section className="border-t border-[var(--cp-line)] bg-[var(--section-alt-bg)] py-16 md:py-24">
+            <div className="mx-auto max-w-6xl px-6">
+              <h2 className="text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-3xl">
+                None of it quite fits?
+              </h2>
+              <p className="mt-4 max-w-[62ch] text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                Most of these started as a custom build for somebody. Tell me
+                what you are trying to solve and I&apos;ll point you at the
+                closest one, or quote the thing that actually fits. You
+                don&apos;t need a technical plan to get started.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/?offer=custom#contact"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--cp-ink)] px-7 py-3.5 text-sm font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                >
+                  Start a conversation
+                  <span aria-hidden="true">→</span>
+                </Link>
+                <Link
+                  href="/services"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.2] px-7 py-3.5 text-sm font-semibold text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:bg-white/[0.05]"
+                >
+                  Scope and pricing
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+      <Footer />
+      <CommandPalette />
     </div>
   );
 }

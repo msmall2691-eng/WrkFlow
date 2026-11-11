@@ -294,22 +294,22 @@ export default async function CaseStudyPage({ params }: Props) {
           </section>
         )}
 
-        {/* Stack */}
-        <section className="border-t border-line py-16 md:py-20">
-          <div className="mx-auto max-w-6xl px-6">
-            <h2 className="display text-2xl text-ink sm:text-3xl">Built with</h2>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {cs.stack.map((t) => (
-                <span
-                  key={t}
-                  className="rounded-full border border-line bg-surface px-3.5 py-1.5 text-sm text-muted"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/*
+          Built with.
+
+          This used to sit here, between "How it works" and "Result", as a
+          full section with an h2 the same size as "What I built" — so the
+          last thing a visitor read before the outcome was a row of framework
+          names. For somebody deciding whether to buy this, that is the least
+          useful block on the page, and it was weighted like one of the most.
+
+          It is not deleted, because the stack is a real promise about what a
+          client inherits and its absence reads as evasive (see the note above
+          `stackColumns` in lib/content.ts). It moved below the result and the
+          owner's words, and it is a labelled line rather than a section, so
+          the people who come looking for it still find it and nobody else
+          has to read past it. The full breakdown is on /about.
+        */}
 
         {/* Result — REAL numbers only, so this is empty today and renders
             nothing. Do not fill it in to make the page look finished. */}
@@ -350,6 +350,24 @@ export default async function CaseStudyPage({ params }: Props) {
             </div>
           </section>
         )}
+
+        <section className="border-t border-line py-10 md:py-12">
+          <div className="mx-auto max-w-6xl px-6">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-faint">
+              Built with
+            </h2>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {cs.stack.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full border border-line bg-surface px-3 py-1 text-xs text-muted"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* Next. OfferLink can't be used off the homepage (it hardcodes
             href="#contact"), so this uses the documented deep link, which
