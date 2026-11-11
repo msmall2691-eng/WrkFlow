@@ -17,10 +17,10 @@ import WorkflowDiagram, { type WorkflowStage } from "./WorkflowDiagram";
 export type { WorkflowStage };
 
 const STAGES: WorkflowStage[] = [
-  { icon: "📝", label: "Form" },
-  { icon: "🗂️", label: "CRM" },
-  { icon: "📧", label: "Email" },
-  { icon: "🔔", label: "Notify" },
+  { label: "Form" },
+  { label: "CRM" },
+  { label: "Email" },
+  { label: "Notify" },
 ];
 
 /* `stages` lets a case study pass its own chain for "How it works" — the

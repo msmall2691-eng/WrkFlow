@@ -131,7 +131,7 @@ export const profiles: readonly string[] = [];
 
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =
-  "Made with the free tools at mlinx.studio — get one tuned to your business.";
+  "Made with the free tools at mlinx.studio. Get one tuned to your business.";
 
 
 export type ServiceExample = {
@@ -278,7 +278,7 @@ export const approachSteps: ApproachStep[] = [
   {
     index: "01",
     title: "Discovery",
-    body: "It starts with how you actually run—where time goes, where data lives, what keeps breaking.",
+    body: "It starts with how you actually run: where time goes, where data lives, what keeps breaking.",
   },
   {
     index: "02",
@@ -391,7 +391,7 @@ export const work: WorkItem[] = [
     tier: "site",
     tag: "Guest experience · our own rental",
     title: "The Keystone House",
-    blurb: "A digital welcome book for our Maine short-term rental — check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
+    blurb: "A digital welcome book for our Maine short-term rental: check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
     stack: ["Next.js", "Vercel"],
     url: "https://keystonestay.maineclean.co",
     live: true,
@@ -518,7 +518,7 @@ export type CaseStudyResult = {
 };
 
 /** A node in the "How it works" chain. Same shape WorkflowDemo takes. */
-export type CaseStudyFlowNode = { icon: string; label: string };
+export type CaseStudyFlowNode = { label: string };
 
 /**
  * A measured Lighthouse run against the live site. REAL RUNS ONLY — generated
@@ -632,10 +632,10 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     flow: [
-      { icon: "🌐", label: "Site" },
-      { icon: "🗂️", label: "Back office" },
-      { icon: "📅", label: "Schedule" },
-      { icon: "💬", label: "Customer" },
+      { label: "Site" },
+      { label: "Back office" },
+      { label: "Schedule" },
+      { label: "Customer" },
     ],
     stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
     // Confirmed Oct 2026: 12 paid tools covered (bank records), 4,028 tests
@@ -681,10 +681,10 @@ export const caseStudies: CaseStudy[] = [
       },
     ],
     flow: [
-      { icon: "🏠", label: "Host posts" },
-      { icon: "🧹", label: "Cleaners bid" },
-      { icon: "✅", label: "Job done" },
-      { icon: "💳", label: "Stripe releases" },
+      { label: "Host posts" },
+      { label: "Cleaners bid" },
+      { label: "Job done" },
+      { label: "Stripe releases" },
     ],
     stack: ["Python", "Stripe Connect", "Railway"],
     results: [], // TODO(Meg)
@@ -762,7 +762,19 @@ export type MarketItem = {
   tagline: string;
   /** 3–4 bullets of what's included. */
   includes: string[];
-  /** Indicative price label, e.g. "$1,200 one-time" or "$19/mo". */
+  /**
+   * What the card shows where a price goes.
+   *
+   * Nov 2026: the three build tiers read "Quoted to your scope" rather than
+   * "from $299", "from $1,000" and "from $1,200". Meg is about to start
+   * posting to find website work and did not want a visitor deciding she is
+   * out of reach before asking. A "from" price is the worst of both: it
+   * anchors high AND implies it will grow.
+   *
+   * The cheap end deliberately KEEPS its numbers, because those do the
+   * opposite job: Free on the tools and $99 on the welcome book are the
+   * proof that she is affordable. Do not strip those for consistency.
+   */
   price: string;
   /** Preview screenshot in /shots. Optional — a gradient renders without one. */
   shot?: string;
@@ -867,7 +879,7 @@ export const marketItems: MarketItem[] = [
       "Hosting, domain & analytics set up",
       "You own the code outright",
     ],
-    price: "from $299 one-time",
+    price: "Quoted to your scope",
     shot: "/shots/maineclean.png",
     featured: true,
   },
@@ -883,7 +895,7 @@ export const marketItems: MarketItem[] = [
       "Hosted for you, or run it on your own server",
       "Room to grow into",
     ],
-    price: "from $1,000 one-time",
+    price: "Quoted to your scope",
     /*
       A real capture of BrightBase's owner dashboard running on demo data (a
       fictional company with made-up figures), so no customer or business
@@ -903,7 +915,7 @@ export const marketItems: MarketItem[] = [
       "Owner calendar + admin view",
       "Connects to your existing tools",
     ],
-    price: "from $1,200 one-time",
+    price: "Quoted to your scope",
     // The turnover scheduler running in daily production: the owner calendar
     // and the confirm step this card sells. Same capture the Work section
     // uses for "Turnover scheduling"; the address and pay are redacted in it.
@@ -926,22 +938,22 @@ export const welcomeBook = {
   hero: {
     kicker: "Digital Welcome Book",
     headline: "The welcome binder your guests actually open.",
-    sub: "One link — check-in steps, WiFi, the house manual, and your own local picks — on the phone that's already in their hand. Built for you, yours to keep.",
+    sub: "One link with the check-in steps, the WiFi, the house manual and your own local picks, on the phone that's already in their hand. Built for you, yours to keep.",
   },
   // What the host gets — written around the questions hosts answer every week.
   includes: [
-    "Check-in steps, door code & parking — the questions you answer every single week",
-    "WiFi, thermostat, grill, laundry — your whole house manual in one tap",
-    "Local food, beaches & things to do — your recommendations, not a generic list",
+    "Check-in steps, door code and parking: the questions you answer every single week",
+    "WiFi, thermostat, grill, laundry: your whole house manual in one tap",
+    "Local food, beaches and things to do: your recommendations, not a generic list",
     "House rules + a checkout checklist guests can't skim past",
     "A printable QR code for the door or the fridge",
-    "Your own link, yours to keep — no monthly app fee",
+    "Your own link, yours to keep, with no monthly app fee",
   ],
   steps: [
     {
       n: "01",
       title: "Share the details",
-      body: "Share your listing and the basics — check-in, WiFi, rules, your favorite local spots. A short form is all it takes to get started.",
+      body: "Share your listing and the basics: check-in, WiFi, rules, your favorite local spots. A short form is all it takes to get started.",
     },
     {
       n: "02",
@@ -961,7 +973,7 @@ export const welcomeBook = {
     },
     {
       q: "Does it work for VRBO, Booking.com, or direct bookings?",
-      a: "Yes. It's just a link, so it works with any platform — or with none, for direct guests.",
+      a: "Yes. It's just a link, so it works with any platform, or with none, for direct guests.",
     },
     {
       q: "Can I update it later?",
@@ -969,7 +981,7 @@ export const welcomeBook = {
     },
     {
       q: "What does it cost?",
-      a: "$99 for the first few books at the founding price, then $149. One-time — no monthly app fee, and the book is yours.",
+      a: "$99 for the first few books at the founding price, then $149. One-time, with no monthly app fee, and the book is yours.",
     },
     {
       q: "How long does it take?",
@@ -977,7 +989,7 @@ export const welcomeBook = {
     },
     {
       q: "Do you only work with Maine rentals?",
-      a: "No — anywhere. The Keystone House in Maine is one example, but the welcome book works for any short-term rental.",
+      a: "No, anywhere. The Keystone House in Maine is one example, but the welcome book works for any short-term rental.",
     },
   ],
 } as const;

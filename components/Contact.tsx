@@ -143,7 +143,7 @@ export default function Contact() {
                   Rather be asked than face a blank box?
                 </p>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
-                  The questionnaire walks you through it — ten minutes, saved as
+                  The questionnaire walks you through it in about ten minutes, saved as
                   you go, nothing binding.
                 </p>
                 <a

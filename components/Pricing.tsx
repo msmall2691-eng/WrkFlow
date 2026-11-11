@@ -8,10 +8,20 @@ import { appOffer, smallProjects, studioStats, testimonial } from "@/lib/content
   a custom build (websites, web apps, tools) and the Care Plan that keeps it
   running. CTAs route to contact — no live checkout.
 
-  The $749 Starter site tier was retired (Oct 2026) so nothing on the page
-  anchors the studio as a budget website shop. Custom build is the entry
-  point; `appOffer` in lib/content.ts drives its founding price and the
-  auto-revert to full price at 0 spots left.
+  Oct 2026: the $749 Starter tier was retired so nothing on the page
+  anchored the studio as a budget website shop.
+
+  Nov 2026 reverses that worry. Meg is about to start posting to find
+  website work, and the risk she actually has is the opposite one: a small
+  local business reading a four-figure number and never asking. So the
+  custom build shows no price at all, and the affordable things elsewhere on
+  the site (free tools, the $99 welcome book, the $250-$900 fixed-scope
+  projects below) keep theirs. Looking reachable beats looking premium while
+  she is trying to fill a calendar.
+
+  `appOffer` in lib/content.ts still holds the numbers and still drives
+  `appFounding`, so restoring a price is reverting one block rather than
+  rebuilding the data.
 */
 
 const CUSTOM_BULLETS = [
@@ -69,29 +79,27 @@ export default function Pricing() {
           {/* Custom build — the primary offer, highlighted */}
                       <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99]">
               <p className="text-xs text-faint">Custom build</p>
-              {/* Was "Let's scope it" — the only tier with no number (brief A6).
-                  Founding rate for the first ten. */}
-              {appFounding ? (
-                <>
-                  <p className="mt-4 font-display text-3xl text-ink">
-                    ${appOffer.price.toLocaleString("en-US")}
-                    <span className="ml-2 align-middle text-[1rem] text-faint line-through">
-                      ${appOffer.fullPrice.toLocaleString("en-US")}
-                    </span>
-                  </p>
-                  <p className="mt-1.5 text-sm text-muted">Starting price · scoped before you commit</p>
-                  <p className="mt-2 text-xs font-medium text-gold">
-                    Founding · {appOffer.spotsRemaining} of {appOffer.totalSpots} left
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="mt-4 font-display text-3xl text-ink">
-                    ${appOffer.fullPrice.toLocaleString("en-US")}
-                  </p>
-                  <p className="mt-1.5 text-sm text-muted">Starting price · scoped before you commit</p>
-                </>
-              )}
+              {/*
+                Back to "Let's scope it", which is what this tier said
+                originally (brief A6) before a founding rate was put on it.
+
+                Nov 2026: Meg is about to start posting to find website work
+                and the thing she least wants is somebody deciding she is out
+                of reach before they ask. $1,500 struck through $2,500 was
+                the largest number on the site and the first one a visitor
+                met on this page.
+
+                `appOffer` is still in lib/content.ts with its numbers, so
+                putting the price back is reverting this block, not
+                reconstructing the data. The cheap end of the site keeps its
+                numbers on purpose; see the note on MarketItem.price.
+              */}
+              <p className="mt-4 font-display text-3xl text-ink">
+                Let&apos;s scope it
+              </p>
+              <p className="mt-1.5 text-sm text-muted">
+                Agreed in writing before you commit to anything
+              </p>
               <p className="mt-1 text-xs text-faint">
                 One-time · monthly · hybrid
               </p>
@@ -174,7 +182,8 @@ export default function Pricing() {
             </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
-                Founding pricing includes a testimonial + permission to feature your site in our portfolio.
+                Early clients get my best rate, in exchange for a testimonial
+                and permission to show the site in my portfolio.
               </p>
             )}
           </div>

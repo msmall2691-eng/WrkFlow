@@ -99,7 +99,7 @@ export default function MarketplacePage() {
                 way /tools does.
               */}
               <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                Ready to use. <span className="cp-grad">Nothing to learn.</span>
+                Ready to use. Nothing to learn.
               </h1>
               <p className="mt-5 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 Start with something free, buy one thing outright, or add a
@@ -198,8 +198,8 @@ export default function MarketplacePage() {
                 Free first, then the rest.
               </h2>
               <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                Cheapest and quickest at the top. Reserve anything and
-                you&apos;ll get a fixed quote back, with no payment up front.
+                Cheapest and quickest at the top. Ask about anything here and
+                you get a fixed quote back, with no payment up front.
               </p>
               <div className="mt-10">
                 <MarketCatalog exclude={["welcome-book"]} />
@@ -220,7 +220,7 @@ export default function MarketplacePage() {
                 When one tool is not enough
               </p>
               <h2 className="mt-3 max-w-2xl text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-3xl">
-                The whole thing, <span className="cp-grad">running a real company</span>.
+                The whole thing, running a real company.
               </h2>
               <p className="mt-4 max-w-[62ch] text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 BrightBase is the operations system I built to run my own

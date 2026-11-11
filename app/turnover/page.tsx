@@ -43,7 +43,7 @@ export default function TurnoverPage() {
         <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-              Your bookings, as a <span className="cp-grad">cleaning schedule.</span>
+              Your bookings, as a cleaning schedule.
             </h1>
             <p className="mt-5 max-w-2xl text-[1rem] leading-relaxed text-muted">
               Paste the calendar your booking platform already publishes. You

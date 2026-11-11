@@ -44,10 +44,16 @@ export default function MarketCatalog({ exclude = [] }: { exclude?: string[] }) 
       </div>
 
       <Reveal>
+        {/*
+          Was "Pricing is indicative...", which stopped being true in Nov 2026
+          when the three build tiers dropped their numbers. Half this grid now
+          shows a price and half shows "Quoted to your scope", so the footnote
+          has to cover both without implying the priced ones are soft.
+        */}
         <p className="mt-10 text-sm leading-relaxed text-faint">
-          Pricing is indicative. Every setup is tuned to your business, so the
-          final number depends on scope. Reserve one and I&apos;ll send a fixed
-          quote.
+          Where there is a price, that is the price. Everything else is scoped
+          with you first, and you get a fixed quote in writing before anything
+          starts. Nothing here takes payment up front.
         </p>
       </Reveal>
 
@@ -209,10 +215,10 @@ function FlowThumb() {
       <div className="w-full">
         <WorkflowDiagram
           stages={[
-            { icon: "\u{1F4C5}", label: "Booking" },
-            { icon: "\u2709\uFE0F", label: "Confirm" },
-            { icon: "\u{1F514}", label: "Remind" },
-            { icon: "\u2B50", label: "Review" },
+            { label: "Booking" },
+            { label: "Confirm" },
+            { label: "Remind" },
+            { label: "Review" },
           ]}
           live="still"
           compact

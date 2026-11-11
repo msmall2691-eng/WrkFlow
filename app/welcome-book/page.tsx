@@ -14,11 +14,11 @@ export const metadata: Metadata = pageMeta({
   // The root template appends " · M Studio"; this used to add "| M Studio" too.
   title: "Digital Welcome Book for Short-Term Rentals",
   description:
-    "A digital welcome book your Airbnb guests actually open — check-in, WiFi, house manual, and your local picks on one link, plus a printable QR code. Built for you, yours to keep. Founding price $99.",
+    "A digital welcome book your Airbnb guests actually open: check-in, WiFi, house manual, and your local picks on one link, plus a printable QR code. Built for you, yours to keep. Founding price $99.",
   path: "/welcome-book",
   ogTitle: "Digital Welcome Book for Short-Term Rentals",
   ogDescription:
-    "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks — built for you, yours to keep.",
+    "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks, built for you, yours to keep.",
 });
 
 export default function WelcomeBookPage() {
@@ -110,7 +110,7 @@ export default function WelcomeBookPage() {
                 <div className="relative aspect-[16/11] bg-base">
                   <iframe
                     src={wb.demoUrl}
-                    title={`${wb.demoName} — live welcome book`}
+                    title={`${wb.demoName}, live welcome book`}
                     loading="lazy"
                     className="absolute left-0 top-0"
                     style={{
@@ -142,7 +142,7 @@ export default function WelcomeBookPage() {
           <div className="relative mx-auto max-w-6xl px-6">
             <div className="mb-10 max-w-3xl">
                               <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-                  Everything a guest asks — before they ask.
+                  Everything a guest asks, before they ask.
                 </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -222,7 +222,7 @@ export default function WelcomeBookPage() {
                   Want one for your place?
                 </h2>
                               <p className="mx-auto mt-4 max-w-lg text-[1rem] leading-relaxed text-muted">
-                  Founding price of ${wb.introPrice} for the first few — one-time,
+                  Founding price of ${wb.introPrice} for the first few. One-time,
                   no monthly app fee, and the book is yours to keep. Tell me about
                   your rental and I&apos;ll take it from there.
                 </p>

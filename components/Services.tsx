@@ -64,7 +64,7 @@ export default function Services() {
                     {s.example.shot ? (
                       <Image
                         src={s.example.shot}
-                        alt={`${s.example.client} — ${s.example.built}`}
+                        alt={`${s.example.client}: ${s.example.built}`}
                         fill
                         sizes="(min-width: 1024px) 660px, 100vw"
                         className="object-cover object-top"

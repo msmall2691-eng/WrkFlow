@@ -90,7 +90,7 @@ export default function ServicesPage() {
                 rather than page by page.
               */}
               <h1 className="display-serif m-0 max-w-3xl text-balance text-[2rem] text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                What I build, and <span className="cp-grad">what it costs.</span>
+                What I build, and what it costs.
               </h1>
               <p className="mt-5 max-w-[62ch] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
                 Start with one useful improvement or a full custom build. I agree
