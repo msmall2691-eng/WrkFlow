@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import Nav from "@/components/Nav";
+import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
-import HeroWordmark from "@/components/HeroWordmark";
+import CommandPalette from "@/components/CommandPalette";
 import LinxMark from "@/components/LinxMark";
 import WelcomeBookReserve from "@/components/WelcomeBookReserve";
 import { welcomeBook } from "@/lib/content";
@@ -23,17 +23,32 @@ export const metadata: Metadata = pageMeta({
 
 export default function WelcomeBookPage() {
   return (
-    <>
-      <Nav />
-      <main className="pt-16">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-line py-16 md:py-24">
-          <div
-            aria-hidden="true"
-            className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
-          />
-          <HeroWordmark text="WELCOME" />
-          <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_1fr]">
+    <div className="cp">
+      <div className="relative overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cp-aurora cp-a1" />
+          <span className="cp-aurora cp-a2" />
+        </div>
+
+        <div className="relative z-10">
+          <PanelHeader bookHref="/?offer=call#contact" />
+        </div>
+
+        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        <main className="relative z-10">
+        {/*
+          Hero.
+
+          The `grid-bg` layer and the parked "WELCOME" HeroWordmark are gone.
+          Both were the old look's way of filling a hero, and the aurora above
+          is V2's; running all three together is three background treatments
+          stacked on one screen, which is the opposite of the note Meg gave
+          about the first V2 cut being too busy. /marketplace dropped its
+          wordmark for the same reason. The LinxMark below still marks the
+          page as part of the M Linx line.
+        */}
+        <section className="border-b border-[var(--cp-line)] py-16 md:py-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_1fr]">
             <div>
                               <div className="mb-5 flex items-center text-ink">
                   <LinxMark className="h-4 w-auto" />
@@ -215,12 +230,14 @@ export default function WelcomeBookPage() {
                           <WelcomeBookReserve price={wb.introPrice} />
           </div>
         </section>
-      </main>
+        </main>
+      </div>
       <Footer />
-        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
-            every page and on a phone sat on top of the cards. The theme
-            toggle is now a command in the ⌘K palette (lib/theme.ts), so
-            nobody who picked Harbor is stranded in it. */}
-    </>
+      {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+          every page and on a phone sat on top of the cards. The theme
+          toggle is now a command in the ⌘K palette (lib/theme.ts), so
+          nobody who picked Harbor is stranded in it. */}
+      <CommandPalette />
+    </div>
   );
 }

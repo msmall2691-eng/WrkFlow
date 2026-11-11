@@ -533,10 +533,28 @@ test("the case study's build screenshot stays pinned while the steps scroll", as
   adds the next page: a call CTA pointing at a bare #contact is only allowed
   on a page that has one.
 */
-/* /marketplace joined this list when its V2 pass gave it PanelHeader. It
-   renders no Contact either, so it is exactly the shape this test exists to
-   catch, and it was not covered while it still ran the old <Nav>. */
-for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/marketplace", "/work/maine-cleaning-co"]) {
+/* A route joins this list the moment its V2 pass gives it PanelHeader: that
+   is the shape this test exists to catch. /marketplace came in with its own
+   conversion; /turnover, /welcome-book, /privacy and /terms came in with the
+   batch that finished the site. The two legal pages share one shell
+   (components/LegalDoc.tsx), so they are one fix and two routes.
+
+   /intake is deliberately NOT here. Its V2 pass gave it the palette and no
+   header, so it has no booking CTA to dead-end; see the note at the top of
+   app/intake/page.tsx. /lab is not here either: it was left unconverted. */
+for (const path of [
+  "/",
+  "/brightbase",
+  "/services",
+  "/tools",
+  "/about",
+  "/marketplace",
+  "/turnover",
+  "/welcome-book",
+  "/privacy",
+  "/terms",
+  "/work/maine-cleaning-co",
+]) {
   test(`${path} has no dead-end booking CTA`, async ({ page }) => {
     await page.goto(path);
 
