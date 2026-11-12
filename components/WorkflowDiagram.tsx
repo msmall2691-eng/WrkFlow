@@ -14,7 +14,21 @@ import { Fragment } from "react";
   WorkflowDemo still imports it for the animated case. One definition of
   what a flow diagram looks like, two ways to use it.
 */
-export type WorkflowStage = { icon: string; label: string };
+/*
+  No `icon` field, deliberately.
+
+  Each node used to hold an emoji (🌐, 🗂️, 📅, 💬 and so on). Emoji in a
+  diagram is one of the loudest "this was generated" tells there is: it is
+  what you reach for when you want a picture and have not drawn one. Meg
+  asked for the site to stop reading as machine-made, and this was the
+  cheapest and most visible thing to fix.
+
+  The node now carries its step number, in the same mono tabular treatment
+  the case-study process list on /work/[slug] already uses for 01, 02, 03.
+  It says the same thing the emoji was gesturing at (these happen in order)
+  without pretending to be an illustration.
+*/
+export type WorkflowStage = { label: string };
 
 export default function WorkflowDiagram({
   stages,
@@ -49,17 +63,18 @@ export default function WorkflowDiagram({
     >
       {stages.map((stage, i) => {
         const isLast = i === stages.length - 1;
+        const step = String(i + 1).padStart(2, "0");
         return (
           <Fragment key={stage.label}>
             <div className="flex shrink-0 flex-col items-center">
               <span
-                className={`flex items-center justify-center rounded-full border border-signal/40 bg-base shadow-[inset_0_0_18px_-4px_var(--color-signal-glow)] ${
+                className={`flex items-center justify-center rounded-full border border-signal/40 bg-base font-mono tabular-nums text-signal shadow-[inset_0_0_18px_-4px_var(--color-signal-glow)] ${
                   compact
-                    ? "h-9 w-9 text-base"
-                    : "h-12 w-12 text-xl md:h-14 md:w-14 md:text-2xl"
+                    ? "h-9 w-9 text-[11px]"
+                    : "h-12 w-12 text-sm md:h-14 md:w-14 md:text-base"
                 }`}
               >
-                {stage.icon}
+                {step}
               </span>
               <span
                 className={`text-faint ${

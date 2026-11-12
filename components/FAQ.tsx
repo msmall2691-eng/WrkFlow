@@ -36,11 +36,11 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "Do you work with clients outside Maine?",
-    a: "Yes. Most of it happens over video calls and shared docs — location doesn't matter.",
+    a: "Yes. Most of it happens over video calls and shared docs, so location doesn't matter.",
   },
   {
     q: "Do I own the code?",
-    a: "Yes. Files, database, hosting keys, domain — all yours from day one. If you ever want to move on, everything moves with you.",
+    a: "Yes. Files, database, hosting keys, domain. All yours from day one. If you ever want to move on, everything moves with you.",
   },
   {
     q: "What if I need changes later?",

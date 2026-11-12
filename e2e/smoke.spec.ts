@@ -533,10 +533,28 @@ test("the case study's build screenshot stays pinned while the steps scroll", as
   adds the next page: a call CTA pointing at a bare #contact is only allowed
   on a page that has one.
 */
-/* /marketplace joined this list when its V2 pass gave it PanelHeader. It
-   renders no Contact either, so it is exactly the shape this test exists to
-   catch, and it was not covered while it still ran the old <Nav>. */
-for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/marketplace", "/work/maine-cleaning-co"]) {
+/* A route joins this list the moment its V2 pass gives it PanelHeader: that
+   is the shape this test exists to catch. /marketplace came in with its own
+   conversion; /turnover, /welcome-book, /privacy and /terms came in with the
+   batch that finished the site. The two legal pages share one shell
+   (components/LegalDoc.tsx), so they are one fix and two routes.
+
+   /intake is deliberately NOT here. Its V2 pass gave it the palette and no
+   header, so it has no booking CTA to dead-end; see the note at the top of
+   app/intake/page.tsx. /lab is not here either: it was left unconverted. */
+for (const path of [
+  "/",
+  "/brightbase",
+  "/services",
+  "/tools",
+  "/about",
+  "/marketplace",
+  "/turnover",
+  "/welcome-book",
+  "/privacy",
+  "/terms",
+  "/work/maine-cleaning-co",
+]) {
   test(`${path} has no dead-end booking CTA`, async ({ page }) => {
     await page.goto(path);
 
@@ -557,3 +575,72 @@ for (const path of ["/", "/brightbase", "/services", "/tools", "/about", "/marke
     }
   });
 }
+
+/*
+  The demo store.
+
+  Two things are worth a test here and the rest is not.
+
+  The banner is the first one. /demo/shop is a fictional company with
+  fictional stock, and the only thing standing between that and a visitor
+  believing otherwise is a line of text at the top of the page. CLAUDE.md
+  bans invented proof "anywhere, including demos and placeholders", so if a
+  refactor ever drops that banner the demo stops being honest. A test is
+  cheaper than remembering.
+
+  The cart arithmetic is the second. It is the one piece of real logic in
+  the store, it is the thing a prospective client is implicitly being shown
+  ("she can build a working cart"), and money bugs are invisible until
+  somebody adds a second item.
+*/
+test("/demo/shop says it is a demo, before anything else", async ({ page }) => {
+  await page.goto("/demo/shop");
+
+  const banner = page.getByText(/not a real company/i);
+  await expect(banner).toBeVisible();
+  await expect(page.getByText(/nothing here takes payment/i)).toBeVisible();
+
+  /* First in the DOM, so a screen reader reaches it before the storefront. */
+  const bannerIsFirst = await page.evaluate(() => {
+    const el = [...document.querySelectorAll("body *")].find((n) =>
+      /not a real company/i.test(n.textContent ?? ""),
+    );
+    const h1 = document.querySelector("h1");
+    return !!el && !!h1 && !!(el.compareDocumentPosition(h1) & Node.DOCUMENT_POSITION_FOLLOWING);
+  });
+  expect(bannerIsFirst, "the demo notice must precede the storefront").toBe(true);
+});
+
+test("/demo/shop cart totals a size change and a second copy", async ({ page }) => {
+  await page.goto("/demo/shop");
+
+  await page.getByRole("button", { name: /First Light/ }).first().click();
+  const sheet = page.getByRole("dialog");
+
+  /* Base size, then the one that adds $42. */
+  await expect(sheet.getByText("$28", { exact: true })).toBeVisible();
+  await sheet.getByRole("button", { name: '24 × 36"' }).click();
+  await expect(sheet.getByText("$70", { exact: true })).toBeVisible();
+
+  await sheet.getByRole("button", { name: "Add to cart" }).click();
+
+  /*
+    Read the grand total by its own label rather than by matching a dollar
+    string anywhere in the cart. With one line at quantity two the line
+    total and the grand total are the same number, so a loose match passes
+    while proving nothing about which one it read, and Playwright's strict
+    mode rejects it outright for resolving to two elements.
+  */
+  const cart = page.getByRole("dialog", { name: "Cart" });
+  const grandTotal = cart.getByTestId("cart-total");
+
+  await expect(grandTotal).toContainText("$70");
+
+  await cart.getByRole("button", { name: /Add one First Light/ }).click();
+  await expect(grandTotal).toContainText("$140");
+  /* And the line itself, which is the other half of the arithmetic. */
+  await expect(cart.locator("li").filter({ hasText: "First Light" })).toContainText("$140");
+
+  /* And it must say no money changes hands before the button is pressed. */
+  await expect(cart.getByText(/nothing is charged/i)).toBeVisible();
+});

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import Nav from "@/components/Nav";
+import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
-import HeroWordmark from "@/components/HeroWordmark";
+import CommandPalette from "@/components/CommandPalette";
 import LinxMark from "@/components/LinxMark";
 import WelcomeBookReserve from "@/components/WelcomeBookReserve";
 import { welcomeBook } from "@/lib/content";
@@ -14,26 +14,41 @@ export const metadata: Metadata = pageMeta({
   // The root template appends " · M Studio"; this used to add "| M Studio" too.
   title: "Digital Welcome Book for Short-Term Rentals",
   description:
-    "A digital welcome book your Airbnb guests actually open — check-in, WiFi, house manual, and your local picks on one link, plus a printable QR code. Built for you, yours to keep. Founding price $99.",
+    "A digital welcome book your Airbnb guests actually open: check-in, WiFi, house manual, and your local picks on one link, plus a printable QR code. Built for you, yours to keep. Founding price $99.",
   path: "/welcome-book",
   ogTitle: "Digital Welcome Book for Short-Term Rentals",
   ogDescription:
-    "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks — built for you, yours to keep.",
+    "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks, built for you, yours to keep.",
 });
 
 export default function WelcomeBookPage() {
   return (
-    <>
-      <Nav />
-      <main className="pt-16">
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-line py-16 md:py-24">
-          <div
-            aria-hidden="true"
-            className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-96"
-          />
-          <HeroWordmark text="WELCOME" />
-          <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_1fr]">
+    <div className="cp">
+      <div className="relative overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cp-aurora cp-a1" />
+          <span className="cp-aurora cp-a2" />
+        </div>
+
+        <div className="relative z-10">
+          <PanelHeader bookHref="/?offer=call#contact" />
+        </div>
+
+        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        <main className="relative z-10">
+        {/*
+          Hero.
+
+          The `grid-bg` layer and the parked "WELCOME" HeroWordmark are gone.
+          Both were the old look's way of filling a hero, and the aurora above
+          is V2's; running all three together is three background treatments
+          stacked on one screen, which is the opposite of the note Meg gave
+          about the first V2 cut being too busy. /marketplace dropped its
+          wordmark for the same reason. The LinxMark below still marks the
+          page as part of the M Linx line.
+        */}
+        <section className="border-b border-[var(--cp-line)] py-16 md:py-24">
+          <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 lg:grid-cols-[1.05fr_1fr]">
             <div>
                               <div className="mb-5 flex items-center text-ink">
                   <LinxMark className="h-4 w-auto" />
@@ -95,7 +110,7 @@ export default function WelcomeBookPage() {
                 <div className="relative aspect-[16/11] bg-base">
                   <iframe
                     src={wb.demoUrl}
-                    title={`${wb.demoName} — live welcome book`}
+                    title={`${wb.demoName}, live welcome book`}
                     loading="lazy"
                     className="absolute left-0 top-0"
                     style={{
@@ -127,7 +142,7 @@ export default function WelcomeBookPage() {
           <div className="relative mx-auto max-w-6xl px-6">
             <div className="mb-10 max-w-3xl">
                               <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-                  Everything a guest asks — before they ask.
+                  Everything a guest asks, before they ask.
                 </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -207,7 +222,7 @@ export default function WelcomeBookPage() {
                   Want one for your place?
                 </h2>
                               <p className="mx-auto mt-4 max-w-lg text-[1rem] leading-relaxed text-muted">
-                  Founding price of ${wb.introPrice} for the first few — one-time,
+                  Founding price of ${wb.introPrice} for the first few. One-time,
                   no monthly app fee, and the book is yours to keep. Tell me about
                   your rental and I&apos;ll take it from there.
                 </p>
@@ -215,12 +230,14 @@ export default function WelcomeBookPage() {
                           <WelcomeBookReserve price={wb.introPrice} />
           </div>
         </section>
-      </main>
+        </main>
+      </div>
       <Footer />
-        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
-            every page and on a phone sat on top of the cards. The theme
-            toggle is now a command in the ⌘K palette (lib/theme.ts), so
-            nobody who picked Harbor is stranded in it. */}
-    </>
+      {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
+          every page and on a phone sat on top of the cards. The theme
+          toggle is now a command in the ⌘K palette (lib/theme.ts), so
+          nobody who picked Harbor is stranded in it. */}
+      <CommandPalette />
+    </div>
   );
 }

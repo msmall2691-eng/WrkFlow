@@ -20,7 +20,7 @@ import CommandPalette from "@/components/CommandPalette";
 export const metadata: Metadata = pageMeta({
   // No "| M Studio" here — the root layout's title template appends the
   // brand already; doubling it renders "… | M Studio · M Studio".
-  title: "About — Meet Meg",
+  title: "About · Meet Meg",
   description:
     "Meet Meg, founder of M Studio. Websites, CRMs, platform setup, data migration and integrations, built from hands-on business experience and a love of figuring out systems.",
   path: "/about",

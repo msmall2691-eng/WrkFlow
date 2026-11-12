@@ -1,11 +1,28 @@
 import type { ReactNode } from "react";
-import Nav from "./Nav";
+import PanelHeader from "./panel/PanelHeader";
 import Footer from "./Footer";
+import CommandPalette from "./CommandPalette";
 
 /*
   Shared shell for the legal pages (Privacy, Terms). Keeps both documents
-  visually consistent with the rest of the site (Deep Harbor dark theme) and
-  gives them readable, narrow body type.
+  visually consistent with the rest of the site and gives them readable,
+  narrow body type.
+
+  V2 pass. Converting this one file converts both legal pages, which is the
+  whole reason the shell exists: they are the same document in two voices and
+  neither should drift from the other or from the site around them.
+
+  The usual wrapper, not a rewrite: `.cp` redefines --color-base, --color-ink,
+  --color-muted, --color-line and --section-alt-bg in its own scope, so H2, P,
+  UL and Disclaimer below take the V2 palette without being touched. Two of
+  them lean on accent tokens that needed the globals.css fix shipped in #128:
+  UL's `marker:text-signal` and Disclaimer's gold border and tint, both of
+  which rendered a Daylight-tuned colour inside the near-black panel before
+  that landed.
+
+  `bookHref` is set because neither legal page renders Contact, so the
+  header's "Book a free call" would otherwise change the hash and do nothing.
+  e2e/smoke.spec.ts covers both routes.
 */
 export function LegalShell({
   title,
@@ -22,15 +39,27 @@ export function LegalShell({
   children: ReactNode;
 }) {
   return (
-    <>
-      <Nav />
-      <main className="pt-16">
-        <section className="relative overflow-hidden border-b border-line py-14 md:py-20">
-          <div
-            aria-hidden="true"
-            className="grid-bg pointer-events-none absolute inset-x-0 top-0 h-72"
-          />
-          <div className="relative z-10 mx-auto max-w-3xl px-6">
+    <div className="cp">
+      <div className="relative overflow-hidden">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+          <span className="cp-aurora cp-a1" />
+          <span className="cp-aurora cp-a2" />
+        </div>
+
+        <div className="relative z-10">
+          <PanelHeader bookHref="/?offer=call#contact" />
+        </div>
+
+        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        <main className="relative z-10">
+        <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
+          <div className="mx-auto max-w-3xl px-6">
+            {/*
+              Still `display-serif` (Fraunces), for the same reason as the h1
+              on /services: the heading face on these pages is a question
+              about Meg's brand to settle once for the whole site, not page by
+              page. The palette converts; the typeface does not.
+            */}
             <h1 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
               {title}
             </h1>
@@ -43,16 +72,19 @@ export function LegalShell({
           </div>
         </section>
 
-        <section className="py-12 md:py-16">
+        {/*
+          The body sits on the flat ground, not over the aurora. Same call as
+          the tool grid on /tools: this is the densest small text on the site
+          and --color-faint is tuned to clear 4.5:1 on #08070c specifically.
+        */}
+        <section className="relative bg-[var(--color-base)] py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-6">{children}</div>
         </section>
-      </main>
+        </main>
+      </div>
       <Footer />
-        {/* The floating "DAYLIGHT" pill lived here. It overlapped content on
-            every page and on a phone sat on top of the cards. The theme
-            toggle is now a command in the ⌘K palette (lib/theme.ts), so
-            nobody who picked Harbor is stranded in it. */}
-    </>
+      <CommandPalette />
+    </div>
   );
 }
 

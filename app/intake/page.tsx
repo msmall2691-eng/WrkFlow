@@ -12,6 +12,20 @@ import MaineReadout from "@/components/MaineReadout";
   Deliberately stripped of the main site's Nav and Footer: this page is a
   focused, one-job surface a prospective client is sent to directly. Every
   extra link is a way out of a form we want them to finish.
+
+  V2 pass, and the one page in the batch that gets the palette WITHOUT the
+  header. CLAUDE.md asks inner pages to be built in the `.cp` palette and
+  tokens; it does not ask them to grow a nav, and the paragraph above is a
+  deliberate decision about this page that predates V2 and still holds. So
+  the `.cp` wrapper goes on, PanelHeader does not, and the wordmark stays
+  the only way back to the main site.
+
+  Wrapping is enough on its own: `.cp` redefines --color-base, --color-ink,
+  --color-muted, --color-line and --color-faint in its own scope, so the
+  Questionnaire and MaineReadout below convert untouched. The <main> keeps
+  its own `bg-[var(--color-base)]`, which now resolves to the V2 near-black
+  rather than the old cream, so the page has a real opaque ground under the
+  form instead of inheriting the body's.
 */
 
 export const metadata: Metadata = {
@@ -32,7 +46,8 @@ export default function StartPage() {
   // learns whether a key exists, only whether the step should render.
   const previewEnabled = Boolean(process.env.ANTHROPIC_API_KEY);
   return (
-    <main className="min-h-screen bg-[var(--color-base)]">
+    <div className="cp">
+      <main className="min-h-screen bg-[var(--color-base)]">
       {/* Same wordmark as the main site's nav, so this reads as a page OF
           mlinx.studio rather than a funnel pointed at it. */}
       <header className="mx-auto flex max-w-2xl items-center justify-between px-6 pb-2 pt-10 md:pt-14">
@@ -62,6 +77,7 @@ export default function StartPage() {
           </p>
         </div>
       </footer>
-    </main>
+      </main>
+    </div>
   );
 }

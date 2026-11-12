@@ -20,7 +20,7 @@ import Playground from "@/components/Playground";
 */
 
 export const metadata: Metadata = pageMeta({
-  title: "Free tools — quotes, invoices, QR codes & more",
+  title: "Free tools · quotes, invoices, QR codes and more",
   description:
     "Free tools for service businesses: instant quotes, invoices, email signatures, digital cards, QR codes, tracked links and a website health check. No signup.",
   path: "/tools",
@@ -49,7 +49,7 @@ export default function ToolsPage() {
                 there is nothing to decide here.
               */}
               <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                Free tools. <span className="cp-grad">No signup.</span>
+                Free tools. No signup.
               </h1>
               <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 {/* "we build" was the one "we" left on this page. Meg is a solo

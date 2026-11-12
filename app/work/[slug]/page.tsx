@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!cs) return {};
   return pageMeta({
     // Bare title — the root layout appends " · M Studio".
-    title: `${cs.title} — case study`,
+    title: `${cs.title} · case study`,
     description: cs.outcome,
     path: `/work/${cs.slug}`,
   });
