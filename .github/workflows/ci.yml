@@ -46,11 +46,48 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # **Deliberately not `--with-deps`**, which this step used to pass.
+      # That flag shells out to `apt-get`, so every run of the one job that
+      # catches a dead page depended on Ubuntu's package mirrors resolving
+      # from a GitHub runner. On 2026-11-11 they did not, and run 62 died
+      # right here, before a single test ran, on nine repeats of "Temporary
+      # failure resolving 'azure.archive.ubuntu.com'" and then "Failed to
+      # install browsers". A dependency on somebody else's DNS, on every
+      # run, is the more expensive of the two risks.
+      #
+      # **Every one of those nine packages was a font.** The failing log
+      # names them: fonts-ipafont-gothic, fonts-freefont-ttf,
+      # fonts-tlwg-loma-otf, fonts-unifont, fonts-wqy-zenhei,
+      # xfonts-encodings, xfonts-utils, xfonts-cyrillic, xfonts-scalable.
+      # Not one shared library appears, because this image already ships
+      # them. So on ubuntu-24.04 the apt round-trip was buying fonts and
+      # nothing else.
+      #
+      # And the fonts are not load-bearing for this suite. app/layout.tsx
+      # loads all four typefaces through `next/font/google`, which self-hosts
+      # them: a production build emits 19 .woff2 files under
+      # /_next/static/media and `@font-face` points at those, so the page
+      # never asks the system for a face. No rendered copy contains an emoji.
+      # No test compares pixels, and the only one that measures anything
+      # asserts a 24x24 hit target, which padding sets rather than glyph
+      # metrics.
+      #
+      # What this accepts is a future image that drops a library the flag
+      # would have installed. The step after it is what keeps that legible:
+      # without one, a missing library surfaces as every smoke test failing
+      # on a launch error deep in a trace, and the remedy is not obvious from
+      # any of them.
+      - name: Install Chromium
+        run: npx playwright install chromium
+
+      # A second or two to turn "32 tests failed" into one sentence naming
+      # the cause. It is a committed script rather than an inline snippet so
+      # that what runs here is byte-identical to what can be run locally.
+      - name: Check Chromium can actually launch
+        run: node scripts/chromium-launch-check.mjs
+
       # The smoke suite's webServer runs `npm run build` itself, so the
       # production build is covered here rather than as a separate step.
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
-
       - name: Smoke tests
         run: npm run test:e2e
 
