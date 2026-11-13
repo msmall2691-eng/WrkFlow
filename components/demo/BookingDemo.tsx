@@ -40,7 +40,16 @@ export default function BookingDemo({ dates }: { dates: string[] }) {
   const [chosen, setChosen] = useState<number | null>(null);
   /* Appointments made in this session, which join the ones already on the books. */
   const [mine, setMine] = useState<Appointment[]>([]);
-  const [confirmed, setConfirmed] = useState<(Appointment & { serviceId: string }) | null>(null);
+  /*
+    `stillOpen` is recorded when the booking is made, not re-derived later.
+    With "anyone available" selected, holding a time with one practitioner
+    leaves it genuinely bookable with the other, and the panel below has to
+    say which of those happened. Working it out at render time would read
+    the filters as they are *then*, which the visitor may have changed.
+  */
+  const [confirmed, setConfirmed] = useState<
+    (Appointment & { serviceId: string; stillOpen: boolean; stillWith: string | null }) | null
+  >(null);
 
   const booked = useMemo(
     () => [...bookedOn(date), ...mine.filter((a) => a.date === date)],
@@ -70,8 +79,16 @@ export default function BookingDemo({ dates }: { dates: string[] }) {
     /* "Anyone" has to resolve to a real person at the moment of booking. */
     const practitionerId = filter === "any" ? slot.practitionerIds[0] : filter;
     const appt: Appointment = { practitionerId, date, start: chosen, minutes: service.minutes };
+
+    /* Ask the same function the grid asks, with this booking included. */
+    const after = slotsFor(service, date, [...booked, appt], filter === "any" ? undefined : filter);
+    const stillThere = after.find((s) => s.start === chosen);
+    const stillWith = stillThere
+      ? (PRACTITIONERS.find((p) => p.id === stillThere.practitionerIds[0])?.name ?? null)
+      : null;
+
     setMine((m) => [...m, appt]);
-    setConfirmed({ ...appt, serviceId: service.id });
+    setConfirmed({ ...appt, serviceId: service.id, stillOpen: !!stillThere, stillWith });
     setChosen(null);
   }
 
@@ -266,9 +283,21 @@ export default function BookingDemo({ dates }: { dates: string[] }) {
               <span className="tabular-nums">{clock(confirmed.start)}</span>.
             </p>
             <p className="mt-2.5 text-[13px] leading-relaxed text-[#dfeae7]/70">
-              Look at the times above: that slot is gone, and so are the ones too close to it
-              to leave {GAP_MINUTES} minutes for the room. That is the same rule running, not a
-              screen pretending.
+              {confirmed.stillOpen ? (
+                <>
+                  Look at the times above.{" "}
+                  {PRACTITIONERS.find((p) => p.id === confirmed.practitionerId)?.name} is booked, so
+                  their nearby times are gone, but that hour is still there because{" "}
+                  {confirmed.stillWith} is free then too. Availability is tracked per person, not
+                  per clock.
+                </>
+              ) : (
+                <>
+                  Look at the times above: that slot is gone, and so are the ones too close to it to
+                  leave {GAP_MINUTES} minutes for the room. That is the same rule running, not a
+                  screen pretending.
+                </>
+              )}
             </p>
           </div>
         )}

@@ -704,6 +704,19 @@ test("/demo/studio will not offer a time it has just given away", async ({ page 
   await page.getByTestId("service-signature").click();
 
   /*
+    Pin a practitioner first, and that is not tidiness.
+
+    Left on "anyone available", holding a time books ONE of them and the
+    hour stays bookable with the other, which is correct behaviour and makes
+    the assertion below false. Replaying this test against the booking
+    helpers for every start date in a year, it fails on five of them — the
+    first being a studio date of 2027-07-26, where July 27 at 3:00 PM is
+    free for both. A calendar-dependent flake that only shows up on 1.4% of
+    days is the worst kind: it lands months later, on somebody else's PR.
+  */
+  await page.getByTestId("who-rk").click();
+
+  /*
     Find a day with enough slots to have neighbours either side. Which day
     that is depends on when the suite runs, so it is searched for rather
     than hardcoded — the demo offers the next seven days from today.
