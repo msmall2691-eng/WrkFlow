@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -549,6 +549,7 @@ for (const path of [
   "/tools",
   "/about",
   "/marketplace",
+  "/demo",
   "/turnover",
   "/welcome-book",
   "/privacy",
@@ -593,6 +594,33 @@ for (const path of [
   ("she can build a working cart"), and money bugs are invisible until
   somebody adds a second item.
 */
+/*
+  Is `pattern` the first thing on the page, ahead of the <h1>?
+
+  Reads rendered text order rather than hunting for the element that matches,
+  for two reasons that each broke an earlier version of this. Every one of
+  these demos repeats its notice in the footer, so "the element containing
+  the text" is ambiguous. And `textContent` matches on ancestors, so the
+  first match is the outermost wrapper — which CONTAINS the h1, making a
+  compareDocumentPosition check return FOLLOWING and pass even if the banner
+  had been moved to the bottom of the page.
+
+  innerText is the order a person reads in and roughly the order a screen
+  reader announces, which is the thing being asserted.
+*/
+async function noticeComesFirst(page: Page, pattern: RegExp) {
+  return page.evaluate(
+    ({ source, flags }) => {
+      const text = document.body.innerText;
+      const at = text.search(new RegExp(source, flags));
+      const h1 = document.querySelector("h1");
+      const h1At = h1 ? text.indexOf(h1.innerText.trim()) : -1;
+      return { at, h1At };
+    },
+    { source: pattern.source, flags: pattern.flags },
+  );
+}
+
 test("/demo/shop says it is a demo, before anything else", async ({ page }) => {
   await page.goto("/demo/shop");
 
@@ -600,15 +628,11 @@ test("/demo/shop says it is a demo, before anything else", async ({ page }) => {
   await expect(banner).toBeVisible();
   await expect(page.getByText(/nothing here takes payment/i)).toBeVisible();
 
-  /* First in the DOM, so a screen reader reaches it before the storefront. */
-  const bannerIsFirst = await page.evaluate(() => {
-    const el = [...document.querySelectorAll("body *")].find((n) =>
-      /not a real company/i.test(n.textContent ?? ""),
-    );
-    const h1 = document.querySelector("h1");
-    return !!el && !!h1 && !!(el.compareDocumentPosition(h1) & Node.DOCUMENT_POSITION_FOLLOWING);
-  });
-  expect(bannerIsFirst, "the demo notice must precede the storefront").toBe(true);
+  /* Before the storefront, so a screen reader reaches it first. */
+  const { at, h1At } = await noticeComesFirst(page, /not a real company/i);
+  expect(at, "the demo notice should appear on the page").toBeGreaterThanOrEqual(0);
+  expect(h1At, "the storefront should have a heading to compare against").toBeGreaterThan(-1);
+  expect(at, "the demo notice must precede the storefront").toBeLessThan(h1At);
 });
 
 test("/demo/shop cart totals a size change and a second copy", async ({ page }) => {
@@ -643,4 +667,171 @@ test("/demo/shop cart totals a size change and a second copy", async ({ page }) 
 
   /* And it must say no money changes hands before the button is pressed. */
   await expect(cart.getByText(/nothing is charged/i)).toBeVisible();
+});
+
+/*
+  The booking demo.
+
+  Same two-things rule as the store above: the honesty banner, and the one
+  piece of real logic.
+
+  Here that logic is availability, and it is worth a test for a reason the
+  cart is not. A cart that adds up wrong is embarrassing; a booking page
+  that double-books puts two people in one room at the same time, and the
+  studio finds out from whoever turns up second. The rule is in
+  lib/demo-booking.ts and the screen renders what it returns, so a test
+  that books a slot and watches its neighbours vanish is testing the rule
+  through the glass the visitor is actually looking at.
+*/
+test("/demo/studio says it is a demo, before anything else", async ({ page }) => {
+  await page.goto("/demo/studio");
+
+  await expect(page.getByText(/not a real business/i).first()).toBeVisible();
+  await expect(page.getByText(/nothing here books a real appointment/i).first()).toBeVisible();
+
+  const { at, h1At } = await noticeComesFirst(page, /not a real business/i);
+  expect(at).toBeGreaterThanOrEqual(0);
+  expect(at, "the demo notice must precede the booking form").toBeLessThan(h1At);
+
+  /* Nothing on this page may ask for money. */
+  await expect(
+    page.locator('input[type="password"], input[autocomplete*="cc-"], input[name*="card" i]'),
+  ).toHaveCount(0);
+});
+
+test("/demo/studio will not offer a time it has just given away", async ({ page }) => {
+  await page.goto("/demo/studio");
+  await page.getByTestId("service-signature").click();
+
+  /*
+    Find a day with enough slots to have neighbours either side. Which day
+    that is depends on when the suite runs, so it is searched for rather
+    than hardcoded — the demo offers the next seven days from today.
+  */
+  const days = await page.getByTestId("date-strip").locator("button").all();
+  let found = false;
+  for (const d of days) {
+    await d.click();
+    if ((await page.locator("[data-slot]").count()) >= 4) {
+      found = true;
+      break;
+    }
+  }
+  expect(found, "no day in the next week offered four slots to test with").toBe(true);
+
+  const before = await page
+    .locator("[data-slot]")
+    .evaluateAll((els) => els.map((e) => Number((e as HTMLElement).dataset.slot)));
+
+  /* The middle one, so there is something to block on both sides. */
+  const target = before[Math.floor(before.length / 2)];
+  await page.locator(`[data-slot="${target}"]`).click();
+  await page.getByTestId("confirm-booking").click();
+  await expect(page.getByTestId("booked-panel")).toBeVisible();
+
+  const after = await page
+    .locator("[data-slot]")
+    .evaluateAll((els) => els.map((e) => Number((e as HTMLElement).dataset.slot)));
+
+  expect(after, "the time just booked is still on offer").not.toContain(target);
+  /* The cleanup gap has to take the touching times with it, or the studio
+     runs late all day. A 60 minute treatment blocks more than its own hour. */
+  expect(
+    before.length - after.length,
+    "booking should remove the slot AND the ones too close to leave a cleanup gap",
+  ).toBeGreaterThan(1);
+  /* And nothing may appear out of nowhere. */
+  expect(after.filter((s) => !before.includes(s)), "slots appeared after a booking").toEqual([]);
+});
+
+/*
+  The directory demo.
+
+  The banner again, for the sharpest version of the reason: these entries
+  read like real small farms in real Maine towns, so the page saying they
+  are invented is the only thing between a visitor and a wrong belief.
+
+  Then the one piece of real logic, which here is that the filters COMBINE.
+  A filter set that replaces the previous one instead of narrowing with it
+  looks completely normal until somebody ticks two boxes, and the count is
+  the only thing that would have told them.
+*/
+test("/demo/directory says the growers are invented, before anything else", async ({ page }) => {
+  await page.goto("/demo/directory");
+
+  await expect(page.getByText(/every grower listed here is invented/i).first()).toBeVisible();
+
+  const { at, h1At } = await noticeComesFirst(page, /every grower listed here is invented/i);
+  expect(at).toBeGreaterThanOrEqual(0);
+  expect(at, "the demo notice must precede the listings").toBeLessThan(h1At);
+});
+
+test("/demo/directory filters narrow together, and an empty result says what to drop", async ({
+  page,
+}) => {
+  await page.goto("/demo/directory");
+
+  const count = page.getByTestId("dir-count");
+  const cards = page.getByTestId("dir-results").locator("> li");
+  const all = await cards.count();
+  expect(all, "the directory should list something to begin with").toBeGreaterThan(5);
+
+  /* One filter narrows, and every surviving card actually carries it. */
+  await page.getByTestId("cat-Seafood").click();
+  const seafood = await cards.count();
+  expect(seafood).toBeLessThan(all);
+  await expect(count).toContainText(`${seafood} of ${all}`);
+  for (const c of await cards.all())
+    await expect(c.locator('[data-cat="Seafood"]')).toHaveCount(1);
+
+  /*
+    A second filter narrows FURTHER rather than replacing the first. This is
+    the assertion the whole test exists for: a facet UI that swaps filters
+    instead of combining them passes every other check on this page.
+  */
+  await page.getByTestId("town-Friendship").click();
+  const both = await cards.count();
+  expect(both, "adding a town should narrow the seafood list, not reset it").toBeLessThan(seafood);
+  expect(both).toBeGreaterThan(0);
+
+  /* Now ask for something that cannot exist, and expect a way out of it. */
+  await page.getByTestId("town-Friendship").click();
+  await page.getByTestId("cat-Seafood").click();
+  await page.getByTestId("cat-Dairy").click();
+  await page.getByTestId("town-Friendship").click();
+  await expect(page.getByTestId("dir-empty")).toBeVisible();
+
+  /*
+    Dairy in Friendship fails on two counts at once, so the page must offer
+    BOTH ways out rather than picking one and sounding certain. That
+    ambiguity is why lib/demo-directory.ts returns a list.
+  */
+  await expect(page.getByTestId("loosen-categories")).toBeVisible();
+  await expect(page.getByTestId("loosen-towns")).toBeVisible();
+
+  /* And the way out has to work. */
+  await page.getByTestId("loosen-towns").click();
+  await expect(page.getByTestId("dir-empty")).toHaveCount(0);
+  expect(await cards.count()).toBeGreaterThan(0);
+});
+
+/*
+  The showcase.
+
+  One test, and it is about the links rather than the look: /demo exists so
+  three demos can be presented together, and a card that does not reach its
+  demo makes the page worse than not having it.
+*/
+test("/demo reaches all three demos and says they are invented", async ({ page }) => {
+  await page.goto("/demo");
+
+  for (const href of ["/demo/shop", "/demo/studio", "/demo/directory"])
+    await expect(page.locator(`a[href="${href}"]`), `${href} should be linked from /demo`).toHaveCount(1);
+
+  await expect(page.getByText(/businesses in them are invented/i)).toBeVisible();
+
+  /* Follow one through, so the link is proven rather than merely present. */
+  await page.locator('a[href="/demo/studio"]').click();
+  await expect(page).toHaveURL(/\/demo\/studio$/);
+  await expect(page.getByTestId("service-signature")).toBeVisible();
 });
