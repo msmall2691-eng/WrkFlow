@@ -38,7 +38,7 @@ export default function WorkBelow() {
           page ever lands, that is the moment to add the link, not before.
         */}
         <h2 className="text-[1.75rem] font-semibold tracking-tight text-[var(--cp-ink)] sm:text-4xl">
-          Things I built that are running right now.
+          Running in real businesses right now.
         </h2>
         <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[var(--cp-muted)]">
           Real businesses use each of these every day. Open one to see what it

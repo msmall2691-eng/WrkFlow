@@ -76,15 +76,15 @@ export default function PanelWindow() {
     >
       <figure className="cp-tile cp-tilt relative m-0 overflow-hidden">
         <div className="flex items-center gap-2 border-b border-[color:var(--cp-line)] px-4 py-2.5">
-          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-white/10" />
-          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-white/10" />
-          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-white/10" />
-          <span className="ml-3 min-w-0 flex-1 truncate rounded-md bg-white/[0.04] px-2.5 py-1 font-mono text-[11px] text-[color:var(--cp-faint)]">
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+          <span className="ml-3 min-w-0 flex-1 truncate rounded-md bg-[color:var(--cp-fill)] px-2.5 py-1 font-mono text-[11px] text-[color:var(--cp-faint)]">
             {address}
           </span>
         </div>
 
-        <div className="relative aspect-[16/10] w-full bg-black/40 lg:aspect-auto lg:h-[clamp(200px,calc(100svh-610px),360px)]">
+        <div className="relative aspect-[16/10] w-full bg-[color:var(--cp-well)] lg:aspect-auto lg:h-[clamp(200px,calc(100svh-610px),360px)]">
           {FRAMES.map((f, i) =>
             shown.includes(i) ? (
               <Image
@@ -102,7 +102,7 @@ export default function PanelWindow() {
           )}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#08070c]/90 to-transparent"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[color:var(--cp-scrim)] to-transparent"
           />
         </div>
 
@@ -138,7 +138,7 @@ export default function PanelWindow() {
               className={`relative min-h-11 overflow-hidden rounded-xl border px-3 py-2.5 text-left text-[13px] font-medium transition-colors duration-150 ${
                 on
                   ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)] text-[color:var(--cp-ink)]"
-                  : "border-[color:var(--cp-line)] bg-white/[0.02] text-[color:var(--cp-muted)] hover:text-[color:var(--cp-ink)]"
+                  : "border-[color:var(--cp-line)] bg-[color:var(--cp-fill)] text-[color:var(--cp-muted)] hover:text-[color:var(--cp-ink)]"
               }`}
             >
               {f.title}

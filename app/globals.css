@@ -921,6 +921,23 @@ html[data-fog="1"] .elevate {
   --cp-amber: #fbbf24;
   --cp-amber-line: rgba(251, 191, 36, 0.3);
 
+  /* The two weights every panel border and sunken fill now uses, instead of
+     a hardcoded white at one of seven opacities. White on near-black is
+     invisible on cream, which is the whole reason these are tokens. */
+  /* The label colour for a button filled with --cp-ink. Hardcoding #08070c
+     worked only while ink was always near-white: in Daylight ink is navy, so
+     the header's Book a call went navy-on-near-black and vanished. */
+  --cp-on-ink: #08070c;
+  /* The well a product screenshot sits in, and the scrim that fades its
+     bottom edge. Both were hardcoded black: unnoticeable depth on
+     near-black, a grey veil over the screenshot on cream. */
+  --cp-well: rgba(0, 0, 0, 0.4);
+  --cp-scrim: rgba(8, 7, 12, 0.9);
+  --cp-hairline: rgba(255, 255, 255, 0.14);
+  --cp-hairline-strong: rgba(255, 255, 255, 0.28);
+  --cp-fill: rgba(255, 255, 255, 0.035);
+  --cp-fill-strong: rgba(255, 255, 255, 0.08);
+
   --color-base: #08070c;
   --color-surface: #12101a;
   --color-elevated: #17141f;
@@ -1045,4 +1062,133 @@ body:has(.cp) { background: #08070c; }
   .cp-progress { transform: scaleX(1) !important; }
   .cp-tilt, .cp-glow { transform: none !important; }
   .cp-row:hover { transform: none; }
+}
+
+/* ============================================================
+   Daylight for the V2 panel (`.cp`)
+
+   **The whole site already defaulted to light and the panel did not.**
+   Middleware sends `light` for every route and the pre-paint script sets
+   `data-theme="light"` unless somebody stored Harbor, but `.cp` hardcoded
+   `background:#08070c` with no light branch — so every page wearing the
+   panel was dark regardless of the theme, including the case studies. Meg
+   asked for clean and modern over near-black, which is the Nov 1 "V2 is
+   near-black" decision reversed: the aurora stays, as accent rather than
+   canvas.
+
+   Done as a `[data-theme="light"]` branch rather than by rewriting `.cp`,
+   so Harbor survives as a real choice in ⌘K and the diff stays readable.
+
+   **Two tokens had ratios measured on the wrong ground.** The branch at
+   the top of this file already pointed `.cp .text-signal` and `.marker` at
+   `--cp-violet-ink` in Daylight, with a comment quoting 9.25:1 and
+   10.78:1 — true against #08070c, which is what `.cp` was. On cream
+   #b9a2ff is ~2.1:1 and #2dd4bf ~1.8:1. Those rules are left exactly as
+   they are and the *tokens* are re-pointed here, so the selector logic in
+   that comment still holds and the colours become ones this ground can
+   carry. That is the #115 / #118 failure caught before it shipped rather
+   than after.
+   ============================================================ */
+:root[data-theme="light"] .cp {
+  color-scheme: light;
+  background: #f7f4ef;
+  color: #0b1722;
+
+  --cp-ink: #0b1722;
+  --cp-soft: #3f4a58;
+  --cp-muted: #4a5563;
+  --cp-faint: #5a6572;
+  --cp-line: rgba(11, 23, 34, 0.1);
+
+  /* Fills keep their saturation because they carry white labels; inks are
+     darkened until cream can hold them. Measured on #f7f4ef: violet-ink
+     7.3:1, teal 5.6:1, pink 6.0:1, amber 5.1:1. */
+  --cp-violet: #7c3aed;
+  --cp-violet-ink: #6d28d9;
+  --cp-violet-line: rgba(124, 58, 237, 0.35);
+  --cp-violet-wash: rgba(124, 58, 237, 0.1);
+  --cp-teal: #0f766e;
+  --cp-pink: #be185d;
+  --cp-amber: #a16207;
+  --cp-amber-line: rgba(161, 98, 7, 0.3);
+
+  --cp-on-ink: #ffffff;
+  --cp-well: rgba(11, 23, 34, 0.05);
+  --cp-scrim: rgba(255, 255, 255, 0.92);
+  --cp-hairline: rgba(11, 23, 34, 0.13);
+  --cp-hairline-strong: rgba(11, 23, 34, 0.26);
+  --cp-fill: rgba(11, 23, 34, 0.035);
+  --cp-fill-strong: rgba(11, 23, 34, 0.07);
+
+  --color-base: #f7f4ef;
+  --color-surface: #ffffff;
+  --color-elevated: #ffffff;
+  --color-line: rgba(11, 23, 34, 0.1);
+  --color-ink: #0b1722;
+  --color-muted: #4a5563;
+  --color-faint: #5a6572;
+  --color-signal: #7c3aed;
+  --color-signal-dim: #6d28d9;
+  --color-signal-glow: rgba(124, 58, 237, 0.12);
+  --color-gold: #0f766e;
+  --color-gold-dim: #115e59;
+  --hero-bg: #f7f4ef;
+  --section-alt-bg: #f1ede6;
+  --section-alt2-bg: #faf8f4;
+  --panel-bg: #ffffff;
+  --panel-line: rgba(11, 23, 34, 0.1);
+  --panel-ink: #0b1722;
+  --panel-muted: rgba(11, 23, 34, 0.68);
+  --panel-faint: rgba(11, 23, 34, 0.62);
+  --panel-input-bg: rgba(11, 23, 34, 0.04);
+  --nav-hero-ink: rgba(11, 23, 34, 0.6);
+  --nav-hero-ink2: #0b1722;
+  --nav-hero-line: rgba(11, 23, 34, 0.25);
+  --nav-hero-line2: rgba(11, 23, 34, 0.5);
+  --moon-disc: transparent;
+  --moon-rim: #0b1722;
+  --moon-lit: #0b1722;
+  --wm-ink: rgba(11, 23, 34, 0.13);
+  --wm-stroke: rgba(11, 23, 34, 0.2);
+}
+:root[data-theme="light"] body:has(.cp) { background: #f7f4ef; }
+
+/*
+  Cards, not glass. The dark panel floats translucent tiles over the
+  aurora; on cream that reads as grubby, so Daylight gets opaque white with
+  a hairline and a shadow you have to look for. No backdrop blur: there is
+  nothing behind them worth blurring once the ground is pale.
+*/
+:root[data-theme="light"] .cp-tile {
+  background: #ffffff;
+  border-color: rgba(11, 23, 34, 0.09);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: 0 1px 2px rgba(11, 23, 34, 0.04), 0 10px 28px -18px rgba(11, 23, 34, 0.22);
+}
+:root[data-theme="light"] .cp-tile:hover { border-color: rgba(124, 58, 237, 0.34); }
+:root[data-theme="light"] .cp-tile-cta {
+  background: linear-gradient(160deg, rgba(124, 58, 237, 0.1), rgba(190, 24, 93, 0.05) 70%, #ffffff);
+}
+:root[data-theme="light"] .cp-row:hover { background: rgba(124, 58, 237, 0.07); }
+:root[data-theme="light"] .cp-kbd { border-color: rgba(11, 23, 34, 0.18); }
+
+/* The hero ramp, in inks cream can carry: 6.0:1, 5.6:1, 6.0:1 across the
+   sweep. #b9a2ff opened the dark one at ~2:1 here. */
+:root[data-theme="light"] .cp-grad {
+  background: linear-gradient(90deg, #7c3aed, #0f766e 55%, #be185d);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/*
+  The aurora survives as a tint rather than the canvas — "colour as accent"
+  is the whole brief. Roughly a third of the dark opacities, which on cream
+  lands as a wash you notice only when you look for it.
+*/
+:root[data-theme="light"] .cp-a1 { background: rgba(124, 58, 237, 0.14); }
+:root[data-theme="light"] .cp-a2 { background: rgba(13, 148, 136, 0.1); }
+:root[data-theme="light"] .cp-a3 { background: rgba(190, 24, 93, 0.08); }
+:root[data-theme="light"] .cp-glow {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.07), transparent 62%);
 }
