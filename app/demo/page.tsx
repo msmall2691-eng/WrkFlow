@@ -83,7 +83,7 @@ export default function DemoIndexPage() {
         </div>
 
         <div className="relative z-10">
-          <PanelHeader bookHref="/?offer=call#contact" />
+          <PanelHeader current="/demo" bookHref="/?offer=call#contact" />
         </div>
 
         <main className="relative z-10">

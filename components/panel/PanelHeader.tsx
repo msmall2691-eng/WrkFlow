@@ -4,11 +4,22 @@ import PaletteButton from "./PaletteButton";
 
 /*
   PanelHeader — the V2 header, shared by the homepage panel and the V2 inner
-  pages (/brightbase first). Five links, ⌘K, one call to action. Anything
+  pages (/brightbase first). Six links, ⌘K, one call to action. Anything
   else belongs in ⌘K or the footer, not here (Meg: keep it calm).
+
+  It was five until /demo existed. Meg asked for the sixth once the three
+  demos shipped, because a showcase nothing links to is a showcase nobody
+  opens, and she is about to start posting. Recorded here so the count is
+  not quietly trimmed back to five by somebody reading the old note: the
+  calm instruction still stands, this one link was a decision.
+
+  Demos sits next to Work because they are the same argument twice. Work is
+  what she built for real clients, Demos is what somebody can click right
+  now. Both come before the product and the price.
 */
 const NAV = [
   { href: "/#work", label: "Work" },
+  { href: "/demo", label: "Demos" },
   { href: "/brightbase", label: "BrightBase" },
   { href: "/services", label: "Services" },
   { href: "/tools", label: "Tools" },
@@ -36,7 +47,17 @@ export default function PanelHeader({
         </span>
         Studio
       </Link>
-      <nav aria-label="Main" className="hidden flex-wrap gap-6 text-[14px] md:flex">
+      {/*
+        Tighter links between md and lg, the designed gap-6 from 1024 up.
+
+        The sixth link put the header's contents 47px over the line at
+        exactly 768, which is the md breakpoint where the nav first appears
+        and iPad portrait, so the whole header wrapped to a second row
+        there and nowhere else. Measured: 81px tall at 820 and above, 129px
+        at 768. A 14px gap in that one band puts it back on one row without
+        crowding the desktop nav, which is where it is actually read.
+      */}
+      <nav aria-label="Main" className="hidden flex-wrap gap-3.5 text-[14px] md:flex lg:gap-6">
         {NAV.map((n) => (
           <Link
             key={n.href}
