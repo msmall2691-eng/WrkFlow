@@ -148,7 +148,7 @@ export default function MarketplacePage() {
                     <div className="mt-8 flex flex-wrap items-center gap-4">
                       <Link
                         href="/welcome-book"
-                        className="inline-flex items-center gap-2 rounded-full bg-[color:var(--cp-ink)] px-6 py-3 text-sm font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                        className="inline-flex items-center gap-2 rounded-full bg-[color:var(--cp-ink)] px-6 py-3 text-sm font-semibold text-[color:var(--cp-on-ink)] no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                       >
                         See it and get one
                         <span aria-hidden="true">→</span>
@@ -232,7 +232,7 @@ export default function MarketplacePage() {
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Link
                   href="/brightbase"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.2] px-6 py-3 text-sm font-semibold text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:bg-white/[0.05]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--cp-hairline-strong)] px-6 py-3 text-sm font-semibold text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:bg-[color:var(--cp-fill-strong)]"
                 >
                   Take a look at BrightBase
                   <span aria-hidden="true">→</span>
@@ -267,14 +267,14 @@ export default function MarketplacePage() {
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link
                   href="/?offer=custom#contact"
-                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--cp-ink)] px-7 py-3.5 text-sm font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--cp-ink)] px-7 py-3.5 text-sm font-semibold text-[color:var(--cp-on-ink)] no-underline transition-transform duration-150 hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
                 >
                   Start a conversation
                   <span aria-hidden="true">→</span>
                 </Link>
                 <Link
                   href="/services"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.2] px-7 py-3.5 text-sm font-semibold text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:bg-white/[0.05]"
+                  className="inline-flex items-center gap-2 rounded-full border border-[color:var(--cp-hairline-strong)] px-7 py-3.5 text-sm font-semibold text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:bg-[color:var(--cp-fill-strong)]"
                 >
                   Scope and pricing
                   <span aria-hidden="true">→</span>

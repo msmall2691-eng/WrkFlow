@@ -74,7 +74,7 @@ export default function PanelHeader({
       <div className="flex flex-wrap items-center gap-2.5">
         <PaletteButton
           label="Search the site or run a tool"
-          className="flex min-h-10 cursor-pointer items-center gap-2.5 rounded-[10px] border border-white/[0.12] bg-white/[0.03] py-2 pl-3 pr-2.5 text-[13px] text-[color:var(--cp-muted)] transition-colors duration-150 hover:text-[color:var(--cp-ink)]"
+          className="flex min-h-10 cursor-pointer items-center gap-2.5 rounded-[10px] border border-[color:var(--cp-hairline-strong)] bg-[color:var(--cp-fill)] py-2 pl-3 pr-2.5 text-[13px] text-[color:var(--cp-muted)] transition-colors duration-150 hover:text-[color:var(--cp-ink)]"
         >
           <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="7" />
@@ -85,7 +85,7 @@ export default function PanelHeader({
         <BookCall
           where="nav"
           fallbackHref={bookHref}
-          className="rounded-[10px] bg-[color:var(--cp-ink)] px-4 py-2.5 text-[14px] font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5"
+          className="rounded-[10px] bg-[color:var(--cp-ink)] px-4 py-2.5 text-[14px] font-semibold text-[color:var(--cp-on-ink)] no-underline transition-transform duration-150 hover:-translate-y-0.5"
         >
           Book a free call
         </BookCall>

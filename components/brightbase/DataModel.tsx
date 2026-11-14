@@ -44,7 +44,7 @@ function NodeButton({
           ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)]"
           : linked
             ? "border-[rgba(45,212,191,0.55)] bg-[rgba(45,212,191,0.08)]"
-            : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-white/20"
+            : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-[color:var(--cp-hairline-strong)]"
       }`}
     >
       <span className="text-[14.5px] font-semibold text-[color:var(--cp-ink)]">{node.label}</span>

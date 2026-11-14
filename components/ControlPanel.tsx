@@ -65,7 +65,11 @@ export default function ControlPanel() {
         <span className="cp-aurora cp-a3" />
         <span className="cp-glow" />
       </div>
-      <WeatherLayer ink="light" />
+      {/* `auto` reads `data-theme` and inks the rain and snow to match —
+          dark marks on cream, light on navy. This was pinned to "light"
+          because the panel was dark whatever the theme; now that it follows
+          Daylight, pinning it would paint white streaks onto cream. */}
+      <WeatherLayer />
 
       <PanelHeader />
 
@@ -82,7 +86,8 @@ export default function ControlPanel() {
             Software that runs <span className="cp-grad">real businesses.</span>
           </h1>
           <p className="m-0 max-w-[30em] text-[17px] leading-relaxed text-[color:var(--cp-muted)]">
-            I design and build websites, web apps and custom tools for small businesses.
+            Websites, web apps and custom tools for small businesses. Built to
+            bring work in, and to cut the manual parts out.
           </p>
           <div className="flex flex-wrap gap-3">
             <BookCall
@@ -93,7 +98,7 @@ export default function ControlPanel() {
             </BookCall>
             <a
               href="#work"
-              className="inline-flex items-center rounded-xl border border-white/[0.16] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-white/30"
+              className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-hairline-strong)]"
             >
               See the work
             </a>
@@ -121,14 +126,14 @@ export default function ControlPanel() {
           not in `caseStudies` and so is not one of the cards below.
         */}
         <section aria-labelledby="cp-work" className="cp-tile col-span-12 flex min-w-0 flex-col gap-0.5 p-4 md:col-span-6 lg:col-span-4">
-          <h2 id="cp-work" className="m-0 mb-2 px-2.5 text-[13px] font-medium text-[color:var(--cp-soft)]">My work</h2>
+          <h2 id="cp-work" className="m-0 mb-2 px-2.5 text-[13px] font-medium text-[color:var(--cp-soft)]">Built and running</h2>
           <Link
             href="/brightbase"
             className="cp-row group flex items-center justify-between gap-3 rounded-[10px] px-2.5 py-1.5 text-[color:var(--cp-ink)] no-underline"
           >
             <span className="flex min-w-0 flex-col gap-0.5">
               <span className="text-[14.5px] font-semibold">BrightBase</span>
-              <span className="line-clamp-1 text-[12.5px] text-[color:var(--cp-muted)]">The operations app I built and run my cleaning company on.</span>
+              <span className="line-clamp-1 text-[12.5px] text-[color:var(--cp-muted)]">The operations app behind an eight-year-old cleaning company.</span>
             </span>
             <Arrow />
           </Link>

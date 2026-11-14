@@ -71,7 +71,7 @@ export default function BrightBasePage() {
                 </OfferLink>
                 <a
                   href="#inside"
-                  className="inline-flex items-center rounded-xl border border-white/[0.16] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-white/30"
+                  className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-hairline-strong)]"
                 >
                   See what&apos;s inside
                 </a>
@@ -156,11 +156,11 @@ export default function BrightBasePage() {
               <div className="flex flex-wrap gap-3">
                 <BookCall
                   where="brightbase"
-                  className="rounded-[10px] bg-[color:var(--cp-ink)] px-4 py-3 text-[14px] font-semibold text-[#08070c] no-underline transition-transform duration-150 hover:-translate-y-0.5"
+                  className="rounded-[10px] bg-[color:var(--cp-ink)] px-4 py-3 text-[14px] font-semibold text-[color:var(--cp-on-ink)] no-underline transition-transform duration-150 hover:-translate-y-0.5"
                 >
                   Book a 15-min demo
                 </BookCall>
-                <OfferLink offer="brightbase" className="rounded-[10px] border border-white/[0.2] px-4 py-3 text-[14px] font-medium text-[color:var(--cp-ink)] no-underline">
+                <OfferLink offer="brightbase" className="rounded-[10px] border border-[color:var(--cp-hairline-strong)] px-4 py-3 text-[14px] font-medium text-[color:var(--cp-ink)] no-underline">
                   Ask a question
                 </OfferLink>
               </div>

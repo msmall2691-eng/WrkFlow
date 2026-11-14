@@ -21,12 +21,12 @@ export function Frame({ shot }: { shot?: Shot }) {
       >
         {!phone ? (
           <div className="flex items-center gap-2 border-b border-[color:var(--cp-line)] px-4 py-2.5" aria-hidden="true">
-            <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
-            <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
           </div>
         ) : null}
-        <div className={`relative w-full ${phone ? "aspect-[9/19.5] overflow-hidden rounded-[26px]" : "aspect-[16/10]"} bg-black/40`}>
+        <div className={`relative w-full ${phone ? "aspect-[9/19.5] overflow-hidden rounded-[26px]" : "aspect-[16/10]"} bg-[color:var(--cp-well)]`}>
           <Image src={shot.src} alt={shot.alt} fill sizes={phone ? "300px" : "(min-width: 1024px) 60vw, 100vw"} className="object-cover object-top" />
         </div>
       </div>
@@ -58,7 +58,7 @@ export function Pipeline() {
               className={`flex min-h-11 items-center gap-2 rounded-xl border px-3 py-2.5 text-left text-[14px] font-medium transition-colors duration-150 ${
                 on
                   ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)] text-[color:var(--cp-ink)]"
-                  : "border-[color:var(--cp-line)] bg-white/[0.02] text-[color:var(--cp-muted)] hover:text-[color:var(--cp-ink)]"
+                  : "border-[color:var(--cp-line)] bg-[color:var(--cp-fill)] text-[color:var(--cp-muted)] hover:text-[color:var(--cp-ink)]"
               }`}
             >
               <span className="font-mono text-[11px] text-[color:var(--cp-faint)]">{String(n + 1).padStart(2, "0")}</span>
@@ -105,8 +105,8 @@ export function Roles() {
               }}
               className={`min-h-11 rounded-full border px-5 py-2.5 text-[14px] font-medium transition-colors duration-150 ${
                 on
-                  ? "border-[color:var(--cp-ink)] bg-[color:var(--cp-ink)] text-[#08070c]"
-                  : "border-white/[0.14] bg-white/[0.03] text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]"
+                  ? "border-[color:var(--cp-ink)] bg-[color:var(--cp-ink)] text-[color:var(--cp-on-ink)]"
+                  : "border-[color:var(--cp-hairline-strong)] bg-[color:var(--cp-fill)] text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]"
               }`}
             >
               {r.label}
@@ -130,7 +130,7 @@ export function Roles() {
                     className={`w-full rounded-2xl border p-4 text-left transition-colors duration-150 ${
                       on
                         ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)]"
-                        : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-white/20"
+                        : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-[color:var(--cp-hairline-strong)]"
                     }`}
                   >
                     <span className="block text-[15.5px] font-semibold text-[color:var(--cp-ink)]">{f.title}</span>

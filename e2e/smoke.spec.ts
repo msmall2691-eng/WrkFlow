@@ -405,12 +405,22 @@ test('the work anchor is unique and lands on the case studies', async ({ page })
     'exactly one element may carry id="work"',
   ).toBe(1);
 
-  /* The target is the section that shows the work, not a list of its names. */
+  /*
+    The target is the section that shows the work, not a list of its names.
+
+    The phrase moved with the copy: the heading was "Things I built that are
+    running right now" and is now "Running in real businesses right now",
+    because the site stopped writing in the first person. This assertion is
+    only here to tell the two sections apart — the cards section from the
+    small tile in the panel that lists the same projects by name — so it is
+    matched on "real businesses", the half of the heading that does that job
+    and is not shared with the tile's "Built and running".
+  */
   const section = anchors.first();
   await expect(
     section.getByRole("heading", { level: 2 }),
     "the anchor should land on the work section's own heading",
-  ).toContainText(/running right now/i);
+  ).toContainText(/running in real businesses/i);
 
   const cards = section.locator("ul > li a[href^='/work/']");
   expect(
