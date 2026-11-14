@@ -848,3 +848,27 @@ test("/demo reaches all three demos and says they are invented", async ({ page }
   await expect(page).toHaveURL(/\/demo\/studio$/);
   await expect(page.getByTestId("service-signature")).toBeVisible();
 });
+
+/*
+  The demos are reachable without knowing the URL.
+
+  /demo existed for a day with nothing linking to it, because a sixth nav
+  link was Meg's call rather than mine. She made it. This test is what
+  stops the link being tidied away again by somebody reading PanelHeader's
+  older "five links" note, which is the likeliest way it would disappear.
+
+  Asserted by following it rather than by matching markup: a link that is
+  present and wrong is the failure worth catching, and the nav is where
+  most people will meet the demos at all.
+*/
+test("the nav reaches the demos showcase", async ({ page }) => {
+  await page.goto("/");
+
+  const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Demos" });
+  await expect(link, "the main nav should offer Demos").toHaveCount(1);
+
+  await link.click();
+  await expect(page).toHaveURL(/\/demo$/);
+  /* And it lands on the showcase, not on one of the demos. */
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(/three demos/i);
+});

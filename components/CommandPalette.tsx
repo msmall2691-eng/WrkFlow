@@ -77,6 +77,18 @@ export default function CommandPalette() {
       },
       { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
       {
+        id: "demos",
+        label: "Demos",
+        hint: "↗",
+        group: "Navigate",
+        keywords:
+          "demo demos examples storefront shop ecommerce booking appointments scheduling directory search filter try clickable sample",
+        run: () => {
+          close();
+          window.location.href = "/demo";
+        },
+      },
+      {
         id: "brightbase",
         label: "BrightBase",
         hint: "↗",
