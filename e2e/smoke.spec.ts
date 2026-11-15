@@ -4,7 +4,7 @@ import { test, expect, type Page } from "@playwright/test";
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { services, work } from "../lib/content";
+import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1061,4 +1061,77 @@ test("the four service doors route, and their counts are real", async ({ page })
     page.locator(`#${first.id}`),
     "the services page should have the anchor the door points at",
   ).toBeVisible();
+});
+
+/*
+  The ladder on /services resolves, and nothing on sale is orphaned.
+
+  Three separate things this guards, all of which fail silently.
+
+  **One: every id resolves.** `ladder` carries ids rather than retyped
+  prices, because /services and /marketplace had already drifted into
+  quoting the same business two different ways. The component drops an item
+  whose id matches nothing — the alternative is a card with a blank price,
+  which reads as a styling bug and sits there for weeks. That means a typo
+  or a retired product thins this page in a way nobody would notice, so it
+  is asserted here instead.
+
+  **Two: every fixed-price job is placed.** All four `smallProjects` used to
+  have a block of their own on /services, which was the only place a visitor
+  could learn that a $300 job was on offer at all. That block is gone and
+  the ladder carries them beside the problem each one solves. If a future
+  edit drops one from `ladder`, it would vanish from the site entirely
+  rather than merely move, and the page would still look perfectly fine.
+
+  **Three: the rendered page agrees.** Resolving in Node proves the data is
+  sound and says nothing about whether any of it reached the DOM. The prices
+  are read off the live page for that reason.
+*/
+test("every price on the services ladder resolves to its one source", async ({
+  page,
+}) => {
+  /* Data first: fail with the offending id rather than with "0 prices found". */
+  const orphans: string[] = [];
+  for (const item of ladder) {
+    if (item.market) {
+      if (!marketItems.some((m) => m.id === item.market))
+        orphans.push(`market "${item.market}"`);
+    } else if (item.project) {
+      if (!smallProjects.some((p) => p.offer === item.project))
+        orphans.push(`project "${item.project}"`);
+    } else if (!item.title || !item.price || !item.body) {
+      orphans.push(`inline item on "${item.service}" is missing title/price/body`);
+    }
+  }
+  expect(orphans, "every ladder id should resolve to a real product or project").toEqual([]);
+
+  /* Every service the page shows has at least a way in and a way to commission. */
+  for (const s of services) {
+    const rungs = new Set(ladder.filter((i) => i.service === s.id).map((i) => i.rung));
+    expect(rungs.has("build"), `"${s.id}" should offer a full build`).toBe(true);
+  }
+
+  /* Every fixed-price job is somewhere on it. */
+  for (const p of smallProjects) {
+    expect(
+      ladder.some((i) => i.project === p.offer),
+      `"${p.title}" (${p.price}) should be on the ladder, or it is on sale nowhere`,
+    ).toBe(true);
+  }
+
+  /* And it actually renders. */
+  await page.goto("/services");
+  /* textContent, not innerText: a price inside a clipped or visually hidden
+     element still counts as the page carrying it, and innerText drops
+     exactly those. */
+  const text = await page
+    .locator("#websites, #leads, #software, #integrations")
+    .evaluateAll((els) => els.map((e) => e.textContent ?? "").join(" "));
+
+  for (const p of smallProjects)
+    expect(text, `${p.title} should appear on the rendered ladder`).toContain(p.price);
+
+  /* A free rung is the cheapest way in and the easiest thing to lose in a
+     tidy-up, so assert it survived to the page rather than only to the data. */
+  expect(text, "the ladder should offer something free").toContain("Free");
 });

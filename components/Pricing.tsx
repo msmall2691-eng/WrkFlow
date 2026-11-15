@@ -1,7 +1,7 @@
 import FAQ from "./FAQ";
 import OfferLink from "./OfferLink";
 import BookCall from "./BookCall";
-import { appOffer, smallProjects, studioStats, testimonial } from "@/lib/content";
+import { appOffer, studioStats, testimonial } from "@/lib/content";
 
 /*
   Pricing — the "harbor at night" pricing section. Two ways to work together:
@@ -146,29 +146,25 @@ export default function Pricing() {
             </article>
         </div>
 
-        <div className="mt-8 rounded-2xl border border-line bg-surface/40 p-5 sm:p-7">
-            <h3 className="display text-xl text-ink">Smaller projects</h3>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-              Start with one piece of the work. These are estimates for a focused project;
-              larger refreshes, complex data, and multiple connections get their own quote.
-            </p>
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              {smallProjects.map((project) => (
-                <article key={project.offer} className="flex flex-col rounded-xl border border-line bg-base/60 p-5">
-                  <h4 className="text-sm font-semibold text-ink">{project.title}</h4>
-                  <p className="mt-2 font-display text-2xl text-signal">{project.price}</p>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{project.scope}</p>
-                  <OfferLink offer={project.offer} className="mt-4 inline-flex w-fit items-center gap-2 text-sm font-semibold text-signal hover:text-ink">
-                    Ask about this <span aria-hidden="true">→</span>
-                  </OfferLink>
-                </article>
-              ))}
-            </div>
-            <p className="mt-4 text-xs leading-relaxed text-faint">
-              Platform subscriptions, paid plugins, and other third-party costs are quoted separately.
-              The Care Plan covers website upkeep; software and integration support are scoped separately.
-            </p>
-        </div>
+        {/*
+          The "Smaller projects" grid is gone, and this note is why.
+
+          It listed all four `smallProjects` — website updates, CRM setup,
+          data migration, one integration — as a block of their own, which
+          was the only place on the site a visitor could see that a $300 job
+          was even on offer. The ladder under each service on this same page
+          now carries each of those four beside the problem it solves, which
+          is both a better place for them and one copy instead of two. Four
+          duplicated cards on one page is the thing the homepage rebuild was
+          about.
+
+          Nothing was lost in the move: `smallProjects` is still their one
+          source, every `offer` key still routes to this page's contact form
+          through the ladder's own OfferLink, and a test asserts all four are
+          placed. The third-party-costs caveat moved into the strip below,
+          since it qualifies the custom build too and was never only about
+          the small tier.
+        */}
 
         {/* Under-row strip — the softer second option and the founding terms,
             kept out of the cards so nothing sits below a button (survey O-06). */}
@@ -187,6 +183,14 @@ export default function Pricing() {
               </p>
             )}
           </div>
+
+        {/* Moved here from the retired small-projects block: it qualifies
+            every tier on the page, not just the cheapest one. */}
+        <p className="mt-4 text-xs leading-relaxed text-faint">
+          Platform subscriptions, paid plugins, and other third-party costs are
+          quoted separately. The Care Plan covers website upkeep; software and
+          integration support are scoped separately.
+        </p>
 
         {/* Client words — renders only when a REAL quote exists in
             lib/content.ts (testimonial.quote). Never ship a fabricated one. */}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import ProjectVisual from "./ProjectVisual";
+import ServiceRungs from "./Ladder";
 import { services } from "@/lib/content";
 
 /*
@@ -42,6 +43,13 @@ export default function Services() {
             For small businesses, independent professionals, and teams. A new
             website, a platform switch, or one process that needs to work
             better.
+          </p>
+          {/* Says up front that each block below carries three price points,
+              because the rungs sit at the bottom of a tall row and somebody
+              scanning headings would never reach one. */}
+          <p className="mt-3 text-[1.0625rem] leading-relaxed text-muted">
+            Each one has something free to try today, something with a fixed
+            price, and a full build. Start wherever it makes sense.
           </p>
         </div>
 
@@ -131,6 +139,22 @@ export default function Services() {
                   See an example
                   <span aria-hidden="true">→</span>
                 </Link>
+              </div>
+
+              {/*
+                The three price points for this service, full width under the
+                row that just argued for it.
+
+                `lg:col-span-12` and `lg:order-last`: the evidence column
+                carries `lg:order-last` on alternating rows, and without an
+                explicit order here the rungs would land above the image on
+                every other service. `items-center` on the article centres the
+                two columns against each other, which is right for a two-up
+                row and wrong for a full-width band below it, hence
+                `self-stretch`.
+              */}
+              <div className="lg:order-last lg:col-span-12 lg:self-stretch">
+                <ServiceRungs service={s.id} />
               </div>
             </article>
           ))}

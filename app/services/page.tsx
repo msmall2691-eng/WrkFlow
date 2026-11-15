@@ -4,6 +4,7 @@ import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import Services from "@/components/Services";
 import Pricing from "@/components/Pricing";
+import ForRentals from "@/components/ForRentals";
 import Contact from "@/components/Contact";
 import CommandPalette from "@/components/CommandPalette";
 
@@ -99,6 +100,7 @@ export default function ServicesPage() {
             </div>
           </section>
           <Services />
+          <ForRentals />
           <Pricing />
           <Contact />
         </main>
