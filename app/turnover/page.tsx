@@ -62,7 +62,7 @@ export default function TurnoverPage() {
               case study is the argument, not a footnote.
             */}
             <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
-              This is one piece of a system I built for a cleaning company
+              This is one piece of a system built for a cleaning company
               with 1,000+ customers: bookings arrive, turnovers land on the
               crew schedule, nobody retypes anything.{" "}
               <Link

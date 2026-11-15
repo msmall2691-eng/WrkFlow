@@ -32,10 +32,11 @@ export default function Services() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-14 max-w-3xl">
           <h2 className="display-serif text-2xl text-ink sm:text-3xl md:text-4xl">
-            What I can help you with.
+            What gets built here.
           </h2>
-          {/* main's newer, broader audience line, kept in first person per
-              CLAUDE.md. */}
+          {/* The broader audience line. No longer first person: CLAUDE.md
+              reversed that on Nov 14, and the replacement is a change of
+              subject rather than a different pronoun. */}
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
             For small businesses, independent professionals, and teams. A new
             website, a platform switch, or one process that needs to work
@@ -47,7 +48,11 @@ export default function Services() {
           {services.map((s, i) => (
             <article
               key={s.id}
-              className="grid items-center gap-6 lg:grid-cols-12 lg:gap-12"
+              /* Deep-linkable, because the homepage router sends people to a
+                 specific one of the four rather than to the top of the page.
+                 `scroll-mt` keeps the heading clear of the sticky header. */
+              id={s.id}
+              className="grid scroll-mt-24 items-center gap-6 lg:grid-cols-12 lg:gap-12"
             >
               {/* The evidence. Alternates side at lg so three rows stay
                   scannable without needing dividers between them. */}

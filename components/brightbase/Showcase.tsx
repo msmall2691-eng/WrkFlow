@@ -130,7 +130,7 @@ export function Roles() {
                     className={`w-full rounded-2xl border p-4 text-left transition-colors duration-150 ${
                       on
                         ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)]"
-                        : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-[color:var(--cp-hairline-strong)]"
+                        : "border-[color:var(--cp-line)] bg-[color:var(--cp-option-bg)] hover:border-[color:var(--cp-hairline-strong)]"
                     }`}
                   >
                     <span className="block text-[15.5px] font-semibold text-[color:var(--cp-ink)]">{f.title}</span>

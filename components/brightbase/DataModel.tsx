@@ -44,7 +44,7 @@ function NodeButton({
           ? "border-[color:var(--cp-violet-line)] bg-[color:var(--cp-violet-wash)]"
           : linked
             ? "border-[rgba(45,212,191,0.55)] bg-[rgba(45,212,191,0.08)]"
-            : "border-[color:var(--cp-line)] bg-[rgba(18,16,26,0.62)] hover:border-[color:var(--cp-hairline-strong)]"
+            : "border-[color:var(--cp-line)] bg-[color:var(--cp-option-bg)] hover:border-[color:var(--cp-hairline-strong)]"
       }`}
     >
       <span className="text-[14.5px] font-semibold text-[color:var(--cp-ink)]">{node.label}</span>
@@ -98,7 +98,7 @@ export default function DataModel() {
             onClick={() => setPick("client")}
             className="cp-tile flex flex-col items-start gap-2 p-5 text-left transition-colors duration-150"
             style={{
-              background: "linear-gradient(150deg, rgba(139,92,246,0.30), rgba(45,212,191,0.10) 70%, rgba(18,16,26,0.6))",
+              background: "linear-gradient(150deg, var(--cp-violet-wash), rgba(45,212,191,0.10) 70%, var(--cp-option-bg))",
               ...(clientLinked ? { borderColor: "rgba(185,162,255,0.55)" } : {}),
             }}
           >

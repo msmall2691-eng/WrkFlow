@@ -931,6 +931,13 @@ html[data-fog="1"] .elevate {
   /* The well a product screenshot sits in, and the scrim that fades its
      bottom edge. Both were hardcoded black: unnoticeable depth on
      near-black, a grey veil over the screenshot on cream. */
+  /* The surface of an *unselected* option in the BrightBase showcases.
+     Three components inlined `rgba(18,16,26,0.62)` — the dark tile fill —
+     which on cream composites to a mid grey and drops the labels on it to
+     1.06:1. Codex caught it on #135 after the merge; the sweep that should
+     have caught it first skipped the layer because its alpha was below a
+     threshold I had set and then waved through by hand. */
+  --cp-option-bg: rgba(18, 16, 26, 0.62);
   --cp-well: rgba(0, 0, 0, 0.4);
   --cp-scrim: rgba(8, 7, 12, 0.9);
   --cp-hairline: rgba(255, 255, 255, 0.14);
@@ -1107,12 +1114,13 @@ body:has(.cp) { background: #08070c; }
   --cp-violet-ink: #6d28d9;
   --cp-violet-line: rgba(124, 58, 237, 0.35);
   --cp-violet-wash: rgba(124, 58, 237, 0.1);
-  --cp-teal: #0f766e;
+  --cp-teal: #115e59;
   --cp-pink: #be185d;
   --cp-amber: #a16207;
   --cp-amber-line: rgba(161, 98, 7, 0.3);
 
   --cp-on-ink: #ffffff;
+  --cp-option-bg: rgba(11, 23, 34, 0.035);
   --cp-well: rgba(11, 23, 34, 0.05);
   --cp-scrim: rgba(255, 255, 255, 0.92);
   --cp-hairline: rgba(11, 23, 34, 0.13);
@@ -1130,8 +1138,8 @@ body:has(.cp) { background: #08070c; }
   --color-signal: #7c3aed;
   --color-signal-dim: #6d28d9;
   --color-signal-glow: rgba(124, 58, 237, 0.12);
-  --color-gold: #0f766e;
-  --color-gold-dim: #115e59;
+  --color-gold: #115e59;
+  --color-gold-dim: #0f4f4a;
   --hero-bg: #f7f4ef;
   --section-alt-bg: #f1ede6;
   --section-alt2-bg: #faf8f4;
@@ -1176,7 +1184,7 @@ body:has(.cp) { background: #08070c; }
 /* The hero ramp, in inks cream can carry: 6.0:1, 5.6:1, 6.0:1 across the
    sweep. #b9a2ff opened the dark one at ~2:1 here. */
 :root[data-theme="light"] .cp-grad {
-  background: linear-gradient(90deg, #7c3aed, #0f766e 55%, #be185d);
+  background: linear-gradient(90deg, #7c3aed, #115e59 55%, #be185d);
   -webkit-background-clip: text;
   background-clip: text;
 }

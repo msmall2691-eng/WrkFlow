@@ -5,7 +5,7 @@ import Image from "next/image";
 import type { CaseStudyBuild } from "@/lib/content";
 
 /*
-  BuildScroller — the "What I built" sequence on a case study.
+  BuildScroller — the "What was built" sequence on a case study.
 
   The screen stays pinned while the bullets scroll past it; whichever bullet
   owns the middle of the viewport is the screen you are looking at. That is

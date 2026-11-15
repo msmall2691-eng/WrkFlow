@@ -163,7 +163,7 @@ export default function DemoIndexPage() {
                   href="/?offer=call#contact"
                   className="underline decoration-[color:var(--cp-ink)]/30 underline-offset-4 hover:decoration-[color:var(--cp-ink)]"
                 >
-                  Tell me what you need
+                  Say what you need
                 </Link>
                 .
               </p>
