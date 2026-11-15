@@ -2,6 +2,7 @@ import Opening from "@/components/home/Opening";
 import ServiceRouter from "@/components/panel/ServiceRouter";
 import OneJob from "@/components/home/OneJob";
 import MoreWork from "@/components/home/MoreWork";
+import TryItNow from "@/components/home/TryItNow";
 import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -40,6 +41,9 @@ import CommandPalette from "@/components/CommandPalette";
                  wrong, what got built, what changed, where to look
     MoreWork     everything the worked example does not cover, once each,
                  plus the live readout as the integrations evidence
+    TryItNow     the finished things somebody can open or buy today: the
+                 three demos, the free planner and the welcome book. All of
+                 them were unreachable from this page before
     HowToStart   what pressing send actually sets in motion
     Contact      the form, so no lead depends on a second page
     Footer
@@ -71,6 +75,7 @@ export default function Home() {
       <ServiceRouter />
       <OneJob />
       <MoreWork />
+      <TryItNow />
       <HowToStart />
       <Contact />
       <Footer />

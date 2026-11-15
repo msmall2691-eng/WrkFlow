@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
+import { demos as DEMOS } from "@/lib/content";
 import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
@@ -33,45 +34,12 @@ export const metadata: Metadata = pageMeta({
   path: "/demo",
 });
 
-type Demo = {
-  href: string;
-  kind: string;
-  name: string;
-  what: string;
-  proves: string;
-  /* The demo's own two colours, so the card previews three different looks. */
-  swatch: [string, string];
-};
-
-const DEMOS: Demo[] = [
-  {
-    href: "/demo/shop",
-    kind: "Storefront",
-    name: "Fathom & Fog",
-    what: "A print shop. Browse, filter, pick a size that changes the price, fill a cart and reach a checkout.",
-    proves:
-      "Catalog, options that affect price, and cart arithmetic that still adds up at quantity two.",
-    swatch: ["#fbf7f1", "#2f5d73"],
-  },
-  {
-    href: "/demo/studio",
-    kind: "Booking",
-    name: "Blue Hour Bodywork",
-    what: "A massage studio. Pick a treatment, a practitioner and a time, and hold it.",
-    proves:
-      "Real availability: different treatment lengths, two practitioners with different skills and shifts, appointments already on the books, and a cleanup gap between them. Book one and watch the neighbouring times disappear.",
-    swatch: ["#f3f6f5", "#2f6b63"],
-  },
-  {
-    href: "/demo/directory",
-    kind: "Directory",
-    name: "Midcoast Growers",
-    what: "A local food directory. Search, then narrow by what they grow, the day they are out, and the town.",
-    proves:
-      "Filters that combine rather than replace each other, a count that moves, and an empty result that names which filter to drop instead of showing a blank page.",
-    swatch: ["#f6f7fa", "#2d4ed8"],
-  },
-];
+/*
+  The three demos now come from lib/content.ts, so the homepage band and
+  this page cannot disagree about what exists or what each one proves.
+  They were declared here, which was fine while this was the only page
+  that showed them.
+*/
 
 export default function DemoIndexPage() {
   return (

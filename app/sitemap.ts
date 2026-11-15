@@ -67,6 +67,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    /*
+      /turnover was missing from this list entirely, which is a plain bug
+      rather than a decision. It is a finished, working, free tool — paste an
+      Airbnb or Vrbo calendar export, get the cleaning schedule with same-day
+      turnarounds flagged — it carries no `noindex`, and it is exactly the
+      page a short-term-rental host searching for this would want to land on.
+      It was simply never added, so the one page most likely to be found by a
+      stranger was the one page search engines were never told about.
+    */
+    {
+      url: `${SITE_URL}/turnover`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     {
       url: `${SITE_URL}/privacy`,
       lastModified: now,
