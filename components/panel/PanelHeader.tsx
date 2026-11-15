@@ -16,13 +16,17 @@ import PaletteButton from "./PaletteButton";
   Demos sits next to Work because they are the same argument twice. Work is
   what she built for real clients, Demos is what somebody can click right
   now. Both come before the product and the price.
+
+  Nov 15 2026: "Tools" became "Catalog", on Meg's ask that everything for
+  sale be visible up front. The count stays at six. /catalog links all eight
+  free tools directly, and /tools is still in ⌘K and the footer.
 */
 const NAV = [
   { href: "/#work", label: "Work" },
   { href: "/demo", label: "Demos" },
   { href: "/brightbase", label: "BrightBase" },
   { href: "/services", label: "Services" },
-  { href: "/tools", label: "Tools" },
+  { href: "/catalog", label: "Catalog" },
   { href: "/about", label: "About" },
 ];
 

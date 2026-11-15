@@ -57,6 +57,16 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/catalog" className="text-muted transition-colors hover:text-ink">
+                    Catalog
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/tools" className="text-muted transition-colors hover:text-ink">
+                    Free tools
+                  </Link>
+                </li>
+                <li>
                   <Link href="/marketplace" className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink">
                     <LinxMark className="h-2.5 w-auto" />
                     M Linx marketplace
