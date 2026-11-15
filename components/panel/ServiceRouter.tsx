@@ -22,10 +22,14 @@ import { services, work } from "@/lib/content";
   list — if Meg adds a fifth site it goes up on its own, and if a category
   empties out the line disappears instead of reading "0 projects".
 
-  Placed between the panel and the case studies deliberately: the panel
-  earns attention, this spends it on the one decision a visitor has to
-  make, and the work below it is the evidence for whichever door they
-  picked.
+  **It sits directly under the hero, ahead of the worked example, and the
+  order was corrected on Nov 15.** It used to land between two duplicate
+  lists of the same four projects, which made it a section inside a
+  repetition rather than a fix for one. More importantly, the worked example
+  below it is a cleaning company: a contractor or an admin firm who meets
+  that first has to work out for themselves whether any of it applies to
+  them. Four doors answer that in four words each, and the example then
+  shows what the work actually looks like.
 */
 
 /** Plural only when it needs to be; silent when there is nothing to count. */

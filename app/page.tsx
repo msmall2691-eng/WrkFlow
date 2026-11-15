@@ -1,27 +1,63 @@
-import ControlPanel from "@/components/ControlPanel";
+import Opening from "@/components/home/Opening";
 import ServiceRouter from "@/components/panel/ServiceRouter";
-import WorkBelow from "@/components/panel/WorkBelow";
+import OneJob from "@/components/home/OneJob";
+import MoreWork from "@/components/home/MoreWork";
+import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 
 /*
-  Homepage — V2, the one-screen control panel (Meg, Nov 1 2026).
+  Homepage — rebuilt from scratch (Meg, Nov 15 2026).
 
-    ControlPanel  the whole first screen: headline, real shipped screens,
-                  the work list, free tools, the five-feed live readout, and
-                  a call CTA
-    ServiceRouter the four things Meg sells, as four doors — the one place
-                  the page asks a visitor what they came for
-    WorkBelow     the case studies, which are the evidence for whichever
-                  door they picked
-    Contact       the form, directly below, so no lead depends on a second page
+  **What was here, and why it went.** V2 (Nov 1) put the whole site on one
+  screen as a control panel: a headline, a rotating window of four shipped
+  screens, a tile listing those same four projects by name, a tile of free
+  tools, and a live weather readout. Below it, three case-study cards named
+  three of the same projects again, with sentences copied verbatim from the
+  tile. The four-door service router landed between those two blocks and
+  made it worse, by putting a section in the middle of a repetition rather
+  than removing it.
+
+  Meg's verdict, which is the brief for this file: "I'm still not confident
+  sharing this, it's very redundant, I cannot see anything that would make
+  me want to have someone build something for me, and it all just looks
+  like it's all over the place."
+
+  Measured before rewriting: The Remote Admin and linx each appeared three
+  times above the fold-and-a-half, and a visitor met four project names
+  three times before reaching a single sentence about what any of them
+  changed for anybody.
+
+  **The page is now one argument, in the order it gets asked:**
+
+    Opening      who it is for, one way in, and the operating history that
+                 answers "has this person done this before"
+    ServiceRouter the four things on offer, as four doors — so somebody who
+                 is not a cleaning company finds themselves immediately,
+                 before the worked example
+    OneJob       id="work" — one project all the way through: what was
+                 wrong, what got built, what changed, where to look
+    MoreWork     everything the worked example does not cover, once each,
+                 plus the live readout as the integrations evidence
+    HowToStart   what pressing send actually sets in motion
+    Contact      the form, so no lead depends on a second page
     Footer
 
-  Everything the long homepage used to carry has a page of its own:
-  /work/[slug] for case studies, /tools for every free tool, /services for
-  scope and pricing, /about for Meg. The panel links to each, and ⌘K reaches
-  all of them.
+  **The rule the rewrite is built on: nothing appears twice.** Every project
+  in `work` is rendered in exactly one place on this page, and
+  e2e/smoke.spec.ts asserts it, because the repetition was editorial rather
+  than structural and editorial problems grow back.
+
+  The doors come BEFORE the worked example deliberately. The example is a
+  cleaning company, and a contractor or an admin firm reading it first has
+  to work out for themselves whether any of it applies to them. The doors
+  answer that in four words each, then the example shows what the work
+  actually looks like.
+
+  Everything deeper still has its own page: /work/[slug], /brightbase,
+  /tools, /services, /about, /demo. The panel header links each, and ⌘K
+  reaches all of them.
 
   `.cp` scopes the V2 palette to this page and remaps the site's shared
   tokens, so Contact and Footer pick up the same colours without being
@@ -31,9 +67,11 @@ import CommandPalette from "@/components/CommandPalette";
 export default function Home() {
   return (
     <div className="cp">
-      <ControlPanel />
+      <Opening />
       <ServiceRouter />
-      <WorkBelow />
+      <OneJob />
+      <MoreWork />
+      <HowToStart />
       <Contact />
       <Footer />
       <CommandPalette />

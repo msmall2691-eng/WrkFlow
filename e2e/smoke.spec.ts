@@ -237,31 +237,77 @@ test("the analytics beacons are not blocked by the CSP", async ({ page }) => {
 });
 
 /*
-  Touch target size on the hero reel controls.
+  Touch target size on the homepage's controls.
 
-  These shipped at 6x6 CSS px — a fine-looking dot and a target a quarter
+  **This was scoped to the hero reel, and the reel no longer exists.** Its
+  dots shipped at 6x6 CSS px — a fine-looking dot and a target a quarter of
   the 24px minimum (WCAG 2.5.8). It cost the live homepage its accessibility
   score, and nobody saw it, because a too-small button looks exactly like a
-  correctly-sized one: the dot is the same either way. The only signal was
-  a Lighthouse run after it was already merged.
+  correctly-sized one: the dot is the same either way. The only signal was a
+  Lighthouse run after it was already merged.
 
-  So the assertion is on the rendered box, not the markup. Restyling the
-  dot is fine; shrinking what a thumb has to hit is not.
+  The Nov 15 rebuild deleted the reel, which left the test selecting nothing
+  and the lesson guarding nothing. Deleting it with the component would have
+  been the tidy move and the wrong one: the rebuild immediately reintroduced
+  the same failure in a new place. Eight standalone links on the new page —
+  the worked example's three closing links, the four card links under "the
+  rest of it", and the live readout's "connect yours" — rendered between 16
+  and 23px tall at phone width, which is the only width where it matters.
+
+  So it sweeps the page instead of naming one widget. Measured at 390px,
+  because a target is only too small for a thumb.
+
+  Links sitting inside a paragraph are skipped: WCAG 2.5.8 exempts a target
+  in a sentence or block of text, and "try the free tools on this site" is
+  exactly that. Everything standalone is fair game, and a new section gets
+  checked without anybody remembering to add it here.
+
+  The assertion is on the rendered box, not the markup. Restyling a link is
+  fine; shrinking what a thumb has to hit is not.
 */
-test("the reel controls are big enough to hit", async ({ page }) => {
+test("the homepage's controls are big enough to hit on a phone", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  const dots = page.locator('[aria-label^="Show "]');
-  const n = await dots.count();
-  expect(n, "the hero reel should render its controls").toBeGreaterThan(1);
+
+  /* The page's own sections. The shared header and footer are deliberately
+     out of scope: they are not what this change touched, and sweeping them
+     here would make a homepage test fail for a footer reason. */
+  const SECTIONS = [
+    "#top",
+    'section[aria-labelledby="router-heading"]',
+    "#work",
+    'section[aria-labelledby="more-work-heading"]',
+    'section[aria-labelledby="start-heading"]',
+  ];
 
   const tooSmall: string[] = [];
-  for (let i = 0; i < n; i++) {
-    const box = await dots.nth(i).boundingBox();
-    const label = await dots.nth(i).getAttribute("aria-label");
-    if (!box || box.width < 24 || box.height < 24)
-      tooSmall.push(`${label}: ${Math.round(box?.width ?? 0)}x${Math.round(box?.height ?? 0)}`);
+  let checked = 0;
+
+  for (const selector of SECTIONS) {
+    const root = page.locator(selector);
+    await expect(root, `the homepage should render ${selector}`).toHaveCount(1);
+    await root.scrollIntoViewIfNeeded();
+
+    const controls = root.locator("a, button");
+    for (let i = 0; i < (await controls.count()); i++) {
+      const control = controls.nth(i);
+      /* Inline in a sentence: exempt. See the header note. */
+      if (await control.evaluate((el) => Boolean(el.closest("p")))) continue;
+
+      const box = await control.boundingBox();
+      if (!box) continue; // not rendered at this width
+      checked += 1;
+      if (box.width < 24 || box.height < 24) {
+        const label = (await control.innerText()).trim().replace(/\s+/g, " ").slice(0, 48);
+        tooSmall.push(
+          `${selector} → "${label}": ${Math.round(box.width)}x${Math.round(box.height)}`,
+        );
+      }
+    }
   }
-  expect(tooSmall, "every reel control should be at least 24x24").toEqual([]);
+
+  expect(checked, "the sweep should have found controls to measure").toBeGreaterThan(8);
+  expect(tooSmall, "every standalone control should be at least 24x24").toEqual([]);
 });
 
 /*
@@ -388,21 +434,39 @@ test("the turnover planner ignores blocked dates", async ({ request }) => {
 });
 
 /*
-  "See the work" goes to the work.
+  The homepage's work anchor, and the one rule the rebuild is built on.
 
-  The hero's secondary button, the nav and footer Work links, and every
-  /#work from an inner page all target one id. That id sat on the small
-  "My work" tile inside the control panel, so the one button whose entire
-  job is "show me what she built" scrolled a few hundred pixels to four
-  one-line rows of project names. It now sits on the work section below.
+  Two separate invariants, asserted together because they describe the same
+  section.
 
-  This is asserted rather than left to a reviewer because both failure modes
-  are invisible: a duplicate id renders two perfect-looking sections while
-  every link silently resolves to the first one, and a renamed id leaves
-  four live-looking links that scroll nowhere at all. Neither shows up in a
-  build, a type check or a Lighthouse run.
+  **One: #work is unique and lands on the worked example.** The hero's
+  secondary button, the nav and footer Work links, and every /#work from an
+  inner page target one id. It has moved twice: it sat on a small tile of
+  project names inside the control panel, then on a grid of three case-study
+  cards, and it is now on OneJob, the single project told all the way
+  through. Both failure modes here are invisible — a duplicate id renders
+  two perfect-looking sections while every link silently resolves to the
+  first, and a renamed id leaves five live-looking links that scroll
+  nowhere. Neither shows up in a build, a type check or a Lighthouse run.
+
+  **Two: no project appears twice on the page.** This is the complaint the
+  rebuild answers. The old homepage listed four projects in three separate
+  blocks — a rotating window, a "Built and running" tile, and three cards —
+  with sentences copied verbatim between two of them, so a visitor met the
+  same four names three times before reading anything about what any of them
+  did. The split between OneJob and MoreWork is the fix, and MoreWork's
+  `ALREADY_SHOWN` is an editorial list, which is exactly the kind of thing
+  that regrows when somebody adds a project and reaches for the obvious
+  place to put it. So the rule is asserted against `work` itself rather than
+  against a count written here.
+
+  Counted on the rendered text rather than on links, because the repetition
+  was prose: two of the three blocks carried the project's name and blurb as
+  text, and a test that only counted anchors would have passed on all of it.
 */
-test('the work anchor is unique and lands on the case studies', async ({ page }) => {
+test("the work anchor is unique and lands on one job told all the way through", async ({
+  page,
+}) => {
   await page.goto("/");
 
   const anchors = page.locator("#work");
@@ -411,53 +475,49 @@ test('the work anchor is unique and lands on the case studies', async ({ page })
     'exactly one element may carry id="work"',
   ).toBe(1);
 
-  /*
-    The target is the section that shows the work, not a list of its names.
-
-    The phrase moved with the copy: the heading was "Things I built that are
-    running right now" and is now "Running in real businesses right now",
-    because the site stopped writing in the first person. This assertion is
-    only here to tell the two sections apart — the cards section from the
-    small tile in the panel that lists the same projects by name — so it is
-    matched on "real businesses", the half of the heading that does that job
-    and is not shared with the tile's "Built and running".
-  */
   const section = anchors.first();
   await expect(
     section.getByRole("heading", { level: 2 }),
-    "the anchor should land on the work section's own heading",
-  ).toContainText(/running in real businesses/i);
-
-  const cards = section.locator("ul > li a[href^='/work/']");
-  expect(
-    await cards.count(),
-    "every case study should be a card here",
-  ).toBe(3);
+    "the anchor should land on the worked example's own heading",
+  ).toContainText(/one job, start to finish/i);
 
   /*
-    Scroll to the cards before asking whether their screenshots loaded, and
-    let the check retry.
+    The four beats. Each is a promise the section makes that an edit could
+    quietly drop: the problem is the only real voice on the site, the
+    captures are the only screenshots left on the page, and the three
+    results are the only confirmed outcome numbers in the repo.
+  */
+  await expect(
+    section.getByRole("heading", { name: /what got built/i }),
+    "the worked example should show what was built",
+  ).toBeVisible();
+  await expect(
+    section.getByRole("heading", { name: /what changed/i }),
+    "the worked example should show what changed",
+  ).toBeVisible();
+  await expect(
+    section.locator("blockquote"),
+    "the problem should be quoted, and attributed, rather than asserted",
+  ).toHaveCount(1);
+  await expect(section.locator("figcaption")).toContainText(/megan small/i);
 
-    These <Image>s are loading="lazy", so nothing fetches them until they
-    approach the viewport, and `goto` resolves on `load`. The first version
-    of this read naturalWidth once, straight after goto, with no retry. It
-    passed, but only by coincidence: the section lands about 500px below the
-    fold at this viewport, inside the distance at which Chromium starts a
-    lazy image early, so `load` waited for them. Nothing asserts that
-    distance. Grow the panel above, or let Chromium judge the connection
-    slow, and the images fall outside that window: the snapshot then reads 0
-    and fails a page that is perfectly fine. Scrolling makes the fetch
-    certain and polling makes a cold image-optimization response a wait
-    rather than a failure.
+  /*
+    Scroll to the captures before asking whether they loaded, and let the
+    check retry. These <Image>s are loading="lazy", so nothing fetches them
+    until they approach the viewport, and `goto` resolves on `load`. Reading
+    naturalWidth once straight after goto passes only by coincidence —
+    whether the section happens to fall inside the distance at which
+    Chromium starts a lazy image early. Nothing asserts that distance.
   */
   await section.scrollIntoViewIfNeeded();
-  const shots = section.locator("img");
-  await expect(shots).toHaveCount(3);
-  for (let i = 0; i < 3; i++)
+  const shots = section.locator("ul img");
+  const built = await shots.count();
+  expect(built, "the build steps should lead with real captures").toBeGreaterThan(1);
+  for (let i = 0; i < built; i++)
     await expect
       .poll(
         () => shots.nth(i).evaluate((el: HTMLImageElement) => el.naturalWidth),
-        { message: `card ${i + 1} should lead with a real screenshot that loaded` },
+        { message: `build step ${i + 1} should lead with a screenshot that loaded` },
       )
       .toBeGreaterThan(0);
 
@@ -465,8 +525,44 @@ test('the work anchor is unique and lands on the case studies', async ({ page })
      first, or the assertion below passes on the scroll this test just did. */
   await page.evaluate(() => window.scrollTo(0, 0));
   await expect(section).not.toBeInViewport();
-  await page.getByRole("link", { name: /see the work/i }).click();
+  await page.getByRole("link", { name: /see one job, start to finish/i }).click();
   await expect(section).toBeInViewport();
+
+  /*
+    Invariant two: every project is argued in exactly one of the two
+    sections that argue projects.
+
+    Scoped to those two rather than swept across the whole page, because the
+    page legitimately says some of these words elsewhere: the header nav
+    links BrightBase, and the footer carries "mlinx.studio", which contains
+    "linx". A page-wide sweep would fail on both and be deleted within the
+    week, which is worse than no test.
+
+    `textContent` rather than `innerText`, because a title inside a visually
+    hidden <dt> or a clipped element still counts as the page saying it
+    twice, and innerText reports nothing for exactly those.
+
+    Case-insensitive, because the same thing is legitimately spelled two
+    ways: `work` calls it "Instant Estimate" and the build step it belongs
+    to is labelled "Instant estimate". A case-sensitive count would read
+    that as zero and call a correctly-rendered page broken.
+  */
+  const read = async (selector: string) =>
+    ((await page.locator(selector).evaluate((el) => el.textContent)) ?? "").toLowerCase();
+
+  const argued = [
+    await read("#work"),
+    await read('section[aria-labelledby="more-work-heading"]'),
+  ];
+
+  for (const item of work) {
+    const needle = item.title.toLowerCase();
+    const hits = argued.reduce((n, text) => n + text.split(needle).length - 1, 0);
+    expect(
+      hits,
+      `"${item.title}" should be argued in exactly one place on the homepage, not ${hits}`,
+    ).toBe(1);
+  }
 });
 
 /*

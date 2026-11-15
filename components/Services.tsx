@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import ProjectVisual from "./ProjectVisual";
 import { services } from "@/lib/content";
 
@@ -115,13 +116,21 @@ export default function Services() {
                 <p className="mt-5 text-sm font-medium text-signal">
                   {s.example.result}
                 </p>
-                <a
-                  href="#work"
+                {/*
+                  `/#work`, not `#work`. This component only ever renders on
+                  /services and /marketplace, and neither page has a #work
+                  anchor, so the relative version was a live-looking link
+                  that scrolled nowhere on both. The anchor lives on the
+                  homepage (components/home/OneJob.tsx), which is where "see
+                  an example" is actually answered.
+                */}
+                <Link
+                  href="/#work"
                   className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
                 >
                   See an example
                   <span aria-hidden="true">→</span>
-                </a>
+                </Link>
               </div>
             </article>
           ))}

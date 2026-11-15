@@ -39,7 +39,9 @@ export default function LiveTile() {
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[color:var(--cp-teal)]" />
           5 LIVE FEEDS · ONE READOUT
         </span>
-        <Link href="/services" className="shrink-0 text-[13px] text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
+        {/* `inline-flex` + `py-1` clears the 24x24 tap minimum; as bare text
+            this rendered 20px tall on a phone. */}
+        <Link href="/services" className="inline-flex shrink-0 items-center py-1 text-[13px] text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
           Connect yours →
         </Link>
       </div>
