@@ -148,7 +148,14 @@ export type ServiceExample = {
 };
 
 export type Service = {
-  id: string;
+  /*
+    The category id, not a free string. `work.category`, ServiceRouter's
+    `/services#${id}` anchors and the ladder all key off these four values,
+    so the relationship was already load-bearing and only enforced by them
+    happening to agree. Typed, a renamed service fails the build instead of
+    silently emptying a ladder column. Declared below; type aliases hoist.
+  */
+  id: ServiceCategory;
   index: string;
   title: string;
   /** One-line essence shown under the title. */
@@ -946,6 +953,196 @@ export const marketItems: MarketItem[] = [
     shot: "/shots/brightbase-crew-schedule.png",
   },
 ];
+
+/*
+  The ladder — one spine for everything on sale.
+
+  **The site described the same business three separate ways.** `services`
+  sorts it by what is wrong (websites, leads, software, integrations),
+  `marketItems` sorts it by how you buy (free, hosted, buy-and-own), and
+  `smallProjects` is a third list of fixed-price jobs on a fourth page. Nine
+  free tools and three demos sit on two more. So a visitor met "CRM &
+  platform setup, $300-$750" on /services and "M Linx Dashboard, quoted to
+  your scope" on /marketplace with nothing anywhere saying how the two
+  relate, or which one they wanted.
+
+  Meg's ask, in her words: structure it for the audience, and make things
+  easier for customers to obtain.
+
+  So there is one taxonomy now — the four `services`, which are already named
+  for what somebody arrived wanting — and every sellable thing hangs off one
+  of them at one of three rungs:
+
+    try    free, works right now, no conversation
+    buy    a real fixed price, a decision somebody can make today
+    build  scoped and quoted, the conversation this page exists to start
+
+  The three rungs are the answer to "easier to obtain": the cheapest way in
+  is visible beside the expensive one, in the same column, so nobody has to
+  guess whether there is a smaller version of what they need.
+
+  **Prices have one author.** An item that already exists in `marketItems`
+  or `smallProjects` carries only its id here, and the component resolves
+  the title, price and copy from the source. Retyping them is how /services
+  and /marketplace drifted apart in the first place, and a price that
+  disagrees with itself across two pages is worse than no price at all.
+  `title`/`price`/`body` are written inline only for things in neither list:
+  the free tools, and the custom builds that are quoted by definition.
+*/
+export type LadderRung = "try" | "buy" | "build";
+
+/** The `offer` keys on `smallProjects`, which are also `lib/offer.ts` keys. */
+export type SmallProjectOffer = (typeof smallProjects)[number]["offer"];
+
+export type LadderItem = {
+  service: ServiceCategory;
+  rung: LadderRung;
+  /** Resolve from `marketItems` by id. Mutually exclusive with `project`. */
+  market?: string;
+  /** Resolve from `smallProjects` by its offer key. */
+  project?: SmallProjectOffer;
+  /** Written here ONLY when the item is in neither list. */
+  title?: string;
+  price?: string;
+  body?: string;
+  /** An internal page somebody can open right now. */
+  href?: string;
+  /** An `OFFERS` key, which opens the contact form with that sentence in it. */
+  offer?: string;
+};
+
+export const ladder: LadderItem[] = [
+  // ── Websites that bring work in ──────────────────────────────────────────
+  {
+    service: "websites",
+    rung: "try",
+    title: "Website check",
+    price: "Free",
+    body: "Paste any URL and get a real speed, SEO and accessibility report. Yours or a competitor's.",
+    href: "/tools?tool=sitecheck",
+  },
+  { service: "websites", rung: "buy", project: "website" },
+  {
+    service: "websites",
+    rung: "build",
+    title: "A website built around one goal",
+    price: "Quoted to your scope",
+    body: "Designed, built and launched, with the pages that get somebody to the thing you want them to do. Yours to keep.",
+    offer: "custom",
+  },
+
+  // ── Turning visitors into booked work ────────────────────────────────────
+  {
+    service: "leads",
+    rung: "try",
+    title: "Instant quote calculator",
+    price: "Free",
+    body: "Price a job by service and size, and see the range you would send a customer.",
+    href: "/tools?tool=quote",
+  },
+  { service: "leads", rung: "buy", market: "quote-widget" },
+  { service: "leads", rung: "buy", market: "automation-pack" },
+  {
+    service: "leads",
+    rung: "build",
+    title: "Quoting and booking, built in",
+    price: "Quoted to your scope",
+    body: "The whole path from first click to a booked job, wired into whatever you already run on.",
+    offer: "custom",
+  },
+
+  // ── Custom software ──────────────────────────────────────────────────────
+  {
+    service: "software",
+    rung: "try",
+    title: "Three working demos",
+    price: "Free",
+    body: "A storefront, a booking app and a searchable directory. Real interfaces you can click, not pictures of them.",
+    href: "/demo",
+  },
+  {
+    service: "software",
+    rung: "try",
+    title: "Look inside BrightBase",
+    price: "Free",
+    body: "The operations app behind an eight-year-old cleaning company: jobs, quotes, scheduling, crew, invoicing.",
+    href: "/brightbase",
+  },
+  {
+    service: "software",
+    rung: "build",
+    title: "Dashboard, CRM or client portal",
+    price: "Quoted to your scope",
+    body: "The app your business runs on, when nothing off the shelf fits. Features and handover agreed before work starts.",
+    offer: "custom",
+  },
+
+  // ── Getting your tools to talk ───────────────────────────────────────────
+  {
+    service: "integrations",
+    rung: "try",
+    title: "Turnover Planner",
+    price: "Free",
+    body: "Paste an Airbnb or Vrbo calendar and get the cleaning schedule it implies, same-day turnarounds flagged. Nothing is stored.",
+    href: "/turnover",
+  },
+  {
+    service: "integrations",
+    rung: "try",
+    title: "Cost of manual work",
+    price: "Free",
+    body: "Hours and people in, the yearly cost out, and how fast automating it pays for itself.",
+    href: "/tools?tool=cost",
+  },
+  { service: "integrations", rung: "buy", project: "platform" },
+  { service: "integrations", rung: "buy", project: "integration" },
+  { service: "integrations", rung: "buy", project: "migration" },
+  {
+    service: "integrations",
+    rung: "build",
+    title: "Several systems, talking",
+    price: "Quoted to your scope",
+    body: "Jobber, HubSpot, a booking feed, a spreadsheet nobody wants to give up. Connected around the workflow you actually have.",
+    offer: "integration",
+  },
+];
+
+/** What each rung promises, in the heading above it. */
+export const ladderRungs: { id: LadderRung; label: string; note: string }[] = [
+  { id: "try", label: "Try it now", note: "Free, works today, no conversation needed." },
+  { id: "buy", label: "Buy a piece of it", note: "A real price for one agreed piece of work." },
+  { id: "build", label: "Have it built", note: "Scoped and priced with you before anything starts." },
+];
+
+/*
+  Short-term rentals — an audience, deliberately not a fifth service.
+
+  Meg names this one first when asked what she wants to sell, and it is the
+  only corner of the business where two finished things already exist that
+  somebody can have today without talking to anybody: the welcome book and
+  the turnover planner. A host arriving from an Airbnb group should not have
+  to read four service categories to find the two things aimed at them.
+
+  It is an audience band rather than a category because both items are
+  already filed under a service above — the book is a website product, the
+  planner is an integration — and the one rule the homepage rebuild rests on
+  is that nothing appears twice without meaning to. Here the repetition is
+  the point and is labelled as such: same items, sorted by who you are
+  instead of by what is broken.
+*/
+export const forRentals = {
+  heading: "Running a short-term rental?",
+  body: "Two of these are finished and waiting. Neither needs a call, and one of them is free.",
+  /** Resolved from `marketItems`, so the price has one author. */
+  market: ["welcome-book"],
+  /** The free planner, which is a page rather than a product. */
+  extra: {
+    title: "Turnover Planner",
+    price: "Free",
+    body: "Paste your booking calendar, get the cleaning schedule, with same-day turnarounds flagged.",
+    href: "/turnover",
+  },
+} as const;
 
 /*
   Digital Welcome Book — content for the dedicated /welcome-book landing page.
