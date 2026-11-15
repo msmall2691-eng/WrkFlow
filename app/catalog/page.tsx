@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { pageMeta } from "@/lib/seo";
 import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import CatalogBrowser from "@/components/CatalogBrowser";
-import { audienceLabels, catalog, formatLabels, type CatalogAudience } from "@/lib/catalog";
+import { audienceLabels, catalog, formatLabels, liveDemoIds, type CatalogAudience } from "@/lib/catalog";
 
 /*
   /catalog — everything in one place, filterable by who you are and what
@@ -25,6 +26,10 @@ export const metadata: Metadata = pageMeta({
 });
 
 const shelves: CatalogAudience[] = ["rentals", "service", "family", "any"];
+
+const liveDemos = liveDemoIds
+  .map((id) => catalog.find((i) => i.id === id))
+  .filter((i): i is NonNullable<typeof i> => Boolean(i));
 
 export default function CatalogPage() {
   return (
@@ -46,11 +51,9 @@ export default function CatalogPage() {
                 Everything you can use, buy or have built.
               </h1>
               <p className="mt-5 max-w-2xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                Free tools you can use right now, add-ons for the site you
-                already have, apps that run a business, and the connections that
-                stop you typing the same thing twice. Every card says how real it
-                is. If nothing here fits, describe what you need and get a written
-                scope within a day.
+                Websites, apps, add-ons and connections for small businesses.
+                Try the live demos, buy something ready-made, or have it built
+                around how you work. Every card says exactly how real it is.
               </p>
               <nav aria-label="Shelves" className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[14px]">
                 {shelves.map((s) => (
@@ -63,6 +66,48 @@ export default function CatalogPage() {
                   </Link>
                 ))}
               </nav>
+            </div>
+          </section>
+
+          {/* Try it live: the five things that open and work right now. */}
+          <section aria-labelledby="live-heading" className="border-b border-[var(--cp-line)] py-12 md:py-14">
+            <div className="mx-auto max-w-6xl px-6">
+              <h2 id="live-heading" className="m-0 text-xl font-semibold text-[color:var(--cp-ink)]">
+                Try it live
+              </h2>
+              <p className="mt-1.5 max-w-2xl text-[14px] leading-relaxed text-[color:var(--cp-muted)]">
+                Working versions you can click through right now. The businesses
+                in the demos are invented. What they do is real, and yours gets
+                built around your own business.
+              </p>
+              <ul className="-mx-6 m-0 mt-6 flex list-none snap-x gap-4 overflow-x-auto px-6 pb-2 md:mx-0 md:grid md:grid-cols-5 md:overflow-visible md:px-0">
+                {liveDemos.map((d) => (
+                  <li key={d.id} className="w-[72%] shrink-0 snap-start sm:w-[44%] md:w-auto">
+                    <Link
+                      href={d.primary?.href ?? "/catalog"}
+                      className="cp-tile group flex h-full flex-col overflow-hidden no-underline"
+                    >
+                      <span className="relative block aspect-[16/10] w-full overflow-hidden border-b border-[color:var(--cp-hairline)] bg-[color:var(--cp-well)]">
+                        {d.image && (
+                          <Image
+                            src={d.image}
+                            alt={`${d.name}: a real screen`}
+                            fill
+                            sizes="(min-width: 768px) 220px, 72vw"
+                            className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                          />
+                        )}
+                      </span>
+                      <span className="flex flex-1 flex-col p-4">
+                        <span className="text-[14px] font-semibold text-[color:var(--cp-ink)]">{d.name}</span>
+                        <span className="mt-auto pt-2 text-[12.5px] font-semibold text-[color:var(--cp-violet-ink)]">
+                          Open it <span aria-hidden="true">→</span>
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           </section>
 

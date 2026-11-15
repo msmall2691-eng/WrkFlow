@@ -66,6 +66,15 @@ export type CatalogItem = {
   /** Which contact-form opener "Ask about this" uses. */
   offer: OfferKey;
   connects?: string[];
+  /**
+   * A REAL capture in /public/shots: of the live product, the working demo,
+   * or the production system it comes from. Never a mock-up. Items with
+   * nothing real to show (most `workbench` ones) leave this empty and the
+   * card shows no picture rather than a stand-in.
+   */
+  image?: string;
+  /** Extra links shown as chips, used by the folded free-tools card. */
+  chips?: CatalogLink[];
 };
 
 export const audienceLabels: Record<CatalogAudience, string> = {
@@ -128,6 +137,7 @@ export const catalog: CatalogItem[] = [
       external: true,
     },
     offer: "custom",
+    image: "/shots/catalog/welcome-book.webp",
   },
   {
     id: "turnover-planner",
@@ -141,6 +151,7 @@ export const catalog: CatalogItem[] = [
     primary: { label: "Use it now", href: "/turnover" },
     offer: "integration",
     connects: ["Airbnb calendar", "Vrbo calendar"],
+    image: "/shots/catalog/turnover.webp",
   },
   {
     id: "turnover-sync",
@@ -154,6 +165,7 @@ export const catalog: CatalogItem[] = [
     proof: { label: "See it in BrightBase", href: "/brightbase" },
     offer: "integration",
     connects: ["Airbnb calendar", "Vrbo calendar", "Google Calendar"],
+    image: "/shots/brightbase/turnovers.webp",
   },
   {
     id: "linx",
@@ -167,6 +179,7 @@ export const catalog: CatalogItem[] = [
     proof: { label: "How linx was built", href: "/work/linx" },
     offer: "custom",
     connects: ["Stripe Connect"],
+    image: "/shots/linx.png",
   },
   {
     id: "guest-replies",
@@ -203,6 +216,7 @@ export const catalog: CatalogItem[] = [
     price: marketPrice("service-site"),
     proof: { label: "See sites built", href: "/#work" },
     offer: "custom",
+    image: "/shots/maineclean.png",
   },
   {
     id: "site-updates",
@@ -226,6 +240,7 @@ export const catalog: CatalogItem[] = [
     price: marketPrice("quote-widget"),
     primary: { label: "Try the free version", href: "/tools?tool=quote" },
     offer: "quote",
+    image: "/shots/catalog/quote-tool.webp",
   },
   {
     id: "flows",
@@ -250,6 +265,7 @@ export const catalog: CatalogItem[] = [
     primary: { label: "Try the demo", href: "/demo/studio" },
     proof: { label: "The production scheduler", href: "/brightbase" },
     offer: "custom",
+    image: "/shots/catalog/demo-studio.webp",
   },
   {
     id: "storefront",
@@ -262,6 +278,7 @@ export const catalog: CatalogItem[] = [
     price: "Quoted to your scope",
     primary: { label: "Try the demo", href: "/demo/shop" },
     offer: "custom",
+    image: "/shots/catalog/demo-shop.webp",
   },
   {
     id: "directory",
@@ -274,6 +291,7 @@ export const catalog: CatalogItem[] = [
     price: "Quoted to your scope",
     primary: { label: "Try the demo", href: "/demo/directory" },
     offer: "custom",
+    image: "/shots/catalog/demo-directory.webp",
   },
   {
     id: "instant-estimate",
@@ -287,6 +305,7 @@ export const catalog: CatalogItem[] = [
     proof: { label: "See it in the work", href: "/#work" },
     offer: "custom",
     connects: ["Anthropic AI"],
+    image: "/shots/instant-estimate.png",
   },
 
   // ── Apps a business runs on ─────────────────────────────────────────────
@@ -302,6 +321,7 @@ export const catalog: CatalogItem[] = [
     primary: { label: "Look inside", href: "/brightbase" },
     offer: "brightbase",
     connects: ["Stripe", "Twilio", "Google Calendar"],
+    image: "/shots/brightbase/schedule.webp",
   },
   {
     id: "dashboard",
@@ -314,6 +334,7 @@ export const catalog: CatalogItem[] = [
     price: marketPrice("dashboard-starter"),
     proof: { label: "See the BrightBase dashboard", href: "/brightbase" },
     offer: "custom",
+    image: "/shots/brightbase/owner-dashboard.webp",
   },
   {
     id: "parent-portal",
@@ -331,6 +352,7 @@ export const catalog: CatalogItem[] = [
     },
     offer: "custom",
     connects: ["Supabase"],
+    image: "/shots/arrowhead.png",
   },
 
   // ── Getting your tools to talk ──────────────────────────────────────────
@@ -366,6 +388,7 @@ export const catalog: CatalogItem[] = [
       "The CRM you already pay for, set up properly: fields, views, settings and one workflow that matches how you work.",
     price: projectPrice("platform"),
     offer: "platform",
+    image: "/shots/brightbase/custom-fields.webp",
   },
   {
     id: "systems",
@@ -379,6 +402,7 @@ export const catalog: CatalogItem[] = [
     proof: { label: "See one job, start to finish", href: "/work/maine-cleaning-co" },
     offer: "integration",
     connects: ["Stripe", "Twilio", "Google Calendar", "Airbnb calendar"],
+    image: "/shots/brightbase/inbox.webp",
   },
   {
     id: "ai-setup",
@@ -392,31 +416,37 @@ export const catalog: CatalogItem[] = [
     offer: "call",
   },
 
-  // ── Free tools ──────────────────────────────────────────────────────────
-  ...(
-    [
-      ["quote", "Instant quote", "Service and size in, a live price range you can send a customer.", ["service"]],
-      ["invoice", "Invoice maker", "Build an invoice or proposal and print a clean PDF in one click.", ["service", "any"]],
-      ["sig", "Email signature", "A styled signature ready to paste into Gmail or Outlook.", ["any"]],
-      ["vcard", "Digital business card", "A contact card file plus a scan-to-save QR code.", ["any"]],
-      ["qr", "QR code maker", "Any link, or your WiFi, as a QR code to download and print.", ["any", "rentals"]],
-      ["utm", "Tracked link builder", "Campaign tags on any link, so you can see which post brought people in.", ["any"]],
-      ["sitecheck", "Website check", "Paste any URL and get a real speed, SEO and accessibility report.", ["any"]],
-      ["cost", "Cost of manual work", "Hours and people in, the yearly cost out, and how fast automating it pays back.", ["any"]],
-    ] as const
-  ).map(
-    ([tool, name, outcome, audience]): CatalogItem => ({
-      id: `tool-${tool}`,
-      name,
-      audience: [...audience],
-      format: "tool",
-      status: "try",
-      outcome,
-      price: "Free",
-      primary: { label: "Use it now", href: `/tools?tool=${tool}` },
-      offer: "custom",
-    }),
-  ),
+  // ── Free tools: one card, eight links ───────────────────────────────
+  /*
+    These were eight separate cards and they buried everything for sale
+    under a screen of "Free". One card with a chip per tool keeps every
+    tool one tap away and the grid about the things people buy.
+  */
+  {
+    id: "free-tools",
+    name: "8 free business tools",
+    audience: ["any", "service", "rentals"],
+    format: "tool",
+    status: "try",
+    outcome:
+      "Quotes, invoices, email signatures, QR codes, tracked links and a website check. No signup, nothing to install.",
+    price: "Free",
+    primary: { label: "Open the tools", href: "/tools" },
+    offer: "custom",
+    image: "/shots/tools.png",
+    chips: (
+      [
+        ["quote", "Instant quote"],
+        ["invoice", "Invoices"],
+        ["sig", "Email signature"],
+        ["vcard", "Digital card"],
+        ["qr", "QR codes"],
+        ["utm", "Tracked links"],
+        ["sitecheck", "Website check"],
+        ["cost", "Cost of manual work"],
+      ] as const
+    ).map(([tool, label]) => ({ label, href: `/tools?tool=${tool}` })),
+  },
 
   // ── Workbench: ideas, clearly labelled as not built ─────────────────────
   {
@@ -446,3 +476,16 @@ export const sectionHeadings: Record<CatalogStatus, string> = {
   try: "Free to use right now",
   workbench: "On the workbench",
 };
+
+/*
+  The "try it live" strip at the top of /catalog: the five things a visitor
+  can open and use right now, with a real capture of each. Ids point into
+  `catalog` so the copy has one author.
+*/
+export const liveDemoIds = [
+  "storefront",
+  "booking",
+  "directory",
+  "turnover-planner",
+  "welcome-book",
+] as const;
