@@ -56,6 +56,14 @@ const TARGETS = {
   "linx.png": "https://linx-production-6edf.up.railway.app",
   /* This site's own /tools page, which the marketplace sells as M Linx Tools. */
   "tools.png": "https://mlinx.studio/tools",
+  /*
+    The public marketing half of Arrowhead Explorers. Deliberately NOT the
+    parent portal at portal.lacexplorers.online: that one is noindex, sits
+    behind a family code, and its screens carry children's names, daily logs
+    and photographs. A capture of it has no place in a public repository
+    whatever it would prove, and nothing on the site needs it.
+  */
+  "arrowhead.png": "https://www.lacexplorers.online",
 };
 
 const WIDTH = 2208;
