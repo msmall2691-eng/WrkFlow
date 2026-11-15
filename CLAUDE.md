@@ -13,6 +13,38 @@ The current roadmap is `docs/NEXT-LEVEL-HANDOFF.md`. Start there.
 - `lib/content.ts` holds the real numbers; fields like `testimonial`, `metric` and case-study results render nothing until Meg fills them. Leave `TODO(Meg)` instead of writing your own.
 - Screenshots in `public/shots/` must be real captures of real sites or systems.
 
+## What the site sells — four categories, Nov 14 2026
+
+`lib/content.ts` `services[]` is the single definition; everything else reads
+it. **This was five, organised by discipline, and it is now four, organised by
+what somebody arrived wanting.**
+
+1. **Websites that bring work in** — a site somebody can hire you from.
+2. **Turning visitors into booked work** — quotes, estimates, online booking.
+3. **Custom software** — the app a business runs on.
+4. **Getting your tools to talk** — integrations, CRM setup, data migration.
+
+Two things changed and both are worth keeping written down. "CRM & platform
+setup", "Data migration & cleanup" and "Integrations & automations" were three
+services and one complaint: *my systems do not talk and I keep typing the same
+thing twice.* They are one category with the detail in `kinds`. And **leads was
+missing entirely** — the thing Meg names first when asked what she sells, with
+real work behind it already (Instant Estimate, the booking flow, half the free
+tools), and no category carrying that word.
+
+**`WorkItem.category` is deliberately not `WorkItem.tier`.** `tier`
+(`site`/`product`/`private`) answers "can a visitor go and look at it".
+`category` answers "what is this proof of". Sorting the work by `tier` sorted
+it by whether Meg could share a URL, which is not a thing a buyer cares about,
+and filed three of her strongest builds under a word meaning *you cannot have
+this*.
+
+`components/panel/ServiceRouter.tsx` is the one place the homepage asks a
+visitor what they came for. The project count under each door is computed from
+`work`, never written by hand, and
+`e2e/smoke.spec.ts` asserts it against the same source — a count is a claim
+about evidence, which is the first rule on this page.
+
 ## Voice and copy
 - **Nov 14, 2026: no "I" either.** This said *write in first person ("I", "my"), not "we/our"* — the "we" half stands, because a solo founder writing as a company is the oldest small-business tell there is. Meg then asked for the "I" to go too, and the replacement is not a third pronoun: **write about the reader and the work, not the maker.** "I design and build websites" became "Websites, web apps and custom tools for small businesses." It is better copy for the same reason it was asked for: a visitor is deciding about themselves, not about Meg. Where attribution is genuinely needed, name her or M Studio. The About page is the one place a human voice may still be worth keeping; raise it rather than assume.
 - Use commas or periods instead of em dashes in user-facing copy.

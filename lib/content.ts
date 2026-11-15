@@ -163,19 +163,39 @@ export type Service = {
   example: ServiceExample;
 };
 
+/*
+  Four categories, named for what somebody arrived wanting.
+
+  **This was five, organised by discipline.** "CRM & platform setup", "Data
+  migration & cleanup" and "Integrations & automations" are three things Meg
+  does; to the person reading they are one complaint — my systems do not
+  talk to each other and I keep typing the same thing twice. They are one
+  category now, with the detail carried in `kinds`.
+
+  **And the thing she sells hardest was not on the list at all.** Leads: the
+  quote form, the instant estimate, the booking step. It is the category
+  with the clearest buying intent, it has real work behind it already
+  (Instant Estimate, the booking flow on The Maine Cleaning Co., half the
+  free tools), and a visitor who came for it previously found nothing with
+  that name on it.
+
+  Order is deliberate: websites first because it is what most people arrive
+  for and the cheapest thing to say yes to, leads second because it is the
+  upsell from the first, then the two that need more trust to sell.
+*/
 export const services: Service[] = [
   {
     "id": "websites",
     "index": "01",
-    "title": "Websites & website improvements",
-    "tagline": "A new site, a better page, or the feature your website is missing.",
+    "title": "Websites that bring work in",
+    "tagline": "A site somebody can hire you from, not just read about you on.",
     "kinds": [
       "Business websites",
-      "Quotes & booking",
-      "Existing site updates"
+      "Booking & quote forms",
+      "Rebuilds & improvements"
     ],
-    "pain": "Your website is outdated, hard to use, or missing a way for customers to take the next step.",
-    "outcome": "A clear, useful website with the pages, forms, and features your business needs.",
+    "pain": "Your website is dated or hard to use, and it tells people about the business without giving them a way to start.",
+    "outcome": "A site built around the one thing you want a visitor to do, and the pages that get them there.",
     "example": {
       "client": "The Remote Admin",
       "built": "A complete website for an administrative services business in New Hampshire.",
@@ -184,78 +204,60 @@ export const services: Service[] = [
     }
   },
   {
-    "id": "platforms",
+    "id": "leads",
     "index": "02",
-    "title": "CRM & platform setup",
-    "tagline": "Get your software organized around how your business actually runs.",
+    "title": "Turning visitors into booked work",
+    "tagline": "The quote, the estimate and the booking step people actually finish.",
     "kinds": [
-      "CRM setup",
-      "Fields & workflows",
-      "Platform cleanup"
+      "Instant quotes",
+      "Online booking",
+      "Lead capture & follow-up"
     ],
-    "pain": "You have a platform, but the records, settings, and workflow are not set up the way you need them.",
-    "outcome": "A clearer setup with useful fields, views, and a walkthrough of how to use it.",
+    "pain": "Enquiries arrive as voicemails and half-filled forms, and quoting each one by hand eats an evening.",
+    "outcome": "A path from first click to a booked job, with the quoting mostly done before it reaches you.",
     "example": {
-      "client": "Twenty CRM extension",
-      "built": "An extension for Twenty CRM with recurring service plans, a dispatch board, and a shared inbox.",
-      "result": "A general-purpose CRM adapted to a specific business workflow.",
-      "visual": "database"
+      "client": "Instant Estimate",
+      "built": "Reads an incoming request, drafts a quote, and queues a reply for approval.",
+      "result": "Around twenty minutes of manual quoting per lead, handled before a person sees it.",
+      "shot": "/shots/instant-estimate.png"
     }
   },
   {
-    "id": "migration",
+    "id": "software",
     "index": "03",
-    "title": "Data migration & cleanup",
-    "tagline": "Move your information into a new system and make it easier to use.",
-    "kinds": [
-      "Exports & imports",
-      "Field mapping",
-      "Record cleanup"
-    ],
-    "pain": "You want to switch platforms, but your customer and job information is still in the old system or scattered across files.",
-    "outcome": "An agreed set of records cleaned, mapped, and imported, with checks before the handover.",
-    "example": {
-      "client": "Jobber data migration",
-      "built": "Exported Jobber data and moved records into other systems for The Maine Cleaning Company.",
-      "result": "Practical experience with the move from one platform to another.",
-      "visual": "cleanup"
-    }
-  },
-  {
-    "id": "automation",
-    "index": "04",
-    "title": "Integrations & automations",
-    "tagline": "Connect your tools and cut down on entering the same information twice.",
-    "kinds": [
-      "API connections",
-      "Calendar sync",
-      "Workflow automation"
-    ],
-    "pain": "You are copying details between systems or updating a schedule by hand whenever something changes.",
-    "outcome": "A connection built around what your platforms support and checked against the workflow you need.",
-    "example": {
-      "client": "Vacation rental booking sync",
-      "built": "Rental bookings automatically appear on our cleaning schedule for turnover planning.",
-      "result": "One less booking to enter by hand.",
-      "shot": "/shots/brightbase-crew-schedule.png"
-    }
-  },
-  {
-    "id": "apps",
-    "index": "05",
-    "title": "Custom CRMs & business tools",
-    "tagline": "Build the dashboard, portal, or small app you cannot find off the shelf.",
+    "title": "Custom software",
+    "tagline": "The app a business runs on, when nothing off the shelf fits it.",
     "kinds": [
       "Custom CRMs",
       "Dashboards & reporting",
       "Client & team portals"
     ],
-    "pain": "The tools you have do not quite fit, and important work still lives in spreadsheets and messages.",
-    "outcome": "A focused tool built around your process, with the features and handover agreed before work starts.",
+    "pain": "The tools you have do not quite fit, and the important work still lives in spreadsheets and messages.",
+    "outcome": "A focused tool built around your process, with the features and the handover agreed before work starts.",
     "example": {
       "client": "BrightBase",
       "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
       "result": "Daily operations brought into one view."
+    }
+  },
+  {
+    "id": "integrations",
+    "index": "04",
+    "title": "Getting your tools to talk",
+    "tagline": "Connect what you already use, so nothing gets typed in twice.",
+    "kinds": [
+      "API connections",
+      "Calendar & booking sync",
+      "CRM setup & cleanup",
+      "Data migration"
+    ],
+    "pain": "You are copying the same details between systems, or keeping a schedule up to date by hand every time something changes.",
+    "outcome": "One connection built around what your platforms actually support, checked against the workflow you need.",
+    "example": {
+      "client": "Vacation rental booking sync",
+      "built": "Rental bookings appear on the cleaning schedule automatically, for turnover planning.",
+      "result": "One less booking to enter by hand.",
+      "shot": "/shots/brightbase-crew-schedule.png"
     }
   }
 ];
@@ -299,8 +301,22 @@ export const approachSteps: ApproachStep[] = [
 
 export type WorkTier = "site" | "product" | "private";
 
+/**
+ * Which of the four things on `services` this piece of work is evidence for.
+ *
+ * **Deliberately not `tier`.** They answer different questions: `tier` is
+ * "can a visitor go and look at it", which is why BrightBase is `private`
+ * and The Remote Admin is a `site`. `category` is "what does this prove I
+ * can do for you", which is the question somebody browsing actually has.
+ * Overloading one onto the other is how the work list ended up sorted by
+ * whether Meg could share a URL, which is not a thing a buyer cares about.
+ */
+export type ServiceCategory = "websites" | "leads" | "software" | "integrations";
+
 export type WorkItem = {
   tier: WorkTier;
+  /** The service this is proof of. See `ServiceCategory`. */
+  category: ServiceCategory;
   /** Eyebrow tag, e.g. "Client work" / "Website + system" / "Product" / "Private system". */
   tag: string;
   title: string;
@@ -379,6 +395,7 @@ export const work: WorkItem[] = [
   {
     tier: "site",
     tag: "Website + system · our own company",
+    category: "websites",
     title: "The Maine Cleaning Co.",
     caseStudy: "maine-cleaning-co",
     blurb: "Marketing + booking site, wired straight into the back-office system that runs the company.",
@@ -390,6 +407,7 @@ export const work: WorkItem[] = [
   {
     tier: "site",
     tag: "Guest experience · our own rental",
+    category: "websites",
     title: "The Keystone House",
     blurb: "A digital welcome book for our Maine short-term rental: check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
     stack: ["Next.js", "Vercel"],
@@ -399,6 +417,7 @@ export const work: WorkItem[] = [
   {
     tier: "site",
     tag: "Client work",
+    category: "websites",
     title: "The Remote Admin",
     caseStudy: "the-remote-admin",
     blurb: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
@@ -411,6 +430,7 @@ export const work: WorkItem[] = [
   {
     tier: "site",
     tag: "Website project · construction",
+    category: "websites",
     title: "Nash Construction",
     blurb: "A construction company website with service pages, a project portfolio, and a consultation form.",
     stack: ["Next.js", "Vercel"],
@@ -421,6 +441,7 @@ export const work: WorkItem[] = [
   {
     tier: "product",
     tag: "Product · designed & built by M Studio",
+    category: "software",
     title: "linx",
     caseStudy: "linx",
     blurb: "A cleaning marketplace for Southern Maine: hosts post a turnover, vetted local cleaners bid, and you pay when the job is done.",
@@ -435,6 +456,7 @@ export const work: WorkItem[] = [
   {
     tier: "private",
     tag: "Product · in daily use",
+    category: "software",
     title: "BrightBase",
     blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
@@ -447,6 +469,7 @@ export const work: WorkItem[] = [
   {
     tier: "private",
     tag: "Private system",
+    category: "integrations",
     title: "Turnover scheduling",
     blurb: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
@@ -457,6 +480,7 @@ export const work: WorkItem[] = [
   {
     tier: "private",
     tag: "Private system",
+    category: "leads",
     title: "Instant Estimate",
     blurb: "Reads requests, drafts a quote, and queues a reply for approval.",
     stack: ["Next.js", "Anthropic API", "Postgres"],

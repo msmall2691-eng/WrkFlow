@@ -59,7 +59,7 @@ export default function BrightBasePage() {
             <div className="min-w-0 col-span-12 flex flex-col gap-6 lg:col-span-6">
               <Eyebrow tone="teal">BrightBase · in daily use</Eyebrow>
               <h1 className="m-0 font-display text-[clamp(2.5rem,4.6vw,4rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
-                The system I built to run my cleaning company.
+                The system an eight-year-old cleaning company runs on.
               </h1>
               <p className="m-0 max-w-[36em] text-[17px] leading-relaxed text-[color:var(--cp-muted)]">{brightbase.summary}</p>
               <div className="flex flex-wrap gap-3">

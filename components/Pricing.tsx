@@ -51,8 +51,8 @@ export default function Pricing() {
           {/* main's newer framing, which now has to cover the small
               fixed-scope tier as well as the custom build. */}
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
-            Start with one useful improvement or a custom build. I agree the
-            scope and price with you before work begins.
+            Start with one useful improvement or a custom build. Scope and
+            price are agreed with you before any work begins.
           </p>
         </div>
 

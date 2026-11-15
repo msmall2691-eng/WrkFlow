@@ -1,5 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
 
+/* The router test asserts its counts against the same source the component
+   reads, so a literal here cannot drift from the real work list. Static
+   rather than a dynamic import(): Playwright transpiles these, and a
+   runtime import of a .ts module is not. */
+import { services, work } from "../lib/content";
+
 /*
   Does every page still render, and does the one form that matters still
   submit? That is the whole brief. Anything more detailed would need
@@ -881,4 +887,60 @@ test("the nav reaches the demos showcase", async ({ page }) => {
   await expect(page).toHaveURL(/\/demo$/);
   /* And it lands on the showcase, not on one of the demos. */
   await expect(page.getByRole("heading", { level: 1 })).toContainText(/three demos/i);
+});
+
+/*
+  The four doors route, and the number under each one is real.
+
+  The homepage used to sort by what a thing is — "Built and running", "Free
+  tools", the live readout — which is Meg's side of the relationship. A
+  contractor who needs a website and an owner drowning in manual entry
+  landed on the same undifferentiated list. `ServiceRouter` is the one
+  place the page asks what the visitor came for.
+
+  **The count is the part worth a test.** "4 projects" under Websites is a
+  claim about evidence, and CLAUDE.md's first rule is that the site never
+  invents proof. It is computed from `work` filtered by `category`, so the
+  honest failure mode is that somebody later hardcodes it, or files a
+  project under a category and the card does not move. Asserted against the
+  same source the component reads, rather than against a number written
+  here — a literal would drift the moment Meg ships her next site, and a
+  test nobody can trust gets deleted.
+
+  Each door is also followed, because a link that is present and lands on
+  the wrong anchor looks identical to one that works.
+*/
+test("the four service doors route, and their counts are real", async ({ page }) => {
+  await page.goto("/");
+  const router = page.locator('section[aria-labelledby="router-heading"]');
+  await expect(router, "the homepage should ask what the visitor came for").toHaveCount(1);
+
+  const doors = router.locator("ul > li a");
+  await expect(doors, "one door per service").toHaveCount(services.length);
+
+  for (const s of services) {
+    const door = router.locator(`a[href="/services#${s.id}"]`);
+    await expect(door, `a door for ${s.id}`).toHaveCount(1);
+    await expect(door).toContainText(s.title);
+
+    const real = work.filter((w) => w.category === s.id).length;
+    if (real > 0) {
+      await expect(
+        door,
+        `${s.id} should quote the real number of projects behind it`,
+      ).toContainText(real === 1 ? "1 project" : `${real} projects`);
+    } else {
+      /* Nothing behind it says nothing, rather than "0 projects". */
+      await expect(door).not.toContainText(/project/i);
+    }
+  }
+
+  /* Follow one all the way, so the anchor is proven to exist on the target. */
+  const first = services[0];
+  await page.locator(`a[href="/services#${first.id}"]`).click();
+  await expect(page).toHaveURL(new RegExp(`/services#${first.id}$`));
+  await expect(
+    page.locator(`#${first.id}`),
+    "the services page should have the anchor the door points at",
+  ).toBeVisible();
 });

@@ -223,7 +223,7 @@ export default function MarketplacePage() {
                 The whole thing, running a real company.
               </h2>
               <p className="mt-4 max-w-[62ch] text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                BrightBase is the operations system I built to run my own
+                BrightBase is the operations system behind a real Maine
                 cleaning company: leads, quotes, scheduling, a crew phone app,
                 a customer portal, invoicing and payouts in one place. It is in
                 daily use. If the tools above are pieces of a system, this is

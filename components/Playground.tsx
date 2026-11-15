@@ -42,7 +42,7 @@ const TOOLS: {
     label: "Invoice maker",
     blurb: "Build an invoice or proposal → print to a clean PDF in one click.",
     group: "Win & bill",
-    nudge: { line: "Want invoices that send and track themselves? That's a custom build.", cta: "Tell me what you need", href: "/#contact" },
+    nudge: { line: "Want invoices that send and track themselves? That's a custom build.", cta: "Say what you need", href: "/#contact" },
   },
   {
     id: "sig",

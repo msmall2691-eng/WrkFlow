@@ -22,7 +22,7 @@ import WorkflowDemo from "@/components/WorkflowDemo";
   this is the easiest page on the site to get caught inventing a number on.
   See the comment above `caseStudies` in lib/content.ts.
 
-  Note what is NOT here: `overflow-hidden` on the "What I built" section.
+  Note what is NOT here: `overflow-hidden` on the "What was built" section.
   BuildScroller pins its screen with `position: sticky`, which silently stops
   working inside a clipped ancestor.
 */
@@ -160,7 +160,7 @@ export default async function CaseStudyPage({ params }: Props) {
                 needs, and the thing a screenshot cannot say. */}
             {cs.role && (
               <p className="mt-6 max-w-[62ch] border-l-2 border-signal/50 pl-4 text-sm leading-relaxed text-ink">
-                <span className="font-semibold">My role. </span>
+                <span className="font-semibold">M Studio&apos;s role. </span>
                 {cs.role}
               </p>
             )}
@@ -199,11 +199,11 @@ export default async function CaseStudyPage({ params }: Props) {
           </section>
         )}
 
-        {/* What I built. No overflow-hidden on this section — see the note above. */}
+        {/* What was built. No overflow-hidden on this section — see the note above. */}
         <section className="border-t border-line py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-6">
             <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              What I built
+              What was built
             </h2>
             <div className="mt-10">
               <BuildScroller items={cs.built} />
@@ -298,7 +298,7 @@ export default async function CaseStudyPage({ params }: Props) {
           Built with.
 
           This used to sit here, between "How it works" and "Result", as a
-          full section with an h2 the same size as "What I built" — so the
+          full section with an h2 the same size as "What was built" — so the
           last thing a visitor read before the outcome was a row of framework
           names. For somebody deciding whether to buy this, that is the least
           useful block on the page, and it was weighted like one of the most.
@@ -378,7 +378,7 @@ export default async function CaseStudyPage({ params }: Props) {
               Want something like this?
             </h2>
             <p className="mt-4 max-w-[62ch] text-[1.0625rem] leading-relaxed text-muted">
-              Tell me what you are trying to solve. You don&apos;t need a
+              Say what you are trying to solve. You don&apos;t need a
               technical plan to get started.
             </p>
             <Link
