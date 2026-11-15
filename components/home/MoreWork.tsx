@@ -25,11 +25,17 @@ import { work, type WorkItem } from "@/lib/content";
   title appears exactly once on the homepage, because this is an editorial
   list and an editorial list is the kind of thing that quietly regrows.
 
-  **The live readout sits beside it, and that placement is the honest one.**
-  Excluding Turnover scheduling left "getting your tools to talk" with no
-  evidence on this page at all, and the readout is exactly that: five
-  independent public feeds merged into one screen, with the sources named so
-  the claim is checkable. It is the only other moving thing on the page.
+  **The live readout sits beside it: five independent public feeds merged
+  into one screen, with the sources named so the claim is checkable. It is
+  the only other moving thing on the page.**
+
+  It used to be justified here as the page's integrations evidence, on the
+  grounds that excluding Turnover scheduling left "getting your tools to
+  talk" with nothing behind it. That was true and it was thin, and it is no
+  longer either: `WhatConnects` below carries eight integrations that are
+  running in named systems. The readout earns its place as a live thing
+  built from public feeds, which is what it actually is, rather than as a
+  stand-in for proof that was missing.
 */
 
 const ALREADY_SHOWN = [
