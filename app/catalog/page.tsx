@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
 import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import CatalogBrowser from "@/components/CatalogBrowser";
-import { audienceLabels, type CatalogAudience } from "@/lib/catalog";
+import { audienceLabels, catalog, formatLabels, type CatalogAudience } from "@/lib/catalog";
 
 /*
   /catalog — everything in one place, filterable by who you are and what
@@ -67,7 +68,9 @@ export default function CatalogPage() {
 
           <section className="py-12 md:py-16">
             <div className="mx-auto max-w-6xl px-6">
-              <CatalogBrowser />
+              <Suspense fallback={<StaticList />}>
+                <CatalogBrowser />
+              </Suspense>
             </div>
           </section>
 
@@ -94,5 +97,22 @@ export default function CatalogPage() {
       <Footer />
       <CommandPalette />
     </div>
+  );
+}
+
+/* What renders before the filters hydrate: every card's name, type and
+   price as a plain list, so the page is complete without JavaScript. */
+function StaticList() {
+  return (
+    <ul className="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+      {catalog.map((i) => (
+        <li key={i.id} className="cp-tile p-4 text-[14px] text-[color:var(--cp-ink)]">
+          <span className="font-semibold">{i.name}</span>
+          <span className="block text-[12.5px] text-[color:var(--cp-muted)]">
+            {formatLabels[i.format]} · {i.price}
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }

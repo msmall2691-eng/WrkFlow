@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   catalog,
@@ -25,10 +26,8 @@ import { track } from "@vercel/analytics";
   so Meg can post a link straight to the rental shelf in a host group, and
   so a filtered view survives a refresh or a share.
 
-  Read from window.location on mount rather than useSearchParams, which
-  would force a Suspense boundary and a client-only render of the whole
-  grid. The first paint is the unfiltered list, which is also what search
-  engines and no-JS visitors get, and it is complete.
+  The page wraps this in <Suspense> with the unfiltered list as the
+  fallback, so search engines and no-JS visitors still get every card.
 */
 
 type AudienceFilter = CatalogAudience | "all";
@@ -52,30 +51,31 @@ function isFormat(v: string | null): v is CatalogFormat {
 }
 
 export default function CatalogBrowser() {
-  const [aud, setAud] = useState<AudienceFilter>("all");
-  const [fmt, setFmt] = useState<FormatFilter>("all");
-
-  useEffect(() => {
-    const p = new URLSearchParams(window.location.search);
-    const f = p.get("for");
-    const t = p.get("type");
-    if (isAudience(f)) setAud(f);
-    if (isFormat(t)) setFmt(t);
-  }, []);
+  /*
+    The URL is the only source of truth for the filters. Reading it once on
+    mount (the first version) broke the shelf links above the grid: a <Link>
+    to /catalog?for=rentals while already on /catalog changes the query
+    without remounting this component, so the URL moved and the cards did
+    not. Deriving from useSearchParams means any navigation, a shelf link,
+    the back button or a pasted URL, re-filters, and a parameter that is
+    absent reads as "all".
+  */
+  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const f = params.get("for");
+  const t = params.get("type");
+  const aud: AudienceFilter = isAudience(f) ? f : "all";
+  const fmt: FormatFilter = isFormat(t) ? t : "all";
 
   function update(nextAud: AudienceFilter, nextFmt: FormatFilter) {
-    setAud(nextAud);
-    setFmt(nextFmt);
-    try {
-      const url = new URL(window.location.href);
-      if (nextAud === "all") url.searchParams.delete("for");
-      else url.searchParams.set("for", nextAud);
-      if (nextFmt === "all") url.searchParams.delete("type");
-      else url.searchParams.set("type", nextFmt);
-      window.history.replaceState(null, "", `${url.pathname}${url.search}`);
-    } catch {
-      // A blocked history API leaves the filter working, just unshareable.
-    }
+    const next = new URLSearchParams(params.toString());
+    if (nextAud === "all") next.delete("for");
+    else next.set("for", nextAud);
+    if (nextFmt === "all") next.delete("type");
+    else next.set("type", nextFmt);
+    const qs = next.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   }
 
   const shown = useMemo(
