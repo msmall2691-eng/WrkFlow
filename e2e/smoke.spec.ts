@@ -502,24 +502,46 @@ test("the work anchor is unique and lands on one job told all the way through", 
   await expect(section.locator("figcaption")).toContainText(/megan small/i);
 
   /*
-    Scroll to the captures before asking whether they loaded, and let the
-    check retry. These <Image>s are loading="lazy", so nothing fetches them
-    until they approach the viewport, and `goto` resolves on `load`. Reading
-    naturalWidth once straight after goto passes only by coincidence —
-    whether the section happens to fall inside the distance at which
-    Chromium starts a lazy image early. Nothing asserts that distance.
+    Scroll EACH capture into view before asking whether it loaded, and give
+    the poll a budget that a cold image-optimization response can fit in.
+
+    These <Image>s are loading="lazy", so nothing fetches them until they
+    approach the viewport, and `goto` resolves on `load`. The version this
+    was adapted from scrolled the *section* and then polled, which is fine
+    for three cards in one row and worth not assuming for a 2x2 grid in a
+    section nearly 2000px tall.
+
+    Measured rather than assumed, because the first draft of this comment
+    asserted that the section scroll left the captures below the fold and
+    that was simply untrue: at Playwright's 1280x720 default,
+    `scrollIntoViewIfNeeded` on the section puts its top at -583, and all
+    four captures are in the viewport and fully loaded before the first
+    poll. So the per-image scroll is belt and braces, not the fix.
+
+    What actually failed on CI was the fetch itself: build step 1
+    (maineclean.png, the largest source at 2208x1380) reported naturalWidth
+    0 after the default 5s poll, on the same run where three separate
+    navigations to /work/maine-cleaning-co — whose hero is that same file —
+    each timed out at 30s. One slow optimizer, four symptoms. 15s is the
+    budget a cold encode on a loaded two-core runner can actually fit in;
+    it buys patience without hiding a real failure, since an image that
+    never arrives still fails.
   */
-  await section.scrollIntoViewIfNeeded();
   const shots = section.locator("ul img");
   const built = await shots.count();
   expect(built, "the build steps should lead with real captures").toBeGreaterThan(1);
-  for (let i = 0; i < built; i++)
+  for (let i = 0; i < built; i++) {
+    await shots.nth(i).scrollIntoViewIfNeeded();
     await expect
       .poll(
         () => shots.nth(i).evaluate((el: HTMLImageElement) => el.naturalWidth),
-        { message: `build step ${i + 1} should lead with a screenshot that loaded` },
+        {
+          message: `build step ${i + 1} should lead with a screenshot that loaded`,
+          timeout: 15000,
+        },
       )
       .toBeGreaterThan(0);
+  }
 
   /* And the button that promises it actually reaches it. Back to the top
      first, or the assertion below passes on the scroll this test just did. */
