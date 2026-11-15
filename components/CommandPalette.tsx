@@ -110,6 +110,50 @@ export default function CommandPalette() {
           window.location.href = "/marketplace";
         },
       },
+      /*
+        Three finished pages that had no command at all, which is the gap
+        PanelHeader's own note creates: it caps the header at six links and
+        says the overflow belongs here, and then the overflow never arrived.
+
+        /turnover was the worst of them — not in the header, not on the
+        homepage, not in the footer, not here, and not even in the sitemap.
+        A working free tool reachable only by typing its URL.
+      */
+      {
+        id: "turnover",
+        label: "Turnover Planner",
+        hint: "↗",
+        group: "Navigate",
+        keywords:
+          "turnover planner airbnb vrbo rental cleaning schedule calendar ical ics same-day changeover host str short-term free tool",
+        run: () => {
+          close();
+          window.location.href = "/turnover";
+        },
+      },
+      {
+        id: "welcome-book",
+        label: "Digital Welcome Book",
+        hint: "↗",
+        group: "Navigate",
+        keywords:
+          "welcome book guest guide airbnb vrbo rental house manual wifi check-in qr code host str buy 99",
+        run: () => {
+          close();
+          window.location.href = "/welcome-book";
+        },
+      },
+      {
+        id: "intake",
+        label: "Start the project questionnaire",
+        hint: "↗",
+        group: "Navigate",
+        keywords: "intake questionnaire brief scope start project form answers concept preview",
+        run: () => {
+          close();
+          window.location.href = "/intake";
+        },
+      },
       {
         id: "approach",
         label: "Approach",

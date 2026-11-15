@@ -955,6 +955,65 @@ export const marketItems: MarketItem[] = [
 ];
 
 /*
+  The three demos.
+
+  **These lived in a local array inside `app/demo/page.tsx`**, which was fine
+  while /demo was the only page that showed them and stopped being fine the
+  moment the homepage needed them too. An audit of what a visitor can
+  actually reach found the demos one hop behind /demo with no other path in,
+  and the homepage never mentioning the most clickable proof on the site.
+
+  Here instead, for the same reason `marketItems` and `smallProjects` own
+  their own prices: two pages rendering the same three things from two
+  arrays is how they drift.
+
+  Deliberately NOT in `work[]`. Every business in them is invented, and
+  `work` is the list of things real businesses are running — the homepage's
+  whole argument rests on that distinction, and every demo page says it is a
+  demo in its own first line.
+*/
+export type Demo = {
+  href: string;
+  kind: string;
+  name: string;
+  what: string;
+  /** What the demo proves can be built, as opposed to what it looks like. */
+  proves: string;
+  /** The demo's own two colours, so a card can preview three different looks. */
+  swatch: [string, string];
+};
+
+export const demos: Demo[] = [
+  {
+    href: "/demo/shop",
+    kind: "Storefront",
+    name: "Fathom & Fog",
+    what: "A print shop. Browse, filter, pick a size that changes the price, fill a cart and reach a checkout.",
+    proves:
+      "Catalog, options that affect price, and cart arithmetic that still adds up at quantity two.",
+    swatch: ["#fbf7f1", "#2f5d73"],
+  },
+  {
+    href: "/demo/studio",
+    kind: "Booking",
+    name: "Blue Hour Bodywork",
+    what: "A massage studio. Pick a treatment, a practitioner and a time, and hold it.",
+    proves:
+      "Real availability: different treatment lengths, two practitioners with different skills and shifts, appointments already on the books, and a cleanup gap between them. Book one and watch the neighbouring times disappear.",
+    swatch: ["#f3f6f5", "#2f6b63"],
+  },
+  {
+    href: "/demo/directory",
+    kind: "Directory",
+    name: "Midcoast Growers",
+    what: "A local food directory. Search, then narrow by what they grow, the day they are out, and the town.",
+    proves:
+      "Filters that combine rather than replace each other, a count that moves, and an empty result that names which filter to drop instead of showing a blank page.",
+    swatch: ["#f6f7fa", "#2d4ed8"],
+  },
+];
+
+/*
   The ladder — one spine for everything on sale.
 
   **The site described the same business three separate ways.** `services`

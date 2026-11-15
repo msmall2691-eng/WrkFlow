@@ -1135,3 +1135,81 @@ test("every price on the services ladder resolves to its one source", async ({
      tidy-up, so assert it survived to the page rather than only to the data. */
   expect(text, "the ladder should offer something free").toContain("Free");
 });
+
+/*
+  Nothing finished is reachable from nowhere.
+
+  An audit of what a visitor can actually get to found three finished,
+  indexable things effectively invisible:
+
+    · /turnover — a working free tool (paste an Airbnb or Vrbo calendar
+      export, get the cleaning schedule). Not in the header, not on the
+      homepage, not in the footer, not in the command palette, and not in
+      the sitemap. Reachable only by typing the URL.
+    · /welcome-book — the only page on the site with a price on it — with
+      two inbound links in the entire repo.
+    · the three demo apps — one hop behind /demo, and never mentioned on
+      the homepage at all.
+
+  Every one of those renders perfectly. That is the point: an orphaned page
+  looks exactly like a linked one from the inside, so nothing in a build, a
+  type check or a Lighthouse run can tell you a visitor will never find it.
+  The only way it surfaces is somebody going looking, which is how it was
+  found and why it is asserted here.
+
+  Scoped to the homepage rather than "somewhere on the site" deliberately.
+  A link buried on a page that is itself unreachable is not reachability,
+  and the homepage is the one page every visitor sees.
+*/
+test("every finished thing is reachable from the homepage", async ({ page }) => {
+  await page.goto("/");
+
+  /* Paths a visitor should be able to click to, without a search box. */
+  const MUST_REACH = [
+    "/turnover",
+    "/welcome-book",
+    "/demo/shop",
+    "/demo/studio",
+    "/demo/directory",
+    "/tools",
+    "/marketplace",
+  ];
+
+  const hrefs = await page
+    .locator("a[href]")
+    .evaluateAll((els) => els.map((e) => e.getAttribute("href") ?? ""));
+
+  const unreachable = MUST_REACH.filter(
+    (path) => !hrefs.some((h) => h === path || h.startsWith(`${path}?`)),
+  );
+
+  expect(
+    unreachable,
+    "these are finished and priced, and a visitor cannot click to them from the homepage",
+  ).toEqual([]);
+});
+
+/*
+  And search engines are told about the indexable ones.
+
+  /turnover was missing from app/sitemap.ts entirely while carrying no
+  `noindex` — so the page most likely to be found by a stranger searching
+  for exactly what it does was the one page never submitted. The three demos
+  are deliberately excluded, because the businesses in them are invented and
+  should not rank for somebody trying to buy a print or book a massage;
+  asserting their ABSENCE is what stops a well-meaning edit adding them.
+*/
+test("the sitemap lists the public pages, and not the invented ones", async ({ request }) => {
+  const res = await request.get("/sitemap.xml");
+  expect(res.status()).toBe(200);
+  const xml = await res.text();
+
+  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo"])
+    expect(xml, `${path} should be in the sitemap`).toContain(`${path}</loc>`);
+
+  for (const path of ["/demo/shop", "/demo/studio", "/demo/directory"])
+    expect(xml, `${path} is noindex and should stay out of the sitemap`).not.toContain(
+      `${path}</loc>`,
+    );
+});
+
