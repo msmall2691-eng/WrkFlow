@@ -15,35 +15,33 @@ const PORT = 3100;
 export default defineConfig({
   testDir: "./e2e",
   /*
-    90s per test on CI, against Playwright's 30s default.
+    No custom timeout here, and that is a decision with a history.
 
-    **This is margin, not a fix, and the distinction is the point.** Twice now
-    a run has failed with the same four tests — three navigations to
-    /work/maine-cleaning-co and the homepage's first build capture — each
-    timing out at exactly 30s. Both times on a diff that touches neither that
-    route nor those images, and both times `main` was green.
+    **An intermittent hang on /work/maine-cleaning-co fails roughly half of
+    all CI runs**, and it is not any one branch's: run 79 hit it on `main`
+    itself, immediately after #137 merged, with the same four tests —
+    three navigations to that route plus the homepage's first build capture.
 
-    What the runs actually show is a slow runner rather than a slow page. The
-    two failing runs took 4.3 and 5.0 minutes of test time; the three passing
-    runs around 2. That is roughly 2.5x across the board, and the heaviest
-    page is simply the first thing to cross a 30s cliff the suite had no
-    margin for.
+    Raising this to 90s was tried and reverted, because the diagnosis behind
+    it was wrong. The theory was a slow runner with no margin; the evidence
+    killed it. At 90s the same four tests still failed, having burned 10.5
+    minutes instead of 5. A page that renders in 0.43s locally and does not
+    finish in 90s on CI is hanging, not running slowly, and no budget fixes
+    a hang. It only makes each failure cost more.
 
-    What was ruled out, so nobody re-derives it: the page loads in 0.43s
-    locally with an emptied .next/cache/images, at Playwright's own viewport,
-    and requests four images. Cold-encoding every width of the largest source
-    with the server pinned to two cores peaks at 0.6s. Next emits WebP only
-    here, so the expensive AVIF path is not in play. No reproduction locally,
-    cold or CPU-pinned.
+    What has been ruled out, so nobody re-derives it: the page loads in
+    0.43s locally against an emptied .next/cache/images at Playwright's own
+    viewport, requesting four images. Cold-encoding every width of the
+    largest source with the server pinned to two cores peaks at 0.6s. Next
+    emits WebP only here, so the expensive AVIF path is not in play. No
+    reproduction locally, cold or CPU-pinned, in a browser or over curl.
 
-    Raising the budget does not hide a failure: every assertion still runs,
-    and a page that is genuinely broken, blank or erroring still fails on its
-    own assertion rather than on the clock. What it stops is a green suite
-    being reported red because somebody else's build was noisy for five
-    minutes. Local stays at the default, where a 30s page load is a real
-    signal worth seeing.
+    What is still unexplained, and is the thread to pull next: the four
+    images that page loads eagerly are the only PNGs the suite waits on, and
+    every page whose captures are .webp has never failed. That is a
+    correlation, not a cause, and it is written here rather than acted on
+    because three confident guesses have already been wrong.
   */
-  timeout: process.env.CI ? 90_000 : 30_000,
   // A failing smoke test is a real failure, so don't paper over it locally.
   retries: process.env.CI ? 1 : 0,
   forbidOnly: !!process.env.CI,
