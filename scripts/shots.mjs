@@ -38,9 +38,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 /*
-  Output filename -> the live URL it is a capture of. The key is the file in
-  public/shots that lib/content.ts points at, so adding a target here is the
-  whole job of keeping a new shot current.
+  Output filename -> the live URL it is a capture of, or a { url, ... } spec
+  when the capture needs more than a URL. The key is the file in public/shots
+  that lib/content.ts points at, so adding a target here is the whole job of
+  keeping a new shot current.
 
   Not here, and not capturable this way: instant-estimate.png and the
   brightbase/* screens. Those are private systems with no public URL; retake
@@ -62,8 +63,32 @@ const TARGETS = {
     behind a family code, and its screens carry children's names, daily logs
     and photographs. A capture of it has no place in a public repository
     whatever it would prove, and nothing on the site needs it.
+
+    `cropHeight` is the second half of that boundary and it is the half that
+    was nearly lost. The public page's hero carries a photograph of two
+    children, which was cropped out by hand before committing: it sits on
+    Meg's own childcare site with whatever permission she has for that, and
+    reusing it on a portfolio is her decision rather than one to take by
+    default. Cropped by hand, that decision lived in the committed pixels and
+    nowhere in this script, so the very next `npm run shots` would have
+    silently put the photograph back. A refresh path is exactly where a rule
+    honored once by hand goes missing.
+
+    Two things worth knowing before changing it. The number is in output
+    pixels, the same units as the committed file, so it is checkable: every
+    other shot here is 2208x1380 and this one is 2208x1030. And it is a
+    guarantee about a fixed rectangle rather than about the photograph, so if
+    the live page's layout ever moves that hero upward the crop stops
+    protecting anything. That is a judgement for Meg rather than something
+    this script can make, which is also why it is a fixed height and not a
+    selector: a selector that stopped matching would fail open and capture
+    everything, where a height that no longer fits throws and leaves the
+    previous file in place.
   */
-  "arrowhead.png": "https://www.lacexplorers.online",
+  "arrowhead.png": {
+    url: "https://www.lacexplorers.online",
+    cropHeight: 1030,
+  },
 };
 
 const WIDTH = 2208;
@@ -73,7 +98,8 @@ const staging = mkdtempSync(join(tmpdir(), "shots-"));
 const browser = await chromium.launch();
 let wrote = 0;
 
-for (const [file, url] of Object.entries(TARGETS)) {
+for (const [file, target] of Object.entries(TARGETS)) {
+  const { url, cropHeight } = typeof target === "string" ? { url: target } : target;
   const slug = file.replace(/\.(png|jpg)$/, "");
   if (only.length && !only.includes(slug) && !only.includes(file)) continue;
 
@@ -90,7 +116,14 @@ for (const [file, url] of Object.entries(TARGETS)) {
     await page.waitForTimeout(2500);
     await page.screenshot({ path: raw });
 
-    const img = sharp(raw).resize({ width: WIDTH });
+    /* Resize first, then crop, so cropHeight is in the output's own pixels
+       rather than the capture's. An over-tall crop throws here and the
+       catch below leaves the committed file untouched, which is the safe
+       direction for a boundary this one is protecting. */
+    const resized = sharp(raw).resize({ width: WIDTH });
+    const img = cropHeight
+      ? resized.extract({ left: 0, top: 0, width: WIDTH, height: cropHeight })
+      : resized;
     await (file.endsWith(".jpg")
       ? img.jpeg({ quality: 82, mozjpeg: true })
       /* palette: true quantizes to <=256 colours, which is what keeps these
