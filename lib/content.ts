@@ -444,6 +444,40 @@ export const work: WorkItem[] = [
     url: "https://nash-alpha.vercel.app/",
     shot: "/shots/nash.jpg",
   },
+  /*
+    Arrowhead Explorers — the public site and the parent portal behind it.
+
+    Filed under `software` rather than `websites`, which is the judgement
+    `ServiceCategory` exists to make: `category` answers "what is this proof
+    of", and the distinctive half here is not the marketing page, it is a
+    multi-role app. "Client & team portals" is already one of the `kinds`
+    listed under Custom software, and until now nothing on the site proved
+    it.
+
+    `tag` says whose it is, in the same shape as the other two personal
+    builds ("our own company", "our own rental"). Meg built it herself
+    rather than for a client, and the site distinguishes those everywhere
+    else, so it says so here too.
+
+    The capture is the public marketing page only. The portal is noindex,
+    behind a family code, and its screens carry children's names, daily logs
+    and photographs; none of that belongs in a public repository. The hero
+    photograph of two children was cropped out of the capture for the same
+    reason — it is on Meg's own childcare site with whatever permission she
+    has for that, and reusing it on a portfolio is a separate decision that
+    is hers rather than one to make by default.
+  */
+  {
+    tier: "site",
+    tag: "Website + parent portal · our own project",
+    category: "software",
+    title: "Arrowhead Explorers",
+    blurb:
+      "A nature-based childcare site with a private parent portal: families sign in with a code to see their child's day, a door kiosk takes QR badge check-ins, and staff run attendance, daily logs and photos.",
+    stack: ["Next.js", "Supabase", "Vercel"],
+    url: "https://www.lacexplorers.online",
+    shot: "/shots/arrowhead.png",
+  },
   // Tier 2 — product we built
   {
     tier: "product",
