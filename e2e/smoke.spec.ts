@@ -5,6 +5,7 @@ import { test, expect, type Page } from "@playwright/test";
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
 import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
+import { integrations, resolveProof } from "../lib/integrations";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1213,3 +1214,60 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
     );
 });
 
+/*
+  Every integration shown is one somebody is already running.
+
+  This section is the easiest thing on the site to fake. A grid of familiar
+  logos reads as proof and costs nothing to type, and the first rule in
+  CLAUDE.md is that proof is never invented. So the list is not trusted:
+  each entry cites the exact record elsewhere in the repo that backs it,
+  either a chip in a project's own `stack` or an entry in
+  `brightbase.integrations`, and this resolves every one of them.
+
+  It asks `resolveProof` rather than re-deriving what counts as backed.
+  A second copy of that rule here would agree with the first until the day
+  it did not, which is the failure the single-author convention in this
+  repo exists to prevent.
+
+  Verified both ways: adding an integration with an invented source fails
+  naming it, and the rendered half fails if the section is unwired.
+*/
+test("every integration shown is running in a named project", async ({ page }) => {
+  /* Data first, so a bad entry fails with its own name rather than with
+     "0 tiles found" on a page that rendered perfectly. */
+  const unbacked: string[] = [];
+  for (const i of integrations) {
+    if (i.proof.length === 0) {
+      unbacked.push(`"${i.name}" cites nothing`);
+      continue;
+    }
+    for (const p of i.proof) {
+      if (!resolveProof(p))
+        unbacked.push(`"${i.name}" cites "${p.source}" in "${p.project}", which does not back it`);
+    }
+  }
+  expect(
+    unbacked,
+    "every integration should trace to a real record on a real project",
+  ).toEqual([]);
+
+  /* And it reaches the page. textContent rather than innerText, matching
+     the ladder test: a name inside a clipped element still counts as the
+     page carrying it. */
+  await page.goto("/");
+  const section = page.locator("#connects");
+  await expect(section).toBeVisible();
+
+  const text = (await section.textContent()) ?? "";
+  const missing = integrations.filter((i) => !text.includes(i.name)).map((i) => i.name);
+  expect(missing, "every integration should render on the homepage").toEqual([]);
+
+  /* The attribution is the whole point: a tool name on its own is the wall
+     of logos this test exists to refuse. Assert the projects reach the page
+     too, not just the tool names. */
+  const projects = new Set(
+    integrations.flatMap((i) => i.proof.map((p) => resolveProof(p)?.title).filter(Boolean)),
+  );
+  for (const title of projects)
+    expect(text, `"${title}" should be named as where an integration runs`).toContain(title as string);
+});

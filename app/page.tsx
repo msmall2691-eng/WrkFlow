@@ -2,6 +2,7 @@ import Opening from "@/components/home/Opening";
 import ServiceRouter from "@/components/panel/ServiceRouter";
 import OneJob from "@/components/home/OneJob";
 import MoreWork from "@/components/home/MoreWork";
+import WhatConnects from "@/components/home/WhatConnects";
 import TryItNow from "@/components/home/TryItNow";
 import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
@@ -40,7 +41,10 @@ import CommandPalette from "@/components/CommandPalette";
     OneJob       id="work" — one project all the way through: what was
                  wrong, what got built, what changed, where to look
     MoreWork     everything the worked example does not cover, once each,
-                 plus the live readout as the integrations evidence
+                 plus the live readout
+    WhatConnects the integrations evidence, cut by tool rather than by
+                 project, because "will it work with what I already pay
+                 for" is not a question about a project
     TryItNow     the finished things somebody can open or buy today: the
                  three demos, the free planner and the welcome book. All of
                  them were unreachable from this page before
@@ -75,6 +79,7 @@ export default function Home() {
       <ServiceRouter />
       <OneJob />
       <MoreWork />
+      <WhatConnects />
       <TryItNow />
       <HowToStart />
       <Contact />
