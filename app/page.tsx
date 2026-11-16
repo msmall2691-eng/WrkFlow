@@ -1,6 +1,5 @@
 import Opening from "@/components/home/Opening";
 import CategoryDoors from "@/components/home/CategoryDoors";
-import OneJob from "@/components/home/OneJob";
 import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -13,7 +12,8 @@ import CommandPalette from "@/components/CommandPalette";
 
     Opening        headline, two ways in, and six live things to open
     CategoryDoors  "What do you need?": six shelves of /catalog, real screens
-    OneJob         id="work": one real business, start to finish
+    (OneJob removed late Nov 15 at Meg's ask: the homepage should not
+     centre on the cleaning company. Its story is on /work/maine-cleaning-co.)
     HowToStart     what pressing send sets in motion
     Contact
 
@@ -89,7 +89,6 @@ export default function Home() {
     <div className="cp">
       <Opening />
       <CategoryDoors />
-      <OneJob />
       <HowToStart />
       <Contact />
       <Footer />

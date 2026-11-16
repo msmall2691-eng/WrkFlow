@@ -43,6 +43,24 @@ const shots: Record<string, string> = {
   "Instant Estimate": "/shots/catalog/live-estimate.webp",
 };
 
+/* Client and outside work first, Meg's own businesses after (Nov 15: the
+   site should not centre on the cleaning company). Unlisted titles keep
+   their `work[]` order at the end. */
+const ORDER = [
+  "The Remote Admin",
+  "Nash Construction",
+  "Arrowhead Explorers",
+  "The Keystone House",
+  "linx",
+  "The Maine Cleaning Co.",
+  "BrightBase",
+  "Turnover scheduling",
+  "Instant Estimate",
+];
+const ordered = [...work].sort(
+  (a, b) => (ORDER.indexOf(a.title) + 1 || 99) - (ORDER.indexOf(b.title) + 1 || 99),
+);
+
 function primaryLink(w: WorkItem): { href: string; label: string; external?: boolean } | null {
   if (w.caseStudy) return { href: `/work/${w.caseStudy}`, label: "Read the case study" };
   if (w.page) return { href: w.page, label: "Look inside" };
@@ -77,7 +95,7 @@ export default function WorkPage() {
         <section className="py-12 md:py-14">
           <div className="mx-auto max-w-6xl px-6">
             <ul className="m-0 grid list-none gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3">
-              {work.map((w) => {
+              {ordered.map((w) => {
                 const img = shots[w.title] ?? w.shot;
                 const link = primaryLink(w);
                 return (

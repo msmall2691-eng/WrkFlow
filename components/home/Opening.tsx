@@ -6,12 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { smallProjects, welcomeBook } from "@/lib/content";
 
-/* Three real, live sites, all built by Meg. The Remote Admin is a client;
-   the cleaning company and the rental are her own businesses, said so. */
+/* Three real, live sites, three different industries. Meg (Nov 15): the
+   page should not centre on the cleaning company, so it is not here; it
+   lives on /work and in its case study. */
 const proof = [
-  { name: "The Maine Cleaning Co.", what: "Booking site + the office system behind it", domain: "maineclean.co", href: "https://www.maineclean.co", image: "/shots/catalog/live-maineclean.webp" },
-  { name: "The Remote Admin", what: "Client site for an admin-services business", domain: "the-remote-admin.com", href: "https://www.the-remote-admin.com", image: "/shots/catalog/live-remote-admin.webp" },
-  { name: "Nash Construction", what: "Contractor site with a project portfolio", domain: "nashconstructionnh.com", href: "https://www.nashconstructionnh.com", image: "/shots/catalog/live-nash.webp" },
+  { name: "The Remote Admin", what: "Admin services", domain: "the-remote-admin.com", href: "https://www.the-remote-admin.com", image: "/shots/catalog/live-remote-admin.webp" },
+  { name: "Nash Construction", what: "General contractor", domain: "nashconstructionnh.com", href: "https://www.nashconstructionnh.com", image: "/shots/catalog/live-nash.webp" },
+  { name: "Arrowhead Explorers", what: "Childcare, with a parent portal", domain: "lacexplorers.online", href: "https://www.lacexplorers.online", image: "/shots/catalog/live-arrowhead.webp" },
 ];
 
 /*
@@ -89,11 +90,10 @@ export default function Opening() {
               Southern Maine · clients anywhere
             </span>
             <h1 className="m-0 font-display text-[clamp(2.3rem,4.6vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-balance text-[color:var(--cp-ink)]">
-              Websites and office software for small service businesses.
+              Websites and apps for small businesses.
             </h1>
             <p className="m-0 max-w-[30em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-              Get found, get booked, and stop typing the same thing twice.
-              Built by the owner of an eight-year cleaning company that runs on it.
+              Built to bring in work and cut the busywork.
             </p>
 
             <div className="flex items-center gap-3">
@@ -131,16 +131,16 @@ export default function Opening() {
 
             {/* Real prices, each from its one source. */}
             <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-1.5 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
-              <li>Fixes from <span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
+              <li>Fixes from{" "}<span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
               <li>
                 <Link href="/welcome-book" className="inline-flex min-h-7 items-center no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
-                  Rental welcome book <span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
+                  Rental welcome book{" "}<span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
                 </Link>
               </li>
-              <li>Site care <span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
+              <li>Site care{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
               <li>
                 <Link href="/turnover" className="inline-flex min-h-7 items-center no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
-                  Turnover Planner <span className="font-semibold text-[color:var(--cp-ink)]">free</span>
+                  Turnover Planner{" "}<span className="font-semibold text-[color:var(--cp-ink)]">free</span>
                 </Link>
               </li>
             </ul>
@@ -149,7 +149,7 @@ export default function Opening() {
           {/* Proof: three real, live client sites. Not demos. */}
           <div>
             <p className="m-0 text-[12px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
-              Live sites, built and running
+              Recent work
             </p>
             <ul className="m-0 mt-3 grid list-none gap-3 p-0">
               {proof.map((p) => (
