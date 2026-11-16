@@ -2,7 +2,8 @@ import BookCall from "../BookCall";
 import WeatherLayer from "../WeatherLayer";
 import PanelStage from "../panel/PanelStage";
 import PanelHeader from "../panel/PanelHeader";
-import { provingGround } from "@/lib/content";
+import Link from "next/link";
+import LiveStrip from "../LiveStrip";
 
 /*
   Opening — the first screen, and now only the first screen.
@@ -73,8 +74,8 @@ export default function Opening() {
             Software that runs <span className="cp-grad">real businesses.</span>
           </h1>
           <p className="m-0 max-w-[32em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-            Websites, web apps and custom tools for small businesses. Built to
-            bring work in, and to cut the manual parts out.
+            Websites, booking, apps, integrations and AI for small businesses.
+            Built to bring work in, and to cut the manual parts out.
           </p>
           <div className="mt-1 flex flex-wrap gap-3">
             <BookCall
@@ -89,35 +90,29 @@ export default function Opening() {
               rows of project names; this one promises one job told all the
               way through, which is what #work now holds.
             */}
-            <a
-              href="#work"
-              className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-hairline-strong)]"
+            <Link
+              href="/catalog"
+              className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-ink)]"
             >
-              See one job, start to finish
-            </a>
+              Browse everything
+            </Link>
           </div>
         </div>
 
-        {/* The proving ground, attributed. See the header note. */}
-        <div className="border-t border-[color:var(--cp-line)] pt-7">
-          <p className="m-0 text-[12px] uppercase tracking-wider text-[color:var(--cp-faint)]">
-            {provingGround.label}
+        {/*
+          Nov 15 2026 (Meg): the Maine Cleaning Co. operating numbers used to
+          sit here. A stranger reading "$1M+ collected" as the first fact on
+          the page assumes the site sells cleaning. They still appear, in
+          context, in the worked example (#work) and the case study. The
+          first screen shows the work instead: six real things to open.
+        */}
+        <div className="border-t border-[color:var(--cp-line)] pt-6">
+          <p className="m-0 text-[12px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
+            Try it live
           </p>
-          <dl className="mt-5 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-            {provingGround.stats.map((s) => (
-              <div key={s.label}>
-                <dt className="sr-only">{s.label}</dt>
-                <dd className="m-0">
-                  <span className="block font-display text-2xl font-semibold text-[color:var(--cp-ink)] md:text-3xl">
-                    {s.value}
-                  </span>
-                  <span className="mt-1 block text-[13.5px] leading-snug text-[color:var(--cp-muted)]">
-                    {s.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mt-3">
+            <LiveStrip />
+          </div>
         </div>
       </main>
     </PanelStage>

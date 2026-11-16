@@ -71,15 +71,26 @@ export type CatalogItem = {
   chips?: CatalogLink[];
 };
 
-export const categories: { id: CatalogCategory; label: string; blurb: string }[] = [
-  { id: "websites", label: "Websites", blurb: "Sites that bring in work, built around one goal and yours to keep." },
-  { id: "booking", label: "Quotes & booking", blurb: "From first click to a booked job, without the back-and-forth." },
-  { id: "apps", label: "Apps & portals", blurb: "The software a business runs on, for the office, the crew and the customer." },
-  { id: "rentals", label: "Rental hosts", blurb: "Built by a team that cleans and hosts short-term rentals." },
-  { id: "connect", label: "Integrations & data", blurb: "Your tools talking to each other, and your data where it belongs." },
-  { id: "ai", label: "AI", blurb: "AI that drafts and waits for your OK. Nothing goes out on its own." },
-  { id: "tools", label: "Free tools", blurb: "Use them right now. No signup." },
+export const categories: {
+  id: CatalogCategory;
+  label: string;
+  blurb: string;
+  /** A real capture that stands for the category on the homepage doors. */
+  image: string;
+}[] = [
+  { id: "websites", label: "Websites", blurb: "Sites that bring in work, built around one goal and yours to keep.", image: "/shots/catalog/live-maineclean.webp" },
+  { id: "booking", label: "Quotes & booking", blurb: "From first click to a booked job, without the back-and-forth.", image: "/shots/catalog/live-book.webp" },
+  { id: "apps", label: "Apps & portals", blurb: "The software a business runs on, for the office, the crew and the customer.", image: "/shots/brightbase/schedule.webp" },
+  { id: "rentals", label: "Rental hosts", blurb: "Built by a team that cleans and hosts short-term rentals.", image: "/shots/catalog/welcome-book.webp" },
+  { id: "connect", label: "Integrations & data", blurb: "Your tools talking to each other, and your data where it belongs.", image: "/shots/brightbase/turnovers.webp" },
+  { id: "ai", label: "AI", blurb: "AI that drafts and waits for your OK. Nothing goes out on its own.", image: "/shots/catalog/live-estimate.webp" },
+  { id: "tools", label: "Free tools", blurb: "Use them right now. No signup.", image: "/shots/catalog/tools-light.webp" },
 ];
+
+/** How many finished items sit in a category, computed, never typed. */
+export function categoryCount(id: CatalogCategory): number {
+  return catalog.filter((i) => i.status !== "workbench" && i.categories.includes(id)).length;
+}
 
 export const statusLabels: Record<CatalogStatus, { label: string; note: string }> = {
   try: { label: "Free", note: "Works on this site today." },

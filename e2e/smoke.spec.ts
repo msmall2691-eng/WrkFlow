@@ -4,7 +4,8 @@ import { test, expect, type Page } from "@playwright/test";
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
+import { marketItems, smallProjects, work } from "../lib/content";
+import { catalog, categories, categoryCount } from "../lib/catalog";
 import { integrations, resolveProof } from "../lib/integrations";
 
 /*
@@ -18,9 +19,9 @@ const PAGES = [
   { path: "/", name: "home" },
   { path: "/about", name: "about" },
   { path: "/tools", name: "tools" },
-  // Services and pricing moved off the homepage onto their own page.
-  { path: "/services", name: "services" },
-  { path: "/marketplace", name: "marketplace" },
+  // Nov 15 2026: /services, /marketplace and /demo redirect to /catalog;
+  // the redirect test below covers them. /work is the new projects page.
+  { path: "/work", name: "work" },
   { path: "/catalog", name: "catalog" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here
@@ -276,9 +277,8 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
      here would make a homepage test fail for a footer reason. */
   const SECTIONS = [
     "#top",
-    'section[aria-labelledby="router-heading"]',
+    'section[aria-labelledby="needs-heading"]',
     "#work",
-    'section[aria-labelledby="more-work-heading"]',
     'section[aria-labelledby="start-heading"]',
   ];
 
@@ -547,10 +547,8 @@ test("the work anchor is unique and lands on one job told all the way through", 
 
   /* And the button that promises it actually reaches it. Back to the top
      first, or the assertion below passes on the scroll this test just did. */
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await expect(section).not.toBeInViewport();
-  await page.getByRole("link", { name: /see one job, start to finish/i }).click();
-  await expect(section).toBeInViewport();
+  /* The hero's "See one job" button was replaced by "Browse everything"
+     (Nov 15 2026 restructure); the nav's Work link now goes to /work. */
 
   /*
     Invariant two: every project is argued in exactly one of the two
@@ -574,18 +572,16 @@ test("the work anchor is unique and lands on one job told all the way through", 
   const read = async (selector: string) =>
     ((await page.locator(selector).evaluate((el) => el.textContent)) ?? "").toLowerCase();
 
-  const argued = [
-    await read("#work"),
-    await read('section[aria-labelledby="more-work-heading"]'),
-  ];
+  /* Since the restructure the homepage argues ONE project (#work) and
+     /work lists every project. So: the worked example names The Maine
+     Cleaning Co., and /work carries every project exactly once. */
+  expect(await read("#work")).toContain("maine cleaning co");
 
+  await page.goto("/work");
+  const cards = await page.locator("main h2").allTextContents();
   for (const item of work) {
-    const needle = item.title.toLowerCase();
-    const hits = argued.reduce((n, text) => n + text.split(needle).length - 1, 0);
-    expect(
-      hits,
-      `"${item.title}" should be argued in exactly one place on the homepage, not ${hits}`,
-    ).toBe(1);
+    const hits = cards.filter((t) => t.trim() === item.title).length;
+    expect(hits, `"${item.title}" should be listed exactly once on /work, not ${hits}`).toBe(1);
   }
 });
 
@@ -681,12 +677,10 @@ test("the case study's build screenshot stays pinned while the steps scroll", as
 for (const path of [
   "/",
   "/brightbase",
-  "/services",
   "/tools",
   "/about",
-  "/marketplace",
   "/catalog",
-  "/demo",
+  "/work",
   "/turnover",
   "/welcome-book",
   "/privacy",
@@ -966,177 +960,90 @@ test("/demo/directory filters narrow together, and an empty result says what to 
 });
 
 /*
-  The showcase.
-
-  One test, and it is about the links rather than the look: /demo exists so
-  three demos can be presented together, and a card that does not reach its
-  demo makes the page worse than not having it.
+  The restructure (Nov 15 2026): /services, /marketplace and /demo each
+  listed what is for sale, three different ways. They now redirect into
+  /catalog. A redirect that quietly breaks strands every old link and every
+  Facebook post that used one, so it is asserted, hash included.
 */
-test("/demo reaches all three demos and says they are invented", async ({ page }) => {
-  await page.goto("/demo");
+test("the retired pages redirect into the catalog", async ({ page }) => {
+  for (const path of ["/services", "/marketplace", "/demo"]) {
+    await page.goto(path);
+    await expect(page, `${path} should land on /catalog`).toHaveURL(/\/catalog$/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  }
+  await page.goto("/services#pricing");
+  await expect(page).toHaveURL(/\/catalog#pricing$/);
+  await expect(page.locator("#pricing")).toHaveCount(1);
+});
 
+/*
+  The demos are still one click from the catalog and the homepage, and the
+  catalog says the businesses in them are invented. Followed through, so the
+  link is proven rather than merely present.
+*/
+test("the live row reaches all three demos and says they are invented", async ({ page }) => {
+  await page.goto("/catalog");
+  const live = page.locator("#live");
   for (const href of ["/demo/shop", "/demo/studio", "/demo/directory"])
-    await expect(page.locator(`a[href="${href}"]`), `${href} should be linked from /demo`).toHaveCount(1);
+    await expect(live.locator(`a[href="${href}"]`), `${href} should be in Try it live`).toHaveCount(1);
+  await expect(page.getByText(/demos are invented/i).first()).toBeVisible();
 
-  await expect(page.getByText(/businesses in them are invented/i)).toBeVisible();
-
-  /* Follow one through, so the link is proven rather than merely present. */
-  await page.locator('a[href="/demo/studio"]').click();
+  await live.locator('a[href="/demo/studio"]').click();
   await expect(page).toHaveURL(/\/demo\/studio$/);
   await expect(page.getByTestId("service-signature")).toBeVisible();
 });
 
-/*
-  The demos are reachable without knowing the URL.
-
-  /demo existed for a day with nothing linking to it, because a sixth nav
-  link was Meg's call rather than mine. She made it. This test is what
-  stops the link being tidied away again by somebody reading PanelHeader's
-  older "five links" note, which is the likeliest way it would disappear.
-
-  Asserted by following it rather than by matching markup: a link that is
-  present and wrong is the failure worth catching, and the nav is where
-  most people will meet the demos at all.
-*/
-test("the nav reaches the demos showcase", async ({ page }) => {
+/* Four links, and the two that carry the site actually land. */
+test("the nav is Catalog, Work, BrightBase and About", async ({ page }) => {
   await page.goto("/");
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link")).toHaveText(["Catalog", "Work", "BrightBase", "About"]);
 
-  const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Demos" });
-  await expect(link, "the main nav should offer Demos").toHaveCount(1);
-
-  await link.click();
-  await expect(page).toHaveURL(/\/demo$/);
-  /* And it lands on the showcase, not on one of the demos. */
-  await expect(page.getByRole("heading", { level: 1 })).toContainText(/three demos/i);
+  await nav.getByRole("link", { name: "Work" }).click();
+  await expect(page).toHaveURL(/\/work$/);
+  await page.goto("/");
+  await nav.getByRole("link", { name: "Catalog" }).click();
+  await expect(page).toHaveURL(/\/catalog$/);
 });
 
 /*
-  The four doors route, and the number under each one is real.
-
-  The homepage used to sort by what a thing is — "Built and running", "Free
-  tools", the live readout — which is Meg's side of the relationship. A
-  contractor who needs a website and an owner drowning in manual entry
-  landed on the same undifferentiated list. `ServiceRouter` is the one
-  place the page asks what the visitor came for.
-
-  **The count is the part worth a test.** "4 projects" under Websites is a
-  claim about evidence, and CLAUDE.md's first rule is that the site never
-  invents proof. It is computed from `work` filtered by `category`, so the
-  honest failure mode is that somebody later hardcodes it, or files a
-  project under a category and the card does not move. Asserted against the
-  same source the component reads, rather than against a number written
-  here — a literal would drift the moment Meg ships her next site, and a
-  test nobody can trust gets deleted.
-
-  Each door is also followed, because a link that is present and lands on
-  the wrong anchor looks identical to one that works.
+  The homepage doors route to catalog shelves, and the number under each is
+  real. The count is a claim about evidence (CLAUDE.md, first rule), so it
+  is asserted against the same function the component calls, never against
+  a literal here, and one door is followed to prove the shelf opens.
 */
-test("the four service doors route, and their counts are real", async ({ page }) => {
+test("the homepage category doors route, and their counts are real", async ({ page }) => {
   await page.goto("/");
-  const router = page.locator('section[aria-labelledby="router-heading"]');
-  await expect(router, "the homepage should ask what the visitor came for").toHaveCount(1);
+  const doors = page.locator('section[aria-labelledby="needs-heading"]');
+  await expect(doors).toHaveCount(1);
 
-  const doors = router.locator("ul > li a");
-  await expect(doors, "one door per service").toHaveCount(services.length);
-
-  for (const s of services) {
-    const door = router.locator(`a[href="/services#${s.id}"]`);
-    await expect(door, `a door for ${s.id}`).toHaveCount(1);
-    await expect(door).toContainText(s.title);
-
-    const real = work.filter((w) => w.category === s.id).length;
-    if (real > 0) {
-      await expect(
-        door,
-        `${s.id} should quote the real number of projects behind it`,
-      ).toContainText(real === 1 ? "1 project" : `${real} projects`);
-    } else {
-      /* Nothing behind it says nothing, rather than "0 projects". */
-      await expect(door).not.toContainText(/project/i);
-    }
+  const shown = categories.filter((c) => c.id !== "tools");
+  await expect(doors.locator("ul > li a")).toHaveCount(shown.length);
+  for (const c of shown) {
+    const door = doors.locator(`a[href="/catalog?c=${c.id}"]`);
+    await expect(door, `a door for ${c.id}`).toHaveCount(1);
+    const n = categoryCount(c.id);
+    await expect(door).toContainText(`${n} ${n === 1 ? "option" : "options"}`);
   }
 
-  /* Follow one all the way, so the anchor is proven to exist on the target. */
-  const first = services[0];
-  await page.locator(`a[href="/services#${first.id}"]`).click();
-  await expect(page).toHaveURL(new RegExp(`/services#${first.id}$`));
-  await expect(
-    page.locator(`#${first.id}`),
-    "the services page should have the anchor the door points at",
-  ).toBeVisible();
+  await doors.locator('a[href="/catalog?c=rentals"]').click();
+  await expect(page).toHaveURL(/\/catalog\?c=rentals$/);
+  await expect(page.getByRole("heading", { level: 2, name: "Rental hosts" })).toBeVisible();
 });
 
 /*
-  The ladder on /services resolves, and nothing on sale is orphaned.
-
-  Three separate things this guards, all of which fail silently.
-
-  **One: every id resolves.** `ladder` carries ids rather than retyped
-  prices, because /services and /marketplace had already drifted into
-  quoting the same business two different ways. The component drops an item
-  whose id matches nothing — the alternative is a card with a blank price,
-  which reads as a styling bug and sits there for weeks. That means a typo
-  or a retired product thins this page in a way nobody would notice, so it
-  is asserted here instead.
-
-  **Two: every fixed-price job is placed.** All four `smallProjects` used to
-  have a block of their own on /services, which was the only place a visitor
-  could learn that a $300 job was on offer at all. That block is gone and
-  the ladder carries them beside the problem each one solves. If a future
-  edit drops one from `ladder`, it would vanish from the site entirely
-  rather than merely move, and the page would still look perfectly fine.
-
-  **Three: the rendered page agrees.** Resolving in Node proves the data is
-  sound and says nothing about whether any of it reached the DOM. The prices
-  are read off the live page for that reason.
+  Every finished catalog item reaches the page. Prices already resolve or
+  fail the build (marketPrice/projectPrice throw on a missing id), so this
+  guards the other silent failure: an item that exists and never renders.
 */
-test("every price on the services ladder resolves to its one source", async ({
-  page,
-}) => {
-  /* Data first: fail with the offending id rather than with "0 prices found". */
-  const orphans: string[] = [];
-  for (const item of ladder) {
-    if (item.market) {
-      if (!marketItems.some((m) => m.id === item.market))
-        orphans.push(`market "${item.market}"`);
-    } else if (item.project) {
-      if (!smallProjects.some((p) => p.offer === item.project))
-        orphans.push(`project "${item.project}"`);
-    } else if (!item.title || !item.price || !item.body) {
-      orphans.push(`inline item on "${item.service}" is missing title/price/body`);
-    }
-  }
-  expect(orphans, "every ladder id should resolve to a real product or project").toEqual([]);
-
-  /* Every service the page shows has at least a way in and a way to commission. */
-  for (const s of services) {
-    const rungs = new Set(ladder.filter((i) => i.service === s.id).map((i) => i.rung));
-    expect(rungs.has("build"), `"${s.id}" should offer a full build`).toBe(true);
-  }
-
-  /* Every fixed-price job is somewhere on it. */
-  for (const p of smallProjects) {
-    expect(
-      ladder.some((i) => i.project === p.offer),
-      `"${p.title}" (${p.price}) should be on the ladder, or it is on sale nowhere`,
-    ).toBe(true);
-  }
-
-  /* And it actually renders. */
-  await page.goto("/services");
-  /* textContent, not innerText: a price inside a clipped or visually hidden
-     element still counts as the page carrying it, and innerText drops
-     exactly those. */
-  const text = await page
-    .locator("#websites, #leads, #software, #integrations")
-    .evaluateAll((els) => els.map((e) => e.textContent ?? "").join(" "));
-
-  for (const p of smallProjects)
-    expect(text, `${p.title} should appear on the rendered ladder`).toContain(p.price);
-
-  /* A free rung is the cheapest way in and the easiest thing to lose in a
-     tidy-up, so assert it survived to the page rather than only to the data. */
-  expect(text, "the ladder should offer something free").toContain("Free");
+test("every catalog item renders on /catalog", async ({ page }) => {
+  await page.goto("/catalog");
+  const text = (await page.locator("main").textContent()) ?? "";
+  const missing = catalog.filter((i) => !text.includes(i.name)).map((i) => i.name);
+  expect(missing, "every item, workbench included, should be on the page").toEqual([]);
+  /* And the prices from the single sources reach it too. */
+  for (const p of smallProjects) expect(text).toContain(p.price);
+  expect(marketItems.length).toBeGreaterThan(0);
 });
 
 /*
@@ -1175,8 +1082,8 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
     "/demo/studio",
     "/demo/directory",
     "/tools",
-    "/marketplace",
     "/catalog",
+    "/work",
   ];
 
   const hrefs = await page
@@ -1208,7 +1115,7 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
   expect(res.status()).toBe(200);
   const xml = await res.text();
 
-  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo", "/catalog"])
+  for (const path of ["/turnover", "/welcome-book", "/tools", "/catalog", "/work"])
     expect(xml, `${path} should be in the sitemap`).toContain(`${path}</loc>`);
 
   for (const path of ["/demo/shop", "/demo/studio", "/demo/directory"])
@@ -1257,13 +1164,14 @@ test("every integration shown is running in a named project", async ({ page }) =
   /* And it reaches the page. textContent rather than innerText, matching
      the ladder test: a name inside a clipped element still counts as the
      page carrying it. */
-  await page.goto("/");
+  /* Moved from the homepage to /catalog in the Nov 15 restructure. */
+  await page.goto("/catalog");
   const section = page.locator("#connects");
   await expect(section).toBeVisible();
 
   const text = (await section.textContent()) ?? "";
   const missing = integrations.filter((i) => !text.includes(i.name)).map((i) => i.name);
-  expect(missing, "every integration should render on the homepage").toEqual([]);
+  expect(missing, "every integration should render on /catalog").toEqual([]);
 
   /* The attribution is the whole point: a tool name on its own is the wall
      of logos this test exists to refuse. Assert the projects reach the page

@@ -33,6 +33,20 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  /*
+    Nov 15 2026: /services, /marketplace and /demo each listed what is for
+    sale, three different ways. They fold into /catalog; permanent redirects
+    keep every old link and shared post working. Hashes survive a redirect
+    in the browser, so /services#pricing lands on /catalog#pricing.
+    The three demos themselves (/demo/shop etc.) are unchanged.
+  */
+  async redirects() {
+    return [
+      { source: "/services", destination: "/catalog", permanent: true },
+      { source: "/marketplace", destination: "/catalog", permanent: true },
+      { source: "/demo", destination: "/catalog", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

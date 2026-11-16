@@ -218,7 +218,10 @@ function TextLink({ link, strong }: { link: CatalogLink; strong?: boolean }) {
 function AskLink({ item, label, strong }: { item: CatalogItem; label: string; strong?: boolean }) {
   return (
     <Link
-      href={`/?offer=${item.offer}#contact`}
+      /* The form is on this page now, so stay here: requestOffer prefills it
+         and records ?offer= in the URL, the plain hash does the scroll. */
+      href="#contact"
+      data-offer={item.offer}
       onClick={() => {
         requestOffer(item.offer, `From the catalog: ${item.name}`);
         try {

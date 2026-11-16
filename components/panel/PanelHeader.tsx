@@ -21,12 +21,15 @@ import PaletteButton from "./PaletteButton";
   sale be visible up front. The count stays at six. /catalog links all eight
   free tools directly, and /tools is still in ⌘K and the footer.
 */
+/*
+  Nov 15 2026, evening: four links. Demos, Services and Catalog were three
+  doors onto the same things; /services and /demo now redirect into
+  /catalog (next.config.ts), and Work is its own page of real projects.
+*/
 const NAV = [
-  { href: "/#work", label: "Work" },
-  { href: "/demo", label: "Demos" },
-  { href: "/brightbase", label: "BrightBase" },
-  { href: "/services", label: "Services" },
   { href: "/catalog", label: "Catalog" },
+  { href: "/work", label: "Work" },
+  { href: "/brightbase", label: "BrightBase" },
   { href: "/about", label: "About" },
 ];
 

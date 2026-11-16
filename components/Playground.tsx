@@ -35,7 +35,7 @@ const TOOLS: {
     label: "Instant quote",
     blurb: "Service + size → a live price range you can send a customer.",
     group: "Win & bill",
-    nudge: { line: "Tuned to your pricing? That's the marketplace.", cta: "M Linx Quote", href: "/marketplace" },
+    nudge: { line: "Tuned to your pricing? It's in the catalog.", cta: "Instant quote on your site", href: "/catalog?c=booking" },
   },
   {
     id: "invoice",
@@ -56,21 +56,21 @@ const TOOLS: {
     label: "Digital card",
     blurb: "Your details → a .vcf and a scan-to-save QR for cards, emails & signatures.",
     group: "Brand & share",
-    nudge: { line: "Want a real site behind that card? That's the marketplace.", cta: "M Linx Site", href: "/marketplace" },
+    nudge: { line: "Want a real site behind that card? See the websites.", cta: "Websites", href: "/catalog?c=websites" },
   },
   {
     id: "qr",
     label: "QR code",
     blurb: "Any link—or your WiFi—into a real QR code to download & print.",
     group: "Brand & share",
-    nudge: { line: "Want that QR pointed at a page built to convert? That's the marketplace.", cta: "M Linx Site", href: "/marketplace" },
+    nudge: { line: "Want that QR pointed at a page built to convert? See the websites.", cta: "Websites", href: "/catalog?c=websites" },
   },
   {
     id: "utm",
     label: "Tracked link",
     blurb: "Add campaign tags to any link → a tracked URL for emails, ads & bios.",
     group: "Brand & share",
-    nudge: { line: "Want links tracked and reported automatically? That's the marketplace.", cta: "M Linx Flows", href: "/marketplace" },
+    nudge: { line: "Want links tracked and reported automatically? See automatic follow-ups.", cta: "Follow-ups", href: "/catalog?c=booking" },
   },
   {
     id: "sitecheck",
