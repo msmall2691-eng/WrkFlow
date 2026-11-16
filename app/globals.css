@@ -159,7 +159,7 @@
   LiveReadout swatch row; preference persists in localStorage.
 */
 :root[data-theme="light"] {
-  --color-base: #f7f4ef;
+  --color-base: #f4f5f7;
   --color-surface: #ffffff;
   --color-elevated: #ffffff;
   --color-line: rgba(11, 23, 34, 0.1);
@@ -176,7 +176,7 @@
 
   --color-signal-glow: rgba(47, 109, 240, 0.14);
 
-  --hero-bg: #f7f4ef;
+  --hero-bg: #f4f5f7;
   --section-alt-bg: #ebe6df;
   --section-alt2-bg: #f2efe9;
 
@@ -259,9 +259,9 @@ html:not([data-theme="light"]) { color-scheme: dark; }
 :root[data-theme="light"] .hero-scrim {
   background: linear-gradient(
     105deg,
-    rgba(247, 244, 239, 0.7) 0%,
-    rgba(247, 244, 239, 0.3) 42%,
-    rgba(247, 244, 239, 0) 78%
+    rgba(244, 245, 247, 0.7) 0%,
+    rgba(244, 245, 247, 0.3) 42%,
+    rgba(244, 245, 247, 0) 78%
   );
 }
 
@@ -912,12 +912,12 @@ html[data-fog="1"] .elevate {
   --cp-muted: #a8a4b8;
   --cp-faint: #8f8ba0;
   --cp-line: rgba(255, 255, 255, 0.08);
-  --cp-violet: #8b5cf6;
-  --cp-violet-ink: #b9a2ff;
-  --cp-violet-line: rgba(185, 162, 255, 0.4);
-  --cp-violet-wash: rgba(139, 92, 246, 0.16);
+  --cp-violet: #3b82f6;
+  --cp-violet-ink: #93b4ff;
+  --cp-violet-line: rgba(147, 180, 255, 0.4);
+  --cp-violet-wash: rgba(59, 130, 246, 0.16);
   --cp-teal: #2dd4bf;
-  --cp-pink: #f472b6;
+  --cp-pink: #fb923c;
   --cp-amber: #fbbf24;
   --cp-amber-line: rgba(251, 191, 36, 0.3);
 
@@ -953,9 +953,9 @@ html[data-fog="1"] .elevate {
   --color-muted: #b4b0c2;
   --color-faint: #9a96aa;
   /* #7547f0 carries white button labels at 5.4:1; #8b5cf6 only manages 4.2. */
-  --color-signal: #7547f0;
-  --color-signal-dim: #6d4be0;
-  --color-signal-glow: rgba(139, 92, 246, 0.18);
+  --color-signal: #2563eb;
+  --color-signal-dim: #1d4ed8;
+  --color-signal-glow: rgba(59, 130, 246, 0.18);
   --color-gold: #2dd4bf;
   --color-gold-dim: #14b8a6;
   --hero-bg: #08070c;
@@ -973,7 +973,7 @@ html[data-fog="1"] .elevate {
   --nav-hero-line2: rgba(255, 255, 255, 0.5);
   --moon-disc: #08070c;
   --moon-rim: #e4daff;
-  --moon-lit: #b9a2ff;
+  --moon-lit: #93b4ff;
   --wm-ink: rgba(255, 255, 255, 0.12);
   --wm-stroke: rgba(255, 255, 255, 0.18);
 }
@@ -992,23 +992,23 @@ body:has(.cp) { background: #08070c; }
   backdrop-filter: blur(14px);
   transition: border-color 150ms var(--ease-out-expo);
 }
-.cp-tile:hover { border-color: rgba(185, 162, 255, 0.32); }
+.cp-tile:hover { border-color: rgba(147, 180, 255, 0.34); }
 .cp-tile-cta {
-  background: linear-gradient(160deg, rgba(139, 92, 246, 0.3), rgba(244, 114, 182, 0.12) 70%, rgba(18, 16, 26, 0.6));
+  background: linear-gradient(160deg, rgba(59, 130, 246, 0.26), rgba(18, 16, 26, 0.6) 70%);
 }
 .cp-row { transition: background-color 150ms var(--ease-out-expo), transform 150ms var(--ease-out-expo); }
-.cp-row:hover { background: rgba(139, 92, 246, 0.1); transform: translateX(3px); }
+.cp-row:hover { background: rgba(59, 130, 246, 0.1); transform: translateX(3px); }
 
-.cp-mark { background: linear-gradient(135deg, #8b5cf6, #2dd4bf 60%, #f472b6); }
+.cp-mark { background: linear-gradient(135deg, #1d4ed8, #0f766e); }
 .cp-grad {
-  background: linear-gradient(90deg, #b9a2ff, #2dd4bf 55%, #f472b6);
+  background: linear-gradient(90deg, #93b4ff, #2dd4bf);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 .cp-cta {
-  background: linear-gradient(135deg, #7c4dff, #6d4be0);
-  box-shadow: 0 12px 34px -10px rgba(139, 92, 246, 0.85);
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 12px 30px -12px rgba(59, 130, 246, 0.8);
 }
 .cp-kbd {
   font-family: var(--font-mono);
@@ -1030,9 +1030,9 @@ body:has(.cp) { background: #08070c; }
   filter: blur(90px);
   will-change: transform;
 }
-.cp-a1 { width: 620px; height: 620px; top: -220px; left: 18%; background: rgba(139, 92, 246, 0.42); animation: cp-a1 22s var(--ease-out-expo) infinite alternate; }
+.cp-a1 { width: 620px; height: 620px; top: -220px; left: 18%; background: rgba(59, 130, 246, 0.36); animation: cp-a1 22s var(--ease-out-expo) infinite alternate; }
 .cp-a2 { width: 560px; height: 560px; top: 120px; right: -160px; background: rgba(45, 212, 191, 0.24); animation: cp-a2 26s var(--ease-out-expo) infinite alternate; }
-.cp-a3 { width: 520px; height: 520px; bottom: -260px; left: -120px; background: rgba(244, 114, 182, 0.2); animation: cp-a3 30s var(--ease-out-expo) infinite alternate; }
+.cp-a3 { width: 520px; height: 520px; bottom: -260px; left: -120px; background: rgba(251, 146, 60, 0.12); animation: cp-a3 30s var(--ease-out-expo) infinite alternate; }
 @keyframes cp-a1 { to { transform: translate3d(220px, 120px, 0) scale(1.25); } }
 @keyframes cp-a2 { to { transform: translate3d(-260px, -80px, 0) scale(1.15); } }
 @keyframes cp-a3 { to { transform: translate3d(160px, -140px, 0) scale(1.3); } }
@@ -1044,7 +1044,7 @@ body:has(.cp) { background: #08070c; }
   height: 560px;
   margin: -280px 0 0 -280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(185, 162, 255, 0.12), transparent 62%);
+  background: radial-gradient(circle, rgba(147, 180, 255, 0.12), transparent 62%);
   transform: translate3d(calc(var(--px, 0) * 1200px), calc(var(--py, 0) * 800px), 0);
 }
 
@@ -1054,7 +1054,7 @@ body:has(.cp) { background: #08070c; }
   transition: transform 300ms var(--ease-out-expo), border-color 150ms var(--ease-out-expo);
 }
 .cp-progress {
-  background: linear-gradient(90deg, #8b5cf6, #2dd4bf, #f472b6);
+  background: linear-gradient(90deg, #3b82f6, #2dd4bf);
   transform-origin: left;
   transform: scaleX(1);
 }
@@ -1098,7 +1098,7 @@ body:has(.cp) { background: #08070c; }
    ============================================================ */
 :root[data-theme="light"] .cp {
   color-scheme: light;
-  background: #f7f4ef;
+  background: #f4f5f7;
   color: #0b1722;
 
   --cp-ink: #0b1722;
@@ -1107,15 +1107,17 @@ body:has(.cp) { background: #08070c; }
   --cp-faint: #5a6572;
   --cp-line: rgba(11, 23, 34, 0.1);
 
-  /* Fills keep their saturation because they carry white labels; inks are
-     darkened until cream can hold them. Measured on #f7f4ef: violet-ink
-     7.3:1, teal 5.6:1, pink 6.0:1, amber 5.1:1. */
-  --cp-violet: #7c3aed;
-  --cp-violet-ink: #6d28d9;
-  --cp-violet-line: rgba(124, 58, 237, 0.35);
-  --cp-violet-wash: rgba(124, 58, 237, 0.1);
+  /* Nov 16 2026: the "violet" and "pink" tokens keep their names (dozens of
+     components read them) but now hold blue and burnt orange, after Meg
+     called the violet/pink look girly for a contractor audience. Measured on
+     #f4f5f7: violet-ink 8.0:1, violet 6.1:1, teal 7.0:1, pink 4.75:1,
+     amber 4.5:1; white on the blue CTA 6.7:1. */
+  --cp-violet: #1d4ed8;
+  --cp-violet-ink: #1e40af;
+  --cp-violet-line: rgba(29, 78, 216, 0.35);
+  --cp-violet-wash: rgba(29, 78, 216, 0.08);
   --cp-teal: #115e59;
-  --cp-pink: #be185d;
+  --cp-pink: #c2410c;
   --cp-amber: #a16207;
   --cp-amber-line: rgba(161, 98, 7, 0.3);
 
@@ -1128,21 +1130,21 @@ body:has(.cp) { background: #08070c; }
   --cp-fill: rgba(11, 23, 34, 0.035);
   --cp-fill-strong: rgba(11, 23, 34, 0.07);
 
-  --color-base: #f7f4ef;
+  --color-base: #f4f5f7;
   --color-surface: #ffffff;
   --color-elevated: #ffffff;
   --color-line: rgba(11, 23, 34, 0.1);
   --color-ink: #0b1722;
   --color-muted: #4a5563;
   --color-faint: #5a6572;
-  --color-signal: #7c3aed;
-  --color-signal-dim: #6d28d9;
-  --color-signal-glow: rgba(124, 58, 237, 0.12);
+  --color-signal: #1d4ed8;
+  --color-signal-dim: #1e40af;
+  --color-signal-glow: rgba(29, 78, 216, 0.12);
   --color-gold: #115e59;
   --color-gold-dim: #0f4f4a;
-  --hero-bg: #f7f4ef;
-  --section-alt-bg: #f1ede6;
-  --section-alt2-bg: #faf8f4;
+  --hero-bg: #f4f5f7;
+  --section-alt-bg: #eaedf1;
+  --section-alt2-bg: #f9fafb;
   --panel-bg: #ffffff;
   --panel-line: rgba(11, 23, 34, 0.1);
   --panel-ink: #0b1722;
@@ -1159,7 +1161,7 @@ body:has(.cp) { background: #08070c; }
   --wm-ink: rgba(11, 23, 34, 0.13);
   --wm-stroke: rgba(11, 23, 34, 0.2);
 }
-:root[data-theme="light"] body:has(.cp) { background: #f7f4ef; }
+:root[data-theme="light"] body:has(.cp) { background: #f4f5f7; }
 
 /*
   Cards, not glass. The dark panel floats translucent tiles over the
@@ -1174,17 +1176,17 @@ body:has(.cp) { background: #08070c; }
   backdrop-filter: none;
   box-shadow: 0 1px 2px rgba(11, 23, 34, 0.04), 0 10px 28px -18px rgba(11, 23, 34, 0.22);
 }
-:root[data-theme="light"] .cp-tile:hover { border-color: rgba(124, 58, 237, 0.34); }
+:root[data-theme="light"] .cp-tile:hover { border-color: rgba(29, 78, 216, 0.4); }
 :root[data-theme="light"] .cp-tile-cta {
-  background: linear-gradient(160deg, rgba(124, 58, 237, 0.1), rgba(190, 24, 93, 0.05) 70%, #ffffff);
+  background: linear-gradient(160deg, rgba(29, 78, 216, 0.08), #ffffff 70%);
 }
-:root[data-theme="light"] .cp-row:hover { background: rgba(124, 58, 237, 0.07); }
+:root[data-theme="light"] .cp-row:hover { background: rgba(29, 78, 216, 0.06); }
 :root[data-theme="light"] .cp-kbd { border-color: rgba(11, 23, 34, 0.18); }
 
 /* The hero ramp, in inks cream can carry: 6.0:1, 5.6:1, 6.0:1 across the
    sweep. #b9a2ff opened the dark one at ~2:1 here. */
 :root[data-theme="light"] .cp-grad {
-  background: linear-gradient(90deg, #7c3aed, #115e59 55%, #be185d);
+  background: linear-gradient(90deg, #1e40af, #115e59);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -1194,15 +1196,34 @@ body:has(.cp) { background: #08070c; }
   is the whole brief. Roughly a third of the dark opacities, which on cream
   lands as a wash you notice only when you look for it.
 */
-:root[data-theme="light"] .cp-a1 { background: rgba(124, 58, 237, 0.14); }
-:root[data-theme="light"] .cp-a2 { background: rgba(13, 148, 136, 0.1); }
-:root[data-theme="light"] .cp-a3 { background: rgba(190, 24, 93, 0.08); }
-:root[data-theme="light"] .cp-glow {
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.07), transparent 62%);
+/* Nov 16 2026: Meg found the violet/pink wash "girly"; her buyers are
+   contractors and trades. Daylight drops the aurora entirely and the hero
+   gets a faint blueprint grid (.cp-grid) instead. Harbor keeps its sky. */
+:root[data-theme="light"] .cp-aurora,
+:root[data-theme="light"] .cp-glow { display: none; }
+:root[data-theme="light"] .cp-cta {
+  background: #1d4ed8;
+  box-shadow: 0 10px 24px -12px rgba(29, 78, 216, 0.7);
 }
+:root[data-theme="light"] .cp-cta:hover { background: #1e40af; }
 
 /* /catalog's sticky category bar: the page ground at high opacity, so cards
    scrolling underneath do not show through the tabs. One rule per theme,
    per the "colour that follows the theme is a token" rule in CLAUDE.md. */
 .cp .cp-sticky-bar { background: rgba(8, 7, 12, 0.9); }
-:root[data-theme="light"] .cp .cp-sticky-bar { background: rgba(247, 244, 239, 0.92); }
+:root[data-theme="light"] .cp .cp-sticky-bar { background: rgba(244, 245, 247, 0.92); }
+
+/* Blueprint grid behind the homepage hero. Static, so no motion fallback is
+   needed. Ink-coloured hairlines at very low alpha, faded out from the top
+   left so it reads as texture, not a pattern. */
+.cp-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--cp-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--cp-hairline) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 30% 20%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 80% at 30% 20%, #000 20%, transparent 75%);
+}

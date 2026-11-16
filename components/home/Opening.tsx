@@ -6,13 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { smallProjects, welcomeBook } from "@/lib/content";
 
-/* Three real, live sites, three different industries. Meg (Nov 15): the
-   page should not centre on the cleaning company, so it is not here; it
-   lives on /work and in its case study. */
+/* Three real, live builds. Nov 16 2026: Meg asked for stronger sites up top
+   and a look men in the trades would take seriously, so the script-font
+   admin site and the childcare site moved to /work. A contractor, a service
+   business that takes bookings and quotes online, and a working app. */
 const proof = [
-  { name: "The Remote Admin", what: "Admin services", domain: "the-remote-admin.com", href: "https://www.the-remote-admin.com", image: "/shots/catalog/live-remote-admin.webp" },
-  { name: "Nash Construction", what: "General contractor", domain: "nashconstructionnh.com", href: "https://www.nashconstructionnh.com", image: "/shots/catalog/live-nash.webp" },
-  { name: "Arrowhead Explorers", what: "Childcare, with a parent portal", domain: "lacexplorers.online", href: "https://www.lacexplorers.online", image: "/shots/catalog/live-arrowhead.webp" },
+  { name: "Nash Construction", what: "Commercial general contractor", label: "nashconstructionnh.com", href: "https://www.nashconstructionnh.com", image: "/shots/catalog/live-nash.webp" },
+  { name: "The Maine Cleaning Co.", what: "Online booking and instant quotes", label: "maineclean.co", href: "https://maineclean.co", image: "/shots/catalog/live-maineclean.webp" },
+  { name: "linx", what: "Job marketplace app with payouts", label: "Live app", href: "https://linx-production-6edf.up.railway.app", image: "/shots/catalog/live-linx.webp" },
 ];
 
 /*
@@ -56,6 +57,7 @@ export default function Opening() {
           rotating product window that used to sit beside this is gone; the
           aurora is the only moving thing up here now. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span className="cp-grid" />
         <span className="cp-aurora cp-a1" />
         <span className="cp-aurora cp-a2" />
         <span className="cp-aurora cp-a3" />
@@ -90,11 +92,12 @@ export default function Opening() {
               Southern Maine · clients anywhere
             </span>
             <h1 className="m-0 font-display text-[clamp(2.3rem,4.6vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-balance text-[color:var(--cp-ink)]">
-              More booked jobs, less busywork.
+              Websites and software that bring in work.
             </h1>
             <p className="m-0 max-w-[30em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-              Websites, booking tools and simple apps for small service
-              businesses. Try each one before you buy.
+              For contractors, trades and service businesses. Sites, instant
+              quotes, online booking, and plug-ins for the site you already
+              have. Try any of it first.
             </p>
 
             <div className="flex items-center gap-3">
@@ -126,14 +129,14 @@ export default function Opening() {
             </div>
 
             {/* Real prices, each from its one source. */}
-            <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-1.5 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
-              <li>Fixes from{" "}<span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
+            <ul className="m-0 flex list-none flex-wrap items-center gap-x-5 gap-y-1 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
+              <li className="inline-flex min-h-7 items-center gap-1">Fixes from{" "}<span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
               <li>
                 <Link href="/welcome-book" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
                   Rental welcome book{" "}<span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
                 </Link>
               </li>
-              <li>Site care{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
+              <li className="inline-flex min-h-7 items-center gap-1">Site care{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
               <li>
                 <Link href="/turnover" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
                   Turnover Planner{" "}<span className="font-semibold text-[color:var(--cp-ink)]">free</span>
@@ -162,7 +165,7 @@ export default function Opening() {
                     <span className="min-w-0">
                       <span className="block text-[14.5px] font-semibold text-[color:var(--cp-ink)]">{p.name}</span>
                       <span className="block text-[12.5px] text-[color:var(--cp-muted)]">{p.what}</span>
-                      <span className="mt-1 block text-[12px] font-medium text-[color:var(--cp-violet-ink)]">{p.domain} ↗</span>
+                      <span className="mt-1 block text-[12px] font-medium text-[color:var(--cp-violet-ink)]">{p.label} ↗</span>
                     </span>
                   </a>
                 </li>
