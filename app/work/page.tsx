@@ -85,6 +85,7 @@ export default function WorkPage() {
                     {img && (
                       <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-[color:var(--cp-hairline)] bg-[color:var(--cp-well)]">
                         <Image
+                          unoptimized
                           src={img}
                           alt={`${w.title}, a real screen`}
                           fill

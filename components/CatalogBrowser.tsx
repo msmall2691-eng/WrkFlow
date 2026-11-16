@@ -248,6 +248,7 @@ function Card({ item }: { item: CatalogItem }) {
       {item.image && (
         <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-[color:var(--cp-hairline)] bg-[color:var(--cp-well)]">
           <Image
+            unoptimized
             src={item.image}
             alt={`${item.name}, a real screen`}
             fill

@@ -1038,6 +1038,10 @@ test("the homepage category doors route, and their counts are real", async ({ pa
 */
 test("every catalog item renders on /catalog", async ({ page }) => {
   await page.goto("/catalog");
+  /* Wait for the grid itself: until the client component mounts, the page
+     shows the plain-text Suspense fallback, which lists finished items
+     only. Reading before that raced under a loaded runner. */
+  await expect(page.getByRole("navigation", { name: "Categories" })).toBeVisible();
   const text = (await page.locator("main").textContent()) ?? "";
   const missing = catalog.filter((i) => !text.includes(i.name)).map((i) => i.name);
   expect(missing, "every item, workbench included, should be on the page").toEqual([]);

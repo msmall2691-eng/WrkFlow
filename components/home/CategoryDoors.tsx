@@ -47,6 +47,7 @@ export default function CategoryDoors() {
                 >
                   <span className="relative block aspect-[16/9] w-full overflow-hidden border-b border-[color:var(--cp-hairline)] bg-[color:var(--cp-well)]">
                     <Image
+                      unoptimized
                       src={c.image}
                       alt=""
                       fill

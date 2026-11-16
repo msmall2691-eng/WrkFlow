@@ -502,3 +502,12 @@ export const liveDemoIds = [
   "welcome-book",
   "linx",
 ] as const;
+
+/*
+  Note on images: every capture used by the catalog, the homepage doors,
+  the live strip and /work is a pre-sized webp of 75KB or less, and those
+  components render it with `unoptimized`. Sending ~40 of them through the
+  Next image optimizer queued them behind each other on CI's runner and
+  timed out unrelated pages (PR #143); there is nothing left to optimize.
+  A new capture should be resized (~960px wide, webp) before it is added.
+*/

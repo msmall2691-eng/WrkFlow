@@ -24,6 +24,7 @@ export default function LiveStrip({ id }: { id?: string }) {
             <span className="relative block aspect-[16/10] w-full overflow-hidden border-b border-[color:var(--cp-hairline)] bg-[color:var(--cp-well)]">
               {d.image && (
                 <Image
+                  unoptimized
                   src={d.image}
                   alt={`${d.name}, a real screen`}
                   fill
