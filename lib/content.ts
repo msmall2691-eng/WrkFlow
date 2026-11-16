@@ -158,16 +158,6 @@ export type Service = {
   id: ServiceCategory;
   index: string;
   title: string;
-  /*
-    A two-word label for places that show the category beside something
-    else, where the full title does not fit: the shelf tags every item with
-    the service it belongs to, and "Turning visitors into booked work" on a
-    price card is longer than the card. Deliberately a field rather than a
-    prettified `id`: the id is a code identifier that `work.category`, the
-    router's anchors and the ladder all key off, and borrowing it as display
-    copy would mean a rename could not change one without the other.
-  */
-  short: string;
   /** One-line essence shown under the title. */
   tagline: string;
   /** Concrete kinds we build in this discipline — shown as chips. */
@@ -205,7 +195,6 @@ export const services: Service[] = [
     "id": "websites",
     "index": "01",
     "title": "Websites that bring work in",
-    "short": "Websites",
     "tagline": "A site somebody can hire you from, not just read about you on.",
     "kinds": [
       "Business websites",
@@ -225,7 +214,6 @@ export const services: Service[] = [
     "id": "leads",
     "index": "02",
     "title": "Turning visitors into booked work",
-    "short": "Leads",
     "tagline": "The quote, the estimate and the booking step people actually finish.",
     "kinds": [
       "Instant quotes",
@@ -245,7 +233,6 @@ export const services: Service[] = [
     "id": "software",
     "index": "03",
     "title": "Custom software",
-    "short": "Software",
     "tagline": "The app a business runs on, when nothing off the shelf fits it.",
     "kinds": [
       "Custom CRMs",
@@ -264,7 +251,6 @@ export const services: Service[] = [
     "id": "integrations",
     "index": "04",
     "title": "Getting your tools to talk",
-    "short": "Integrations",
     "tagline": "Connect what you already use, so nothing gets typed in twice.",
     "kinds": [
       "API connections",

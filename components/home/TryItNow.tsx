@@ -1,74 +1,178 @@
 import Link from "next/link";
-import { demos } from "@/lib/content";
+import { demos, forRentals, marketItems } from "@/lib/content";
+import { catalog } from "@/lib/catalog";
 
 /*
-  Three working demos, each one openable.
+  TryItNow — the finished things a visitor can open or buy today, on the
+  homepage, where until now none of them appeared.
 
-  **This section used to carry the whole free shelf** — the three demos, the
-  turnover planner and the welcome book — because at the time those were
-  unreachable from the homepage altogether, and a band that gathered them up
-  was the fix. `Shelf` above now lists every one of them with its price, so
-  keeping them here as well would be the same thing twice, which is the
-  complaint the homepage rebuild started from.
+  **This section exists because an audit measured what a visitor can
+  actually reach, and the answer was embarrassing.** Three working demo
+  apps, a finished free tool and the only product on the site with a price
+  on it, between them:
 
-  What is left is the half the shelf genuinely cannot do. The shelf has one
-  row for "three working demos", pointing at /demo, because a price list
-  with three nearly identical free rows reads as padding. But
-  `e2e/smoke.spec.ts` asserts each demo is reachable from the homepage
-  itself, and that assertion is not a technicality: those three pages were
-  orphaned once already, and one hop behind an index is exactly how it
-  happened. So the three links live here, in a strip that costs a fraction
-  of a screen.
+    · /demo/shop, /demo/studio, /demo/directory — one hop behind /demo, and
+      never mentioned on the homepage at all
+    · /turnover — not in the header, not on the homepage, not in the footer,
+      not in the command palette, and not even in the sitemap. A working
+      free tool reachable only by typing its URL.
+    · /welcome-book — $99, a live example, a reserve form — invisible from
+      the header, the homepage, the footer and the palette. Two inbound
+      links in the entire site.
 
-  **The invented-business line stays, and it is not decoration.** These are
-  made-up companies. CLAUDE.md's first rule is that proof is never invented,
-  and a grid of three polished sites with no such line is a portfolio
-  claiming three clients it does not have. Every demo page repeats it in its
-  own first line; this is the one a visitor reads before clicking.
+  Meg's words: "those demos we made should be something people see right
+  away", and "the airbnb digital welcome book is hidden".
+
+  **Placed after the real work, not before it.** The businesses in the three
+  demos are invented, and every demo page says so in its own first line. The
+  homepage's whole argument rests on the difference between work that real
+  businesses run and work that is illustrative, so the real case study and
+  the real projects come first and this follows as "and here is what you can
+  touch". Putting invented storefronts above the one confirmed outcome on
+  the site would trade the argument for the novelty.
+
+  The kind label on each demo is doing the categorising Meg asked for: a
+  visitor looking for a shop, a booking system or a directory sees which is
+  which before clicking.
 */
+
+/** The two products that are finished, priced and buyable without a call. */
+const BUYABLE = forRentals.market;
+
 export default function TryItNow() {
-  if (demos.length === 0) return null;
+  const products = BUYABLE.map((id) => marketItems.find((m) => m.id === id)).filter(
+    (m): m is NonNullable<typeof m> => Boolean(m),
+  );
+  const readyCount = catalog.filter((i) => i.status !== "workbench").length;
 
   return (
     <section
-      aria-labelledby="demos-heading"
-      className="border-t border-[color:var(--cp-line)] py-12 md:py-14"
+      aria-labelledby="try-heading"
+      className="border-t border-[color:var(--cp-line)] py-16 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <h2
-            id="demos-heading"
-            className="m-0 text-[1.25rem] font-semibold tracking-tight text-[color:var(--cp-ink)]"
-          >
-            Or go and click one.
-          </h2>
-          <p className="m-0 text-[13px] leading-snug text-[color:var(--cp-faint)]">
-            Full working sites. The businesses in them are invented.
-          </p>
-        </div>
+        <h2
+          id="try-heading"
+          className="m-0 text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-4xl"
+        >
+          Click something.
+        </h2>
+        <p className="mt-3 max-w-2xl text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
+          Three working apps, a free planner and a product you can have this
+          week. The businesses in the demos are invented. Everything they do is
+          real.
+        </p>
 
-        <ul className="m-0 mt-5 grid list-none gap-3 p-0 sm:grid-cols-3">
+        <ul className="m-0 mt-10 grid list-none gap-5 p-0 md:grid-cols-3">
           {demos.map((d) => (
-            <li key={d.href} className="min-w-0">
-              {/* The whole tile is the link, so the tap target is the card
-                  rather than a 13px line inside it. */}
+            <li key={d.href} className="flex">
               <Link
                 href={d.href}
-                className="cp-tile flex min-w-0 flex-col gap-1 p-4 no-underline transition-transform duration-150 hover:-translate-y-0.5"
+                className="cp-tile group flex min-w-0 flex-1 flex-col overflow-hidden no-underline"
               >
-                <span className="text-[10px] uppercase tracking-wider text-[color:var(--cp-faint)]">
-                  {d.kind}
-                </span>
-                <span className="text-[13.5px] font-semibold text-[color:var(--cp-ink)]">
-                  {d.name}
-                </span>
-                <span className="text-[12.5px] leading-relaxed text-[color:var(--cp-muted)]">
-                  {d.what}
+                {/*
+                  Each demo's own two colours, so three cards preview three
+                  different looks rather than three recolourings of this one.
+                  Decorative: the card's meaning is entirely in its text.
+                */}
+                <span
+                  aria-hidden="true"
+                  className="block h-16 w-full"
+                  style={{
+                    background: `linear-gradient(135deg, ${d.swatch[0]} 0%, ${d.swatch[1]} 100%)`,
+                  }}
+                />
+                <span className="flex flex-1 flex-col p-5">
+                  <span className="text-[11px] uppercase tracking-wider text-[color:var(--cp-faint)]">
+                    {d.kind}
+                  </span>
+                  <span className="mt-1 text-[15px] font-semibold text-[color:var(--cp-ink)]">
+                    {d.name}
+                  </span>
+                  <span className="mt-2 flex-1 text-[13.5px] leading-relaxed text-[color:var(--cp-muted)]">
+                    {d.what}
+                  </span>
+                  <span className="mt-4 text-[13px] font-semibold text-[color:var(--cp-violet-ink)]">
+                    Open it{" "}
+                    <span
+                      aria-hidden="true"
+                      className="inline-block transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                    >
+                      →
+                    </span>
+                  </span>
                 </span>
               </Link>
             </li>
           ))}
         </ul>
+
+        {/* The two finished short-term-rental things, which were the most
+            hidden items on the whole site. */}
+        <ul className="m-0 mt-5 grid list-none gap-5 p-0 md:grid-cols-2">
+          {forRentals.extra ? (
+            <li className="cp-tile flex min-w-0 flex-col p-5">
+              <span className="font-display text-xl font-semibold text-[color:var(--cp-ink)]">
+                {forRentals.extra.price}
+              </span>
+              <h3 className="m-0 mt-2 text-[15px] font-semibold text-[color:var(--cp-ink)]">
+                {forRentals.extra.title}
+              </h3>
+              <p className="m-0 mt-2 flex-1 text-[13.5px] leading-relaxed text-[color:var(--cp-muted)]">
+                {forRentals.extra.body}
+              </p>
+              <Link
+                href={forRentals.extra.href}
+                className="mt-4 inline-flex w-fit items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
+              >
+                Use it now <span aria-hidden="true">&nbsp;→</span>
+              </Link>
+            </li>
+          ) : null}
+
+          {products.map((p) => (
+            <li key={p.id} className="cp-tile flex min-w-0 flex-col p-5">
+              <span className="font-display text-xl font-semibold text-[color:var(--cp-ink)]">
+                {p.price}
+              </span>
+              <h3 className="m-0 mt-2 text-[15px] font-semibold text-[color:var(--cp-ink)]">
+                {p.name}
+              </h3>
+              <p className="m-0 mt-2 flex-1 text-[13.5px] leading-relaxed text-[color:var(--cp-muted)]">
+                {p.tagline}
+              </p>
+              <Link
+                href="/welcome-book"
+                className="mt-4 inline-flex w-fit items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
+              >
+                See what is in it <span aria-hidden="true">&nbsp;→</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* One door to everything else. The count is computed from the
+            catalog itself, never typed, for the reason CLAUDE.md gives: a
+            count is a claim about evidence. */}
+        <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <Link
+            href="/catalog"
+            className="inline-flex min-h-11 items-center rounded-[10px] bg-[color:var(--cp-ink)] px-5 text-[14px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90"
+          >
+            Browse all {readyCount} things you can use, buy or have built
+            <span aria-hidden="true">&nbsp;→</span>
+          </Link>
+          <Link
+            href="/catalog?c=rentals"
+            /* inline-flex + py-1.5 makes this a 28px tap target; as a bare
+               14px line it rendered 21px, under the 24px minimum. Caught
+               by the homepage sweep once that stopped running against a
+               hardcoded list of sections and started finding its own. */
+            className="inline-flex items-center py-1.5 text-[14px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
+          >
+            Just the rental tools <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

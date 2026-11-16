@@ -6,7 +6,7 @@ import { test, expect, type Page } from "@playwright/test";
    runtime import of a .ts module is not. */
 import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
-import { resolveRungItem } from "../components/Ladder";
+import { catalog } from "../lib/catalog";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -22,6 +22,7 @@ const PAGES = [
   // Services and pricing moved off the homepage onto their own page.
   { path: "/services", name: "services" },
   { path: "/marketplace", name: "marketplace" },
+  { path: "/catalog", name: "catalog" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here
   // to break without noticing, since nothing links to it at build time.
@@ -721,6 +722,7 @@ for (const path of [
   "/tools",
   "/about",
   "/marketplace",
+  "/catalog",
   "/demo",
   "/turnover",
   "/welcome-book",
@@ -1046,36 +1048,33 @@ test("the nav reaches the demos showcase", async ({ page }) => {
 });
 
 /*
-  The shelf is the shop, it is high on the page, and it covers everything.
+  The shop is on the homepage, near the top, and it tells the truth about
+  what it is leaving out.
 
-  **This replaced the four-door test, and the replacement is the point.**
-  ServiceRouter asked "What are you trying to fix?" at screen 2 and answered
-  with four categories and a count of past projects: no price, no product,
-  1.4 screens, and a link to another page. Meg's complaint was that it was
-  "hard to see what is for sale that's tangible", and measured at phone
-  width she was being generous. The homepage ran 17.9 screens, the first
-  purchasable price was on screen 12, and the only other price on the page
-  was "$1M+", a statistic about her old cleaning company.
+  **This replaced the four-door test.** ServiceRouter asked "What are you
+  trying to fix?" at screen 2 and answered with four categories and a count
+  of past projects: no price, no product, 1.4 screens, and a link to another
+  page. Meg's complaint was that it was "hard to see what is for sale that's
+  tangible", and measured at phone width she was being generous. The page
+  ran 20.4 screens, the first purchasable price was on screen 14.6, and
+  three product prices existed on the whole page.
 
-  So the assertions are the three things that were actually wrong, and each
-  one can regrow:
+  So the assertions are the things that were actually wrong, each of which
+  can regrow without anything failing to build:
 
-  1. **Depth.** The shelf has to start within the first few screens at
-     390px. This is the regression that matters and the one no build, type
-     check or Lighthouse run can see: a page whose shop has drifted to
-     screen 12 renders perfectly.
-  2. **Coverage.** Every service must appear, asserted against `services`
-     itself, which is what the door counts used to prove. A category that
-     silently stopped being sold would otherwise just be absent.
-  3. **Prices.** The rendered shelf must carry the real prices from the
-     data, so a styling change that drops them fails here rather than in
-     front of a buyer.
-
-  It also picks up the reachability assertion that used to sit in the work
-  anchor test, because the hero's second button now promises this section
-  rather than the case study.
+  1. **Depth.** The shelf starts within the first few screens at 390px. A
+     page whose shop has drifted back to screen 14 renders perfectly, so
+     nothing else catches this.
+  2. **One source.** Every card must come from `catalog`, the same list
+     /catalog renders. The first version of this section built its own
+     shelf from `ladder` and would have been a second catalog with a second
+     set of prices, which is the failure this repo keeps recording.
+  3. **Honesty about the rest.** Only `try` and `buy` have a price somebody
+     can act on today. `built` is quoted, and the page has to say how many
+     there are rather than imply the shelf is everything. `workbench` items
+     are not built at all, so none of them may appear.
 */
-test("the shop is on the homepage, near the top, and covers everything", async ({
+test("the shop is on the homepage, near the top, and says what it leaves out", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -1084,11 +1083,8 @@ test("the shop is on the homepage, near the top, and covers everything", async (
   const shelf = page.locator("#shelf");
   await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
 
-  /*
-    How far down it starts, in screens. Three is deliberately generous: the
-    hero is one, and the point is to catch a drift back toward twelve, not
-    to freeze the hero's height.
-  */
+  /* How far down it starts, in screens. Three is deliberately generous: the
+     hero is one, and the point is to catch a drift back toward fourteen. */
   const screens = await shelf.evaluate(
     (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
   );
@@ -1103,35 +1099,51 @@ test("the shop is on the homepage, near the top, and covers everything", async (
 
   const text = (await shelf.textContent()) ?? "";
 
-  /* Every service is represented, counted from the source rather than
-     listed here. This is what the door counts used to prove. */
-  const uncovered = services
-    .filter((s) => !ladder.some((i) => i.service === s.id))
-    .map((s) => s.id);
-  expect(uncovered, "every service should have something on the shelf").toEqual([]);
+  /*
+    Everything with a decided price is on it, with that price.
 
-  const missingLabel = services.filter((s) => !text.includes(s.short)).map((s) => s.short);
-  expect(missingLabel, "every service should be tagged on the rendered shelf").toEqual([]);
+    Keyed on the price rather than on `status`, which is the distinction
+    this section got wrong first time round: `status` says how real a thing
+    is, not whether it has been priced. The two interactive demos are `try`
+    because you can genuinely use them today, and building one is quoted, so
+    a status-banded shelf put "Quoted to your scope" under a FREE heading.
+  */
+  const decided = (p: string) => /\d/.test(p) || /^free$/i.test(p.trim());
+  const actionable = catalog.filter(
+    (i) => (i.status === "try" || i.status === "buy") && decided(i.price),
+  );
+  expect(actionable.length, "there should be something to sell").toBeGreaterThan(4);
 
-  /* And the prices reach the page. Resolved through the single author, so
-     this cannot drift from what /services shows for the same items. */
-  const unresolved: string[] = [];
-  const missingPrice: string[] = [];
-  for (const item of ladder) {
-    const r = resolveRungItem(item);
-    if (!r) {
-      unresolved.push(item.market ?? item.project ?? item.title ?? "(unnamed)");
-      continue;
-    }
-    if (!text.includes(r.price)) missingPrice.push(`${r.title} (${r.price})`);
-  }
-  expect(unresolved, "every shelf item should resolve to a real product").toEqual([]);
-  expect(missingPrice, "every price should reach the rendered shelf").toEqual([]);
+  const missing = actionable.filter((i) => !text.includes(i.name)).map((i) => i.name);
+  expect(missing, "every item priced for today should be on the shelf").toEqual([]);
 
-  /* The cheapest way in and the clearest number on the site. Both are the
-     first thing a tidy-up would flatten for consistency. */
-  expect(text, "the shelf should offer something free").toContain("Free");
-  expect(text, "the welcome book's real price should be on the shelf").toContain("$99");
+  const noPrice = actionable.filter((i) => !text.includes(i.price)).map((i) => i.name);
+  expect(noPrice, "every one of those should show its price").toEqual([]);
+
+  /* Nothing unbuilt. `workbench` is the catalog's own word for "not built
+     yet", and a price list is the last place it may leak into. */
+  const unbuilt = catalog
+    .filter((i) => i.status === "workbench")
+    .filter((i) => text.includes(i.name))
+    .map((i) => i.name);
+  expect(unbuilt, "nothing on the workbench may appear on the shelf").toEqual([]);
+
+  /* And it owns up to the larger, quoted half rather than implying the
+     shelf is the whole shop. Same predicate as the shelf uses, so the two
+     cannot disagree about what counts as quoted. */
+  const quoted = catalog.filter(
+    (i) => i.status !== "workbench" && !decided(i.price),
+  ).length;
+  expect(text, "the shelf should say how many more are built and quoted").toContain(
+    String(quoted),
+  );
+  /* At least one, not exactly one: a card with no page of its own falls
+     back to the catalog entry, which is the right destination for it. What
+     has to exist is the way into the whole thing. */
+  await expect(
+    shelf.getByRole("link", { name: /browse all/i }),
+    "the shelf should lead into the full catalog",
+  ).toHaveCount(1);
 });
 
 /*
@@ -1244,6 +1256,7 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
     "/demo/directory",
     "/tools",
     "/marketplace",
+    "/catalog",
   ];
 
   const hrefs = await page
@@ -1275,7 +1288,7 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
   expect(res.status()).toBe(200);
   const xml = await res.text();
 
-  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo"])
+  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo", "/catalog"])
     expect(xml, `${path} should be in the sitemap`).toContain(`${path}</loc>`);
 
   for (const path of ["/demo/shop", "/demo/studio", "/demo/directory"])
