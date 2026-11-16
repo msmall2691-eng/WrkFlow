@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { demos, forRentals, marketItems } from "@/lib/content";
+import { catalog } from "@/lib/catalog";
 
 /*
   TryItNow — the finished things a visitor can open or buy today, on the
@@ -42,6 +43,7 @@ export default function TryItNow() {
   const products = BUYABLE.map((id) => marketItems.find((m) => m.id === id)).filter(
     (m): m is NonNullable<typeof m> => Boolean(m),
   );
+  const readyCount = catalog.filter((i) => i.status !== "workbench").length;
 
   return (
     <section
@@ -149,23 +151,24 @@ export default function TryItNow() {
           ))}
         </ul>
 
-        <p className="mt-8 text-[14.5px] text-[color:var(--cp-muted)]">
-          There are{" "}
+        {/* One door to everything else. The count is computed from the
+            catalog itself, never typed, for the reason CLAUDE.md gives: a
+            count is a claim about evidence. */}
+        <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
           <Link
-            href="/tools"
-            className="font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
+            href="/catalog"
+            className="inline-flex min-h-11 items-center rounded-[10px] bg-[color:var(--cp-ink)] px-5 text-[14px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90"
           >
-            eight more free tools
-          </Link>{" "}
-          on this site, and{" "}
+            Browse all {readyCount} things you can use, buy or have built
+            <span aria-hidden="true">&nbsp;→</span>
+          </Link>
           <Link
-            href="/marketplace"
-            className="font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
+            href="/catalog?c=rentals"
+            className="text-[14px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
           >
-            the rest of the products
-          </Link>{" "}
-          are priced and ready.
-        </p>
+            Just the rental tools <span aria-hidden="true">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );

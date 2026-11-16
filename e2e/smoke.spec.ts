@@ -21,6 +21,7 @@ const PAGES = [
   // Services and pricing moved off the homepage onto their own page.
   { path: "/services", name: "services" },
   { path: "/marketplace", name: "marketplace" },
+  { path: "/catalog", name: "catalog" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here
   // to break without noticing, since nothing links to it at build time.
@@ -684,6 +685,7 @@ for (const path of [
   "/tools",
   "/about",
   "/marketplace",
+  "/catalog",
   "/demo",
   "/turnover",
   "/welcome-book",
@@ -1174,6 +1176,7 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
     "/demo/directory",
     "/tools",
     "/marketplace",
+    "/catalog",
   ];
 
   const hrefs = await page
@@ -1205,7 +1208,7 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
   expect(res.status()).toBe(200);
   const xml = await res.text();
 
-  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo"])
+  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo", "/catalog"])
     expect(xml, `${path} should be in the sitemap`).toContain(`${path}</loc>`);
 
   for (const path of ["/demo/shop", "/demo/studio", "/demo/directory"])

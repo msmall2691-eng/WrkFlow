@@ -100,6 +100,17 @@ export default function CommandPalette() {
         },
       },
       {
+        id: "catalog",
+        label: "Catalog: everything to use, buy or have built",
+        hint: "↗",
+        group: "Navigate",
+        keywords: "catalog everything products plugins apps integrations ai rental airbnb host childcare portal migration buy",
+        run: () => {
+          close();
+          window.location.href = "/catalog";
+        },
+      },
+      {
         id: "marketplace",
         label: "M Linx marketplace",
         hint: "↗",
