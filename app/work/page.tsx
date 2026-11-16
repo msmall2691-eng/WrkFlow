@@ -47,8 +47,8 @@ const shots: Record<string, string> = {
    site should not centre on the cleaning company). Unlisted titles keep
    their `work[]` order at the end. */
 const ORDER = [
-  "The Remote Admin",
   "Nash Construction",
+  "The Remote Admin",
   "Arrowhead Explorers",
   "The Keystone House",
   "linx",

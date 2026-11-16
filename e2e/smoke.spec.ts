@@ -1115,3 +1115,20 @@ test("the plug-in lead relay refuses a site it does not know", async ({ request 
   });
   expect(res.status()).toBe(403);
 });
+
+/*
+  No page scrolls sideways on a phone (Nov 16 2026). /plugins shipped its
+  first cut 578px wide at 375: the install snippet's <pre> set the grid
+  column's minimum width. It looked fine at 1440 and passed every other
+  test. Intentional horizontal scrollers (the catalog's tab bar) scroll
+  inside themselves and do not widen the document, so this checks the
+  document, not individual elements.
+*/
+for (const { path, name } of PAGES) {
+  test(`${name} does not scroll sideways at 375px`, async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto(path);
+    const width = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(width, `${path} is ${width}px wide on a 375px screen`).toBeLessThanOrEqual(375);
+  });
+}

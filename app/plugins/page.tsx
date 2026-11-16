@@ -64,7 +64,7 @@ export default function PluginsPage() {
 
         <section className="py-12 md:py-16" aria-labelledby="iq-heading">
           <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[1fr_1.05fr] lg:items-start">
-            <div>
+            <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-[color:var(--cp-ink)] px-2.5 py-0.5 text-[12px] font-semibold text-[color:var(--cp-on-ink)]">
                   Plug-in
@@ -121,7 +121,9 @@ export default function PluginsPage() {
               Two ways to install
             </h2>
             <div className="mt-8 grid gap-10 lg:grid-cols-2">
-              <div>
+              {/* min-w-0: the code block must scroll inside its column, not
+                  widen the page on a phone. */}
+              <div className="min-w-0">
                 <h3 className="m-0 text-lg font-semibold text-[color:var(--cp-ink)]">Any website: paste a snippet</h3>
                 <p className="m-0 mt-2 text-[14.5px] leading-relaxed text-[color:var(--cp-muted)]">
                   Add an HTML or Embed block where you want it (Wix, Squarespace,
@@ -132,7 +134,7 @@ export default function PluginsPage() {
                   <CopySnippet code={SNIPPET} label="HTML" />
                 </div>
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 className="m-0 text-lg font-semibold text-[color:var(--cp-ink)]">WordPress: install the plugin</h3>
                 <ol className="m-0 mt-2 grid gap-2 pl-5 text-[14.5px] leading-relaxed text-[color:var(--cp-muted)]">
                   <li>In WordPress, go to Plugins, then Add New, then Upload Plugin, and choose the zip you were sent.</li>

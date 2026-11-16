@@ -5,7 +5,6 @@ import WhenNear from "./WhenNear";
 import CopyLink from "./CopyLink";
 import SelfScore from "./SelfScore";
 import MoonPhase from "./MoonPhase";
-import MaineReadout from "./MaineReadout";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -31,9 +30,8 @@ export default function Footer() {
           <div className="max-w-sm">
             <Logo />
             <p className="mt-4 text-sm leading-relaxed text-muted">
-              Websites, CRMs, platform setup, data migrations, and integrations.
-              Help with the systems behind your business, from one improvement
-              to a custom build. Based in Maine, working with clients anywhere.
+              Websites, software and plug-ins for contractors, trades and
+              service businesses.
             </p>
             <p className="mt-4 text-xs text-faint">
               Custom software and web design &middot; Southern Maine &middot; clients anywhere
@@ -43,7 +41,6 @@ export default function Footer() {
                 which asserted it without showing it. Now that the hero no
                 longer carries the readout panel, this is the signature: the
                 real feed, on one line, rendering nothing when it is down. */}
-            <MaineReadout className="mt-4 text-faint" />
           </div>
 
           <div className="flex gap-10 sm:gap-16">
@@ -128,7 +125,7 @@ export default function Footer() {
           </span>
           <span className="inline-flex items-center gap-1.5">
             <MoonPhase size={12} className="align-[-2px]" />
-            <span>Made in Portland, ME · installable app</span>
+            <span>Made in Maine</span>
           </span>
         </div>
       </div>

@@ -71,6 +71,10 @@ export default function ProductsRow() {
           <Link href="/catalog" className="font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
             See everything and every price
           </Link>
+          . Rent out a place?{" "}
+          <Link href="/turnover" className="font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
+            The Turnover Planner is free
+          </Link>
           .
         </p>
       </div>

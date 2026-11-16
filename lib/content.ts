@@ -499,7 +499,7 @@ export const work: WorkItem[] = [
     tag: "Product · in daily use",
     category: "software",
     title: "BrightBase",
-    blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
+    blurb: "The operations app that runs The Maine Cleaning Co.: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "12 overlapping tools, now one system",
     status: "In daily production",

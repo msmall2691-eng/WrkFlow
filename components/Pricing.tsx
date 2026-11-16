@@ -39,10 +39,6 @@ export default function Pricing() {
       id="pricing"
       className="relative overflow-hidden border-t border-line bg-[var(--section-alt2-bg)] py-20 md:py-24"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
-      />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-8 max-w-3xl">
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
@@ -77,7 +73,7 @@ export default function Pricing() {
             can compare offers across a horizontal line (survey M-04). */}
         <div className="grid items-stretch gap-5 md:grid-cols-2">
           {/* Custom build — the primary offer, highlighted */}
-                      <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99]">
+                      <article className="cp-tile group flex h-full flex-col !rounded-2xl border-2 !border-[color:var(--cp-violet)] p-7">
               <p className="text-xs text-faint">Custom build</p>
               {/*
                 Back to "Let's scope it", which is what this tier said
@@ -123,17 +119,17 @@ export default function Pricing() {
             </article>
 
           {/* Care Plan */}
-                      <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(11,23,34,0.35)] active:scale-[0.99]">
+                      <article className="cp-tile group flex h-full flex-col !rounded-2xl p-7">
               <p className="text-xs text-faint">Care Plan</p>
               <p className="mt-4 font-display text-3xl text-ink">
                 $49
                 <span className="text-[1rem] text-faint">/mo</span>
               </p>
               <p className="mt-1.5 text-xs leading-relaxed text-faint">
-                Cancel anytime — your site keeps running, you just take over hosting.
+                Cancel anytime. Your site keeps running; you just take over hosting.
               </p>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                Hosting, domain, security, and small edits — handled. The stuff
+                Hosting, domain, security and small edits, handled. The stuff
                 that keeps a site running, off your plate.
               </p>
               <OfferLink
@@ -178,8 +174,8 @@ export default function Pricing() {
             </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
-                Early clients get my best rate, in exchange for a testimonial
-                and permission to show the site in my portfolio.
+                Early clients get a lower rate in exchange for a testimonial
+                and permission to show the site as an example.
               </p>
             )}
           </div>

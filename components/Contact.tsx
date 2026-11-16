@@ -134,9 +134,8 @@ export default function Contact() {
                 and what you wish worked better. You don&apos;t need a technical
                 plan to get started.
               </p>
-                          <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-signal/30 bg-signal/[0.06] px-4 py-2 text-sm font-semibold text-signal">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
-                Currently available for new projects
+                          <p className="mt-6 text-sm font-semibold text-[color:var(--cp-ink)]">
+                Taking new projects now.
               </p>
                           <div className="mt-8 rounded-xl border border-line bg-surface/40 p-5">
                 <p className="text-sm font-medium text-gold">
