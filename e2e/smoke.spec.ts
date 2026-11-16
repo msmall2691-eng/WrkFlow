@@ -281,10 +281,13 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
   /* The page's own sections. The shared header and footer are deliberately
      out of scope: they are not what this change touched, and sweeping them
      here would make a homepage test fail for a footer reason. */
+  /* Nov 16 2026: the Blueprint homepage. The pinned work stage is desktop
+     only, so at 390px the "#work" sweep measures its stacked phone list. */
   const SECTIONS = [
     "#top",
+    "#work",
     'section[aria-labelledby="products-heading"]',
-    'section[aria-labelledby="start-heading"]',
+    'section[aria-labelledby="price-heading"]',
   ];
 
   const tooSmall: string[] = [];
