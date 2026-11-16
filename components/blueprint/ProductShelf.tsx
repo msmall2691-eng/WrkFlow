@@ -6,9 +6,7 @@ import { catalog, kindOf } from "@/lib/catalog";
   ProductShelf: the ready-made things somebody can open right now, in the
   blueprint look. Same six rows, prices and demos as the old ProductsRow
   (each card is one pain, the product that fixes it, and a working demo),
-  resolved from lib/catalog.ts so nothing drifts. Each card is drawn like a
-  sheet in a drawing set: a sheet number, corner ticks, and the kind and
-  price in the title block.
+  resolved from lib/catalog.ts so nothing drifts.
 */
 
 const ROWS: { id: string; pain: string; tryHref: string; tryLabel: string }[] = [
@@ -29,7 +27,7 @@ export default function ProductShelf() {
       <div className="mx-auto max-w-[1400px] px-6 py-24 lg:px-10">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="bp-eyebrow"><span className="text-[color:var(--bp-print)]">[ 02 ]</span> Ready to try · sample data</p>
+            <p className="bp-eyebrow"><span className="text-[color:var(--bp-print)]">[ 04 ]</span> Ready to try · sample data</p>
             <h2 id="products-heading" className="bp-h2 mt-4">
               Sound familiar?
               <span className="bp-serif block normal-case text-[color:var(--bp-print)]">There&apos;s a fix you can open now.</span>
@@ -50,7 +48,7 @@ export default function ProductShelf() {
               </Link>
               <div className="flex flex-1 flex-col p-5">
                 <p className="m-0 font-mono text-[11px] uppercase tracking-[0.08em] text-[color:var(--bp-mute)]">
-                  Sheet {pad(i + 1)} · <span className="text-[color:var(--bp-hi)]">{kindOf[item.id] ?? "Service"}</span>
+                  N° {pad(i + 1)} · <span className="text-[color:var(--bp-hi)]">{kindOf[item.id] ?? "Service"}</span>
                 </p>
                 <p className="m-0 mt-3 font-display text-[19px] font-semibold leading-snug text-[color:var(--bp-paper)]">{pain}</p>
                 <p className="m-0 mt-2 flex-1 text-[14px] text-[color:var(--bp-mute)]">

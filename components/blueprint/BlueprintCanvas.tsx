@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 /*
   BlueprintCanvas: the moving background of the homepage opening.
 
-  A drafting sheet on blueprint navy. Line by line, a web page gets drawn on
+  A drafting sheet on near-black (it began as blueprint navy). Line by line, a web page gets drawn on
   it: the browser frame, the nav, the headline, the button, the cards, with
   dimension ticks and small labels the way a real drawing carries them. When
   one sheet is finished it holds, fades, and the next one is drawn (a
@@ -94,8 +94,8 @@ const SHEETS: Shape[][] = [
   ],
 ];
 
-const PRINT = "127, 211, 255"; // --bp-print
-const HI = "255, 107, 44"; // --bp-hi
+const PRINT = "237, 235, 230"; // --bp-paper: the lines
+const HI = "0, 224, 255"; // --bp-cyan: the one accent
 
 export default function BlueprintCanvas({ className = "" }: { className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -146,14 +146,14 @@ export default function BlueprintCanvas({ className = "" }: { className?: string
     function grid() {
       ctx!.lineWidth = 1;
       for (let x = 0; x < w; x += 24) {
-        ctx!.strokeStyle = x % 120 === 0 ? `rgba(${PRINT},0.09)` : `rgba(${PRINT},0.035)`;
+        ctx!.strokeStyle = x % 120 === 0 ? `rgba(${PRINT},0.05)` : `rgba(${PRINT},0.018)`;
         ctx!.beginPath();
         ctx!.moveTo(x + 0.5, 0);
         ctx!.lineTo(x + 0.5, h);
         ctx!.stroke();
       }
       for (let y = 0; y < h; y += 24) {
-        ctx!.strokeStyle = y % 120 === 0 ? `rgba(${PRINT},0.09)` : `rgba(${PRINT},0.035)`;
+        ctx!.strokeStyle = y % 120 === 0 ? `rgba(${PRINT},0.05)` : `rgba(${PRINT},0.018)`;
         ctx!.beginPath();
         ctx!.moveTo(0, y + 0.5);
         ctx!.lineTo(w, y + 0.5);
@@ -195,7 +195,7 @@ export default function BlueprintCanvas({ className = "" }: { className?: string
         if (p <= 0) return;
         const hi = "hi" in sh && sh.hi;
         const rgb = hi ? HI : PRINT;
-        ctx!.strokeStyle = `rgba(${rgb},${0.85 * alpha})`;
+        ctx!.strokeStyle = `rgba(${rgb},${(hi ? 0.95 : 0.55) * alpha})`;
         ctx!.fillStyle = `rgba(${rgb},${0.85 * alpha})`;
         ctx!.lineWidth = hi ? 1.6 : 1.15;
         ctx!.setLineDash([]);

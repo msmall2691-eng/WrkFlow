@@ -96,7 +96,7 @@ export default function PriceIt() {
     <section aria-labelledby="price-heading" className="bp-band relative">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 py-24 lg:grid-cols-12 lg:px-10">
         <div className="lg:col-span-5">
-          <p className="bp-eyebrow"><span className="text-[color:var(--bp-print)]">[ 04 ]</span> Price sheet · real prices</p>
+          <p className="bp-eyebrow"><span className="text-[color:var(--bp-print)]">[ 05 ]</span> Price sheet · real prices</p>
           <h2 id="price-heading" className="bp-h2 mt-4">
             Price your project.
             <span className="bp-serif block normal-case text-[color:var(--bp-print)]">Before lunch.</span>

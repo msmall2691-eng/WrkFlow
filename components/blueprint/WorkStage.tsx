@@ -121,7 +121,7 @@ export default function WorkStage() {
               </div>
               <p className="bp-eyebrow mt-5">Take {pad(i + 1)} · {p.tag}</p>
               <h3 className="mt-2 font-display text-[26px] font-semibold text-[color:var(--bp-paper)]">{p.title}</h3>
-              <p className="bp-serif text-[22px] text-[color:var(--bp-print)]">{p.line}</p>
+              <p className="bp-serif text-[22px] text-[color:var(--bp-paper)]">{p.line}</p>
               <p className="mt-3 text-[15px] leading-relaxed text-[color:var(--bp-mute)]">{p.blurb}</p>
               <ProjectLink p={p} className="bp-link mt-4 inline-flex" />
             </li>
@@ -159,7 +159,7 @@ export default function WorkStage() {
                 <div key={`t${idx}`} className="bp-swap">
                   <p className="bp-eyebrow mt-7"><span className="text-[color:var(--bp-hi)]">Take {pad(idx + 1)}</span> · {cur.tag}</p>
                   <h3 className="mt-3 font-display text-[34px] font-semibold leading-[1.05] tracking-[-0.02em] text-[color:var(--bp-paper)]">{cur.title}</h3>
-                  <p className="bp-serif text-[30px] leading-[1.1] text-[color:var(--bp-print)]">{cur.line}</p>
+                  <p className="bp-serif text-[30px] leading-[1.1] text-[color:var(--bp-paper)]">{cur.line}</p>
                   <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-[color:var(--bp-mute)]">{cur.blurb}</p>
                   <ProjectLink p={cur} className="bp-btn bp-btn-ghost mt-6" />
                 </div>
