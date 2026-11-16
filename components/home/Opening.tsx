@@ -4,7 +4,7 @@ import PanelStage from "../panel/PanelStage";
 import PanelHeader from "../panel/PanelHeader";
 import Link from "next/link";
 import Image from "next/image";
-import { smallProjects, welcomeBook } from "@/lib/content";
+import { smallProjects } from "@/lib/content";
 
 /* Three real, live builds. Nov 16 2026: Meg asked for stronger sites up top
    and a look men in the trades would take seriously, so the script-font
@@ -132,16 +132,11 @@ export default function Opening() {
             <ul className="m-0 flex list-none flex-wrap items-center gap-x-5 gap-y-1 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
               <li className="inline-flex min-h-7 items-center gap-1">Fixes from{" "}<span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
               <li>
-                <Link href="/welcome-book" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
-                  Rental welcome book{" "}<span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
+                <Link href="/plugins" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                  Instant Quote plug-in{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$150</span>
                 </Link>
               </li>
               <li className="inline-flex min-h-7 items-center gap-1">Site care{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
-              <li>
-                <Link href="/turnover" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
-                  Turnover Planner{" "}<span className="font-semibold text-[color:var(--cp-ink)]">free</span>
-                </Link>
-              </li>
             </ul>
           </div>
 

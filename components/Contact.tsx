@@ -134,9 +134,8 @@ export default function Contact() {
                 and what you wish worked better. You don&apos;t need a technical
                 plan to get started.
               </p>
-                          <p className="mt-6 inline-flex items-center gap-2.5 rounded-full border border-signal/30 bg-signal/[0.06] px-4 py-2 text-sm font-semibold text-signal">
-                <span className="inline-block h-1.5 w-1.5 rounded-full bg-signal" />
-                Currently available for new projects
+                          <p className="mt-6 text-sm font-semibold text-[color:var(--cp-ink)]">
+                Taking new projects now.
               </p>
                           <div className="mt-8 rounded-xl border border-line bg-surface/40 p-5">
                 <p className="text-sm font-medium text-gold">
@@ -151,7 +150,6 @@ export default function Contact() {
                   className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
                 >
                   Start the questionnaire
-                  <span aria-hidden="true">→</span>
                 </a>
               </div>
                           <div className="mt-8 space-y-2.5 text-sm text-faint">
@@ -191,7 +189,6 @@ export default function Contact() {
                 className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
               >
                 Book a free 15-min call
-                <span aria-hidden="true">→</span>
               </BookCall>
           </div>
 
@@ -287,12 +284,9 @@ export default function Contact() {
                   <button
                       type="submit"
                       disabled={status === "submitting"}
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-all hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+                      className="cp-cta inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-6 text-[15px] font-semibold text-white disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {status === "submitting" ? "Sending…" : "Send it over"}
-                      {status !== "submitting" && (
-                        <span aria-hidden="true">→</span>
-                      )}
                   </button>
 
                   <p className="text-xs leading-relaxed text-[color:var(--panel-faint)]">
@@ -330,7 +324,7 @@ function SuccessPanel({ onReset }: { onReset: () => void }) {
         onClick={onReset}
         className="mt-6 text-sm font-semibold text-signal transition-opacity hover:opacity-80"
       >
-        Send another →
+        Send another
       </button>
     </div>
   );

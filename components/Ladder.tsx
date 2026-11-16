@@ -92,14 +92,14 @@ function Card({ item }: { item: LadderItem }) {
           href={r.href}
           className="mt-3 inline-flex w-fit items-center py-1.5 text-[12.5px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
         >
-          Open it <span aria-hidden="true">&nbsp;→</span>
+          Open it
         </Link>
       ) : r.offer ? (
         <OfferLink
           offer={r.offer as never}
           className="mt-3 inline-flex w-fit items-center py-1.5 text-[12.5px] font-semibold text-[color:var(--cp-violet-ink)]"
         >
-          Ask about this <span aria-hidden="true">&nbsp;→</span>
+          Ask about this
         </OfferLink>
       ) : null}
     </li>

@@ -175,7 +175,6 @@ function ProductCard({
               className="inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-signal/10 px-4 py-2 text-xs font-semibold text-signal transition-colors hover:bg-signal/20"
             >
               Use it free
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
             </a>
           ) : (
             <button
@@ -184,7 +183,6 @@ function ProductCard({
               className="inline-flex items-center gap-1.5 rounded-full border border-signal/40 bg-signal/10 px-4 py-2 text-xs font-semibold text-signal transition-colors hover:bg-signal/20"
             >
               Reserve
-              <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
             </button>
           )}
         </div>
@@ -417,7 +415,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
               disabled={state === "sending"}
               className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 disabled:opacity-50"
             >
-              {state === "sending" ? "Reserving…" : "Reserve this →"}
+              {state === "sending" ? "Reserving…" : "Reserve this"}
             </button>
           </form>
         )}

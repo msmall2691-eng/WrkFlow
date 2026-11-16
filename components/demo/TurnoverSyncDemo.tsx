@@ -139,7 +139,8 @@ export default function TurnoverSyncDemo() {
 
       <main className="mx-auto grid max-w-6xl gap-6 px-5 py-6 lg:grid-cols-[1.25fr_1fr]">
         {/* Left: what the platforms say */}
-        <section aria-labelledby="cal-h">
+        {/* min-w-0 so the calendar scrolls inside itself instead of widening the page on a phone. */}
+        <section aria-labelledby="cal-h" className="min-w-0">
           <h1 id="cal-h" className="m-0 text-[15px] font-semibold">Bookings from Airbnb and Vrbo</h1>
           <p className="m-0 mt-1 text-[13px] text-[#14262b]/60">Read from each listing&apos;s calendar link every few minutes.</p>
           <div className="mt-4 overflow-x-auto rounded-xl border border-[#14262b]/10 bg-white">
@@ -196,7 +197,7 @@ export default function TurnoverSyncDemo() {
         </section>
 
         {/* Right: what the cleaners see */}
-        <section aria-labelledby="sched-h">
+        <section aria-labelledby="sched-h" className="min-w-0">
           <h2 id="sched-h" className="m-0 text-[15px] font-semibold">Cleaning schedule</h2>
           <p className="m-0 mt-1 text-[13px] text-[#14262b]/60">Built from the checkouts. Same-day turns are flagged.</p>
           <ol className="m-0 mt-4 list-none space-y-2.5 p-0">

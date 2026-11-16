@@ -80,7 +80,7 @@ export default function WelcomeBookPage() {
                     href="#reserve"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
                   >
-                    Get yours →
+                    Get yours
                   </a>
                   <a
                     href={wb.demoUrl}
@@ -166,7 +166,7 @@ export default function WelcomeBookPage() {
           <div className="relative mx-auto max-w-6xl px-6">
             <div className="mb-10 max-w-3xl">
                               <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-                  Three steps, mostly on me.
+                  Three steps. Most of the work is done for you.
                 </h2>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
@@ -223,8 +223,8 @@ export default function WelcomeBookPage() {
                 </h2>
                               <p className="mx-auto mt-4 max-w-lg text-[1rem] leading-relaxed text-muted">
                   Founding price of ${wb.introPrice} for the first few. One-time,
-                  no monthly app fee, and the book is yours to keep. Tell me about
-                  your rental and I&apos;ll take it from there.
+                  no monthly app fee, and the book is yours to keep. Send the
+                  details of your rental and it gets built from there.
                 </p>
             </div>
                           <WelcomeBookReserve price={wb.introPrice} />

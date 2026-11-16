@@ -154,7 +154,7 @@ export default function QuoteCalc() {
     <div className="grid gap-8 md:grid-cols-2 md:items-start">
       {/* Controls — left: adjust the job */}
               <div className="rounded-2xl border border-line bg-surface p-6">
-          <p className="mb-5 font-mono text-[11px] uppercase tracking-widest text-faint">The job</p>
+          <p className="mb-5 text-[13px] font-semibold text-ink">The job</p>
           <div className="space-y-5">
             <Seg
               label="Industry"
@@ -199,7 +199,7 @@ export default function QuoteCalc() {
       {/* Result — right: the live price */}
               <div className="rounded-2xl border border-line bg-[radial-gradient(120%_120%_at_50%_0%,var(--color-surface)_0%,var(--color-base)_70%)] p-8 md:sticky md:top-24">
           <div className="rounded-2xl border border-line bg-elevated p-7 text-ink shadow-[0_18px_50px_-16px_rgba(11,23,34,0.25)]">
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-faint">Estimated price</p>
+            <p className="text-[13px] font-medium text-muted">Estimated price</p>
             <p className="mt-2 font-display text-4xl tracking-tight">
               {money(low)}<span className="text-faint">–</span>{money(high)}
             </p>
@@ -223,7 +223,7 @@ export default function QuoteCalc() {
               onClick={() => requestOffer("quote", summary)}
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-5 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
             >
-              Request this quote →
+              Request this quote
             </Link>
             <SaveResult summary={summary} filename="instant-quote" tool="quote" toolLabel="Instant quote" />
           </div>

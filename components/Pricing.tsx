@@ -39,10 +39,6 @@ export default function Pricing() {
       id="pricing"
       className="relative overflow-hidden border-t border-line bg-[var(--section-alt2-bg)] py-20 md:py-24"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
-      />
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-8 max-w-3xl">
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
@@ -77,7 +73,7 @@ export default function Pricing() {
             can compare offers across a horizontal line (survey M-04). */}
         <div className="grid items-stretch gap-5 md:grid-cols-2">
           {/* Custom build — the primary offer, highlighted */}
-                      <article className="group corner-accents flex h-full flex-col rounded-2xl border border-signal/60 bg-signal/[0.08] p-7 shadow-[0_28px_60px_-32px_rgba(22,163,148,0.75)] transition-all duration-300 hover:-translate-y-1.5 hover:border-signal/80 hover:shadow-[0_34px_70px_-30px_rgba(22,163,148,0.9)] active:scale-[0.99]">
+                      <article className="cp-tile group flex h-full flex-col !rounded-2xl border-2 !border-[color:var(--cp-violet)] p-7">
               <p className="text-xs text-faint">Custom build</p>
               {/*
                 Back to "Let's scope it", which is what this tier said
@@ -115,33 +111,31 @@ export default function Pricing() {
               </ul>
               <OfferLink
                 offer="custom"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                className="cp-cta mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-6 text-[15px] font-semibold text-white"
               >
                 Talk through your project
-                <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
 
           {/* Care Plan */}
-                      <article className="group corner-accents flex h-full flex-col rounded-2xl border border-line bg-surface/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-signal/40 hover:bg-surface/80 hover:shadow-[0_28px_60px_-32px_rgba(11,23,34,0.35)] active:scale-[0.99]">
+                      <article className="cp-tile group flex h-full flex-col !rounded-2xl p-7">
               <p className="text-xs text-faint">Care Plan</p>
               <p className="mt-4 font-display text-3xl text-ink">
                 $49
                 <span className="text-[1rem] text-faint">/mo</span>
               </p>
               <p className="mt-1.5 text-xs leading-relaxed text-faint">
-                Cancel anytime — your site keeps running, you just take over hosting.
+                Cancel anytime. Your site keeps running; you just take over hosting.
               </p>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                Hosting, domain, security, and small edits — handled. The stuff
+                Hosting, domain, security and small edits, handled. The stuff
                 that keeps a site running, off your plate.
               </p>
               <OfferLink
                 offer="care"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-signal/50 px-6 py-3 text-sm font-semibold text-signal transition-colors hover:bg-signal/10"
+                className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[color:var(--cp-ink)] px-6 text-[15px] font-semibold text-[color:var(--cp-on-ink)] hover:opacity-90"
               >
                 Keep it running
-                <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
         </div>
@@ -174,12 +168,11 @@ export default function Pricing() {
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"
             >
               Not ready to commit? Book a free 15-min call
-              <span aria-hidden="true">→</span>
             </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
-                Early clients get my best rate, in exchange for a testimonial
-                and permission to show the site in my portfolio.
+                Early clients get a lower rate in exchange for a testimonial
+                and permission to show the site as an example.
               </p>
             )}
           </div>
@@ -196,7 +189,7 @@ export default function Pricing() {
             lib/content.ts (testimonial.quote). Never ship a fabricated one. */}
         {testimonial.quote && (
                       <figure className="mt-8 rounded-2xl border border-gold/30 bg-gold/[0.05] p-6">
-              <blockquote className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink">
+              <blockquote className="text-lg leading-relaxed text-ink">
                 &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-3 text-xs text-faint">

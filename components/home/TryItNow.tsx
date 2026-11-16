@@ -125,7 +125,7 @@ export default function TryItNow() {
                 href={forRentals.extra.href}
                 className="mt-4 inline-flex w-fit items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
               >
-                Use it now <span aria-hidden="true">&nbsp;→</span>
+                Use it now
               </Link>
             </li>
           ) : null}
@@ -145,7 +145,7 @@ export default function TryItNow() {
                 href="/welcome-book"
                 className="mt-4 inline-flex w-fit items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
               >
-                See what is in it <span aria-hidden="true">&nbsp;→</span>
+                See what is in it
               </Link>
             </li>
           ))}
@@ -160,13 +160,12 @@ export default function TryItNow() {
             className="inline-flex min-h-11 items-center rounded-[10px] bg-[color:var(--cp-ink)] px-5 text-[14px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90"
           >
             Browse all {readyCount} things you can use, buy or have built
-            <span aria-hidden="true">&nbsp;→</span>
           </Link>
           <Link
             href="/catalog?c=rentals"
             className="text-[14px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
           >
-            Just the rental tools <span aria-hidden="true">→</span>
+            Just the rental tools
           </Link>
         </div>
       </div>

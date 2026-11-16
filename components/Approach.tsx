@@ -37,12 +37,12 @@ export default function Approach() {
   return (
     <section
       id="approach"
-      className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-20 md:py-24"
+      className="relative overflow-hidden py-16 md:py-20"
     >
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-12 max-w-3xl">
-                      <p className="mb-3 text-xs font-medium text-signal">
-              Approach
+                      <p className="mb-2 text-[13px] font-medium text-[color:var(--cp-faint)]">
+              How it works
             </p>
                       <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
               No black boxes. You steer the whole build.
@@ -69,11 +69,11 @@ export default function Approach() {
           <div className="flex flex-col md:grid md:grid-cols-4 md:gap-5">
             {approachSteps.map((step, i) => (
               <div key={step.index}>
-                                  <div className="group corner-accents relative rounded-2xl border border-line bg-surface/40 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-signal/40 hover:bg-surface/70 hover:shadow-[0_20px_50px_-30px_rgba(22,163,148,0.5)] active:scale-[0.99] md:h-full">
-                    <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-base font-mono text-xs text-faint transition-all duration-300 group-hover:border-signal group-hover:bg-signal/10 group-hover:text-signal">
+                                  <div className="cp-tile relative !rounded-2xl p-6 md:h-full">
+                    <span className="relative z-10 inline-flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--cp-ink)] text-[13px] font-semibold text-[color:var(--cp-on-ink)]">
                       {step.index}
                     </span>
-                    <h3 className="display-serif mt-5 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
+                    <h3 className="display mt-4 text-lg text-ink md:text-xl">
                       {step.title}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted">

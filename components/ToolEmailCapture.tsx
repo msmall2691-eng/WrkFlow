@@ -63,7 +63,7 @@ export default function ToolEmailCapture({
       <p className={`text-xs leading-relaxed text-signal ${className}`}>
         Sent! Want this tuned to your business?{" "}
         <Link href="/#contact" className="font-semibold underline underline-offset-2 hover:opacity-80">
-          →
+          Start a project
         </Link>
       </p>
     );
@@ -77,7 +77,6 @@ export default function ToolEmailCapture({
         className={`inline-flex items-center gap-2 rounded-full border border-line bg-base px-4 py-2 text-xs font-medium text-muted transition-colors hover:border-signal/60 hover:text-signal ${className}`}
       >
         Email me this
-        <span aria-hidden="true">→</span>
       </button>
     );
   }

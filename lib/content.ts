@@ -13,11 +13,13 @@ import type { VisualType } from "@/components/ProjectVisual";
   statement, not an essay. Edit here, not in the component.
 */
 export const founderNote = {
-  headline: "A business background. A love of building.",
-  headlineFollow: "Websites and systems shaped around the people using them.",
-  paragraphs: [
-    "M Studio brings hands-on business experience to websites and systems. Every project starts with understanding the work, the tools already in place, and what could run more smoothly.",
-  ],
+  /* Nov 16 2026 redesign: says who is behind the work in the terms the
+     buyer cares about (ran a service business, builds what it runs on),
+     instead of "a love of building", which was about Meg, not the reader. */
+  headline: "Built by someone who has run a service business.",
+  headlineFollow:
+    "Eight years running The Maine Cleaning Co., then building the website and software it runs on. Now the same work, for contractors, trades and service businesses.",
+  paragraphs: [] as string[],
 } as const;
 
 export const founderBio = {
@@ -30,7 +32,7 @@ export const founderBio = {
     "M Studio is based in Maine and works remotely with businesses anywhere. Alongside the studio, I am studying Business Analytics and AI at the University of Southern Maine with a minor in Computer Science. Outside of work and school, you will usually find me with the kids and our dog, near the water. Fishing if the day allows.",
   ],
   detail: "The Maine Cleaning Company is the proving ground: $1M+ collected and 4,900+ service visits since 2023.",
-  signature: "— Meg",
+  signature: "Meg",
 } as const;
 
 export const founderPhilosophy = {
@@ -499,7 +501,7 @@ export const work: WorkItem[] = [
     tag: "Product · in daily use",
     category: "software",
     title: "BrightBase",
-    blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
+    blurb: "The operations app that runs The Maine Cleaning Co.: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "12 overlapping tools, now one system",
     status: "In daily production",
@@ -661,7 +663,7 @@ export const caseStudies: CaseStudy[] = [
     // Drafted from Meg's own cover-letter wording and approved by her (Oct 2026).
     // Public-safe on purpose: no revenue, spend, client or staff details.
     problem:
-      "Running the cleaning company, I was paying for a dozen tools that didn't talk to each other: one for quotes and invoices, another for the crew schedule and time clock, others for the phone, booking and automation. Every handoff between them was done by hand. I mapped how a job actually moves from request to paid, and built one system around it.",
+      "The company was paying for a dozen tools that didn't talk to each other: one for quotes and invoices, another for the crew schedule and time clock, others for the phone, booking and automation. Every handoff between them was done by hand. The fix was to map how a job actually moves from request to paid, and build one system around it.",
     built: [
       {
         label: "Marketing and booking site",
@@ -914,7 +916,7 @@ export const marketItems: MarketItem[] = [
       "Embeddable estimate calculator",
       "Configured to your pricing + branding",
       "Leads emailed straight to you on submit",
-      "One line of code to install. I set it up, you go live",
+      "One line of code to install. Set up for you, then you go live",
     ],
     price: "$150 setup + $15/mo",
     shot: "/shots/instant-estimate.webp",

@@ -94,7 +94,7 @@ export default function ServiceRouter() {
                       <span aria-hidden="true" />
                     )}
                     <span className="text-[13px] font-medium text-[color:var(--cp-violet-ink)]">
-                      See it <span aria-hidden="true">→</span>
+                      See it
                     </span>
                   </span>
                 </Link>

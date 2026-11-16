@@ -28,6 +28,7 @@ const PAGES = [
   { path: "/demo/family-portal", name: "family portal demo" },
   { path: "/demo/instant-quote", name: "instant quote demo" },
   { path: "/catalog", name: "catalog" },
+  { path: "/plugins", name: "plugins" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here
   // to break without noticing, since nothing links to it at build time.
@@ -1021,7 +1022,7 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
   expect(res.status()).toBe(200);
   const xml = await res.text();
 
-  for (const path of ["/turnover", "/welcome-book", "/tools", "/catalog", "/work"])
+  for (const path of ["/turnover", "/welcome-book", "/tools", "/catalog", "/work", "/plugins"])
     expect(xml, `${path} should be in the sitemap`).toContain(`${path}</loc>`);
 
   for (const path of ["/demo/shop", "/demo/studio", "/demo/directory"])
@@ -1072,3 +1073,62 @@ test("every integration traces to a named project", async () => {
      and BrightBase already has its own "works with" section). The data
      half above still guards that every integration traces to a project. */
 });
+
+/*
+  The Instant Quote plug-in on /plugins is the real public/embed/quote.js in
+  demo mode (Nov 16 2026). It must price from its settings, refuse an empty
+  form, and send nothing in demo mode. The lead relay must refuse a site
+  key it does not know, so it can never be used to send mail for strangers.
+*/
+test("the Instant Quote plug-in prices the job and sends nothing in demo mode", async ({ page }) => {
+  const posts: string[] = [];
+  page.on("request", (r) => {
+    if (r.method() === "POST") posts.push(r.url());
+  });
+  await page.goto("/plugins");
+  const w = page.locator("[data-mstudio-quote]");
+  await w.getByRole("button", { name: "Full replacement" }).click();
+  // 1800 + 450 x 22 squares = 11,700; range 90% to 115%.
+  await expect(w.locator(".est .v")).toHaveText("$10,530 \u2013 $13,455");
+  await w.getByLabel(/Haul away old roofing/).check();
+  await expect(w.locator(".est .v")).toHaveText("$10,930 \u2013 $13,855");
+
+  await w.getByRole("button", { name: "Send me this quote" }).click();
+  await expect(w.getByRole("alert")).toContainText("Add your name");
+
+  await w.getByPlaceholder("Your name").fill("Test Person");
+  await w.getByPlaceholder("Email or phone").fill("test@example.com");
+  // Switching service re-renders the widget; what was typed must survive.
+  await w.getByRole("button", { name: "Gutters" }).click();
+  await expect(w.getByPlaceholder("Your name")).toHaveValue("Test Person");
+  await w.getByRole("button", { name: "Full replacement" }).click();
+  await expect(w.getByPlaceholder("Email or phone")).toHaveValue("test@example.com");
+  await w.getByRole("button", { name: "Send me this quote" }).click();
+  await expect(w.getByRole("status")).toContainText("nothing was sent");
+  expect(posts.filter((u) => u.includes("widget-lead")), "demo mode must not post a lead").toEqual([]);
+});
+
+test("the plug-in lead relay refuses a site it does not know", async ({ request }) => {
+  const res = await request.post("/api/widget-lead", {
+    headers: { origin: "https://stranger.example" },
+    data: { site: "not-a-site", name: "x", contact: "x@example.com" },
+  });
+  expect(res.status()).toBe(403);
+});
+
+/*
+  No page scrolls sideways on a phone (Nov 16 2026). /plugins shipped its
+  first cut 578px wide at 375: the install snippet's <pre> set the grid
+  column's minimum width. It looked fine at 1440 and passed every other
+  test. Intentional horizontal scrollers (the catalog's tab bar) scroll
+  inside themselves and do not widen the document, so this checks the
+  document, not individual elements.
+*/
+for (const { path, name } of PAGES) {
+  test(`${name} does not scroll sideways at 375px`, async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 800 });
+    await page.goto(path);
+    const width = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(width, `${path} is ${width}px wide on a 375px screen`).toBeLessThanOrEqual(375);
+  });
+}

@@ -17,7 +17,7 @@ import { catalog, kindOf } from "@/lib/catalog";
 */
 
 const ROWS: { id: string; pain: string; tryHref: string; tryLabel: string }[] = [
-  { id: "quote-widget", pain: "Leads want a price before they will call.", tryHref: "/demo/instant-quote", tryLabel: "Try the demo" },
+  { id: "quote-widget", pain: "Leads want a price before they will call.", tryHref: "/plugins", tryLabel: "Try the plug-in" },
   { id: "brightbase", pain: "Quotes, schedule and invoices live in five different apps.", tryHref: "/demo/brightbase", tryLabel: "Try the demo" },
   { id: "turnover-sync", pain: "A booking changes and your cleaner is the last to know.", tryHref: "/demo/turnover-sync", tryLabel: "Try the demo" },
   { id: "parent-portal", pain: "Parents text all day asking how their child is doing.", tryHref: "/demo/family-portal", tryLabel: "Try the demo" },
@@ -70,6 +70,10 @@ export default function ProductsRow() {
           Need something else, like data moved or two tools connected?{" "}
           <Link href="/catalog" className="font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
             See everything and every price
+          </Link>
+          . Rent out a place?{" "}
+          <Link href="/turnover" className="font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80">
+            The Turnover Planner is free
           </Link>
           .
         </p>

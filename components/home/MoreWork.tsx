@@ -135,7 +135,7 @@ export default function MoreWork() {
                             href={to.href}
                             className="inline-flex items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
                           >
-                            {to.label} →
+                            {to.label}
                           </Link>
                         )}
                       </span>

@@ -30,10 +30,6 @@ export default function AboutPage() {
   return (
     <div className="cp">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
 
         <div className="relative z-10">
           <PanelHeader current="/about" bookHref="/?offer=call#contact" />

@@ -47,8 +47,8 @@ const shots: Record<string, string> = {
    site should not centre on the cleaning company). Unlisted titles keep
    their `work[]` order at the end. */
 const ORDER = [
-  "The Remote Admin",
   "Nash Construction",
+  "The Remote Admin",
   "Arrowhead Explorers",
   "The Keystone House",
   "linx",
@@ -140,7 +140,7 @@ export default function WorkPage() {
                               href={link.href}
                               className="inline-flex min-h-9 items-center text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
                             >
-                              {link.label} <span aria-hidden="true">→</span>
+                              {link.label}
                             </Link>
                           )}
                         </div>

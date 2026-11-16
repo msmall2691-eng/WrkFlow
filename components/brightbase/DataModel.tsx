@@ -120,7 +120,7 @@ export default function DataModel() {
                 <div className="mt-auto flex flex-wrap items-center gap-2">
                   <span className="text-[12.5px] text-[color:var(--cp-faint)]">Points to</span>
                   {node.links.map((l) => (
-                    <span key={l} className="rounded-md bg-[rgba(45,212,191,0.10)] px-2 py-1 text-[12.5px] text-[color:var(--cp-teal)]">
+                    <span key={l} className="rounded-md bg-[color:var(--cp-fill-strong)] px-2 py-1 text-[12.5px] text-[color:var(--cp-teal)]">
                       {l}
                     </span>
                   ))}

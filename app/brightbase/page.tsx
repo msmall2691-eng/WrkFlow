@@ -53,12 +53,12 @@ export default function BrightBasePage() {
           <PanelHeader current="/brightbase" />
         </div>
 
-        <main className="relative z-10 mx-auto flex max-w-[1240px] flex-col gap-24 px-6 pb-24 pt-8 lg:px-10">
+        <main className="relative z-10 mx-auto flex max-w-6xl flex-col gap-24 px-6 pb-24 pt-10">
           {/* Hero */}
           <section className="grid grid-cols-12 items-center gap-y-10 lg:gap-x-10">
             <div className="min-w-0 col-span-12 flex flex-col gap-6 lg:col-span-6">
-              <Eyebrow tone="teal">BrightBase · in daily use</Eyebrow>
-              <h1 className="m-0 font-display text-[clamp(2.5rem,4.6vw,4rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
+              <Eyebrow>BrightBase · in daily use</Eyebrow>
+              <h1 className="m-0 font-display text-[clamp(2.3rem,4.6vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-balance text-[color:var(--cp-ink)]">
                 The system an eight-year-old cleaning company runs on.
               </h1>
               <p className="m-0 max-w-[36em] text-[17px] leading-relaxed text-[color:var(--cp-muted)]">{brightbase.summary}</p>
@@ -67,7 +67,7 @@ export default function BrightBasePage() {
                   offer="brightbase"
                   className="cp-cta inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white no-underline transition-transform duration-150 hover:-translate-y-0.5"
                 >
-                  Get a demo <span aria-hidden="true">→</span>
+                  Get a demo
                 </OfferLink>
                 <a
                   href="#inside"
