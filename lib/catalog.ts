@@ -127,10 +127,10 @@ export const categories: {
   image: string;
 }[] = [
   { id: "websites", label: "Websites", blurb: "A site people can hire you from. You own it.", image: "/shots/catalog/demo-shop.webp" },
-  { id: "booking", label: "Quotes & booking", blurb: "Quotes and bookings without the phone tag.", image: "/shots/catalog/quote-tool.webp" },
-  { id: "apps", label: "Apps & portals", blurb: "The app your office, crew and customers use.", image: "/shots/brightbase/schedule.webp" },
+  { id: "booking", label: "Quotes & booking", blurb: "Quotes and bookings without the phone tag.", image: "/shots/catalog/demo-instant-quote.webp" },
+  { id: "apps", label: "Apps & portals", blurb: "The app your office, crew and customers use.", image: "/shots/catalog/demo-brightbase.webp" },
   { id: "rentals", label: "Rental hosts", blurb: "Welcome books and turnover scheduling for short-term rentals.", image: "/shots/catalog/welcome-book.webp" },
-  { id: "connect", label: "Integrations & data", blurb: "Stop typing the same thing into two apps.", image: "/shots/brightbase/turnovers.webp" },
+  { id: "connect", label: "Integrations & data", blurb: "Stop typing the same thing into two apps.", image: "/shots/catalog/demo-turnover-sync.webp" },
   { id: "ai", label: "AI", blurb: "Drafts replies and quotes. You approve before anything sends.", image: "/shots/catalog/live-estimate.webp" },
   { id: "tools", label: "Free tools", blurb: "Use them right now. No signup.", image: "/shots/catalog/tools-light.webp" },
 ];
@@ -239,9 +239,9 @@ export const catalog: CatalogItem[] = [
     status: "buy",
     outcome: "Visitors price the job themselves and you get the lead by email.",
     price: marketPrice("quote-widget"),
-    primary: { label: "Try it free", href: "/tools?tool=quote" },
+    primary: { label: "Try the demo", href: "/demo/instant-quote" },
     offer: "quote",
-    image: `${S}/quote-tool.webp`,
+    image: `${S}/demo-instant-quote.webp`,
   },
   {
     id: "booking",
@@ -298,10 +298,11 @@ export const catalog: CatalogItem[] = [
     status: "built",
     outcome: "Leads, quotes, scheduling, crew, invoicing and payouts in one system.",
     price: "Book a demo",
-    primary: { label: "Look inside", href: "/brightbase" },
+    primary: { label: "Try the demo", href: "/demo/brightbase" },
+    proof: { label: "Look inside", href: "/brightbase" },
     offer: "brightbase",
     connects: ["Stripe", "Twilio", "Google Calendar"],
-    image: `${BB}/schedule.webp`,
+    image: `${S}/demo-brightbase.webp`,
   },
   {
     id: "customer-portal",
@@ -357,9 +358,10 @@ export const catalog: CatalogItem[] = [
     status: "built",
     outcome: "Families sign in with a code, a door tablet takes check-ins, staff run logs and attendance.",
     price: "Quoted to your program",
-    proof: { label: "Open the portal", href: "https://www.lacexplorers.online/portal", external: true },
+    primary: { label: "Try the demo", href: "/demo/family-portal" },
+    proof: { label: "The live one", href: "https://www.lacexplorers.online/portal", external: true },
     offer: "custom",
-    image: `${S}/live-portal.webp`,
+    image: `${S}/demo-family-portal.webp`,
   },
   {
     id: "directory",
@@ -416,10 +418,10 @@ export const catalog: CatalogItem[] = [
     status: "built",
     outcome: "New bookings land on your cleaner's schedule by themselves, with times and door codes.",
     price: "Quoted to your setup",
-    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    primary: { label: "Try the demo", href: "/demo/turnover-sync" },
     offer: "integration",
     connects: ["Airbnb", "Vrbo", "Google Calendar"],
-    image: `${BB}/turnovers.webp`,
+    image: `${S}/demo-turnover-sync.webp`,
   },
 
   // ── Integrations & data ─────────────────────────────────────────────────

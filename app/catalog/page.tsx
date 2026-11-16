@@ -54,8 +54,8 @@ export default function CatalogPage() {
               <CatalogBrowser />
             </Suspense>
             <p className="m-0 mt-10 text-[12.5px] text-[color:var(--cp-faint)]">
-              The online store, booking and directory demos use invented businesses
-              so you can click around. What they do is real.
+              The demos use invented businesses and sample data so you can click
+              around. Nothing in them is saved or sent. What they do is real.
             </p>
           </div>
         </section>

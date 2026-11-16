@@ -22,6 +22,11 @@ const PAGES = [
   // Nov 15 2026: /services, /marketplace and /demo redirect to /catalog;
   // the redirect test below covers them. /work is the new projects page.
   { path: "/work", name: "work" },
+  // The four product demos (Nov 15 2026).
+  { path: "/demo/turnover-sync", name: "turnover sync demo" },
+  { path: "/demo/brightbase", name: "brightbase demo" },
+  { path: "/demo/family-portal", name: "family portal demo" },
+  { path: "/demo/instant-quote", name: "instant quote demo" },
   { path: "/catalog", name: "catalog" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here
@@ -852,6 +857,17 @@ test("/demo/directory filters narrow together, and an empty result says what to 
   await expect(page.getByTestId("dir-empty")).toHaveCount(0);
   expect(await cards.count()).toBeGreaterThan(0);
 });
+
+/* Each product demo says it is a demo, with invented data, before anything
+   else on the page, for the reason the store and studio demos do. */
+for (const path of ["/demo/turnover-sync", "/demo/brightbase", "/demo/family-portal", "/demo/instant-quote"]) {
+  test(`${path} says it is a demo with invented data, first`, async ({ page }) => {
+    await page.goto(path);
+    const { at, h1At } = await noticeComesFirst(page, /invented/i);
+    expect(at, "the demo notice should be on the page").toBeGreaterThanOrEqual(0);
+    expect(at, "the demo notice should come before the heading").toBeLessThan(h1At);
+  });
+}
 
 /*
   The restructure (Nov 15 2026): /services, /marketplace and /demo each
