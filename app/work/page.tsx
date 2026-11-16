@@ -140,7 +140,7 @@ export default function WorkPage() {
                               href={link.href}
                               className="inline-flex min-h-9 items-center text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
                             >
-                              {link.label} <span aria-hidden="true">→</span>
+                              {link.label}
                             </Link>
                           )}
                         </div>

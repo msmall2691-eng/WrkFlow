@@ -65,7 +65,7 @@ export default function ForRentals() {
                   href={PAGES[p.id] ?? "/marketplace"}
                   className="inline-flex items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
                 >
-                  See what is in it <span aria-hidden="true">&nbsp;→</span>
+                  See what is in it
                 </Link>
                 {/* The live example, when the product has one. Meg's own
                     rental, so it is a real thing somebody can open. */}
@@ -98,7 +98,7 @@ export default function ForRentals() {
                 href={forRentals.extra.href}
                 className="mt-4 inline-flex w-fit items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
               >
-                Use it now <span aria-hidden="true">&nbsp;→</span>
+                Use it now
               </Link>
             </li>
           ) : null}

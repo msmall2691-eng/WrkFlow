@@ -167,7 +167,7 @@ function Section({
             onClick={onSeeAll}
             className="cursor-pointer border-0 bg-transparent p-0 text-[13.5px] font-semibold text-[color:var(--cp-violet-ink)] hover:opacity-80"
           >
-            All {total} in {label} <span aria-hidden="true">→</span>
+            All {total} in {label}
           </button>
         ) : null}
       </div>

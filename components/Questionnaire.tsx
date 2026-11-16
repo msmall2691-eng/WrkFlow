@@ -566,12 +566,6 @@ function ContinueButton({
       className="group inline-flex items-center justify-center gap-2 rounded-full bg-gold px-8 py-4 text-[15px] font-semibold text-[#0b1722] transition-all hover:-translate-y-0.5 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       {label}
-      <span
-        aria-hidden="true"
-        className="transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
-      >
-        →
-      </span>
     </button>
   );
 }
@@ -926,7 +920,7 @@ function SuccessScreen({ name }: { name: string }) {
 
       <div className="mt-9 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-faint">
         <a href="https://mlinx.studio" className="text-ink/85 transition-colors hover:text-gold">
-          mlinx.studio →
+          mlinx.studio
         </a>
         <a href="mailto:contact@mlinx.studio" className="text-ink/85 transition-colors hover:text-gold">
           contact@mlinx.studio
@@ -1005,7 +999,6 @@ function FastFill({
           <span className="font-medium" style={{ color: TEAL }}>Skip the typing</span>
           {" "}— describe it your way and we&apos;ll draft the answers for you.
         </span>
-        <span aria-hidden="true" className="text-faint">→</span>
       </button>
     );
   }
@@ -1161,7 +1154,7 @@ function PreviewScreen({
             onClick={onRetry}
             className="mt-2 text-xs font-medium text-gold transition-opacity hover:opacity-75"
           >
-            Try again →
+            Try again
           </button>
         </div>
       )}

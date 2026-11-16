@@ -121,10 +121,6 @@ export default function Playground() {
 
   return (
     <section id="tools" className="relative overflow-hidden py-10 md:py-14">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-24 top-20 h-72 w-72 rounded-full bg-signal/[0.05] blur-[130px]"
-      />
       <div className="relative mx-auto max-w-6xl px-6">
 
         {/* Tabs — grouped; each tool is its own clean pill */}
@@ -141,7 +137,7 @@ export default function Playground() {
                         onClick={() => selectTool(t.id)}
                         className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
                           tool === t.id
-                            ? "border-gold/40 bg-gold/15 text-gold"
+                            ? "border-[color:var(--cp-ink)] bg-[color:var(--cp-ink)] text-[color:var(--cp-on-ink)]"
                             : "border-line bg-surface text-muted hover:border-signal/40 hover:text-ink"
                         }`}
                       >
@@ -173,7 +169,7 @@ export default function Playground() {
               href={activeTool.nudge.href}
               className="font-semibold text-signal transition-opacity hover:opacity-80"
             >
-              {activeTool.nudge.cta} →
+              {activeTool.nudge.cta}
             </a>
           </div>
       </div>

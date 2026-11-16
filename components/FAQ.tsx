@@ -19,6 +19,14 @@ const QUESTIONS: { q: string; a: string }[] = [
     a: "No. M Studio grew out of hands-on experience running a cleaning business, but projects span different industries. What matters is the website, system, or workflow you need help with.",
   },
   {
+    /* Nov 16 2026, competitive brief: Jobber and Housecall Pro both bundle
+       a basic site and online booking, so a buyer already paying for one
+       asks this first. Answered without claiming an integration that has
+       not been built. */
+    q: "I already pay for Jobber or Housecall Pro. Why would I need this?",
+    a: "Keep them. They run your jobs; their built-in site is a template. A site from here is built to bring the work in, and it can send people straight to your existing booking page. The Instant Quote plug-in can send leads to your inbox or to any tool that accepts a web form.",
+  },
+  {
     q: "Can I hire you for a small project?",
     a: "Yes. It can be a form, a page update, a CRM setup, a data import, or one connection between tools. The smaller-project ranges above are estimates; you get a written scope and quote before anything starts.",
   },

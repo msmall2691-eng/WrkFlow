@@ -54,7 +54,7 @@ export default function ToolsPage() {
               <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 {/* "we build" was the one "we" left on this page. Meg is a solo
                     founder and the house rule is first person. */}
-                The same tools I build into client systems. Use them here, free,
+                The same tools that go into client systems. Use them here, free,
                 for as long as you like.
               </p>
             </div>

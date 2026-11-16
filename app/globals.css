@@ -577,14 +577,17 @@ body {
   line-height: 1.02;
 }
 
-/* The editorial heading face. Paired with .display (Space Grotesk), which
-   keeps the hero and the UI. */
+/* Nov 16 2026: one heading family site-wide (DESIGN.md, "Clean pro").
+   This was Fraunces, an editorial serif, which made the About page, case
+   studies, the welcome book and the questionnaire read as a different,
+   softer brand than the rest. The class name stays so nothing else has to
+   change; it now renders Space Grotesk. --font-serif is untouched because
+   the demo storefronts use it to look like somebody else's business. */
 .display-serif {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-optical-sizing: auto;
-  letter-spacing: -0.015em;
-  line-height: 1.04;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.06;
 }
 
 /* Soft elevation for cards on the light surface — hairline + faint lift */

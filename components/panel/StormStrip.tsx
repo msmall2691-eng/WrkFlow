@@ -46,7 +46,7 @@ export default function StormStrip() {
       <span className="text-[#fde7b0]">
         Systems I build can watch alerts like this, move outdoor jobs and text customers on their own.
       </span>
-      <span className="ml-auto font-semibold text-[color:var(--cp-amber)]">Ask me how →</span>
+      <span className="ml-auto font-semibold text-[color:var(--cp-amber)]">Ask me how</span>
     </a>
   );
 }

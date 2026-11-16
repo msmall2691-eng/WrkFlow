@@ -1,50 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
-import TideLevel from "./TideLevel";
-import TideKey from "./TideKey";
-import {
-  provingGround,
-  founderNote,
-  founderBio,
-  founderPhilosophy,
-  founderCta,
-} from "@/lib/content";
+import { provingGround, founderNote, founderBio, founderPhilosophy, founderCta } from "@/lib/content";
 
 /*
-  FounderNote — belief, then the person, then the ask.
+  FounderNote, the About page body. Rebuilt Nov 16 2026 for the "Clean pro"
+  redesign (DESIGN.md).
 
-  Photograph + operating stats → the belief ("why the software is any good")
-  → the bio, which is now where the real content is: what she ran, what she
-  is studying, what she builds, and what she does when she is not building.
-  Philosophy rides under the signature as two quiet lines → CTA.
+  What went: the live tide-water strip and its key, the blurred glow behind
+  the photo, the background blob, the centred stack, and Fraunces body
+  copy. Each was decoration, and together they made this the one page that
+  looked like a lifestyle brand rather than the rest of the site.
 
-  Two blocks came out on the way: a "What we build" chip row that repeated
-  the homepage's Services section, and the philosophy's own kicker + border
-  + heading, which was a lot of furniture around one and a half sentences.
-  Copy lives in `lib/content.ts` so voice edits are one file, not one
-  component.
+  What it is now: the same left edge and type as every other page. Who is
+  behind the work and why that matters to a contractor, beside a plain
+  photo; the operating numbers as tiles, attributed to the company they
+  belong to; then Meg's own words. The About page is the one place the
+  first person stays (CLAUDE.md, "Voice and copy").
 
-  Edit SOCIALS below to change the icon row; edit lib/content.ts for the
-  arc's copy and for `provingGround`, which now feeds the stats line.
+  Stats come from `provingGround` so this page and the homepage cannot
+  drift apart. Copy lives in lib/content.ts.
 */
-
-/*
-  Derived from `provingGround`, not hand-copied.
-
-  These four were a literal array here, and they had already drifted from
-  lib/content.ts: "running a business" against "running the business", and
-  "4,900+ service visits" with the "since 2023" dropped. That last one
-  matters. content.ts states plainly that the figures were verified against
-  Jobber for Mar 2023 to Oct 2026 and that "pre-2023 years are not in any
-  system, so nothing here counts them", so a bare "4,900+ service visits"
-  beside "8 yrs running the business" reads as eight years of visits and
-  claims more than was checked.
-
-  The caption below drifted the same way, keeping an em dash that the source
-  no longer has. One array, one source, and the next edit to content.ts
-  reaches this page too. Same reasoning as the comment in ProofStrip.
-*/
-const STATS = provingGround.stats.map((s) => `${s.value} ${s.label}`);
 
 const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
   {
@@ -79,75 +54,48 @@ const SOCIALS: { label: string; href: string; icon: React.ReactNode }[] = [
 
 export default function FounderNote() {
   return (
-    <section id="founder" className="relative overflow-hidden border-t border-line bg-base pt-16 pb-20 md:pt-24 md:pb-24">
-      {/* Live "harbor water" — fills to the real Portland tide level. Pinned
-          to a fixed-height strip at the bottom (not a % of the whole
-          section) so it stays clear of copy no matter how long the note
-          and bio get. */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-48 overflow-hidden md:h-56">
-        <TideLevel />
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-signal/[0.06] blur-[130px]"
-      />
-      <div className="relative z-10 mx-auto max-w-2xl px-6">
-                  <figure className="flex flex-col items-center text-center">
-            {/* The real photograph, not the wordmark.
+    <section id="founder" className="border-b border-[var(--cp-line)] pb-16 pt-10 md:pb-20 md:pt-14">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid items-start gap-10 lg:grid-cols-[1.3fr_1fr]">
+          <div>
+            <p className="m-0 text-[13px] font-medium text-[color:var(--cp-faint)]">About</p>
+            <h1 className="display m-0 mt-2 max-w-[18ch] text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-[2.6rem]">
+              {founderNote.headline}
+            </h1>
+            <p className="m-0 mt-4 max-w-[36em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
+              {founderNote.headlineFollow}
+            </p>
 
-                This slot held a big "M Studio" lockup with a note explaining
-                there was deliberately no photo. On a page whose whole argument
-                is "a person who ran a service business built this", a logo was
-                the one thing that could not make that argument. A face can.
+            <ul className="m-0 mt-8 grid max-w-xl list-none grid-cols-2 gap-3 p-0 sm:grid-cols-4">
+              {provingGround.stats.map((s) => (
+                <li key={s.label} className="cp-tile !rounded-xl px-4 py-3">
+                  <span className="block font-display text-xl font-semibold text-[color:var(--cp-ink)]">{s.value}</span>
+                  <span className="mt-0.5 block text-[12.5px] leading-snug text-[color:var(--cp-muted)]">{s.label}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="m-0 mt-2 text-[12.5px] text-[color:var(--cp-faint)]">
+              The Maine Cleaning Co.&apos;s own numbers, from its invoices and visit records.
+            </p>
+          </div>
 
-                Sized well above its display box so it stays sharp on a 3x
-                screen, and `priority` because it is the first thing on /about
-                and lazy-loading it just means a grey hole on arrival. */}
-            <div className="relative inline-block">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -inset-4 rounded-full opacity-70 blur-2xl"
-                style={{
-                  background:
-                    "radial-gradient(closest-side, color-mix(in srgb, var(--color-signal) 22%, transparent), transparent)",
-                }}
-              />
+          <figure className="m-0 w-full max-w-sm lg:justify-self-end">
+            <div className="cp-tile overflow-hidden !rounded-2xl p-2">
               <Image
                 src="/meg.webp"
-                alt="Meg, founder of M Studio"
+                alt="Megan Small"
                 width={1047}
                 height={1290}
                 priority
-                sizes="(max-width: 640px) 10rem, 12rem"
-                className="relative h-40 w-40 rounded-full object-cover object-top ring-1 ring-line sm:h-48 sm:w-48"
+                sizes="(max-width: 1024px) 90vw, 420px"
+                className="aspect-square w-full rounded-xl object-cover object-top"
               />
             </div>
-            <figcaption className="mt-7 w-full">
-              {/* --color-faint is tuned to land just over 4.5:1 at full
-                  strength, so any alpha modifier on it fails — these were
-                  3.53:1 on cream. Same fix already applied in Footer and
-                  Contact; /about was never in the audit's page list. */}
-              <p className="text-sm text-muted">{provingGround.label}</p>
-
-              {/* Operating stats — the proof, not a CV — plain dot-separated
-                  footnote so the wordmark stays the visual lead */}
-              <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
-                {STATS.map((stat, i) => (
-                  <li key={stat} className="flex items-center gap-2">
-                    {i > 0 && (
-                      <span aria-hidden="true" className="text-faint">
-                        ·
-                      </span>
-                    )}
-                    <span className="whitespace-nowrap text-xs leading-none text-faint">
-                      {stat}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Socials — swap the LinkedIn URL in SOCIALS above */}
-              <div className="mt-4 flex items-center justify-center gap-3">
+            <figcaption className="mt-3 flex items-center justify-between gap-3">
+              <span className="text-[14px] text-[color:var(--cp-soft)]">
+                <span className="font-semibold text-[color:var(--cp-ink)]">Meg Small</span>, North Waterboro, Maine
+              </span>
+              <span className="flex gap-2">
                 {SOCIALS.map((s) => (
                   <a
                     key={s.label}
@@ -156,122 +104,54 @@ export default function FounderNote() {
                     rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                     aria-label={s.label}
                     title={s.label}
-                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-signal/50 hover:text-signal active:scale-95"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--cp-hairline)] text-[color:var(--cp-soft)] hover:border-[color:var(--cp-violet)] hover:text-[color:var(--cp-violet-ink)]"
                   >
                     {s.icon}
                   </a>
                 ))}
-              </div>
+              </span>
             </figcaption>
           </figure>
+        </div>
 
-        {/* The mission — the "why this exists" story. No signature: this
-            reads as a philosophy, not a personal letter. */}
-                  <div className="mt-10 flex flex-col items-start text-left">
-            <h1 className="display text-[2rem] text-balance text-ink sm:text-4xl">
-              {founderNote.headline}
-            </h1>
-            <p className="mt-1 text-lg font-medium text-ink sm:text-xl">
-              {founderNote.headlineFollow}
-            </p>
-            <div className="mt-6 max-w-[62ch] space-y-5">
-              {founderNote.paragraphs.map((para, i) => (
-                <p
-                  key={i}
-                  className="[font-family:var(--font-serif)] text-[1.0625rem] leading-[1.7] text-ink"
-                >
-                  {para}
-                </p>
-              ))}
-            </div>
+        <div className="mt-16 grid gap-10 border-t border-[var(--cp-line)] pt-12 lg:grid-cols-[1fr_2fr]">
+          <div>
+            <p className="m-0 text-[13px] font-medium text-[color:var(--cp-faint)]">{founderBio.kicker}</p>
+            <h2 className="display m-0 mt-2 text-2xl text-[color:var(--cp-ink)] sm:text-3xl">{founderBio.heading}</h2>
           </div>
-
-        {/* A "What we build" row of six chips sat here — AI Workflows,
-            Custom Software, Internal Tools, Automation, Dashboards,
-            Operations Systems. Services on the homepage already says all of
-            it, in more detail, and this is the page about the person. */}
-
-        {/* The proof — visually distinct from the belief above (its own
-            kicker + headline weight) so it reads as stepping into the
-            conversation, not a continuation of the pitch. Company name is
-            a footnote detail, not the headline. */}
-                  <div className="mt-16 flex flex-col items-start border-t border-line pt-10 text-left">
-            <p className="text-xs font-medium text-signal">
-              {founderBio.kicker}
-            </p>
-            <h2 className="display text-2xl text-ink sm:text-3xl">
-              {founderBio.heading}
-            </h2>
-            <div className="mt-6 max-w-[62ch] space-y-4">
+          <div className="max-w-[64ch]">
+            <div className="[&>p]:m-0 [&>p+p]:mt-4">
               {founderBio.paragraphs.map((para, i) => (
-                <p
-                  key={i}
-                  className="[font-family:var(--font-serif)] text-[1.0625rem] leading-[1.7] text-ink"
-                >
+                <p key={i} className="text-[1.0625rem] leading-[1.7] text-[color:var(--cp-soft)]">
                   {para}
                 </p>
               ))}
             </div>
-            <p className="mt-5 max-w-[62ch] text-sm leading-relaxed text-muted">
-              {founderBio.detail}
-            </p>
-            {/*
-              This was the only use of Caveat — a whole webfont for one line.
-              Dropped rather than kept, since the type system is now two
-              families plus mono for data.
+            <p className="m-0 mt-5 font-semibold text-[color:var(--cp-ink)]">{founderBio.signature}</p>
 
-              It is deliberately NOT a hand-drawn SVG path: an approximated
-              signature reads as a scribble, which is worse than no signature
-              at all. Set as a sign-off instead, honestly.
-
-              TODO(Meg): if you want your real signature here, scan it, trace
-              it to a single-path SVG, drop it in /public, and swap this <p>
-              for an <Image> or inline <svg> with aria-label="Megan".
-            */}
-            <p className="display mt-6 text-2xl italic text-signal">
-              {founderBio.signature}
-            </p>
+            <div className="mt-8 border-l-2 border-[color:var(--cp-violet)] pl-4">
+              {founderPhilosophy.lines.map((line) => (
+                <p key={line} className="m-0 text-[1rem] leading-relaxed text-[color:var(--cp-ink)]">
+                  {line}
+                </p>
+              ))}
+            </div>
           </div>
+        </div>
 
-        {/* Philosophy — two lines. It used to get its own kicker, its own
-            border-top and its own block, which is a lot of furniture for one
-            sentence and a half. It rides quietly under the signature now. */}
-                  <div className="mt-12 flex flex-col items-center gap-1.5 text-center">
-            {founderPhilosophy.lines.map((line) => (
-              <p
-                key={line}
-                className="[font-family:var(--font-serif)] text-[1rem] italic leading-relaxed text-muted"
-              >
-                {line}
-              </p>
-            ))}
+        <div className="mt-16 flex flex-col gap-4 rounded-2xl border border-[var(--cp-hairline)] bg-[color:var(--cp-fill)] p-6 sm:flex-row sm:items-center sm:justify-between md:p-8">
+          <div>
+            <h2 className="display m-0 text-xl text-[color:var(--cp-ink)] sm:text-2xl">{founderCta.headline}</h2>
+            <p className="m-0 mt-1.5 max-w-xl text-[15px] leading-relaxed text-[color:var(--cp-muted)]">{founderCta.body}</p>
           </div>
-
-        {/* CTA — closes the arc before handing off into Services below. */}
-                  <div className="mt-14 flex flex-col items-center text-center">
-            <h2 className="display text-2xl text-ink sm:text-3xl">
-              {founderCta.headline}
-            </h2>
-            <p className="mt-3 max-w-md text-[1rem] leading-relaxed text-muted">
-              {founderCta.body}
-            </p>
-            <Link
-                href="/#contact"
-                className="group mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97]"
-              >
-                {founderCta.buttonLabel}
-                <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">
-                  →
-                </span>
-              </Link>
-          </div>
-
-        {/* Quiet key down by the water it labels */}
-        <div className="mt-12 flex justify-center">
-          <TideKey />
+          <Link
+            href="/#contact"
+            className="cp-cta inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl px-5 text-[15px] font-semibold text-white no-underline"
+          >
+            {founderCta.buttonLabel}
+          </Link>
         </div>
       </div>
     </section>
   );
 }
-

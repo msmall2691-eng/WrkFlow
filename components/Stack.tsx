@@ -14,7 +14,7 @@ import { stackColumns } from "@/lib/content";
 export default function Stack() {
   return (
     <section id="stack" className="relative border-t border-line py-12 md:py-14">
-      <div className="relative mx-auto max-w-5xl px-6">
+      <div className="relative mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">
                       <h2 className="display text-lg text-ink sm:text-xl">
               Boring, proven tools. Nothing you&apos;ll struggle to hire for later.

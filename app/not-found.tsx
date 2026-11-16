@@ -1,43 +1,36 @@
 import Link from "next/link";
-import Logo from "@/components/Logo";
+import PanelHeader from "@/components/panel/PanelHeader";
 
+/* 404, in the site's own frame (Nov 16 2026 redesign): the normal header so
+   nobody is stranded, a plain message, and the two places most people want.
+   The glow and the serif headline went with the rest of the decoration. */
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 text-center">
-      {/* Soft accent glow */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-signal/10 blur-[120px]"
-      />
-
-      <div className="relative">
-        <Link href="/" aria-label="M Studio — home" className="inline-block">
-          <Logo tag tone="light" />
-        </Link>
-
-        <h1 className="display-serif mt-12 text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
-          This link came loose.
+    <div className="cp min-h-[100svh]">
+      <PanelHeader />
+      <main className="mx-auto max-w-6xl px-6 pb-24 pt-16">
+        <p className="m-0 text-[13px] font-medium text-[color:var(--cp-faint)]">Page not found</p>
+        <h1 className="display m-0 mt-2 text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl">
+          That page isn&apos;t here.
         </h1>
-        <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-muted">
-          The page you&apos;re after doesn&apos;t exist or has moved. Everything
-          else is still linked up where it should be.
+        <p className="m-0 mt-3 max-w-md text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
+          It may have moved. Everything on the site is one click from here.
         </p>
-
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <div className="mt-8 flex flex-wrap items-center gap-4">
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+            className="cp-cta inline-flex min-h-11 items-center rounded-xl px-5 text-[15px] font-semibold text-white no-underline"
           >
-            Back home →
+            Go to the homepage
           </Link>
           <Link
             href="/catalog"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-7 py-3.5 text-sm font-medium text-muted transition-colors hover:border-signal/60 hover:text-ink"
+            className="inline-flex min-h-11 items-center text-[15px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:underline"
           >
-            Browse the marketplace
+            See everything and every price
           </Link>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

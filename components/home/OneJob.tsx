@@ -165,18 +165,12 @@ export default function OneJob() {
             className="group inline-flex items-center py-1 text-[color:var(--cp-violet-ink)] no-underline transition-opacity duration-150 hover:opacity-80"
           >
             How it was built{" "}
-            <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0">
-              →
-            </span>
           </Link>
           <Link
             href="/brightbase"
             className="group inline-flex items-center py-1 text-[color:var(--cp-violet-ink)] no-underline transition-opacity duration-150 hover:opacity-80"
           >
             Inside BrightBase{" "}
-            <span aria-hidden="true" className="inline-block transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0">
-              →
-            </span>
           </Link>
           {STUDY.url ? (
             <a

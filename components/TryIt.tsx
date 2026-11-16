@@ -24,7 +24,7 @@ export default function TryIt() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-3xl">
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            This is the kind of thing I build into a site.
+            This is the kind of thing that goes into a site.
           </h2>
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
             A live quote, worked out in the browser while the customer is still
@@ -45,7 +45,7 @@ export default function TryIt() {
             href="/tools"
             className="text-signal underline underline-offset-2 transition-opacity hover:opacity-80"
           >
-            the tools page →
+            the tools page
           </Link>
         </p>
       </div>

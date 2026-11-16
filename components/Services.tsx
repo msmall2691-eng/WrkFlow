@@ -137,7 +137,6 @@ export default function Services() {
                   className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-signal transition-colors hover:text-ink"
                 >
                   See an example
-                  <span aria-hidden="true">→</span>
                 </Link>
               </div>
 

@@ -111,10 +111,9 @@ export default function Pricing() {
               </ul>
               <OfferLink
                 offer="custom"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-signal px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.98]"
+                className="cp-cta mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl px-6 text-[15px] font-semibold text-white"
               >
                 Talk through your project
-                <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
 
@@ -134,10 +133,9 @@ export default function Pricing() {
               </p>
               <OfferLink
                 offer="care"
-                className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full border border-signal/50 px-6 py-3 text-sm font-semibold text-signal transition-colors hover:bg-signal/10"
+                className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[color:var(--cp-ink)] px-6 text-[15px] font-semibold text-[color:var(--cp-on-ink)] hover:opacity-90"
               >
                 Keep it running
-                <span aria-hidden="true">→</span>
               </OfferLink>
             </article>
         </div>
@@ -170,7 +168,6 @@ export default function Pricing() {
               className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-ink"
             >
               Not ready to commit? Book a free 15-min call
-              <span aria-hidden="true">→</span>
             </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
@@ -192,7 +189,7 @@ export default function Pricing() {
             lib/content.ts (testimonial.quote). Never ship a fabricated one. */}
         {testimonial.quote && (
                       <figure className="mt-8 rounded-2xl border border-gold/30 bg-gold/[0.05] p-6">
-              <blockquote className="[font-family:var(--font-serif)] text-lg leading-relaxed text-ink">
+              <blockquote className="text-lg leading-relaxed text-ink">
                 &ldquo;{testimonial.quote}&rdquo;
               </blockquote>
               <figcaption className="mt-3 text-xs text-faint">
