@@ -5,8 +5,6 @@ import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import CatalogBrowser from "@/components/CatalogBrowser";
-import LiveStrip from "@/components/LiveStrip";
-import WhatConnects from "@/components/home/WhatConnects";
 import Pricing from "@/components/Pricing";
 import Contact from "@/components/Contact";
 import { catalog, categories } from "@/lib/catalog";
@@ -41,19 +39,12 @@ export default function CatalogPage() {
               Catalog · {count} things to use, buy or have built
             </p>
             <h1 className="display m-0 mt-2 max-w-3xl text-[1.85rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl">
-              Websites, apps and tools for small businesses.
+              What you can get, and what it costs.
             </h1>
             <p className="mt-3 max-w-2xl text-[15.5px] leading-relaxed text-[color:var(--cp-muted)]">
-              Try a live demo, buy something ready-made, or have it built around
-              how you work. Every picture here is a real screen.
+              Fixed prices where there is one. Everything else gets a written
+              quote within a day, free.
             </p>
-
-            <h2 className="m-0 mt-9 text-[13px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
-              Try it live
-            </h2>
-            <div className="mt-3">
-              <LiveStrip id="live" />
-            </div>
           </div>
         </section>
 
@@ -62,14 +53,18 @@ export default function CatalogPage() {
             <Suspense fallback={<StaticList />}>
               <CatalogBrowser />
             </Suspense>
+            <p className="m-0 mt-10 text-[12.5px] text-[color:var(--cp-faint)]">
+              The online store, booking and directory demos use invented businesses
+              so you can click around. What they do is real.
+            </p>
           </div>
         </section>
 
-        {/* Moved here from the homepage and /services when those were
-            consolidated (Nov 15 2026): the integrations evidence belongs
-            beside the integrations shelf, and pricing and the FAQ beside
-            the things they price. */}
-        <WhatConnects />
+        {/* Pricing and the FAQ moved here from /services (Nov 15 2026).
+            The Try it live strip and the integrations wall were cut after
+            the buyer review: demos-first read as fake proof, and the wall
+            was long. The integrations still show on each card ("Works
+            with ..."), and WhatConnects lives on in the case study data. */}
         <Pricing />
 
         {/* The form, so "Ask about this", the pricing CTAs and "Don't see

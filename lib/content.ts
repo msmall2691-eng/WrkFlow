@@ -502,7 +502,7 @@ export const work: WorkItem[] = [
     blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "12 overlapping tools, now one system",
-    status: "In daily production since 2026",
+    status: "In daily production",
     // A real capture of the app on demo data (a fictional company), see lib/brightbase.ts.
     shot: "/shots/brightbase/home-dark.webp",
     page: "/brightbase",
@@ -707,8 +707,10 @@ export const caseStudies: CaseStudy[] = [
     // counted in the BrightBase repo. Business financials stay off the site.
     results: [
       { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
-      { value: "4,000+", label: "automated checks run before any change goes live" },
-      { value: "Daily", label: "in use by the office and field crews since 2026" },
+      /* "4,000+ automated checks" was true (4,028 tests) and cut on Nov 15:
+         a buyer review read it as noise or made up. Kept to what an owner
+         cares about. */
+      { value: "Daily", label: "in use by the office and the field crews" },
     ],
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",

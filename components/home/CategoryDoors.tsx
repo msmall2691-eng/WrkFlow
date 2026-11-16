@@ -16,7 +16,12 @@ import { categories, categoryCount } from "@/lib/catalog";
   and the catalog, not a thing somebody arrives needing.
 */
 
-const doors = categories.filter((c) => c.id !== "tools");
+/* Four doors, the four things buyers ask for most (Meg's call, and the
+   buyer review agreed): websites, quotes and booking, rental hosts, and
+   integrations/data. Apps, AI and tools live in the catalog. */
+const doors = (["websites", "booking", "rentals", "connect"] as const).map(
+  (id) => categories.find((c) => c.id === id)!,
+);
 
 export default function CategoryDoors() {
   return (
@@ -32,11 +37,10 @@ export default function CategoryDoors() {
           What do you need?
         </h2>
         <p className="mt-3 max-w-2xl text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-          Pick the one that sounds like your week. Each opens the matching shelf
-          of the catalog, with prices, live examples and real screens.
+          Prices and real examples for each are in the catalog.
         </p>
 
-        <ul className="m-0 mt-10 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="m-0 mt-8 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4">
           {doors.map((c) => {
             const n = categoryCount(c.id);
             return (
@@ -51,7 +55,7 @@ export default function CategoryDoors() {
                       src={c.image}
                       alt=""
                       fill
-                      sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+                      sizes="(min-width: 1024px) 270px, (min-width: 640px) 50vw, 100vw"
                       className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                     />
                   </span>

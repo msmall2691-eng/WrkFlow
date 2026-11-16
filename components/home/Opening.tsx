@@ -3,7 +3,16 @@ import WeatherLayer from "../WeatherLayer";
 import PanelStage from "../panel/PanelStage";
 import PanelHeader from "../panel/PanelHeader";
 import Link from "next/link";
-import LiveStrip from "../LiveStrip";
+import Image from "next/image";
+import { smallProjects, welcomeBook } from "@/lib/content";
+
+/* Three real, live sites, all built by Meg. The Remote Admin is a client;
+   the cleaning company and the rental are her own businesses, said so. */
+const proof = [
+  { name: "The Maine Cleaning Co.", what: "Booking site + the office system behind it", domain: "maineclean.co", href: "https://www.maineclean.co", image: "/shots/catalog/live-maineclean.webp" },
+  { name: "The Remote Admin", what: "Client site for an admin-services business", domain: "the-remote-admin.com", href: "https://www.the-remote-admin.com", image: "/shots/catalog/live-remote-admin.webp" },
+  { name: "Nash Construction", what: "Contractor site with a project portfolio", domain: "nashconstructionnh.com", href: "https://www.nashconstructionnh.com", image: "/shots/catalog/live-nash.webp" },
+];
 
 /*
   Opening — the first screen, and now only the first screen.
@@ -66,52 +75,103 @@ export default function Opening() {
         headline reads as a margin rather than as something missing.
       */}
       <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-10 px-6 pb-14 pt-10 lg:pb-16" id="top">
-        <div className="flex max-w-3xl flex-col gap-5">
-          <span className="text-[14px] text-[color:var(--cp-soft)]">
-            Southern Maine · clients anywhere
-          </span>
-          <h1 className="m-0 font-display text-[clamp(2.6rem,5.2vw,4.4rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
-            Software that runs <span className="cp-grad">real businesses.</span>
-          </h1>
-          <p className="m-0 max-w-[32em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-            Websites, booking, apps, integrations and AI for small businesses.
-            Built to bring work in, and to cut the manual parts out.
-          </p>
-          <div className="mt-1 flex flex-wrap gap-3">
-            <BookCall
-              where="hero"
-              className="cp-cta inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white no-underline transition-transform duration-150 hover:-translate-y-0.5"
-            >
-              Book a free 15-min call <span aria-hidden="true">→</span>
-            </BookCall>
-            {/*
-              Names what is actually down there, rather than "See the work".
-              The old button promised the work and landed on four one-line
-              rows of project names; this one promises one job told all the
-              way through, which is what #work now holds.
-            */}
-            <Link
-              href="/catalog"
-              className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-ink)]"
-            >
-              Browse everything
-            </Link>
-          </div>
-        </div>
-
         {/*
-          Nov 15 2026 (Meg): the Maine Cleaning Co. operating numbers used to
-          sit here. A stranger reading "$1M+ collected" as the first fact on
-          the page assumes the site sells cleaning. They still appear, in
-          context, in the worked example (#work) and the case study. The
-          first screen shows the work instead: six real things to open.
+          Nov 15 2026, late: rewritten after a buyer review (founderos
+          customer-proxy) read the old hero as a tech startup selling hype:
+          gradient "real businesses", no face, no phone, no prices, and the
+          first proof on the page was a row of invented demo businesses.
+          Now: what it is in plain words, who is behind it, how to reach
+          her, what things cost, and three REAL client sites as proof.
         */}
-        <div className="border-t border-[color:var(--cp-line)] pt-6">
-          <p className="m-0 text-[12px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
-            Try it live
-          </p>
-          <div className="mt-3">
-            <LiveStrip />
+        <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_1fr]">
+          <div className="flex flex-col gap-5">
+            <span className="text-[14px] text-[color:var(--cp-soft)]">
+              Southern Maine · clients anywhere
+            </span>
+            <h1 className="m-0 font-display text-[clamp(2.3rem,4.6vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-balance text-[color:var(--cp-ink)]">
+              Websites and office software for small service businesses.
+            </h1>
+            <p className="m-0 max-w-[30em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
+              Get found, get booked, and stop typing the same thing twice.
+              Built by the owner of an eight-year cleaning company that runs on it.
+            </p>
+
+            <div className="flex items-center gap-3">
+              <Image
+                src="/meg.webp"
+                alt="Megan Small"
+                width={56}
+                height={56}
+                className="h-14 w-14 rounded-full object-cover object-top"
+              />
+              <p className="m-0 text-[14px] leading-snug text-[color:var(--cp-soft)]">
+                <span className="font-semibold text-[color:var(--cp-ink)]">Meg Small</span>, North Waterboro, Maine
+                <br />
+                Call or text{" "}
+                <a href="tel:+12074329492" className="font-semibold text-[color:var(--cp-ink)] no-underline hover:underline">
+                  (207) 432-9492
+                </a>
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <BookCall
+                where="hero"
+                className="cp-cta inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white no-underline transition-transform duration-150 hover:-translate-y-0.5"
+              >
+                Book a free 15-min call
+              </BookCall>
+              <Link
+                href="/catalog"
+                className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-ink)]"
+              >
+                See what it costs
+              </Link>
+            </div>
+
+            {/* Real prices, each from its one source. */}
+            <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-1.5 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
+              <li>Fixes from <span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
+              <li>
+                <Link href="/welcome-book" className="inline-flex min-h-7 items-center no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                  Rental welcome book <span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
+                </Link>
+              </li>
+              <li>Site care <span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
+              <li>
+                <Link href="/turnover" className="inline-flex min-h-7 items-center no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                  Turnover Planner <span className="font-semibold text-[color:var(--cp-ink)]">free</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Proof: three real, live client sites. Not demos. */}
+          <div>
+            <p className="m-0 text-[12px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
+              Live sites, built and running
+            </p>
+            <ul className="m-0 mt-3 grid list-none gap-3 p-0">
+              {proof.map((p) => (
+                <li key={p.name}>
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cp-tile group flex items-center gap-4 overflow-hidden !rounded-xl p-2.5 pr-4 no-underline"
+                  >
+                    <span className="relative block aspect-[16/10] w-32 shrink-0 overflow-hidden rounded-md bg-[color:var(--cp-well)] sm:w-40">
+                      <Image unoptimized src={p.image} alt={`${p.name}, live site`} fill sizes="160px" className="object-cover object-top" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[14.5px] font-semibold text-[color:var(--cp-ink)]">{p.name}</span>
+                      <span className="block text-[12.5px] text-[color:var(--cp-muted)]">{p.what}</span>
+                      <span className="mt-1 block text-[12px] font-medium text-[color:var(--cp-violet-ink)]">{p.domain} ↗</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </main>

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { studioStats } from "@/lib/content";
 
 /*
   HowToStart — the last beat, and the one the old homepage skipped.
@@ -76,25 +75,9 @@ export default function HowToStart() {
           ))}
         </ol>
 
-        {/* The promises, from lib/content.ts. These are about the process,
-            not about results, which is why they are safe to show while every
-            client outcome field in the repo is still empty. */}
-        <dl className="mt-12 grid grid-cols-2 gap-4 border-t border-[color:var(--cp-line)] pt-10 lg:grid-cols-4">
-          {studioStats.map((s) => (
-            <div key={s.label} className="cp-tile px-4 py-3.5">
-              <dt className="sr-only">{s.label}</dt>
-              <dd className="m-0">
-                <span className="block font-display text-xl font-semibold text-[color:var(--cp-ink)]">
-                  {s.value}
-                </span>
-                <span className="mt-0.5 block text-[12.5px] leading-snug text-[color:var(--cp-faint)]">
-                  {s.label}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
-
+        {/* The 24 hrs / 3 / $0 / 100% tiles used to sit here and again in
+            Pricing on /catalog; the buyer review flagged the repeat. They
+            stay in one place, the pricing section. */}
         <p className="mt-8 text-[14.5px] text-[color:var(--cp-muted)]">
           Not ready to talk?{" "}
           <Link

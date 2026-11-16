@@ -981,14 +981,14 @@ test("the retired pages redirect into the catalog", async ({ page }) => {
   catalog says the businesses in them are invented. Followed through, so the
   link is proven rather than merely present.
 */
-test("the live row reaches all three demos and says they are invented", async ({ page }) => {
+test("the catalog reaches all three demos and says they are invented", async ({ page }) => {
   await page.goto("/catalog");
-  const live = page.locator("#live");
+  await expect(page.getByRole("navigation", { name: "Categories" })).toBeVisible();
   for (const href of ["/demo/shop", "/demo/studio", "/demo/directory"])
-    await expect(live.locator(`a[href="${href}"]`), `${href} should be in Try it live`).toHaveCount(1);
-  await expect(page.getByText(/demos are invented/i).first()).toBeVisible();
+    await expect(page.locator(`main a[href="${href}"]`).first(), `${href} should be linked`).toBeVisible();
+  await expect(page.getByText(/demos use invented businesses/i)).toBeVisible();
 
-  await live.locator('a[href="/demo/studio"]').click();
+  await page.locator('main a[href="/demo/studio"]').first().click();
   await expect(page).toHaveURL(/\/demo\/studio$/);
   await expect(page.getByTestId("service-signature")).toBeVisible();
 });
@@ -1017,7 +1017,7 @@ test("the homepage category doors route, and their counts are real", async ({ pa
   const doors = page.locator('section[aria-labelledby="needs-heading"]');
   await expect(doors).toHaveCount(1);
 
-  const shown = categories.filter((c) => c.id !== "tools");
+  const shown = categories.filter((c) => ["websites", "booking", "rentals", "connect"].includes(c.id));
   await expect(doors.locator("ul > li a")).toHaveCount(shown.length);
   for (const c of shown) {
     const door = doors.locator(`a[href="/catalog?c=${c.id}"]`);
@@ -1082,9 +1082,6 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
   const MUST_REACH = [
     "/turnover",
     "/welcome-book",
-    "/demo/shop",
-    "/demo/studio",
-    "/demo/directory",
     "/tools",
     "/catalog",
     "/work",
@@ -1146,7 +1143,7 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
   Verified both ways: adding an integration with an invented source fails
   naming it, and the rendered half fails if the section is unwired.
 */
-test("every integration shown is running in a named project", async ({ page }) => {
+test("every integration traces to a named project", async () => {
   /* Data first, so a bad entry fails with its own name rather than with
      "0 tiles found" on a page that rendered perfectly. */
   const unbacked: string[] = [];
@@ -1165,24 +1162,8 @@ test("every integration shown is running in a named project", async ({ page }) =
     "every integration should trace to a real record on a real project",
   ).toEqual([]);
 
-  /* And it reaches the page. textContent rather than innerText, matching
-     the ladder test: a name inside a clipped element still counts as the
-     page carrying it. */
-  /* Moved from the homepage to /catalog in the Nov 15 restructure. */
-  await page.goto("/catalog");
-  const section = page.locator("#connects");
-  await expect(section).toBeVisible();
-
-  const text = (await section.textContent()) ?? "";
-  const missing = integrations.filter((i) => !text.includes(i.name)).map((i) => i.name);
-  expect(missing, "every integration should render on /catalog").toEqual([]);
-
-  /* The attribution is the whole point: a tool name on its own is the wall
-     of logos this test exists to refuse. Assert the projects reach the page
-     too, not just the tool names. */
-  const projects = new Set(
-    integrations.flatMap((i) => i.proof.map((p) => resolveProof(p)?.title).filter(Boolean)),
-  );
-  for (const title of projects)
-    expect(text, `"${title}" should be named as where an integration runs`).toContain(title as string);
+  /* The page half of this test went with the section: the integrations
+     wall was cut from the site after the Nov 15 buyer review (too long,
+     and BrightBase already has its own "works with" section). The data
+     half above still guards that every integration traces to a project. */
 });
