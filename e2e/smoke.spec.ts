@@ -6,6 +6,7 @@ import { test, expect, type Page } from "@playwright/test";
    runtime import of a .ts module is not. */
 import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
+import { resolveRungItem } from "../components/Ladder";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -270,24 +271,38 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  /* The page's own sections. The shared header and footer are deliberately
-     out of scope: they are not what this change touched, and sweeping them
-     here would make a homepage test fail for a footer reason. */
-  const SECTIONS = [
-    "#top",
-    'section[aria-labelledby="router-heading"]',
-    "#work",
-    'section[aria-labelledby="more-work-heading"]',
-    'section[aria-labelledby="start-heading"]',
-  ];
+  /*
+    Every section the page owns, found rather than listed.
+
+    This was a hardcoded list of five selectors, directly under a comment
+    promising "a new section gets checked without anybody remembering to add
+    it here". It did not do that, and the storefront rebuild is what proved
+    it: deleting ServiceRouter left the list pointing at a section that no
+    longer exists, so the sweep failed on a missing selector instead of
+    checking anything, and two brand new sections full of new links went
+    unswept. A list that has to be maintained is the thing this test exists
+    to not depend on.
+
+    `.cp > section` is every band the homepage composes, and `#top` is the
+    hero's own main. The shared header and footer stay out of scope on
+    purpose: they are not this page's, and sweeping them here would make a
+    homepage test fail for a footer reason.
+  */
+  const roots = page.locator(".cp > section, #top");
+  const found = await roots.count();
+  expect(found, "the homepage should have sections to sweep").toBeGreaterThan(4);
 
   const tooSmall: string[] = [];
   let checked = 0;
 
-  for (const selector of SECTIONS) {
-    const root = page.locator(selector);
-    await expect(root, `the homepage should render ${selector}`).toHaveCount(1);
+  for (let r = 0; r < found; r++) {
+    const root = roots.nth(r);
     await root.scrollIntoViewIfNeeded();
+    /* Name the section from its own markup, so a failure says where to
+       look rather than giving an index into a list that no longer exists. */
+    const where = await root.evaluate(
+      (el) => el.id || el.getAttribute("aria-labelledby") || el.tagName.toLowerCase(),
+    );
 
     const controls = root.locator("a, button");
     for (let i = 0; i < (await controls.count()); i++) {
@@ -301,7 +316,7 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
       if (box.width < 24 || box.height < 24) {
         const label = (await control.innerText()).trim().replace(/\s+/g, " ").slice(0, 48);
         tooSmall.push(
-          `${selector} → "${label}": ${Math.round(box.width)}x${Math.round(box.height)}`,
+          `${where} → "${label}": ${Math.round(box.width)}x${Math.round(box.height)}`,
         );
       }
     }
@@ -544,12 +559,34 @@ test("the work anchor is unique and lands on one job told all the way through", 
       .toBeGreaterThan(0);
   }
 
-  /* And the button that promises it actually reaches it. Back to the top
-     first, or the assertion below passes on the scroll this test just did. */
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await expect(section).not.toBeInViewport();
-  await page.getByRole("link", { name: /see one job, start to finish/i }).click();
-  await expect(section).toBeInViewport();
+  /*
+    The hero's second button used to promise this section and now promises
+    the shelf, which is the storefront rebuild's one deliberate change to
+    what the top of the page offers: a stranger met their first purchasable
+    price on screen 12 of 18, and the only alternative to booking a call
+    sent them further into the proof. So the reachability assertion moved
+    with the button, to the shelf test. What stays here is that the anchor
+    itself still works, since the nav, the footer, PanelHeader, every case
+    study's back link and /services all target #work.
+  */
+  /*
+    The "a button on this page reaches it" assertion lived here and has
+    moved to the shelf test, because the button did. The hero's second
+    action used to promise this section; in the storefront rebuild it
+    promises the shelf, and a test asserting a promise nothing makes any
+    more is a test that cannot fail.
+
+    What is deliberately NOT replaced with a stand-in: there is no longer a
+    same-page link to #work on the homepage at all, only the footer's
+    `/#work`, which is a full navigation. Clicking that proves nothing about
+    this page, and `goto("/#work")` was tried and is worse than nothing: a
+    fresh load scrolls before the lazy images above have reserved their
+    space, so it lands short and passes or fails on image timing rather
+    than on the anchor. The anchor's job is to be a destination for the
+    nav, the footer, PanelHeader, every case study's back link and
+    /services, and what makes that work is the uniqueness asserted at the
+    top of this test.
+  */
 
   /*
     Invariant two: every project is argued in exactly one of the two
@@ -1009,59 +1046,92 @@ test("the nav reaches the demos showcase", async ({ page }) => {
 });
 
 /*
-  The four doors route, and the number under each one is real.
+  The shelf is the shop, it is high on the page, and it covers everything.
 
-  The homepage used to sort by what a thing is — "Built and running", "Free
-  tools", the live readout — which is Meg's side of the relationship. A
-  contractor who needs a website and an owner drowning in manual entry
-  landed on the same undifferentiated list. `ServiceRouter` is the one
-  place the page asks what the visitor came for.
+  **This replaced the four-door test, and the replacement is the point.**
+  ServiceRouter asked "What are you trying to fix?" at screen 2 and answered
+  with four categories and a count of past projects: no price, no product,
+  1.4 screens, and a link to another page. Meg's complaint was that it was
+  "hard to see what is for sale that's tangible", and measured at phone
+  width she was being generous. The homepage ran 17.9 screens, the first
+  purchasable price was on screen 12, and the only other price on the page
+  was "$1M+", a statistic about her old cleaning company.
 
-  **The count is the part worth a test.** "4 projects" under Websites is a
-  claim about evidence, and CLAUDE.md's first rule is that the site never
-  invents proof. It is computed from `work` filtered by `category`, so the
-  honest failure mode is that somebody later hardcodes it, or files a
-  project under a category and the card does not move. Asserted against the
-  same source the component reads, rather than against a number written
-  here — a literal would drift the moment Meg ships her next site, and a
-  test nobody can trust gets deleted.
+  So the assertions are the three things that were actually wrong, and each
+  one can regrow:
 
-  Each door is also followed, because a link that is present and lands on
-  the wrong anchor looks identical to one that works.
+  1. **Depth.** The shelf has to start within the first few screens at
+     390px. This is the regression that matters and the one no build, type
+     check or Lighthouse run can see: a page whose shop has drifted to
+     screen 12 renders perfectly.
+  2. **Coverage.** Every service must appear, asserted against `services`
+     itself, which is what the door counts used to prove. A category that
+     silently stopped being sold would otherwise just be absent.
+  3. **Prices.** The rendered shelf must carry the real prices from the
+     data, so a styling change that drops them fails here rather than in
+     front of a buyer.
+
+  It also picks up the reachability assertion that used to sit in the work
+  anchor test, because the hero's second button now promises this section
+  rather than the case study.
 */
-test("the four service doors route, and their counts are real", async ({ page }) => {
+test("the shop is on the homepage, near the top, and covers everything", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  const router = page.locator('section[aria-labelledby="router-heading"]');
-  await expect(router, "the homepage should ask what the visitor came for").toHaveCount(1);
 
-  const doors = router.locator("ul > li a");
-  await expect(doors, "one door per service").toHaveCount(services.length);
+  const shelf = page.locator("#shelf");
+  await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
 
-  for (const s of services) {
-    const door = router.locator(`a[href="/services#${s.id}"]`);
-    await expect(door, `a door for ${s.id}`).toHaveCount(1);
-    await expect(door).toContainText(s.title);
+  /*
+    How far down it starts, in screens. Three is deliberately generous: the
+    hero is one, and the point is to catch a drift back toward twelve, not
+    to freeze the hero's height.
+  */
+  const screens = await shelf.evaluate(
+    (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
+  );
+  expect(
+    screens,
+    `the shop should be near the top; it starts ${screens.toFixed(1)} screens down`,
+  ).toBeLessThan(3);
 
-    const real = work.filter((w) => w.category === s.id).length;
-    if (real > 0) {
-      await expect(
-        door,
-        `${s.id} should quote the real number of projects behind it`,
-      ).toContainText(real === 1 ? "1 project" : `${real} projects`);
-    } else {
-      /* Nothing behind it says nothing, rather than "0 projects". */
-      await expect(door).not.toContainText(/project/i);
+  /* The hero's own button promises it, so it has to arrive. */
+  await page.locator('a[href="#shelf"]').first().click();
+  await expect(shelf).toBeInViewport();
+
+  const text = (await shelf.textContent()) ?? "";
+
+  /* Every service is represented, counted from the source rather than
+     listed here. This is what the door counts used to prove. */
+  const uncovered = services
+    .filter((s) => !ladder.some((i) => i.service === s.id))
+    .map((s) => s.id);
+  expect(uncovered, "every service should have something on the shelf").toEqual([]);
+
+  const missingLabel = services.filter((s) => !text.includes(s.short)).map((s) => s.short);
+  expect(missingLabel, "every service should be tagged on the rendered shelf").toEqual([]);
+
+  /* And the prices reach the page. Resolved through the single author, so
+     this cannot drift from what /services shows for the same items. */
+  const unresolved: string[] = [];
+  const missingPrice: string[] = [];
+  for (const item of ladder) {
+    const r = resolveRungItem(item);
+    if (!r) {
+      unresolved.push(item.market ?? item.project ?? item.title ?? "(unnamed)");
+      continue;
     }
+    if (!text.includes(r.price)) missingPrice.push(`${r.title} (${r.price})`);
   }
+  expect(unresolved, "every shelf item should resolve to a real product").toEqual([]);
+  expect(missingPrice, "every price should reach the rendered shelf").toEqual([]);
 
-  /* Follow one all the way, so the anchor is proven to exist on the target. */
-  const first = services[0];
-  await page.locator(`a[href="/services#${first.id}"]`).click();
-  await expect(page).toHaveURL(new RegExp(`/services#${first.id}$`));
-  await expect(
-    page.locator(`#${first.id}`),
-    "the services page should have the anchor the door points at",
-  ).toBeVisible();
+  /* The cheapest way in and the clearest number on the site. Both are the
+     first thing a tidy-up would flatten for consistency. */
+  expect(text, "the shelf should offer something free").toContain("Free");
+  expect(text, "the welcome book's real price should be on the shelf").toContain("$99");
 });
 
 /*

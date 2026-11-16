@@ -51,7 +51,7 @@ export default function WhatConnects() {
     <section
       id="connects"
       aria-labelledby="connects-heading"
-      className="border-t border-[color:var(--cp-line)] py-16 md:py-20"
+      className="border-t border-[color:var(--cp-line)] py-12 md:py-16"
     >
       <div className="mx-auto max-w-6xl px-6">
         <h2
@@ -65,11 +65,11 @@ export default function WhatConnects() {
           list is a plan.
         </p>
 
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-8 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
           {integrations.map((i) => {
             const running = provenIn(i);
             return (
-              <li key={i.name} className="cp-tile flex min-w-0 flex-col p-5">
+              <li key={i.name} className="cp-tile flex min-w-0 flex-col p-3.5">
                 <h3 className="m-0 text-[15px] font-semibold text-[color:var(--cp-ink)]">
                   {i.name}
                 </h3>

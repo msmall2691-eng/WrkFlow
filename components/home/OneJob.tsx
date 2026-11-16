@@ -57,7 +57,7 @@ export default function OneJob() {
   const built = STUDY.built.filter((b) => b.shot);
 
   return (
-    <section id="work" className="relative border-t border-[color:var(--cp-line)] py-16 md:py-24">
+    <section id="work" className="relative border-t border-[color:var(--cp-line)] py-12 md:py-20">
       <div className="mx-auto max-w-6xl px-6">
         <p className="m-0 text-[12px] uppercase tracking-wider text-[color:var(--cp-faint)]">
           {STUDY.tag}
@@ -79,7 +79,7 @@ export default function OneJob() {
 
         {/* Beat 1 — what was wrong, in the words of the person it was wrong for. */}
         {STUDY.problem ? (
-          <figure className="mt-10 max-w-3xl border-l-2 border-[color:var(--cp-violet-line)] pl-5 sm:pl-7">
+          <figure className="mt-8 max-w-3xl border-l-2 border-[color:var(--cp-violet-line)] pl-5 sm:pl-7">
             <blockquote className="m-0 [font-family:var(--font-serif)] text-[1.0625rem] leading-relaxed text-[color:var(--cp-ink)] sm:text-[1.1875rem]">
               {STUDY.problem}
             </blockquote>
@@ -91,7 +91,7 @@ export default function OneJob() {
 
         {/* Beat 2 — what got built. Real captures; the argument is the screen. */}
         {built.length > 0 ? (
-          <div className="mt-14">
+          <div className="mt-10">
             <h3 className="text-[1.125rem] font-semibold text-[color:var(--cp-ink)]">
               What got built
             </h3>
@@ -125,7 +125,7 @@ export default function OneJob() {
 
         {/* Beat 3 — what changed. REAL numbers only; [] renders nothing. */}
         {STUDY.results.length > 0 ? (
-          <div className="mt-14 border-t border-[color:var(--cp-line)] pt-10">
+          <div className="mt-10 border-t border-[color:var(--cp-line)] pt-10">
             <h3 className="text-[1.125rem] font-semibold text-[color:var(--cp-ink)]">
               What changed
             </h3>
@@ -159,7 +159,7 @@ export default function OneJob() {
             24x24 minimum (WCAG 2.5.8) on a phone. As text they rendered 23px
             tall, which looks identical to a correct one and is the exact
             failure the tap-target test was written for. */}
-        <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-1 text-[15px] font-semibold">
+        <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-1 text-[15px] font-semibold">
           <Link
             href={`/work/${STUDY.slug}`}
             className="group inline-flex items-center py-1 text-[color:var(--cp-violet-ink)] no-underline transition-opacity duration-150 hover:opacity-80"

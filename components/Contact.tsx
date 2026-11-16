@@ -146,9 +146,15 @@ export default function Contact() {
                   The questionnaire walks you through it in about ten minutes, saved as
                   you go, nothing binding.
                 </p>
+                {/* `py-1.5` makes a 14px line a 28px tap target. Without it
+                    this renders 20px tall at 390px, under the 24px minimum
+                    (WCAG 2.5.8), and it is one of the two primary ways
+                    anybody starts a project. The homepage sweep missed it
+                    for months because it ran against a hardcoded list of
+                    sections that did not include this one. */}
                 <a
                   href="/intake"
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
+                  className="mt-3 inline-flex items-center gap-2 py-1.5 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
                 >
                   Start the questionnaire
                   <span aria-hidden="true">→</span>
@@ -186,9 +192,10 @@ export default function Contact() {
                   <span aria-hidden="true">↓</span>
                 </a>
               )}
+              {/* Same 24px minimum, same reason. See the note above. */}
               <BookCall
                 where="contact"
-                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
+                className="mt-5 inline-flex items-center gap-2 py-1.5 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
               >
                 Book a free 15-min call
                 <span aria-hidden="true">→</span>

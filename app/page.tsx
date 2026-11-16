@@ -1,86 +1,84 @@
 import Opening from "@/components/home/Opening";
-import ServiceRouter from "@/components/panel/ServiceRouter";
+import Shelf from "@/components/home/Shelf";
+import TryItNow from "@/components/home/TryItNow";
 import OneJob from "@/components/home/OneJob";
 import MoreWork from "@/components/home/MoreWork";
 import WhatConnects from "@/components/home/WhatConnects";
-import TryItNow from "@/components/home/TryItNow";
 import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 
 /*
-  Homepage — rebuilt from scratch (Meg, Nov 15 2026).
+  Homepage — a storefront (Meg, Nov 16 2026).
 
-  **What was here, and why it went.** V2 (Nov 1) put the whole site on one
-  screen as a control panel: a headline, a rotating window of four shipped
-  screens, a tile listing those same four projects by name, a tile of free
-  tools, and a live weather readout. Below it, three case-study cards named
-  three of the same projects again, with sentences copied verbatim from the
-  tile. The four-door service router landed between those two blocks and
-  made it worse, by putting a section in the middle of a repetition rather
-  than removing it.
+  **The brief, in her words:** "hard to see what is for sale that's
+  tangible", and then, asked to choose a shape, the full storefront rather
+  than a tidier portfolio.
 
-  Meg's verdict, which is the brief for this file: "I'm still not confident
-  sharing this, it's very redundant, I cannot see anything that would make
-  me want to have someone build something for me, and it all just looks
-  like it's all over the place."
+  **Measured on the live site at phone width before changing anything**, so
+  the decision rests on numbers rather than taste:
 
-  Measured before rewriting: The Remote Admin and linx each appeared three
-  times above the fold-and-a-half, and a visitor met four project names
-  three times before reaching a single sentence about what any of them
-  changed for anybody.
+    · the page ran 17.9 screens
+    · the first price for anything purchasable was on screen 12
+    · there were two prices on the whole page, and one of them, "$1M+", is
+      a statistic about her old cleaning company, not something on sale
+    · the one priced product was followed by the sentence "There are eight
+      more free tools on this site, and the rest of the products are priced
+      and ready", which is a page pointing at a shop instead of being one
 
-  **The page is now one argument, in the order it gets asked:**
+  The stock was never the problem. /services ran 20.6 screens with prices
+  at screens 3, 5 and 10; /marketplace, which holds most of the goods, ran
+  12.8 and is reached by nobody. Seventeen real offers existed, spread
+  across three long pages, none of them the page everybody sees.
 
-    Opening      who it is for, one way in, and the operating history that
-                 answers "has this person done this before"
-    ServiceRouter the four things on offer, as four doors — so somebody who
-                 is not a cleaning company finds themselves immediately,
-                 before the worked example
-    OneJob       id="work" — one project all the way through: what was
-                 wrong, what got built, what changed, where to look
-    MoreWork     everything the worked example does not cover, once each,
-                 plus the live readout
-    WhatConnects the integrations evidence, cut by tool rather than by
-                 project, because "will it work with what I already pay
-                 for" is not a question about a project
-    TryItNow     the finished things somebody can open or buy today: the
-                 three demos, the free planner and the welcome book. All of
-                 them were unreachable from this page before
-    HowToStart   what pressing send actually sets in motion
-    Contact      the form, so no lead depends on a second page
+  **So the order is the change.** Proof used to come first and product last,
+  which is backwards for a stranger: proof matters once somebody wants the
+  thing, not before.
+
+    Opening      who it is for, and one button to the shelf
+    Shelf        id="shelf" — the whole catalog, with prices, grouped by
+                 what it costs rather than by what it is
+    TryItNow     the three demos, which the shelf deliberately carries as
+                 one row and which have to stay individually reachable
+    OneJob       id="work" — one project told all the way through, which is
+                 now the evidence FOR the shelf rather than the main event
+    MoreWork     the rest of the work, once each
+    WhatConnects the tools these already talk to
+    HowToStart   what pressing send sets in motion
+    Contact      the form
     Footer
 
-  **The rule the rewrite is built on: nothing appears twice.** Every project
-  in `work` is rendered in exactly one place on this page, and
-  e2e/smoke.spec.ts asserts it, because the repetition was editorial rather
-  than structural and editorial problems grow back.
+  **ServiceRouter is gone from this page, and that is the one real
+  deletion.** It asked "What are you trying to fix?" and answered with four
+  categories and a count of past projects. The question is good and the
+  answer was a table of contents in front of a shop: no price, no product,
+  1.4 screens, and a link to another page. Every item on the shelf now
+  carries its service as a tag, so the four categories are still readable
+  here, and /services still argues them in full with the pain, the outcome
+  and the same ladder. What the router uniquely had, the project counts, is
+  kept honest in the test that replaced its own: the shelf must cover all
+  four services, asserted against `services` itself.
 
-  The doors come BEFORE the worked example deliberately. The example is a
-  cleaning company, and a contractor or an admin firm reading it first has
-  to work out for themselves whether any of it applies to them. The doors
-  answer that in four words each, then the example shows what the work
-  actually looks like.
-
-  Everything deeper still has its own page: /work/[slug], /brightbase,
-  /tools, /services, /about, /demo. The panel header links each, and ⌘K
-  reaches all of them.
+  **The rule the previous rebuild rested on still holds: nothing appears
+  twice.** TryItNow used to carry the demos, the turnover planner and the
+  welcome book; the shelf lists all of those with prices, so that section
+  shrank to the one thing the shelf cannot do, which is link each demo
+  individually. `e2e/smoke.spec.ts` asserts both halves.
 
   `.cp` scopes the V2 palette to this page and remaps the site's shared
   tokens, so Contact and Footer pick up the same colours without being
-  restyled one by one. Since Nov 14 that palette is Daylight by default —
-  cream, white cards, aurora as accent — with Harbor still reachable in ⌘K.
+  restyled one by one. Daylight by default, Harbor still in ⌘K.
 */
 export default function Home() {
   return (
     <div className="cp">
       <Opening />
-      <ServiceRouter />
+      <Shelf />
+      <TryItNow />
       <OneJob />
       <MoreWork />
       <WhatConnects />
-      <TryItNow />
       <HowToStart />
       <Contact />
       <Footer />

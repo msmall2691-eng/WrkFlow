@@ -51,7 +51,10 @@ export function resolveRungItem(item: LadderItem): Resolved | null {
   if (item.market) {
     const m = marketItems.find((x) => x.id === item.market);
     if (!m) return null;
-    return { title: m.name, price: m.price, body: m.tagline, href: "/marketplace" };
+    /* An explicit `href` wins, so a product with its own page sends people
+       there rather than to the marketplace index. Most market items have no
+       page of their own, and /marketplace is the honest fallback. */
+    return { title: m.name, price: m.price, body: m.tagline, href: item.href ?? "/marketplace" };
   }
 
   if (item.project) {
