@@ -9,6 +9,7 @@ import {
   categories,
   legacyShelf,
   statusLabels,
+  kindOf,
   type CatalogCategory,
   type CatalogItem,
   type CatalogLink,
@@ -63,9 +64,6 @@ export default function CatalogBrowser() {
   }
 
   const ready = catalog.filter((i) => i.status !== "workbench");
-  const coming = catalog.filter(
-    (i) => i.status === "workbench" && (active === "all" || i.categories.includes(active)),
-  );
 
   return (
     <div>
@@ -115,27 +113,9 @@ export default function CatalogBrowser() {
         })()
       )}
 
-      {coming.length > 0 && (
-        <section aria-labelledby="coming-heading" className="mt-14 border-t border-[color:var(--cp-line)] pt-10">
-          <h2 id="coming-heading" className="m-0 text-lg font-semibold text-[color:var(--cp-ink)]">
-            Coming next
-          </h2>
-          <p className="mt-1 text-[14px] text-[color:var(--cp-muted)]">
-            Ideas being considered, not finished products. Say you want one and it moves up the list.
-          </p>
-          <ul className="m-0 mt-5 list-none divide-y divide-[color:var(--cp-hairline)] rounded-xl border border-[color:var(--cp-hairline-strong)] p-0">
-            {coming.map((i) => (
-              <li key={i.id} className="flex flex-wrap items-center gap-x-6 gap-y-2 px-5 py-4">
-                <div className="min-w-0 flex-1">
-                  <p className="m-0 text-[14.5px] font-semibold text-[color:var(--cp-ink)]">{i.name}</p>
-                  <p className="m-0 mt-0.5 text-[13px] text-[color:var(--cp-muted)]">{i.outcome}</p>
-                </div>
-                <AskLink item={i} label="I want this" />
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      {/* "Coming next" (workbench ideas) was removed at Meg's ask on
+          Nov 15: "I don't like moving things up the list." The ideas stay
+          in lib/catalog.ts with status "workbench" and do not render. */}
     </div>
   );
 }
@@ -218,7 +198,10 @@ function TextLink({ link, strong }: { link: CatalogLink; strong?: boolean }) {
 function AskLink({ item, label, strong }: { item: CatalogItem; label: string; strong?: boolean }) {
   return (
     <Link
-      href={`/?offer=${item.offer}#contact`}
+      /* The form is on this page now, so stay here: requestOffer prefills it
+         and records ?offer= in the URL, the plain hash does the scroll. */
+      href="#contact"
+      data-offer={item.offer}
       onClick={() => {
         requestOffer(item.offer, `From the catalog: ${item.name}`);
         try {
@@ -245,6 +228,7 @@ function Card({ item }: { item: CatalogItem }) {
       {item.image && (
         <div className="relative aspect-[16/10] w-full overflow-hidden border-b border-[color:var(--cp-hairline)] bg-[color:var(--cp-well)]">
           <Image
+            unoptimized
             src={item.image}
             alt={`${item.name}, a real screen`}
             fill
@@ -254,8 +238,13 @@ function Card({ item }: { item: CatalogItem }) {
         </div>
       )}
       <div className="flex flex-1 flex-col p-4">
-        <p className="m-0 text-[11.5px] font-medium text-[color:var(--cp-faint)]" title={status.note}>
-          {status.label}
+        <p className="m-0 flex flex-wrap items-center gap-2">
+          <span className="rounded-md bg-[color:var(--cp-ink)] px-2 py-0.5 text-[11px] font-semibold text-[color:var(--cp-on-ink)]">
+            {kindOf[item.id] ?? "Service"}
+          </span>
+          <span className="text-[11.5px] text-[color:var(--cp-faint)]" title={status.note}>
+            {status.label}
+          </span>
         </p>
         <h3 className="m-0 mt-1 text-[15px] font-semibold leading-snug text-[color:var(--cp-ink)]">{item.name}</h3>
         <p className="m-0 mt-0.5 text-[13px] text-[color:var(--cp-soft)]">{item.price}</p>

@@ -84,7 +84,7 @@ export default function OneJob() {
               {STUDY.problem}
             </blockquote>
             <figcaption className="mt-3 text-[13px] text-[color:var(--cp-faint)]">
-              Megan Small, who was running the company at the time
+              Megan Small, owner, The Maine Cleaning Co.
             </figcaption>
           </figure>
         ) : null}

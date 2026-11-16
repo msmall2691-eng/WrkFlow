@@ -46,13 +46,13 @@ export default function Pricing() {
       <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-8 max-w-3xl">
           <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-            Pricing that fits where you&apos;re at.
+            How pricing works
           </h2>
           {/* main's newer framing, which now has to cover the small
               fixed-scope tier as well as the custom build. */}
           <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
-            Start with one useful improvement or a custom build. Scope and
-            price are agreed with you before any work begins.
+            Small jobs have a fixed price. Bigger builds get a written quote
+            first, and nothing starts until you agree to it.
           </p>
         </div>
 

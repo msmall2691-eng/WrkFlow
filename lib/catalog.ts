@@ -49,6 +49,54 @@ export type CatalogCategory =
 
 export type CatalogStatus = "try" | "buy" | "built" | "workbench";
 
+/*
+  What the thing IS, in buyer words (Meg, Nov 15: "emphasize whether it's a
+  plug-in or a web app ... but simplify it for people"). This is the label
+  a card leads with; `status` is secondary.
+*/
+export type CatalogKind =
+  | "Website"
+  | "Web app"
+  | "Add-on for your site"
+  | "Mobile web app"
+  | "Connection"
+  | "Service"
+  | "Free tool";
+
+export const kindOf: Record<string, CatalogKind> = {
+  "service-site": "Website",
+  "trades-site": "Website",
+  "firm-site": "Website",
+  "brand-kit": "Service",
+  "site-updates": "Service",
+  storefront: "Website",
+  "quote-widget": "Add-on for your site",
+  booking: "Add-on for your site",
+  "online-quotes": "Web app",
+  recurring: "Web app",
+  flows: "Connection",
+  brightbase: "Web app",
+  "customer-portal": "Web app",
+  "crew-app": "Mobile web app",
+  invoicing: "Web app",
+  dashboard: "Web app",
+  "parent-portal": "Web app",
+  directory: "Website",
+  linx: "Web app",
+  "welcome-book": "Mobile web app",
+  "turnover-planner": "Free tool",
+  "turnover-sync": "Connection",
+  "one-integration": "Connection",
+  migration: "Service",
+  "crm-setup": "Service",
+  "instant-estimate": "Add-on for your site",
+  "ai-setup": "Service",
+  "free-tools": "Free tool",
+  "guest-replies": "Web app",
+  "direct-booking": "Website",
+  "meal-planner": "Web app",
+};
+
 export type CatalogLink = { label: string; href: string; external?: boolean };
 
 export type CatalogItem = {
@@ -71,15 +119,26 @@ export type CatalogItem = {
   chips?: CatalogLink[];
 };
 
-export const categories: { id: CatalogCategory; label: string; blurb: string }[] = [
-  { id: "websites", label: "Websites", blurb: "Sites that bring in work, built around one goal and yours to keep." },
-  { id: "booking", label: "Quotes & booking", blurb: "From first click to a booked job, without the back-and-forth." },
-  { id: "apps", label: "Apps & portals", blurb: "The software a business runs on, for the office, the crew and the customer." },
-  { id: "rentals", label: "Rental hosts", blurb: "Built by a team that cleans and hosts short-term rentals." },
-  { id: "connect", label: "Integrations & data", blurb: "Your tools talking to each other, and your data where it belongs." },
-  { id: "ai", label: "AI", blurb: "AI that drafts and waits for your OK. Nothing goes out on its own." },
-  { id: "tools", label: "Free tools", blurb: "Use them right now. No signup." },
+export const categories: {
+  id: CatalogCategory;
+  label: string;
+  blurb: string;
+  /** A real capture that stands for the category on the homepage doors. */
+  image: string;
+}[] = [
+  { id: "websites", label: "Websites", blurb: "A site people can hire you from. You own it.", image: "/shots/catalog/demo-shop.webp" },
+  { id: "booking", label: "Quotes & booking", blurb: "Quotes and bookings without the phone tag.", image: "/shots/catalog/demo-instant-quote.webp" },
+  { id: "apps", label: "Apps & portals", blurb: "The app your office, crew and customers use.", image: "/shots/catalog/demo-brightbase.webp" },
+  { id: "rentals", label: "Rental hosts", blurb: "Welcome books and turnover scheduling for short-term rentals.", image: "/shots/catalog/welcome-book.webp" },
+  { id: "connect", label: "Integrations & data", blurb: "Stop typing the same thing into two apps.", image: "/shots/catalog/demo-turnover-sync.webp" },
+  { id: "ai", label: "AI", blurb: "Drafts replies and quotes. You approve before anything sends.", image: "/shots/catalog/live-estimate.webp" },
+  { id: "tools", label: "Free tools", blurb: "Use them right now. No signup.", image: "/shots/catalog/tools-light.webp" },
 ];
+
+/** How many finished items sit in a category, computed, never typed. */
+export function categoryCount(id: CatalogCategory): number {
+  return catalog.filter((i) => i.status !== "workbench" && i.categories.includes(id)).length;
+}
 
 export const statusLabels: Record<CatalogStatus, { label: string; note: string }> = {
   try: { label: "Free", note: "Works on this site today." },
@@ -180,9 +239,9 @@ export const catalog: CatalogItem[] = [
     status: "buy",
     outcome: "Visitors price the job themselves and you get the lead by email.",
     price: marketPrice("quote-widget"),
-    primary: { label: "Try it free", href: "/tools?tool=quote" },
+    primary: { label: "Try the demo", href: "/demo/instant-quote" },
     offer: "quote",
-    image: `${S}/quote-tool.webp`,
+    image: `${S}/demo-instant-quote.webp`,
   },
   {
     id: "booking",
@@ -239,10 +298,11 @@ export const catalog: CatalogItem[] = [
     status: "built",
     outcome: "Leads, quotes, scheduling, crew, invoicing and payouts in one system.",
     price: "Book a demo",
-    primary: { label: "Look inside", href: "/brightbase" },
+    primary: { label: "Try the demo", href: "/demo/brightbase" },
+    proof: { label: "Look inside", href: "/brightbase" },
     offer: "brightbase",
     connects: ["Stripe", "Twilio", "Google Calendar"],
-    image: `${BB}/schedule.webp`,
+    image: `${S}/demo-brightbase.webp`,
   },
   {
     id: "customer-portal",
@@ -298,9 +358,10 @@ export const catalog: CatalogItem[] = [
     status: "built",
     outcome: "Families sign in with a code, a door tablet takes check-ins, staff run logs and attendance.",
     price: "Quoted to your program",
-    proof: { label: "Open the portal", href: "https://www.lacexplorers.online/portal", external: true },
+    primary: { label: "Try the demo", href: "/demo/family-portal" },
+    proof: { label: "The live one", href: "https://www.lacexplorers.online/portal", external: true },
     offer: "custom",
-    image: `${S}/live-portal.webp`,
+    image: `${S}/demo-family-portal.webp`,
   },
   {
     id: "directory",
@@ -357,10 +418,10 @@ export const catalog: CatalogItem[] = [
     status: "built",
     outcome: "New bookings land on your cleaner's schedule by themselves, with times and door codes.",
     price: "Quoted to your setup",
-    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    primary: { label: "Try the demo", href: "/demo/turnover-sync" },
     offer: "integration",
     connects: ["Airbnb", "Vrbo", "Google Calendar"],
-    image: `${BB}/turnovers.webp`,
+    image: `${S}/demo-turnover-sync.webp`,
   },
 
   // ── Integrations & data ─────────────────────────────────────────────────
@@ -491,3 +552,12 @@ export const liveDemoIds = [
   "welcome-book",
   "linx",
 ] as const;
+
+/*
+  Note on images: every capture used by the catalog, the homepage doors,
+  the live strip and /work is a pre-sized webp of 75KB or less, and those
+  components render it with `unoptimized`. Sending ~40 of them through the
+  Next image optimizer queued them behind each other on CI's runner and
+  timed out unrelated pages (PR #143); there is nothing left to optimize.
+  A new capture should be resized (~960px wide, webp) before it is added.
+*/

@@ -97,7 +97,6 @@ export const brightbase = {
 
   proof: [
     { value: "Daily", label: "in use by the office and crew at The Maine Cleaning Co." },
-    { value: "4,000+", label: "automated checks run before any change goes live" },
     { value: "3", label: "apps in one: office, crew phone and customer portal" },
   ],
 

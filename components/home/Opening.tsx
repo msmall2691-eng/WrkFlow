@@ -2,7 +2,19 @@ import BookCall from "../BookCall";
 import WeatherLayer from "../WeatherLayer";
 import PanelStage from "../panel/PanelStage";
 import PanelHeader from "../panel/PanelHeader";
-import { provingGround } from "@/lib/content";
+import Link from "next/link";
+import Image from "next/image";
+import { smallProjects, welcomeBook } from "@/lib/content";
+
+/* Three real, live builds. Nov 16 2026: Meg asked for stronger sites up top
+   and a look men in the trades would take seriously, so the script-font
+   admin site and the childcare site moved to /work. A contractor, a service
+   business that takes bookings and quotes online, and a working app. */
+const proof = [
+  { name: "Nash Construction", what: "Commercial general contractor", label: "nashconstructionnh.com", href: "https://www.nashconstructionnh.com", image: "/shots/catalog/live-nash.webp" },
+  { name: "The Maine Cleaning Co.", what: "Online booking and instant quotes", label: "maineclean.co", href: "https://maineclean.co", image: "/shots/catalog/live-maineclean.webp" },
+  { name: "linx", what: "Job marketplace app with payouts", label: "Live app", href: "https://linx-production-6edf.up.railway.app", image: "/shots/catalog/live-linx.webp" },
+];
 
 /*
   Opening — the first screen, and now only the first screen.
@@ -45,6 +57,7 @@ export default function Opening() {
           rotating product window that used to sit beside this is gone; the
           aurora is the only moving thing up here now. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span className="cp-grid" />
         <span className="cp-aurora cp-a1" />
         <span className="cp-aurora cp-a2" />
         <span className="cp-aurora cp-a3" />
@@ -65,59 +78,100 @@ export default function Opening() {
         headline reads as a margin rather than as something missing.
       */}
       <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-10 px-6 pb-14 pt-10 lg:pb-16" id="top">
-        <div className="flex max-w-3xl flex-col gap-5">
-          <span className="text-[14px] text-[color:var(--cp-soft)]">
-            Southern Maine · clients anywhere
-          </span>
-          <h1 className="m-0 font-display text-[clamp(2.6rem,5.2vw,4.4rem)] font-semibold leading-[0.96] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
-            Software that runs <span className="cp-grad">real businesses.</span>
-          </h1>
-          <p className="m-0 max-w-[32em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-            Websites, web apps and custom tools for small businesses. Built to
-            bring work in, and to cut the manual parts out.
-          </p>
-          <div className="mt-1 flex flex-wrap gap-3">
-            <BookCall
-              where="hero"
-              className="cp-cta inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white no-underline transition-transform duration-150 hover:-translate-y-0.5"
-            >
-              Book a free 15-min call <span aria-hidden="true">→</span>
-            </BookCall>
-            {/*
-              Names what is actually down there, rather than "See the work".
-              The old button promised the work and landed on four one-line
-              rows of project names; this one promises one job told all the
-              way through, which is what #work now holds.
-            */}
-            <a
-              href="#work"
-              className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-hairline-strong)]"
-            >
-              See one job, start to finish
-            </a>
-          </div>
-        </div>
+        {/*
+          Nov 15 2026, late: rewritten after a buyer review (founderos
+          customer-proxy) read the old hero as a tech startup selling hype:
+          gradient "real businesses", no face, no phone, no prices, and the
+          first proof on the page was a row of invented demo businesses.
+          Now: what it is in plain words, who is behind it, how to reach
+          her, what things cost, and three REAL client sites as proof.
+        */}
+        <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_1fr]">
+          <div className="flex flex-col gap-5">
+            <span className="text-[14px] text-[color:var(--cp-soft)]">
+              Southern Maine · clients anywhere
+            </span>
+            <h1 className="m-0 font-display text-[clamp(2.3rem,4.6vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-balance text-[color:var(--cp-ink)]">
+              Websites and software that bring in work.
+            </h1>
+            <p className="m-0 max-w-[30em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
+              For contractors, trades and service businesses. Sites, instant
+              quotes, online booking, and plug-ins for the site you already
+              have. Try any of it first.
+            </p>
 
-        {/* The proving ground, attributed. See the header note. */}
-        <div className="border-t border-[color:var(--cp-line)] pt-7">
-          <p className="m-0 text-[12px] uppercase tracking-wider text-[color:var(--cp-faint)]">
-            {provingGround.label}
-          </p>
-          <dl className="mt-5 grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
-            {provingGround.stats.map((s) => (
-              <div key={s.label}>
-                <dt className="sr-only">{s.label}</dt>
-                <dd className="m-0">
-                  <span className="block font-display text-2xl font-semibold text-[color:var(--cp-ink)] md:text-3xl">
-                    {s.value}
-                  </span>
-                  <span className="mt-1 block text-[13.5px] leading-snug text-[color:var(--cp-muted)]">
-                    {s.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+            <div className="flex items-center gap-3">
+              <Image
+                src="/meg.webp"
+                alt="Megan Small"
+                width={56}
+                height={56}
+                className="h-14 w-14 rounded-full object-cover object-top"
+              />
+              <p className="m-0 text-[14px] leading-snug text-[color:var(--cp-soft)]">
+                <span className="font-semibold text-[color:var(--cp-ink)]">Meg Small</span>, North Waterboro, Maine
+                <br />
+                Call or text{" "}
+                <a href="tel:+12074329492" className="font-semibold text-[color:var(--cp-ink)] no-underline hover:underline">
+                  (207) 432-9492
+                </a>
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <BookCall
+                where="hero"
+                className="cp-cta inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white no-underline transition-transform duration-150 hover:-translate-y-0.5"
+              >
+                Book a free 15-min call
+              </BookCall>
+
+            </div>
+
+            {/* Real prices, each from its one source. */}
+            <ul className="m-0 flex list-none flex-wrap items-center gap-x-5 gap-y-1 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
+              <li className="inline-flex min-h-7 items-center gap-1">Fixes from{" "}<span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
+              <li>
+                <Link href="/welcome-book" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                  Rental welcome book{" "}<span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
+                </Link>
+              </li>
+              <li className="inline-flex min-h-7 items-center gap-1">Site care{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
+              <li>
+                <Link href="/turnover" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                  Turnover Planner{" "}<span className="font-semibold text-[color:var(--cp-ink)]">free</span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Proof: three real, live client sites. Not demos. */}
+          <div>
+            <p className="m-0 text-[12px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
+              Recent work
+            </p>
+            <ul className="m-0 mt-3 grid list-none gap-3 p-0">
+              {proof.map((p) => (
+                <li key={p.name}>
+                  <a
+                    href={p.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cp-tile group flex items-center gap-4 overflow-hidden !rounded-xl p-2.5 pr-4 no-underline"
+                  >
+                    <span className="relative block aspect-[16/10] w-32 shrink-0 overflow-hidden rounded-md bg-[color:var(--cp-well)] sm:w-40">
+                      <Image unoptimized src={p.image} alt={`${p.name}, live site`} fill sizes="160px" className="object-cover object-top" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[14.5px] font-semibold text-[color:var(--cp-ink)]">{p.name}</span>
+                      <span className="block text-[12.5px] text-[color:var(--cp-muted)]">{p.what}</span>
+                      <span className="mt-1 block text-[12px] font-medium text-[color:var(--cp-violet-ink)]">{p.label} ↗</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </main>
     </PanelStage>

@@ -140,7 +140,7 @@ export default function Contact() {
               </p>
                           <div className="mt-8 rounded-xl border border-line bg-surface/40 p-5">
                 <p className="text-sm font-medium text-gold">
-                  Rather be asked than face a blank box?
+                  Prefer a few questions instead?
                 </p>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
                   The questionnaire walks you through it in about ten minutes, saved as

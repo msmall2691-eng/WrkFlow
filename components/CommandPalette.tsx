@@ -26,11 +26,11 @@ type Command = {
   command should still land somewhere real instead of doing nothing.
 */
 const ELSEWHERE: Record<string, string> = {
-  services: "/services",
-  pricing: "/services",
-  approach: "/services",
+  services: "/catalog",
+  pricing: "/catalog#pricing",
+  approach: "/about#approach",
   meg: "/about",
-  marketplace: "/marketplace",
+  marketplace: "/catalog",
 };
 
 function scrollToId(id: string) {
@@ -75,7 +75,18 @@ export default function CommandPalette() {
           window.location.href = "/tools";
         },
       },
-      { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
+      {
+        id: "work",
+        label: "Work: every project",
+        group: "Navigate",
+        keywords: "work showcase portfolio projects shipped",
+        /* Straight to /work, not go("work"): the homepage's #work is now one
+           worked example, and the full portfolio is its own page. */
+        run: () => {
+          close();
+          window.location.href = "/work";
+        },
+      },
       {
         id: "demos",
         label: "Demos",
@@ -85,7 +96,7 @@ export default function CommandPalette() {
           "demo demos examples storefront shop ecommerce booking appointments scheduling directory search filter try clickable sample",
         run: () => {
           close();
-          window.location.href = "/demo";
+          window.location.href = "/catalog";
         },
       },
       {
@@ -118,7 +129,7 @@ export default function CommandPalette() {
         keywords: "linx buy templates tools premade store shop products embed marketplace",
         run: () => {
           close();
-          window.location.href = "/marketplace";
+          window.location.href = "/catalog";
         },
       },
       /*

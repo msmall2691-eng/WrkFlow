@@ -207,7 +207,7 @@ export const services: Service[] = [
       "client": "The Remote Admin",
       "built": "A complete website for an administrative services business in New Hampshire.",
       "result": "Services, business details, and a clear way to get in touch.",
-      "shot": "/shots/remote-admin.png"
+      "shot": "/shots/remote-admin.webp"
     }
   },
   {
@@ -226,7 +226,7 @@ export const services: Service[] = [
       "client": "Instant Estimate",
       "built": "Reads an incoming request, drafts a quote, and queues a reply for approval.",
       "result": "Around twenty minutes of manual quoting per lead, handled before a person sees it.",
-      "shot": "/shots/instant-estimate.png"
+      "shot": "/shots/instant-estimate.webp"
     }
   },
   {
@@ -264,7 +264,7 @@ export const services: Service[] = [
       "client": "Vacation rental booking sync",
       "built": "Rental bookings appear on the cleaning schedule automatically, for turnover planning.",
       "result": "One less booking to enter by hand.",
-      "shot": "/shots/brightbase-crew-schedule.png"
+      "shot": "/shots/brightbase-crew-schedule.webp"
     }
   }
 ];
@@ -409,7 +409,7 @@ export const work: WorkItem[] = [
     stack: ["React", "Node", "Python · FastAPI", "Postgres", "Twilio", "Stripe"],
     url: "https://maineclean.co",
     live: true,
-    shot: "/shots/maineclean.png",
+    shot: "/shots/maineclean.webp",
   },
   {
     tier: "site",
@@ -431,7 +431,7 @@ export const work: WorkItem[] = [
     stack: ["Next.js", "Vercel"],
     url: "https://the-remote-admin.com",
     live: true,
-    shot: "/shots/remote-admin.png",
+    shot: "/shots/remote-admin.webp",
     client: true,
   },
   {
@@ -442,7 +442,7 @@ export const work: WorkItem[] = [
     blurb: "A construction company website with service pages, a project portfolio, and a consultation form.",
     stack: ["Next.js", "Vercel"],
     url: "https://nash-alpha.vercel.app/",
-    shot: "/shots/nash.jpg",
+    shot: "/shots/nash.webp",
   },
   /*
     Arrowhead Explorers — the public site and the parent portal behind it.
@@ -476,7 +476,7 @@ export const work: WorkItem[] = [
       "A nature-based childcare site with a private parent portal: families sign in with a code to see their child's day, a door kiosk takes QR badge check-ins, and staff run attendance, daily logs and photos.",
     stack: ["Next.js", "Supabase", "Vercel"],
     url: "https://www.lacexplorers.online",
-    shot: "/shots/arrowhead.png",
+    shot: "/shots/arrowhead.webp",
   },
   // Tier 2 — product we built
   {
@@ -491,7 +491,7 @@ export const work: WorkItem[] = [
     // stats, testimonials and contact details. linx is a real, launched
     // product. Swap `url` for a custom domain once one is attached.
     url: "https://linx-production-6edf.up.railway.app",
-    shot: "/shots/linx.png",
+    shot: "/shots/linx.webp",
   },
   // Tier 3 — private internal/client systems (no links)
   {
@@ -502,7 +502,7 @@ export const work: WorkItem[] = [
     blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "12 overlapping tools, now one system",
-    status: "In daily production since 2026",
+    status: "In daily production",
     // A real capture of the app on demo data (a fictional company), see lib/brightbase.ts.
     shot: "/shots/brightbase/home-dark.webp",
     page: "/brightbase",
@@ -516,7 +516,7 @@ export const work: WorkItem[] = [
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
     replaced: "A shared Google Calendar and text threads",
     status: "In daily production",
-    shot: "/shots/brightbase-crew-schedule.png",
+    shot: "/shots/brightbase-crew-schedule.webp",
   },
   {
     tier: "private",
@@ -527,7 +527,7 @@ export const work: WorkItem[] = [
     stack: ["Next.js", "Anthropic API", "Postgres"],
     replaced: "~20 min of manual quoting per lead",
     status: "Production, approval-gated",
-    shot: "/shots/instant-estimate.png",
+    shot: "/shots/instant-estimate.webp",
   },
 ];
 
@@ -655,7 +655,7 @@ export const caseStudies: CaseStudy[] = [
     outcome: "Customers can get an estimate and book online.",
     url: "https://maineclean.co",
     hero: {
-      src: "/shots/maineclean.png",
+      src: "/shots/maineclean.webp",
       alt: "The maineclean.co home page: a cleaning company site with instant estimate and online booking.",
     },
     // Drafted from Meg's own cover-letter wording and approved by her (Oct 2026).
@@ -667,7 +667,7 @@ export const caseStudies: CaseStudy[] = [
         label: "Marketing and booking site",
         body: "Marketing and booking site, wired straight into the back-office system that runs the company.",
         shot: {
-          src: "/shots/maineclean.png",
+          src: "/shots/maineclean.webp",
           alt: "The public site, with the quote request and booking flow.",
         },
       },
@@ -675,7 +675,7 @@ export const caseStudies: CaseStudy[] = [
         label: "Instant estimate",
         body: "Reads requests, drafts a quote, and queues a reply for approval.",
         shot: {
-          src: "/shots/instant-estimate.png",
+          src: "/shots/instant-estimate.webp",
           alt: "The instant estimate screen, showing a drafted quote awaiting approval.",
         },
       },
@@ -683,7 +683,7 @@ export const caseStudies: CaseStudy[] = [
         label: "Crew workspace",
         body: "A phone workspace for the crew, separate from the office: today's work, cleaning tips, availability, time off, paperwork and what each person is owed.",
         shot: {
-          src: "/shots/brightbase-crew-tools.png",
+          src: "/shots/brightbase-crew-tools.webp",
           alt: "The crew's Today screen with a cleaning tip, and the Me screen with availability, time off, paperwork and payouts. Names are blurred.",
         },
       },
@@ -691,7 +691,7 @@ export const caseStudies: CaseStudy[] = [
         label: "Turnover scheduling",
         body: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
         shot: {
-          src: "/shots/brightbase-crew-schedule.png",
+          src: "/shots/brightbase-crew-schedule.webp",
           alt: "The crew's phone view: an open turnover to request, and the month schedule. Addresses and pay are blurred.",
         },
       },
@@ -707,8 +707,10 @@ export const caseStudies: CaseStudy[] = [
     // counted in the BrightBase repo. Business financials stay off the site.
     results: [
       { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
-      { value: "4,000+", label: "automated checks run before any change goes live" },
-      { value: "Daily", label: "in use by the office and field crews since 2026" },
+      /* "4,000+ automated checks" was true (4,028 tests) and cut on Nov 15:
+         a buyer review read it as noise or made up. Kept to what an owner
+         cares about. */
+      { value: "Daily", label: "in use by the office and the field crews" },
     ],
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
     role: "Design and build, end to end: the public site, the back office behind it, and the integrations between them.",
@@ -730,7 +732,7 @@ export const caseStudies: CaseStudy[] = [
       "Hosts post a turnover, vetted local cleaners bid, and you pay when the job is done.",
     url: "https://linx-production-6edf.up.railway.app",
     hero: {
-      src: "/shots/linx.png",
+      src: "/shots/linx.webp",
       alt: "The linx marketplace: a cleaning marketplace for Southern Maine.",
     },
     problem: "", // TODO(Meg)
@@ -770,7 +772,7 @@ export const caseStudies: CaseStudy[] = [
       "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
     url: "https://the-remote-admin.com",
     hero: {
-      src: "/shots/remote-admin.png",
+      src: "/shots/remote-admin.webp",
       alt: "The the-remote-admin.com home page: a marketing site for an admin-services business.",
     },
     problem: "", // TODO(Meg)
@@ -779,7 +781,7 @@ export const caseStudies: CaseStudy[] = [
         label: "Designed, built and shipped",
         body: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
         shot: {
-          src: "/shots/remote-admin.png",
+          src: "/shots/remote-admin.webp",
           alt: "The Remote Admin home page.",
         },
       },
@@ -900,7 +902,7 @@ export const marketItems: MarketItem[] = [
     ],
     price: "Free",
     // A real capture of this site's own /tools page, calculator and all.
-    shot: "/shots/tools.png",
+    shot: "/shots/tools.webp",
   },
   {
     id: "quote-widget",
@@ -915,7 +917,7 @@ export const marketItems: MarketItem[] = [
       "One line of code to install. I set it up, you go live",
     ],
     price: "$150 setup + $15/mo",
-    shot: "/shots/instant-estimate.png",
+    shot: "/shots/instant-estimate.webp",
   },
   {
     id: "automation-pack",
@@ -945,7 +947,7 @@ export const marketItems: MarketItem[] = [
       "You own the code outright",
     ],
     price: "Quoted to your scope",
-    shot: "/shots/maineclean.png",
+    shot: "/shots/maineclean.webp",
     featured: true,
   },
   {
@@ -984,7 +986,7 @@ export const marketItems: MarketItem[] = [
     // The turnover scheduler running in daily production: the owner calendar
     // and the confirm step this card sells. Same capture the Work section
     // uses for "Turnover scheduling"; the address and pay are redacted in it.
-    shot: "/shots/brightbase-crew-schedule.png",
+    shot: "/shots/brightbase-crew-schedule.webp",
   },
 ];
 

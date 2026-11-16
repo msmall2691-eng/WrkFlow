@@ -29,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     {
+      url: `${SITE_URL}/work`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/catalog`,
       lastModified: now,
       changeFrequency: "weekly",
@@ -41,19 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${SITE_URL}/services`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
       url: `${SITE_URL}/tools`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/marketplace`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.8,
@@ -61,12 +55,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     /* The showcase only. Each demo it links to is `noindex`, because the
        businesses in them are invented and should not rank for anybody
        actually looking to buy a print or book a massage. */
-    {
-      url: `${SITE_URL}/demo`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.7,
-    },
     {
       url: `${SITE_URL}/welcome-book`,
       lastModified: now,

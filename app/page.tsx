@@ -1,15 +1,28 @@
 import Opening from "@/components/home/Opening";
-import ServiceRouter from "@/components/panel/ServiceRouter";
-import OneJob from "@/components/home/OneJob";
-import MoreWork from "@/components/home/MoreWork";
-import WhatConnects from "@/components/home/WhatConnects";
-import TryItNow from "@/components/home/TryItNow";
+import ProductsRow from "@/components/home/ProductsRow";
+import Reassure from "@/components/home/Reassure";
 import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 
 /*
+  Site restructure (Meg, Nov 15 2026, evening): "the pages none of it makes
+  any sense". Five pages (home, /services, /marketplace, /catalog, /demo)
+  each listed what is for sale, in different orders and words. Now:
+
+    Opening        headline, two ways in, and six live things to open
+    CategoryDoors  "What do you need?": six shelves of /catalog, real screens
+    (OneJob removed late Nov 15 at Meg's ask: the homepage should not
+     centre on the cleaning company. Its story is on /work/maine-cleaning-co.)
+    HowToStart     what pressing send sets in motion
+    Contact
+
+  MoreWork moved to /work (all projects), WhatConnects to /catalog (it is
+  integrations evidence, which is a catalog shelf), and TryItNow became the
+  live strip in Opening. /services, /marketplace and /demo redirect to
+  /catalog (next.config.ts). The notes below describe the earlier rebuild.
+
   Homepage — rebuilt from scratch (Meg, Nov 15 2026).
 
   **What was here, and why it went.** V2 (Nov 1) put the whole site on one
@@ -76,12 +89,9 @@ export default function Home() {
   return (
     <div className="cp">
       <Opening />
-      <ServiceRouter />
-      <OneJob />
-      <MoreWork />
-      <WhatConnects />
-      <TryItNow />
+      <ProductsRow />
       <HowToStart />
+      <Reassure />
       <Contact />
       <Footer />
       <CommandPalette />

@@ -65,7 +65,7 @@ export default function SelfScore() {
       <span ref={sentinel} aria-hidden="true" className="block h-px w-px" />
       {score != null && (
         <a
-          href="/marketplace"
+          href="/catalog"
           title="From a tool we built—run it on your own site"
           className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-base px-3 py-1.5 text-xs text-muted transition-colors hover:border-signal/50 hover:text-signal"
         >

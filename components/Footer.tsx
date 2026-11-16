@@ -3,7 +3,6 @@ import Link from "next/link";
 import FooterWordmark from "./FooterWordmark";
 import WhenNear from "./WhenNear";
 import CopyLink from "./CopyLink";
-import LinxMark from "./LinxMark";
 import SelfScore from "./SelfScore";
 import MoonPhase from "./MoonPhase";
 import MaineReadout from "./MaineReadout";
@@ -52,8 +51,8 @@ export default function Footer() {
               <p className="text-sm font-semibold text-ink">Studio</p>
               <ul className="mt-4 space-y-2.5 text-sm">
                 <li>
-                  <Link href="/services" className="text-muted transition-colors hover:text-ink">
-                    Services
+                  <Link href="/catalog#pricing" className="text-muted transition-colors hover:text-ink">
+                    Pricing
                   </Link>
                 </li>
                 <li>
@@ -67,18 +66,12 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/marketplace" className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink">
-                    <LinxMark className="h-2.5 w-auto" />
-                    M Linx marketplace
-                  </Link>
-                </li>
-                <li>
                   <Link href="/about#approach" className="text-muted transition-colors hover:text-ink">
                     Approach
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#work" className="text-muted transition-colors hover:text-ink">
+                  <Link href="/work" className="text-muted transition-colors hover:text-ink">
                     Work
                   </Link>
                 </li>
