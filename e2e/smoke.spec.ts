@@ -1098,6 +1098,11 @@ test("the Instant Quote plug-in prices the job and sends nothing in demo mode", 
 
   await w.getByPlaceholder("Your name").fill("Test Person");
   await w.getByPlaceholder("Email or phone").fill("test@example.com");
+  // Switching service re-renders the widget; what was typed must survive.
+  await w.getByRole("button", { name: "Gutters" }).click();
+  await expect(w.getByPlaceholder("Your name")).toHaveValue("Test Person");
+  await w.getByRole("button", { name: "Full replacement" }).click();
+  await expect(w.getByPlaceholder("Email or phone")).toHaveValue("test@example.com");
   await w.getByRole("button", { name: "Send me this quote" }).click();
   await expect(w.getByRole("status")).toContainText("nothing was sent");
   expect(posts.filter((u) => u.includes("widget-lead")), "demo mode must not post a lead").toEqual([]);

@@ -147,7 +147,7 @@
       return;
     }
 
-    var state = { i: 0, size: cfg.services[0].start, extras: {}, sent: false };
+    var state = { i: 0, size: cfg.services[0].start, extras: {}, sent: false, form: { name: "", contact: "", message: "" } };
     var uid = "mq" + Math.random().toString(36).slice(2, 8);
 
     function quote() {
@@ -194,9 +194,9 @@
           money(q.low, cfg.currency) + " \u2013 " + money(q.high, cfg.currency) + "</div>" +
           "<div class='n'>" + esc(cfg.note || "A guide, not a final price. Confirmed after a quick look.") + "</div></div>";
         html += "<form class='f' novalidate>" +
-          "<label class='sr' for='" + uid + "n'>Your name</label><input id='" + uid + "n' name='name' autocomplete='name' placeholder='Your name' required>" +
-          "<label class='sr' for='" + uid + "c'>Email or phone</label><input id='" + uid + "c' name='contact' autocomplete='email' placeholder='Email or phone' required>" +
-          "<label class='sr' for='" + uid + "m'>Anything we should know</label><textarea id='" + uid + "m' name='message' placeholder='Address, timing, anything we should know (optional)'></textarea>" +
+          "<label class='sr' for='" + uid + "n'>Your name</label><input id='" + uid + "n' name='name' autocomplete='name' placeholder='Your name' value='" + esc(state.form.name) + "' required>" +
+          "<label class='sr' for='" + uid + "c'>Email or phone</label><input id='" + uid + "c' name='contact' autocomplete='email' placeholder='Email or phone' value='" + esc(state.form.contact) + "' required>" +
+          "<label class='sr' for='" + uid + "m'>Anything we should know</label><textarea id='" + uid + "m' name='message' placeholder='Address, timing, anything we should know (optional)'>" + esc(state.form.message) + "</textarea>" +
           "<div class='hp' aria-hidden='true'><input name='company_website' tabindex='-1' autocomplete='off'></div>" +
           "<p class='err' role='alert' hidden></p>" +
           "<button class='go' type='submit'>" + esc(cfg.button || "Send me this quote") + "</button></form>";
@@ -320,7 +320,15 @@
         c.addEventListener("change", function () { state.extras[c.getAttribute("data-ex")] = c.checked; update(); });
       });
       var f = root.querySelector("form");
-      if (f) f.addEventListener("submit", function (e) { e.preventDefault(); send(f); });
+      if (f) {
+        // Keep what the visitor typed in state, so switching service (which
+        // re-renders) never wipes their name, contact or notes.
+        f.addEventListener("input", function (e) {
+          var t = e.target;
+          if (t && t.name && state.form.hasOwnProperty(t.name)) state.form[t.name] = t.value;
+        });
+        f.addEventListener("submit", function (e) { e.preventDefault(); send(f); });
+      }
       update();
     }
 
