@@ -5,7 +5,7 @@ import { test, expect, type Page } from "@playwright/test";
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
 import { marketItems, smallProjects, work } from "../lib/content";
-import { catalog, categories, categoryCount } from "../lib/catalog";
+import { catalog } from "../lib/catalog";
 import { integrations, resolveProof } from "../lib/integrations";
 
 /*
@@ -282,7 +282,7 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
      here would make a homepage test fail for a footer reason. */
   const SECTIONS = [
     "#top",
-    'section[aria-labelledby="needs-heading"]',
+    'section[aria-labelledby="products-heading"]',
     'section[aria-labelledby="start-heading"]',
   ];
 
@@ -922,23 +922,16 @@ test("the nav is Catalog, Work, BrightBase and About", async ({ page }) => {
   is asserted against the same function the component calls, never against
   a literal here, and one door is followed to prove the shelf opens.
 */
-test("the homepage category doors route, and their counts are real", async ({ page }) => {
+test("every homepage product card opens a page that works", async ({ page, request }) => {
   await page.goto("/");
-  const doors = page.locator('section[aria-labelledby="needs-heading"]');
-  await expect(doors).toHaveCount(1);
-
-  const shown = categories.filter((c) => ["websites", "booking", "rentals", "connect"].includes(c.id));
-  await expect(doors.locator("ul > li a")).toHaveCount(shown.length);
-  for (const c of shown) {
-    const door = doors.locator(`a[href="/catalog?c=${c.id}"]`);
-    await expect(door, `a door for ${c.id}`).toHaveCount(1);
-    const n = categoryCount(c.id);
-    await expect(door).toContainText(`${n} ${n === 1 ? "option" : "options"}`);
+  const section = page.locator('section[aria-labelledby="products-heading"]');
+  await expect(section).toHaveCount(1);
+  const hrefs = [...new Set(await section.locator("li a[href]").evaluateAll((els) => els.map((e) => e.getAttribute("href") ?? "")))];
+  expect(hrefs.length, "each product card should link somewhere").toBeGreaterThanOrEqual(6);
+  for (const href of hrefs) {
+    const res = await request.get(href);
+    expect(res.status(), `${href} should load`).toBe(200);
   }
-
-  await doors.locator('a[href="/catalog?c=rentals"]').click();
-  await expect(page).toHaveURL(/\/catalog\?c=rentals$/);
-  await expect(page.getByRole("heading", { level: 2, name: "Rental hosts" })).toBeVisible();
 });
 
 /*

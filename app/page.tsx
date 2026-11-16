@@ -1,5 +1,6 @@
 import Opening from "@/components/home/Opening";
-import CategoryDoors from "@/components/home/CategoryDoors";
+import ProductsRow from "@/components/home/ProductsRow";
+import Reassure from "@/components/home/Reassure";
 import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -88,8 +89,9 @@ export default function Home() {
   return (
     <div className="cp">
       <Opening />
-      <CategoryDoors />
+      <ProductsRow />
       <HowToStart />
+      <Reassure />
       <Contact />
       <Footer />
       <CommandPalette />

@@ -90,10 +90,11 @@ export default function Opening() {
               Southern Maine · clients anywhere
             </span>
             <h1 className="m-0 font-display text-[clamp(2.3rem,4.6vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.035em] text-balance text-[color:var(--cp-ink)]">
-              Websites and apps for small businesses.
+              More booked jobs, less busywork.
             </h1>
             <p className="m-0 max-w-[30em] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-              Built to bring in work and cut the busywork.
+              Websites, booking tools and simple apps for small service
+              businesses. Try each one before you buy.
             </p>
 
             <div className="flex items-center gap-3">
@@ -121,25 +122,20 @@ export default function Opening() {
               >
                 Book a free 15-min call
               </BookCall>
-              <Link
-                href="/catalog"
-                className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-ink)]"
-              >
-                See what it costs
-              </Link>
+
             </div>
 
             {/* Real prices, each from its one source. */}
             <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-1.5 p-0 text-[13.5px] text-[color:var(--cp-soft)]">
               <li>Fixes from{" "}<span className="font-semibold text-[color:var(--cp-ink)]">{smallProjects[0].price.split("–")[0]}</span></li>
               <li>
-                <Link href="/welcome-book" className="inline-flex min-h-7 items-center no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                <Link href="/welcome-book" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
                   Rental welcome book{" "}<span className="font-semibold text-[color:var(--cp-ink)]">${welcomeBook.introPrice}</span>
                 </Link>
               </li>
               <li>Site care{" "}<span className="font-semibold text-[color:var(--cp-ink)]">$49/mo</span></li>
               <li>
-                <Link href="/turnover" className="inline-flex min-h-7 items-center no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
+                <Link href="/turnover" className="inline-flex min-h-7 items-center gap-1 no-underline text-[color:var(--cp-soft)] hover:text-[color:var(--cp-ink)]">
                   Turnover Planner{" "}<span className="font-semibold text-[color:var(--cp-ink)]">free</span>
                 </Link>
               </li>
