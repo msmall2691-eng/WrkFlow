@@ -2,50 +2,51 @@ import { marketItems, smallProjects } from "@/lib/content";
 import type { OfferKey } from "@/lib/offer";
 
 /*
-  The catalog: everything on the site somebody can use, buy or have built,
-  in one browsable list (Meg, Nov 15 2026).
+  The catalog: everything somebody can use, buy or have built, on one page
+  (Meg, Nov 15 2026).
 
   Her brief, in her words: "they really need to see all of this upfront so
-  they can find what they are looking for." The pieces already existed, but
-  across six pages: free tools on /tools, demos on /demo, products on
-  /marketplace, fixed-price jobs on /services, the rental things on the
-  homepage, BrightBase on its own page. A visitor arriving from a Facebook
-  post had to know which page to open before they could find the thing.
+  they can find what they are looking for." Second pass, also hers: cleaner,
+  fewer colours, real images, no blank boxes, less scattered.
 
-  This list does not replace any of them. It points at them, sorted by who
-  the visitor is (`audience`) and what shape the thing comes in (`format`),
-  which are the two questions a stranger actually asks.
+  So it is organised the way a buyer browses a store: by what they need
+  (`categories`), with a real screen on every card. Status ("Ready to buy",
+  "Built & running" …) is a quiet label on the card, not the organising
+  principle; sorting by how real something is was the maker's view, not
+  the buyer's.
 
-  **The honesty rule, applied per card.** `status` says exactly how real a
-  thing is, and the card prints it:
+  **The honesty rule, per card.** `status` says exactly how real it is:
 
     try        works on this site right now, free
     buy        a fixed price you can decide on today
     built      running for a real business already; yours is adapted and
                quoted. `proof` links to where it can be seen
-    workbench  NOT built yet. Listed so people can say they want it, and
-               labelled that way on the card. Never give one of these a
-               `proof` link or a screenshot
+    workbench  NOT built yet. Listed so people can say they want it. These
+               render as a short text list with no image, never as a card
 
-  **Prices have one author.** Anything that already lives in `marketItems`
-  or `smallProjects` takes its price from there through `marketPrice()` and
-  `projectPrice()`, so this page cannot disagree with /marketplace or
-  /services. The same rule `ladder` follows in lib/content.ts.
+  **Every image is a real capture**: Meg's live sites, the site's own demos,
+  or BrightBase running on its demo dataset (fictional names and addresses,
+  see the notes in lib/content.ts). Never a mock-up. If a new item has no
+  real screen, it does not get a stand-in; find a real one or leave it on
+  the workbench list.
 
-  `connects` lists only services this work has actually been wired to in a
-  shipped build (see the `stack` fields on `work`). Do not add a logo-name
-  here because it is popular; add it when something real talks to it.
+  **Prices have one author.** Anything already in `marketItems` or
+  `smallProjects` takes its price from there, so this page cannot disagree
+  with /marketplace or /services.
+
+  `connects` lists only services this work is actually wired to in a
+  shipped build.
 */
 
-export type CatalogAudience = "rentals" | "service" | "family" | "any";
-export type CatalogFormat =
-  | "tool"
-  | "plugin"
-  | "template"
-  | "app"
-  | "integration"
+export type CatalogCategory =
+  | "websites"
+  | "booking"
+  | "apps"
+  | "rentals"
+  | "connect"
   | "ai"
-  | "service";
+  | "tools";
+
 export type CatalogStatus = "try" | "buy" | "built" | "workbench";
 
 export type CatalogLink = { label: string; href: string; external?: boolean };
@@ -53,58 +54,38 @@ export type CatalogLink = { label: string; href: string; external?: boolean };
 export type CatalogItem = {
   id: string;
   name: string;
-  audience: CatalogAudience[];
-  format: CatalogFormat;
+  /** First entry is where the card lives on the "All" view. */
+  categories: CatalogCategory[];
   status: CatalogStatus;
-  /** What it does for the person reading, in one or two sentences. */
+  /** What it does for the person reading, one or two short sentences. */
   outcome: string;
   price: string;
-  /** The main action: open the tool, the demo, or the product page. */
   primary?: CatalogLink;
-  /** Where a real version can be seen. `built` items should have one. */
   proof?: CatalogLink;
-  /** Which contact-form opener "Ask about this" uses. */
   offer: OfferKey;
   connects?: string[];
-  /**
-   * A REAL capture in /public/shots: of the live product, the working demo,
-   * or the production system it comes from. Never a mock-up. Items with
-   * nothing real to show (most `workbench` ones) leave this empty and the
-   * card shows no picture rather than a stand-in.
-   */
+  /** A real capture. Required for everything except `workbench`. */
   image?: string;
-  /** Extra links shown as chips, used by the folded free-tools card. */
+  /** Portrait phone captures sit centred on a plain well instead of cropping. */
+  fit?: "contain";
   chips?: CatalogLink[];
 };
 
-export const audienceLabels: Record<CatalogAudience, string> = {
-  rentals: "Rental hosts",
-  service: "Service businesses",
-  family: "Childcare & family programs",
-  any: "Any small business",
-};
-
-export const formatLabels: Record<CatalogFormat, string> = {
-  tool: "Free tool",
-  plugin: "Add to your site",
-  template: "Buy & own",
-  app: "Web app",
-  integration: "Integration",
-  ai: "AI assistant",
-  service: "Done for you",
-};
+export const categories: { id: CatalogCategory; label: string; blurb: string }[] = [
+  { id: "websites", label: "Websites", blurb: "Sites that bring in work, built around one goal and yours to keep." },
+  { id: "booking", label: "Quotes & booking", blurb: "From first click to a booked job, without the back-and-forth." },
+  { id: "apps", label: "Apps & portals", blurb: "The software a business runs on, for the office, the crew and the customer." },
+  { id: "rentals", label: "Rental hosts", blurb: "Built by a team that cleans and hosts short-term rentals." },
+  { id: "connect", label: "Integrations & data", blurb: "Your tools talking to each other, and your data where it belongs." },
+  { id: "ai", label: "AI", blurb: "AI that drafts and waits for your OK. Nothing goes out on its own." },
+  { id: "tools", label: "Free tools", blurb: "Use them right now. No signup." },
+];
 
 export const statusLabels: Record<CatalogStatus, { label: string; note: string }> = {
-  try: { label: "Use it now", note: "Free, works on this site today." },
+  try: { label: "Free", note: "Works on this site today." },
   buy: { label: "Ready to buy", note: "A fixed price you can decide on today." },
-  built: {
-    label: "Built & running",
-    note: "Already running for a real business. Yours is adapted and quoted.",
-  },
-  workbench: {
-    label: "On the workbench",
-    note: "Not built yet. Say you want it and it moves up the list.",
-  },
+  built: { label: "Built & running", note: "Running for a real business. Yours is adapted and quoted." },
+  workbench: { label: "Coming", note: "Not built yet." },
 };
 
 function marketPrice(id: string): string {
@@ -119,321 +100,336 @@ function projectPrice(offer: (typeof smallProjects)[number]["offer"]): string {
   return p.price;
 }
 
-export const catalog: CatalogItem[] = [
-  // ── Short-term rentals ──────────────────────────────────────────────────
-  {
-    id: "welcome-book",
-    name: "Digital Welcome Book",
-    audience: ["rentals"],
-    format: "template",
-    status: "buy",
-    outcome:
-      "Check-in steps, WiFi, the house manual and your local picks on one link and a QR code. Fewer 'how do I' messages from guests.",
-    price: marketPrice("welcome-book"),
-    primary: { label: "See what is in it", href: "/welcome-book" },
-    proof: {
-      label: "Open a live one",
-      href: "https://keystonestay.maineclean.co",
-      external: true,
-    },
-    offer: "custom",
-    image: "/shots/catalog/welcome-book.webp",
-  },
-  {
-    id: "turnover-planner",
-    name: "Turnover Planner",
-    audience: ["rentals"],
-    format: "tool",
-    status: "try",
-    outcome:
-      "Paste an Airbnb or Vrbo calendar link and get the cleaning schedule it implies, with same-day turnarounds flagged. Nothing is stored.",
-    price: "Free",
-    primary: { label: "Use it now", href: "/turnover" },
-    offer: "integration",
-    connects: ["Airbnb calendar", "Vrbo calendar"],
-    image: "/shots/catalog/turnover.webp",
-  },
-  {
-    id: "turnover-sync",
-    name: "Turnover Sync",
-    audience: ["rentals", "service"],
-    format: "integration",
-    status: "built",
-    outcome:
-      "New bookings land on the cleaning schedule by themselves, with checkout and check-in times attached, so nobody copies dates out of a calendar again.",
-    price: "Quoted to your setup",
-    proof: { label: "See it in BrightBase", href: "/brightbase" },
-    offer: "integration",
-    connects: ["Airbnb calendar", "Vrbo calendar", "Google Calendar"],
-    image: "/shots/brightbase/turnovers.webp",
-  },
-  {
-    id: "linx",
-    name: "Cleaner marketplace",
-    audience: ["rentals", "service"],
-    format: "app",
-    status: "built",
-    outcome:
-      "Hosts post a turnover, vetted local cleaners bid, and payment releases when the job is done. The pattern works for any job board with payouts.",
-    price: "Quoted to your scope",
-    proof: { label: "How linx was built", href: "/work/linx" },
-    offer: "custom",
-    connects: ["Stripe Connect"],
-    image: "/shots/linx.png",
-  },
-  {
-    id: "guest-replies",
-    name: "AI guest replies",
-    audience: ["rentals"],
-    format: "ai",
-    status: "workbench",
-    outcome:
-      "Drafts answers to the guest questions you get every week from your own house guide, and waits for your OK before anything is sent.",
-    price: "Not priced yet",
-    offer: "custom",
-  },
-  {
-    id: "direct-booking",
-    name: "Direct booking site",
-    audience: ["rentals"],
-    format: "template",
-    status: "workbench",
-    outcome:
-      "Your own site where repeat guests book you directly, alongside your Airbnb and Vrbo listings rather than instead of them.",
-    price: "Not priced yet",
-    offer: "custom",
-  },
+const S = "/shots/catalog";
+const BB = "/shots/brightbase";
 
-  // ── Websites and getting booked ─────────────────────────────────────────
+export const catalog: CatalogItem[] = [
+  // ── Websites ────────────────────────────────────────────────────────────
   {
     id: "service-site",
-    name: "Business website",
-    audience: ["service", "any"],
-    format: "template",
+    name: "Website that brings in work",
+    categories: ["websites"],
     status: "built",
-    outcome:
-      "A fast site built around one goal, usually a quote or a booking, with the forms wired up and the code yours to keep.",
+    outcome: "Booking and instant quotes built in, fast on a phone, and the code is yours.",
     price: marketPrice("service-site"),
-    proof: { label: "See sites built", href: "/#work" },
+    proof: { label: "See the case study", href: "/work/maine-cleaning-co" },
     offer: "custom",
-    image: "/shots/maineclean.png",
+    image: `${S}/live-maineclean.webp`,
+  },
+  {
+    id: "trades-site",
+    name: "Contractor & trades website",
+    categories: ["websites"],
+    status: "built",
+    outcome: "Services, a project portfolio and a consultation request, for builders and trades.",
+    price: "Quoted to your scope",
+    proof: { label: "View the live site", href: "https://www.nashconstructionnh.com", external: true },
+    offer: "custom",
+    image: `${S}/live-nash.webp`,
+  },
+  {
+    id: "firm-site",
+    name: "Professional services website",
+    categories: ["websites"],
+    status: "built",
+    outcome: "A polished site for an admin, bookkeeping or consulting business that books calls.",
+    price: "Quoted to your scope",
+    proof: { label: "See the case study", href: "/work/the-remote-admin" },
+    offer: "custom",
+    image: `${S}/live-remote-admin.webp`,
+  },
+  {
+    id: "brand-kit",
+    name: "Brand & launch kit",
+    categories: ["websites"],
+    status: "built",
+    outcome: "Name, logo and colors, the website, a printed welcome guide and a month of social posts.",
+    price: "Quoted to your scope",
+    proof: { label: "View the live site", href: "https://www.lacexplorers.online", external: true },
+    offer: "custom",
+    image: `${S}/live-arrowhead.webp`,
   },
   {
     id: "site-updates",
-    name: "Website updates & forms",
-    audience: ["service", "any"],
-    format: "service",
+    name: "Website updates & care",
+    categories: ["websites"],
     status: "buy",
-    outcome:
-      "One page improved, a quote form added or a booking feature put on the site you already have.",
-    price: projectPrice("website"),
+    outcome: "A page fixed or a form added on the site you have, or hosting and edits handled monthly.",
+    price: `${projectPrice("website")} · or $49/mo`,
     offer: "website",
-  },
-  {
-    id: "quote-widget",
-    name: "M Linx Quote",
-    audience: ["service"],
-    format: "plugin",
-    status: "buy",
-    outcome:
-      "The instant-quote calculator from this site, set to your prices and brand, on your own site. Leads are emailed to you on submit.",
-    price: marketPrice("quote-widget"),
-    primary: { label: "Try the free version", href: "/tools?tool=quote" },
-    offer: "quote",
-    image: "/shots/catalog/quote-tool.webp",
-  },
-  {
-    id: "flows",
-    name: "M Linx Flows",
-    audience: ["service", "rentals"],
-    format: "plugin",
-    status: "buy",
-    outcome:
-      "Booking confirmations, reminders and review requests that send themselves, set up on the tools you already use.",
-    price: marketPrice("automation-pack"),
-    offer: "integration",
-  },
-  {
-    id: "booking",
-    name: "Online booking",
-    audience: ["service", "family"],
-    format: "app",
-    status: "built",
-    outcome:
-      "Customers pick a service, a person and a time that is actually free. You get an owner calendar and confirmations.",
-    price: marketPrice("booking-app"),
-    primary: { label: "Try the demo", href: "/demo/studio" },
-    proof: { label: "The production scheduler", href: "/brightbase" },
-    offer: "custom",
-    image: "/shots/catalog/demo-studio.webp",
+    image: `${S}/live-maineclean-mobile.webp`,
+    fit: "contain",
   },
   {
     id: "storefront",
     name: "Online store",
-    audience: ["service", "any"],
-    format: "app",
+    categories: ["websites", "booking"],
     status: "try",
-    outcome:
-      "Browse, filter, pick options that change the price and check out. Built to your products rather than a theme you fight.",
+    outcome: "Products with options that change the price, a cart and checkout. Try the demo.",
     price: "Quoted to your scope",
     primary: { label: "Try the demo", href: "/demo/shop" },
     offer: "custom",
-    image: "/shots/catalog/demo-shop.webp",
-  },
-  {
-    id: "directory",
-    name: "Searchable directory",
-    audience: ["any"],
-    format: "app",
-    status: "try",
-    outcome:
-      "A members, vendors or listings directory where filters combine, the count updates and an empty search tells people what to change.",
-    price: "Quoted to your scope",
-    primary: { label: "Try the demo", href: "/demo/directory" },
-    offer: "custom",
-    image: "/shots/catalog/demo-directory.webp",
-  },
-  {
-    id: "instant-estimate",
-    name: "AI quote drafting",
-    audience: ["service"],
-    format: "ai",
-    status: "built",
-    outcome:
-      "Reads an incoming request, drafts the quote and the reply, and queues both for you to approve. Nothing goes out on its own.",
-    price: "Quoted to your setup",
-    proof: { label: "See it in the work", href: "/#work" },
-    offer: "custom",
-    connects: ["Anthropic AI"],
-    image: "/shots/instant-estimate.png",
+    image: `${S}/demo-shop.webp`,
   },
 
-  // ── Apps a business runs on ─────────────────────────────────────────────
+  // ── Quotes & booking ────────────────────────────────────────────────────
+  {
+    id: "quote-widget",
+    name: "Instant quote on your site",
+    categories: ["booking"],
+    status: "buy",
+    outcome: "Visitors price the job themselves and you get the lead by email.",
+    price: marketPrice("quote-widget"),
+    primary: { label: "Try it free", href: "/tools?tool=quote" },
+    offer: "quote",
+    image: `${S}/quote-tool.webp`,
+  },
+  {
+    id: "booking",
+    name: "Online booking",
+    categories: ["booking"],
+    status: "built",
+    outcome: "Customers pick a service and a time that is actually open. You get the calendar.",
+    price: marketPrice("booking-app"),
+    primary: { label: "Try the demo", href: "/demo/studio" },
+    proof: { label: "A live one", href: "https://www.maineclean.co/book", external: true },
+    offer: "custom",
+    image: `${S}/live-book.webp`,
+  },
+  {
+    id: "online-quotes",
+    name: "Quotes customers accept online",
+    categories: ["booking", "apps"],
+    status: "built",
+    outcome: "A clean quote page they open on their phone, approve, and turn into a booked job.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    offer: "custom",
+    image: `${BB}/customer-quote.webp`,
+    fit: "contain",
+  },
+  {
+    id: "recurring",
+    name: "Recurring service scheduling",
+    categories: ["booking"],
+    status: "built",
+    outcome: "Weekly and biweekly visits that schedule themselves. Change one without breaking the rest.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    offer: "custom",
+    image: `${BB}/recurring.webp`,
+  },
+  {
+    id: "flows",
+    name: "Automatic follow-ups & reminders",
+    categories: ["booking", "connect"],
+    status: "buy",
+    outcome: "Confirmations, reminders, quote follow-ups and review requests that send themselves.",
+    price: marketPrice("automation-pack"),
+    offer: "integration",
+    connects: ["Twilio", "Email"],
+    image: `${BB}/quote.webp`,
+  },
+
+  // ── Apps & portals ──────────────────────────────────────────────────────
   {
     id: "brightbase",
     name: "Operations app (BrightBase)",
-    audience: ["service"],
-    format: "app",
+    categories: ["apps"],
     status: "built",
-    outcome:
-      "Leads, quotes, scheduling, a crew app, invoicing and payouts in one system, in place of the pile of apps most service companies juggle.",
+    outcome: "Leads, quotes, scheduling, crew, invoicing and payouts in one system.",
     price: "Book a demo",
     primary: { label: "Look inside", href: "/brightbase" },
     offer: "brightbase",
     connects: ["Stripe", "Twilio", "Google Calendar"],
-    image: "/shots/brightbase/schedule.webp",
+    image: `${BB}/schedule.webp`,
+  },
+  {
+    id: "customer-portal",
+    name: "Customer portal",
+    categories: ["apps"],
+    status: "built",
+    outcome: "Customers see visits, confirm or reschedule, and pay invoices without calling you.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    offer: "custom",
+    image: `${BB}/customer-portal.webp`,
+    fit: "contain",
+  },
+  {
+    id: "crew-app",
+    name: "Crew & staff mobile app",
+    categories: ["apps"],
+    status: "built",
+    outcome: "Today's jobs, door codes, checklists and pay on the phone in their pocket.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    offer: "custom",
+    image: `${BB}/crew-my-day.webp`,
+    fit: "contain",
+  },
+  {
+    id: "invoicing",
+    name: "Invoicing & online payments",
+    categories: ["apps", "connect"],
+    status: "built",
+    outcome: "Invoices that send, get paid by card and show what is overdue at a glance.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    offer: "custom",
+    connects: ["Stripe"],
+    image: `${BB}/invoicing.webp`,
   },
   {
     id: "dashboard",
     name: "Owner dashboard",
-    audience: ["service", "any"],
-    format: "app",
+    categories: ["apps"],
     status: "built",
-    outcome:
-      "Jobs, revenue and the numbers you check every morning on one screen, pulled live from the tools you already pay for.",
+    outcome: "Jobs, revenue and the numbers you check every morning, on one screen.",
     price: marketPrice("dashboard-starter"),
-    proof: { label: "See the BrightBase dashboard", href: "/brightbase" },
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
     offer: "custom",
-    image: "/shots/brightbase/owner-dashboard.webp",
+    image: `${BB}/owner-dashboard.webp`,
   },
   {
     id: "parent-portal",
-    name: "Parent portal with QR check-in",
-    audience: ["family"],
-    format: "app",
+    name: "Family portal with QR check-in",
+    categories: ["apps"],
     status: "built",
-    outcome:
-      "Families sign in to see their child's day, a door kiosk takes QR badge check-ins, and staff run attendance, daily logs and photos.",
+    outcome: "Families sign in with a code, a door tablet takes check-ins, staff run logs and attendance.",
     price: "Quoted to your program",
-    proof: {
-      label: "See the program site",
-      href: "https://www.lacexplorers.online",
-      external: true,
-    },
+    proof: { label: "Open the portal", href: "https://www.lacexplorers.online/portal", external: true },
     offer: "custom",
-    connects: ["Supabase"],
-    image: "/shots/arrowhead.png",
+    image: `${S}/live-portal.webp`,
+  },
+  {
+    id: "directory",
+    name: "Searchable directory",
+    categories: ["apps"],
+    status: "try",
+    outcome: "Members, vendors or listings with filters that combine. Try the demo.",
+    price: "Quoted to your scope",
+    primary: { label: "Try the demo", href: "/demo/directory" },
+    offer: "custom",
+    image: `${S}/demo-directory.webp`,
+  },
+  {
+    id: "linx",
+    name: "Job marketplace with payouts",
+    categories: ["apps", "rentals"],
+    status: "built",
+    outcome: "Post a job, vetted pros bid, payment releases when it is done.",
+    price: "Quoted to your scope",
+    proof: { label: "Open linx", href: "https://linx-production-6edf.up.railway.app", external: true },
+    offer: "custom",
+    connects: ["Stripe Connect"],
+    image: `${S}/live-linx.webp`,
   },
 
-  // ── Getting your tools to talk ──────────────────────────────────────────
+  // ── Rental hosts ────────────────────────────────────────────────────────
+  {
+    id: "welcome-book",
+    name: "Digital Welcome Book",
+    categories: ["rentals"],
+    status: "buy",
+    outcome: "Check-in, WiFi, house manual and local picks on one link and a QR code.",
+    price: marketPrice("welcome-book"),
+    primary: { label: "See what's in it", href: "/welcome-book" },
+    proof: { label: "Open a live one", href: "https://keystonestay.maineclean.co", external: true },
+    offer: "custom",
+    image: `${S}/welcome-book.webp`,
+  },
+  {
+    id: "turnover-planner",
+    name: "Turnover Planner",
+    categories: ["rentals", "tools"],
+    status: "try",
+    outcome: "Paste your Airbnb or Vrbo calendar and see every cleaning, same-day turns flagged.",
+    price: "Free",
+    primary: { label: "Use it now", href: "/turnover" },
+    offer: "integration",
+    image: `${S}/turnover.webp`,
+  },
+  {
+    id: "turnover-sync",
+    name: "Turnover Sync",
+    categories: ["rentals", "connect"],
+    status: "built",
+    outcome: "New bookings land on your cleaner's schedule by themselves, with times and door codes.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in BrightBase", href: "/brightbase" },
+    offer: "integration",
+    connects: ["Airbnb", "Vrbo", "Google Calendar"],
+    image: `${BB}/turnovers.webp`,
+  },
+
+  // ── Integrations & data ─────────────────────────────────────────────────
   {
     id: "one-integration",
-    name: "One integration",
-    audience: ["any"],
-    format: "integration",
+    name: "Connect two tools",
+    categories: ["connect"],
     status: "buy",
-    outcome:
-      "One connection between two tools, such as a booking feed into your calendar or a web form into your CRM. No more typing it twice.",
+    outcome: "A booking feed into your calendar, or a web form into your CRM. No more retyping.",
     price: projectPrice("integration"),
     offer: "integration",
+    image: `${BB}/property.webp`,
   },
   {
     id: "migration",
     name: "Data migration",
-    audience: ["any"],
-    format: "service",
+    categories: ["connect"],
     status: "buy",
-    outcome:
-      "Your customers out of a spreadsheet or an old system and into the new one, with the fields mapped and the result checked.",
+    outcome: "Customers out of a spreadsheet or old system and into the new one, mapped and checked.",
     price: projectPrice("migration"),
     offer: "migration",
+    image: `${BB}/custom-fields.webp`,
   },
   {
     id: "crm-setup",
-    name: "CRM & platform setup",
-    audience: ["any"],
-    format: "service",
+    name: "CRM setup & cleanup",
+    categories: ["connect"],
     status: "buy",
-    outcome:
-      "The CRM you already pay for, set up properly: fields, views, settings and one workflow that matches how you work.",
+    outcome: "The CRM you pay for, set up to match how you work, with leads landing in one place.",
     price: projectPrice("platform"),
     offer: "platform",
-    image: "/shots/brightbase/custom-fields.webp",
+    image: `${BB}/requests.webp`,
   },
+
+  // ── AI ──────────────────────────────────────────────────────────────────
   {
-    id: "systems",
-    name: "Several systems, talking",
-    audience: ["any", "service"],
-    format: "integration",
+    id: "instant-estimate",
+    name: "AI quote drafting",
+    categories: ["ai", "booking"],
     status: "built",
-    outcome:
-      "Payments, texts, calendars and booking feeds connected around the workflow you actually have, with one place that holds the truth.",
-    price: "Quoted to your scope",
-    proof: { label: "See one job, start to finish", href: "/work/maine-cleaning-co" },
-    offer: "integration",
-    connects: ["Stripe", "Twilio", "Google Calendar", "Airbnb calendar"],
-    image: "/shots/brightbase/inbox.webp",
+    outcome: "Reads a request, drafts the quote and reply, and waits for your approval.",
+    price: "Quoted to your setup",
+    proof: { label: "See it in the work", href: "/#work" },
+    offer: "custom",
+    connects: ["Anthropic AI"],
+    image: `${S}/live-estimate.webp`,
   },
   {
     id: "ai-setup",
     name: "AI, set up for your business",
-    audience: ["any"],
-    format: "service",
+    categories: ["ai"],
     status: "buy",
-    outcome:
-      "Help choosing where AI saves you time, then setting it up so it drafts and you approve. Starts with a free 15-minute call.",
+    outcome: "Find where AI saves you hours, then set it up so it drafts and you approve.",
     price: "Free first call",
     offer: "call",
+    image: `${BB}/inbox.webp`,
   },
 
-  // ── Free tools: one card, eight links ───────────────────────────────
-  /*
-    These were eight separate cards and they buried everything for sale
-    under a screen of "Free". One card with a chip per tool keeps every
-    tool one tap away and the grid about the things people buy.
-  */
+  // ── Free tools ──────────────────────────────────────────────────────────
   {
     id: "free-tools",
     name: "8 free business tools",
-    audience: ["any", "service", "rentals"],
-    format: "tool",
+    categories: ["tools"],
     status: "try",
-    outcome:
-      "Quotes, invoices, email signatures, QR codes, tracked links and a website check. No signup, nothing to install.",
+    outcome: "Quotes, invoices, signatures, QR codes, tracked links and a website check.",
     price: "Free",
     primary: { label: "Open the tools", href: "/tools" },
     offer: "custom",
-    image: "/shots/tools.png",
+    image: `${S}/tools-light.webp`,
     chips: (
       [
         ["quote", "Instant quote"],
@@ -448,44 +444,50 @@ export const catalog: CatalogItem[] = [
     ).map(([tool, label]) => ({ label, href: `/tools?tool=${tool}` })),
   },
 
-  // ── Workbench: ideas, clearly labelled as not built ─────────────────────
+  // ── Coming next: not built, listed as text only ─────────────────────────
+  {
+    id: "guest-replies",
+    name: "AI guest replies for rentals",
+    categories: ["rentals", "ai"],
+    status: "workbench",
+    outcome: "Answers your guests' common questions from your house guide, with your OK first.",
+    price: "",
+    offer: "custom",
+  },
+  {
+    id: "direct-booking",
+    name: "Direct booking site for rentals",
+    categories: ["rentals", "websites"],
+    status: "workbench",
+    outcome: "Repeat guests book you directly, alongside Airbnb and Vrbo.",
+    price: "",
+    offer: "custom",
+  },
   {
     id: "meal-planner",
     name: "AI meal planner & grocery list",
-    audience: ["any"],
-    format: "ai",
+    categories: ["ai"],
     status: "workbench",
-    outcome:
-      "Plans the week's meals around your family's tastes and budget, then turns them into one grocery list sorted by store aisle.",
-    price: "Not priced yet",
+    outcome: "A week of meals around your family's tastes and budget, turned into one shopping list.",
+    price: "",
     offer: "custom",
   },
 ];
 
-/*
-  Section order on the page. Things with a price come first, then proven
-  builds, then the free tools. Free first buried every product under eleven
-  free cards, which was the "I can't tell what's for sale" problem this page
-  exists to fix.
-*/
-export const statusOrder: CatalogStatus[] = ["buy", "built", "try", "workbench"];
-
-export const sectionHeadings: Record<CatalogStatus, string> = {
-  buy: "Ready to buy",
-  built: "Built and running, adapted for you",
-  try: "Free to use right now",
-  workbench: "On the workbench",
+/* Legacy ?for= shelf links (homepage, earlier posts) map onto categories. */
+export const legacyShelf: Record<string, CatalogCategory> = {
+  rentals: "rentals",
+  service: "booking",
+  family: "apps",
+  any: "connect",
 };
 
-/*
-  The "try it live" strip at the top of /catalog: the five things a visitor
-  can open and use right now, with a real capture of each. Ids point into
-  `catalog` so the copy has one author.
-*/
+/* The "Try it live" row: things that open and work right now. */
 export const liveDemoIds = [
   "storefront",
   "booking",
   "directory",
   "turnover-planner",
   "welcome-book",
+  "linx",
 ] as const;

@@ -163,7 +163,7 @@ export default function TryItNow() {
             <span aria-hidden="true">&nbsp;→</span>
           </Link>
           <Link
-            href="/catalog?for=rentals"
+            href="/catalog?c=rentals"
             className="text-[14px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
           >
             Just the rental tools <span aria-hidden="true">→</span>

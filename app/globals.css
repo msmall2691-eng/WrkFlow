@@ -1200,3 +1200,9 @@ body:has(.cp) { background: #08070c; }
 :root[data-theme="light"] .cp-glow {
   background: radial-gradient(circle, rgba(124, 58, 237, 0.07), transparent 62%);
 }
+
+/* /catalog's sticky category bar: the page ground at high opacity, so cards
+   scrolling underneath do not show through the tabs. One rule per theme,
+   per the "colour that follows the theme is a token" rule in CLAUDE.md. */
+.cp .cp-sticky-bar { background: rgba(8, 7, 12, 0.9); }
+:root[data-theme="light"] .cp .cp-sticky-bar { background: rgba(247, 244, 239, 0.92); }
