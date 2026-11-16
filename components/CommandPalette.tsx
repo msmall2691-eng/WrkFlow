@@ -75,7 +75,18 @@ export default function CommandPalette() {
           window.location.href = "/tools";
         },
       },
-      { id: "work", label: "Selected work", group: "Navigate", keywords: "work showcase portfolio projects shipped", run: go("work") },
+      {
+        id: "work",
+        label: "Work: every project",
+        group: "Navigate",
+        keywords: "work showcase portfolio projects shipped",
+        /* Straight to /work, not go("work"): the homepage's #work is now one
+           worked example, and the full portfolio is its own page. */
+        run: () => {
+          close();
+          window.location.href = "/work";
+        },
+      },
       {
         id: "demos",
         label: "Demos",
