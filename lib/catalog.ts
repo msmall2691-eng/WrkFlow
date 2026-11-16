@@ -57,7 +57,7 @@ export type CatalogStatus = "try" | "buy" | "built" | "workbench";
 export type CatalogKind =
   | "Website"
   | "Web app"
-  | "Add-on for your site"
+  | "Plug-in"
   | "Mobile web app"
   | "Connection"
   | "Service"
@@ -70,8 +70,8 @@ export const kindOf: Record<string, CatalogKind> = {
   "brand-kit": "Service",
   "site-updates": "Service",
   storefront: "Website",
-  "quote-widget": "Add-on for your site",
-  booking: "Add-on for your site",
+  "quote-widget": "Plug-in",
+  booking: "Web app",
   "online-quotes": "Web app",
   recurring: "Web app",
   flows: "Connection",
@@ -89,7 +89,7 @@ export const kindOf: Record<string, CatalogKind> = {
   "one-integration": "Connection",
   migration: "Service",
   "crm-setup": "Service",
-  "instant-estimate": "Add-on for your site",
+  "instant-estimate": "Plug-in",
   "ai-setup": "Service",
   "free-tools": "Free tool",
   "guest-replies": "Web app",
@@ -239,7 +239,8 @@ export const catalog: CatalogItem[] = [
     status: "buy",
     outcome: "Visitors price the job themselves and you get the lead by email.",
     price: marketPrice("quote-widget"),
-    primary: { label: "Try the demo", href: "/demo/instant-quote" },
+    primary: { label: "Try the plug-in", href: "/plugins" },
+    proof: { label: "See it on a sample site", href: "/demo/instant-quote" },
     offer: "quote",
     image: `${S}/demo-instant-quote.webp`,
   },

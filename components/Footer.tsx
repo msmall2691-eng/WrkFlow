@@ -61,6 +61,9 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/plugins" className="text-muted transition-colors hover:text-ink">Plug-ins</Link>
+                </li>
+                <li>
                   <Link href="/tools" className="text-muted transition-colors hover:text-ink">
                     Free tools
                   </Link>
