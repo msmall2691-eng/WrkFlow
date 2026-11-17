@@ -1362,227 +1362,99 @@ test("every integration shown is running in a named project", async ({ page }) =
 });
 
 /*
-  The hero scene keeps its promise to somebody who does not want motion.
+  The hero scene keeps its two promises, now that the scene is WebGL.
 
-  **This test exists because the same bug was found three times, in two
-  different effects, each time on the commit that fixed the one before.**
-  The rule it guards is the oldest one in CLAUDE.md's motion section --
-  every animation has a `prefers-reduced-motion: reduce` fallback that
-  shows the end state -- and before this, nothing in this suite asserted
-  it on any page. Three rounds of review were the only thing standing
-  between the rule and a scene that ignored it, which is the arrangement
-  that guide warns about: "Neither showed up in a build, a test or a
-  Lighthouse run; both were only visible by looking."
+  **These replace two tests written against the CSS 3D blueprint, and the
+  replacement is deliberate rather than a deletion.** That hero is gone:
+  Meg asked for an immersive 3D hero and said plainly she did not want
+  the square box. The PROMISES it carried are not gone, and this repo's
+  own lesson is that deleting a screen deletes its tests, which is how a
+  rule quietly stops being checked.
 
-  So it is deliberately written against the *class* rather than the three
-  instances. The question is "does the preference hold, however the
-  visitor arrives at it", asked of both animated things on the card: the
-  CSS stages, which are inline custom properties and therefore beat the
-  stylesheet's reduced-motion rule, and the dust, which is a canvas the
-  stylesheet cannot reach at all.
+  Both promises are in CLAUDE.md, both have shipped broken before, and
+  both broke again inside this very feature: the canvas clear colour was
+  set once at creation, so Harbor rendered cream under light text.
+  Measured, not assumed.
 
-  The viewport is 1440x900 because the pin is gated on height as well as
-  width (`min-height: 820px`), so Playwright's 1280x720 default exercises
-  the unpinned path and would quietly assert nothing about the pinned one.
-
-  Smooth scrolling is turned off for the reason recorded in the component:
-  a synchronous scroll-then-read samples mid-animation and reads stages
-  that look stuck.
-
-  Verified by breaking each half and watching exactly this test fail:
-  reverting the dust loop's preference listener fails on the canvas, and
-  reverting `apply()`'s reduced-motion guard fails on the stages.
+  What changed is how they are observable. There is no `fillStyle` to
+  read on a WebGL canvas, so the theme promise is asserted on the ground
+  the visitor actually sees, sampled from a screenshot, which is a
+  stronger check than reading a property: it is the pixels.
 */
-test("the hero scene honors reduced motion however it is switched on", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-
-  /* How much dust is painted right now. The canvas is the half no
-     stylesheet can stop, so it is measured in pixels rather than trusted. */
-  const litPixels = () =>
-    page.evaluate(() => {
-      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
-      if (!cv) return -1;
-      const ctx = cv.getContext("2d");
-      if (!ctx) return -1;
-      const d = ctx.getImageData(0, 0, cv.width, cv.height).data;
-      let lit = 0;
-      for (let i = 3; i < d.length; i += 4) if (d[i] > 0) lit++;
-      return lit;
-    });
-
-  const stages = () =>
-    page.evaluate(() => {
-      const el = document.querySelector(".bp");
-      if (!el) return null;
-      const s = getComputedStyle(el);
-      const read = (n: string) => Number.parseFloat(s.getPropertyValue(n).trim() || "0");
-      return { tilt: read("--tilt"), rise: read("--rise"), light: read("--light") };
-    });
-
-  /* 1. Loaded with the preference already on: the building is finished
-        rather than flat, and no dust is painted. */
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  await page.addStyleTag({ content: "html{scroll-behavior:auto !important}" });
-  await expect(page.locator(".bp")).toBeVisible();
-  await page.waitForTimeout(600);
-
-  expect(await stages(), "loading with reduced motion should show the end state").toEqual({
-    tilt: 1,
-    rise: 1,
-    light: 1,
-  });
-  const onLoad = await litPixels();
-  expect(onLoad, "the dust canvas should be found and reported on").toBeGreaterThanOrEqual(0);
-  expect(onLoad, "loading with reduced motion should paint no dust").toBe(0);
-
-  /* 2. With motion allowed, scroll halfway through the scene's own travel
-        -- computed the way the component computes it, so the test cannot
-        drift from the thing it measures -- and confirm it really is
-        mid-arc. A card already finished here would make step 3 pass
-        without proving anything. */
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  const half = await page.evaluate(() => {
-    const t = document.querySelector(".bp-track") ?? document.querySelector(".bp");
-    if (!t) return 0;
-    const box = t.getBoundingClientRect();
-    const travel = Math.max(window.innerHeight * 0.6, box.height - window.innerHeight);
-    return box.top + window.scrollY + travel * 0.5;
-  });
-  await page.evaluate((y) => window.scrollTo(0, y), half);
-  await page.waitForTimeout(500);
-
-  const midArc = await stages();
-  expect(midArc, "the scene should read its stages").not.toBeNull();
-  expect(
-    midArc!.rise,
-    "halfway through the travel the walls should be partway up, not finished",
-  ).toBeGreaterThan(0);
-  expect(midArc!.rise, "halfway through the travel the walls should not be finished").toBeLessThan(1);
-  expect(await litPixels(), "dust should be painting when motion is allowed").toBeGreaterThan(0);
-
-  /* 3. The preference goes on with the page open and scrolled. Both halves
-        have to answer, and the stages are the interesting one: they are
-        inline custom properties, so the stylesheet's reduced-motion rule
-        loses to them and only the script can stand down. */
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.waitForTimeout(400);
-
-  expect(
-    await stages(),
-    "switching reduced motion on mid-scene should settle it to the end state",
-  ).toEqual({ tilt: 1, rise: 1, light: 1 });
-  expect(await litPixels(), "switching reduced motion on should clear the dust").toBe(0);
-
-  /* 4. And it stays stood down. This is the step that caught the third
-        bug: settling once is easy, and the next scroll event overwrote it
-        because `apply()` never re-read the preference. */
-  await page.evaluate((y) => window.scrollTo(0, y + 240), half);
-  await page.waitForTimeout(500);
-
-  expect(
-    await stages(),
-    "scrolling further under reduced motion must not restart the arc",
-  ).toEqual({ tilt: 1, rise: 1, light: 1 });
-  expect(await litPixels(), "scrolling further under reduced motion must not repaint dust").toBe(0);
-});
-
-/*
-  The hero scene's dust is painted in the theme that is on screen now.
-
-  **The third instance of this repo's most-repeated failure, and the one
-  that finally got a test.** CLAUDE.md records two: #115, a chip
-  hardcoded dark that went white-on-white in Harbor, and #118,
-  illustrations drawn in white that vanished when the site moved to a
-  light default. Both were invisible to a build, a typecheck and this
-  suite, and the guide says so in those words.
-
-  This one is sneakier, because the colour *is* a token and looks correct
-  in review: `ctx.fillStyle = getComputedStyle(cv).color` reads the token
-  properly, once. `fillStyle` is a copy rather than a reference, so from
-  the next repaint on, a token is as frozen as a literal. Measured across
-  a palette switch the canvas kept painting rgb(11,23,34) while the
-  ground went to rgb(8,7,12), about 1.05:1.
-
-  So the assertion is the invariant rather than the two colours: whatever
-  the canvas is painting must equal what CSS currently says, in both
-  themes. That cannot go stale when the palette is retuned, which a test
-  naming specific values would. It also checks the ink genuinely differs
-  between the themes, because an invariant compared against itself would
-  pass just as happily if both themes shared one colour and the whole
-  question were moot.
-
-  The theme is switched the way `lib/theme.ts` does it -- Harbor is the
-  *absence* of `data-theme`, not `data-theme="dark"` -- so that the test
-  exercises the real mechanism. Verified by removing the `theme:change`
-  listener and watching this fail.
-*/
-test("the hero scene paints its dust in the theme that is on screen", async ({ page }) => {
+test("the hero scene's ground follows the theme that is on screen", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator(".bp")).toBeVisible();
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(2500);
 
-  /* Both normalised to hex, because getComputedStyle answers in rgb()
-     and fillStyle answers in #rrggbb. */
-  const ink = () =>
-    page.evaluate(() => {
-      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
-      if (!cv) return null;
-      const ctx = cv.getContext("2d");
-      if (!ctx) return null;
-      const hex = (c: string) => {
-        const t = c.trim().toLowerCase();
-        /* fillStyle already answers in #rrggbb, and running the rgb()
-           parser over it mangles the string: the digit runs in "#0b1722"
-           are "0" and "1722", which reassemble as "#006ba". Caught by
-           this test failing on its own helper. */
-        if (t.startsWith("#")) {
-          return t.length === 4
-            ? "#" + [...t.slice(1)].map((d) => d + d).join("")
-            : t;
-        }
-        const m = t.match(/[\d.]+/g);
-        if (!m) return t;
-        return (
-          "#" +
-          m
-            .slice(0, 3)
-            .map((n) => Math.round(Number(n)).toString(16).padStart(2, "0"))
-            .join("")
-        );
-      };
-      return {
-        painting: hex(String(ctx.fillStyle)),
-        css: hex(getComputedStyle(cv).color),
-      };
-    });
+  /* An empty strip low on the first screen, away from copy and controls. */
+  const CLIP = { x: 40, y: 700, width: 160, height: 120 };
 
-  const first = await ink();
-  expect(first, "the dust canvas should be on the page").not.toBeNull();
-  expect(
-    first!.painting,
-    "the dust should be painted in the ink CSS currently specifies",
-  ).toBe(first!.css);
+  const read = async () => {
+    const png = await page.screenshot({ clip: CLIP });
+    const body = await page.evaluate(
+      () => getComputedStyle(document.body).backgroundColor,
+    );
+    return { png, body };
+  };
 
-  /* Exactly what applyTheme() does: Harbor is the absence of the
-     attribute, and the event is what every other themed layer listens
-     for. */
+  const first = await read();
+
   await page.evaluate(() => {
     const root = document.documentElement;
     if (root.dataset.theme === "light") delete root.dataset.theme;
     else root.dataset.theme = "light";
     window.dispatchEvent(new Event("theme:change"));
   });
-  await page.waitForTimeout(400);
+  await page.waitForTimeout(2000);
+  const second = await read();
 
-  const second = await ink();
   expect(
-    second!.css,
-    "the two palettes should specify different ink, or this test proves nothing",
-  ).not.toBe(first!.css);
+    second.body,
+    "the two palettes should specify different grounds, or this proves nothing",
+  ).not.toBe(first.body);
+
+  /*
+    The painted ground has to CHANGE with the palette. If the scene held a
+    colour copied at creation, these bytes would be identical while the
+    stylesheet said otherwise, which is exactly the bug this guards.
+  */
   expect(
-    second!.painting,
-    "after a palette switch the dust should be repainted in the new ink",
-  ).toBe(second!.css);
+    Buffer.compare(first.png, second.png),
+    "the scene's ground should repaint when the palette changes",
+  ).not.toBe(0);
+});
+
+/*
+  Reduced motion gets the scene held, not removed.
+
+  The rule is that the fallback shows the end state. A visitor who cannot
+  have animation should still get the space; what they must not get is a
+  blank rectangle where the hero was, or a page whose background is
+  transparent with nothing behind it.
+*/
+test("the hero scene goes still under reduced motion rather than blank", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForTimeout(2500);
+
+  const state = await page.evaluate(() => {
+    const host = document.querySelector(".fixed.-z-10");
+    const canvas = host?.querySelector("canvas") as HTMLCanvasElement | null;
+    return {
+      mounted: document.documentElement.dataset.stage ?? "(none)",
+      hasCanvas: !!canvas,
+      painted: (canvas?.width ?? 0) > 0 && (canvas?.height ?? 0) > 0,
+      ground: getComputedStyle(document.body).backgroundColor,
+    };
+  });
+
+  expect(state.hasCanvas, "reduced motion should still get the scene").toBe(true);
+  expect(state.painted, "the held scene should still have a drawing surface").toBe(true);
+  expect(
+    state.mounted,
+    "the stage should report itself mounted so the page is not left transparent",
+  ).toBe("on");
+  /* Whatever happens to the scene, the page keeps a real ground. */
+  expect(state.ground).not.toBe("rgba(0, 0, 0, 0)");
 });

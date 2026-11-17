@@ -1,6 +1,5 @@
 import BookCall from "../BookCall";
 import WeatherLayer from "../WeatherLayer";
-import BlueprintRise from "./BlueprintRise";
 import PanelStage from "../panel/PanelStage";
 import PanelHeader from "../panel/PanelHeader";
 import { provingGround } from "@/lib/content";
@@ -97,7 +96,6 @@ export default function Opening() {
         its own, so the hero still belongs to the V2 look rather than
         arriving as a third style.
       */}
-      <BlueprintRise />
       <WeatherLayer />
 
       <PanelHeader />

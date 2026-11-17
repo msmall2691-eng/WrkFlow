@@ -72,7 +72,7 @@ import CommandPalette from "@/components/CommandPalette";
 */
 export default function Home() {
   return (
-    <div className="cp">
+    <div id="scroll-container" className="cp">
       <Opening />
       <Shelf />
       <TryItNow />

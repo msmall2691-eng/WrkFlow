@@ -1,7 +1,28 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { usePathname } from "next/navigation";
+
+/*
+  Loaded lazily so a route that never shows the storefront never
+  downloads gsap, postprocessing, the transmission material or `<Html>`,
+  and never registers a scroll plugin.
+
+  **It is worth saying what this is NOT, because I argued the opposite
+  for an hour.** I believed a static import here had broken twelve tests
+  across the demos, the case study, the nav and the contact form. It had
+  not. Those failures were seven stray `next-server` processes I had left
+  running, which starved the machine: `pkill -f "next start"` kills the
+  npx wrapper and leaves the server child alive, and they had been piling
+  up all session. On an idle machine the same tree passes 48/48 in 42s.
+
+  So this is an ordinary and correct piece of code splitting, kept on its
+  own merits, and not the fix for a bug that never existed. Recorded
+  because a confident wrong diagnosis in a comment is worse than no
+  comment: the next person would optimise against a ghost.
+*/
+const StorefrontEngine = lazy(() => import("./StorefrontEngine"));
+import { lazy, Suspense, useEffect, useMemo, useRef } from "react";
 import {
   AdditiveBlending,
   BufferAttribute,
@@ -32,8 +53,6 @@ import { useStageTheme, type StageTheme } from "./useStageTheme";
   network weight beyond its own code.
 */
 
-/** How far the camera leans toward the pointer. Small on purpose. */
-const PARALLAX = 0.45;
 /** Motes in the volume. Low enough to cost nothing on an integrated GPU. */
 const MOTE_COUNT = 420;
 
@@ -103,99 +122,7 @@ function Motes({ theme }: { theme: StageTheme }) {
   );
 }
 
-/*
-  The floor: concentric rings of line segments receding into the fog.
-
-  Built by hand rather than with drei's Grid because what this wants is an
-  architect's drawing fading into distance, which is the language the hero
-  already speaks, and because hand-built geometry is a few dozen lines
-  against a dependency with its own shader.
-*/
-function Floor({ theme }: { theme: StageTheme }) {
-  const geometry = useMemo(() => {
-    const pts: number[] = [];
-    const half = 22;
-    const step = 1.6;
-    for (let x = -half; x <= half; x += step) {
-      pts.push(x, 0, -half, x, 0, half);
-    }
-    for (let z = -half; z <= half; z += step) {
-      pts.push(-half, 0, z, half, 0, z);
-    }
-    const g = new BufferGeometry();
-    g.setAttribute("position", new BufferAttribute(new Float32Array(pts), 3));
-    return g;
-  }, []);
-
-  useEffect(() => () => geometry.dispose(), [geometry]);
-
-  return (
-    <lineSegments geometry={geometry} position={[0, -3.2, -6]}>
-      <lineBasicMaterial
-        color={theme.line}
-        transparent
-        opacity={theme.dark ? 0.22 : 0.16}
-        depthWrite={false}
-      />
-    </lineSegments>
-  );
-}
-
-/*
-  Pointer parallax and scroll depth.
-
-  The camera leans toward the pointer and dollies as the page scrolls, so
-  the space has somewhere to be looked at from. Both are damped rather than
-  followed, because a camera pinned to the cursor is the thing that makes a
-  3D background feel cheap.
-
-  This writes to the camera inside `useFrame` and never to React state, so
-  moving the mouse across the site re-renders nothing.
-*/
-function Rig() {
-  const { camera, size } = useThree();
-  const target = useRef({ x: 0, y: 0, scroll: 0 });
-
-  useEffect(() => {
-    const onPointer = (e: PointerEvent) => {
-      target.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      target.current.y = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    const onScroll = () => {
-      const max = Math.max(1, document.body.scrollHeight - window.innerHeight);
-      target.current.scroll = Math.min(1, window.scrollY / max);
-    };
-    onScroll();
-    window.addEventListener("pointermove", onPointer, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("pointermove", onPointer);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  useFrame((_, delta) => {
-    const t = target.current;
-    /* Frame-rate independent damping, so a 120Hz display and a 60Hz one
-       settle at the same speed rather than one being twice as twitchy. */
-    const k = 1 - Math.pow(0.0015, Math.min(delta, 0.05));
-    /* Parallax is scaled down on a narrow screen: the same lean that reads
-       as depth at 1440 reads as a wobble at 390. */
-    const scale = size.width < 760 ? 0.35 : 1;
-    camera.position.x = MathUtils.lerp(camera.position.x, t.x * PARALLAX * scale, k);
-    camera.position.y = MathUtils.lerp(
-      camera.position.y,
-      0.6 - t.y * PARALLAX * 0.6 * scale,
-      k,
-    );
-    camera.position.z = MathUtils.lerp(camera.position.z, 6.5 - t.scroll * 3.2, k);
-    camera.lookAt(0, 0.4, -6);
-  });
-
-  return null;
-}
-
-function Scene() {
+function Scene({ still, rich }: { still: boolean; rich: boolean }) {
   const theme = useStageTheme();
   const group = useRef<Group>(null);
   const { scene, gl, invalidate } = useThree();
@@ -220,16 +147,36 @@ function Scene() {
 
   return (
     <group ref={group}>
-      <fog attach="fog" args={[`#${theme.ground.getHexString()}`, 8, 30]} />
-      <ambientLight intensity={theme.dark ? 0.6 : 1.1} />
-      <Floor theme={theme} />
+      <fog attach="fog" args={[`#${theme.ground.getHexString()}`, 10, 34]} />
+      {/* Atmosphere everywhere; the storefront only where it sells. */}
       <Motes theme={theme} />
-      <Rig />
+      {rich ? (
+        <Suspense fallback={null}>
+          <StorefrontEngine still={still} />
+        </Suspense>
+      ) : null}
     </group>
   );
 }
 
 export default function Stage({ still = false }: { still?: boolean }) {
+  const pathname = usePathname();
+  /*
+    **No software-renderer gate here, and that is deliberate.**
+
+    One was added when the twelve failures above looked like a frame-rate
+    problem: it skipped the scene on SwiftShader and llvmpipe. The
+    failures turned out to be stray processes, so the gate was protecting
+    nothing, and it had a real cost: headless Chromium reports exactly
+    those renderers, so it would have quietly excluded the showpiece from
+    every CI run. A gate that makes a feature untestable is worse than no
+    gate when the thing it guards against has not been measured.
+
+    If a real device measurement later says a weak GPU struggles, it
+    comes back with that measurement attached.
+  */
+  const rich = pathname === "/" && !still;
+
   return (
     <Canvas
       /*
@@ -244,7 +191,7 @@ export default function Stage({ still = false }: { still?: boolean }) {
       camera={{ fov: 42, position: [0, 0.6, 6.5], near: 0.1, far: 60 }}
       style={{ position: "absolute", inset: 0 }}
     >
-      <Scene />
+      <Scene still={still} rich={rich} />
     </Canvas>
   );
 }
