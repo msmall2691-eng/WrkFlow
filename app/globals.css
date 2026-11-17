@@ -1468,3 +1468,35 @@ body:has(.cp) { background: #08070c; }
     opacity: 1;
   }
 }
+
+
+/*
+  The 3D stage can only be seen if the page stops painting over it.
+
+  `.cp` sets an opaque ground in each theme and is `position: static`, so a
+  `fixed` canvas behind it at a negative z-index is covered completely.
+  That is how the first version of this shipped: the canvas was created,
+  rendered every frame and cost GPU, while nobody could see one pixel of
+  it. Caught by asking `elementFromPoint` what was actually on top, and
+  then by comparing a patch of background with the stage on and off, which
+  came back identical. A screenshot alone would not have shown it, because
+  the page looked exactly as it was supposed to.
+
+  **It lives at the foot of the file, and that is load-bearing.** The first
+  attempt put it beside the Harbor ground near the top. `:root[data-stage]
+  .cp` and `:root[data-theme="light"] .cp` have the same specificity, so
+  the later rule wins, and the Daylight branch is 120 lines further down:
+  the attribute was set, the rule was ignored, and the stage stayed
+  invisible. Being last is what makes it apply in both themes.
+
+  **Gated on `data-stage`, which `StageMount` sets only once WebGL is
+  confirmed and the scene is mounted**, and clears on unmount or a lost
+  context. A browser without WebGL keeps the opaque ground exactly as
+  before. The transparency and the thing that fills it arrive together or
+  not at all, which is the only way this cannot leave somebody looking at
+  a hole.
+
+  `body` keeps its own ground underneath, so there is no flash of white
+  between first paint and the canvas's first frame.
+*/
+:root[data-stage="on"] .cp { background: transparent; }

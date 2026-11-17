@@ -3,6 +3,7 @@ import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google
 import { headers } from "next/headers";
 import "./globals.css";
 import BackToTop from "@/components/BackToTop";
+import StageMount from "@/components/three/StageMount";
 import RegisterSW from "@/components/RegisterSW";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -172,6 +173,16 @@ export default async function RootLayout({
           on every page for an easter egg no buyer will ever find) and
           ConsoleGreeting (a client-component boundary for a console.log).
         */}
+        {/*
+          The 3D stage, behind every page.
+
+          Site-wide rather than per-page on purpose: one space the content
+          moves through reads as a place, where a scene per section reads
+          as effects bolted onto a page. It is `fixed` and `-z-10`, takes
+          no pointer events, and renders nothing at all until the client
+          has confirmed WebGL, so a page is complete without it.
+        */}
+        <StageMount />
         {children}
         <BackToTop />
         <RegisterSW />
