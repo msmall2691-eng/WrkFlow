@@ -1,5 +1,6 @@
 import BookCall from "../BookCall";
 import WeatherLayer from "../WeatherLayer";
+import BlueprintRise from "./BlueprintRise";
 import PanelStage from "../panel/PanelStage";
 import PanelHeader from "../panel/PanelHeader";
 import { provingGround } from "@/lib/content";
@@ -39,17 +40,56 @@ import { provingGround } from "@/lib/content";
   depends on.
 */
 export default function Opening() {
+  /*
+    Tall on large screens, so the scene has scroll to play across, with
+    everything inside pinned to the top while it does. That is the whole of
+    "scroll-driven stages": the headline holds still and the building
+    assembles behind it, then the section releases and the shop comes up.
+
+    It costs about two thirds of a screen of page length, which is a real
+    cost on a page Meg has already called too long, and it is the thing she
+    asked for by name.
+
+    Pinned on `lg` only. Below that the inner wrapper is an ordinary block,
+    so a phone scrolls through the same stages without a sticky element it
+    has no room for.
+  */
+  /*
+    No `overflow-hidden` on PanelStage, and that is load-bearing rather than
+    tidy: a clipped ancestor becomes the scroll container for anything
+    `sticky` inside it, so the pin does nothing and the hero just scrolls
+    away. It shipped that way once in this very change, and CLAUDE.md
+    already records the same failure from the case-study page. The clipping
+    lives on the pinned wrapper instead, which is where it is wanted anyway.
+  */
   return (
-    <PanelStage className="relative flex flex-col overflow-hidden lg:min-h-[82svh]">
-      {/* The sky: aurora, a pointer glow, and live weather on top. The
-          rotating product window that used to sit beside this is gone; the
-          aurora is the only moving thing up here now. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <span className="cp-aurora cp-a1" />
-        <span className="cp-aurora cp-a2" />
-        <span className="cp-aurora cp-a3" />
-        <span className="cp-glow" />
-      </div>
+      <PanelStage className="bp-track relative flex flex-col lg:min-h-[168svh]">
+        {/*
+          No `flex-1` on this wrapper. PanelStage is a column flex container,
+          and `flex-1` stretches this child to the full 168svh of the track,
+          which leaves `sticky` nothing to stick across: it is already as
+          tall as the thing it would pin inside. One screen tall inside a
+          taller track is what creates the travel the stages play over.
+        */}
+        <div className="relative flex flex-col overflow-hidden lg:sticky lg:top-0 lg:h-svh">
+      {/*
+        The scene: a floor plan that inks itself onto paper, tips back into
+        perspective, stands its walls up and lights its windows, driven by
+        scroll.
+
+        **This replaced the aurora, at Meg's direct ask**: "3D scenes,
+        particles, moving fog, a blueprint rising into a building,
+        scroll-driven stages." The aurora was a mood; this is an argument.
+        Her buyers are contractors, rental owners and service businesses,
+        and a drawing that becomes the thing it describes is what she sells
+        them, in an image they already live in.
+
+        It keeps the aurora's colour family, because its fog is built from
+        `--cp-violet-wash` and `--cp-fill-strong` rather than a palette of
+        its own, so the hero still belongs to the V2 look rather than
+        arriving as a third style.
+      */}
+      <BlueprintRise />
       <WeatherLayer />
 
       <PanelHeader />
@@ -126,6 +166,7 @@ export default function Opening() {
           </dl>
         </div>
       </main>
+    </div>
     </PanelStage>
   );
 }
