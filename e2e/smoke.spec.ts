@@ -1128,12 +1128,18 @@ test("the shop is on the homepage, near the top, and says what it leaves out", a
     .map((i) => i.name);
   expect(unbuilt, "nothing on the workbench may appear on the shelf").toEqual([]);
 
-  /* And it owns up to the larger, quoted half rather than implying the
-     shelf is the whole shop. Same predicate as the shelf uses, so the two
-     cannot disagree about what counts as quoted. */
-  const quoted = catalog.filter(
-    (i) => i.status !== "workbench" && !decided(i.price),
-  ).length;
+  /*
+    And it owns up to the larger, built half rather than implying the shelf
+    is the whole shop.
+
+    `status === "built"` rather than "everything not priced", which is the
+    bug Codex caught on this PR: the leftover set pulls in `storefront` and
+    `directory`, two `try` demos whose own pages open by saying the business
+    is invented, and calls them proof of real businesses. Asking the field
+    that already means "running for a real business" is the single author
+    for it.
+  */
+  const quoted = catalog.filter((i) => i.status === "built").length;
   expect(text, "the shelf should say how many more are built and quoted").toContain(
     String(quoted),
   );

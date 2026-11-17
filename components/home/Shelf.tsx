@@ -95,9 +95,22 @@ export default function Shelf() {
   if (bands.length === 0) return null;
 
   const browsable = catalog.filter((i) => i.status !== "workbench").length;
-  const quoted = catalog.filter(
-    (i) => i.status !== "workbench" && !pricedForToday(i),
-  ).length;
+  /*
+    "Built and running for real businesses" is `status === "built"`, the
+    catalog's own word for exactly that, and not "everything left over once
+    the priced ones are taken out".
+
+    The leftover version shipped to review and was wrong in the way this
+    repo cares about most. It counted 19, and three of those are not
+    running for anybody: `storefront` and `directory` are `try` items whose
+    pages open by saying the business in them is invented, and `ai-setup`
+    is priced "Free first call". A sentence on the homepage calling two
+    admittedly fictional demos proof of real businesses is the "never
+    invent proof" rule broken by arithmetic rather than by a claim somebody
+    typed, which is the hard kind to see. Asking the one field that already
+    means this is also what stops it drifting again.
+  */
+  const quoted = catalog.filter((i) => i.status === "built").length;
   const priced = bands.reduce((n, b) => n + b.items.length, 0);
 
   return (
