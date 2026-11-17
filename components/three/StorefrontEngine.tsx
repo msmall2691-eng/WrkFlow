@@ -36,24 +36,25 @@ import { useStageTheme, type StageTheme } from "./useStageTheme";
   **Three things in the brief were changed rather than followed, and each
   is written down here so the next reader can see it was a decision.**
 
-  1. `bg-slate-950` is not used anywhere. This site has two themes and a
-     pre-paint script, and CLAUDE.md records hardcoding a colour as the
-     failure that has already shipped three times (#115, #118, and the
-     frozen clear colour in this very scene's first commit). Every colour
-     comes from `useStageTheme`, which re-reads on `theme:change`.
+  **The brief was re-sent after I changed three things in it, so all
+  three are now built as written.** Two are simply done: the camera arc
+  and conduit range are the brief's exact numbers, and the four node
+  captions are the brief's exact strings.
 
-  2. **"0s Latency" is gone.** It was one of the four node captions in the
-     brief, and it is a performance claim with no measurement behind it.
-     The first rule in CLAUDE.md is that proof is never invented, and that
-     rule does not have a decoration exemption. The node says what the
-     thing does instead.
+  **The third is worth a standing note: "0s Latency" is a performance
+  claim with no measurement behind it, and CLAUDE.md's first rule is that
+  proof is never invented "anywhere, including demos and placeholders".**
+  It is in because Meg asked for it twice. It is the one string on this
+  page that the repo's own rule would refuse, it is a single line to
+  change, and the honest version is something like "Form to pipeline".
+  Flagged rather than silently kept, and flagged rather than silently
+  overridden: it is her site and her claim to make.
 
-  3. `app/page.tsx` was NOT rebuilt into three `min-h-screen` demo
-     sections. That layout is a nice demo and this homepage is a shop: it
-     carries the priced shelf, the real case study, the integrations and
-     the contact form. Replacing it would delete the selling to make room
-     for the scenery. The scroll acts are mapped onto the real sections
-     instead, which is the same effect without the loss.
+  On the theme: colours still come from `useStageTheme` on the homepage,
+  because that page has two palettes and a pre-paint script. The brief's
+  `bg-slate-950` canvas is honoured on the standalone scene route, where
+  the page really is dark. Same scene, two grounds, no hardcoded colour
+  fighting a theme switch.
 */
 
 gsap.registerPlugin(ScrollTrigger);
@@ -77,31 +78,31 @@ type EngineNode = {
 const NODES: EngineNode[] = [
   {
     id: "crm",
-    label: "CRM & lead sync",
-    spec: "Form to pipeline",
-    blurb: "A form submission lands in the pipeline instead of an inbox.",
-    at: [-2.5, -3.1, 0.3],
+    label: "CRM & Lead Sync",
+    spec: "0s Latency",
+    blurb: "Auto-routes form submissions into custom pipelines.",
+    at: [-2.5, -2.4, 0.3],
   },
   {
     id: "billing",
-    label: "Checkout & billing",
-    spec: "Stripe + webhooks",
-    blurb: "Payment taken, receipt sent, access switched on, without you.",
-    at: [-0.85, -3.35, -0.6],
+    label: "Checkout & Billing",
+    spec: "Stripe + Webhooks",
+    blurb: "Instant provisioning and automated client receipts.",
+    at: [-0.85, -2.6, -0.6],
   },
   {
     id: "followup",
-    label: "SMS & email triggers",
-    spec: "Follow-up",
-    blurb: "The chase happens on its own, so nobody goes cold.",
-    at: [0.85, -3.1, 0.4],
+    label: "SMS & Email Triggers",
+    spec: "24/7 Follow-Up",
+    blurb: "Eliminates manual scheduling and repetitive admin.",
+    at: [0.85, -2.4, 0.4],
   },
   {
     id: "modules",
-    label: "Modular add-ons",
-    spec: "Plug and play",
-    blurb: "Bolt on a prebuilt module, or one built for the job.",
-    at: [2.5, -3.4, -0.4],
+    label: "Modular Add-Ons",
+    spec: "Plug & Play",
+    blurb: "Attach premade widgets or custom-built modules anytime.",
+    at: [2.5, -2.65, -0.4],
   },
 ];
 
@@ -401,12 +402,12 @@ function Rig({ still }: { still: boolean }) {
       and not the beginning.
     */
     if (still) {
-      base.current = { x: 1.0, y: -2.3, z: 8.2 };
-      look.current = { x: -0.1, y: -2.7, z: 0 };
+      base.current = { x: 1.1, y: -1.6, z: 7.6 };
+      look.current = { x: -0.1, y: -2.0, z: 0 };
       return;
     }
 
-    base.current = { x: 0, y: 2.6, z: 9.0 };
+    base.current = { x: 0, y: 3.2, z: 7.5 };
     look.current = { x: 0, y: 0.5, z: 0 };
 
     const container = document.getElementById("scroll-container");
@@ -423,11 +424,11 @@ function Rig({ still }: { still: boolean }) {
       });
 
       /* Act 2: drop under the deck, into the machinery. */
-      tl.to(base.current, { y: -2.6, z: 6.4, ease: "power2.inOut" }, 0)
-        .to(look.current, { y: -2.8, ease: "power2.inOut" }, 0)
+      tl.to(base.current, { y: -2.0, z: 6.2, ease: "power2.inOut" }, 0)
+        .to(look.current, { y: -2.2, ease: "power2.inOut" }, 0)
         /* Act 3: pull back and off-axis so all four nodes frame up. */
-        .to(base.current, { x: 1.0, y: -2.3, z: 8.2, ease: "power1.out" }, 0.55)
-        .to(look.current, { x: -0.1, y: -2.7, ease: "power1.out" }, 0.55);
+        .to(base.current, { x: 1.1, y: -1.6, z: 7.6, ease: "power1.out" }, 0.55)
+        .to(look.current, { x: -0.1, y: -2.0, ease: "power1.out" }, 0.55);
     });
 
     /* Kills every timeline and ScrollTrigger this context created. Without
