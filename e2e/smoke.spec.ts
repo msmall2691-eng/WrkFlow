@@ -1360,3 +1360,129 @@ test("every integration shown is running in a named project", async ({ page }) =
   for (const title of projects)
     expect(text, `"${title}" should be named as where an integration runs`).toContain(title as string);
 });
+
+/*
+  The hero scene keeps its promise to somebody who does not want motion.
+
+  **This test exists because the same bug was found three times, in two
+  different effects, each time on the commit that fixed the one before.**
+  The rule it guards is the oldest one in CLAUDE.md's motion section --
+  every animation has a `prefers-reduced-motion: reduce` fallback that
+  shows the end state -- and before this, nothing in this suite asserted
+  it on any page. Three rounds of review were the only thing standing
+  between the rule and a scene that ignored it, which is the arrangement
+  that guide warns about: "Neither showed up in a build, a test or a
+  Lighthouse run; both were only visible by looking."
+
+  So it is deliberately written against the *class* rather than the three
+  instances. The question is "does the preference hold, however the
+  visitor arrives at it", asked of both animated things on the card: the
+  CSS stages, which are inline custom properties and therefore beat the
+  stylesheet's reduced-motion rule, and the dust, which is a canvas the
+  stylesheet cannot reach at all.
+
+  The viewport is 1440x900 because the pin is gated on height as well as
+  width (`min-height: 820px`), so Playwright's 1280x720 default exercises
+  the unpinned path and would quietly assert nothing about the pinned one.
+
+  Smooth scrolling is turned off for the reason recorded in the component:
+  a synchronous scroll-then-read samples mid-animation and reads stages
+  that look stuck.
+
+  Verified by breaking each half and watching exactly this test fail:
+  reverting the dust loop's preference listener fails on the canvas, and
+  reverting `apply()`'s reduced-motion guard fails on the stages.
+*/
+test("the hero scene honors reduced motion however it is switched on", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  /* How much dust is painted right now. The canvas is the half no
+     stylesheet can stop, so it is measured in pixels rather than trusted. */
+  const litPixels = () =>
+    page.evaluate(() => {
+      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
+      if (!cv) return -1;
+      const ctx = cv.getContext("2d");
+      if (!ctx) return -1;
+      const d = ctx.getImageData(0, 0, cv.width, cv.height).data;
+      let lit = 0;
+      for (let i = 3; i < d.length; i += 4) if (d[i] > 0) lit++;
+      return lit;
+    });
+
+  const stages = () =>
+    page.evaluate(() => {
+      const el = document.querySelector(".bp");
+      if (!el) return null;
+      const s = getComputedStyle(el);
+      const read = (n: string) => Number.parseFloat(s.getPropertyValue(n).trim() || "0");
+      return { tilt: read("--tilt"), rise: read("--rise"), light: read("--light") };
+    });
+
+  /* 1. Loaded with the preference already on: the building is finished
+        rather than flat, and no dust is painted. */
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await page.addStyleTag({ content: "html{scroll-behavior:auto !important}" });
+  await expect(page.locator(".bp")).toBeVisible();
+  await page.waitForTimeout(600);
+
+  expect(await stages(), "loading with reduced motion should show the end state").toEqual({
+    tilt: 1,
+    rise: 1,
+    light: 1,
+  });
+  const onLoad = await litPixels();
+  expect(onLoad, "the dust canvas should be found and reported on").toBeGreaterThanOrEqual(0);
+  expect(onLoad, "loading with reduced motion should paint no dust").toBe(0);
+
+  /* 2. With motion allowed, scroll halfway through the scene's own travel
+        -- computed the way the component computes it, so the test cannot
+        drift from the thing it measures -- and confirm it really is
+        mid-arc. A card already finished here would make step 3 pass
+        without proving anything. */
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  const half = await page.evaluate(() => {
+    const t = document.querySelector(".bp-track") ?? document.querySelector(".bp");
+    if (!t) return 0;
+    const box = t.getBoundingClientRect();
+    const travel = Math.max(window.innerHeight * 0.6, box.height - window.innerHeight);
+    return box.top + window.scrollY + travel * 0.5;
+  });
+  await page.evaluate((y) => window.scrollTo(0, y), half);
+  await page.waitForTimeout(500);
+
+  const midArc = await stages();
+  expect(midArc, "the scene should read its stages").not.toBeNull();
+  expect(
+    midArc!.rise,
+    "halfway through the travel the walls should be partway up, not finished",
+  ).toBeGreaterThan(0);
+  expect(midArc!.rise, "halfway through the travel the walls should not be finished").toBeLessThan(1);
+  expect(await litPixels(), "dust should be painting when motion is allowed").toBeGreaterThan(0);
+
+  /* 3. The preference goes on with the page open and scrolled. Both halves
+        have to answer, and the stages are the interesting one: they are
+        inline custom properties, so the stylesheet's reduced-motion rule
+        loses to them and only the script can stand down. */
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.waitForTimeout(400);
+
+  expect(
+    await stages(),
+    "switching reduced motion on mid-scene should settle it to the end state",
+  ).toEqual({ tilt: 1, rise: 1, light: 1 });
+  expect(await litPixels(), "switching reduced motion on should clear the dust").toBe(0);
+
+  /* 4. And it stays stood down. This is the step that caught the third
+        bug: settling once is easy, and the next scroll event overwrote it
+        because `apply()` never re-read the preference. */
+  await page.evaluate((y) => window.scrollTo(0, y + 240), half);
+  await page.waitForTimeout(500);
+
+  expect(
+    await stages(),
+    "scrolling further under reduced motion must not restart the arc",
+  ).toEqual({ tilt: 1, rise: 1, light: 1 });
+  expect(await litPixels(), "scrolling further under reduced motion must not repaint dust").toBe(0);
+});

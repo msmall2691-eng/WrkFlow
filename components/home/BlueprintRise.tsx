@@ -113,11 +113,19 @@ export default function BlueprintRise() {
       el.style.setProperty("--light", "1");
     };
 
-    if (reduced.matches) {
-      settle();
-      return;
-    }
+    /*
+      There is deliberately no early return here for "reduced motion is on
+      at mount", and that absence is the whole of a fourth bug in this
+      class.
 
+      Returning early left the scroll, resize and preference listeners
+      unbound, so the scene was settled for good: a visitor who loaded the
+      page with the setting on and then turned it *off* got a hero that
+      never moved again, with nothing to say why. `apply()` already asks
+      the preference on every run and settles when it is on, so the
+      opening call below is correct either way and the listeners can stay
+      bound. One asker, in one place, as with the dust below.
+    */
     const apply = () => {
       frame = 0;
       /*
@@ -193,7 +201,7 @@ export default function BlueprintRise() {
     const cv = dust.current;
     const el = root.current;
     if (!cv || !el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const ctx = cv.getContext("2d");
     if (!ctx) return;
@@ -258,14 +266,56 @@ export default function BlueprintRise() {
       raf = 0;
     };
 
+    /*
+      Three things decide whether the dust runs, and they now get one
+      reader rather than one each. The scroll stages next door were caught
+      by review for asking the motion preference only at mount; the same
+      question was being asked three ways here and two of the answers
+      were stale.
+
+      The preference was read once, above, before any of this, so turning
+      reduced motion on while the page was open left the canvas painting
+      -- the identical failure one effect along, and the reduced-motion
+      CSS cannot help, because this is a canvas rather than a transform.
+      `document.hidden` was read *inside* the observer callback, which
+      only fires when the element crosses the viewport: so a hidden tab
+      stopped the dust and returning to it never started the dust again,
+      since `io.takeRecords()` hands back the queued entries and nothing
+      read them.
+
+      Keeping the three answers in one predicate is what stops the next
+      input arriving with a fourth opinion.
+    */
+    let onScreen = false;
+    const sync = () => {
+      if (onScreen && !document.hidden && !reduced.matches) start();
+      else stop();
+    };
+
     const io = new IntersectionObserver(
-      ([e]) => (e.isIntersecting && !document.hidden ? start() : stop()),
+      ([e]) => {
+        onScreen = e.isIntersecting;
+        sync();
+      },
       { threshold: 0 },
     );
     io.observe(el);
 
-    const onVis = () => (document.hidden ? stop() : io.takeRecords(), undefined);
-    document.addEventListener("visibilitychange", onVis);
+    document.addEventListener("visibilitychange", sync);
+    /*
+      Switching the preference on clears the canvas as well as stopping
+      it, and the order matters: stop first, so no queued frame repaints
+      what we just wiped. Stopping alone would leave the last frame
+      painted, so a visitor who asked for less motion would be left
+      looking at 44 static specks while somebody who loaded the page with
+      it on sees none. `settle()` next door makes the same promise --
+      however you arrive at reduced motion, you get the same picture.
+    */
+    const onPref = () => {
+      sync();
+      if (reduced.matches) ctx.clearRect(0, 0, w, h);
+    };
+    reduced.addEventListener("change", onPref);
     const onResize = () => {
       size();
       paint();
@@ -275,7 +325,8 @@ export default function BlueprintRise() {
     return () => {
       stop();
       io.disconnect();
-      document.removeEventListener("visibilitychange", onVis);
+      document.removeEventListener("visibilitychange", sync);
+      reduced.removeEventListener("change", onPref);
       window.removeEventListener("resize", onResize);
     };
   }, []);
