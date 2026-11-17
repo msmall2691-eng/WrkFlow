@@ -1230,3 +1230,39 @@ body:has(.cp) { background: #08070c; }
   -webkit-mask-image: radial-gradient(ellipse 70% 80% at 30% 20%, #000 20%, transparent 75%);
   mask-image: radial-gradient(ellipse 70% 80% at 30% 20%, #000 20%, transparent 75%);
 }
+
+/* /demo/lakeside (Mistwood Cove), the cinematic-site demo. Its own look,
+   not the studio's: warm paper, slate ink, Fraunces. */
+.lake .lake-serif { font-family: var(--font-fraunces), Georgia, serif; font-weight: 400; letter-spacing: -0.02em; }
+.lake .lake-sky { background: linear-gradient(180deg, #34455b 0%, #8b98a3 42%, #d8d2c8 52%, #6c7d86 60%, #1d2a30 100%); }
+.lake .lake-line {
+  grid-area: 1 / 1;
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 600ms cubic-bezier(.2,.8,.2,1), transform 600ms cubic-bezier(.2,.8,.2,1);
+}
+.lake .lake-line[data-on="true"] { opacity: 1; transform: none; }
+.lake .lake-scroll {
+  width: 1px; height: 28px; background: linear-gradient(#fff, transparent);
+  animation: lake-drip 1.8s ease-in-out infinite;
+}
+@keyframes lake-drip { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+.lake .lake-card {
+  display: block; border-radius: 18px; border: 1px solid rgba(29, 42, 48, 0.12);
+  background: #fbfaf7; padding: 14px; cursor: pointer;
+  transition: border-color 150ms, transform 250ms cubic-bezier(.2,.8,.2,1), box-shadow 250ms;
+}
+.lake .lake-card:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -24px rgba(29, 42, 48, 0.35); }
+.lake .lake-card[aria-pressed="true"] { border-color: #1d2a30; box-shadow: 0 0 0 1px #1d2a30; }
+.lake .lake-day {
+  min-height: 44px; border-radius: 10px; border: 1px solid rgba(238, 242, 243, 0.14);
+  background: transparent; color: #eef2f3; font: inherit; font-size: 14px; cursor: pointer;
+  transition: background-color 150ms, color 150ms;
+}
+.lake .lake-day:hover:not(:disabled) { background: rgba(238, 242, 243, 0.08); }
+.lake .lake-day[data-taken="true"] { color: rgba(238, 242, 243, 0.3); text-decoration: line-through; cursor: not-allowed; }
+.lake .lake-day[data-on="true"] { background: #eef2f3; color: #1d2a30; font-weight: 600; }
+.lake a:focus-visible, .lake button:focus-visible { outline: 2px solid #8fc7d9; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .lake .lake-line, .lake .lake-card { transition: none; }
+  .lake .lake-scroll { animation: none; }
+}
