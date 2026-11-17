@@ -97,8 +97,17 @@ export default function BlueprintRise() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+    let frame = 0;
+
     const settle = () => {
-      /* The finished building, held still. See the header note. */
+      /*
+        The finished building, held still. See the header note.
+
+        It cancels any queued frame, because an `apply` already scheduled
+        would otherwise land a moment later and undo this.
+      */
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
       el.style.setProperty("--tilt", "1");
       el.style.setProperty("--rise", "1");
       el.style.setProperty("--light", "1");
@@ -109,9 +118,24 @@ export default function BlueprintRise() {
       return;
     }
 
-    let frame = 0;
     const apply = () => {
       frame = 0;
+      /*
+        Checked here, not only at mount, because the preference can be
+        turned on while the page is open and that is exactly the moment it
+        matters most: somebody switching it on mid-page is doing it because
+        the motion is bothering them.
+
+        Settling in the `change` handler alone was not enough. The scroll
+        and resize listeners stay bound, so the next scroll called this and
+        wrote intermediate stages straight back over the settled ones, and
+        because these are inline properties they beat the reduced-motion
+        CSS. The building carried on moving with the setting enabled.
+      */
+      if (reduced.matches) {
+        settle();
+        return;
+      }
       /*
         Measured against the TALL outer section, never against this element.
 
