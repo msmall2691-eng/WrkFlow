@@ -15,32 +15,39 @@ const PORT = 3100;
 export default defineConfig({
   testDir: "./e2e",
   /*
-    No custom timeout here, and that is a decision with a history.
+    No custom timeout here, and that is a decision with a history that is
+    now closed.
 
-    **An intermittent hang on /work/maine-cleaning-co fails roughly half of
-    all CI runs**, and it is not any one branch's: run 79 hit it on `main`
-    itself, immediately after #137 merged, with the same four tests —
-    three navigations to that route plus the homepage's first build capture.
+    **An intermittent hang on /work/maine-cleaning-co used to fail roughly
+    half of all CI runs**, on `main` as well as on pull requests. Raising
+    this to 90s was tried and reverted: at 90s the same four tests still
+    failed, having burned 10.5 minutes instead of 5. A page that renders
+    in 0.43s locally and does not finish in 90s is hanging, not running
+    slowly, and no budget fixes a hang.
 
-    Raising this to 90s was tried and reverted, because the diagnosis behind
-    it was wrong. The theory was a slow runner with no margin; the evidence
-    killed it. At 90s the same four tests still failed, having burned 10.5
-    minutes instead of 5. A page that renders in 0.43s locally and does not
-    finish in 90s on CI is hanging, not running slowly, and no budget fixes
-    a hang. It only makes each failure cost more.
+    **It was an upstream Next.js bug and it is now worked around in
+    `e2e/warm-images.ts`**, which carries the full write-up. In short:
+    `/_next/image` under a self-hosted `next start` builds its internal
+    response on the requesting client's socket, so a client that goes away
+    during a COLD transform leaves that cache key's generator unsettled
+    for the life of the process, and every later request for that exact
+    URL waits forever. vercel/next.js#96538, fixed upstream by #98168,
+    not yet in the 15.5.x line we are on.
 
-    What has been ruled out, so nobody re-derives it: the page loads in
-    0.43s locally against an emptied .next/cache/images at Playwright's own
-    viewport, requesting four images. Cold-encoding every width of the
-    largest source with the server pinned to two cores peaks at 0.6s. Next
-    emits WebP only here, so the expensive AVIF path is not in play. No
-    reproduction locally, cold or CPU-pinned, in a browser or over curl.
+    Three guesses were recorded here before that, and all three were
+    wrong, so it is worth saying what settled it: not reasoning, but
+    reproducing it in three commands (abort a cold transform, request the
+    same URL, watch it hang, then watch a different width of the same file
+    answer in 283ms) and then reading the real CI trace, which showed every
+    resource completing in under 150ms except four /_next/image requests
+    that never completed at all.
 
-    What is still unexplained, and is the thread to pull next: the four
-    images that page loads eagerly are the only PNGs the suite waits on, and
-    every page whose captures are .webp has never failed. That is a
-    correlation, not a cause, and it is written here rather than acted on
-    because three confident guesses have already been wrong.
+    The old note's loose end is also explained rather than left hanging.
+    It read: "the four images that page loads eagerly are the only PNGs
+    the suite waits on, and every page whose captures are .webp has never
+    failed. That is a correlation, not a cause." It is the cause one step
+    removed: a PNG transform takes longer than a WebP one, so its window
+    to be aborted is wider.
   */
   // A failing smoke test is a real failure, so don't paper over it locally.
   retries: process.env.CI ? 1 : 0,
@@ -50,6 +57,11 @@ export default defineConfig({
     baseURL: `http://127.0.0.1:${PORT}`,
     trace: "on-first-retry",
   },
+  /*
+    Runs after webServer is up and before the first test, which is the only
+    window where it can do its job. See the file for why it exists.
+  */
+  globalSetup: "./e2e/warm-images.ts",
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
     command: `npm run build && npx next start -p ${PORT}`,
