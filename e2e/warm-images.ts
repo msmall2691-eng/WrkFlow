@@ -66,6 +66,32 @@ import type { FullConfig } from "@playwright/test";
   cache it was sent to fill.
 */
 
+/*
+  The Accept header Chromium sends for an image, which is part of the
+  cache key and therefore part of this file's correctness.
+
+  **The first version of this warmed the wrong entry, and a review bot
+  caught it.** Node's `fetch` sends `Accept: *\/*`. Next's optimizer reads
+  the Accept header to decide the output format and puts that format in
+  the cache key, so `*\/*` warms a PNG and the browser then asks for, and
+  cold-transforms, a WebP under a different key. Measured on one URL:
+
+      Accept: *\/*            -> 324ms, content-type: image/png
+      Accept: (this constant) ->  59ms, content-type: image/webp
+      two key directories on disk for one URL
+
+  So the whole step was a no-op against the failure it exists to prevent:
+  every key the browser actually uses stayed cold. Worth recording as its
+  own lesson, because it would have passed CI, passed review by eye, and
+  simply not worked.
+
+  It also quietly confirms the PNG/WebP asymmetry elsewhere in this file:
+  the WebP transform took 59ms where the PNG took 324ms, which is why PNG
+  pages were the ones that ever failed.
+*/
+const BROWSER_ACCEPT =
+  "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8";
+
 /** Pull every /_next/image URL out of a page's HTML, from src and srcset. */
 function imageUrls(html: string): string[] {
   const found = html.match(/\/_next\/image\?[^"'\s]+/g) ?? [];
@@ -130,16 +156,22 @@ export default async function warmImages(config: FullConfig) {
   const queue = [...urls];
   let warmed = 0;
   const failed: string[] = [];
+  const formats = new Map<string, number>();
 
   const worker = async () => {
     for (;;) {
       const u = queue.pop();
       if (!u) return;
       try {
-        const res = await fetch(`${base}${u}`);
+        const res = await fetch(`${base}${u}`, {
+          headers: { Accept: BROWSER_ACCEPT },
+        });
         await res.arrayBuffer();
-        if (res.ok) warmed += 1;
-        else failed.push(`${res.status} ${u}`);
+        if (res.ok) {
+          warmed += 1;
+          const t = (res.headers.get("content-type") ?? "unknown").split(";")[0];
+          formats.set(t, (formats.get(t) ?? 0) + 1);
+        } else failed.push(`${res.status} ${u}`);
       } catch (e) {
         failed.push(`${(e as Error).message} ${u}`);
       }
@@ -147,10 +179,32 @@ export default async function warmImages(config: FullConfig) {
   };
   await Promise.all(Array.from({ length: POOL }, worker));
 
+  /*
+    Prove the right entries were warmed rather than assume it.
+
+    This is the check the first version did not have, and its absence is
+    exactly why warming the wrong format shipped: the step reported
+    "365/365 warmed" while every key the browser would ask for was still
+    cold. An optimized content-type coming back is the observable proof
+    that content negotiation took the same branch the browser takes, so
+    if this header ever drifts from what Playwright's Chromium sends, the
+    run says so instead of quietly going back to being a no-op.
+  */
+  const negotiated = [...formats].filter(([t]) => t !== "image/png" && t !== "image/jpeg");
+  if (warmed > 0 && negotiated.length === 0) {
+    throw new Error(
+      "warm-images: every response came back in its source format " +
+        `(${[...formats.keys()].join(", ")}). The optimizer did not negotiate, ` +
+        "so these are not the cache entries the browser will use. Check that " +
+        "BROWSER_ACCEPT still matches what the test browser sends.",
+    );
+  }
+
   const secs = ((Date.now() - started) / 1000).toFixed(1);
+  const breakdown = [...formats].map(([t, n]) => `${n} ${t}`).join(", ");
   console.log(
     `warm-images: ${warmed}/${urls.size} optimized images warmed across ` +
-      `${paths.length} pages in ${secs}s`,
+      `${paths.length} pages in ${secs}s (${breakdown})`,
   );
   if (failed.length > 0) {
     console.log(`warm-images: ${failed.length} did not warm:`);
