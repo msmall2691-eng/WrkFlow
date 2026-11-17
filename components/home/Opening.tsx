@@ -63,15 +63,23 @@ export default function Opening() {
     lives on the pinned wrapper instead, which is where it is wanted anyway.
   */
   return (
-      <PanelStage className="bp-track relative flex flex-col lg:min-h-[168svh]">
+      <PanelStage className="bp-track relative flex flex-col">
         {/*
-          No `flex-1` on this wrapper. PanelStage is a column flex container,
-          and `flex-1` stretches this child to the full 168svh of the track,
-          which leaves `sticky` nothing to stick across: it is already as
-          tall as the thing it would pin inside. One screen tall inside a
-          taller track is what creates the travel the stages play over.
+          The pin lives in CSS (`.bp-track` / `.bp-pin`) rather than in `lg:`
+          utilities, because it has to be gated on viewport HEIGHT as well as
+          width and Tailwind's `lg:` is width only.
+
+          Two things it must not do, both found by Codex on this PR. It must
+          not carry `flex-1`, which stretches this child to the full height of
+          the track and leaves `sticky` nothing to stick across. And it must
+          not be a fixed height with `overflow-hidden` on a short window: at
+          1280x620 the content measured 671px against a 620px wrapper, so 51px
+          of it, including the end of the operating-history row, was clipped
+          and unreachable, because scrolling moves the track rather than the
+          pinned box. Anyone on a short laptop window or with larger text hit
+          it. Below the height threshold there is simply no pin.
         */}
-        <div className="relative flex flex-col overflow-hidden lg:sticky lg:top-0 lg:h-svh">
+        <div className="bp-pin relative flex flex-col">
       {/*
         The scene: a floor plan that inks itself onto paper, tips back into
         perspective, stands its walls up and lights its windows, driven by

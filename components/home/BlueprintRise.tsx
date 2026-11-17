@@ -124,10 +124,21 @@ export default function BlueprintRise() {
       */
       const track = el.closest(".bp-track") ?? el;
       const box = track.getBoundingClientRect();
-      /* The travel is the part of the section that scrolls past before its
-         bottom reaches the bottom of the screen, which is what the pin
-         actually costs. */
-      const travel = Math.max(1, box.height - window.innerHeight);
+      /*
+        Pinned, the travel is the part of the section that scrolls past
+        before its bottom reaches the bottom of the screen, which is what
+        the pin costs. Unpinned, that figure is wrong and can be nearly
+        zero: the hero is then only a little taller than the viewport, so
+        `height - innerHeight` collapses and the whole four-stage build
+        fires within a few pixels of scroll. Measured on an iPhone 13 it
+        was 240px, and on a taller phone or with shorter content it reaches
+        the floor of 1 and snaps straight to the finished building.
+
+        So there is a floor of six tenths of a screen. On a pinned desktop
+        the real travel is larger and wins; everywhere else the stages get
+        a scroll-through range somebody can actually watch.
+      */
+      const travel = Math.max(window.innerHeight * 0.6, box.height - window.innerHeight);
       const p = Math.min(1, Math.max(0, -box.top / travel));
       el.style.setProperty("--tilt", stage(p, 0.08, 0.46).toFixed(4));
       el.style.setProperty("--rise", stage(p, 0.34, 0.76).toFixed(4));
