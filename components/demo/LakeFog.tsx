@@ -18,7 +18,8 @@ import { useEffect, useRef } from "react";
       sun leans toward the cursor.
 
   Rules kept, as on the M Studio homepage canvas:
-    - prefers-reduced-motion draws one still frame (and redraws on scroll).
+    - prefers-reduced-motion holds a still frame, redrawn only when the
+      scroll position changes.
     - It stops when off screen or the tab is hidden, tracked separately.
     - It renders below device resolution (it is soft by nature) to stay
       light on phones. Without WebGL the CSS gradient behind it shows.
@@ -233,12 +234,19 @@ export default function LakeFog({
       gl!.drawArrays(gl!.TRIANGLES, 0, 3);
     }
 
+    // Reduced motion keeps a loop too, but it only redraws when the scroll
+    // position the page wrote has changed, so the still never lags behind
+    // the parent's own frame-timed update (Codex, #146).
+    let lastLift = -1;
     function loop(now: number) {
-      draw(now);
+      if (!reduce || lift.current !== lastLift) {
+        lastLift = lift.current;
+        draw(now);
+      }
       if (running) raf = requestAnimationFrame(loop);
     }
     function update() {
-      const should = inView && tabShown && !reduce;
+      const should = inView && tabShown;
       if (should && !running) {
         running = true;
         raf = requestAnimationFrame(loop);
@@ -272,11 +280,6 @@ export default function LakeFog({
       mouse.ty = 1 - e.clientY / window.innerHeight;
     };
     window.addEventListener("pointermove", onMove, { passive: true });
-    // With reduced motion there is no loop, so scrolling redraws the still.
-    const onScroll = () => {
-      if (reduce) draw(performance.now());
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       running = false;
@@ -285,7 +288,6 @@ export default function LakeFog({
       io.disconnect();
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("scroll", onScroll);
       gl!.deleteProgram(prog);
     };
   }, [lift]);

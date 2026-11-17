@@ -113,9 +113,12 @@ export default function LakesideDemo() {
     return false;
   }, [from, to]);
 
+  // A taken night can still be the morning somebody leaves (Codex, #146).
+  const canCheckOut = (d: number) => !!from && !to && d > from;
+
   function pick(d: number) {
     setRequested(false);
-    if (BOOKED.has(d)) return;
+    if (BOOKED.has(d) && !canCheckOut(d)) return;
     if (!from || (from && to) || d <= from) {
       setFrom(d);
       setTo(null);
@@ -230,7 +233,7 @@ export default function LakesideDemo() {
             <div className="mt-2 grid grid-cols-7 gap-1.5">
               {Array.from({ length: MONTH.firstDow - 1 }).map((_, i) => <span key={`b${i}`} />)}
               {Array.from({ length: MONTH.days }, (_, i) => i + 1).map((d) => {
-                const taken = BOOKED.has(d);
+                const taken = BOOKED.has(d) && !canCheckOut(d);
                 const inRange = from && to ? d >= from && d <= to : d === from;
                 return (
                   <button
