@@ -247,9 +247,29 @@ export default function BlueprintRise() {
       raf = requestAnimationFrame(tick);
     };
 
-    /* `fill` comes from CSS so the motes follow the theme rather than
-       being a hardcoded colour, which is the failure this repo has shipped
-       twice. */
+    /*
+      The ink comes from CSS so the motes follow the theme rather than
+      being a hardcoded colour, which is the failure this repo has shipped
+      twice (#115, #118).
+
+      **Reading a token once is the third spelling of that failure, and
+      this shipped with it.** `ctx.fillStyle` is a copy, not a reference:
+      taking it at mount makes a token as frozen as a literal from the
+      next repaint onward. Harbor is reachable from the command palette
+      at any moment, and measured across that switch the canvas kept
+      painting rgb(11,23,34) while the ground went to rgb(8,7,12) --
+      about 1.05:1, so the dust simply vanished. The same in reverse:
+      near-white motes on cream. A build, a typecheck and the whole
+      browser suite are all silent on it, which is exactly what that
+      guide note says about both earlier instances.
+
+      So the ink is re-read on `theme:change`, the event `lib/theme.ts`
+      already dispatches and that `WeatherLayer`, `DaylightSky`,
+      `AuroraSwell`, `ReactiveAurora` and `LiveReadout` already listen
+      for. This was the one themed thing on the page not subscribed to
+      it. No redraw is needed alongside it: `tick` clears and repaints
+      every mote, so the next frame carries the new ink.
+    */
     const paint = () => {
       ctx.fillStyle = getComputedStyle(cv).color || "#1e2a44";
     };
@@ -316,6 +336,7 @@ export default function BlueprintRise() {
       if (reduced.matches) ctx.clearRect(0, 0, w, h);
     };
     reduced.addEventListener("change", onPref);
+    window.addEventListener("theme:change", paint);
     const onResize = () => {
       size();
       paint();
@@ -327,6 +348,7 @@ export default function BlueprintRise() {
       io.disconnect();
       document.removeEventListener("visibilitychange", sync);
       reduced.removeEventListener("change", onPref);
+      window.removeEventListener("theme:change", paint);
       window.removeEventListener("resize", onResize);
     };
   }, []);

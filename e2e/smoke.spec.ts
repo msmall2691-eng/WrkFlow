@@ -1486,3 +1486,103 @@ test("the hero scene honors reduced motion however it is switched on", async ({ 
   ).toEqual({ tilt: 1, rise: 1, light: 1 });
   expect(await litPixels(), "scrolling further under reduced motion must not repaint dust").toBe(0);
 });
+
+/*
+  The hero scene's dust is painted in the theme that is on screen now.
+
+  **The third instance of this repo's most-repeated failure, and the one
+  that finally got a test.** CLAUDE.md records two: #115, a chip
+  hardcoded dark that went white-on-white in Harbor, and #118,
+  illustrations drawn in white that vanished when the site moved to a
+  light default. Both were invisible to a build, a typecheck and this
+  suite, and the guide says so in those words.
+
+  This one is sneakier, because the colour *is* a token and looks correct
+  in review: `ctx.fillStyle = getComputedStyle(cv).color` reads the token
+  properly, once. `fillStyle` is a copy rather than a reference, so from
+  the next repaint on, a token is as frozen as a literal. Measured across
+  a palette switch the canvas kept painting rgb(11,23,34) while the
+  ground went to rgb(8,7,12), about 1.05:1.
+
+  So the assertion is the invariant rather than the two colours: whatever
+  the canvas is painting must equal what CSS currently says, in both
+  themes. That cannot go stale when the palette is retuned, which a test
+  naming specific values would. It also checks the ink genuinely differs
+  between the themes, because an invariant compared against itself would
+  pass just as happily if both themes shared one colour and the whole
+  question were moot.
+
+  The theme is switched the way `lib/theme.ts` does it -- Harbor is the
+  *absence* of `data-theme`, not `data-theme="dark"` -- so that the test
+  exercises the real mechanism. Verified by removing the `theme:change`
+  listener and watching this fail.
+*/
+test("the hero scene paints its dust in the theme that is on screen", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await expect(page.locator(".bp")).toBeVisible();
+  await page.waitForTimeout(600);
+
+  /* Both normalised to hex, because getComputedStyle answers in rgb()
+     and fillStyle answers in #rrggbb. */
+  const ink = () =>
+    page.evaluate(() => {
+      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
+      if (!cv) return null;
+      const ctx = cv.getContext("2d");
+      if (!ctx) return null;
+      const hex = (c: string) => {
+        const t = c.trim().toLowerCase();
+        /* fillStyle already answers in #rrggbb, and running the rgb()
+           parser over it mangles the string: the digit runs in "#0b1722"
+           are "0" and "1722", which reassemble as "#006ba". Caught by
+           this test failing on its own helper. */
+        if (t.startsWith("#")) {
+          return t.length === 4
+            ? "#" + [...t.slice(1)].map((d) => d + d).join("")
+            : t;
+        }
+        const m = t.match(/[\d.]+/g);
+        if (!m) return t;
+        return (
+          "#" +
+          m
+            .slice(0, 3)
+            .map((n) => Math.round(Number(n)).toString(16).padStart(2, "0"))
+            .join("")
+        );
+      };
+      return {
+        painting: hex(String(ctx.fillStyle)),
+        css: hex(getComputedStyle(cv).color),
+      };
+    });
+
+  const first = await ink();
+  expect(first, "the dust canvas should be on the page").not.toBeNull();
+  expect(
+    first!.painting,
+    "the dust should be painted in the ink CSS currently specifies",
+  ).toBe(first!.css);
+
+  /* Exactly what applyTheme() does: Harbor is the absence of the
+     attribute, and the event is what every other themed layer listens
+     for. */
+  await page.evaluate(() => {
+    const root = document.documentElement;
+    if (root.dataset.theme === "light") delete root.dataset.theme;
+    else root.dataset.theme = "light";
+    window.dispatchEvent(new Event("theme:change"));
+  });
+  await page.waitForTimeout(400);
+
+  const second = await ink();
+  expect(
+    second!.css,
+    "the two palettes should specify different ink, or this test proves nothing",
+  ).not.toBe(first!.css);
+  expect(
+    second!.painting,
+    "after a palette switch the dust should be repainted in the new ink",
+  ).toBe(second!.css);
+});
