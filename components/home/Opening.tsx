@@ -84,16 +84,22 @@ export default function Opening() {
               Book a free 15-min call <span aria-hidden="true">→</span>
             </BookCall>
             {/*
-              Names what is actually down there, rather than "See the work".
-              The old button promised the work and landed on four one-line
-              rows of project names; this one promises one job told all the
-              way through, which is what #work now holds.
+              Points at the shop, not at the portfolio, and that is the
+              storefront rebuild in one line.
+
+              It read "See one job, start to finish" and landed on the case
+              study. Fine for a portfolio, wrong here: measured on the live
+              site, a visitor met their first purchasable price on screen 12
+              of 18, and the one button offering an alternative to booking a
+              call sent them further into the proof rather than to the
+              goods. The case study is still the next thing after the shelf;
+              it just stops being the only thing the hero offers.
             */}
             <a
-              href="#work"
+              href="#shelf"
               className="inline-flex items-center rounded-xl border border-[color:var(--cp-hairline-strong)] px-5 py-3.5 text-[15px] font-medium text-[color:var(--cp-ink)] no-underline transition-colors duration-150 hover:border-[color:var(--cp-hairline-strong)]"
             >
-              See one job, start to finish
+              See everything, with prices
             </a>
           </div>
         </div>

@@ -164,7 +164,11 @@ export default function TryItNow() {
           </Link>
           <Link
             href="/catalog?c=rentals"
-            className="text-[14px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
+            /* inline-flex + py-1.5 makes this a 28px tap target; as a bare
+               14px line it rendered 21px, under the 24px minimum. Caught
+               by the homepage sweep once that stopped running against a
+               hardcoded list of sections and started finding its own. */
+            className="inline-flex items-center py-1.5 text-[14px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
           >
             Just the rental tools <span aria-hidden="true">→</span>
           </Link>

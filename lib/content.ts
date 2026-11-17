@@ -1114,6 +1114,19 @@ export const ladder: LadderItem[] = [
     body: "Paste any URL and get a real speed, SEO and accessibility report. Yours or a competitor's.",
     href: "/tools?tool=sitecheck",
   },
+  /*
+    The Digital Welcome Book was missing from this list entirely, which is a
+    plain gap rather than a decision. It is the most tangible thing on the
+    site: a real product, at a real price, with its own page and its own
+    demo, and the only item anywhere carrying a number a visitor can act on
+    without a conversation. It was reachable from `forRentals` and from
+    /marketplace and from nowhere else, so the one list that answers "what
+    can I get and what does it cost" left out the clearest answer it had.
+
+    `href` sends somebody to the product's own page rather than to the
+    marketplace index, which is the point of having one.
+  */
+  { service: "websites", rung: "buy", market: "welcome-book", href: "/welcome-book" },
   { service: "websites", rung: "buy", project: "website" },
   {
     service: "websites",
