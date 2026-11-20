@@ -1500,3 +1500,41 @@ body:has(.cp) { background: #08070c; }
   between first paint and the canvas's first frame.
 */
 :root[data-stage="on"] .cp { background: transparent; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   A dark island on a light page.
+
+   The work canvas hero is near-black by Meg's direct ask, on a site whose
+   default palette is Daylight. Everything inside it that reads a token was
+   therefore rendering for cream: the header wordmark came out navy on
+   near-black and effectively vanished, which is #115 and #118 for the third
+   time, in the one spot where the whole point is that it looks expensive.
+
+   So the island re-declares the tokens rather than the components
+   restyling themselves. A custom property set on the element beats one
+   inherited from `.cp`, and this selector matches the specificity of the
+   Daylight branch, so it holds in both palettes: in Harbor these are
+   already the values and the rule is a no-op.
+
+   **These are copies of the Harbor block above and have to track it.**
+   That is a real cost and it is the smaller one: the alternative is each
+   component inside the hero growing its own dark variant, which is seven
+   places to get wrong instead of one.
+   ───────────────────────────────────────────────────────────────────────── */
+:root[data-theme="light"] .cp-night {
+  color-scheme: dark;
+  --cp-ink: #f2f0f7;
+  --cp-soft: #cfcadf;
+  --cp-muted: #a8a4b8;
+  --cp-faint: #8f8ba0;
+  --cp-line: rgba(255, 255, 255, 0.08);
+  --cp-violet-ink: #b9a2ff;
+  --cp-violet-line: rgba(185, 162, 255, 0.4);
+  --cp-on-ink: #08070c;
+  --cp-hairline: rgba(255, 255, 255, 0.14);
+  --cp-hairline-strong: rgba(255, 255, 255, 0.28);
+  --cp-fill: rgba(255, 255, 255, 0.035);
+  --cp-fill-strong: rgba(255, 255, 255, 0.08);
+  --color-base: #08070c;
+  --color-ink: #f2f0f7;
+}

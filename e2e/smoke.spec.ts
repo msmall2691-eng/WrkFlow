@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 /* The router test asserts its counts against the same source the component
    reads, so a literal here cannot drift from the real work list. Static
@@ -7,6 +9,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
+import { canvasTiles } from "../lib/canvasTiles";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1363,68 +1366,80 @@ test("every integration shown is running in a named project", async ({ page }) =
 });
 
 /*
-  The hero shows a real capture of a real system, and it is the picture
-  rather than a drawing of one.
+  Every tile on the hero is a real capture of a real thing, with the
+  price that thing already carries.
 
-  **Three heroes have now been built on this page and this is the promise
+  **Four heroes have now been built on this page and this is the promise
   that outlived all of them.** The CSS blueprint went, the storefront and
-  engine went, and what Meg has been pointing at throughout is work she
-  actually shipped being shown as itself. So the test is on the evidence,
-  not on the technique: whatever renders the hero, the image in it has to
-  be a file in `public/shots/` that something in `work` claims is real.
+  engine went, the editorial masthead went. What Meg has been pointing at
+  the whole way is work she actually shipped, shown as itself. So the test
+  is on the evidence rather than on the technique.
 
-  That is the first rule in CLAUDE.md applied to the largest element on
-  the page. A hero illustration nobody built is the same invented proof as
-  a made-up statistic, drawn instead of written.
+  It is also the strongest version of it yet, because this hero is the
+  shop: a tile is not decoration, it is a thing with a price and a
+  destination. A tile for something unbuilt would be invented proof with a
+  price tag on it.
 */
-test("the hero shows a real capture that the work list vouches for", async ({ page }) => {
+test("every tile on the hero is a real capture of something real", async ({ page }) => {
+  expect(canvasTiles.length, "the wall needs enough tiles to read as one").toBeGreaterThanOrEqual(12);
+
+  for (const t of canvasTiles) {
+    expect(t.image, `${t.name} should show a capture from public/shots`).toMatch(/^\/shots\//);
+    expect(
+      existsSync(join(process.cwd(), "public", t.image)),
+      `${t.image} is on the hero and not on disk`,
+    ).toBe(true);
+    /* `catalog` requires an image on everything except `workbench`, so a
+       tile that got through with no price is a tile for something unbuilt. */
+    expect(t.price, `${t.name} is on the hero with no price`).toBeTruthy();
+  }
+
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const hero = page.locator("section").first();
-  const src = await hero.locator("img").first().getAttribute("src");
-
-  expect(src, "the hero should carry a picture").toBeTruthy();
-  expect(
-    src,
-    `the hero image ${src} should come from public/shots, which is real captures only`,
-  ).toMatch(/^\/shots\//);
-
-  /* And the work list has to claim it, so the picture cannot drift away
-     from the project it is evidence for. */
-  const claimed = work.some((w) => w.shot === src);
-  expect(
-    claimed,
-    `nothing in \`work\` claims ${src}, so the hero is showing a picture of nothing`,
-  ).toBe(true);
+  /* The Index is the same list, and it is the copy a keyboard and a
+     screen reader get, so it has to carry the names and the prices. */
+  await page.getByRole("button", { name: "index" }).click();
+  const index = page.locator("ol").first();
+  const text = (await index.textContent()) ?? "";
+  for (const t of canvasTiles.slice(0, 8)) {
+    expect(text, `the index should list ${t.name}`).toContain(t.name);
+  }
 });
 
 /*
-  Reduced motion gets the picture, held.
+  The hero survives without WebGL and without motion.
 
-  The rule in CLAUDE.md is that the fallback shows the end state rather
-  than a blank. For a hero whose whole content is one image, that means
-  the image is still there and still the right one; only the movement
-  goes. The `<img>` underneath is what guarantees it, which is also what
-  keeps the hero visible on a browser with no WebGL at all.
+  A full-screen hero that is a WebGL canvas and nothing else is a blank
+  black rectangle on a machine that cannot draw it. The Index is not a
+  degraded view here, it is the same list in a form that always renders,
+  which is why the component switches to it rather than showing an empty
+  frame.
 */
-test("the hero keeps its picture under reduced motion", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
+test("the hero still lists the work without WebGL", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  /* Refuse every WebGL context, the way a locked-down or very old browser
+     does, before any of the page's own script runs. */
+  await page.addInitScript(() => {
+    HTMLCanvasElement.prototype.getContext = function () {
+      return null;
+    } as typeof HTMLCanvasElement.prototype.getContext;
+  });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(1500);
 
-  const img = page.locator("section").first().locator("img").first();
-  await expect(img, "reduced motion should still get the picture").toBeVisible();
+  await expect(
+    page.locator("#canvas-heading"),
+    "the headline should survive a browser with no WebGL",
+  ).toBeVisible();
 
-  const painted = await img.evaluate(
-    (el) => (el as HTMLImageElement).naturalWidth > 0,
-  );
-  expect(painted, "the hero picture should actually have loaded").toBe(true);
+  const text = (await page.locator("ol").first().textContent()) ?? "";
+  expect(
+    text,
+    "with no canvas to draw, the hero should fall back to the index rather than a black rectangle",
+  ).toContain(canvasTiles[0].name);
 
-  /* Whatever happens to the hero, the page keeps a real ground. */
-  const ground = await page.evaluate(
-    () => getComputedStyle(document.body).backgroundColor,
-  );
-  expect(ground).not.toBe("rgba(0, 0, 0, 0)");
+  await ctx.close();
 });
