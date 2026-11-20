@@ -46,15 +46,11 @@ const FilmStripScene = dynamic(() => import("./FilmStripScene"), {
   ssr: false,
 });
 
-/* The Vesper particle wordmark, built from the licensed prompt. */
-const VesperStage = dynamic(() => import("../vesper/VesperStage"), {
-  ssr: false,
-});
 
-type View = "particles" | "strip" | "index";
+type View = "strip" | "index";
 
 export default function WorkCanvas() {
-  const [view, setView] = useState<View>("particles");
+  const [view, setView] = useState<View>("strip");
   const [ready, setReady] = useState(false);
   const [still, setStill] = useState(false);
   const [hover, setHover] = useState<CanvasTile | null>(null);
@@ -100,9 +96,6 @@ export default function WorkCanvas() {
       aria-labelledby="canvas-heading"
     >
       {/* The wall. */}
-      {/* The particle wordmark. Its own canvas, so switching views does
-          not rebuild the other one's GPU context. */}
-      {ready && view === "particles" ? <VesperStage word="M STUDIO" /> : null}
 
       <div
         id="film-strip"
@@ -122,7 +115,7 @@ export default function WorkCanvas() {
         type is legible over a dark screenshot and gone over a white one,
         which is a thing that only shows up on the fourth drag.
       */}
-      {view !== "index" ? (
+      {view === "strip" ? (
         <div
           aria-hidden="true"
           /* Top-to-bottom on a phone, where the strip is vertical and the copy
@@ -261,13 +254,13 @@ export default function WorkCanvas() {
             role="group"
             aria-label="How to view the work"
           >
-            {(["particles", "strip", "index"] as const).map((v) => (
+            {(["strip", "index"] as const).map((v) => (
               <button
                 key={v}
                 type="button"
                 onClick={() => setView(v)}
                 aria-pressed={view === v}
-                disabled={v !== "index" && !ready}
+                disabled={v === "strip" && !ready}
                 className={`min-h-9 rounded-full px-4 text-[13px] capitalize transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-40 ${
                   view === v
                     ? "bg-white text-[#0a0a0c]"

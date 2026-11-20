@@ -60,6 +60,9 @@ const ASSEMBLE_MS = 2500;
 */
 const PLACE_X = 1.25;
 const PLACE_Y = -0.05;
+/* On the spline, three units in front of where the camera starts, so
+   the word is the first thing seen and is flown past rather than cut. */
+const PLACE_Z = 7;
 const PLACE_SCALE = 0.75;
 
 /* The spec's attractor, in CSS pixels and in strength. */
@@ -244,7 +247,7 @@ export default function VesperHero({
       const r = Math.sqrt(1 - z * z) * (2.6 + (i % 7) * 0.12);
       start[i * 3] = Math.cos(a) * r + PLACE_X;
       start[i * 3 + 1] = Math.sin(a) * r * 0.62 + PLACE_Y;
-      start[i * 3 + 2] = z * 2.2;
+      start[i * 3 + 2] = z * 2.2 + PLACE_Z;
       seed[i] = (i % 211) * 0.0297;
     }
 
@@ -257,7 +260,7 @@ export default function VesperHero({
     for (let i = 0; i < count; i += 1) {
       target[i * 3] = target[i * 3] * PLACE_SCALE + PLACE_X;
       target[i * 3 + 1] = target[i * 3 + 1] * PLACE_SCALE + PLACE_Y;
-      target[i * 3 + 2] *= PLACE_SCALE;
+      target[i * 3 + 2] = target[i * 3 + 2] * PLACE_SCALE + PLACE_Z;
     }
     g.setAttribute("aTarget", new BufferAttribute(target, 3));
     g.setAttribute("aSeed", new BufferAttribute(seed, 1));

@@ -1,3 +1,4 @@
+import VesperJourney from "@/components/vesper/VesperJourney";
 import WorkCanvas from "@/components/home/WorkCanvas";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
@@ -36,7 +37,10 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    WorkCanvas   the hero: everything built, as a wall of real captures
+    VesperJourney the particle wordmark, then the camera flight past the
+                 five project planets. Its own 600svh section, because
+                 that is what the spline needs to be scrolled through
+    WorkCanvas   everything built, as a wall of real captures
                  you drag through, lit by the cursor, with an Index view
                  that is the same list as a table. Every tile is a real
                  thing with a real price
@@ -76,6 +80,7 @@ import CommandPalette from "@/components/CommandPalette";
 export default function Home() {
   return (
     <div className="cp">
+      <VesperJourney word="M STUDIO" />
       <WorkCanvas />
       <Shelf />
       <TryItNow />
