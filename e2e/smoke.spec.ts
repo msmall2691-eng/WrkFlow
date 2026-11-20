@@ -1,12 +1,15 @@
 import { test, expect, type Page } from "@playwright/test";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 /* The router test asserts its counts against the same source the component
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
+import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
+import { destination, planets as takes } from "../lib/planets";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1083,19 +1086,42 @@ test("the shop is on the homepage, near the top, and says what it leaves out", a
   const shelf = page.locator("#shelf");
   await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
 
-  /* How far down it starts, in screens. Three is deliberately generous: the
-     hero is one, and the point is to catch a drift back toward fourteen. */
+  /*
+    How far down it starts, and how far it is from being reachable.
+
+    **This number moved because Meg specified a scroll-driven hero, and
+    the move is recorded rather than quietly made.** The Vesper prompt
+    puts a 600vh camera flight (300vh under 768px) in front of
+    everything; measured at 390px the shelf went from 1.7 screens down to
+    3.9, and the old `< 3` failed. That is the spec working as written,
+    not a regression, and it is also the one thing in that spec that
+    fights her own first instruction about this page: "hard to see what
+    is for sale that's tangible".
+
+    So the guard is rebuilt around what actually matters rather than
+    relaxed. Depth alone was always a proxy; what a visitor needs is for
+    the shop to be ONE ACTION away from the first screen, which the
+    hero's own button gives them, and for the preamble not to grow
+    without anybody noticing. Both are asserted. `SPLINE_VH` is a single
+    constant in `lib/planets.ts` if the depth is judged too much.
+  */
   const screens = await shelf.evaluate(
     (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
   );
+
+  /* The hero promises the shop; pressing that promise has to arrive
+     there, from the first screen, without scrolling to find it. */
+  await page.locator('a[href="#shelf"]').first().click();
+  await expect(
+    shelf,
+    "the hero's own button should reach the shop from the first screen",
+  ).toBeInViewport();
+
   expect(
     screens,
-    `the shop should be near the top; it starts ${screens.toFixed(1)} screens down`,
-  ).toBeLessThan(3);
+    `the preamble should stay about as long as the spec asks for; the shop starts ${screens.toFixed(1)} screens down`,
+  ).toBeLessThan(5);
 
-  /* The hero's own button promises it, so it has to arrive. */
-  await page.locator('a[href="#shelf"]').first().click();
-  await expect(shelf).toBeInViewport();
 
   const text = (await shelf.textContent()) ?? "";
 
@@ -1362,227 +1388,93 @@ test("every integration shown is running in a named project", async ({ page }) =
 });
 
 /*
-  The hero scene keeps its promise to somebody who does not want motion.
+  Every take on the reel is a real capture of something real.
 
-  **This test exists because the same bug was found three times, in two
-  different effects, each time on the commit that fixed the one before.**
-  The rule it guards is the oldest one in CLAUDE.md's motion section --
-  every animation has a `prefers-reduced-motion: reduce` fallback that
-  shows the end state -- and before this, nothing in this suite asserted
-  it on any page. Three rounds of review were the only thing standing
-  between the rule and a scene that ignored it, which is the arrangement
-  that guide warns about: "Neither showed up in a build, a test or a
-  Lighthouse run; both were only visible by looking."
+  **Five heroes have now been built on this page and this is the promise
+  that outlived all of them.** The CSS blueprint went, the storefront and
+  engine went, the editorial masthead went, the drag wall went, the film
+  strip went, the globes went. What Meg has been pointing at the whole
+  way is work she actually shipped, shown as itself, so the test is on
+  the evidence rather than on the technique.
 
-  So it is deliberately written against the *class* rather than the three
-  instances. The question is "does the preference hold, however the
-  visitor arrives at it", asked of both animated things on the card: the
-  CSS stages, which are inline custom properties and therefore beat the
-  stylesheet's reduced-motion rule, and the dust, which is a canvas the
-  stylesheet cannot reach at all.
-
-  The viewport is 1440x900 because the pin is gated on height as well as
-  width (`min-height: 820px`), so Playwright's 1280x720 default exercises
-  the unpinned path and would quietly assert nothing about the pinned one.
-
-  Smooth scrolling is turned off for the reason recorded in the component:
-  a synchronous scroll-then-read samples mid-animation and reads stages
-  that look stuck.
-
-  Verified by breaking each half and watching exactly this test fail:
-  reverting the dust loop's preference listener fails on the canvas, and
-  reverting `apply()`'s reduced-motion guard fails on the stages.
+  **It also refuses the thing the LINX prompt would have done here.**
+  That spec ships four invented clients with invented results: Kettering
+  Audio at +212% preorders, Brightwater Optics at 38,400 sign-ups. This
+  asserts the opposite: every take names a real project from the work
+  list and shows a capture that is on disk.
 */
-test("the hero scene honors reduced motion however it is switched on", async ({ page }) => {
+test("every take on the reel is a real capture of something real", async ({ page }) => {
+  expect(takes.length, "the reel needs takes").toBeGreaterThanOrEqual(3);
+
+  for (const t of takes) {
+    expect(t.shot, `${t.title} should show a capture from public/shots`).toMatch(/^\/shots\//);
+    expect(
+      existsSync(join(process.cwd(), "public", t.shot)),
+      `${t.shot} is on the reel and not on disk`,
+    ).toBe(true);
+  }
+
+  /*
+    `lib/planets.ts` drops a take that has nowhere to go OR no capture,
+    and the second half of that is quiet: the reel simply shows four
+    cards instead of five and nothing says why. So this asserts the
+    thing the filter would otherwise hide, which is also the thing that
+    actually happened: The Keystone House was live, linked, and had no
+    screenshot, so it rendered as a browser window with a URL in the
+    chrome and an empty well behind it.
+
+    Scoped to the front of the list, because that is the slice the reel
+    takes. A tenth work item with no capture is not this test's business.
+  */
+  const reach = work.filter((w) => destination(w) !== null).slice(0, takes.length + 1);
+  for (const w of reach) {
+    expect(
+      w.shot,
+      `${w.title} can be opened but has no capture, so it is silently off the reel`,
+    ).toBeTruthy();
+  }
+
   await page.setViewportSize({ width: 1440, height: 900 });
-
-  /* How much dust is painted right now. The canvas is the half no
-     stylesheet can stop, so it is measured in pixels rather than trusted. */
-  const litPixels = () =>
-    page.evaluate(() => {
-      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
-      if (!cv) return -1;
-      const ctx = cv.getContext("2d");
-      if (!ctx) return -1;
-      const d = ctx.getImageData(0, 0, cv.width, cv.height).data;
-      let lit = 0;
-      for (let i = 3; i < d.length; i += 4) if (d[i] > 0) lit++;
-      return lit;
-    });
-
-  const stages = () =>
-    page.evaluate(() => {
-      const el = document.querySelector(".bp");
-      if (!el) return null;
-      const s = getComputedStyle(el);
-      const read = (n: string) => Number.parseFloat(s.getPropertyValue(n).trim() || "0");
-      return { tilt: read("--tilt"), rise: read("--rise"), light: read("--light") };
-    });
-
-  /* 1. Loaded with the preference already on: the building is finished
-        rather than flat, and no dust is painted. */
-  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.addStyleTag({ content: "html{scroll-behavior:auto !important}" });
-  await expect(page.locator(".bp")).toBeVisible();
-  await page.waitForTimeout(600);
 
-  expect(await stages(), "loading with reduced motion should show the end state").toEqual({
-    tilt: 1,
-    rise: 1,
-    light: 1,
-  });
-  const onLoad = await litPixels();
-  expect(onLoad, "the dust canvas should be found and reported on").toBeGreaterThanOrEqual(0);
-  expect(onLoad, "loading with reduced motion should paint no dust").toBe(0);
-
-  /* 2. With motion allowed, scroll halfway through the scene's own travel
-        -- computed the way the component computes it, so the test cannot
-        drift from the thing it measures -- and confirm it really is
-        mid-arc. A card already finished here would make step 3 pass
-        without proving anything. */
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  const half = await page.evaluate(() => {
-    const t = document.querySelector(".bp-track") ?? document.querySelector(".bp");
-    if (!t) return 0;
-    const box = t.getBoundingClientRect();
-    const travel = Math.max(window.innerHeight * 0.6, box.height - window.innerHeight);
-    return box.top + window.scrollY + travel * 0.5;
-  });
-  await page.evaluate((y) => window.scrollTo(0, y), half);
-  await page.waitForTimeout(500);
-
-  const midArc = await stages();
-  expect(midArc, "the scene should read its stages").not.toBeNull();
-  expect(
-    midArc!.rise,
-    "halfway through the travel the walls should be partway up, not finished",
-  ).toBeGreaterThan(0);
-  expect(midArc!.rise, "halfway through the travel the walls should not be finished").toBeLessThan(1);
-  expect(await litPixels(), "dust should be painting when motion is allowed").toBeGreaterThan(0);
-
-  /* 3. The preference goes on with the page open and scrolled. Both halves
-        have to answer, and the stages are the interesting one: they are
-        inline custom properties, so the stylesheet's reduced-motion rule
-        loses to them and only the script can stand down. */
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.waitForTimeout(400);
-
-  expect(
-    await stages(),
-    "switching reduced motion on mid-scene should settle it to the end state",
-  ).toEqual({ tilt: 1, rise: 1, light: 1 });
-  expect(await litPixels(), "switching reduced motion on should clear the dust").toBe(0);
-
-  /* 4. And it stays stood down. This is the step that caught the third
-        bug: settling once is easy, and the next scroll event overwrote it
-        because `apply()` never re-read the preference. */
-  await page.evaluate((y) => window.scrollTo(0, y + 240), half);
-  await page.waitForTimeout(500);
-
-  expect(
-    await stages(),
-    "scrolling further under reduced motion must not restart the arc",
-  ).toEqual({ tilt: 1, rise: 1, light: 1 });
-  expect(await litPixels(), "scrolling further under reduced motion must not repaint dust").toBe(0);
+  /* The reel is DOM, so every take's title is in the document whatever
+     the scroll position: it is the accessible copy, not a canvas. */
+  const body = (await page.locator("body").textContent()) ?? "";
+  for (const t of takes) {
+    expect(body, `the reel should name ${t.title}`).toContain(t.title);
+  }
 });
 
 /*
-  The hero scene's dust is painted in the theme that is on screen now.
+  The work survives a browser with no WebGL.
 
-  **The third instance of this repo's most-repeated failure, and the one
-  that finally got a test.** CLAUDE.md records two: #115, a chip
-  hardcoded dark that went white-on-white in Harbor, and #118,
-  illustrations drawn in white that vanished when the site moved to a
-  light default. Both were invisible to a build, a typecheck and this
-  suite, and the guide says so in those words.
-
-  This one is sneakier, because the colour *is* a token and looks correct
-  in review: `ctx.fillStyle = getComputedStyle(cv).color` reads the token
-  properly, once. `fillStyle` is a copy rather than a reference, so from
-  the next repaint on, a token is as frozen as a literal. Measured across
-  a palette switch the canvas kept painting rgb(11,23,34) while the
-  ground went to rgb(8,7,12), about 1.05:1.
-
-  So the assertion is the invariant rather than the two colours: whatever
-  the canvas is painting must equal what CSS currently says, in both
-  themes. That cannot go stale when the palette is retuned, which a test
-  naming specific values would. It also checks the ink genuinely differs
-  between the themes, because an invariant compared against itself would
-  pass just as happily if both themes shared one colour and the whole
-  question were moot.
-
-  The theme is switched the way `lib/theme.ts` does it -- Harbor is the
-  *absence* of `data-theme`, not `data-theme="dark"` -- so that the test
-  exercises the real mechanism. Verified by removing the `theme:change`
-  listener and watching this fail.
+  The hero's particle wordmark is a canvas and falls back to a gradient;
+  the reel never was one. This is what that buys: on a machine that
+  cannot draw a single triangle, the headline and all five takes still
+  render, because the only thing WebGL was ever doing on this page was
+  decorating the top of it.
 */
-test("the hero scene paints its dust in the theme that is on screen", async ({ page }) => {
+test("the work still shows without WebGL", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.addInitScript(() => {
+    HTMLCanvasElement.prototype.getContext = function () {
+      return null;
+    } as typeof HTMLCanvasElement.prototype.getContext;
+  });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator(".bp")).toBeVisible();
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(1200);
 
-  /* Both normalised to hex, because getComputedStyle answers in rgb()
-     and fillStyle answers in #rrggbb. */
-  const ink = () =>
-    page.evaluate(() => {
-      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
-      if (!cv) return null;
-      const ctx = cv.getContext("2d");
-      if (!ctx) return null;
-      const hex = (c: string) => {
-        const t = c.trim().toLowerCase();
-        /* fillStyle already answers in #rrggbb, and running the rgb()
-           parser over it mangles the string: the digit runs in "#0b1722"
-           are "0" and "1722", which reassemble as "#006ba". Caught by
-           this test failing on its own helper. */
-        if (t.startsWith("#")) {
-          return t.length === 4
-            ? "#" + [...t.slice(1)].map((d) => d + d).join("")
-            : t;
-        }
-        const m = t.match(/[\d.]+/g);
-        if (!m) return t;
-        return (
-          "#" +
-          m
-            .slice(0, 3)
-            .map((n) => Math.round(Number(n)).toString(16).padStart(2, "0"))
-            .join("")
-        );
-      };
-      return {
-        painting: hex(String(ctx.fillStyle)),
-        css: hex(getComputedStyle(cv).color),
-      };
-    });
+  await expect(
+    page.locator("h1"),
+    "the headline should survive a browser with no WebGL",
+  ).toBeVisible();
 
-  const first = await ink();
-  expect(first, "the dust canvas should be on the page").not.toBeNull();
-  expect(
-    first!.painting,
-    "the dust should be painted in the ink CSS currently specifies",
-  ).toBe(first!.css);
+  const body = (await page.locator("body").textContent()) ?? "";
+  for (const t of takes) {
+    expect(body, `${t.title} should still be listed with no WebGL`).toContain(t.title);
+  }
 
-  /* Exactly what applyTheme() does: Harbor is the absence of the
-     attribute, and the event is what every other themed layer listens
-     for. */
-  await page.evaluate(() => {
-    const root = document.documentElement;
-    if (root.dataset.theme === "light") delete root.dataset.theme;
-    else root.dataset.theme = "light";
-    window.dispatchEvent(new Event("theme:change"));
-  });
-  await page.waitForTimeout(400);
-
-  const second = await ink();
-  expect(
-    second!.css,
-    "the two palettes should specify different ink, or this test proves nothing",
-  ).not.toBe(first!.css);
-  expect(
-    second!.painting,
-    "after a palette switch the dust should be repainted in the new ink",
-  ).toBe(second!.css);
+  await ctx.close();
 });

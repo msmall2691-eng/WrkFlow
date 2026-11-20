@@ -1,4 +1,5 @@
-import Opening from "@/components/home/Opening";
+import ReelHero from "@/components/reel/ReelHero";
+import TakeReel from "@/components/reel/TakeReel";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
 import OneJob from "@/components/home/OneJob";
@@ -36,7 +37,12 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    Opening      who it is for, and one button to the shelf
+    ReelHero     one screen: the particle wordmark behind a two-line
+                 title, sans then serif italic, and two pill buttons
+    TakeReel     the work, as a browser window pinned on the right with
+                 four takes swapping inside it. Cards, not globes, at
+                 Meg's ask, and DOM rather than WebGL because nothing
+                 here needs a GPU
     Shelf        id="shelf" — the whole catalog, with prices, grouped by
                  what it costs rather than by what it is
     TryItNow     the three demos, which the shelf deliberately carries as
@@ -73,7 +79,8 @@ import CommandPalette from "@/components/CommandPalette";
 export default function Home() {
   return (
     <div className="cp">
-      <Opening />
+      <ReelHero />
+      <TakeReel />
       <Shelf />
       <TryItNow />
       <OneJob />

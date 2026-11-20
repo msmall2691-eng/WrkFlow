@@ -419,6 +419,11 @@ export const work: WorkItem[] = [
     blurb: "A digital welcome book for our Maine short-term rental: check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
     stack: ["Next.js", "Vercel"],
     url: "https://keystonestay.maineclean.co",
+    /* Captured from the live site on Nov 20 2026, at the 2208x1380 every
+       other shot here uses. It was the one work item with a destination
+       and no capture, which the reel renders as a browser window with a
+       URL in its chrome and nothing inside it. */
+    shot: "/shots/keystone.png",
     live: true,
   },
   {

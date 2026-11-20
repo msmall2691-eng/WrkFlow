@@ -95,16 +95,25 @@ export function middleware(request: NextRequest) {
   const rewriteUrl = questionnaireRewrite(request);
 
   /*
-    Theme default: Daylight, always.
+    Theme default: Harbor, always.
 
-    This used to follow the Portland sun — dark from sunset to sunrise — which
-    meant half the world's visitors met a near-black page and the studio read
-    as a night-time thing. Daylight is the brand now; Harbor is a preference
-    someone opts into, and the inline script in the layout still reads their
-    stored choice first. The sun math it replaced has not gone away: the hero's
+    This has now been all three. It followed the Portland sun, which meant
+    half the world's visitors met a near-black page and the studio read as a
+    night-time thing. Then Daylight, always, because near-black and neon read
+    as a developer tool to contractors and admin firms rather than as somebody
+    who will build their business a site.
+
+    Nov 20 2026: Harbor, at Meg's word, after she picked out three dark
+    cinematic sites in a row and said so plainly. The Daylight argument above
+    was a guess about her buyers; this is her call about her own brand, and
+    hers outranks it. Daylight has not been deleted, it is a preference
+    someone opts into in the palette, and the inline script in the layout
+    still reads their stored choice first.
+
+    The sun math the first version used has not gone away: the hero's
     day-scrubber still uses it to preview the accent's arc through a Maine day.
   */
-  requestHeaders.set("x-theme-default", "light");
+  requestHeaders.set("x-theme-default", "dark");
 
   const response = rewriteUrl
     ? NextResponse.rewrite(rewriteUrl, { request: { headers: requestHeaders } })
