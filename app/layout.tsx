@@ -3,7 +3,6 @@ import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google
 import { headers } from "next/headers";
 import "./globals.css";
 import BackToTop from "@/components/BackToTop";
-import StageMount from "@/components/three/StageMount";
 import RegisterSW from "@/components/RegisterSW";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -182,7 +181,6 @@ export default async function RootLayout({
           no pointer events, and renders nothing at all until the client
           has confirmed WebGL, so a page is complete without it.
         */}
-        <StageMount />
         {children}
         <BackToTop />
         <RegisterSW />

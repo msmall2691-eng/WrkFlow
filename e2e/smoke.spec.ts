@@ -7,7 +7,6 @@ import { test, expect, type Page } from "@playwright/test";
 import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
-import { engineNodes } from "../lib/engineNodes";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1084,41 +1083,16 @@ test("the shop is on the homepage, near the top, and says what it leaves out", a
   const shelf = page.locator("#shelf");
   await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
 
-  /*
-    How far down it starts, in screens.
-
-    **This was `< 3` on the reasoning "the hero is one", and the opening is
-    three screens now at Meg's instruction, so the number had to move.**
-    Moving a threshold to make a test pass is the thing this repo refuses,
-    so it is not a looser version of the same check: the assertion that
-    actually guards the failure is the first one, which says the shop is
-    the NEXT thing after the opening rather than at some tolerated depth.
-    That one cannot be satisfied by padding, and it is what would fail if
-    the shelf drifted back toward screen fourteen.
-
-    The ceiling then only has to bound the opening itself. Measured at
-    390x844 it is 3.34 screens (1.07 + 1.00 + 1.26, the last being the
-    four module cards in one column) and 3.68 at 1440x900, so four fails
-    on a fourth act or on any act growing by a screen.
-  */
-  const depth = await shelf.evaluate((el) => {
-    const vh = window.innerHeight;
-    const acts = document.getElementById("scroll-container");
-    const top = (el.getBoundingClientRect().top + window.scrollY) / vh;
-    const after = acts
-      ? top - (acts.getBoundingClientRect().bottom + window.scrollY) / vh
-      : top;
-    return { top, after };
-  });
-
+  /* How far down it starts, in screens. Three is deliberately generous:
+     the hero is one, and the point is to catch a drift back toward
+     fourteen, which is where the shop was before the storefront rebuild. */
+  const screens = await shelf.evaluate(
+    (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
+  );
   expect(
-    depth.after,
-    `the shop should be the next thing after the opening; it starts ${depth.after.toFixed(2)} screens after it ends`,
-  ).toBeLessThan(0.5);
-  expect(
-    depth.top,
-    `the opening should stay three acts long; the shop starts ${depth.top.toFixed(1)} screens down`,
-  ).toBeLessThan(4);
+    screens,
+    `the shop should be near the top; it starts ${screens.toFixed(1)} screens down`,
+  ).toBeLessThan(3);
 
   /* The hero's own button promises it, so it has to arrive. */
   await page.locator('a[href="#shelf"]').first().click();
@@ -1389,246 +1363,68 @@ test("every integration shown is running in a named project", async ({ page }) =
 });
 
 /*
-  The hero scene keeps its two promises, now that the scene is WebGL.
+  The hero shows a real capture of a real system, and it is the picture
+  rather than a drawing of one.
 
-  **These replace two tests written against the CSS 3D blueprint, and the
-  replacement is deliberate rather than a deletion.** That hero is gone:
-  Meg asked for an immersive 3D hero and said plainly she did not want
-  the square box. The PROMISES it carried are not gone, and this repo's
-  own lesson is that deleting a screen deletes its tests, which is how a
-  rule quietly stops being checked.
+  **Three heroes have now been built on this page and this is the promise
+  that outlived all of them.** The CSS blueprint went, the storefront and
+  engine went, and what Meg has been pointing at throughout is work she
+  actually shipped being shown as itself. So the test is on the evidence,
+  not on the technique: whatever renders the hero, the image in it has to
+  be a file in `public/shots/` that something in `work` claims is real.
 
-  Both promises are in CLAUDE.md, both have shipped broken before, and
-  both broke again inside this very feature: the canvas clear colour was
-  set once at creation, so Harbor rendered cream under light text.
-  Measured, not assumed.
-
-  What changed is how they are observable. There is no `fillStyle` to
-  read on a WebGL canvas, so the theme promise is asserted on the ground
-  the visitor actually sees, sampled from a screenshot, which is a
-  stronger check than reading a property: it is the pixels.
+  That is the first rule in CLAUDE.md applied to the largest element on
+  the page. A hero illustration nobody built is the same invented proof as
+  a made-up statistic, drawn instead of written.
 */
-test("the hero scene's ground follows the theme that is on screen", async ({ page }) => {
+test("the hero shows a real capture that the work list vouches for", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await page.waitForTimeout(2500);
 
-  /* An empty strip low on the first screen, away from copy and controls. */
-  const CLIP = { x: 40, y: 700, width: 160, height: 120 };
+  const hero = page.locator("section").first();
+  const src = await hero.locator("img").first().getAttribute("src");
 
-  const read = async () => {
-    const png = await page.screenshot({ clip: CLIP });
-    const body = await page.evaluate(
-      () => getComputedStyle(document.body).backgroundColor,
-    );
-    return { png, body };
-  };
-
-  const first = await read();
-
-  await page.evaluate(() => {
-    const root = document.documentElement;
-    if (root.dataset.theme === "light") delete root.dataset.theme;
-    else root.dataset.theme = "light";
-    window.dispatchEvent(new Event("theme:change"));
-  });
-  await page.waitForTimeout(2000);
-  const second = await read();
-
+  expect(src, "the hero should carry a picture").toBeTruthy();
   expect(
-    second.body,
-    "the two palettes should specify different grounds, or this proves nothing",
-  ).not.toBe(first.body);
+    src,
+    `the hero image ${src} should come from public/shots, which is real captures only`,
+  ).toMatch(/^\/shots\//);
 
-  /*
-    The painted ground has to CHANGE with the palette. If the scene held a
-    colour copied at creation, these bytes would be identical while the
-    stylesheet said otherwise, which is exactly the bug this guards.
-  */
+  /* And the work list has to claim it, so the picture cannot drift away
+     from the project it is evidence for. */
+  const claimed = work.some((w) => w.shot === src);
   expect(
-    Buffer.compare(first.png, second.png),
-    "the scene's ground should repaint when the palette changes",
-  ).not.toBe(0);
+    claimed,
+    `nothing in \`work\` claims ${src}, so the hero is showing a picture of nothing`,
+  ).toBe(true);
 });
 
 /*
-  Reduced motion gets the scene held, not removed.
+  Reduced motion gets the picture, held.
 
-  The rule is that the fallback shows the end state. A visitor who cannot
-  have animation should still get the space; what they must not get is a
-  blank rectangle where the hero was, or a page whose background is
-  transparent with nothing behind it.
+  The rule in CLAUDE.md is that the fallback shows the end state rather
+  than a blank. For a hero whose whole content is one image, that means
+  the image is still there and still the right one; only the movement
+  goes. The `<img>` underneath is what guarantees it, which is also what
+  keeps the hero visible on a browser with no WebGL at all.
 */
-test("the hero scene goes still under reduced motion rather than blank", async ({ page }) => {
+test("the hero keeps its picture under reduced motion", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await page.waitForTimeout(2500);
+  await page.waitForTimeout(2000);
 
-  const state = await page.evaluate(() => {
-    const host = document.querySelector(".fixed.-z-10");
-    const canvas = host?.querySelector("canvas") as HTMLCanvasElement | null;
-    return {
-      mounted: document.documentElement.dataset.stage ?? "(none)",
-      hasCanvas: !!canvas,
-      painted: (canvas?.width ?? 0) > 0 && (canvas?.height ?? 0) > 0,
-      ground: getComputedStyle(document.body).backgroundColor,
-    };
-  });
+  const img = page.locator("section").first().locator("img").first();
+  await expect(img, "reduced motion should still get the picture").toBeVisible();
 
-  expect(state.hasCanvas, "reduced motion should still get the scene").toBe(true);
-  expect(state.painted, "the held scene should still have a drawing surface").toBe(true);
-  expect(
-    state.mounted,
-    "the stage should report itself mounted so the page is not left transparent",
-  ).toBe("on");
-  /* Whatever happens to the scene, the page keeps a real ground. */
-  expect(state.ground).not.toBe("rgba(0, 0, 0, 0)");
-});
+  const painted = await img.evaluate(
+    (el) => (el as HTMLImageElement).naturalWidth > 0,
+  );
+  expect(painted, "the hero picture should actually have loaded").toBe(true);
 
-/*
-  The three acts, and the thing a literal reading of the brief would have
-  deleted.
-
-  Meg asked for the three-act 3D opening on the homepage. The brief's own
-  version of act one is a card reading "The storefront / The part your
-  customer sees", put at `app/page.tsx`, which means the h1, both calls to
-  action and the operating history from The Maine Cleaning Co all go. Those
-  numbers are the only confirmed hard evidence on this site, so losing them
-  to a layout change is the regression worth a test rather than a comment.
-
-  **The last assertion is one indirection away from the behaviour, and that
-  is said out loud.** `Rig` scrubs the camera against `#scroll-container`
-  by id, so what it is bound to is not observable from the page; what IS
-  observable is which element carries the id. It used to be the page
-  wrapper, which stretched three camera beats over eighteen screens, so a
-  visitor reading act three saw a camera still somewhere in act one. The
-  pixels cannot settle the question because the motes never stop drifting.
-*/
-test("the homepage opens on three acts without losing the hero", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
-
-  /* The hero's own content, which the brief's act one would have replaced. */
-  await expect(page.locator("h1")).toHaveText(/Software that runs/);
-  await expect(page.locator('a[href="#shelf"]').first()).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Book a free 15-min call/i }).first(),
-  ).toBeVisible();
-  /* The Maine Cleaning Co's own numbers, labelled as theirs. */
-  await expect(page.getByText(provingGround.label).first()).toBeVisible();
-  for (const stat of provingGround.stats)
-    await expect(page.getByText(stat.label).first()).toBeVisible();
-
-  const acts = page.locator("#scroll-container");
-  await expect(acts, "the acts should be one element the camera can be bound to").toHaveCount(1);
-
-  /* Three acts, in order: the storefront, then the wiring, then the engine. */
-  const headings = await acts.locator("h1, h2").allTextContents();
-  expect(headings.length, `expected three acts, found ${headings.length}`).toBe(3);
-  expect(headings[0]).toMatch(/Software that runs/);
-  expect(headings[1]).toMatch(/form actually goes/i);
-  expect(headings[2]).toMatch(/engine under the floor/i);
-
-  /* The arc is bound to the acts, so the shop must be outside them. */
-  await expect(
-    acts.locator("#shelf"),
-    "the shelf must sit outside the acts, or the camera arc is stretched over the whole page again",
-  ).toHaveCount(0);
-});
-
-/*
-  The four modules are readable without a mouse, and none of them quotes a
-  number.
-
-  **Both halves of this are failures that already happened here.** The
-  captions lived only in a floating 3D label shown on hover, inside a
-  `fixed`, `-z-10`, `pointer-events-none` layer, so no visitor could ever
-  reach them while act three told them to hover a block. And one caption
-  read "0s Latency", a performance claim about systems on other people's
-  servers that nothing in this project has measured, which is the one rule
-  CLAUDE.md states first.
-
-  The digit sweep is the half worth keeping: a wording test catches the
-  exact string that was wrong, where the rule is about a whole shape of
-  claim. "Under 2s" and "99.9% uptime" would both pass a check for
-  "0s Latency" and both break the same rule.
-*/
-test("the engine's modules are real text and claim no measured number", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
-
-  const modules = page.locator("#engine-heading").locator("..").locator("ul button");
-  await expect(
-    modules,
-    "every module should be a control on the page, not a label only a mouse can find",
-  ).toHaveCount(engineNodes.length);
-
-  const text = (await modules.allTextContents()).join(" ");
-  for (const n of engineNodes) {
-    expect(text, `"${n.label}" should be readable without hovering the scene`).toContain(n.label);
-    expect(text, `"${n.label}" should say what it does`).toContain(n.blurb);
-  }
-
-  /*
-    No caption quotes a MEASUREMENT, which is narrower than "no digits" and
-    deliberately so. The first draft of this swept for any digit and failed
-    on "24/7 Follow-Up", which is the right failure to argue with rather
-    than to design around: a figure with a unit on it ("0s", "99.9%",
-    "under 2s", "3x faster") is a claim about something somebody measured,
-    and nobody here measured it. "24/7" is a schedule, and an automated
-    trigger genuinely does fire at any hour, so it is a description of what
-    the module is rather than a result it produces. Meg asked for the
-    latency caption fixed and that one is the one that was wrong.
-  */
-  const MEASURED = /\d+\s*(ms|s|sec|secs|second|seconds|min|mins|minute|minutes|hr|hrs|hour|hours|day|days|%|x)\b/i;
-  for (const n of engineNodes) {
-    expect(
-      n.spec,
-      `"${n.spec}" quotes a measured figure, and nothing on this page has been measured`,
-    ).not.toMatch(MEASURED);
-    expect(
-      n.spec,
-      `"${n.spec}" is a latency claim, which is the one this caption used to make`,
-    ).not.toMatch(/latency/i);
-  }
-});
-
-/*
-  Hovering a module reaches the scene.
-
-  This is the whole reason the highlight is driven from the page: the
-  blocks' own `onPointerOver` could never fire behind a `pointer-events-none`
-  layer, so the interaction had to come from somewhere a visitor can
-  actually touch. Asserted end to end, on drei's `<Html>` label, which is
-  real DOM inside the canvas host: a DOM hover, through a window event,
-  into R3F state, back out as a label pinned to the block in 3D.
-*/
-test("hovering a module lights its block in the scene", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
-  await page.waitForTimeout(2500);
-
-  const stage = page.locator(".fixed.-z-10");
-  const before = (await stage.textContent()) ?? "";
-
-  const billing = page.getByRole("button", { name: /Checkout & Billing/ });
-  await billing.scrollIntoViewIfNeeded();
-  await billing.hover();
-  await page.waitForTimeout(600);
-
-  const after = (await stage.textContent()) ?? "";
-  expect(
-    before,
-    "nothing should be labelled in the scene until something asks for it",
-  ).not.toContain("Checkout & Billing");
-  expect(
-    after,
-    "hovering the module should label its block in the scene",
-  ).toContain("Checkout & Billing");
-
-  /* And leaving the list puts it away again. */
-  await page.locator("h1").hover();
-  await page.waitForTimeout(600);
-  expect((await stage.textContent()) ?? "").not.toContain("Checkout & Billing");
+  /* Whatever happens to the hero, the page keeps a real ground. */
+  const ground = await page.evaluate(
+    () => getComputedStyle(document.body).backgroundColor,
+  );
+  expect(ground).not.toBe("rgba(0, 0, 0, 0)");
 });

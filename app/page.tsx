@@ -1,4 +1,4 @@
-import EngineActs from "@/components/home/EngineActs";
+import Masthead from "@/components/home/Masthead";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
 import OneJob from "@/components/home/OneJob";
@@ -36,10 +36,9 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    EngineActs   the three-act 3D opening: the hero, then where a form
-                 goes, then the engine running it. Carries
-                 id="scroll-container", which is what the camera arc is
-                 scrubbed against
+    Masthead     the hero: a serif headline, one real capture of a real
+                 system carrying depth that answers the cursor, and the
+                 operating history set as a metadata strip
     Shelf        id="shelf" — the whole catalog, with prices, grouped by
                  what it costs rather than by what it is
     TryItNow     the three demos, which the shelf deliberately carries as
@@ -76,7 +75,7 @@ import CommandPalette from "@/components/CommandPalette";
 export default function Home() {
   return (
     <div className="cp">
-      <EngineActs />
+      <Masthead />
       <Shelf />
       <TryItNow />
       <OneJob />
