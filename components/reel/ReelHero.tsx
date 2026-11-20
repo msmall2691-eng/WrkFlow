@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import BookCall from "../BookCall";
 import PanelHeader from "../panel/PanelHeader";
+import ProofStrip from "../ProofStrip";
 
 /*
   The hero: the particle wordmark, the claim, two pill buttons.
@@ -48,7 +49,11 @@ export default function ReelHero() {
         <PanelHeader />
       </div>
 
-      <div className="relative mx-auto flex min-h-[78svh] w-full max-w-6xl flex-col justify-center px-6 py-14">
+      {/* `justify-between` with the copy in its own block, so the proving
+          band sits at the foot of the screen the way the reference's does
+          rather than floating under the buttons. */}
+      <div className="relative mx-auto flex min-h-[82svh] w-full max-w-6xl flex-col justify-between gap-12 px-6 pb-10 pt-14">
+        <div className="flex flex-1 flex-col justify-center">
         <p className="m-0 font-mono text-[11px] uppercase tracking-[0.2em] text-white/50">
           [ Custom software · Southern Maine · clients anywhere ]
         </p>
@@ -83,7 +88,10 @@ export default function ReelHero() {
           >
             See everything, with prices
           </a>
+          </div>
         </div>
+
+        <ProofStrip />
       </div>
     </section>
   );
