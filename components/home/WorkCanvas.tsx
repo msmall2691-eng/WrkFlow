@@ -116,7 +116,12 @@ export default function WorkCanvas() {
       {view === "strip" ? (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(10,10,12,0.95)_0%,rgba(10,10,12,0.86)_34%,rgba(10,10,12,0.3)_68%,rgba(10,10,12,0.55)_100%)]"
+          /* Top-to-bottom on a phone, where the strip is vertical and the copy
+             sits above it; left-to-right on a wide screen, where the copy owns
+             the left column and the frames own the right. A single direction
+             cannot do both: the left-to-right version put the headline half on
+             black and half on a white screenshot at 390px. */
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,10,12,0.96)_0%,rgba(10,10,12,0.9)_30%,rgba(10,10,12,0.45)_72%,rgba(10,10,12,0.7)_100%)] md:bg-[linear-gradient(to_right,rgba(10,10,12,0.95)_0%,rgba(10,10,12,0.86)_34%,rgba(10,10,12,0.3)_68%,rgba(10,10,12,0.55)_100%)]"
         />
       ) : null}
 
@@ -143,7 +148,16 @@ export default function WorkCanvas() {
       </div>
 
       <div className="pointer-events-none relative mx-auto flex min-h-[78svh] w-full max-w-6xl flex-col px-6 py-10">
-        <div className="pointer-events-none flex flex-1 flex-col justify-center py-10">
+        {/*
+          **The copy block carries its own ground below `md`.** The page
+          scrim cannot do it: on a phone the strip is vertical and always
+          fills the view, so whatever the gradient does there is a
+          near-white capture of a web app somewhere behind white serif.
+          A local backdrop is the only thing that holds at every scroll
+          position, and it disappears at `md` where the frames keep to
+          the right-hand side on their own.
+        */}
+        <div className="pointer-events-none -mx-2 flex flex-1 flex-col justify-center rounded-2xl bg-[rgba(10,10,12,0.78)] px-2 py-10 backdrop-blur-[2px] md:mx-0 md:rounded-none md:bg-transparent md:px-0 md:backdrop-blur-none">
           <p className="m-0 font-mono text-[11px] uppercase tracking-[0.2em] text-white/55">
             Custom software · Southern Maine · clients anywhere
           </p>

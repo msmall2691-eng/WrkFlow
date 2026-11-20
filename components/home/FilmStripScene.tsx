@@ -162,6 +162,9 @@ function Strip({
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
       e.preventDefault();
       velocity.current += e.deltaX * 0.00008;
+      /* Vertical wheel is never taken: on a phone that is the only way
+         off this screen, and on a desktop it is how somebody reaches the
+         shop. The strip drifts on its own instead. */
     };
     el.addEventListener("pointermove", move, { passive: true });
     el.addEventListener("pointerleave", leave);
@@ -172,6 +175,21 @@ function Strip({
       el.removeEventListener("wheel", wheel);
     };
   }, [still]);
+
+  /*
+    **Below 768px the strip stands up, which is the prompt's own
+    responsive rule and not a convenience.** Laid out horizontally on a
+    phone the frames are wider than the screen, so exactly one is visible
+    at a time with its edges cut off: a carousel of one, which is worse
+    than no strip. Rotating the arc to the vertical axis puts two and a
+    bit on screen, each whole, and makes the drift read as a reel going
+    past rather than as a single picture twitching.
+
+    The viewfinder goes with it. There is no cursor to magnify under on a
+    touch screen, and a circle that follows a finger is a circle under the
+    thing it is meant to be showing.
+  */
+  const portrait = size.width < 768;
 
   const hit = useRef<string | null>(null);
   const aim = useMemo(() => new Vector3(), []);
@@ -206,8 +224,13 @@ function Strip({
       let a = frames[i].base + travel.current;
       a = ((((a + Math.PI) % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)) - Math.PI;
 
-      m.position.set(Math.sin(a) * RADIUS, 0, -Math.cos(a) * RADIUS);
-      m.rotation.y = a;
+      if (portrait) {
+        m.position.set(0, Math.sin(a) * RADIUS, -Math.cos(a) * RADIUS);
+        m.rotation.set(-a, 0, 0);
+      } else {
+        m.position.set(Math.sin(a) * RADIUS, 0, -Math.cos(a) * RADIUS);
+        m.rotation.set(0, a, 0);
+      }
       /* Frames behind the viewer are not drawn at all, which keeps the
          draw count near what is actually on screen. */
       m.visible = Math.abs(a) < 1.0;
@@ -226,7 +249,7 @@ function Strip({
 
     /* Point the lens where the cursor is, at half the field of view, and
        render the strip into the circle's texture. */
-    if (!still && pointer.current.inside) {
+    if (!still && !portrait && pointer.current.inside) {
       const main = camera as PerspectiveCamera;
       aim.set(smooth.current.x, smooth.current.y, 0.5).unproject(main);
       lens.position.copy(main.position);
@@ -278,7 +301,7 @@ function Strip({
   useFrame(() => {
     const d = disc.current;
     if (!d) return;
-    d.visible = !still && pointer.current.inside;
+    d.visible = !still && !portrait && pointer.current.inside;
     if (!d.visible) return;
     const main = camera as PerspectiveCamera;
 
@@ -306,6 +329,16 @@ function Strip({
 
   return (
     <>
+      {/*
+        **Moving the reel to clear the copy was tried and does not work**,
+        which is worth recording so it is not tried again. Standing the
+        strip up on a phone puts about two and a bit frames on screen at
+        all times, so translating the arc down just swaps which frame is
+        behind the headline for which is behind the buttons: there is no
+        empty band on a circle that fills the view. The copy carries its
+        own backdrop on small screens instead, in `WorkCanvas`.
+      */}
+      <group>
       {frames.map((f, i) => {
         const map = maps[f.tile.image];
         return (
@@ -328,6 +361,7 @@ function Strip({
           </mesh>
         );
       })}
+      </group>
 
       {/*
         The disc, and the ring and crosshairs that make it a viewfinder.
