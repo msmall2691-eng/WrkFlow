@@ -378,8 +378,30 @@ html:not([data-theme="light"]) { color-scheme: dark; }
   .daylight-sky-deck { animation: none; }
 }
 
-* {
-  border-color: var(--color-line);
+/*
+  The default border colour, in `base` so that utilities can beat it.
+
+  **This was unlayered, and unlayered CSS wins over layered CSS whatever
+  the specificity** — `@import "tailwindcss"` puts every utility in
+  `@layer utilities`, so a bare `*` here outranked all of them. The effect
+  was that every explicit border colour in the codebase silently rendered
+  as `--color-line`: `border-signal/50` came out grey instead of teal,
+  `border-gold/40` grey instead of gold, and `border-transparent` drew a
+  visible hairline where the author had asked for none.
+
+  Found on the hero's secondary button, which asks for `border-white/25`
+  on near-black and computed to `rgba(11, 23, 34, 0.1)`, navy at a tenth,
+  i.e. invisible. That is the #115 / #118 failure a third time: no build
+  error, no test failure, no Lighthouse complaint, visible only by looking
+  at it.
+
+  `@layer base` keeps the default for every element that does not ask for
+  a colour, and gets out of the way of every element that does.
+*/
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
 }
 
 html {
