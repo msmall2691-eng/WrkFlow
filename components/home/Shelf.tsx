@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { catalog, statusLabels, type CatalogItem, type CatalogStatus } from "@/lib/catalog";
+import StackedHeading from "./StackedHeading";
 
 /*
   Shelf — what can be had today, with the price, on the page everybody sees.
@@ -120,12 +121,7 @@ export default function Shelf() {
       className="border-t border-[color:var(--cp-line)] py-12 md:py-16"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <h2
-          id="shelf-heading"
-          className="m-0 text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-4xl"
-        >
-          Everything, with prices.
-        </h2>
+        <StackedHeading id="shelf-heading" lead="Everything," trail="with prices." />
         <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
           {priced} things with a price already on them. No call first.
         </p>

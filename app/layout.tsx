@@ -89,7 +89,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f7f4ef",
+  /* Harbor's ground. This paints the browser's own chrome on a phone, so
+     a cream bar over a near-black page is the theme flip showing up in the
+     one place CSS cannot reach. */
+  themeColor: "#08070c",
   width: "device-width",
   initialScale: 1,
 };
@@ -116,8 +119,8 @@ export default async function RootLayout({
   const hdrs = await headers();
   const nonce = hdrs.get("x-nonce") ?? undefined;
   /*
-    Per-route default theme. Middleware sends "light" for everything now —
-    Daylight is the default the site ships. A visitor's own stored choice
+    Per-route default theme. Middleware sends "dark" for everything now —
+    Harbor is the default the site ships. A visitor's own stored choice
     still wins over this; see the pre-paint script below.
   */
   const themeDefault = hdrs.get("x-theme-default") === "dark" ? "dark" : "light";
@@ -145,14 +148,17 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{
             __html:
               /*
-                 Daylight unless the visitor asked for Harbor. Only an explicit
-                 stored 'dark' turns the attribute off; everything else — no
-                 value, the legacy 'auto', a corrupt value, or localStorage
-                 throwing in a locked-down browser — lands on light, which is
-                 what the site ships. themeAuto records the route default so
-                 the appearance control knows what "reset" means.
+                 Harbor unless the visitor asked for Daylight. Only an
+                 explicit stored 'light' sets the attribute; everything else —
+                 no value, the legacy 'auto', a corrupt value, or localStorage
+                 throwing in a locked-down browser — lands on dark, which is
+                 what the site now ships. The test is on the value we want
+                 rather than on the one we don't, so a corrupt entry falls to
+                 the default instead of to whatever the other branch was.
+                 themeAuto records the route default so the appearance control
+                 knows what "reset" means.
               */
-              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t!=='dark')document.documentElement.dataset.theme='light';`,
+              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t==='light')document.documentElement.dataset.theme='light';`,
           }}
         />
         <script

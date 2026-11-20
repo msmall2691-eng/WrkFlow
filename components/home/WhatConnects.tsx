@@ -1,4 +1,5 @@
 import { integrations, provenIn } from "@/lib/integrations";
+import StackedHeading from "./StackedHeading";
 
 /*
   WhatConnects — the integrations evidence, cut by tool rather than by
@@ -54,12 +55,7 @@ export default function WhatConnects() {
       className="border-t border-[color:var(--cp-line)] py-12 md:py-16"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <h2
-          id="connects-heading"
-          className="m-0 text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-4xl"
-        >
-          The tools these already talk to.
-        </h2>
+        <StackedHeading id="connects-heading" lead="The tools these" trail="already talk to." />
         <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
           Every one is running in a system named beside it. Nothing on this
           list is a plan.

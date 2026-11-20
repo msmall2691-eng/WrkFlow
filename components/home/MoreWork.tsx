@@ -1,6 +1,7 @@
 import Link from "next/link";
 import LiveTile from "../panel/LiveTile";
 import { work, type WorkItem } from "@/lib/content";
+import StackedHeading from "./StackedHeading";
 
 /*
   MoreWork — everything the worked example above does not already cover,
@@ -64,12 +65,7 @@ export default function MoreWork() {
       className="border-t border-[color:var(--cp-line)] py-16 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <h2
-          id="more-work-heading"
-          className="m-0 text-[1.75rem] font-semibold tracking-tight text-[color:var(--cp-ink)] sm:text-4xl"
-        >
-          The rest of it.
-        </h2>
+        <StackedHeading id="more-work-heading" lead="The rest" trail="of it." />
         {/*
           No count and no "for clients" here. Two of these four are Meg's own
           (the rental's welcome book, and linx), so "for other people" would
