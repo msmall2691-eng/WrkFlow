@@ -17,7 +17,7 @@ import { provingGround } from "@/lib/content";
   complete, honest component that no page imported, while /about went on
   rendering the same four numbers as a sentence in `FounderNote`. Meg asked
   for KPIs twice, and the KPI component already existed; it just was not on
-  a page. So it is now at the foot of `ReelHero`, which costs no extra
+  a page. So it is now at the foot of the homepage hero, which costs no extra
   scroll, rather than as a band of its own between the hero and the reel,
   which would have cost about half a screen on the one page that was
   rebuilt to stop burying the shop.

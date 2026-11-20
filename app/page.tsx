@@ -1,4 +1,4 @@
-import ReelHero from "@/components/reel/ReelHero";
+import CableHero from "@/components/cable/CableHero";
 import TakeReel from "@/components/reel/TakeReel";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
@@ -37,8 +37,9 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    ReelHero     one screen: the particle wordmark behind a two-line
-                 title, sans then serif italic, and two pill buttons
+    CableHero    one screen: "Follow the Cable". A fiber crosses a granite
+                 slab, slips through a seam and splits into the two things
+                 this studio sells, with every control as real HTML
     TakeReel     the work, as a browser window pinned on the right with
                  four takes swapping inside it. Cards, not globes, at
                  Meg's ask, and DOM rather than WebGL because nothing
@@ -79,7 +80,7 @@ import CommandPalette from "@/components/CommandPalette";
 export default function Home() {
   return (
     <div className="cp">
-      <ReelHero />
+      <CableHero />
       <TakeReel />
       <Shelf />
       <TryItNow />
