@@ -35,14 +35,21 @@ import { statusLabels } from "@/lib/catalog";
   it.
 */
 
-const WorkCanvasScene = dynamic(() => import("./WorkCanvasScene"), {
+/*
+  **The scene is the film strip now, and the drag wall is gone.** Meg
+  picked Aperture & Line out of the templates once the question became
+  which one could be built completely: its frames are project
+  thumbnails, and she has twenty-eight real ones. The wall was the right
+  shape for the same content and this is the one she chose.
+*/
+const FilmStripScene = dynamic(() => import("./FilmStripScene"), {
   ssr: false,
 });
 
-type View = "canvas" | "index";
+type View = "strip" | "index";
 
 export default function WorkCanvas() {
-  const [view, setView] = useState<View>("canvas");
+  const [view, setView] = useState<View>("strip");
   const [ready, setReady] = useState(false);
   const [still, setStill] = useState(false);
   const [hover, setHover] = useState<CanvasTile | null>(null);
@@ -89,14 +96,14 @@ export default function WorkCanvas() {
     >
       {/* The wall. */}
       <div
-        id="work-canvas"
+        id="film-strip"
         aria-hidden="true"
         className={`absolute inset-0 touch-pan-y ${
-          view === "canvas" ? "" : "pointer-events-none opacity-0"
+          view === "strip" ? "" : "pointer-events-none opacity-0"
         } transition-opacity duration-300`}
       >
-        {ready && view === "canvas" ? (
-          <WorkCanvasScene tiles={canvasTiles} still={still} onHover={setHover} />
+        {ready && view === "strip" ? (
+          <FilmStripScene tiles={canvasTiles} still={still} onFrame={setHover} />
         ) : null}
       </div>
 
@@ -106,10 +113,10 @@ export default function WorkCanvas() {
         type is legible over a dark screenshot and gone over a white one,
         which is a thing that only shows up on the fourth drag.
       */}
-      {view === "canvas" ? (
+      {view === "strip" ? (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,10,12,0.93),rgba(10,10,12,0.86)_30%,rgba(10,10,12,0.72)_62%,rgba(10,10,12,0.9))]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(10,10,12,0.95)_0%,rgba(10,10,12,0.86)_34%,rgba(10,10,12,0.3)_68%,rgba(10,10,12,0.55)_100%)]"
         />
       ) : null}
 
@@ -214,14 +221,14 @@ export default function WorkCanvas() {
         {/* The foot: what you are looking at, and how to look at it. */}
         <div className="relative flex flex-wrap items-end justify-between gap-4">
           <p className="m-0 min-h-[1.4em] font-mono text-[11px] uppercase tracking-[0.16em] text-white/55">
-            {view === "canvas" && hover ? (
+            {view === "strip" && hover ? (
               <>
                 <span className="text-white">{hover.name}</span> ·{" "}
                 {statusLabels[hover.status].label} · {hover.price}
               </>
             ) : (
               <>
-                {canvasTiles.length} things built · drag to wander
+                {canvasTiles.length} things built · scroll the strip
               </>
             )}
           </p>
@@ -231,13 +238,13 @@ export default function WorkCanvas() {
             role="group"
             aria-label="How to view the work"
           >
-            {(["canvas", "index"] as const).map((v) => (
+            {(["strip", "index"] as const).map((v) => (
               <button
                 key={v}
                 type="button"
                 onClick={() => setView(v)}
                 aria-pressed={view === v}
-                disabled={v === "canvas" && !ready}
+                disabled={v === "strip" && !ready}
                 className={`min-h-9 rounded-full px-4 text-[13px] capitalize transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-40 ${
                   view === v
                     ? "bg-white text-[#0a0a0c]"
