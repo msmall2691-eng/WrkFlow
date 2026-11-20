@@ -378,8 +378,30 @@ html:not([data-theme="light"]) { color-scheme: dark; }
   .daylight-sky-deck { animation: none; }
 }
 
-* {
-  border-color: var(--color-line);
+/*
+  The default border colour, in `base` so that utilities can beat it.
+
+  **This was unlayered, and unlayered CSS wins over layered CSS whatever
+  the specificity** — `@import "tailwindcss"` puts every utility in
+  `@layer utilities`, so a bare `*` here outranked all of them. The effect
+  was that every explicit border colour in the codebase silently rendered
+  as `--color-line`: `border-signal/50` came out grey instead of teal,
+  `border-gold/40` grey instead of gold, and `border-transparent` drew a
+  visible hairline where the author had asked for none.
+
+  Found on the hero's secondary button, which asks for `border-white/25`
+  on near-black and computed to `rgba(11, 23, 34, 0.1)`, navy at a tenth,
+  i.e. invisible. That is the #115 / #118 failure a third time: no build
+  error, no test failure, no Lighthouse complaint, visible only by looking
+  at it.
+
+  `@layer base` keeps the default for every element that does not ask for
+  a colour, and gets out of the way of every element that does.
+*/
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
 }
 
 html {
@@ -1467,4 +1489,74 @@ body:has(.cp) { background: #08070c; }
     animation: none;
     opacity: 1;
   }
+}
+
+
+/*
+  The 3D stage can only be seen if the page stops painting over it.
+
+  `.cp` sets an opaque ground in each theme and is `position: static`, so a
+  `fixed` canvas behind it at a negative z-index is covered completely.
+  That is how the first version of this shipped: the canvas was created,
+  rendered every frame and cost GPU, while nobody could see one pixel of
+  it. Caught by asking `elementFromPoint` what was actually on top, and
+  then by comparing a patch of background with the stage on and off, which
+  came back identical. A screenshot alone would not have shown it, because
+  the page looked exactly as it was supposed to.
+
+  **It lives at the foot of the file, and that is load-bearing.** The first
+  attempt put it beside the Harbor ground near the top. `:root[data-stage]
+  .cp` and `:root[data-theme="light"] .cp` have the same specificity, so
+  the later rule wins, and the Daylight branch is 120 lines further down:
+  the attribute was set, the rule was ignored, and the stage stayed
+  invisible. Being last is what makes it apply in both themes.
+
+  **Gated on `data-stage`, which `StageMount` sets only once WebGL is
+  confirmed and the scene is mounted**, and clears on unmount or a lost
+  context. A browser without WebGL keeps the opaque ground exactly as
+  before. The transparency and the thing that fills it arrive together or
+  not at all, which is the only way this cannot leave somebody looking at
+  a hole.
+
+  `body` keeps its own ground underneath, so there is no flash of white
+  between first paint and the canvas's first frame.
+*/
+:root[data-stage="on"] .cp { background: transparent; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   A dark island on a light page.
+
+   The work canvas hero is near-black by Meg's direct ask, on a site whose
+   default palette is Daylight. Everything inside it that reads a token was
+   therefore rendering for cream: the header wordmark came out navy on
+   near-black and effectively vanished, which is #115 and #118 for the third
+   time, in the one spot where the whole point is that it looks expensive.
+
+   So the island re-declares the tokens rather than the components
+   restyling themselves. A custom property set on the element beats one
+   inherited from `.cp`, and this selector matches the specificity of the
+   Daylight branch, so it holds in both palettes: in Harbor these are
+   already the values and the rule is a no-op.
+
+   **These are copies of the Harbor block above and have to track it.**
+   That is a real cost and it is the smaller one: the alternative is each
+   component inside the hero growing its own dark variant, which is seven
+   places to get wrong instead of one.
+   ───────────────────────────────────────────────────────────────────────── */
+:root[data-theme="light"] .cp-night {
+  color-scheme: dark;
+  --cp-ink: #f2f0f7;
+  --cp-soft: #cfcadf;
+  --cp-muted: #a8a4b8;
+  --cp-faint: #8f8ba0;
+  --cp-line: rgba(255, 255, 255, 0.08);
+  --cp-violet-ink: #b9a2ff;
+  --cp-violet-line: rgba(185, 162, 255, 0.4);
+  --cp-on-ink: #08070c;
+  --cp-hairline: rgba(255, 255, 255, 0.14);
+  --cp-hairline-strong: rgba(255, 255, 255, 0.28);
+  --cp-fill: rgba(255, 255, 255, 0.035);
+  --cp-fill-strong: rgba(255, 255, 255, 0.08);
+  --color-base: #08070c;
+  --color-ink: #f2f0f7;
 }
