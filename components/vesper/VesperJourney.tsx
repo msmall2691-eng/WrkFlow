@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { planets, SPLINE_VH, SPLINE_VH_MOBILE } from "@/lib/planets";
 
@@ -22,11 +21,13 @@ import { planets, SPLINE_VH, SPLINE_VH_MOBILE } from "@/lib/planets";
 */
 
 const VesperStage = dynamic(() => import("./VesperStage"), { ssr: false });
+const CaseModal = dynamic(() => import("./CaseModal"), { ssr: false });
 
 export default function VesperJourney({ word }: { word: string }) {
   const section = useRef<HTMLDivElement>(null);
   const progress = useRef(0);
   const [near, setNear] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(null);
   const [vh, setVh] = useState(SPLINE_VH);
 
   useEffect(() => {
@@ -89,28 +90,24 @@ export default function VesperJourney({ word }: { word: string }) {
                 {active?.title ?? ""}
               </h2>
               {active ? (
-                active.external ? (
-                  <a
-                    href={active.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 inline-flex min-h-11 items-center rounded-xl border border-white/25 px-5 text-[14px] font-medium text-white no-underline transition-colors duration-150 hover:border-white/60"
-                  >
-                    View case <span aria-hidden="true">&nbsp;→</span>
-                  </a>
-                ) : (
-                  <Link
-                    href={active.href}
-                    className="mt-5 inline-flex min-h-11 items-center rounded-xl border border-white/25 px-5 text-[14px] font-medium text-white no-underline transition-colors duration-150 hover:border-white/60"
-                  >
-                    View case <span aria-hidden="true">&nbsp;→</span>
-                  </Link>
-                )
+                <button
+                  type="button"
+                  onClick={() => setOpen(near)}
+                  className="mt-5 inline-flex min-h-11 items-center rounded-xl border border-white/25 px-5 text-[14px] font-medium text-white transition-colors duration-150 hover:border-white/60"
+                >
+                  View case <span aria-hidden="true">&nbsp;→</span>
+                </button>
               ) : null}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Section 3: the case transition. Mounted only once something is
+          open, so its canvas does not exist on an untouched page. */}
+      {open !== null ? (
+        <CaseModal planet={planets[open]} onClose={() => setOpen(null)} />
+      ) : null}
     </div>
   );
 }
