@@ -174,8 +174,19 @@ export default function Stage({ still = false }: { still?: boolean }) {
 
     If a real device measurement later says a weak GPU struggles, it
     comes back with that measurement attached.
+
+    **And reduced motion is not part of this gate, which is a correction.**
+    It read `pathname === "/" && !still`, so a visitor who asks for less
+    motion got dust and no storefront at all — on a page whose three acts
+    are now about the storefront and the engine under it, with act three
+    saying "pick one to find it in the scene". That is CLAUDE.md's rule
+    inverted: the reduced-motion fallback shows the END STATE, not nothing,
+    and all the `still` handling downstream was written for exactly that
+    and was unreachable. `Rig` holds the final framing, the two expensive
+    passes are already skipped, and `frameloop="demand"` draws it once.
+    Same scene, one frame, no animation.
   */
-  const rich = pathname === "/" && !still;
+  const rich = pathname === "/";
 
   return (
     <Canvas

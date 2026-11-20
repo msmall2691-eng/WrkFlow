@@ -4,9 +4,10 @@ import { test, expect, type Page } from "@playwright/test";
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
+import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
+import { engineNodes } from "../lib/engineNodes";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1083,15 +1084,41 @@ test("the shop is on the homepage, near the top, and says what it leaves out", a
   const shelf = page.locator("#shelf");
   await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
 
-  /* How far down it starts, in screens. Three is deliberately generous: the
-     hero is one, and the point is to catch a drift back toward fourteen. */
-  const screens = await shelf.evaluate(
-    (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
-  );
+  /*
+    How far down it starts, in screens.
+
+    **This was `< 3` on the reasoning "the hero is one", and the opening is
+    three screens now at Meg's instruction, so the number had to move.**
+    Moving a threshold to make a test pass is the thing this repo refuses,
+    so it is not a looser version of the same check: the assertion that
+    actually guards the failure is the first one, which says the shop is
+    the NEXT thing after the opening rather than at some tolerated depth.
+    That one cannot be satisfied by padding, and it is what would fail if
+    the shelf drifted back toward screen fourteen.
+
+    The ceiling then only has to bound the opening itself. Measured at
+    390x844 it is 3.34 screens (1.07 + 1.00 + 1.26, the last being the
+    four module cards in one column) and 3.68 at 1440x900, so four fails
+    on a fourth act or on any act growing by a screen.
+  */
+  const depth = await shelf.evaluate((el) => {
+    const vh = window.innerHeight;
+    const acts = document.getElementById("scroll-container");
+    const top = (el.getBoundingClientRect().top + window.scrollY) / vh;
+    const after = acts
+      ? top - (acts.getBoundingClientRect().bottom + window.scrollY) / vh
+      : top;
+    return { top, after };
+  });
+
   expect(
-    screens,
-    `the shop should be near the top; it starts ${screens.toFixed(1)} screens down`,
-  ).toBeLessThan(3);
+    depth.after,
+    `the shop should be the next thing after the opening; it starts ${depth.after.toFixed(2)} screens after it ends`,
+  ).toBeLessThan(0.5);
+  expect(
+    depth.top,
+    `the opening should stay three acts long; the shop starts ${depth.top.toFixed(1)} screens down`,
+  ).toBeLessThan(4);
 
   /* The hero's own button promises it, so it has to arrive. */
   await page.locator('a[href="#shelf"]').first().click();
@@ -1457,4 +1484,151 @@ test("the hero scene goes still under reduced motion rather than blank", async (
   ).toBe("on");
   /* Whatever happens to the scene, the page keeps a real ground. */
   expect(state.ground).not.toBe("rgba(0, 0, 0, 0)");
+});
+
+/*
+  The three acts, and the thing a literal reading of the brief would have
+  deleted.
+
+  Meg asked for the three-act 3D opening on the homepage. The brief's own
+  version of act one is a card reading "The storefront / The part your
+  customer sees", put at `app/page.tsx`, which means the h1, both calls to
+  action and the operating history from The Maine Cleaning Co all go. Those
+  numbers are the only confirmed hard evidence on this site, so losing them
+  to a layout change is the regression worth a test rather than a comment.
+
+  **The last assertion is one indirection away from the behaviour, and that
+  is said out loud.** `Rig` scrubs the camera against `#scroll-container`
+  by id, so what it is bound to is not observable from the page; what IS
+  observable is which element carries the id. It used to be the page
+  wrapper, which stretched three camera beats over eighteen screens, so a
+  visitor reading act three saw a camera still somewhere in act one. The
+  pixels cannot settle the question because the motes never stop drifting.
+*/
+test("the homepage opens on three acts without losing the hero", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  /* The hero's own content, which the brief's act one would have replaced. */
+  await expect(page.locator("h1")).toHaveText(/Software that runs/);
+  await expect(page.locator('a[href="#shelf"]').first()).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Book a free 15-min call/i }).first(),
+  ).toBeVisible();
+  /* The Maine Cleaning Co's own numbers, labelled as theirs. */
+  await expect(page.getByText(provingGround.label).first()).toBeVisible();
+  for (const stat of provingGround.stats)
+    await expect(page.getByText(stat.label).first()).toBeVisible();
+
+  const acts = page.locator("#scroll-container");
+  await expect(acts, "the acts should be one element the camera can be bound to").toHaveCount(1);
+
+  /* Three acts, in order: the storefront, then the wiring, then the engine. */
+  const headings = await acts.locator("h1, h2").allTextContents();
+  expect(headings.length, `expected three acts, found ${headings.length}`).toBe(3);
+  expect(headings[0]).toMatch(/Software that runs/);
+  expect(headings[1]).toMatch(/form actually goes/i);
+  expect(headings[2]).toMatch(/engine under the floor/i);
+
+  /* The arc is bound to the acts, so the shop must be outside them. */
+  await expect(
+    acts.locator("#shelf"),
+    "the shelf must sit outside the acts, or the camera arc is stretched over the whole page again",
+  ).toHaveCount(0);
+});
+
+/*
+  The four modules are readable without a mouse, and none of them quotes a
+  number.
+
+  **Both halves of this are failures that already happened here.** The
+  captions lived only in a floating 3D label shown on hover, inside a
+  `fixed`, `-z-10`, `pointer-events-none` layer, so no visitor could ever
+  reach them while act three told them to hover a block. And one caption
+  read "0s Latency", a performance claim about systems on other people's
+  servers that nothing in this project has measured, which is the one rule
+  CLAUDE.md states first.
+
+  The digit sweep is the half worth keeping: a wording test catches the
+  exact string that was wrong, where the rule is about a whole shape of
+  claim. "Under 2s" and "99.9% uptime" would both pass a check for
+  "0s Latency" and both break the same rule.
+*/
+test("the engine's modules are real text and claim no measured number", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const modules = page.locator("#engine-heading").locator("..").locator("ul button");
+  await expect(
+    modules,
+    "every module should be a control on the page, not a label only a mouse can find",
+  ).toHaveCount(engineNodes.length);
+
+  const text = (await modules.allTextContents()).join(" ");
+  for (const n of engineNodes) {
+    expect(text, `"${n.label}" should be readable without hovering the scene`).toContain(n.label);
+    expect(text, `"${n.label}" should say what it does`).toContain(n.blurb);
+  }
+
+  /*
+    No caption quotes a MEASUREMENT, which is narrower than "no digits" and
+    deliberately so. The first draft of this swept for any digit and failed
+    on "24/7 Follow-Up", which is the right failure to argue with rather
+    than to design around: a figure with a unit on it ("0s", "99.9%",
+    "under 2s", "3x faster") is a claim about something somebody measured,
+    and nobody here measured it. "24/7" is a schedule, and an automated
+    trigger genuinely does fire at any hour, so it is a description of what
+    the module is rather than a result it produces. Meg asked for the
+    latency caption fixed and that one is the one that was wrong.
+  */
+  const MEASURED = /\d+\s*(ms|s|sec|secs|second|seconds|min|mins|minute|minutes|hr|hrs|hour|hours|day|days|%|x)\b/i;
+  for (const n of engineNodes) {
+    expect(
+      n.spec,
+      `"${n.spec}" quotes a measured figure, and nothing on this page has been measured`,
+    ).not.toMatch(MEASURED);
+    expect(
+      n.spec,
+      `"${n.spec}" is a latency claim, which is the one this caption used to make`,
+    ).not.toMatch(/latency/i);
+  }
+});
+
+/*
+  Hovering a module reaches the scene.
+
+  This is the whole reason the highlight is driven from the page: the
+  blocks' own `onPointerOver` could never fire behind a `pointer-events-none`
+  layer, so the interaction had to come from somewhere a visitor can
+  actually touch. Asserted end to end, on drei's `<Html>` label, which is
+  real DOM inside the canvas host: a DOM hover, through a window event,
+  into R3F state, back out as a label pinned to the block in 3D.
+*/
+test("hovering a module lights its block in the scene", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForTimeout(2500);
+
+  const stage = page.locator(".fixed.-z-10");
+  const before = (await stage.textContent()) ?? "";
+
+  const billing = page.getByRole("button", { name: /Checkout & Billing/ });
+  await billing.scrollIntoViewIfNeeded();
+  await billing.hover();
+  await page.waitForTimeout(600);
+
+  const after = (await stage.textContent()) ?? "";
+  expect(
+    before,
+    "nothing should be labelled in the scene until something asks for it",
+  ).not.toContain("Checkout & Billing");
+  expect(
+    after,
+    "hovering the module should label its block in the scene",
+  ).toContain("Checkout & Billing");
+
+  /* And leaving the list puts it away again. */
+  await page.locator("h1").hover();
+  await page.waitForTimeout(600);
+  expect((await stage.textContent()) ?? "").not.toContain("Checkout & Billing");
 });

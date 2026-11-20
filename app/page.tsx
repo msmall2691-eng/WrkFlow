@@ -1,4 +1,4 @@
-import Opening from "@/components/home/Opening";
+import EngineActs from "@/components/home/EngineActs";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
 import OneJob from "@/components/home/OneJob";
@@ -36,7 +36,10 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    Opening      who it is for, and one button to the shelf
+    EngineActs   the three-act 3D opening: the hero, then where a form
+                 goes, then the engine running it. Carries
+                 id="scroll-container", which is what the camera arc is
+                 scrubbed against
     Shelf        id="shelf" — the whole catalog, with prices, grouped by
                  what it costs rather than by what it is
     TryItNow     the three demos, which the shelf deliberately carries as
@@ -72,8 +75,8 @@ import CommandPalette from "@/components/CommandPalette";
 */
 export default function Home() {
   return (
-    <div id="scroll-container" className="cp">
-      <Opening />
+    <div className="cp">
+      <EngineActs />
       <Shelf />
       <TryItNow />
       <OneJob />

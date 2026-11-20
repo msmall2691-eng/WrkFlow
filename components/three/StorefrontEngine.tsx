@@ -1,6 +1,6 @@
 "use client";
 
-import { Html, MeshTransmissionMaterial, RoundedBox, useCursor } from "@react-three/drei";
+import { Html, MeshTransmissionMaterial, RoundedBox } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import gsap from "gsap";
@@ -16,6 +16,12 @@ import {
   Points,
   Vector3,
 } from "three";
+import {
+  ENGINE_NODE_EVENT,
+  engineNodes,
+  type EngineNode,
+  type EngineNodeEvent,
+} from "@/lib/engineNodes";
 import { useStageTheme, type StageTheme } from "./useStageTheme";
 
 /*
@@ -33,78 +39,29 @@ import { useStageTheme, type StageTheme } from "./useStageTheme";
   underneath it, looking at the machinery. That is the whole pitch as a
   camera move.
 
-  **Three things in the brief were changed rather than followed, and each
-  is written down here so the next reader can see it was a decision.**
+  The camera arc and the conduit range are the brief's exact numbers.
 
-  **The brief was re-sent after I changed three things in it, so all
-  three are now built as written.** Two are simply done: the camera arc
-  and conduit range are the brief's exact numbers, and the four node
-  captions are the brief's exact strings.
+  **"0s Latency" is gone, at Meg's word, and the reason is worth keeping
+  written down because the string was defended here for a while.** It was
+  a performance claim about systems on other people's servers that
+  nothing in this project has measured, on a page whose first rule is
+  that proof is never invented "anywhere, including demos and
+  placeholders". It shipped once because she asked for it twice, flagged
+  rather than silently overridden, and she then asked for it fixed. The
+  captions live in `lib/engineNodes.ts` now, which is where that note
+  lives too.
 
-  **The third is worth a standing note: "0s Latency" is a performance
-  claim with no measurement behind it, and CLAUDE.md's first rule is that
-  proof is never invented "anywhere, including demos and placeholders".**
-  It is in because Meg asked for it twice. It is the one string on this
-  page that the repo's own rule would refuse, it is a single line to
-  change, and the honest version is something like "Form to pipeline".
-  Flagged rather than silently kept, and flagged rather than silently
-  overridden: it is her site and her claim to make.
-
-  On the theme: colours still come from `useStageTheme` on the homepage,
-  because that page has two palettes and a pre-paint script. The brief's
-  `bg-slate-950` canvas is honoured on the standalone scene route, where
-  the page really is dark. Same scene, two grounds, no hardcoded colour
-  fighting a theme switch.
+  On the theme: colours come from `useStageTheme`, because the homepage
+  has two palettes and a pre-paint script, and a hardcoded ground is the
+  #115 / #118 / #148 failure waiting for its fourth spelling.
 */
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* ------------------------------------------------------------------ */
 
-type EngineNode = {
-  id: string;
-  label: string;
-  spec: string;
-  blurb: string;
-  at: [number, number, number];
-};
-
-/*
-  The four modules under the floor.
-
-  Captions describe what the thing does. None of them quotes a number,
-  because none of these numbers has been measured on this site.
-*/
-const NODES: EngineNode[] = [
-  {
-    id: "crm",
-    label: "CRM & Lead Sync",
-    spec: "0s Latency",
-    blurb: "Auto-routes form submissions into custom pipelines.",
-    at: [-2.5, -2.4, 0.3],
-  },
-  {
-    id: "billing",
-    label: "Checkout & Billing",
-    spec: "Stripe + Webhooks",
-    blurb: "Instant provisioning and automated client receipts.",
-    at: [-0.85, -2.6, -0.6],
-  },
-  {
-    id: "followup",
-    label: "SMS & Email Triggers",
-    spec: "24/7 Follow-Up",
-    blurb: "Eliminates manual scheduling and repetitive admin.",
-    at: [0.85, -2.4, 0.4],
-  },
-  {
-    id: "modules",
-    label: "Modular Add-Ons",
-    spec: "Plug & Play",
-    blurb: "Attach premade widgets or custom-built modules anytime.",
-    at: [2.5, -2.65, -0.4],
-  },
-];
+/* The four modules, and their captions, are `lib/engineNodes.ts`. */
+const NODES = engineNodes;
 
 /* Where each conduit leaves the deck and where it lands. */
 const DECK_Y = 0.78;
@@ -277,19 +234,14 @@ function Conduits({ theme }: { theme: StageTheme }) {
 function Node({
   node,
   theme,
-  active,
-  onPick,
+  lit,
 }: {
   node: EngineNode;
   theme: StageTheme;
-  active: boolean;
-  onPick: (id: string | null) => void;
+  lit: boolean;
 }) {
   const mesh = useRef<Mesh>(null);
-  const [hovered, setHovered] = useState(false);
-  useCursor(hovered);
-
-  const lit = hovered || active;
+  const { camera } = useThree();
 
   useFrame((_, delta) => {
     const m = mesh.current;
@@ -297,22 +249,43 @@ function Node({
     const k = 1 - Math.pow(0.0001, Math.min(delta, 0.05));
     const want = lit ? 1.18 : 1;
     m.scale.setScalar(MathUtils.lerp(m.scale.x, want, k));
+
+    /*
+      The blocks arrive as the camera drops below the deck, and this is a
+      legibility fix rather than a flourish.
+
+      A note above the scene's `position` claimed the nodes "sit below the
+      fold in Act 1 and are something you arrive at rather than something
+      already there". They do not: screenshotted at 1440x900 they land on
+      the operating-history row, so "4,900+ service visits since 2023" and
+      "63% of clients rebooked" each read over a navy box. Those four
+      numbers are the only confirmed evidence on this site, which makes
+      them the last thing a background may obscure.
+
+      Driven off the camera's own height rather than off scroll progress,
+      so there is nothing to keep in step with the timeline: the rule is
+      simply that you cannot see under the floor until you are under it.
+      Reduced motion holds the end of the arc, so it gets them visible,
+      which is the end state the fallback is supposed to show.
+    */
+    const reveal = MathUtils.clamp((1.5 - camera.position.y) / 1.5, 0, 1);
+    m.visible = reveal > 0.02;
+    const mat = m.material as { opacity: number; transparent: boolean };
+    mat.opacity = reveal;
   });
 
   return (
     <group position={node.at}>
-      <mesh
-        ref={mesh}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          setHovered(true);
-        }}
-        onPointerOut={() => setHovered(false)}
-        onClick={(e) => {
-          e.stopPropagation();
-          onPick(active ? null : node.id);
-        }}
-      >
+      {/*
+        No pointer handlers, and that is the fix rather than a loss. They
+        were here and could never fire: the stage is a `fixed`, `-z-10`,
+        `pointer-events-none` layer behind the entire site, so no mesh in
+        it has ever received a pointer event. `lib/engineNodes.ts` carries
+        the full reasoning; the short version is that act three's list is
+        the control now, so there is one author for which block is lit and
+        it works with a finger and a keyboard as well as a mouse.
+      */}
+      <mesh ref={mesh}>
         <boxGeometry args={[0.78, 0.44, 0.78]} />
         <meshStandardMaterial
           /*
@@ -329,6 +302,8 @@ function Node({
           emissive={theme.accent}
           emissiveIntensity={lit ? 1.1 : 0.1}
           toneMapped={false}
+          /* `transparent` so the reveal above has an alpha to write. */
+          transparent
         />
       </mesh>
 
@@ -338,6 +313,10 @@ function Node({
             `pointer-events-none` on the card: it is a label, and a tooltip
             that eats clicks over a fixed background would steal them from
             the page's own links underneath.
+
+            It is also inside an `aria-hidden` host, which is correct here
+            and would not be if this were the only copy: the same three
+            facts are real text in act three, read from the same module.
           */}
           <div className="pointer-events-none w-56 rounded-xl border border-white/15 bg-slate-950/80 p-3 text-left shadow-xl backdrop-blur-md">
             <p className="m-0 text-[11px] uppercase tracking-wider text-violet-300">
@@ -365,7 +344,7 @@ function Node({
  * across the site re-renders nothing.
  */
 function Rig({ still }: { still: boolean }) {
-  const { camera, size } = useThree();
+  const { camera, size, invalidate } = useThree();
   const pointer = useRef({ x: 0, y: 0 });
 
   /*
@@ -402,8 +381,25 @@ function Rig({ still }: { still: boolean }) {
       and not the beginning.
     */
     if (still) {
-      base.current = { x: 1.1, y: -1.6, z: 7.6 };
-      look.current = { x: -0.1, y: -2.0, z: 0 };
+      /*
+        **Pulled back from the arc's exact last frame (1.1, -1.6, 7.6), and
+        the difference is legibility rather than taste.** Held there, the
+        engine blocks land on the hero's second button: "See everything,
+        with prices" read navy-on-navy, which is the collision just fixed
+        for everybody else arriving at the one visitor who cannot scroll
+        away from it. Here the camera never moves, so a frame that overlaps
+        the copy overlaps it permanently.
+
+        Screenshotted at 1440x900 in both palettes, the engine now sits in
+        the gap between the calls to action and the operating history, to
+        the right of the text column. Same view of the same thing, framed
+        so that nothing it shows is on top of something to read.
+      */
+      base.current = { x: 1.2, y: -1.0, z: 8.4 };
+      look.current = { x: -0.1, y: -1.45, z: 0 };
+      /* Plain refs, so nothing re-renders and the on-demand loop would
+         not otherwise know there is a new frame to draw. */
+      invalidate();
       return;
     }
 
@@ -435,12 +431,26 @@ function Rig({ still }: { still: boolean }) {
        it a route change leaves a trigger bound to a container that is no
        longer in the document. */
     return () => ctx.revert();
-  }, [still]);
+  }, [still, invalidate]);
 
   useFrame((_, delta) => {
-    const k = 1 - Math.pow(0.0025, Math.min(delta, 0.05));
+    /*
+      **Held means arrived, not on its way, and it was on its way.** Under
+      reduced motion the loop runs on demand, so only the handful of frames
+      R3F draws at startup ever reach this; the lerp moves about 9% of the
+      distance each time, so the camera settled nowhere near the end of the
+      arc this path exists to show. The comment above said it held the end
+      state and the blocks were still half faded in.
+
+      Snapping is also the only honest reading of the preference: a lerp is
+      an animation, and running one over a few frames is a short animation
+      rather than none. Same reason the pointer lean is switched off here
+      rather than damped, since moving the mouse would otherwise move the
+      camera on a page asked to keep still.
+    */
+    const k = still ? 1 : 1 - Math.pow(0.0025, Math.min(delta, 0.05));
     /* The lean that reads as depth at 1440 reads as a wobble at 390. */
-    const amp = size.width < 760 ? 0.16 : 0.5;
+    const amp = still ? 0 : size.width < 760 ? 0.16 : 0.5;
 
     const wantX = base.current.x + pointer.current.x * amp;
     const wantY = base.current.y - pointer.current.y * amp * 0.5;
@@ -460,8 +470,25 @@ function Rig({ still }: { still: boolean }) {
 
 export default function StorefrontEngine({ still = false }: { still?: boolean }) {
   const theme = useStageTheme();
-  const { size } = useThree();
-  const [picked, setPicked] = useState<string | null>(null);
+  const { size, invalidate } = useThree();
+  const [lit, setLit] = useState<string | null>(null);
+
+  /*
+    Which block is lit comes from the page. `EngineModules` in act three
+    dispatches it on hover and on focus, which is the only path that can
+    reach a scene the pointer cannot touch at all.
+
+    `invalidate` matters under reduced motion: that path runs the loop on
+    demand, so without a nudge the highlight would be set and never drawn.
+  */
+  useEffect(() => {
+    const onNode = (e: Event) => {
+      setLit(((e as EngineNodeEvent).detail?.id ?? null) || null);
+      invalidate();
+    };
+    window.addEventListener(ENGINE_NODE_EVENT, onNode);
+    return () => window.removeEventListener(ENGINE_NODE_EVENT, onNode);
+  }, [invalidate]);
 
   /*
     Phone-sized viewports skip the two most expensive things in the
@@ -496,11 +523,7 @@ export default function StorefrontEngine({ still = false }: { still?: boolean })
       the right and the depth. The nodes now sit below the fold in Act 1
       and are something you arrive at rather than something already there.
     */
-    <group
-      position={[1.35, -0.75, -1.6]}
-      scale={0.86}
-      onPointerMissed={() => setPicked(null)}
-    >
+    <group position={[1.35, -0.75, -1.6]} scale={0.86}>
       {/* Warm key from the storefront side, cool rim from under the floor:
           the two halves of the idea lit as two different places. */}
       <ambientLight intensity={theme.dark ? 0.35 : 0.9} />
@@ -510,13 +533,7 @@ export default function StorefrontEngine({ still = false }: { still?: boolean })
       <Storefront theme={theme} lite={lite} />
       <Conduits theme={theme} />
       {NODES.map((n) => (
-        <Node
-          key={n.id}
-          node={n}
-          theme={theme}
-          active={picked === n.id}
-          onPick={setPicked}
-        />
+        <Node key={n.id} node={n} theme={theme} lit={lit === n.id} />
       ))}
 
       <Rig still={still} />
