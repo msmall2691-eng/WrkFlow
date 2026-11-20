@@ -9,7 +9,7 @@ import { join } from "node:path";
 import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
-import { canvasTiles } from "../lib/canvasTiles";
+import { destination, planets as takes } from "../lib/planets";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -1388,61 +1388,75 @@ test("every integration shown is running in a named project", async ({ page }) =
 });
 
 /*
-  Every tile on the hero is a real capture of a real thing, with the
-  price that thing already carries.
+  Every take on the reel is a real capture of something real.
 
-  **Four heroes have now been built on this page and this is the promise
+  **Five heroes have now been built on this page and this is the promise
   that outlived all of them.** The CSS blueprint went, the storefront and
-  engine went, the editorial masthead went. What Meg has been pointing at
-  the whole way is work she actually shipped, shown as itself. So the test
-  is on the evidence rather than on the technique.
+  engine went, the editorial masthead went, the drag wall went, the film
+  strip went, the globes went. What Meg has been pointing at the whole
+  way is work she actually shipped, shown as itself, so the test is on
+  the evidence rather than on the technique.
 
-  It is also the strongest version of it yet, because this hero is the
-  shop: a tile is not decoration, it is a thing with a price and a
-  destination. A tile for something unbuilt would be invented proof with a
-  price tag on it.
+  **It also refuses the thing the LINX prompt would have done here.**
+  That spec ships four invented clients with invented results: Kettering
+  Audio at +212% preorders, Brightwater Optics at 38,400 sign-ups. This
+  asserts the opposite: every take names a real project from the work
+  list and shows a capture that is on disk.
 */
-test("every tile on the hero is a real capture of something real", async ({ page }) => {
-  expect(canvasTiles.length, "the wall needs enough tiles to read as one").toBeGreaterThanOrEqual(12);
+test("every take on the reel is a real capture of something real", async ({ page }) => {
+  expect(takes.length, "the reel needs takes").toBeGreaterThanOrEqual(3);
 
-  for (const t of canvasTiles) {
-    expect(t.image, `${t.name} should show a capture from public/shots`).toMatch(/^\/shots\//);
+  for (const t of takes) {
+    expect(t.shot, `${t.title} should show a capture from public/shots`).toMatch(/^\/shots\//);
     expect(
-      existsSync(join(process.cwd(), "public", t.image)),
-      `${t.image} is on the hero and not on disk`,
+      existsSync(join(process.cwd(), "public", t.shot)),
+      `${t.shot} is on the reel and not on disk`,
     ).toBe(true);
-    /* `catalog` requires an image on everything except `workbench`, so a
-       tile that got through with no price is a tile for something unbuilt. */
-    expect(t.price, `${t.name} is on the hero with no price`).toBeTruthy();
+  }
+
+  /*
+    `lib/planets.ts` drops a take that has nowhere to go OR no capture,
+    and the second half of that is quiet: the reel simply shows four
+    cards instead of five and nothing says why. So this asserts the
+    thing the filter would otherwise hide, which is also the thing that
+    actually happened: The Keystone House was live, linked, and had no
+    screenshot, so it rendered as a browser window with a URL in the
+    chrome and an empty well behind it.
+
+    Scoped to the front of the list, because that is the slice the reel
+    takes. A tenth work item with no capture is not this test's business.
+  */
+  const reach = work.filter((w) => destination(w) !== null).slice(0, takes.length + 1);
+  for (const w of reach) {
+    expect(
+      w.shot,
+      `${w.title} can be opened but has no capture, so it is silently off the reel`,
+    ).toBeTruthy();
   }
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  /* The Index is the same list, and it is the copy a keyboard and a
-     screen reader get, so it has to carry the names and the prices. */
-  await page.getByRole("button", { name: "index" }).click();
-  const index = page.locator("ol").first();
-  const text = (await index.textContent()) ?? "";
-  for (const t of canvasTiles.slice(0, 8)) {
-    expect(text, `the index should list ${t.name}`).toContain(t.name);
+  /* The reel is DOM, so every take's title is in the document whatever
+     the scroll position: it is the accessible copy, not a canvas. */
+  const body = (await page.locator("body").textContent()) ?? "";
+  for (const t of takes) {
+    expect(body, `the reel should name ${t.title}`).toContain(t.title);
   }
 });
 
 /*
-  The hero survives without WebGL and without motion.
+  The work survives a browser with no WebGL.
 
-  A full-screen hero that is a WebGL canvas and nothing else is a blank
-  black rectangle on a machine that cannot draw it. The Index is not a
-  degraded view here, it is the same list in a form that always renders,
-  which is why the component switches to it rather than showing an empty
-  frame.
+  The hero's particle wordmark is a canvas and falls back to a gradient;
+  the reel never was one. This is what that buys: on a machine that
+  cannot draw a single triangle, the headline and all five takes still
+  render, because the only thing WebGL was ever doing on this page was
+  decorating the top of it.
 */
-test("the hero still lists the work without WebGL", async ({ browser }) => {
+test("the work still shows without WebGL", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
   const page = await ctx.newPage();
-  /* Refuse every WebGL context, the way a locked-down or very old browser
-     does, before any of the page's own script runs. */
   await page.addInitScript(() => {
     HTMLCanvasElement.prototype.getContext = function () {
       return null;
@@ -1450,18 +1464,17 @@ test("the hero still lists the work without WebGL", async ({ browser }) => {
   });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await page.waitForTimeout(1500);
+  await page.waitForTimeout(1200);
 
   await expect(
-    page.locator("#canvas-heading"),
+    page.locator("h1"),
     "the headline should survive a browser with no WebGL",
   ).toBeVisible();
 
-  const text = (await page.locator("ol").first().textContent()) ?? "";
-  expect(
-    text,
-    "with no canvas to draw, the hero should fall back to the index rather than a black rectangle",
-  ).toContain(canvasTiles[0].name);
+  const body = (await page.locator("body").textContent()) ?? "";
+  for (const t of takes) {
+    expect(body, `${t.title} should still be listed with no WebGL`).toContain(t.title);
+  }
 
   await ctx.close();
 });

@@ -5,9 +5,7 @@ import { Bloom, ChromaticAberration, EffectComposer } from "@react-three/postpro
 import { BlendFunction } from "postprocessing";
 import { useEffect, useRef, useState } from "react";
 import { Vector2 } from "three";
-import ProjectPlanets from "./ProjectPlanets";
 import VesperHero from "./VesperHero";
-import { planets } from "@/lib/planets";
 
 /*
   The shared stage: one canvas, one set of rules about when it is allowed
@@ -41,16 +39,7 @@ const HOT = "#f472b6";
 
 const MOBILE_UNDER = 768;
 
-export default function VesperStage({
-  word,
-  progress,
-  onNear,
-}: {
-  word: string;
-  /** 0..1 along the camera spline, written by the scroll listener. */
-  progress: React.RefObject<number>;
-  onNear: (index: number | null) => void;
-}) {
+export default function VesperStage({ word }: { word: string }) {
   const host = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [dead, setDead] = useState(false);
@@ -149,18 +138,12 @@ export default function VesperStage({
           frameloop={still || !running ? "demand" : "always"}
           dpr={[1, 1.75]}
           gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
-          /* The spline starts here; ProjectPlanets drives it from the
-             first frame on. */
-          camera={{ fov: 42, position: [0, 0, 10], near: 0.1, far: 400 }}
+          /* Square on to the wordmark. The camera no longer flies: the
+             spheres it flew between are gone, at Meg's ask for cards. */
+          camera={{ fov: 42, position: [0, 0, 10], near: 0.1, far: 60 }}
           style={{ position: "absolute", inset: 0 }}
         >
           <VesperHero word={word} still={still} cool={COOL} hot={HOT} />
-          <ProjectPlanets
-            list={planets}
-            progress={progress}
-            still={still}
-            onNear={onNear}
-          />
 
           {/*
             The spec's post chain, minus bloom on a phone, which its own
