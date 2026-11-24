@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Playground from "@/components/Playground";
 import StackedHeading from "@/components/StackedHeading";
+import CastFrame from "@/components/ocean/CastFrame";
 
 /*
   /tools — the free M Linx tools, on their own page.
@@ -43,19 +44,45 @@ export default function ToolsPage() {
         {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
         <main className="relative z-10">
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
-            <div className="mx-auto max-w-6xl px-6">
-              {/*
-                `display` (Space Grotesk), not `display-serif`, and left alone:
-                this heading already used the panel's face, so unlike /services
-                there is nothing to decide here.
-              */}
-              <StackedHeading as="h1" lead="Free tools." trail="No signup." />
-              <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                {/* "we build" was the one "we" left on this page. Meg is a solo
-                    founder and the house rule is first person. */}
-                The same tools I build into client systems. Use them here, free,
-                for as long as you like.
-              </p>
+            {/*
+              **This page had no picture at all** — measured, two screens and
+              zero images, the shortest page on the site and the one selling
+              the strongest reason a stranger ever lands here. The heading sat
+              alone against about 700px of empty right-hand column at 1440.
+
+              It gets the surface rather than a creature, and uncaptioned,
+              which is CastFrame's rule rather than a shortcut: a captioned
+              frame says a creature stands for a service, and /tools is not
+              one of the four. This is the water the hero dives into, used as
+              the world the site is set in, claiming nothing.
+
+              `priority` is on because it is genuinely the first image on the
+              page and nothing else competes with it here, which is exactly
+              the narrow case the default is off for.
+            */}
+            <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 lg:grid-cols-[1fr_0.85fr] lg:gap-14">
+              <div className="min-w-0">
+                {/*
+                  `display` (Space Grotesk), not `display-serif`, and left alone:
+                  this heading already used the panel's face, so unlike /services
+                  there is nothing to decide here.
+                */}
+                <StackedHeading as="h1" lead="Free tools." trail="No signup." />
+                <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                  {/* "we build" was the one "we" left on this page. Meg is a solo
+                      founder and the house rule is first person. */}
+                  The same tools I build into client systems. Use them here, free,
+                  for as long as you like.
+                </p>
+              </div>
+
+              <CastFrame
+                art="/ocean/surface-poster.webp"
+                artAlt="The ocean surface from below, light breaking through the water."
+                priority
+                aspect="aspect-[4/3]"
+                sizes="(min-width: 1024px) 480px, 100vw"
+              />
             </div>
           </section>
           {/*

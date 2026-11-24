@@ -9,6 +9,7 @@ import { join } from "node:path";
 import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
+import { CAST } from "../lib/ocean";
 import { destination, planets as takes } from "../lib/planets";
 
 /*
@@ -1560,5 +1561,69 @@ test("every page title is the same size and weight, from one component", async (
       `${s.path} renders its page title at ${s.size}px but ${base.path} renders ${base.size}px — ` +
         "page titles come from StackedHeading so that there is one answer",
     ).toBe(base.size);
+  }
+});
+
+/*
+  The ocean art never carries a claim.
+
+  **CLAUDE.md's first rule is that nothing on this site invents proof, and
+  spreading the cast across /services is exactly where that gets tested.**
+  On the homepage the creatures sit in a reef map, where a sentence about
+  an anemone is plainly a metaphor. On /services each one now sits directly
+  above a service's name, its pain, its outcome and, a screen below, its
+  price. A caption in that position reads as part of the pitch, which is
+  fine while it says "a clean exchange, both sides get something" and is
+  the "2,400 cleans this month" failure the moment it says anything
+  countable.
+
+  Meg's original Firefly still had a HUD on it reading pH 8.1 and
+  "BIODIVERSITY INDEX HIGH". That is ordinary scene dressing on an ocean
+  picture and it is precisely what must not survive onto a page selling
+  software, so `lib/ocean.ts` states the rule and this asserts it: no digit
+  anywhere in the cast's own words. A number is the thing a reader would
+  take as evidence, and it is also the cheapest thing for a future edit to
+  add without noticing.
+
+  Asserted on the data rather than the rendered page on purpose. Every
+  surface reads `lib/ocean.ts`, so guarding the source covers /services,
+  the homepage reef map and anything added later, including a page that
+  does not exist yet.
+*/
+test("the ocean art claims nothing countable", () => {
+  for (const member of CAST) {
+    for (const [field, text] of [
+      ["creature", member.creature],
+      ["reef", member.reef],
+      ["artAlt", member.artAlt],
+    ] as const) {
+      expect(
+        text,
+        `cast.${member.id}.${field} contains a digit: "${text}". The cast may ` +
+          "name a creature and describe a reef; a number beside a service reads as evidence",
+      ).not.toMatch(/\d/);
+    }
+  }
+
+  /*
+    And every service has one.
+
+    A member naming a service that does not exist is already a build error,
+    because `CastMember.id` is the `ServiceCategory` union rather than a
+    string. The gap the type cannot close is the other direction: a *fifth*
+    service added to `lib/content.ts` compiles perfectly, and then
+    `castFor` returns undefined for it, `Services` renders no frame, and
+    /services shows four rows with a picture and one without. Nothing
+    errors and the page looks almost right, which is the failure mode this
+    whole file exists for. CLAUDE.md records that this list went from five
+    categories to four once already, so it does move.
+  */
+  const withArt = new Set(CAST.map((c) => c.id));
+  for (const s of services) {
+    expect(
+      withArt.has(s.id),
+      `the service "${s.id}" has no cast member, so its row renders without the ` +
+        "picture every other row has — add one to lib/ocean.ts",
+    ).toBe(true);
   }
 });

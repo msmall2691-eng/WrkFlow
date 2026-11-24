@@ -39,18 +39,21 @@ import ProofStrip from "../ProofStrip";
    · the copy, both calls to action and the proof numbers are server
      rendered and never move, so the page sells with no JavaScript at all.
 
-  **The track length is a budget, not a taste.** CLAUDE.md records that
-  this page was rebuilt as a storefront because it was "hard to see what
+  **The track length was a budget and is now a reading of the footage**,
+  because the budget stopped applying to it. CLAUDE.md records that this
+  page was rebuilt as a storefront after Meg said it was "hard to see what
   is for sale that's tangible", and `the shop is on the homepage, near the
-  top` fails if the shelf passes five screens at 390px. A pinned dive buys
-  its drama out of exactly that allowance, so TRACK_VH comes from the
-  measurement rather than from taste.
+  top` fails if the shelf passes five screens at 390px. While the phone was
+  pinned too, a long dive was spent out of exactly that allowance. The
+  phone now gets the clip rather than the pin, so the guard measures a page
+  with no track in it, and the desktop track is free to be as long as the
+  descent needs. See the note on the track itself for what 320vh buys.
 */
 
 /*
   **Three modes, and which one you get is measured rather than assumed.**
 
-   · `scrub` — a pinned 170vh track where your scroll is the camera's
+   · `scrub` — a pinned 320vh track where your scroll is the camera's
      depth. Pointer devices only.
    · `play`  — on a phone: no pin, one screen, a short clip plays once and
      holds. **A different file, deliberately.** `dive.mp4` is 2.7 MB
@@ -181,7 +184,30 @@ export default function OceanHero() {
       className="cp-night relative isolate bg-[#05070b]"
       aria-labelledby="hero-heading"
     >
-      <div ref={track} className={mode === "scrub" ? "relative h-[170vh]" : "relative"}>
+      {/*
+        **The track length is how fast the dive goes, and 170vh was too
+        fast to read as a dive at all.** Measured: the sticky child is one
+        viewport tall, so the scrubbable distance is the track minus a
+        screen, which at 170vh is 0.7 screens. The whole ten-second descent
+        was therefore spent in about 630px at a 900px viewport, roughly one
+        trackpad swipe, and the surface, the mid-water and the floor went
+        past in a single gesture. The camera was there; nobody had time to
+        notice it was a camera.
+
+        At 320vh the scrubbable distance is 2.2 screens, which is about
+        196px of scroll per second of footage. That is slow enough to stop
+        partway and look, which is the whole point of handing somebody the
+        camera rather than playing a descent at them.
+
+        **It costs nothing against the shop's depth budget, which is why it
+        is affordable.** `the shop is on the homepage, near the top` runs at
+        390px, and at 390px this is `play` mode with no pinned track at all,
+        so the measured depth of `#shelf` is unchanged. The budget was the
+        reason the phone stopped getting the pin in the first place, and
+        this is that decision paying out: the desktop can afford a real dive
+        precisely because the phone is not buying it.
+      */}
+      <div ref={track} className={mode === "scrub" ? "relative h-[320vh]" : "relative"}>
         <div className="sticky top-0 flex h-svh min-h-[34rem] flex-col overflow-hidden">
           <div aria-hidden="true" className="absolute inset-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
