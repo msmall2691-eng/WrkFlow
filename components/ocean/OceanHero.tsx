@@ -12,11 +12,41 @@ import ProofStrip from "../ProofStrip";
   world: an ecosystem where everything lives together, and the deep dive as
   the feeling of going down to see what actually runs underneath.
 
+  **Nov 24: this is the surface clip now, not the deep reef, at Meg's
+  word — the hero should be the top of the ocean and the page should go
+  deeper as you scroll.** Her other clip opens on sunlight through the
+  surface, with the light shafts she called "the lines", and descends to
+  the reef floor over ten seconds. It is the descent, so it is the hero,
+  and the deep night reef is what you arrive at further down the page.
+
+  **It is graded.** As shot it is bright daylight blue, which would have
+  fought a near-black site. Brightness down, contrast and curve up, a
+  little blue into the shadows: deeper and moodier, with real black in
+  the corners, and still unmistakably the surface. The grade is baked into
+  the file rather than done with a CSS filter, because a filter costs a
+  compositing pass on every frame for something that never changes.
+
   **It plays once and holds. It does not loop**, and that is a measurement
-  rather than a preference: the first and last frames of her clip differ by
-  16/255 per channel, so a loop would visibly jump. It is also the better
-  reading. The shot is a descent, so you go down, you arrive, and you stay
-  there. The last frame is the resting state of the page.
+  rather than a preference: a loop on either clip visibly jumps, because
+  both are one-way journeys. It is also the better reading. You go down,
+  you arrive, and the last frame is the resting state of the page.
+
+  **Three encodes, best first.** Meg said the quality was poor and she was
+  right: the first cut was 720p to save weight, and upscaled to full bleed
+  it turned the octopus skin to mush, which a frame-against-frame crop
+  against the master made obvious. These are all true 1080p.
+
+  **And the hero is the first 4.6 seconds, not the whole descent.** Run in
+  full, the clip ends on the reef floor, so the hero finished exactly where
+  the next section begins and the descent happened on a timer rather than
+  on the scroll. Trimmed to the lit zone it rests with the light shafts
+  still above it, which is the shot Meg asked for, and going deeper is then
+  something the page does as you scroll rather than something it does to
+  you while you read.
+
+  The trim pays for the resolution twice over: AV1 840 KB, H.265 796 KB,
+  H.264 1.4 MB as the floor. Full 1080p for half what the soft 720p cut
+  of the other clip cost.
 
   **Three ways this refuses to cost somebody their data:**
 
@@ -30,15 +60,14 @@ import ProofStrip from "../ProofStrip";
   It also pauses off-screen and on a hidden tab, because a 14-second video
   playing to nobody is just battery.
 
-  **The source was 20 MB at 11.7 Mbps**, which is a mastering bitrate, not a
-  web one. `public/ocean/dive.mp4` is 1.65 MB at 720p. Dark gradient is the
-  worst case for compression banding and this footage is almost entirely
-  dark gradient, so the encode was checked frame against frame with the
-  master before it was accepted, not trusted from its file size.
+  **The source is a mastering bitrate, not a web one**, so every encode is
+  checked frame against frame with the master before it is accepted rather
+  than trusted from its file size. Dark gradient is the worst case for
+  banding and this footage is little else.
 
-  **This replaces the Cable hero, and three.js leaves with it again** — the
-  second time in four days. The ocean is video and CSS; nothing here needs a
-  GPU or a 936 KB library.
+  **The hero ends by melting into the deep.** The bottom of the section
+  fades to the reef's own ground, so scrolling out of the surface and into
+  `ReefMap` reads as going further down rather than as two sections meeting.
 */
 
 export default function OceanHero() {
@@ -98,22 +127,29 @@ export default function OceanHero() {
             when it is allowed to, so there is never a frame of nothing. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/ocean/dive-poster.webp"
+          src="/ocean/surface-poster.webp"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
           fetchPriority="high"
         />
         {motion ? (
+          /* Ordered best-first: the browser takes the first source it can
+             decode, so AV1 and H.265 browsers get 1080p for under 2.1 MB
+             and only the ones that can do neither fall to the 2.8 MB
+             H.264. */
           <video
             ref={video}
             className="absolute inset-0 h-full w-full object-cover"
-            poster="/ocean/dive-poster.webp"
-            src="/ocean/dive.mp4"
+            poster="/ocean/surface-poster.webp"
             muted
             playsInline
             autoPlay
             preload="metadata"
-          />
+          >
+            <source src="/ocean/surface.av1.mp4" type='video/mp4; codecs="av01.0.08M.08"' />
+            <source src="/ocean/surface.h265.mp4" type='video/mp4; codecs="hvc1"' />
+            <source src="/ocean/surface.mp4" type="video/mp4" />
+          </video>
         ) : null}
       </div>
 
@@ -121,7 +157,13 @@ export default function OceanHero() {
           so the copy side needs a real scrim rather than a tint. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.86)_0%,rgba(5,7,11,0.6)_40%,rgba(5,7,11,0.92)_100%)] md:bg-[linear-gradient(to_right,rgba(5,7,11,0.95)_0%,rgba(5,7,11,0.84)_34%,rgba(5,7,11,0.3)_70%,rgba(5,7,11,0.55)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.8)_0%,rgba(5,7,11,0.52)_38%,rgba(5,7,11,0.95)_100%)] md:bg-[linear-gradient(to_right,rgba(5,7,11,0.95)_0%,rgba(5,7,11,0.82)_34%,rgba(5,7,11,0.28)_70%,rgba(5,7,11,0.5)_100%)]"
+      />
+      {/* The descent. The last fifth of the hero sinks to the reef's own
+          ground so the next section is deeper water, not a new section. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[26%] bg-[linear-gradient(to_bottom,rgba(5,7,11,0)_0%,rgba(5,7,11,0.85)_62%,#05070b_100%)]"
       />
 
       <div className="relative">
