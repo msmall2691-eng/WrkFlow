@@ -2014,3 +2014,28 @@ body:has(.cp) {
 :root[data-theme="light"] .founder-round {
   display: block;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Art behind a case-study title, Harbor only.
+
+   The three case-study pages were the only pages on the site with no
+   picture of their own: the title sat on a flat `--section-alt-bg` band
+   while every other page had something to look at. Like a King gives
+   every section something of its own, and these were the gap.
+
+   Which picture is not a new decision. `work[]` already points at a case
+   study by slug and already carries a `category`, so the art is the cast
+   member for that service, read through `castFor`. No new mapping, and
+   nothing is claimed that `services[]` does not already say.
+
+   Harbor only, for `.creature`'s reason rather than a new one: these are
+   lit-on-black frames, and on cream they are a dark slab behind navy
+   type instead of a ground. Daylight keeps the flat band it already had,
+   which was never wrong there.
+   ───────────────────────────────────────────────────────────────────────── */
+.case-art {
+  display: block;
+}
+:root[data-theme="light"] .case-art {
+  display: none;
+}
