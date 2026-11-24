@@ -120,6 +120,7 @@ export default function ToolsPage() {
                 She was not: it is in this one.
               */}
               <LivingFrame
+                priority
                 video="/ocean/moorings-band.mp4"
                 poster="/ocean/moorings-band-poster.webp"
                 alt="Looking up beneath a dock: barnacled pilings, two mooring ropes and daylight on the underside of the water."
