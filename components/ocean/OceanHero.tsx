@@ -83,18 +83,69 @@ export default function OceanHero() {
           this is a single band rather than the page's ground, nothing
           scrubs it, and a still is 131KB against 2.7MB.
         */}
+        {/*
+          Meg's own 6040x4320 piece, and it is the hero in **both** themes
+          rather than Daylight's stand-in.
+
+          **It needs no treatment at all, which is why it is here.** Its
+          border measures luma 8.7; `#08070c`, the page ground, is 8. The
+          art stops and the page carries on, with no mask, no vignette and
+          no scrim doing the work. Every other picture on this site had to
+          be dissolved into the page with `.ocean-bleed` or
+          `.creature-bleed`; this one already is the page. Centre against
+          border is 43 to 8, a ratio of 5.39, where the best thing
+          previously here managed 2.82 and the poster it replaces managed
+          1.17.
+
+          That poster was Daylight-only and the hero was transparent in
+          Harbor, so the first screen was whatever frame the dive happened
+          to be paused on. A deliberate image is better than an accident,
+          and this is the Like a King shape exactly: one lit subject on
+          black with nothing competing. Theirs is a tree.
+
+          The dive is not gone, it is what you descend into: this covers
+          the first screen, and scrolling reveals the backdrop underneath
+          it still running.
+        */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/ocean/surface-poster.webp"
+          src="/ocean/hero-octopus.webp"
           alt=""
           aria-hidden="true"
-          className="hero-daylight-sea absolute inset-0 h-full w-full object-cover"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-center"
         />
 
-        {/* Only as much as the headline needs, and only where it sits. */}
+        {/* Much lighter than it was, because the art under it is already
+            dark where the words go: measured, the left third of this image
+            is luma 14.2. The old 0.72 was solved against a surface poster
+            that read 76 there, and carried onto this it would crush the
+            art to the page colour for no gain. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.55)_0%,rgba(5,7,11,0.2)_45%,rgba(5,7,11,0.45)_100%)] md:bg-[linear-gradient(to_right,rgba(5,7,11,0.72)_0%,rgba(5,7,11,0.45)_38%,rgba(5,7,11,0)_72%)]"
+          className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.35)_0%,rgba(5,7,11,0.1)_45%,rgba(5,7,11,0.4)_100%)] md:bg-[linear-gradient(to_right,rgba(5,7,11,0.5)_0%,rgba(5,7,11,0.18)_42%,rgba(5,7,11,0)_72%)]"
+        />
+
+        {/*
+          A short scrim under the nav only, and it is a measurement.
+
+          Meg's piece puts its light shaft at the top centre, which is
+          exactly where the nav sits. Measured on the built page the moment
+          this became the hero, "Catalog" fell to 2.61:1 and "About" to
+          4.01:1 — two failures that were not there an hour ago and are
+          mine. `PanelHeader`'s own `onMedia` wash is rgba(5,7,11,0.42)
+          behind a blur, which was solved against the surface poster and is
+          not enough against a lit shaft.
+
+          Deepening that wash was the obvious fix and the wrong one: it
+          would put a dark bar across the top of the art on every page that
+          uses it. This darkens the top 7rem of the hero alone, fading to
+          nothing, so the nav gets its ground and the picture keeps its
+          shaft four pixels below.
+        */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.78)_0%,rgba(5,7,11,0.45)_55%,rgba(5,7,11,0)_100%)]"
         />
 
         {/* `onMedia`: this is the one header that sits on video. See the
