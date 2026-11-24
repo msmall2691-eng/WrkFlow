@@ -9,8 +9,8 @@ import ProofStrip from "../ProofStrip";
   Meg's correction.** It was a pinned track that scrubbed a clip inside
   itself: the descent started at the top of the page and was over before
   the second section, and the ocean went with it. She asked for the ocean
-  *behind the page*, still moving while you read, so the video moved out to
-  `OceanBackdrop` and this went back to being what it always should have
+  *behind the page*, still moving while you read, so the video moved out of
+  the hero and this went back to being what it always should have
   been — a screen of copy sitting on the surface of it.
 
   Three things fell out of that, and all three are improvements rather than

@@ -1841,36 +1841,6 @@ body:has(.cp) {
   --color-ink: #f2f0f7;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   The dive backdrop.
-
-   `.cp-dive` is `.cp` with its ground taken away, so the fixed ocean behind
-   it is what you see. It is a separate class rather than a change to `.cp`
-   because only the homepage is a dive; every other page keeps the flat
-   panel ground it was designed on.
-
-   **Daylight switches the whole thing off rather than restyling it**, and
-   that is the same decision recorded in OceanBackdrop. CLAUDE.md says this
-   site went light because near-black read as a developer tool to Meg's
-   buyers; a dark ocean rolling behind cream content is that mistake with a
-   bigger surface. So the light branch keeps `.cp`'s own cream and hides the
-   backdrop outright. One rule, no second palette.
-
-   The `background: none` is deliberate shorthand-free: `.cp` sets
-   `background` (shorthand), so anything less would leave the colour behind.
-   ───────────────────────────────────────────────────────────────────────── */
-.cp-dive {
-  background: none;
-}
-
-:root[data-theme="light"] .cp-dive {
-  background: #f7f4ef;
-}
-
-:root[data-theme="light"] .ocean-backdrop {
-  display: none;
-}
-
 /* A visitor who has asked for less motion still gets the picture, because
    the still mode renders the poster rather than the video. Nothing here
    needs a reduced-motion branch: the only thing that moved was the
@@ -1889,32 +1859,6 @@ body:has(.cp) {
 
 :root[data-theme="light"] .hero-daylight-sea {
   display: block;
-}
-
-/* A night band's Daylight ground, and the wash that only Harbor wants.
-
-   **`.night-band` is for any section that forces `cp-night`.** Those
-   sections re-point their tokens to the dark theme's values, so their
-   text is near-white whatever the page is doing. In Harbor that is right
-   and the dive shows through a transparent ground. In Daylight there is
-   no backdrop, so without a ground of their own they are near-white text
-   on cream. It was `.hero-band` and covered only the hero; `ReefMap`
-   forces `cp-night` too and had been doing exactly that since its own
-   ground was removed for the backdrop. A review bot found it, and the
-   measurement confirmed it: the reef heading at 2.79:1.
-
-   **`.dive-wash` darkens everything below the hero, in Harbor only.** It
-   exists so a violet shop link clears 4.5:1 over bright water. Applied
-   unconditionally it also covered the cream page, where there is no
-   water under it to darken, compositing the ground to rgb(145,145,144).
-   A guard against bright water has nothing to do in a theme that has
-   none. */
-.dive-wash {
-  background: rgba(5, 7, 11, 0.42);
-}
-
-:root[data-theme="light"] .dive-wash {
-  background: none;
 }
 
 :root[data-theme="light"] .night-band {
@@ -1984,50 +1928,6 @@ body:has(.cp) {
   -webkit-mask-image: none;
   mask-image: none;
   border-radius: 0.875rem;
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   The dive has corners, and Like a King's art does not.
-
-   Measured side by side on Nov 24 2026, at 1440x900, both sites rendered
-   in a real browser rather than read as markup. The grounds already
-   match almost exactly: likeakinginc.com is `oklch(0.06 0.008 260)` and
-   this site is `#08070c`. What differs is what happens at the edge of
-   the picture. Their cherry tree and their globe have no edge at all —
-   the art falls off to the page colour on every side, so there is no
-   boundary to notice and the thing reads as painted into the page. The
-   dive is `object-cover` across the whole viewport, so it ends in four
-   hard corners and reads as a video playing behind a website.
-
-   That is the whole of Meg's "blend well", and it is not about the
-   footage being more realistic. Their art is less realistic than hers.
-   It blends because it is dark at the edges and lit in the middle.
-
-   So the dive gets a vignette to the ground colour. It is an overlay
-   rather than a mask because there is a poster underneath it that has to
-   be covered too, and because fading to `transparent` would reveal
-   whatever is behind rather than the page's own black.
-
-   The geometry, read the way `.ocean-bleed` records it: at `100% 92%`
-   the horizontal box edge sits at 0.50 of the radius and a corner at
-   about 0.74, so the corners land past the 62% stop and carry most of
-   the final 0.88 — which is 94% of the way to the ground colour. The
-   centre is untouched out to a third of the radius, because darkening
-   the middle is what the scrim above already does and doing it twice is
-   how the first `dive.mp4` went invisible.
-
-   Off-centre at 34% rather than 50%: the brightest water is the surface
-   at the top of the clip, and a vignette centred on the frame would
-   spend its transparency on the dark floor.
-   ───────────────────────────────────────────────────────────────────────── */
-.dive-vignette {
-  background: radial-gradient(
-    100% 92% at 50% 34%,
-    transparent 0%,
-    transparent 34%,
-    rgba(8, 7, 12, 0.45) 62%,
-    rgba(8, 7, 12, 0.88) 100%
-  );
 }
 
 /* A still with no frame: the Like a King move, applied to Meg's own renders.
