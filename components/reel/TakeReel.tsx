@@ -122,12 +122,30 @@ export default function TakeReel() {
       </h2>
 
       {still ? (
-        /* Stacked: every take, in order, no pin. */
+        /*
+          Stacked: every take, in order, no pin, **and its capture.**
+
+          The fallback is the pinned sequence's end state rather than a
+          summary of it, which is the rule this page is built on and the
+          thing the first version of this branch got wrong: it rendered
+          `TakePanel` alone, so a reduced-motion visitor read five project
+          descriptions and saw a picture of none of them. `BrowserWindow`
+          is the only component that draws `take.shot`.
+
+          So each take keeps the same two-column shape it has when pinned,
+          with the same source order, and only the pinning and the
+          crossfade are dropped. What is lost under `reduce` is the
+          motion; nothing about the work goes with it.
+        */
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
-          <ul className="m-0 list-none space-y-16 p-0">
+          <ul className="m-0 list-none space-y-24 p-0">
             {takes.map((t, i) => (
-              <li key={t.id}>
-                <TakePanel take={t} index={i} stacked />
+              <li
+                key={t.id}
+                className="grid gap-10 md:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] md:items-center"
+              >
+                <TakePanel take={t} index={i} />
+                <BrowserWindow take={t} index={i} still />
               </li>
             ))}
           </ul>
@@ -144,7 +162,7 @@ export default function TakeReel() {
             className="absolute inset-x-0 top-0 flex gap-1 px-6 pt-5"
           >
             {takes.map((t, i) => {
-              const slice = (progress * takes.length) - i;
+              const slice = progress * takes.length - i;
               const fill = Math.min(1, Math.max(0, slice));
               return (
                 <span key={t.id} className="h-px flex-1 bg-white/15">
@@ -170,14 +188,16 @@ export default function TakeReel() {
 function TakePanel({
   take,
   index,
-  stacked = false,
 }: {
   take: (typeof takes)[number];
   index: number;
-  stacked?: boolean;
 }) {
   return (
-    <div className={stacked ? "" : "order-2 md:order-1"}>
+    /* `stacked` is gone rather than defaulted: its only job was to strip
+       the order classes for a one-column fallback, and that fallback is
+       now the same two-column grid, so a second opinion about source
+       order would be a way for the two layouts to drift apart. */
+    <div className="order-2 md:order-1">
       <p className="m-0 font-mono text-[11px] uppercase tracking-[0.2em] text-white/45">
         [ Take {String(index + 1).padStart(2, "0")} of{" "}
         {String(takes.length).padStart(2, "0")} ]
@@ -230,9 +250,11 @@ function TakePanel({
 function BrowserWindow({
   take,
   index,
+  still = false,
 }: {
   take: (typeof takes)[number];
   index: number;
+  still?: boolean;
 }) {
   return (
     <div className="order-1 md:order-2">
@@ -256,28 +278,44 @@ function BrowserWindow({
           than a swap with a gap in the middle.
         */}
         <div className="relative aspect-[16/10] w-full bg-[#0E0F12]">
-          {takes.map((t, i) => (
-            <div
-              key={t.id}
-              aria-hidden={i === index ? undefined : true}
-              className="absolute inset-0 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{
-                opacity: i === index ? 1 : 0,
-                transform: i === index ? "scale(1)" : "scale(1.06)",
-              }}
-            >
-              {/* No empty branch: `lib/planets.ts` filters out a take with no
+          {still ? (
+            /* One capture, drawn once. The crossfade below renders every
+               take and hides all but one, which is right when they are
+               swapping in place and wrong here: stacked, each window
+               shows its own take for good, so the other four would be
+               four more downloads nobody will ever see. */
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={take.shot}
+              alt={`${take.title}, as it runs today`}
+              className="h-full w-full object-cover object-top"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+            />
+          ) : (
+            takes.map((t, i) => (
+              <div
+                key={t.id}
+                aria-hidden={i === index ? undefined : true}
+                className="absolute inset-0 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                style={{
+                  opacity: i === index ? 1 : 0,
+                  transform: i === index ? "scale(1)" : "scale(1.06)",
+                }}
+              >
+                {/* No empty branch: `lib/planets.ts` filters out a take with no
                   capture, so this frame is never drawn around nothing. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={t.shot}
-                alt={`${t.title}, as it runs today`}
-                className="h-full w-full object-cover object-top"
-                loading={i === 0 ? "eager" : "lazy"}
-                decoding="async"
-              />
-            </div>
-          ))}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={t.shot}
+                  alt={`${t.title}, as it runs today`}
+                  className="h-full w-full object-cover object-top"
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
