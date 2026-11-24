@@ -1618,3 +1618,68 @@ body:has(.cp) { background: #08070c; }
 :root[data-theme="light"] .hero-band {
   background: #05070b;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Art that bleeds, instead of art in a box.
+
+   Meg, Nov 24 2026: no sharp borders or edges, everything should feel like
+   it is living in the background. Every ocean picture was in a rounded box
+   with a hairline border, which is the opposite: a border says "this is a
+   separate object pasted onto the page", and the whole point of the dive
+   is that the page IS the ocean.
+
+   So the frames lose their border and their corners and take a mask that
+   fades all four edges to nothing. The art then has no boundary at all; it
+   simply stops being there, and the page ground shows through. It works
+   because the stills are lit subjects on near-black, so what the edges
+   dissolve into is the same darkness that is already behind them.
+
+   **The first version of this did nothing, and the arithmetic says why.**
+   It was sized `140% 125%` with the solid stop at 52%, which puts the end
+   of the opaque region at 0.52 x 140% = 73% of the box width out from the
+   centre. The box edge is at 50%. The entire picture therefore sat inside
+   the solid part of the mask and not one pixel faded; it looked exactly
+   like the bordered version with the border taken off, which is how it
+   nearly shipped.
+
+   At `100% 100%` the ellipse radii match the box, so an edge sits at half
+   the radius whatever the aspect, and the stops are read against that: 40%
+   solid, half gone by 52%, nothing by 66%. The corners are at 0.707 of the
+   radius and so dissolve completely, which is what kills the rectangle.
+
+   `-webkit-mask-image` is not optional: Safari still needs the prefix for
+   mask-image, and without it the fallback is a hard rectangle, which is
+   exactly the thing being removed.
+   ───────────────────────────────────────────────────────────────────────── */
+.ocean-bleed {
+  -webkit-mask-image: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 40%,
+    rgba(0, 0, 0, 0.45) 52%,
+    transparent 66%
+  );
+  mask-image: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 40%,
+    rgba(0, 0, 0, 0.45) 52%,
+    transparent 66%
+  );
+}
+
+/* Daylight gets an edge back, and that is not a compromise.
+
+   The bleed works on Harbor because the art and the page are both
+   near-black: the picture stops and the same darkness carries on. On
+   cream there is nothing for a dark picture to dissolve INTO, so the same
+   mask produces a grey halo, which is a smudge rather than a soft edge.
+   Seen on /about in Daylight: the reef loop ended in a ring of mud.
+
+   So the mask is Harbor's. In Daylight the art is a dark island on a light
+   page, and an island is allowed a shore: no border, no heavy chrome, just
+   a radius so the edge reads as deliberate. Same reasoning as `.cp-night`
+   existing at all. */
+:root[data-theme="light"] .ocean-bleed {
+  -webkit-mask-image: none;
+  mask-image: none;
+  border-radius: 0.875rem;
+}

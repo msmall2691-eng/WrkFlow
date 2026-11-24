@@ -2,12 +2,24 @@ import Image from "next/image";
 
 /**
  * The frame itself, exported so `LivingFrame` wears the same one. A second
- * component drawing its own border and ground is how two things that should
- * look identical stop looking identical, which is the lesson the page titles
+ * component drawing its own edges is how two things that should look
+ * identical stop looking identical, which is the lesson the page titles
  * taught this repo a commit ago.
+ *
+ * **There is no border, no radius and no ground any more**, at Meg's ask:
+ * the art should feel like it is living in the background rather than
+ * pasted on top of it. `ocean-bleed` masks all four edges away instead, so
+ * the picture has no boundary to notice.
+ *
+ * The ground had to go with them. It was `--color-base` so a dark island
+ * read correctly on cream, and under a mask a solid fill is just a second
+ * rectangle fading at the same rate: on Daylight that put a grey halo
+ * around every picture, since the thing dissolving was near-black over
+ * cream rather than the picture over its own darkness. With no fill, what
+ * shows through at the edges is the page.
  */
 export const FRAME_SHELL =
-  "cp-night relative overflow-hidden rounded-xl border border-[var(--cp-hairline)] bg-[var(--color-base)]";
+  "cp-night ocean-bleed relative overflow-hidden";
 
 /*
   One cast still, framed the same way everywhere it appears.

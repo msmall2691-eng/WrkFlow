@@ -61,8 +61,19 @@ export default function ReefMap() {
         </p>
 
         <div className="mt-10 grid gap-6 lg:gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-start">
-          {/* The picture, with the pins on it. */}
-          <div className="relative overflow-hidden rounded-xl border border-white/10">
+          {/*
+            The picture, with the pins on it.
+
+            **The mask is on the picture alone, not on this container.**
+            The pins and the thread are siblings of the image inside it,
+            and `ocean-bleed` fades all four edges to nothing — put on the
+            container, it would fade the annotations too, and `software`
+            sits at 88% across, right where the falloff bites. So the
+            image gets its own wrapper to dissolve in and the pins stay at
+            full strength on top of it.
+          */}
+          <div className="relative">
+            <div className="ocean-bleed relative overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               /* Meg's clean 2000px render, not the frame grabbed out of
@@ -76,6 +87,7 @@ export default function ReefMap() {
               loading="lazy"
               decoding="async"
             />
+            </div>
 
             {/*
               **The thread.** Meg asked after "the video of the rope" — there
