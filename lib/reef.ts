@@ -36,6 +36,12 @@ import { services } from "./content";
   structure everything else is attached to is the thing that service is
   actually about.
 
+  **Each pin carries a creature now**, cut from Meg's own Shot_01 rather
+  than drawn: the subjects in that clip sit on near-black, so a crop of a
+  frame reads as a piece of art on the page rather than as a screenshot of
+  a video. That is the Like a King move she keeps pointing at, where every
+  section has something of its own to look at.
+
   **Nothing here is a claim.** The HUD in Meg's original still carried
   invented telemetry (pH 8.1, "BIODIVERSITY INDEX HIGH"), which is fine as
   scene dressing on an ocean illustration and is exactly what must not
@@ -56,11 +62,17 @@ export type ReefPin = {
   creature: string;
   /** The reef's half of the analogy, one line. */
   reef: string;
+  /** A still of that creature from Meg's own footage, for the panel. */
+  art: string;
+  /** What the still shows, for anyone who cannot see it. */
+  artAlt: string;
 };
 
 const PINS: ReefPin[] = [
   {
     id: "websites",
+    art: "/ocean/cast/light.webp",
+    artAlt: "Light shafts reaching down through dark water, a ray and a jellyfish drifting in them.",
     x: 49,
     y: 23,
     side: "right",
@@ -69,6 +81,8 @@ const PINS: ReefPin[] = [
   },
   {
     id: "leads",
+    art: "/ocean/cast/turtle.webp",
+    artAlt: "A turtle gliding low over the reef, past anemones and a clownfish.",
     x: 40,
     y: 80,
     side: "right",
@@ -77,6 +91,8 @@ const PINS: ReefPin[] = [
   },
   {
     id: "software",
+    art: "/ocean/cast/ray.webp",
+    artAlt: "The reef floor with a ray passing above it and shoals of lit fish streaming across.",
     x: 72,
     y: 56,
     side: "right",
@@ -85,6 +101,8 @@ const PINS: ReefPin[] = [
   },
   {
     id: "integrations",
+    art: "/ocean/cast/octopus.webp",
+    artAlt: "Thousands of lit fish streaming past an octopus on the rocks.",
     x: 35,
     y: 47,
     side: "left",

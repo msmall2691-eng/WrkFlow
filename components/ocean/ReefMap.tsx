@@ -40,7 +40,7 @@ export default function ReefMap() {
     <section
       id="reef"
       aria-labelledby="reef-heading"
-      className="cp-night relative border-t border-white/10 bg-[#05070b] py-16 md:py-20"
+      className="cp-night relative border-t border-white/10 bg-[#05070b] py-12 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
         <p className="m-0 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
@@ -56,7 +56,7 @@ export default function ReefMap() {
           inbox should work the same way.
         </p>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-start">
+        <div className="mt-10 grid gap-6 lg:gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-start">
           {/* The picture, with the pins on it. */}
           <div className="relative overflow-hidden rounded-xl border border-white/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -67,6 +67,31 @@ export default function ReefMap() {
               loading="lazy"
               decoding="async"
             />
+
+            {/*
+              **The thread.** Meg asked after "the video of the rope" — there
+              is no rope in either clip, and what she was remembering is the
+              glowing fiber from the Cable hero that this replaced. It comes
+              back here instead, as a line running pin to pin: the cable
+              through the ecosystem, which is also exactly what the fourth
+              service is. Faint on purpose, because it is a connection and
+              not a diagram.
+            */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+            >
+              <polyline
+                points={reefPins.map((p) => `${p.x},${p.y}`).join(" ")}
+                fill="none"
+                stroke="#2dd4bf"
+                strokeWidth="0.18"
+                strokeOpacity="0.3"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
 
             {reefPins.map((p) => {
               const on = p.id === active?.id;
@@ -113,7 +138,17 @@ export default function ReefMap() {
 
           {/* The panel. Always rendered, always in the same place. */}
           {active ? (
-            <div className="rounded-xl border border-white/12 bg-white/[0.035] p-6">
+            <div className="overflow-hidden rounded-xl border border-white/12 bg-white/[0.035]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                key={active.art}
+                src={active.art}
+                alt={active.artAlt}
+                className="block aspect-[16/9] w-full object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="p-6">
               <p className="m-0 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40">
                 {active.service.index} · {active.creature}
               </p>
@@ -144,6 +179,7 @@ export default function ReefMap() {
               >
                 What this costs <span aria-hidden="true">&nbsp;→</span>
               </Link>
+              </div>
             </div>
           ) : null}
         </div>
