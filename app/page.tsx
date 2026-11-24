@@ -1,4 +1,5 @@
-import CableHero from "@/components/cable/CableHero";
+import OceanHero from "@/components/ocean/OceanHero";
+import ReefMap from "@/components/ocean/ReefMap";
 import TakeReel from "@/components/reel/TakeReel";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
@@ -37,9 +38,11 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    CableHero    one screen: "Follow the Cable". A fiber crosses a granite
-                 slab, slips through a seam and splits into the two things
-                 this studio sells, with every control as real HTML
+    OceanHero    one screen: the dive. Meg's own Firefly footage of a deep
+                 reef, played once and held at the bottom, with a 45 kB
+                 poster carrying the first paint
+    ReefMap      id="reef" — the same reef as a still, annotated. Four pins,
+                 one per service, read from `services[]`
     TakeReel     the work, as a browser window pinned on the right with
                  four takes swapping inside it. Cards, not globes, at
                  Meg's ask, and DOM rather than WebGL because nothing
@@ -80,7 +83,8 @@ import CommandPalette from "@/components/CommandPalette";
 export default function Home() {
   return (
     <div className="cp">
-      <CableHero />
+      <OceanHero />
+      <ReefMap />
       <TakeReel />
       <Shelf />
       <TryItNow />
