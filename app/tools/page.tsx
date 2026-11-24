@@ -4,6 +4,7 @@ import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Playground from "@/components/Playground";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   /tools — the free M Linx tools, on their own page.
@@ -48,9 +49,7 @@ export default function ToolsPage() {
                 this heading already used the panel's face, so unlike /services
                 there is nothing to decide here.
               */}
-              <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                Free tools. No signup.
-              </h1>
+              <StackedHeading as="h1" lead="Free tools." trail="No signup." />
               <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 {/* "we build" was the one "we" left on this page. Meg is a solo
                     founder and the house rule is first person. */}

@@ -1,5 +1,5 @@
 import { integrations, provenIn } from "@/lib/integrations";
-import StackedHeading from "./StackedHeading";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   WhatConnects — the integrations evidence, cut by tool rather than by

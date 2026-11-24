@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import TideLevel from "./TideLevel";
 import TideKey from "./TideKey";
+import StackedHeading from "./StackedHeading";
 import {
   provingGround,
   founderNote,
@@ -168,10 +169,14 @@ export default function FounderNote() {
         {/* The mission — the "why this exists" story. No signature: this
             reads as a philosophy, not a personal letter. */}
                   <div className="mt-10 flex flex-col items-start text-left">
-            <h1 className="display text-[2rem] text-balance text-ink sm:text-4xl">
-              {founderNote.headline}
-            </h1>
-            <p className="mt-1 text-lg font-medium text-ink sm:text-xl">
+            {/* One line, no step-back: the headline is content, and the
+                component cannot know where to break a sentence it has not
+                seen. StackedHeading's `trail` note has the reasoning. */}
+            <StackedHeading as="h1" lead={founderNote.headline} />
+            {/* `mt-1` here was proportionate under a 36px heading and is a
+                collision under a 72px one: the follow-up sat hard against
+                the descenders. */}
+            <p className="mt-5 text-lg font-medium text-ink sm:text-xl">
               {founderNote.headlineFollow}
             </p>
             <div className="mt-6 max-w-[62ch] space-y-5">

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import StackedHeading from "@/components/StackedHeading";
 
 export default function NotFound() {
   return (
@@ -15,9 +16,15 @@ export default function NotFound() {
           <Logo tag tone="light" />
         </Link>
 
-        <h1 className="display-serif mt-12 text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
-          This link came loose.
-        </h1>
+        {/* This page has no `.cp` wrapper, which is why StackedHeading's
+            colours carry a `--color-*` fallback. See the note there. */}
+        <StackedHeading
+          as="h1"
+          face="serif"
+          className="mt-12"
+          lead="This link"
+          trail="came loose."
+        />
         <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-muted">
           The page you&apos;re after doesn&apos;t exist or has moved. Everything
           else is still linked up where it should be.

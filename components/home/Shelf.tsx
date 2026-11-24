@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { catalog, statusLabels, type CatalogItem, type CatalogStatus } from "@/lib/catalog";
-import StackedHeading from "./StackedHeading";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   Shelf — what can be had today, with the price, on the page everybody sees.

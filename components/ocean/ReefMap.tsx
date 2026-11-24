@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { reefPins } from "@/lib/reef";
-import StackedHeading from "../home/StackedHeading";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   The reef, annotated.

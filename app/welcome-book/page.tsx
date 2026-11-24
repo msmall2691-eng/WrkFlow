@@ -6,6 +6,7 @@ import CommandPalette from "@/components/CommandPalette";
 import LinxMark from "@/components/LinxMark";
 import WelcomeBookReserve from "@/components/WelcomeBookReserve";
 import { welcomeBook } from "@/lib/content";
+import StackedHeading from "@/components/StackedHeading";
 
 const wb = welcomeBook;
 const demoDomain = wb.demoUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
@@ -53,9 +54,7 @@ export default function WelcomeBookPage() {
                               <div className="mb-5 flex items-center text-ink">
                   <LinxMark className="h-4 w-auto" />
                 </div>
-                              <h1 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
-                  {wb.hero.headline}
-                </h1>
+                <StackedHeading as="h1" face="serif" lead={wb.hero.headline} />
                               <p className="mt-6 max-w-xl text-[1rem] leading-relaxed text-muted">
                   {wb.hero.sub}
                 </p>

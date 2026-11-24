@@ -249,9 +249,26 @@ export default function OceanHero() {
               [ Custom software · Southern Maine · clients anywhere ]
             </p>
 
+            {/*
+              **`font-display` is on the h1 itself, not only on the spans.**
+              The two child spans set `font-display` and `font-serif`, so the
+              h1 had no face of its own and inherited Inter from the body:
+              measured, this heading reported `Inter` as its computed family
+              while looking correct, because every glyph on screen belongs to
+              a span. Any direct text added here later would have rendered in
+              the body face for no visible reason. The serif span still
+              overrides it.
+
+              This hero stays bespoke rather than moving to StackedHeading:
+              it is the one heading on the site set over video, in its own
+              fixed near-white against the dive rather than a theme token,
+              with a two-face composition and the teal full stop. That is a
+              designed exception, and the type scale it is an exception to is
+              now written down in one place.
+            */}
             <h1
               id="hero-heading"
-              className="m-0 mt-6 max-w-[16ch] text-[clamp(2.5rem,5.4vw,4.6rem)] font-semibold leading-[0.95] tracking-tight text-[#EDEBE6]"
+              className="m-0 mt-6 max-w-[16ch] font-display text-[clamp(2.5rem,5.4vw,4.6rem)] font-semibold leading-[0.95] tracking-tight text-[#EDEBE6]"
             >
               <span className="block font-display">Software that</span>
               <span className="mt-1 block font-serif font-normal italic">

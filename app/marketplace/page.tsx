@@ -7,6 +7,7 @@ import CommandPalette from "@/components/CommandPalette";
 import MarketCatalog from "@/components/MarketCatalog";
 import WorkflowMap from "@/components/WorkflowMap";
 import LinxMark from "@/components/LinxMark";
+import StackedHeading from "@/components/StackedHeading";
 import { marketItems, welcomeBook } from "@/lib/content";
 
 /*
@@ -98,9 +99,7 @@ export default function MarketplacePage() {
                 they are 18px. So this h1 follows the panel's own face, the
                 way /tools does.
               */}
-              <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                Ready to use. Nothing to learn.
-              </h1>
+              <StackedHeading as="h1" lead="Ready to use." trail="Nothing to learn." />
               <p className="mt-5 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 Start with something free, buy one thing outright, or add a
                 hosted tool to the site you already have. I set it up either

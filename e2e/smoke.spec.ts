@@ -1478,3 +1478,87 @@ test("the work still shows without WebGL", async ({ browser }) => {
 
   await ctx.close();
 });
+
+/*
+  Every page title is set by one component.
+
+  **This guards the failure it was written after, which no other test here
+  could see.** Measured on Nov 24 2026, the eight page titles rendered in
+  three typefaces, three weights and five sizes: 74px Inter on the homepage,
+  48px weight-500 Fraunces on /services, 36px weight-600 Space Grotesk on
+  /catalog, 64px on /brightbase. Every page built, every test passed, no
+  console error anywhere. The cause was that `StackedHeading` lived in
+  `components/home/`, so five homepage sections used it and every other page
+  hand-wrote its own ramp inline.
+
+  CLAUDE.md forbids exactly this everywhere else: a derived value has one
+  author and is never re-derived inline. The type scale is a derived value,
+  and it had eight authors, so this asserts the property rather than the
+  component. A page that goes back to a hand-rolled `h1` fails here even if
+  it imports nothing and looks fine in a screenshot, which is the point:
+  **the previous state of this was invisible to a build, a test and a
+  Lighthouse run, and only visible by measuring.**
+
+  The size is read rather than hardcoded, from whichever page runs first, so
+  retuning the clamp in `StackedHeading` does not fail this. What may not
+  drift is that they all agree.
+
+  The homepage is deliberately absent. Its hero is the one bespoke heading
+  on the site, set over video in a fixed near-white with a two-face
+  composition, and `OceanHero` says so in a comment. The face is absent too:
+  Fraunces or Space Grotesk per page is Meg's open brand decision, recorded
+  in `StackedHeading` and on /services, and this test must not quietly
+  settle it.
+*/
+test("every page title is the same size and weight, from one component", async ({ page }) => {
+  const paths = [
+    "/services",
+    "/tools",
+    "/catalog",
+    "/marketplace",
+    "/about",
+    "/brightbase",
+    "/turnover",
+    "/demo",
+    "/welcome-book",
+    "/privacy",
+    "/terms",
+    "/work/maine-cleaning-co",
+  ];
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const seen: { path: string; size: number; weight: string }[] = [];
+
+  for (const path of paths) {
+    await page.goto(path);
+    const h1 = page.locator("h1").first();
+    await expect(h1, `${path} should have a visible h1`).toBeVisible();
+
+    const got = await h1.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { size: Math.round(parseFloat(cs.fontSize)), weight: cs.fontWeight };
+    });
+    seen.push({ path, ...got });
+  }
+
+  /* Weight is absolute: the treatment is large-and-light, and `.display`
+     (unlayered, font-weight 600) silently beating `font-normal` is the way
+     this breaks without anyone writing a number down. */
+  for (const s of seen) {
+    expect(
+      s.weight,
+      `${s.path} renders its page title at weight ${s.weight}, not 400 — a hand-rolled h1, ` +
+        "or the unlayered `.display` class winning over `font-normal`",
+    ).toBe("400");
+  }
+
+  /* Size is relative: whatever the clamp resolves to, every page agrees. */
+  const base = seen[0];
+  for (const s of seen) {
+    expect(
+      s.size,
+      `${s.path} renders its page title at ${s.size}px but ${base.path} renders ${base.size}px — ` +
+        "page titles come from StackedHeading so that there is one answer",
+    ).toBe(base.size);
+  }
+});

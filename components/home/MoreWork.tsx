@@ -1,7 +1,7 @@
 import Link from "next/link";
 import LiveTile from "../panel/LiveTile";
 import { work, type WorkItem } from "@/lib/content";
-import StackedHeading from "./StackedHeading";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   MoreWork — everything the worked example above does not already cover,

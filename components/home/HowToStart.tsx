@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { studioStats } from "@/lib/content";
-import StackedHeading from "./StackedHeading";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   HowToStart — the last beat, and the one the old homepage skipped.
