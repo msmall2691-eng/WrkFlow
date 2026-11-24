@@ -66,7 +66,13 @@ export default function WhatConnects() {
             `isolate` puts it behind the words and still in front of the
             section's own ground. */}
         <Creature
-          src="/ocean/cast/ray.webp"
+          /* Measured, not chosen by eye: `ray.webp` reads 44 at its border
+             against 18.7 in the middle, so it is DARKER where a subject
+             should be and there was nothing for the mask to leave behind.
+             It was invisible here and the numbers said so. `octopus.webp`
+             is 26.7 against 59.5, and it is also what `lib/ocean.ts`
+             already assigns to integrations, which is this section. */
+          src="/ocean/cast/octopus.webp"
           className="absolute right-0 top-0 -z-10 hidden h-[21rem] w-[33rem] lg:block"
         />
         <StackedHeading

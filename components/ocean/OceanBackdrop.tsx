@@ -54,10 +54,39 @@ import { useEffect, useRef, useState } from "react";
 */
 type Mode = "scrub" | "still";
 
+/* What is left of the ocean once the page stops being about the ocean.
+
+   Meg, after seeing both sites side by side: let the dive fade through the
+   middle so the stills can be the art there. It is the right read of what
+   Like a King actually does — rendered at 1440x900, the gap between two of
+   their sections is several hundred pixels of nothing at all, and that
+   emptiness is why a lit subject lands when one arrives. This page ran the
+   dive at full strength behind every section, so an added still had to
+   compete with moving water instead of sitting on black.
+
+   A floor rather than zero, because the ocean is the idea and switching it
+   off at section two would read as a bug. At 0.22 the water is still
+   legible as water and no longer the brightest thing on screen. It is one
+   number; it is meant to be dialled. */
+const DEEP_WATER = 0.22;
+
+/* Full for the first screen and a half, then down to the floor by the time
+   the shop arrives. The ease is on the way down only: coming back up would
+   be the ocean pumping, which is the "too busy" note Meg gave on the first
+   cut of this page. */
+function clarity(t: number) {
+  if (t <= 0.14) return 1;
+  if (t >= 0.36) return DEEP_WATER;
+  const k = (t - 0.14) / 0.22;
+  return 1 - (1 - DEEP_WATER) * (k * k * (3 - 2 * k));
+}
+
 export default function OceanBackdrop() {
   const video = useRef<HTMLVideoElement>(null);
   const root = useRef<HTMLDivElement>(null);
+  const media = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<Mode | null>(null);
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -66,6 +95,7 @@ export default function OceanBackdrop() {
       navigator as Navigator & { connection?: { saveData?: boolean } }
     ).connection;
     const sync = () => {
+      setReduced(reduced.matches);
       if (reduced.matches || conn?.saveData) setMode("still");
       else setMode(wide.matches ? "scrub" : "still");
     };
@@ -77,6 +107,47 @@ export default function OceanBackdrop() {
       wide.removeEventListener("change", sync);
     };
   }, []);
+
+  /*
+    The fade is its own effect, deliberately, because it is not the seek.
+
+    The seek belongs to `scrub` alone: it needs a decoded video and there
+    is none in `still`. The fade needs neither, so a phone gets it too —
+    one style write per frame on an element that is already composited,
+    against the alternative of a phone being the one device that keeps a
+    full-strength ocean behind every price on the page.
+
+    `reduce` is the exception and gets the end state, which is the rule
+    everywhere else on this site: a scroll-linked opacity IS motion, so
+    somebody who asked for none gets the quiet water without the journey
+    to it rather than a fade they did not ask for.
+  */
+  useEffect(() => {
+    const el = media.current;
+    if (!el || !mode) return;
+    if (reduced) {
+      el.style.opacity = String(DEEP_WATER);
+      return;
+    }
+    let raf = 0;
+    const paint = () => {
+      raf = 0;
+      const span = document.documentElement.scrollHeight - window.innerHeight;
+      const t = span > 0 ? Math.min(1, Math.max(0, window.scrollY / span)) : 0;
+      el.style.opacity = clarity(t).toFixed(3);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(paint);
+    };
+    paint();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [mode, reduced]);
 
   useEffect(() => {
     const v = video.current;
@@ -163,23 +234,29 @@ export default function OceanBackdrop() {
          wrapper on the page carries the matching `relative z-10`. */
       className="ocean-backdrop pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/ocean/surface-poster.webp"
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        fetchPriority="high"
-      />
-      {mode === "scrub" ? (
-        <video
-          ref={video}
+      {/* The poster and the video fade together, and the scrim and the
+          vignette below do not: those are what keep text readable, so
+          thinning them with the water would undo the fade's whole point
+          the moment the water got quiet. */}
+      <div ref={media} className="absolute inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/ocean/surface-poster.webp"
+          alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          src="/ocean/dive.mp4"
-          muted
-          playsInline
-          preload="auto"
+          fetchPriority="high"
         />
-      ) : null}
+        {mode === "scrub" ? (
+          <video
+            ref={video}
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/ocean/dive.mp4"
+            muted
+            playsInline
+            preload="auto"
+          />
+        ) : null}
+      </div>
 
       {/*
         The wash, and both it and the file under it are measurements.
