@@ -104,21 +104,28 @@ export default function Home() {
           deliberately outside it.**
 
           Bright water and 14px text are in direct tension, and the
-          measurement found where it breaks: a violet shop link over a lit
-          patch of water came out at 4.16:1, then 4.35:1 after the scrim
-          was weighted, where it needs 4.5. Violet on teal is the worst
+          measurement found where it breaks, three times now, always on
+          the same element: the violet shop link over a lit patch of
+          water. 4.16:1 at an even scrim, 4.35:1 once the scrim was
+          weighted, and 3.68:1 again the moment the backdrop's second half
+          became the photoreal clip, which is brighter in its sunlit
+          water than anything before it. Violet on teal is the worst
           pairing this palette can make and it is exactly what the shop's
-          links are. Pushing the backdrop's own scrim further would have
-          fixed one link by dimming the whole ocean, including the hero,
-          which is the part worth looking at.
+          links are.
 
           So the hero sits on the backdrop directly at its lightest, and
-          everything from the reef down takes another 22%. That is the
-          difference between 4.35:1 and passing, it costs the lower page
-          about four points of luma, and a section added later inherits it
-          rather than having to remember.
+          everything from the reef down takes another 42%. Pushing the
+          backdrop's own scrim instead would have fixed one link by
+          dimming the hero too, which is the part worth looking at.
+
+          **It costs less than it sounds, and that was measured rather
+          than hoped.** Going from 22% to 42% moved the backdrop's median
+          luma below the hero by about one point, 17 to 16, because the
+          wash bites hardest on exactly the bright patches that break
+          text and barely touches the dark water that is most of the
+          frame. Worst text on the page went 3.68:1 to 4.96:1.
         */}
-        <div className="bg-[rgba(5,7,11,0.22)]">
+        <div className="bg-[rgba(5,7,11,0.42)]">
         <ReefMap />
         <TakeReel />
         <Shelf />

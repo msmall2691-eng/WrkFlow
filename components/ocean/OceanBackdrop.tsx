@@ -185,10 +185,17 @@ export default function OceanBackdrop() {
         The wash, and both it and the file under it are measurements.
 
         **The scrim is paired to the file's measured luma, and the file
-        changed.** `dive.mp4` is now Meg's waterline clip, which opens on
-        sunlight on the surface and sinks into a kelp forest, graded to
-        the site's house look at mean luma 56. It replaced a Firefly
-        descent that measured 86.
+        changed.** `dive.mp4` is two of Meg's clips cut together: the
+        first 2.6s of the waterline shot, which opens on sunlight on the
+        surface and sinks through it, crossfaded into `Video_Project_4_1`,
+        which is photoreal, natively 1080p and carries the octopus and the
+        turtle. She asked for the ocean to look more realistic and that
+        second clip is the one that does; the first is the only one that
+        starts above the water, and starting there is what makes the page
+        feel like arriving somewhere rather than already being somewhere.
+        Both halves are graded to the same house look, so the crossfade
+        reads as carrying on down rather than as a cut between two films.
+        Mean luma 56, against the 86 of the Firefly descent it replaced.
 
         A scrim composites to `(1-a)·L + a·7`, so the same values over a
         darker source give a darker page: the old 0.5 to 0.8 spread would
