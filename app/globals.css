@@ -2073,3 +2073,44 @@ body:has(.cp) {
 :root[data-theme="light"] .creature {
   display: none;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Meg, cut out of her own photograph, on the theme that can take it.
+
+   The Like a King treatment applied to the one picture on this site that
+   is actually a person: no circle, no ring, no frame, just her against the
+   page. `/about` argues that somebody who ran a service business built
+   this software, and FounderNote's own note already records that a face is
+   the only thing that can make that argument.
+
+   **It is Harbor-only, and that is a measurement rather than a
+   preference.** The cut is a neural matte of a photograph shot against
+   green bokeh, so what it leaves behind at the hairline is a thin dark
+   fringe. On `#08070c` that fringe is indistinguishable from rim light and
+   the picture reads clean. Composited on `#f7f4ef` it is a dirty outline
+   around her head, which is `.ocean-bleed`'s lesson exactly: an edge that
+   dissolves into near-black has nothing to dissolve into on cream.
+
+   Eroding the matte was tried and rejected on the numbers. Going from a
+   4px erode to 20px moved mean edge darkness against cream only from 132.6
+   to 119.0 while taking partial-alpha pixels from 16,902 to 34,634: a
+   wider smudge rather than a cleaner edge. The metric rewarded softness,
+   which is not the same thing.
+
+   So Daylight keeps the circular photograph it already had, which was
+   never broken there, and the swap is a `display` toggle rather than two
+   components. The hidden one is `display: none`, so it leaves the
+   accessibility tree too and a screen reader hears one portrait, not two.
+   ───────────────────────────────────────────────────────────────────────── */
+.founder-cut {
+  display: block;
+}
+.founder-round {
+  display: none;
+}
+:root[data-theme="light"] .founder-cut {
+  display: none;
+}
+:root[data-theme="light"] .founder-round {
+  display: block;
+}
