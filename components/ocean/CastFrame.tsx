@@ -1,5 +1,14 @@
 import Image from "next/image";
 
+/**
+ * The frame itself, exported so `LivingFrame` wears the same one. A second
+ * component drawing its own border and ground is how two things that should
+ * look identical stop looking identical, which is the lesson the page titles
+ * taught this repo a commit ago.
+ */
+export const FRAME_SHELL =
+  "cp-night relative overflow-hidden rounded-xl border border-[var(--cp-hairline)] bg-[var(--color-base)]";
+
 /*
   One cast still, framed the same way everywhere it appears.
 
@@ -88,9 +97,7 @@ export default function CastFrame({
         ground. The island is for the photograph, which is dark in both
         themes; the caption belongs to the page, and follows it.
       */}
-      <div
-        className={`cp-night relative ${aspect} overflow-hidden rounded-xl border border-[var(--cp-hairline)] bg-[var(--color-base)]`}
-      >
+      <div className={`${FRAME_SHELL} ${aspect}`}>
         <Image
           src={art}
           alt={artAlt}

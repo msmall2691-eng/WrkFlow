@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { approachSteps } from "@/lib/content";
-import CastFrame from "./ocean/CastFrame";
+import LivingFrame from "./ocean/LivingFrame";
 
 /*
   Approach — the four-step process, rendered as small connected cards.
@@ -60,11 +60,19 @@ export default function Approach() {
           a 16/9 band is most of a screen of water before the first step,
           which would push the content this page exists for below the fold.
         */}
-        <CastFrame
-          art="/ocean/reef.webp"
-          artAlt="A deep reef at night: an octopus on the rocks, shoals of lit fish, anemones and a shaft of light from the surface."
-          aspect="aspect-[21/9]"
-          sizes="(min-width: 1024px) 1152px, 100vw"
+        {/*
+          **This band is the living reef**, which is where Meg's `Shot_01`
+          could actually go. The homepage map annotates a fixed composition
+          and the footage is a travelling push-in, so pins drift off their
+          creatures on it; LivingFrame's note has the frame-by-frame. Here
+          there is nothing pinned, the page has no other motion on it, and
+          the section argues that an ecosystem runs unsupervised, which is
+          a better thing to watch than to read.
+        */}
+        <LivingFrame
+          video="/ocean/reef-loop.mp4"
+          poster="/ocean/reef-loop-poster.webp"
+          alt="A slow push through a deep reef at night, past an octopus, a turtle and shoals of lit fish."
           className="mb-12"
         />
         <div className="mb-12 max-w-3xl">

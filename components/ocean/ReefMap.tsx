@@ -65,8 +65,13 @@ export default function ReefMap() {
           <div className="relative overflow-hidden rounded-xl border border-white/10">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/ocean/reef.webp"
-              alt="A deep reef at night: an octopus on the rocks, shoals of lit fish, anemones and a shaft of light from the surface."
+              /* Meg's clean 2000px render, not the frame grabbed out of
+                 Shot_01 that shipped first. The composition is the same
+                 and the detail is not: the anemones, the clownfish and
+                 the anglerfish along the floor were all but black in the
+                 video frame. Every pin was re-measured for it. */
+              src="/ocean/reef-wide.webp"
+              alt="A deep reef at night: an octopus on the rocks, a turtle and a ray above it, shoals of lit fish, anemones with clownfish, and a shaft of light from the surface."
               className="block h-full w-full object-cover"
               loading="lazy"
               decoding="async"
@@ -130,7 +135,7 @@ export default function ReefMap() {
                     aria-hidden="true"
                     className={`pointer-events-none absolute top-1/2 hidden -translate-y-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 lg:block ${
                       p.side === "right" ? "left-[2.4rem]" : "right-[2.4rem]"
-                    } ${on ? "text-[#2dd4bf]" : "text-white/60"}`}
+                    } ${on ? "text-[#2dd4bf]" : "text-white/85"}`}
                     style={{ textShadow: "0 1px 6px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,1)" }}
                   >
                     {p.service.index} {p.creature}

@@ -76,9 +76,18 @@ export default function ToolsPage() {
                 </p>
               </div>
 
+              {/*
+                The moorings rather than the dive's own surface. Two
+                reasons: the homepage already opens on that exact frame, so
+                reusing it here made two pages look like one; and this is a
+                working waterfront, ropes and pilings and daylight on the
+                underside of the water, which is the nearest thing in the
+                set to Southern Maine and to free tools that are simply
+                tied up and available.
+              */}
               <CastFrame
-                art="/ocean/surface-poster.webp"
-                artAlt="The ocean surface from below, light breaking through the water."
+                art="/ocean/moorings.webp"
+                artAlt="Looking up beneath a dock: barnacled pilings, two mooring ropes and daylight on the underside of the water."
                 priority
                 aspect="aspect-[4/3]"
                 sizes="(min-width: 1024px) 480px, 100vw"

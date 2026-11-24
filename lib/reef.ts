@@ -22,17 +22,29 @@ import { castFor, type CastMember } from "./ocean";
   which is the fourth service on this very list.
 
   **The anchors are percentages, not pixels**, so the annotation stays on
-  its creature at every width. The first set was eyeballed and every one of
-  them missed: the light shaft's source is at 23% down, not 14%, and the
-  clownfish are at 73%, not 70%. They were re-placed against a percentage
-  grid rendered over `public/ocean/reef.webp` and then checked again on the
-  built page, because a pin pointing at empty water is worse than no pin.
+  its creature at every width. They are placed against a percentage grid
+  rendered over the actual file and then checked on the built page, because
+  a pin pointing at empty water is worse than no pin. Every set so far has
+  needed that: the first was eyeballed and all four missed.
 
-  **A label must also fit.** `leads` first sat on the left-most clownfish
-  at 31% with its label running left, and the label ran off the edge of the
-  frame: the picture is cropped by its container, so a pin near an edge has
-  to point its label inward. It is on the large anemone at 40% now, reading
-  right across the dark reef floor.
+  **Nov 24 2026: the picture changed, so all four moved.** Meg sent the
+  scene as a clean 2000px render, where what shipped was a 1600x900 frame
+  grabbed out of `Shot_01`. Same composition, far more of it: the anemones
+  and clownfish along the bottom, the anglerfish, the rock mass, all of
+  which the video frame had crushed into near-black. The co-ordinates here
+  are measured on `reef-wide.webp` and are not transferable back — on the
+  old frame `leads` was at 40/80 and the new anemone cluster is at 37/86.
+
+  **A label must fit as well as point, and fit is measured on the rendered
+  card, not on the file.** The picture sits in the wider half of a two
+  column grid, which is about 610px at 1440, so a label reading right needs
+  its pin before roughly 60% of the width or the frame clips it. `software`
+  is the one this binds: the rock mass it names runs to the right edge, it
+  was tried at 80% reading right and came out as "03 THE REEF ITS", and
+  reading left from 84% put the words across the octopus, which is the
+  subject of the picture and the one thing that must not carry writing. It
+  reads left from 88% now, high enough on the rock that the words cross a
+  tentacle and clear the head.
 
   **"The reef itself" points at the rock mass on the right, not the
   octopus.** The octopus is the picture's subject and needs no label; the
@@ -56,10 +68,18 @@ const PLACEMENTS: {
   y: number;
   side: "left" | "right";
 }[] = [
-  { id: "websites", x: 49, y: 23, side: "right" },
-  { id: "leads", x: 40, y: 80, side: "right" },
-  { id: "software", x: 72, y: 56, side: "right" },
-  { id: "integrations", x: 35, y: 47, side: "left" },
+  /* The light shaft, in the beam itself just left of the ray. */
+  { id: "websites", x: 58, y: 14, side: "right" },
+  /* The big white anemone cluster with the clownfish in it. */
+  { id: "leads", x: 37, y: 86, side: "right" },
+  /* The rock mass on the right, reading left. Measured on the rendered
+     card rather than the file: this column is about 610px wide, so a
+     right-running label needs its pin before roughly 60% or it is clipped
+     by the frame, and at 80% it was. Reading left from 88% at this height
+     the words cross one tentacle and clear the octopus's head. */
+  { id: "software", x: 88, y: 58, side: "left" },
+  /* The shoal streaming left below the turtle, clear of the turtle itself. */
+  { id: "integrations", x: 22, y: 44, side: "left" },
 ];
 
 /** Each pin joined to its cast member and the service it labels. Pins with
