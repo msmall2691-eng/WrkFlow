@@ -10,6 +10,7 @@ import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
+import OceanBackdrop from "@/components/ocean/OceanBackdrop";
 
 /*
   Homepage — a storefront (Meg, Nov 16 2026).
@@ -82,18 +83,54 @@ import CommandPalette from "@/components/CommandPalette";
 */
 export default function Home() {
   return (
-    <div className="cp">
-      <OceanHero />
-      <ReefMap />
-      <TakeReel />
-      <Shelf />
-      <TryItNow />
-      <OneJob />
-      <MoreWork />
-      <WhatConnects />
-      <HowToStart />
-      <Contact />
-      <Footer />
+    <div className="cp cp-dive">
+      {/*
+        **The ocean is the page's ground, not the hero's.** Meg: a 3D
+        immersive background that moves when you scroll. So the dive is
+        fixed behind everything and its playhead is the document's scroll
+        position, which means the descent is still going while somebody
+        reads the shop rather than being finished a screen and a half in.
+        `cp-dive` is what takes `.cp`'s flat ground away so it shows; see
+        globals.css, and OceanBackdrop for why Daylight opts out entirely.
+      */}
+      <OceanBackdrop />
+
+      {/* Everything else rides above it. One wrapper rather than a z-index
+          on each section, so a section added later cannot forget. */}
+      <div className="relative z-10">
+        <OceanHero />
+        {/*
+          **A light wash over everything below the hero, and the hero
+          deliberately outside it.**
+
+          Bright water and 14px text are in direct tension, and the
+          measurement found where it breaks: a violet shop link over a lit
+          patch of water came out at 4.16:1, then 4.35:1 after the scrim
+          was weighted, where it needs 4.5. Violet on teal is the worst
+          pairing this palette can make and it is exactly what the shop's
+          links are. Pushing the backdrop's own scrim further would have
+          fixed one link by dimming the whole ocean, including the hero,
+          which is the part worth looking at.
+
+          So the hero sits on the backdrop directly at its lightest, and
+          everything from the reef down takes another 22%. That is the
+          difference between 4.35:1 and passing, it costs the lower page
+          about four points of luma, and a section added later inherits it
+          rather than having to remember.
+        */}
+        <div className="bg-[rgba(5,7,11,0.22)]">
+        <ReefMap />
+        <TakeReel />
+        <Shelf />
+        <TryItNow />
+        <OneJob />
+        <MoreWork />
+        <WhatConnects />
+        <HowToStart />
+        <Contact />
+        <Footer />
+        </div>
+      </div>
       <CommandPalette />
     </div>
   );

@@ -40,7 +40,11 @@ export default function ReefMap() {
     <section
       id="reef"
       aria-labelledby="reef-heading"
-      className="cp-night relative border-t border-white/10 bg-[#05070b] py-12 md:py-20"
+      /* No ground of its own any more: the page's dive shows through here,
+         which is the point of the backdrop. The wash that keeps this
+         readable is the backdrop's, applied once for every section rather
+         than re-decided per section. */
+      className="cp-night relative border-t border-white/10 py-12 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
         <p className="m-0 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">

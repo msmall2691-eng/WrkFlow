@@ -97,7 +97,12 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative overflow-hidden border-t border-line bg-[var(--hero-bg)] py-16 md:py-24"
+      /* Translucent rather than solid, so the dive is still behind the
+         last section instead of the page going flat at the form. It keeps
+         a local wash because this is the one block with inputs in it, and
+         a form over moving water is where legibility stops being a matter
+         of taste. */
+      className="relative overflow-hidden border-t border-line bg-[var(--hero-bg)]/80 py-16 md:py-24"
     >
       {/*
         Aurora Swell closer. Mounted only once the visitor is near it: it is

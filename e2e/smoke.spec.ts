@@ -288,12 +288,25 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
     unswept. A list that has to be maintained is the thing this test exists
     to not depend on.
 
-    `.cp > section` is every band the homepage composes, and `#top` is the
+    `.cp section` is every band the homepage composes, and `#top` is the
     hero's own main. The shared header and footer stay out of scope on
     purpose: they are not this page's, and sweeping them here would make a
-    homepage test fail for a footer reason.
+    homepage test fail for a footer reason. That exclusion survives the
+    descendant selector because `Footer`, `PanelHeader` and
+    `CommandPalette` contain no `<section>` between them, which was
+    checked rather than assumed.
+
+    **It was `.cp > section` and the direct child broke the moment the
+    page grew a wrapper.** The dive gave the homepage a fixed backdrop and
+    a `relative z-10` layer over it, plus a wash around everything below
+    the hero, so every band moved two levels down and the sweep found
+    *zero* sections. It failed loudly, which is the one good thing here:
+    the count assertion above exists for exactly this, and without it the
+    sweep would have passed while checking nothing at all. A selector tied
+    to depth is a list that has to be maintained wearing a different hat,
+    which is the thing this test's own comment says it must not depend on.
   */
-  const roots = page.locator(".cp > section, #top");
+  const roots = page.locator(".cp section, #top");
   const found = await roots.count();
   expect(found, "the homepage should have sections to sweep").toBeGreaterThan(4);
 
@@ -1626,4 +1639,92 @@ test("the ocean art claims nothing countable", () => {
         "picture every other row has — add one to lib/ocean.ts",
     ).toBe(true);
   }
+});
+
+/*
+  The dive is the whole page, and only in Harbor.
+
+  **Two promises, and the first is the one Meg asked for twice.** The hero
+  used to scrub a clip inside its own pinned track: the descent was over a
+  screen and a half in and the ocean went with it. What she wanted is the
+  ocean behind everything, still moving while you read. That is the
+  difference between a playhead that follows a section and one that follows
+  the document, and it is invisible to every other test here — the page
+  renders, the video element exists, and nothing says which clock it is on.
+
+  **It is asserted on `data-dive-progress` rather than on the video,
+  because this suite's browser cannot play the video at all.** Measured:
+  the pinned Playwright ships a plain Chromium with no H.264, so
+  `dive.mp4` reports `networkState: 3` and `error.code: 4`
+  (MEDIA_ERR_SRC_NOT_SUPPORTED) for as long as you wait, while the same
+  page in a browser with the codec reaches `readyState: 4` in under two
+  seconds. Writing this against `currentTime` would have produced a test
+  that fails everywhere for a reason that has nothing to do with the code.
+  `OceanBackdrop` therefore publishes the depth it computes, and that
+  number is the contract: 0 at the top, about half at the middle of the
+  document, 1 at the foot.
+
+  The second promise is that Daylight opts out. CLAUDE.md records that this
+  site went light because near-black read as a developer tool to Meg's
+  buyers, and a dark ocean rolling behind cream content is that mistake
+  with a bigger surface.
+*/
+test("the dive runs the length of the page, and Harbor only", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const backdrop = page.locator(".ocean-backdrop");
+  await expect(backdrop, "Harbor should mount the dive behind the page").toHaveCount(1);
+  await expect(
+    page.locator('.ocean-backdrop video[src="/ocean/dive.mp4"]'),
+    "a pointer device should get the video, not just the still",
+  ).toHaveCount(1);
+
+  /*
+    Scrolled twice on purpose. The page lazy-loads images, so arriving at
+    the foot makes it taller and the position that *was* the bottom is
+    suddenly 0.93 of a longer document. Settling first is the difference
+    between measuring the contract and measuring image loading.
+  */
+  const depthAt = async (fraction: number) => {
+    for (let i = 0; i < 2; i++) {
+      await page.evaluate((f) => {
+        const span = document.documentElement.scrollHeight - window.innerHeight;
+        window.scrollTo(0, Math.round(span * f));
+      }, fraction);
+      await page.waitForTimeout(500);
+    }
+    const raw = await backdrop.getAttribute("data-dive-progress");
+    return raw === null ? null : Number(raw);
+  };
+
+  const top = await depthAt(0);
+  expect(
+    top,
+    "the backdrop should publish its depth; without it the dive is unguardable",
+  ).not.toBeNull();
+  expect(top, "the page should open at the surface").toBeLessThan(0.05);
+
+  /* The real assertion. A hero-scoped scrub is finished long before the
+     middle of the document and would report 1 here. */
+  const middle = await depthAt(0.5);
+  expect(
+    middle,
+    `halfway down the page the dive should be about halfway down too, not ${middle} — ` +
+      "a playhead tied to a section instead of the document",
+  ).toBeGreaterThan(0.3);
+  expect(middle!).toBeLessThan(0.7);
+
+  const bottom = await depthAt(1);
+  expect(bottom, "the foot of the page should be the floor of the dive").toBeGreaterThan(0.95);
+
+  /* Daylight gets no dive at all. */
+  await page.evaluate(() => {
+    document.documentElement.dataset.theme = "light";
+  });
+  await expect(
+    backdrop,
+    "Daylight should not render the dive: a dark ocean behind cream content is " +
+      "the reason this site went light in the first place",
+  ).toBeHidden();
 });

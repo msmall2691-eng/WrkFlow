@@ -110,7 +110,11 @@ export default function TakeReel() {
         under `reduce` the section collapses to its natural height and every
         take renders as an ordinary card below the next.
       */
-      className="cp-night relative bg-[#0E0F12]"
+      /* Translucent since the homepage became a dive: this is the tallest
+         section on the page, so an opaque stage here was a black band in
+         the middle of the ocean. The browser frames inside keep their own
+         solid grounds, which is where the contrast actually matters. */
+      className="cp-night relative bg-[rgba(14,15,18,0.78)]"
       style={still ? undefined : { height: `${vh}svh` }}
     >
       <h2 id="reel-heading" className="sr-only">

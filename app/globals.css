@@ -1560,3 +1560,61 @@ body:has(.cp) { background: #08070c; }
   --color-base: #08070c;
   --color-ink: #f2f0f7;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The dive backdrop.
+
+   `.cp-dive` is `.cp` with its ground taken away, so the fixed ocean behind
+   it is what you see. It is a separate class rather than a change to `.cp`
+   because only the homepage is a dive; every other page keeps the flat
+   panel ground it was designed on.
+
+   **Daylight switches the whole thing off rather than restyling it**, and
+   that is the same decision recorded in OceanBackdrop. CLAUDE.md says this
+   site went light because near-black read as a developer tool to Meg's
+   buyers; a dark ocean rolling behind cream content is that mistake with a
+   bigger surface. So the light branch keeps `.cp`'s own cream and hides the
+   backdrop outright. One rule, no second palette.
+
+   The `background: none` is deliberate shorthand-free: `.cp` sets
+   `background` (shorthand), so anything less would leave the colour behind.
+   ───────────────────────────────────────────────────────────────────────── */
+.cp-dive {
+  background: none;
+}
+
+:root[data-theme="light"] .cp-dive {
+  background: #f7f4ef;
+}
+
+:root[data-theme="light"] .ocean-backdrop {
+  display: none;
+}
+
+/* A visitor who has asked for less motion still gets the picture, because
+   the still mode renders the poster rather than the video. Nothing here
+   needs a reduced-motion branch: the only thing that moved was the
+   playhead, and `OceanBackdrop` never mounts the video in that mode. */
+
+/* The hero's Daylight sea.
+
+   In Harbor the page-wide dive is already behind this, so a still on top
+   of it would replace moving water with a frozen frame. In Daylight the
+   backdrop is switched off and the hero would otherwise be near-white type
+   on cream, so it gets its own band. One image, shown in exactly one
+   theme. See OceanHero for the measurement that earned it. */
+.hero-daylight-sea {
+  display: none;
+}
+
+:root[data-theme="light"] .hero-daylight-sea {
+  display: block;
+}
+
+/* The hero band's Daylight ground. Harbor leaves it transparent so the
+   dive shows; Daylight fills it, because everything inside the hero is
+   styled for dark and the proof numbers under the poster would otherwise
+   be white on cream. */
+:root[data-theme="light"] .hero-band {
+  background: #05070b;
+}
