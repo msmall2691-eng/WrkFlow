@@ -8,6 +8,7 @@ import MarketCatalog from "@/components/MarketCatalog";
 import WorkflowMap from "@/components/WorkflowMap";
 import LinxMark from "@/components/LinxMark";
 import StackedHeading from "@/components/StackedHeading";
+import CastFrame from "@/components/ocean/CastFrame";
 import { marketItems, welcomeBook } from "@/lib/content";
 
 /*
@@ -105,6 +106,38 @@ export default function MarketplacePage() {
                 hosted tool to the site you already have. I set it up either
                 way, so there is nothing for you to wire together.
               </p>
+            </div>
+          </section>
+
+          {/*
+            **A band of Meg's red octopus, and the one picture on this site
+            that is off-palette on purpose.**
+
+            The rest of the ocean here is violet, teal and near-black,
+            which is the `.cp` palette. This render is red and green, and
+            that is why it sat unused: CLAUDE.md is clear that the accents
+            are violet, teal and pink, and dropping a red-and-green picture
+            next to a teal link is how a palette stops meaning anything.
+
+            It works here because this page has no ocean art at all and no
+            teal accent anywhere near the band, so the picture is its own
+            moment rather than a clash with something beside it. It is
+            uncaptioned, which is CastFrame's rule: a caption marks a
+            creature as standing for one of the four services, and this
+            page is not one of them.
+          */}
+          {/* Not `aria-hidden`: the frame carries a real description, and
+              hiding the section would throw it away. Decorative here means
+              it carries no *claim*, not that it is invisible to a reader
+              who cannot see it. Same treatment as the /tools moorings. */}
+          <section className="border-b border-[var(--cp-line)] py-10 md:py-14">
+            <div className="mx-auto max-w-6xl px-6">
+              <CastFrame
+                art="/ocean/reef-ember.webp"
+                artAlt="A red octopus on a reef of red fan coral and green growth, with jellyfish drifting above it."
+                aspect="aspect-[21/9]"
+                sizes="(min-width: 1024px) 1152px, 100vw"
+              />
             </div>
           </section>
 
