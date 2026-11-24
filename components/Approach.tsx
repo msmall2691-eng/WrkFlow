@@ -69,22 +69,44 @@ export default function Approach() {
           the section argues that an ecosystem runs unsupervised, which is
           a better thing to watch than to read.
         */}
+        {/* Meg's `4k-reef-band`, cut to a seamless loop and swapped in for
+            the old one on measurements rather than taste.
+
+            **It is the right shape, which the last one never was.**
+            `LivingFrame` renders at `aspect-[21/9]`, 2.33:1. The old source
+            was 1280x720, so `object-cover` threw away a quarter of its
+            height to reach that, and what survived was 1280x549 stretched
+            back up. This is 1920x810, which is 2.37:1: almost nothing is
+            cropped, and the composition she framed is the one on screen.
+            About three and a half times the pixels actually displayed, in
+            a file **half** the size (0.99MB against 2.3MB).
+
+            It is also darker, luma 42 against the house 58, which suits a
+            band on a near-black page and is the Like a King treatment: art
+            that is dark at the edges and lit in the middle.
+
+            **Her clip was not a loop, despite being delivered as a band.**
+            First frame against last measured 30.3/255 apart, a visible cut
+            every four seconds on a section that argues an ecosystem runs
+            unsupervised. Rebuilt with an 0.8s `xfade` of the tail over the
+            head: 4.0s becomes 3.2s and the seam measures 7.3, against 2.6
+            for the loop it replaces. Both are below the threshold where a
+            cut is visible; the number is recorded so the next person knows
+            what was checked rather than assumed. */}
         <LivingFrame
-          video="/ocean/reef-loop.mp4"
-          poster="/ocean/reef-loop-poster.webp"
-          alt="A slow push through a deep reef at night, past an octopus, a turtle and shoals of lit fish."
+          video="/ocean/reef-band.mp4"
+          poster="/ocean/reef-band-poster.webp"
+          alt="A slow drift across a deep reef at night, past an anemone, a turtle and shoals of lit fish."
           className="mb-12"
         />
         <div className="mb-12 max-w-3xl">
-                      <p className="mb-3 text-xs font-medium text-signal">
-              Approach
-            </p>
-                      <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
-              No black boxes. You steer the whole build.
-            </h2>
-                      <p className="mt-5 text-[1rem] leading-relaxed text-muted">
-              You see it as it takes shape. You own it. No lock-in.
-            </p>
+          <p className="mb-3 text-xs font-medium text-signal">Approach</p>
+          <h2 className="display text-2xl text-ink sm:text-3xl md:text-4xl">
+            No black boxes. You steer the whole build.
+          </h2>
+          <p className="mt-5 text-[1rem] leading-relaxed text-muted">
+            You see it as it takes shape. You own it. No lock-in.
+          </p>
         </div>
 
         {/* Connected stepper */}
@@ -104,17 +126,17 @@ export default function Approach() {
           <div className="flex flex-col md:grid md:grid-cols-4 md:gap-5">
             {approachSteps.map((step, i) => (
               <div key={step.index}>
-                                  <div className="group corner-accents relative rounded-2xl border border-line bg-surface/40 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-signal/40 hover:bg-surface/70 hover:shadow-[0_20px_50px_-30px_rgba(22,163,148,0.5)] active:scale-[0.99] md:h-full">
-                    <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-base font-mono text-xs text-faint transition-all duration-300 group-hover:border-signal group-hover:bg-signal/10 group-hover:text-signal">
-                      {step.index}
-                    </span>
-                    <h3 className="display-serif mt-5 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
-                      {step.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">
-                      {step.body}
-                    </p>
-                  </div>
+                <div className="group corner-accents relative rounded-2xl border border-line bg-surface/40 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-signal/40 hover:bg-surface/70 hover:shadow-[0_20px_50px_-30px_rgba(22,163,148,0.5)] active:scale-[0.99] md:h-full">
+                  <span className="relative z-10 inline-flex h-10 w-10 items-center justify-center rounded-full border border-line bg-base font-mono text-xs text-faint transition-all duration-300 group-hover:border-signal group-hover:bg-signal/10 group-hover:text-signal">
+                    {step.index}
+                  </span>
+                  <h3 className="display-serif mt-5 text-lg text-ink transition-colors group-hover:text-signal md:text-xl">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">
+                    {step.body}
+                  </p>
+                </div>
                 {/* Mobile vertical connector between cards + signal fill */}
                 {i < approachSteps.length - 1 && (
                   <div

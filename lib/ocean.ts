@@ -63,15 +63,28 @@ export const CAST: readonly CastMember[] = [
     creature: "Anemone and clownfish",
     reef: "A clean exchange. Both sides get something and neither negotiates.",
     art: "/ocean/cast/turtle.webp",
-    artAlt: "A turtle gliding low over the reef, past anemones and a clownfish.",
+    artAlt:
+      "A turtle gliding low over the reef, past anemones and a clownfish.",
   },
   {
     id: "software",
     creature: "The reef itself",
     reef: "The structure the rest of it lives on, and is built from.",
-    art: "/ocean/cast/ray.webp",
+    /* The red octopus, which is Meg's favourite image and also, measured,
+       the best one on the site: luma 17.5 at its border against 39.3 in
+       the middle, the cleanest fall to black in the set. He was only on
+       /marketplace.
+
+       What he replaces is the argument for moving him. `cast/ray.webp`
+       measures 44 at the border against 18.7 in the middle, which is
+       backwards: darker where the subject should be. It is the one image
+       here with no lit subject at all, so it read as a smear in every
+       frame it was put in, and this slot is the reef map's panel, where
+       a visitor has just clicked to see what "the reef itself" means.
+       He is literally that: an animal in the structure it lives on. */
+    art: "/ocean/reef-ember.webp",
     artAlt:
-      "The reef floor with a ray passing above it and shoals of lit fish streaming across.",
+      "An octopus on the reef at night, among fan coral, anemones and drifting jellyfish.",
   },
   {
     id: "integrations",
