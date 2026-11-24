@@ -1460,6 +1460,66 @@ test("every take on the reel is a real capture of something real", async ({ page
 });
 
 /*
+  Reduced motion loses the animation, never the work.
+
+  **A review bot found this on the head that shipped, and the test beside
+  it is the reason it could.** `test("the work still shows without WebGL")`
+  already loads this page under `reduce` and already walks every take, and
+  it passed the whole time: it asserts the take *titles* are in the
+  document. They were. What was missing was every screenshot, because the
+  stacked fallback rendered `TakePanel` alone and `BrowserWindow` is the
+  only thing on the page that draws `take.shot`.
+
+  So a reduced-motion visitor read five project descriptions with no
+  picture of any of them, on a site whose first design rule is "show the
+  work". Nothing failed: the build was clean, the suite was green, the
+  copy was all there.
+
+  **The lesson is the one the reel's own honesty test already carries in
+  the other direction.** That one refuses invented proof; this one
+  refuses *absent* proof. A text assertion cannot see a missing picture,
+  so this counts loaded captures instead, which is the one thing a
+  stacked card cannot fake.
+
+  `reduce` is the condition rather than a viewport, because the fallback
+  is keyed on `prefers-reduced-motion` alone and the bug was invisible at
+  every width.
+*/
+test("reduced motion keeps every take's capture, not just its words", async ({ browser }) => {
+  const ctx = await browser.newContext({
+    reducedMotion: "reduce",
+    viewport: { width: 1440, height: 900 },
+  });
+  const page = await ctx.newPage();
+  await page.goto("/");
+  await page.waitForTimeout(800);
+
+  const reel = page.locator("section[aria-labelledby='reel-heading']");
+  await expect(reel, "the reel should render under reduced motion").toBeVisible();
+
+  const shots = reel.locator("img");
+  const found = await shots.count();
+  expect(
+    found,
+    `the reel shows ${takes.length} takes under reduced motion and drew ${found} captures`,
+  ).toBeGreaterThanOrEqual(takes.length);
+
+  /* Present is not loaded: a broken src is still an <img>, and the
+     whole point here is that somebody can see the work. */
+  for (let i = 0; i < takes.length; i += 1) {
+    await shots.nth(i).scrollIntoViewIfNeeded();
+    await expect
+      .poll(
+        () => shots.nth(i).evaluate((el: HTMLImageElement) => el.naturalWidth),
+        { message: `take ${i + 1}'s capture should have actually loaded`, timeout: 10000 },
+      )
+      .toBeGreaterThan(0);
+  }
+
+  await ctx.close();
+});
+
+/*
   The work survives a browser with no WebGL.
 
   The hero's particle wordmark is a canvas and falls back to a gradient;
