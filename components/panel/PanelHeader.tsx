@@ -49,7 +49,7 @@ export default function PanelHeader({
 
     Measured on the dive backdrop, this was the least readable text on the
     whole page by a distance: the nav runs across the full width at 14px,
-    and the brightest part of the surface footage, the light shafts, comes
+    and the brightest part of the surface footage, the lit water, comes
     up directly behind it. `--cp-soft` over that sampled **1.84:1** where
     14px needs 4.5. It did not look obviously broken in a screenshot, which
     is how it survived the first pass, and it is the single worst contrast

@@ -82,7 +82,7 @@ export default function ReefMap() {
                  the anglerfish along the floor were all but black in the
                  video frame. Every pin was re-measured for it. */
               src="/ocean/reef-wide.webp"
-              alt="A deep reef at night: an octopus on the rocks, a turtle and a ray above it, shoals of lit fish, anemones with clownfish, and a shaft of light from the surface."
+              alt="A deep reef at night: an octopus on the rocks, a turtle and a ray above it, shoals of lit fish, anemones with clownfish, and light reaching down from the surface."
               className="block h-full w-full object-cover"
               loading="lazy"
               decoding="async"

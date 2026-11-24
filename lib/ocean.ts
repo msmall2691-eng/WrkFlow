@@ -52,11 +52,11 @@ export type CastMember = {
 export const CAST: readonly CastMember[] = [
   {
     id: "websites",
-    creature: "The light shaft",
+    creature: "The light above",
     reef: "Everything down here eats because light reaches the water.",
     art: "/ocean/cast/light.webp",
     artAlt:
-      "Light shafts reaching down through dark water, a ray and a jellyfish drifting in them.",
+      "Light reaching down through dark water, a ray and a jellyfish drifting in it.",
   },
   {
     id: "leads",

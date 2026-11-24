@@ -68,7 +68,7 @@ const PLACEMENTS: {
   y: number;
   side: "left" | "right";
 }[] = [
-  /* The light shaft, in the beam itself just left of the ray. */
+  /* The light above, in the beam itself just left of the ray. */
   { id: "websites", x: 58, y: 14, side: "right" },
   /* The big white anemone cluster with the clownfish in it. */
   { id: "leads", x: 37, y: 86, side: "right" },

@@ -129,19 +129,19 @@ export default function OceanHero() {
         {/*
           A short scrim under the nav only, and it is a measurement.
 
-          Meg's piece puts its light shaft at the top centre, which is
+          Meg's piece puts its brightest light at the top centre, which is
           exactly where the nav sits. Measured on the built page the moment
           this became the hero, "Catalog" fell to 2.61:1 and "About" to
           4.01:1 — two failures that were not there an hour ago and are
           mine. `PanelHeader`'s own `onMedia` wash is rgba(5,7,11,0.42)
           behind a blur, which was solved against the surface poster and is
-          not enough against a lit shaft.
+          not enough against that.
 
           Deepening that wash was the obvious fix and the wrong one: it
           would put a dark bar across the top of the art on every page that
           uses it. This darkens the top 7rem of the hero alone, fading to
           nothing, so the nav gets its ground and the picture keeps its
-          shaft four pixels below.
+          picture four pixels below.
         */}
         <div
           aria-hidden="true"
