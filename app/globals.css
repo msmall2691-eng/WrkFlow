@@ -378,8 +378,30 @@ html:not([data-theme="light"]) { color-scheme: dark; }
   .daylight-sky-deck { animation: none; }
 }
 
-* {
-  border-color: var(--color-line);
+/*
+  The default border colour, in `base` so that utilities can beat it.
+
+  **This was unlayered, and unlayered CSS wins over layered CSS whatever
+  the specificity** — `@import "tailwindcss"` puts every utility in
+  `@layer utilities`, so a bare `*` here outranked all of them. The effect
+  was that every explicit border colour in the codebase silently rendered
+  as `--color-line`: `border-signal/50` came out grey instead of teal,
+  `border-gold/40` grey instead of gold, and `border-transparent` drew a
+  visible hairline where the author had asked for none.
+
+  Found on the hero's secondary button, which asks for `border-white/25`
+  on near-black and computed to `rgba(11, 23, 34, 0.1)`, navy at a tenth,
+  i.e. invisible. That is the #115 / #118 failure a third time: no build
+  error, no test failure, no Lighthouse complaint, visible only by looking
+  at it.
+
+  `@layer base` keeps the default for every element that does not ask for
+  a colour, and gets out of the way of every element that does.
+*/
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
 }
 
 html {
@@ -1467,4 +1489,219 @@ body:has(.cp) { background: #08070c; }
     animation: none;
     opacity: 1;
   }
+}
+
+
+/*
+  The 3D stage can only be seen if the page stops painting over it.
+
+  `.cp` sets an opaque ground in each theme and is `position: static`, so a
+  `fixed` canvas behind it at a negative z-index is covered completely.
+  That is how the first version of this shipped: the canvas was created,
+  rendered every frame and cost GPU, while nobody could see one pixel of
+  it. Caught by asking `elementFromPoint` what was actually on top, and
+  then by comparing a patch of background with the stage on and off, which
+  came back identical. A screenshot alone would not have shown it, because
+  the page looked exactly as it was supposed to.
+
+  **It lives at the foot of the file, and that is load-bearing.** The first
+  attempt put it beside the Harbor ground near the top. `:root[data-stage]
+  .cp` and `:root[data-theme="light"] .cp` have the same specificity, so
+  the later rule wins, and the Daylight branch is 120 lines further down:
+  the attribute was set, the rule was ignored, and the stage stayed
+  invisible. Being last is what makes it apply in both themes.
+
+  **Gated on `data-stage`, which `StageMount` sets only once WebGL is
+  confirmed and the scene is mounted**, and clears on unmount or a lost
+  context. A browser without WebGL keeps the opaque ground exactly as
+  before. The transparency and the thing that fills it arrive together or
+  not at all, which is the only way this cannot leave somebody looking at
+  a hole.
+
+  `body` keeps its own ground underneath, so there is no flash of white
+  between first paint and the canvas's first frame.
+*/
+:root[data-stage="on"] .cp { background: transparent; }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   A dark island on a light page.
+
+   The work canvas hero is near-black by Meg's direct ask, on a site whose
+   default palette is Daylight. Everything inside it that reads a token was
+   therefore rendering for cream: the header wordmark came out navy on
+   near-black and effectively vanished, which is #115 and #118 for the third
+   time, in the one spot where the whole point is that it looks expensive.
+
+   So the island re-declares the tokens rather than the components
+   restyling themselves. A custom property set on the element beats one
+   inherited from `.cp`, and this selector matches the specificity of the
+   Daylight branch, so it holds in both palettes: in Harbor these are
+   already the values and the rule is a no-op.
+
+   **These are copies of the Harbor block above and have to track it.**
+   That is a real cost and it is the smaller one: the alternative is each
+   component inside the hero growing its own dark variant, which is seven
+   places to get wrong instead of one.
+   ───────────────────────────────────────────────────────────────────────── */
+:root[data-theme="light"] .cp-night {
+  color-scheme: dark;
+  --cp-ink: #f2f0f7;
+  --cp-soft: #cfcadf;
+  --cp-muted: #a8a4b8;
+  --cp-faint: #8f8ba0;
+  --cp-line: rgba(255, 255, 255, 0.08);
+  --cp-violet-ink: #b9a2ff;
+  --cp-violet-line: rgba(185, 162, 255, 0.4);
+  --cp-on-ink: #08070c;
+  --cp-hairline: rgba(255, 255, 255, 0.14);
+  --cp-hairline-strong: rgba(255, 255, 255, 0.28);
+  --cp-fill: rgba(255, 255, 255, 0.035);
+  --cp-fill-strong: rgba(255, 255, 255, 0.08);
+  --color-base: #08070c;
+  --color-ink: #f2f0f7;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The dive backdrop.
+
+   `.cp-dive` is `.cp` with its ground taken away, so the fixed ocean behind
+   it is what you see. It is a separate class rather than a change to `.cp`
+   because only the homepage is a dive; every other page keeps the flat
+   panel ground it was designed on.
+
+   **Daylight switches the whole thing off rather than restyling it**, and
+   that is the same decision recorded in OceanBackdrop. CLAUDE.md says this
+   site went light because near-black read as a developer tool to Meg's
+   buyers; a dark ocean rolling behind cream content is that mistake with a
+   bigger surface. So the light branch keeps `.cp`'s own cream and hides the
+   backdrop outright. One rule, no second palette.
+
+   The `background: none` is deliberate shorthand-free: `.cp` sets
+   `background` (shorthand), so anything less would leave the colour behind.
+   ───────────────────────────────────────────────────────────────────────── */
+.cp-dive {
+  background: none;
+}
+
+:root[data-theme="light"] .cp-dive {
+  background: #f7f4ef;
+}
+
+:root[data-theme="light"] .ocean-backdrop {
+  display: none;
+}
+
+/* A visitor who has asked for less motion still gets the picture, because
+   the still mode renders the poster rather than the video. Nothing here
+   needs a reduced-motion branch: the only thing that moved was the
+   playhead, and `OceanBackdrop` never mounts the video in that mode. */
+
+/* The hero's Daylight sea.
+
+   In Harbor the page-wide dive is already behind this, so a still on top
+   of it would replace moving water with a frozen frame. In Daylight the
+   backdrop is switched off and the hero would otherwise be near-white type
+   on cream, so it gets its own band. One image, shown in exactly one
+   theme. See OceanHero for the measurement that earned it. */
+.hero-daylight-sea {
+  display: none;
+}
+
+:root[data-theme="light"] .hero-daylight-sea {
+  display: block;
+}
+
+/* A night band's Daylight ground, and the wash that only Harbor wants.
+
+   **`.night-band` is for any section that forces `cp-night`.** Those
+   sections re-point their tokens to the dark theme's values, so their
+   text is near-white whatever the page is doing. In Harbor that is right
+   and the dive shows through a transparent ground. In Daylight there is
+   no backdrop, so without a ground of their own they are near-white text
+   on cream. It was `.hero-band` and covered only the hero; `ReefMap`
+   forces `cp-night` too and had been doing exactly that since its own
+   ground was removed for the backdrop. A review bot found it, and the
+   measurement confirmed it: the reef heading at 2.79:1.
+
+   **`.dive-wash` darkens everything below the hero, in Harbor only.** It
+   exists so a violet shop link clears 4.5:1 over bright water. Applied
+   unconditionally it also covered the cream page, where there is no
+   water under it to darken, compositing the ground to rgb(145,145,144).
+   A guard against bright water has nothing to do in a theme that has
+   none. */
+.dive-wash {
+  background: rgba(5, 7, 11, 0.42);
+}
+
+:root[data-theme="light"] .dive-wash {
+  background: none;
+}
+
+:root[data-theme="light"] .night-band {
+  background: #05070b;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Art that bleeds, instead of art in a box.
+
+   Meg, Nov 24 2026: no sharp borders or edges, everything should feel like
+   it is living in the background. Every ocean picture was in a rounded box
+   with a hairline border, which is the opposite: a border says "this is a
+   separate object pasted onto the page", and the whole point of the dive
+   is that the page IS the ocean.
+
+   So the frames lose their border and their corners and take a mask that
+   fades all four edges to nothing. The art then has no boundary at all; it
+   simply stops being there, and the page ground shows through. It works
+   because the stills are lit subjects on near-black, so what the edges
+   dissolve into is the same darkness that is already behind them.
+
+   **The first version of this did nothing, and the arithmetic says why.**
+   It was sized `140% 125%` with the solid stop at 52%, which puts the end
+   of the opaque region at 0.52 x 140% = 73% of the box width out from the
+   centre. The box edge is at 50%. The entire picture therefore sat inside
+   the solid part of the mask and not one pixel faded; it looked exactly
+   like the bordered version with the border taken off, which is how it
+   nearly shipped.
+
+   At `100% 100%` the ellipse radii match the box, so an edge sits at half
+   the radius whatever the aspect, and the stops are read against that: 40%
+   solid, half gone by 52%, nothing by 66%. The corners are at 0.707 of the
+   radius and so dissolve completely, which is what kills the rectangle.
+
+   `-webkit-mask-image` is not optional: Safari still needs the prefix for
+   mask-image, and without it the fallback is a hard rectangle, which is
+   exactly the thing being removed.
+   ───────────────────────────────────────────────────────────────────────── */
+.ocean-bleed {
+  -webkit-mask-image: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 40%,
+    rgba(0, 0, 0, 0.45) 52%,
+    transparent 66%
+  );
+  mask-image: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 40%,
+    rgba(0, 0, 0, 0.45) 52%,
+    transparent 66%
+  );
+}
+
+/* Daylight gets an edge back, and that is not a compromise.
+
+   The bleed works on Harbor because the art and the page are both
+   near-black: the picture stops and the same darkness carries on. On
+   cream there is nothing for a dark picture to dissolve INTO, so the same
+   mask produces a grey halo, which is a smudge rather than a soft edge.
+   Seen on /about in Daylight: the reef loop ended in a ring of mud.
+
+   So the mask is Harbor's. In Daylight the art is a dark island on a light
+   page, and an island is allowed a shore: no border, no heavy chrome, just
+   a radius so the edge reads as deliberate. Same reasoning as `.cp-night`
+   existing at all. */
+:root[data-theme="light"] .ocean-bleed {
+  -webkit-mask-image: none;
+  mask-image: none;
+  border-radius: 0.875rem;
 }

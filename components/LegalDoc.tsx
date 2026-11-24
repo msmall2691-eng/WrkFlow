@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import PanelHeader from "./panel/PanelHeader";
 import Footer from "./Footer";
 import CommandPalette from "./CommandPalette";
+import StackedHeading from "./StackedHeading";
 
 /*
   Shared shell for the legal pages (Privacy, Terms). Keeps both documents
@@ -60,9 +61,7 @@ export function LegalShell({
               about Meg's brand to settle once for the whole site, not page by
               page. The palette converts; the typeface does not.
             */}
-            <h1 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl md:text-5xl">
-              {title}
-            </h1>
+            <StackedHeading as="h1" face="serif" lead={title} />
             <p className="mt-5 text-xs text-faint">
               Last updated · {updated}
             </p>

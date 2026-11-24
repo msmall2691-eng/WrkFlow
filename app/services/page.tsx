@@ -7,6 +7,7 @@ import Pricing from "@/components/Pricing";
 import ForRentals from "@/components/ForRentals";
 import Contact from "@/components/Contact";
 import CommandPalette from "@/components/CommandPalette";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   Services and pricing, on their own page.
@@ -71,28 +72,37 @@ export default function ServicesPage() {
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
             <div className="mx-auto max-w-6xl px-6">
               {/*
-                Still `display-serif` (Fraunces), not the panel's Space Grotesk.
-
-                The V2 pages so far use font-display for every heading and no
-                Fraunces at all, so matching them was the obvious move. It is
-                the wrong one here. Every section heading below this comes from
-                Services, Pricing and Contact and is set in Fraunces, so a
-                Space Grotesk h1 put two display faces on one page: more like
-                the homepage, less like itself.
+                Still Fraunces, not the panel's Space Grotesk, and the
+                argument is unchanged: every section heading below this comes
+                from Services, Pricing and Contact and is set in Fraunces, so
+                a Space Grotesk h1 would put two display faces on one page.
+                More like the homepage, less like itself.
 
                 Fraunces is also not incidental. app/layout.tsx records that it
                 was dropped once and put back because Meg asked for it kept,
                 and CLAUDE.md asks inner pages to be built in the `.cp` palette
                 and tokens, which is about colour, not typeface.
 
-                So the palette converts and the typography does not. Whether
-                V2 retires Fraunces on converted pages is Meg's call about her
-                own brand, and it should be made once for the whole site
-                rather than page by page.
+                So the palette converts and the typeface does not. Whether V2
+                retires Fraunces is Meg's call about her own brand, to be made
+                once for the whole site rather than page by page.
+
+                **Nov 24 2026: the size, weight, tracking and step-back now
+                come from StackedHeading, and only the face is still decided
+                here.** Measured, this h1 was 48px at weight 500 in Fraunces
+                while /catalog's was 36px at 600 and the homepage's sections
+                were 72px at 400: one element, eight authors. Unifying that
+                is a scale fix and it deliberately stops short of the typeface
+                question above, which is why `face` is a prop rather than an
+                assumption. Flipping this page to Space Grotesk is now one
+                word, whenever that decision is actually made.
               */}
-              <h1 className="display-serif m-0 max-w-3xl text-balance text-[2rem] text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                What gets built, and what it costs.
-              </h1>
+              <StackedHeading
+                as="h1"
+                face="serif"
+                lead="What gets built,"
+                trail="and what it costs."
+              />
               <p className="mt-5 max-w-[62ch] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
                 Start with one useful improvement or a full custom build. Scope and
                 price are agreed with you before any work begins.

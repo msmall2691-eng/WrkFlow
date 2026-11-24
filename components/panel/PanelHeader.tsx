@@ -33,6 +33,7 @@ const NAV = [
 export default function PanelHeader({
   current,
   bookHref,
+  onMedia = false,
 }: {
   current?: string;
   /*
@@ -42,9 +43,40 @@ export default function PanelHeader({
     "/?offer=call#contact" and the click reaches the homepage one.
   */
   bookHref?: string;
+  /*
+    **The homepage sits on moving video and nothing else does**, so this
+    is opt-in rather than the default.
+
+    Measured on the dive backdrop, this was the least readable text on the
+    whole page by a distance: the nav runs across the full width at 14px,
+    and the brightest part of the surface footage, the light shafts, comes
+    up directly behind it. `--cp-soft` over that sampled **1.84:1** where
+    14px needs 4.5. It did not look obviously broken in a screenshot, which
+    is how it survived the first pass, and it is the single worst contrast
+    the page has ever shipped.
+
+    The fix is a wash on the bar rather than a darker scrim on the whole
+    backdrop. Darkening everything to rescue one strip is how the ocean
+    went invisible the first time: the clip means luma 30 to 40, so there
+    is very little headroom to spend globally, and all of it should go to
+    the places text actually sits.
+  */
+  onMedia?: boolean;
 }) {
   return (
-    <header className="relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10">
+    <header
+      className={`relative z-10 flex flex-wrap items-center justify-between gap-4 px-6 py-5 lg:px-10 ${
+        onMedia
+          ? /* `cp-night` as well as the wash, and the wash alone was not
+               enough. The bar's own type reads `--cp-ink` and `--cp-soft`,
+               which in Daylight are navy: over a dark wash that is navy on
+               near-black, so in the light theme the wordmark and half the
+               nav went unreadable. `cp-night` re-points those tokens to
+               their dark-theme values, which is what the class is for. */
+            "cp-night bg-[rgba(5,7,11,0.55)] backdrop-blur-[6px] supports-[backdrop-filter]:bg-[rgba(5,7,11,0.42)]"
+          : ""
+      }`}
+    >
       <Link href="/" className="flex items-center gap-2.5 text-[18px] font-semibold tracking-[-0.01em] text-[color:var(--cp-ink)] no-underline">
         <span aria-hidden="true" className="cp-mark grid h-8 w-8 place-items-center rounded-[9px] font-display text-[16px] font-bold text-white">
           M

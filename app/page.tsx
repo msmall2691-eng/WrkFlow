@@ -1,4 +1,6 @@
-import Opening from "@/components/home/Opening";
+import OceanHero from "@/components/ocean/OceanHero";
+import ReefMap from "@/components/ocean/ReefMap";
+import TakeReel from "@/components/reel/TakeReel";
 import Shelf from "@/components/home/Shelf";
 import TryItNow from "@/components/home/TryItNow";
 import OneJob from "@/components/home/OneJob";
@@ -8,6 +10,7 @@ import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
+import OceanBackdrop from "@/components/ocean/OceanBackdrop";
 
 /*
   Homepage — a storefront (Meg, Nov 16 2026).
@@ -36,7 +39,15 @@ import CommandPalette from "@/components/CommandPalette";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
-    Opening      who it is for, and one button to the shelf
+    OceanHero    one screen: the dive. Meg's own Firefly footage of a deep
+                 reef, played once and held at the bottom, with a 45 kB
+                 poster carrying the first paint
+    ReefMap      id="reef" — the same reef as a still, annotated. Four pins,
+                 one per service, read from `services[]`
+    TakeReel     the work, as a browser window pinned on the right with
+                 four takes swapping inside it. Cards, not globes, at
+                 Meg's ask, and DOM rather than WebGL because nothing
+                 here needs a GPU
     Shelf        id="shelf" — the whole catalog, with prices, grouped by
                  what it costs rather than by what it is
     TryItNow     the three demos, which the shelf deliberately carries as
@@ -72,16 +83,69 @@ import CommandPalette from "@/components/CommandPalette";
 */
 export default function Home() {
   return (
-    <div className="cp">
-      <Opening />
-      <Shelf />
-      <TryItNow />
-      <OneJob />
-      <MoreWork />
-      <WhatConnects />
-      <HowToStart />
-      <Contact />
-      <Footer />
+    <div className="cp cp-dive">
+      {/*
+        **The ocean is the page's ground, not the hero's.** Meg: a 3D
+        immersive background that moves when you scroll. So the dive is
+        fixed behind everything and its playhead is the document's scroll
+        position, which means the descent is still going while somebody
+        reads the shop rather than being finished a screen and a half in.
+        `cp-dive` is what takes `.cp`'s flat ground away so it shows; see
+        globals.css, and OceanBackdrop for why Daylight opts out entirely.
+      */}
+      <OceanBackdrop />
+
+      {/* Everything else rides above it. One wrapper rather than a z-index
+          on each section, so a section added later cannot forget. */}
+      <div className="relative z-10">
+        <OceanHero />
+        {/*
+          **A light wash over everything below the hero, and the hero
+          deliberately outside it.**
+
+          Bright water and 14px text are in direct tension, and the
+          measurement found where it breaks, three times now, always on
+          the same element: the violet shop link over a lit patch of
+          water. 4.16:1 at an even scrim, 4.35:1 once the scrim was
+          weighted, and 3.68:1 again the moment the backdrop's second half
+          became the photoreal clip, which is brighter in its sunlit
+          water than anything before it. Violet on teal is the worst
+          pairing this palette can make and it is exactly what the shop's
+          links are.
+
+          So the hero sits on the backdrop directly at its lightest, and
+          everything from the reef down takes another 42%. Pushing the
+          backdrop's own scrim instead would have fixed one link by
+          dimming the hero too, which is the part worth looking at.
+
+          **It costs less than it sounds, and that was measured rather
+          than hoped.** Going from 22% to 42% moved the backdrop's median
+          luma below the hero by about one point, 17 to 16, because the
+          wash bites hardest on exactly the bright patches that break
+          text and barely touches the dark water that is most of the
+          frame. Worst text on the page went 3.68:1 to 4.96:1.
+
+          **It is Harbor's, and it was not, which a review bot caught.**
+          Applied unconditionally it also covered the cream page, where
+          there is no backdrop under it to darken: measured in Daylight,
+          the ground behind the reef heading came out rgb(145,145,144),
+          grey mud rather than cream, and the heading sat at 2.79:1. The
+          wash exists to protect text from bright water. In a theme with
+          no water it protects nothing and only damages what is there.
+        */}
+        <div className="dive-wash">
+        <ReefMap />
+        <TakeReel />
+        <Shelf />
+        <TryItNow />
+        <OneJob />
+        <MoreWork />
+        <WhatConnects />
+        <HowToStart />
+        <Contact />
+        <Footer />
+        </div>
+      </div>
       <CommandPalette />
     </div>
   );

@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import BuildScroller from "@/components/BuildScroller";
 import WorkflowDemo from "@/components/WorkflowDemo";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   A case study — one project, all the way through.
@@ -138,9 +139,11 @@ export default async function CaseStudyPage({ params }: Props) {
             </Link>
             <p className="mt-8 text-xs text-faint">{cs.tag}</p>
             <div className="mt-2 flex flex-wrap items-end justify-between gap-6">
-              <h1 className="display max-w-3xl text-balance text-[2rem] text-ink sm:text-4xl md:text-5xl">
-                {cs.title}
-              </h1>
+              {/* One line, no step-back: the title is `cs.title` from
+                  lib/content.ts and a component cannot know where the break
+                  belongs in a sentence it has not seen. StackedHeading's
+                  `trail` note has the reasoning. */}
+              <StackedHeading as="h1" lead={cs.title} />
               {cs.url && (
                 <a
                   href={cs.url}

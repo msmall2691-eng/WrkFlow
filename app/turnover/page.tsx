@@ -5,6 +5,7 @@ import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import TurnoverPlanner from "@/components/TurnoverPlanner";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   V2 pass. The usual wrapper: `.cp` redefines the old token names in its own
@@ -42,9 +43,11 @@ export default function TurnoverPage() {
         <main className="relative z-10">
         <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
           <div className="mx-auto max-w-6xl px-6">
-            <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-              Your bookings, as a cleaning schedule.
-            </h1>
+            <StackedHeading
+              as="h1"
+              lead="Your bookings,"
+              trail="as a cleaning schedule."
+            />
             <p className="mt-5 max-w-2xl text-[1rem] leading-relaxed text-muted">
               Paste the calendar your booking platform already publishes. You
               get one cleaning per checkout, the same-day turnarounds marked,

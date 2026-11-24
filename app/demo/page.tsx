@@ -5,6 +5,7 @@ import { demos as DEMOS } from "@/lib/content";
 import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   /demo — the showcase the three demos were built for.
@@ -57,9 +58,14 @@ export default function DemoIndexPage() {
         <main className="relative z-10">
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
             <div className="mx-auto max-w-6xl px-6">
-              <h1 className="display-serif m-0 max-w-3xl text-balance text-[2rem] text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                Three demos you can actually use.
-              </h1>
+              {/* Fraunces, as before: the demo cards under this are Fraunces
+                  too. StackedHeading's `face` note has the reasoning. */}
+              <StackedHeading
+                as="h1"
+                face="serif"
+                lead="Three demos"
+                trail="you can actually use."
+              />
               <p className="mt-5 max-w-[62ch] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
                 My case studies are real client work. These are something else: three different
                 kinds of build, made so you can click them rather than take my word for it. Each

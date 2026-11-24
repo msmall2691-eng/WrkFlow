@@ -7,6 +7,7 @@ import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import CatalogBrowser from "@/components/CatalogBrowser";
+import StackedHeading from "@/components/StackedHeading";
 import { catalog, categories, liveDemoIds } from "@/lib/catalog";
 
 /*
@@ -45,9 +46,12 @@ export default function CatalogPage() {
             <p className="m-0 text-[13px] font-medium text-[color:var(--cp-faint)]">
               Catalog · {count} things to use, buy or have built
             </p>
-            <h1 className="display m-0 mt-2 max-w-3xl text-[1.85rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl">
-              Websites, apps and tools for small businesses.
-            </h1>
+            <StackedHeading
+              as="h1"
+              className="mt-2"
+              lead="Websites, apps and tools"
+              trail="for small businesses."
+            />
             <p className="mt-3 max-w-2xl text-[15.5px] leading-relaxed text-[color:var(--cp-muted)]">
               Try a live demo, buy something ready-made, or have it built around
               how you work. Every picture here is a real screen.

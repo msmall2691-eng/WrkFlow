@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import { Frame, Pipeline, Roles } from "@/components/brightbase/Showcase";
 import DataModel from "@/components/brightbase/DataModel";
+import StackedHeading from "@/components/StackedHeading";
 
 /*
   /brightbase — the showcase for the operations app Meg built and runs her
@@ -58,9 +59,18 @@ export default function BrightBasePage() {
           <section className="grid grid-cols-12 items-center gap-y-10 lg:gap-x-10">
             <div className="min-w-0 col-span-12 flex flex-col gap-6 lg:col-span-6">
               <Eyebrow tone="teal">BrightBase · in daily use</Eyebrow>
-              <h1 className="m-0 font-display text-[clamp(2.5rem,4.6vw,4rem)] font-semibold leading-[0.98] tracking-[-0.045em] text-balance text-[color:var(--cp-ink)]">
-                The system an eight-year-old cleaning company runs on.
-              </h1>
+              {/* The split is lopsided on purpose. This hero is the one
+                  two-column one on the site, so the heading lives in a
+                  ~480px grid column rather than the full width, and at 72px
+                  that wraps hard. Split evenly, the stepped-back half ran to
+                  three grey lines and read as a wrap accident rather than a
+                  composition. A long lead and a two-word trail keeps exactly
+                  one line stepped, which is the gesture. */}
+              <StackedHeading
+                as="h1"
+                lead="The system an eight-year-old cleaning company"
+                trail="runs on."
+              />
               <p className="m-0 max-w-[36em] text-[17px] leading-relaxed text-[color:var(--cp-muted)]">{brightbase.summary}</p>
               <div className="flex flex-wrap gap-3">
                 <OfferLink

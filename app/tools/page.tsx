@@ -4,6 +4,8 @@ import PanelHeader from "@/components/panel/PanelHeader";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Playground from "@/components/Playground";
+import StackedHeading from "@/components/StackedHeading";
+import CastFrame from "@/components/ocean/CastFrame";
 
 /*
   /tools — the free M Linx tools, on their own page.
@@ -42,21 +44,54 @@ export default function ToolsPage() {
         {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
         <main className="relative z-10">
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
-            <div className="mx-auto max-w-6xl px-6">
+            {/*
+              **This page had no picture at all** — measured, two screens and
+              zero images, the shortest page on the site and the one selling
+              the strongest reason a stranger ever lands here. The heading sat
+              alone against about 700px of empty right-hand column at 1440.
+
+              It gets the surface rather than a creature, and uncaptioned,
+              which is CastFrame's rule rather than a shortcut: a captioned
+              frame says a creature stands for a service, and /tools is not
+              one of the four. This is the water the hero dives into, used as
+              the world the site is set in, claiming nothing.
+
+              `priority` is on because it is genuinely the first image on the
+              page and nothing else competes with it here, which is exactly
+              the narrow case the default is off for.
+            */}
+            <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 lg:grid-cols-[1fr_0.85fr] lg:gap-14">
+              <div className="min-w-0">
+                {/*
+                  `display` (Space Grotesk), not `display-serif`, and left alone:
+                  this heading already used the panel's face, so unlike /services
+                  there is nothing to decide here.
+                */}
+                <StackedHeading as="h1" lead="Free tools." trail="No signup." />
+                <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
+                  {/* "we build" was the one "we" left on this page. Meg is a solo
+                      founder and the house rule is first person. */}
+                  The same tools I build into client systems. Use them here, free,
+                  for as long as you like.
+                </p>
+              </div>
+
               {/*
-                `display` (Space Grotesk), not `display-serif`, and left alone:
-                this heading already used the panel's face, so unlike /services
-                there is nothing to decide here.
+                The moorings rather than the dive's own surface. Two
+                reasons: the homepage already opens on that exact frame, so
+                reusing it here made two pages look like one; and this is a
+                working waterfront, ropes and pilings and daylight on the
+                underside of the water, which is the nearest thing in the
+                set to Southern Maine and to free tools that are simply
+                tied up and available.
               */}
-              <h1 className="display m-0 max-w-3xl text-[2rem] text-balance text-[color:var(--cp-ink)] sm:text-4xl md:text-5xl">
-                Free tools. No signup.
-              </h1>
-              <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                {/* "we build" was the one "we" left on this page. Meg is a solo
-                    founder and the house rule is first person. */}
-                The same tools I build into client systems. Use them here, free,
-                for as long as you like.
-              </p>
+              <CastFrame
+                art="/ocean/moorings.webp"
+                artAlt="Looking up beneath a dock: barnacled pilings, two mooring ropes and daylight on the underside of the water."
+                priority
+                aspect="aspect-[4/3]"
+                sizes="(min-width: 1024px) 480px, 100vw"
+              />
             </div>
           </section>
           {/*

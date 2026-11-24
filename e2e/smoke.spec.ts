@@ -1,12 +1,16 @@
 import { test, expect, type Page } from "@playwright/test";
+import { existsSync } from "node:fs";
+import { join } from "node:path";
 
 /* The router test asserts its counts against the same source the component
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
+import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
+import { CAST } from "../lib/ocean";
+import { destination, planets as takes } from "../lib/planets";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -284,12 +288,25 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
     unswept. A list that has to be maintained is the thing this test exists
     to not depend on.
 
-    `.cp > section` is every band the homepage composes, and `#top` is the
+    `.cp section` is every band the homepage composes, and `#top` is the
     hero's own main. The shared header and footer stay out of scope on
     purpose: they are not this page's, and sweeping them here would make a
-    homepage test fail for a footer reason.
+    homepage test fail for a footer reason. That exclusion survives the
+    descendant selector because `Footer`, `PanelHeader` and
+    `CommandPalette` contain no `<section>` between them, which was
+    checked rather than assumed.
+
+    **It was `.cp > section` and the direct child broke the moment the
+    page grew a wrapper.** The dive gave the homepage a fixed backdrop and
+    a `relative z-10` layer over it, plus a wash around everything below
+    the hero, so every band moved two levels down and the sweep found
+    *zero* sections. It failed loudly, which is the one good thing here:
+    the count assertion above exists for exactly this, and without it the
+    sweep would have passed while checking nothing at all. A selector tied
+    to depth is a list that has to be maintained wearing a different hat,
+    which is the thing this test's own comment says it must not depend on.
   */
-  const roots = page.locator(".cp > section, #top");
+  const roots = page.locator(".cp section, #top");
   const found = await roots.count();
   expect(found, "the homepage should have sections to sweep").toBeGreaterThan(4);
 
@@ -1083,19 +1100,42 @@ test("the shop is on the homepage, near the top, and says what it leaves out", a
   const shelf = page.locator("#shelf");
   await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
 
-  /* How far down it starts, in screens. Three is deliberately generous: the
-     hero is one, and the point is to catch a drift back toward fourteen. */
+  /*
+    How far down it starts, and how far it is from being reachable.
+
+    **This number moved because Meg specified a scroll-driven hero, and
+    the move is recorded rather than quietly made.** The Vesper prompt
+    puts a 600vh camera flight (300vh under 768px) in front of
+    everything; measured at 390px the shelf went from 1.7 screens down to
+    3.9, and the old `< 3` failed. That is the spec working as written,
+    not a regression, and it is also the one thing in that spec that
+    fights her own first instruction about this page: "hard to see what
+    is for sale that's tangible".
+
+    So the guard is rebuilt around what actually matters rather than
+    relaxed. Depth alone was always a proxy; what a visitor needs is for
+    the shop to be ONE ACTION away from the first screen, which the
+    hero's own button gives them, and for the preamble not to grow
+    without anybody noticing. Both are asserted. `SPLINE_VH` is a single
+    constant in `lib/planets.ts` if the depth is judged too much.
+  */
   const screens = await shelf.evaluate(
     (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
   );
+
+  /* The hero promises the shop; pressing that promise has to arrive
+     there, from the first screen, without scrolling to find it. */
+  await page.locator('a[href="#shelf"]').first().click();
+  await expect(
+    shelf,
+    "the hero's own button should reach the shop from the first screen",
+  ).toBeInViewport();
+
   expect(
     screens,
-    `the shop should be near the top; it starts ${screens.toFixed(1)} screens down`,
-  ).toBeLessThan(3);
+    `the preamble should stay about as long as the spec asks for; the shop starts ${screens.toFixed(1)} screens down`,
+  ).toBeLessThan(5);
 
-  /* The hero's own button promises it, so it has to arrive. */
-  await page.locator('a[href="#shelf"]').first().click();
-  await expect(shelf).toBeInViewport();
 
   const text = (await shelf.textContent()) ?? "";
 
@@ -1362,227 +1402,405 @@ test("every integration shown is running in a named project", async ({ page }) =
 });
 
 /*
-  The hero scene keeps its promise to somebody who does not want motion.
+  Every take on the reel is a real capture of something real.
 
-  **This test exists because the same bug was found three times, in two
-  different effects, each time on the commit that fixed the one before.**
-  The rule it guards is the oldest one in CLAUDE.md's motion section --
-  every animation has a `prefers-reduced-motion: reduce` fallback that
-  shows the end state -- and before this, nothing in this suite asserted
-  it on any page. Three rounds of review were the only thing standing
-  between the rule and a scene that ignored it, which is the arrangement
-  that guide warns about: "Neither showed up in a build, a test or a
-  Lighthouse run; both were only visible by looking."
+  **Five heroes have now been built on this page and this is the promise
+  that outlived all of them.** The CSS blueprint went, the storefront and
+  engine went, the editorial masthead went, the drag wall went, the film
+  strip went, the globes went. What Meg has been pointing at the whole
+  way is work she actually shipped, shown as itself, so the test is on
+  the evidence rather than on the technique.
 
-  So it is deliberately written against the *class* rather than the three
-  instances. The question is "does the preference hold, however the
-  visitor arrives at it", asked of both animated things on the card: the
-  CSS stages, which are inline custom properties and therefore beat the
-  stylesheet's reduced-motion rule, and the dust, which is a canvas the
-  stylesheet cannot reach at all.
-
-  The viewport is 1440x900 because the pin is gated on height as well as
-  width (`min-height: 820px`), so Playwright's 1280x720 default exercises
-  the unpinned path and would quietly assert nothing about the pinned one.
-
-  Smooth scrolling is turned off for the reason recorded in the component:
-  a synchronous scroll-then-read samples mid-animation and reads stages
-  that look stuck.
-
-  Verified by breaking each half and watching exactly this test fail:
-  reverting the dust loop's preference listener fails on the canvas, and
-  reverting `apply()`'s reduced-motion guard fails on the stages.
+  **It also refuses the thing the LINX prompt would have done here.**
+  That spec ships four invented clients with invented results: Kettering
+  Audio at +212% preorders, Brightwater Optics at 38,400 sign-ups. This
+  asserts the opposite: every take names a real project from the work
+  list and shows a capture that is on disk.
 */
-test("the hero scene honors reduced motion however it is switched on", async ({ page }) => {
+test("every take on the reel is a real capture of something real", async ({ page }) => {
+  expect(takes.length, "the reel needs takes").toBeGreaterThanOrEqual(3);
+
+  for (const t of takes) {
+    expect(t.shot, `${t.title} should show a capture from public/shots`).toMatch(/^\/shots\//);
+    expect(
+      existsSync(join(process.cwd(), "public", t.shot)),
+      `${t.shot} is on the reel and not on disk`,
+    ).toBe(true);
+  }
+
+  /*
+    `lib/planets.ts` drops a take that has nowhere to go OR no capture,
+    and the second half of that is quiet: the reel simply shows four
+    cards instead of five and nothing says why. So this asserts the
+    thing the filter would otherwise hide, which is also the thing that
+    actually happened: The Keystone House was live, linked, and had no
+    screenshot, so it rendered as a browser window with a URL in the
+    chrome and an empty well behind it.
+
+    Scoped to the front of the list, because that is the slice the reel
+    takes. A tenth work item with no capture is not this test's business.
+  */
+  const reach = work.filter((w) => destination(w) !== null).slice(0, takes.length + 1);
+  for (const w of reach) {
+    expect(
+      w.shot,
+      `${w.title} can be opened but has no capture, so it is silently off the reel`,
+    ).toBeTruthy();
+  }
+
   await page.setViewportSize({ width: 1440, height: 900 });
-
-  /* How much dust is painted right now. The canvas is the half no
-     stylesheet can stop, so it is measured in pixels rather than trusted. */
-  const litPixels = () =>
-    page.evaluate(() => {
-      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
-      if (!cv) return -1;
-      const ctx = cv.getContext("2d");
-      if (!ctx) return -1;
-      const d = ctx.getImageData(0, 0, cv.width, cv.height).data;
-      let lit = 0;
-      for (let i = 3; i < d.length; i += 4) if (d[i] > 0) lit++;
-      return lit;
-    });
-
-  const stages = () =>
-    page.evaluate(() => {
-      const el = document.querySelector(".bp");
-      if (!el) return null;
-      const s = getComputedStyle(el);
-      const read = (n: string) => Number.parseFloat(s.getPropertyValue(n).trim() || "0");
-      return { tilt: read("--tilt"), rise: read("--rise"), light: read("--light") };
-    });
-
-  /* 1. Loaded with the preference already on: the building is finished
-        rather than flat, and no dust is painted. */
-  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.addStyleTag({ content: "html{scroll-behavior:auto !important}" });
-  await expect(page.locator(".bp")).toBeVisible();
-  await page.waitForTimeout(600);
 
-  expect(await stages(), "loading with reduced motion should show the end state").toEqual({
-    tilt: 1,
-    rise: 1,
-    light: 1,
-  });
-  const onLoad = await litPixels();
-  expect(onLoad, "the dust canvas should be found and reported on").toBeGreaterThanOrEqual(0);
-  expect(onLoad, "loading with reduced motion should paint no dust").toBe(0);
-
-  /* 2. With motion allowed, scroll halfway through the scene's own travel
-        -- computed the way the component computes it, so the test cannot
-        drift from the thing it measures -- and confirm it really is
-        mid-arc. A card already finished here would make step 3 pass
-        without proving anything. */
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  const half = await page.evaluate(() => {
-    const t = document.querySelector(".bp-track") ?? document.querySelector(".bp");
-    if (!t) return 0;
-    const box = t.getBoundingClientRect();
-    const travel = Math.max(window.innerHeight * 0.6, box.height - window.innerHeight);
-    return box.top + window.scrollY + travel * 0.5;
-  });
-  await page.evaluate((y) => window.scrollTo(0, y), half);
-  await page.waitForTimeout(500);
-
-  const midArc = await stages();
-  expect(midArc, "the scene should read its stages").not.toBeNull();
-  expect(
-    midArc!.rise,
-    "halfway through the travel the walls should be partway up, not finished",
-  ).toBeGreaterThan(0);
-  expect(midArc!.rise, "halfway through the travel the walls should not be finished").toBeLessThan(1);
-  expect(await litPixels(), "dust should be painting when motion is allowed").toBeGreaterThan(0);
-
-  /* 3. The preference goes on with the page open and scrolled. Both halves
-        have to answer, and the stages are the interesting one: they are
-        inline custom properties, so the stylesheet's reduced-motion rule
-        loses to them and only the script can stand down. */
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.waitForTimeout(400);
-
-  expect(
-    await stages(),
-    "switching reduced motion on mid-scene should settle it to the end state",
-  ).toEqual({ tilt: 1, rise: 1, light: 1 });
-  expect(await litPixels(), "switching reduced motion on should clear the dust").toBe(0);
-
-  /* 4. And it stays stood down. This is the step that caught the third
-        bug: settling once is easy, and the next scroll event overwrote it
-        because `apply()` never re-read the preference. */
-  await page.evaluate((y) => window.scrollTo(0, y + 240), half);
-  await page.waitForTimeout(500);
-
-  expect(
-    await stages(),
-    "scrolling further under reduced motion must not restart the arc",
-  ).toEqual({ tilt: 1, rise: 1, light: 1 });
-  expect(await litPixels(), "scrolling further under reduced motion must not repaint dust").toBe(0);
+  /* The reel is DOM, so every take's title is in the document whatever
+     the scroll position: it is the accessible copy, not a canvas. */
+  const body = (await page.locator("body").textContent()) ?? "";
+  for (const t of takes) {
+    expect(body, `the reel should name ${t.title}`).toContain(t.title);
+  }
 });
 
 /*
-  The hero scene's dust is painted in the theme that is on screen now.
+  The work survives a browser with no WebGL.
 
-  **The third instance of this repo's most-repeated failure, and the one
-  that finally got a test.** CLAUDE.md records two: #115, a chip
-  hardcoded dark that went white-on-white in Harbor, and #118,
-  illustrations drawn in white that vanished when the site moved to a
-  light default. Both were invisible to a build, a typecheck and this
-  suite, and the guide says so in those words.
-
-  This one is sneakier, because the colour *is* a token and looks correct
-  in review: `ctx.fillStyle = getComputedStyle(cv).color` reads the token
-  properly, once. `fillStyle` is a copy rather than a reference, so from
-  the next repaint on, a token is as frozen as a literal. Measured across
-  a palette switch the canvas kept painting rgb(11,23,34) while the
-  ground went to rgb(8,7,12), about 1.05:1.
-
-  So the assertion is the invariant rather than the two colours: whatever
-  the canvas is painting must equal what CSS currently says, in both
-  themes. That cannot go stale when the palette is retuned, which a test
-  naming specific values would. It also checks the ink genuinely differs
-  between the themes, because an invariant compared against itself would
-  pass just as happily if both themes shared one colour and the whole
-  question were moot.
-
-  The theme is switched the way `lib/theme.ts` does it -- Harbor is the
-  *absence* of `data-theme`, not `data-theme="dark"` -- so that the test
-  exercises the real mechanism. Verified by removing the `theme:change`
-  listener and watching this fail.
+  The hero's particle wordmark is a canvas and falls back to a gradient;
+  the reel never was one. This is what that buys: on a machine that
+  cannot draw a single triangle, the headline and all five takes still
+  render, because the only thing WebGL was ever doing on this page was
+  decorating the top of it.
 */
-test("the hero scene paints its dust in the theme that is on screen", async ({ page }) => {
+test("the work still shows without WebGL", async ({ browser }) => {
+  const ctx = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await ctx.newPage();
+  await page.addInitScript(() => {
+    HTMLCanvasElement.prototype.getContext = function () {
+      return null;
+    } as typeof HTMLCanvasElement.prototype.getContext;
+  });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator(".bp")).toBeVisible();
-  await page.waitForTimeout(600);
+  await page.waitForTimeout(1200);
 
-  /* Both normalised to hex, because getComputedStyle answers in rgb()
-     and fillStyle answers in #rrggbb. */
-  const ink = () =>
-    page.evaluate(() => {
-      const cv = document.querySelector<HTMLCanvasElement>(".bp canvas");
-      if (!cv) return null;
-      const ctx = cv.getContext("2d");
-      if (!ctx) return null;
-      const hex = (c: string) => {
-        const t = c.trim().toLowerCase();
-        /* fillStyle already answers in #rrggbb, and running the rgb()
-           parser over it mangles the string: the digit runs in "#0b1722"
-           are "0" and "1722", which reassemble as "#006ba". Caught by
-           this test failing on its own helper. */
-        if (t.startsWith("#")) {
-          return t.length === 4
-            ? "#" + [...t.slice(1)].map((d) => d + d).join("")
-            : t;
-        }
-        const m = t.match(/[\d.]+/g);
-        if (!m) return t;
-        return (
-          "#" +
-          m
-            .slice(0, 3)
-            .map((n) => Math.round(Number(n)).toString(16).padStart(2, "0"))
-            .join("")
-        );
-      };
-      return {
-        painting: hex(String(ctx.fillStyle)),
-        css: hex(getComputedStyle(cv).color),
-      };
+  await expect(
+    page.locator("h1"),
+    "the headline should survive a browser with no WebGL",
+  ).toBeVisible();
+
+  const body = (await page.locator("body").textContent()) ?? "";
+  for (const t of takes) {
+    expect(body, `${t.title} should still be listed with no WebGL`).toContain(t.title);
+  }
+
+  await ctx.close();
+});
+
+/*
+  Every page title is set by one component.
+
+  **This guards the failure it was written after, which no other test here
+  could see.** Measured on Nov 24 2026, the eight page titles rendered in
+  three typefaces, three weights and five sizes: 74px Inter on the homepage,
+  48px weight-500 Fraunces on /services, 36px weight-600 Space Grotesk on
+  /catalog, 64px on /brightbase. Every page built, every test passed, no
+  console error anywhere. The cause was that `StackedHeading` lived in
+  `components/home/`, so five homepage sections used it and every other page
+  hand-wrote its own ramp inline.
+
+  CLAUDE.md forbids exactly this everywhere else: a derived value has one
+  author and is never re-derived inline. The type scale is a derived value,
+  and it had eight authors, so this asserts the property rather than the
+  component. A page that goes back to a hand-rolled `h1` fails here even if
+  it imports nothing and looks fine in a screenshot, which is the point:
+  **the previous state of this was invisible to a build, a test and a
+  Lighthouse run, and only visible by measuring.**
+
+  The size is read rather than hardcoded, from whichever page runs first, so
+  retuning the clamp in `StackedHeading` does not fail this. What may not
+  drift is that they all agree.
+
+  The homepage is deliberately absent. Its hero is the one bespoke heading
+  on the site, set over video in a fixed near-white with a two-face
+  composition, and `OceanHero` says so in a comment. The face is absent too:
+  Fraunces or Space Grotesk per page is Meg's open brand decision, recorded
+  in `StackedHeading` and on /services, and this test must not quietly
+  settle it.
+*/
+test("every page title is the same size and weight, from one component", async ({ page }) => {
+  const paths = [
+    "/services",
+    "/tools",
+    "/catalog",
+    "/marketplace",
+    "/about",
+    "/brightbase",
+    "/turnover",
+    "/demo",
+    "/welcome-book",
+    "/privacy",
+    "/terms",
+    "/work/maine-cleaning-co",
+  ];
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const seen: { path: string; size: number; weight: string }[] = [];
+
+  for (const path of paths) {
+    await page.goto(path);
+    const h1 = page.locator("h1").first();
+    await expect(h1, `${path} should have a visible h1`).toBeVisible();
+
+    const got = await h1.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { size: Math.round(parseFloat(cs.fontSize)), weight: cs.fontWeight };
     });
+    seen.push({ path, ...got });
+  }
 
-  const first = await ink();
-  expect(first, "the dust canvas should be on the page").not.toBeNull();
+  /* Weight is absolute: the treatment is large-and-light, and `.display`
+     (unlayered, font-weight 600) silently beating `font-normal` is the way
+     this breaks without anyone writing a number down. */
+  for (const s of seen) {
+    expect(
+      s.weight,
+      `${s.path} renders its page title at weight ${s.weight}, not 400 — a hand-rolled h1, ` +
+        "or the unlayered `.display` class winning over `font-normal`",
+    ).toBe("400");
+  }
+
+  /* Size is relative: whatever the clamp resolves to, every page agrees. */
+  const base = seen[0];
+  for (const s of seen) {
+    expect(
+      s.size,
+      `${s.path} renders its page title at ${s.size}px but ${base.path} renders ${base.size}px — ` +
+        "page titles come from StackedHeading so that there is one answer",
+    ).toBe(base.size);
+  }
+});
+
+/*
+  The ocean art never carries a claim.
+
+  **CLAUDE.md's first rule is that nothing on this site invents proof, and
+  spreading the cast across /services is exactly where that gets tested.**
+  On the homepage the creatures sit in a reef map, where a sentence about
+  an anemone is plainly a metaphor. On /services each one now sits directly
+  above a service's name, its pain, its outcome and, a screen below, its
+  price. A caption in that position reads as part of the pitch, which is
+  fine while it says "a clean exchange, both sides get something" and is
+  the "2,400 cleans this month" failure the moment it says anything
+  countable.
+
+  Meg's original Firefly still had a HUD on it reading pH 8.1 and
+  "BIODIVERSITY INDEX HIGH". That is ordinary scene dressing on an ocean
+  picture and it is precisely what must not survive onto a page selling
+  software, so `lib/ocean.ts` states the rule and this asserts it: no digit
+  anywhere in the cast's own words. A number is the thing a reader would
+  take as evidence, and it is also the cheapest thing for a future edit to
+  add without noticing.
+
+  Asserted on the data rather than the rendered page on purpose. Every
+  surface reads `lib/ocean.ts`, so guarding the source covers /services,
+  the homepage reef map and anything added later, including a page that
+  does not exist yet.
+*/
+test("the ocean art claims nothing countable", () => {
+  for (const member of CAST) {
+    for (const [field, text] of [
+      ["creature", member.creature],
+      ["reef", member.reef],
+      ["artAlt", member.artAlt],
+    ] as const) {
+      expect(
+        text,
+        `cast.${member.id}.${field} contains a digit: "${text}". The cast may ` +
+          "name a creature and describe a reef; a number beside a service reads as evidence",
+      ).not.toMatch(/\d/);
+    }
+  }
+
+  /*
+    And every service has one.
+
+    A member naming a service that does not exist is already a build error,
+    because `CastMember.id` is the `ServiceCategory` union rather than a
+    string. The gap the type cannot close is the other direction: a *fifth*
+    service added to `lib/content.ts` compiles perfectly, and then
+    `castFor` returns undefined for it, `Services` renders no frame, and
+    /services shows four rows with a picture and one without. Nothing
+    errors and the page looks almost right, which is the failure mode this
+    whole file exists for. CLAUDE.md records that this list went from five
+    categories to four once already, so it does move.
+  */
+  const withArt = new Set(CAST.map((c) => c.id));
+  for (const s of services) {
+    expect(
+      withArt.has(s.id),
+      `the service "${s.id}" has no cast member, so its row renders without the ` +
+        "picture every other row has — add one to lib/ocean.ts",
+    ).toBe(true);
+  }
+});
+
+/*
+  The dive is the whole page, and only in Harbor.
+
+  **Two promises, and the first is the one Meg asked for twice.** The hero
+  used to scrub a clip inside its own pinned track: the descent was over a
+  screen and a half in and the ocean went with it. What she wanted is the
+  ocean behind everything, still moving while you read. That is the
+  difference between a playhead that follows a section and one that follows
+  the document, and it is invisible to every other test here — the page
+  renders, the video element exists, and nothing says which clock it is on.
+
+  **It is asserted on `data-dive-progress` rather than on the video,
+  because this suite's browser cannot play the video at all.** Measured:
+  the pinned Playwright ships a plain Chromium with no H.264, so
+  `dive.mp4` reports `networkState: 3` and `error.code: 4`
+  (MEDIA_ERR_SRC_NOT_SUPPORTED) for as long as you wait, while the same
+  page in a browser with the codec reaches `readyState: 4` in under two
+  seconds. Writing this against `currentTime` would have produced a test
+  that fails everywhere for a reason that has nothing to do with the code.
+  `OceanBackdrop` therefore publishes the depth it computes, and that
+  number is the contract: 0 at the top, about half at the middle of the
+  document, 1 at the foot.
+
+  The second promise is that Daylight opts out. CLAUDE.md records that this
+  site went light because near-black read as a developer tool to Meg's
+  buyers, and a dark ocean rolling behind cream content is that mistake
+  with a bigger surface.
+*/
+test("the dive runs the length of the page, and Harbor only", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const backdrop = page.locator(".ocean-backdrop");
+  await expect(backdrop, "Harbor should mount the dive behind the page").toHaveCount(1);
+  await expect(
+    page.locator('.ocean-backdrop video[src="/ocean/dive.mp4"]'),
+    "a pointer device should get the video, not just the still",
+  ).toHaveCount(1);
+
+  /*
+    Scrolled twice on purpose. The page lazy-loads images, so arriving at
+    the foot makes it taller and the position that *was* the bottom is
+    suddenly 0.93 of a longer document. Settling first is the difference
+    between measuring the contract and measuring image loading.
+  */
+  const depthAt = async (fraction: number) => {
+    for (let i = 0; i < 2; i++) {
+      await page.evaluate((f) => {
+        const span = document.documentElement.scrollHeight - window.innerHeight;
+        window.scrollTo(0, Math.round(span * f));
+      }, fraction);
+      await page.waitForTimeout(500);
+    }
+    const raw = await backdrop.getAttribute("data-dive-progress");
+    return raw === null ? null : Number(raw);
+  };
+
+  const top = await depthAt(0);
   expect(
-    first!.painting,
-    "the dust should be painted in the ink CSS currently specifies",
-  ).toBe(first!.css);
+    top,
+    "the backdrop should publish its depth; without it the dive is unguardable",
+  ).not.toBeNull();
+  expect(top, "the page should open at the surface").toBeLessThan(0.05);
 
-  /* Exactly what applyTheme() does: Harbor is the absence of the
-     attribute, and the event is what every other themed layer listens
-     for. */
+  /* The real assertion. A hero-scoped scrub is finished long before the
+     middle of the document and would report 1 here. */
+  const middle = await depthAt(0.5);
+  expect(
+    middle,
+    `halfway down the page the dive should be about halfway down too, not ${middle} — ` +
+      "a playhead tied to a section instead of the document",
+  ).toBeGreaterThan(0.3);
+  expect(middle!).toBeLessThan(0.7);
+
+  const bottom = await depthAt(1);
+  expect(bottom, "the foot of the page should be the floor of the dive").toBeGreaterThan(0.95);
+
+  /* Daylight gets no dive at all. */
   await page.evaluate(() => {
-    const root = document.documentElement;
-    if (root.dataset.theme === "light") delete root.dataset.theme;
-    else root.dataset.theme = "light";
-    window.dispatchEvent(new Event("theme:change"));
+    document.documentElement.dataset.theme = "light";
   });
-  await page.waitForTimeout(400);
+  await expect(
+    backdrop,
+    "Daylight should not render the dive: a dark ocean behind cream content is " +
+      "the reason this site went light in the first place",
+  ).toBeHidden();
+});
 
-  const second = await ink();
+/*
+  Daylight stays readable under every dark island.
+
+  **This is the fifth time the same mistake has shipped, so it finally
+  gets a test.** CLAUDE.md records #115, a chip hardcoded dark that went
+  white-on-white in Harbor, and #118, illustrations drawn in white that
+  vanished when the site went light. Since then: the hero's near-white
+  type stranded on cream when its video moved to a Harbor-only backdrop,
+  a CastFrame caption inheriting the dark island's tokens on a cream page
+  at 2.21:1, and now the below-hero dive wash covering the light theme,
+  which left `ReefMap`'s heading at 2.79:1 over rgb(145,145,144). Every
+  one of them rendered perfectly and failed no build.
+
+  The shape is always identical: something declares `cp-night`, which
+  re-points the tokens to the dark theme so its text comes out
+  near-white, and then in Daylight it has nothing dark to sit on. So the
+  rule is asserted directly rather than through any one symptom — in the
+  light theme, anything wearing `cp-night` must have a dark thing painted
+  behind it. `.night-band` is how a full section gets one and the frames
+  paint their own ground; what matters here is that *something* does.
+
+  Asserted on the rendered page in the light theme, because that is the
+  only place this is visible. A unit test on the class list would pass
+  for all five of the failures above.
+*/
+test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  await page.evaluate(() => {
+    document.documentElement.dataset.theme = "light";
+  });
+  await page.waitForTimeout(900);
+
+  const offenders = await page.evaluate(() => {
+    const luma = (c: number[]) => 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    const out: { what: string; bg: string; luma: number }[] = [];
+    for (const el of Array.from(document.querySelectorAll(".cp-night"))) {
+      const r = el.getBoundingClientRect();
+      if (r.width < 40 || r.height < 24) continue;
+      /* Walk up for the first thing that actually paints. The element may
+         carry its own ground, or sit inside a band that does. */
+      let n: Element | null = el;
+      let bg: string | null = null;
+      while (n && n !== document.documentElement) {
+        const s = getComputedStyle(n).backgroundColor;
+        const m = s.match(/rgba?\(([^)]+)\)/);
+        if (m) {
+          const v = m[1].split(",").map(Number);
+          const a = v[3] === undefined ? 1 : v[3];
+          if (a >= 0.6) {
+            bg = s;
+            break;
+          }
+        }
+        n = n.parentElement;
+      }
+      const v = bg ? bg.match(/\d+/g)!.slice(0, 3).map(Number) : [247, 244, 239];
+      const L = luma(v);
+      if (L > 90) {
+        const tag = el.tagName.toLowerCase();
+        const id = el.id ? "#" + el.id : "";
+        out.push({ what: tag + id, bg: bg ?? "(nothing painted: the cream page)", luma: Math.round(L) });
+      }
+    }
+    return out;
+  });
+
   expect(
-    second!.css,
-    "the two palettes should specify different ink, or this test proves nothing",
-  ).not.toBe(first!.css);
-  expect(
-    second!.painting,
-    "after a palette switch the dust should be repainted in the new ink",
-  ).toBe(second!.css);
+    offenders,
+    "these force dark-theme tokens, so their text is near-white, and in Daylight " +
+      "they have nothing dark behind them: " +
+      offenders.map((o) => `${o.what} on ${o.bg} (luma ${o.luma})`).join("; ") +
+      " — give the section `night-band`, or its own dark ground",
+  ).toEqual([]);
 });

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { approachSteps } from "@/lib/content";
+import LivingFrame from "./ocean/LivingFrame";
 
 /*
   Approach — the four-step process, rendered as small connected cards.
@@ -40,6 +41,40 @@ export default function Approach() {
       className="relative overflow-hidden border-t border-line bg-[var(--section-alt-bg)] py-20 md:py-24"
     >
       <div className="relative mx-auto max-w-6xl px-6">
+        {/*
+          **The reef, uncaptioned, as this section's own picture.** /about
+          was 3.8 screens with one image on it, Meg's photograph, and this
+          section and the stack under it carried none at all.
+
+          It is the reef rather than a creature because this section is not
+          one of the four services, and CastFrame's rule is that a caption
+          is what makes a picture a service's marker. It is also the right
+          picture rather than a convenient one: the homepage annotates this
+          exact image to argue that a reef has no manager, that each
+          organism's output is the next one's input and the whole thing
+          runs unsupervised. This section is about how a build is run with
+          nothing hidden in it. Same argument, one page over, so the band
+          carries no words and the heading under it does the talking.
+
+          A 21/9 crop rather than the panel's 16/9: at full container width
+          a 16/9 band is most of a screen of water before the first step,
+          which would push the content this page exists for below the fold.
+        */}
+        {/*
+          **This band is the living reef**, which is where Meg's `Shot_01`
+          could actually go. The homepage map annotates a fixed composition
+          and the footage is a travelling push-in, so pins drift off their
+          creatures on it; LivingFrame's note has the frame-by-frame. Here
+          there is nothing pinned, the page has no other motion on it, and
+          the section argues that an ecosystem runs unsupervised, which is
+          a better thing to watch than to read.
+        */}
+        <LivingFrame
+          video="/ocean/reef-loop.mp4"
+          poster="/ocean/reef-loop-poster.webp"
+          alt="A slow push through a deep reef at night, past an octopus, a turtle and shoals of lit fish."
+          className="mb-12"
+        />
         <div className="mb-12 max-w-3xl">
                       <p className="mb-3 text-xs font-medium text-signal">
               Approach

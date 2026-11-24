@@ -3,6 +3,8 @@ import Link from "next/link";
 import ProjectVisual from "./ProjectVisual";
 import ServiceRungs from "./Ladder";
 import { services } from "@/lib/content";
+import { castFor } from "@/lib/ocean";
+import CastFrame from "./ocean/CastFrame";
 
 /*
   Services — three wide rows, each led by a real screenshot.
@@ -92,6 +94,31 @@ export default function Services() {
               </div>
 
               <div className="lg:col-span-5">
+                {/*
+                  **The creature leads the text column; the screenshot still
+                  leads the row.** Seven columns of real capture against five
+                  of art keeps CLAUDE.md's order intact — every section shows
+                  something real she built — while giving the page the thing
+                  it was missing, which measured as three images across 9.8
+                  screens.
+
+                  It is the homepage reef map's panel, made permanent. There
+                  a visitor taps a pin and gets the creature and the analogy
+                  for one service at a time; here each service carries its
+                  own. Both read `lib/ocean.ts`, so the octopus cannot come
+                  to mean integrations in one place and something else in
+                  the other.
+                */}
+                {(() => {
+                  const member = castFor(s.id);
+                  return member ? (
+                    <CastFrame
+                      {...member}
+                      className="mb-6"
+                      sizes="(min-width: 1024px) 420px, 100vw"
+                    />
+                  ) : null;
+                })()}
                 <p className="font-mono text-xs text-faint">{s.index}</p>
                 <h3 className="display-serif mt-2 text-xl text-ink md:text-2xl">
                   {s.title}
