@@ -47,7 +47,7 @@ import ProofStrip from "../ProofStrip";
 export default function OceanHero() {
   return (
     <section
-      /* `hero-band` gives this section a dark ground in Daylight only. In
+      /* `night-band` gives this section a dark ground in Daylight only. In
          Harbor the page's dive is behind it and a ground would hide it;
          in Daylight there is no backdrop, and everything in here (the
          headline, the eyebrow, the proof numbers below the fold) is
@@ -55,7 +55,7 @@ export default function OceanHero() {
          The poster covers the first screen; this covers the strip under
          it that ProofStrip lives in, which would otherwise have been
          white figures on cream. */
-      className="hero-band cp-night relative isolate"
+      className="night-band cp-night relative isolate"
       aria-labelledby="hero-heading"
     >
       <div className="flex h-svh min-h-[34rem] flex-col overflow-hidden">

@@ -44,7 +44,7 @@ export default function ReefMap() {
          which is the point of the backdrop. The wash that keeps this
          readable is the backdrop's, applied once for every section rather
          than re-decided per section. */
-      className="cp-night relative border-t border-white/10 py-12 md:py-20"
+      className="night-band cp-night relative border-t border-white/10 py-12 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
         <p className="m-0 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">

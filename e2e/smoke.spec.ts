@@ -1728,3 +1728,79 @@ test("the dive runs the length of the page, and Harbor only", async ({ page }) =
       "the reason this site went light in the first place",
   ).toBeHidden();
 });
+
+/*
+  Daylight stays readable under every dark island.
+
+  **This is the fifth time the same mistake has shipped, so it finally
+  gets a test.** CLAUDE.md records #115, a chip hardcoded dark that went
+  white-on-white in Harbor, and #118, illustrations drawn in white that
+  vanished when the site went light. Since then: the hero's near-white
+  type stranded on cream when its video moved to a Harbor-only backdrop,
+  a CastFrame caption inheriting the dark island's tokens on a cream page
+  at 2.21:1, and now the below-hero dive wash covering the light theme,
+  which left `ReefMap`'s heading at 2.79:1 over rgb(145,145,144). Every
+  one of them rendered perfectly and failed no build.
+
+  The shape is always identical: something declares `cp-night`, which
+  re-points the tokens to the dark theme so its text comes out
+  near-white, and then in Daylight it has nothing dark to sit on. So the
+  rule is asserted directly rather than through any one symptom — in the
+  light theme, anything wearing `cp-night` must have a dark thing painted
+  behind it. `.night-band` is how a full section gets one and the frames
+  paint their own ground; what matters here is that *something* does.
+
+  Asserted on the rendered page in the light theme, because that is the
+  only place this is visible. A unit test on the class list would pass
+  for all five of the failures above.
+*/
+test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  await page.evaluate(() => {
+    document.documentElement.dataset.theme = "light";
+  });
+  await page.waitForTimeout(900);
+
+  const offenders = await page.evaluate(() => {
+    const luma = (c: number[]) => 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+    const out: { what: string; bg: string; luma: number }[] = [];
+    for (const el of Array.from(document.querySelectorAll(".cp-night"))) {
+      const r = el.getBoundingClientRect();
+      if (r.width < 40 || r.height < 24) continue;
+      /* Walk up for the first thing that actually paints. The element may
+         carry its own ground, or sit inside a band that does. */
+      let n: Element | null = el;
+      let bg: string | null = null;
+      while (n && n !== document.documentElement) {
+        const s = getComputedStyle(n).backgroundColor;
+        const m = s.match(/rgba?\(([^)]+)\)/);
+        if (m) {
+          const v = m[1].split(",").map(Number);
+          const a = v[3] === undefined ? 1 : v[3];
+          if (a >= 0.6) {
+            bg = s;
+            break;
+          }
+        }
+        n = n.parentElement;
+      }
+      const v = bg ? bg.match(/\d+/g)!.slice(0, 3).map(Number) : [247, 244, 239];
+      const L = luma(v);
+      if (L > 90) {
+        const tag = el.tagName.toLowerCase();
+        const id = el.id ? "#" + el.id : "";
+        out.push({ what: tag + id, bg: bg ?? "(nothing painted: the cream page)", luma: Math.round(L) });
+      }
+    }
+    return out;
+  });
+
+  expect(
+    offenders,
+    "these force dark-theme tokens, so their text is near-white, and in Daylight " +
+      "they have nothing dark behind them: " +
+      offenders.map((o) => `${o.what} on ${o.bg} (luma ${o.luma})`).join("; ") +
+      " — give the section `night-band`, or its own dark ground",
+  ).toEqual([]);
+});

@@ -124,8 +124,16 @@ export default function Home() {
           wash bites hardest on exactly the bright patches that break
           text and barely touches the dark water that is most of the
           frame. Worst text on the page went 3.68:1 to 4.96:1.
+
+          **It is Harbor's, and it was not, which a review bot caught.**
+          Applied unconditionally it also covered the cream page, where
+          there is no backdrop under it to darken: measured in Daylight,
+          the ground behind the reef heading came out rgb(145,145,144),
+          grey mud rather than cream, and the heading sat at 2.79:1. The
+          wash exists to protect text from bright water. In a theme with
+          no water it protects nothing and only damages what is there.
         */}
-        <div className="bg-[rgba(5,7,11,0.42)]">
+        <div className="dive-wash">
         <ReefMap />
         <TakeReel />
         <Shelf />

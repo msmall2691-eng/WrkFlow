@@ -1611,11 +1611,33 @@ body:has(.cp) { background: #08070c; }
   display: block;
 }
 
-/* The hero band's Daylight ground. Harbor leaves it transparent so the
-   dive shows; Daylight fills it, because everything inside the hero is
-   styled for dark and the proof numbers under the poster would otherwise
-   be white on cream. */
-:root[data-theme="light"] .hero-band {
+/* A night band's Daylight ground, and the wash that only Harbor wants.
+
+   **`.night-band` is for any section that forces `cp-night`.** Those
+   sections re-point their tokens to the dark theme's values, so their
+   text is near-white whatever the page is doing. In Harbor that is right
+   and the dive shows through a transparent ground. In Daylight there is
+   no backdrop, so without a ground of their own they are near-white text
+   on cream. It was `.hero-band` and covered only the hero; `ReefMap`
+   forces `cp-night` too and had been doing exactly that since its own
+   ground was removed for the backdrop. A review bot found it, and the
+   measurement confirmed it: the reef heading at 2.79:1.
+
+   **`.dive-wash` darkens everything below the hero, in Harbor only.** It
+   exists so a violet shop link clears 4.5:1 over bright water. Applied
+   unconditionally it also covered the cream page, where there is no
+   water under it to darken, compositing the ground to rgb(145,145,144).
+   A guard against bright water has nothing to do in a theme that has
+   none. */
+.dive-wash {
+  background: rgba(5, 7, 11, 0.42);
+}
+
+:root[data-theme="light"] .dive-wash {
+  background: none;
+}
+
+:root[data-theme="light"] .night-band {
   background: #05070b;
 }
 
