@@ -6,7 +6,7 @@ import { join } from "node:path";
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
+import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
 import { CAST } from "../lib/ocean";
