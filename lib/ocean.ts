@@ -62,9 +62,20 @@ export const CAST: readonly CastMember[] = [
     id: "leads",
     creature: "Anemone and clownfish",
     reef: "A clean exchange. Both sides get something and neither negotiates.",
-    art: "/ocean/cast/turtle.webp",
+    /* The creature this entry is named for, finally in the picture.
+       `turtle.webp` was here and shows a turtle, so the panel said
+       "Anemone and clownfish" over art with neither of them in it. It
+       was also the last inverted image in the set: luma 44.3 at the
+       border against 34.2 in the middle, darker exactly where a subject
+       should be, so `.creature-bleed` had nothing to leave behind.
+
+       Meg's own frame reads 17.6 against 51.1, a ratio of 2.90 and the
+       cleanest fall to black of any art on this site, and it shows a lit
+       anemone with a clownfish sheltering in it. The metaphor and the
+       measurement agreed for once. */
+    art: "/ocean/cast/anemone.webp",
     artAlt:
-      "A turtle gliding low over the reef, past anemones and a clownfish.",
+      "A lit anemone on the reef at night with a clownfish sheltering in it, shoals streaming overhead.",
   },
   {
     id: "software",
