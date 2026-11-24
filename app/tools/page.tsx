@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Playground from "@/components/Playground";
 import StackedHeading from "@/components/StackedHeading";
-import CastFrame from "@/components/ocean/CastFrame";
+import LivingFrame from "@/components/ocean/LivingFrame";
 
 /*
   /tools — the free M Linx tools, on their own page.
@@ -32,7 +32,10 @@ export default function ToolsPage() {
   return (
     <div className="cp">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
           <span className="cp-aurora cp-a1" />
           <span className="cp-aurora cp-a2" />
         </div>
@@ -60,8 +63,8 @@ export default function ToolsPage() {
               page and nothing else competes with it here, which is exactly
               the narrow case the default is off for.
             */}
-            <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 lg:grid-cols-[1fr_0.85fr] lg:gap-14">
-              <div className="min-w-0">
+            <div className="mx-auto max-w-6xl px-6">
+              <div className="min-w-0 max-w-3xl">
                 {/*
                   `display` (Space Grotesk), not `display-serif`, and left alone:
                   this heading already used the panel's face, so unlike /services
@@ -71,26 +74,57 @@ export default function ToolsPage() {
                 <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                   {/* "we build" was the one "we" left on this page. Meg is a solo
                       founder and the house rule is first person. */}
-                  The same tools I build into client systems. Use them here, free,
-                  for as long as you like.
+                  The same tools I build into client systems. Use them here,
+                  free, for as long as you like.
                 </p>
               </div>
 
               {/*
-                The moorings rather than the dive's own surface. Two
-                reasons: the homepage already opens on that exact frame, so
-                reusing it here made two pages look like one; and this is a
-                working waterfront, ropes and pilings and daylight on the
-                underside of the water, which is the nearest thing in the
-                set to Southern Maine and to free tools that are simply
-                tied up and available.
+                The moorings, and the reasoning above still holds: the
+                homepage opens on the dive's own surface, so reusing that
+                frame here made two pages look like one, and a working
+                waterfront of ropes and pilings is the nearest thing in the
+                set to Southern Maine and to free tools simply tied up and
+                available.
+
+                **What changed is that the moorings move now, and that they
+                are the full width.** Both are measurements rather than
+                taste.
+
+                The still was the problem Meg named out loud when she asked
+                for no sharp edges, everything living in the background:
+                `moorings.webp` reads luma 50.6 at its border against 109.9
+                in the middle, which is the brightest border of any art on
+                this site. There is nothing for a mask to dissolve, so it
+                rendered as a lit rectangle on a near-black page, which is
+                the one thing that rule forbids.
+
+                And the column was the wrong shape for her clip. Her
+                `4k-dive-header` is 1920x840, 2.29:1; the old frame was
+                4:3, which would have thrown away 42% of its width. At
+                `LivingFrame`'s 21/9 almost nothing is cropped, so this
+                moves out of the column and runs the width instead, which
+                is also the Like a King shape: a heading, then the art
+                full-bleed under it.
+
+                **It is her clip repaired twice.** Its last 0.33 second is
+                a hard cut to a different, much brighter shot, luma 71
+                jumping to 104 and staying there, so that tail is trimmed;
+                and it was not a loop, so an 0.7s `xfade` folds the end
+                back over the start. Seam measures 5.2/255, well under
+                where a cut becomes visible.
+
+                This is also the rope. CLAUDE.md records Meg asking after
+                "the video of the rope" and concludes there is none in
+                either clip and she must be remembering the old Cable hero.
+                She was not: it is in this one.
               */}
-              <CastFrame
-                art="/ocean/moorings.webp"
-                artAlt="Looking up beneath a dock: barnacled pilings, two mooring ropes and daylight on the underside of the water."
+              <LivingFrame
                 priority
-                aspect="aspect-[4/3]"
-                sizes="(min-width: 1024px) 480px, 100vw"
+                video="/ocean/moorings-band.mp4"
+                poster="/ocean/moorings-band-poster.webp"
+                alt="Looking up beneath a dock: barnacled pilings, two mooring ropes and daylight on the underside of the water."
+                className="mt-12"
               />
             </div>
           </section>

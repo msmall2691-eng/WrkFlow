@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { studioStats } from "@/lib/content";
 import StackedHeading from "@/components/StackedHeading";
+import Creature from "@/components/ocean/Creature";
 
 /*
   HowToStart — the last beat, and the one the old homepage skipped.
@@ -69,10 +70,27 @@ export default function HowToStart() {
   return (
     <section
       aria-labelledby="start-heading"
-      className="border-t border-[color:var(--cp-line)] py-16 md:py-20"
+      className="relative isolate border-t border-[color:var(--cp-line)] py-16 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <StackedHeading id="start-heading" lead="How a project" trail="starts." />
+        {/* A character beside the heading, which is the shape Like a
+            King uses on every section and this page had nowhere: their
+            globe sits next to "Multi-cloud by design." with no card and
+            no edge. Decoration only, so it is `aria-hidden`, it is gone
+            below `lg` where there is no room beside a heading, and it is
+            gone in Daylight, which has nothing for a lit-on-black
+            subject to dissolve into. `-z-10` against the section's
+            `isolate` puts it behind the words and still in front of the
+            section's own ground. */}
+        <Creature
+          src="/ocean/cast/light.webp"
+          className="absolute right-0 top-0 -z-10 hidden h-[21rem] w-[33rem] lg:block"
+        />
+        <StackedHeading
+          id="start-heading"
+          lead="How a project"
+          trail="starts."
+        />
 
         <ol className="mt-12 grid gap-5 md:grid-cols-3">
           {STEPS.map((s) => (

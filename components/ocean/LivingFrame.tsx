@@ -44,6 +44,7 @@ export default function LivingFrame({
   alt,
   aspect = "aspect-[21/9]",
   className = "",
+  priority = false,
 }: {
   /** The loop. Cut to be seamless; see above. */
   video: string;
@@ -52,6 +53,23 @@ export default function LivingFrame({
   alt: string;
   aspect?: string;
   className?: string;
+  /*
+    Load the poster eagerly because this frame is the first image on its
+    page. Off by default and deliberately so: the lazy poster is right
+    for a band further down, and a page with two eager heroes has none.
+
+    **It exists because swapping a `CastFrame` for a `LivingFrame`
+    silently dropped it.** `CastFrame` takes `priority`, /tools passed
+    it, and the comment there spelled out why — "genuinely the first
+    image on the page and nothing else competes with it here". This
+    component had no such prop, so the swap turned the page's largest
+    element into a lazy load and nothing failed: the build was clean,
+    the suite was green, and the only symptom was a slower first paint
+    on one page. The prop the old component had was load-bearing, and
+    not checking for that is the seam-check rule this repo already
+    writes down.
+  */
+  priority?: boolean;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const film = useRef<HTMLVideoElement>(null);
@@ -91,7 +109,8 @@ export default function LivingFrame({
           src={poster}
           alt={alt}
           className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
           decoding="async"
         />
         {moving ? (

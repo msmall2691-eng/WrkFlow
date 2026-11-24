@@ -52,7 +52,6 @@
   ───────────────────────────────────────────────────────────────────────────
 */
 
-
 /*
   M Studio — design tokens
   "Deep Harbor": a dark, luxe coastal-New-England identity. Harbor-navy
@@ -94,7 +93,8 @@
   --color-gold-dim: #b9842b;
 
   /* Type */
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
   --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
@@ -118,15 +118,15 @@
 
   /* Footer moon SVG */
   --moon-disc: #0b1722;
-  --moon-rim:  #dff3ef;
-  --moon-lit:  #8bd6c8;
+  --moon-rim: #dff3ef;
+  --moon-lit: #8bd6c8;
 
   /* Nav — colors used when transparent over the hero. Dark mode = white ink,
      daylight = harbor navy ink. Scrolled state stays token-driven either way. */
-  --nav-hero-ink:  rgba(255, 255, 255, 0.75);
+  --nav-hero-ink: rgba(255, 255, 255, 0.75);
   --nav-hero-ink2: #ffffff;
   --nav-hero-line: rgba(255, 255, 255, 0.28);
-  --nav-hero-line2:rgba(255, 255, 255, 0.5);
+  --nav-hero-line2: rgba(255, 255, 255, 0.5);
 
   /* Panel tokens — used by LiveReadout, InstallCard, Contact form. */
   --panel-bg: rgba(8, 19, 29, 0.6);
@@ -204,28 +204,38 @@
   --aurora-deep-b: 0.935;
 
   --moon-disc: transparent;
-  --moon-rim:  #0b1722;
-  --moon-lit:  #0b1722;
+  --moon-rim: #0b1722;
+  --moon-lit: #0b1722;
 
-  --nav-hero-ink:  rgba(11, 23, 34, 0.6);
+  --nav-hero-ink: rgba(11, 23, 34, 0.6);
   --nav-hero-ink2: var(--color-ink);
   --nav-hero-line: rgba(11, 23, 34, 0.25);
-  --nav-hero-line2:rgba(11, 23, 34, 0.5);
+  --nav-hero-line2: rgba(11, 23, 34, 0.5);
 
   /* Harbor navy at low alpha reads on cream the way white does on navy. */
   --wm-ink: rgba(11, 23, 34, 0.13);
-  --wm-stroke: rgba(11, 23, 34, 0.20);
+  --wm-stroke: rgba(11, 23, 34, 0.2);
 }
 
-html { color-scheme: light; }
-html:not([data-theme="light"]) { color-scheme: dark; }
+html {
+  color-scheme: light;
+}
+html:not([data-theme="light"]) {
+  color-scheme: dark;
+}
 
 /* Hero headline & subtitle — text-shadow only makes sense over the dark aurora,
    drop it in daylight. Metallic subline needs a warm-friendly gradient too. */
-.hero-heading { text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5); }
-.hero-sub     { text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45); }
+.hero-heading {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+}
+.hero-sub {
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
 :root[data-theme="light"] .hero-heading,
-:root[data-theme="light"] .hero-sub { text-shadow: none; }
+:root[data-theme="light"] .hero-sub {
+  text-shadow: none;
+}
 
 /* Metallic sub-line (below the h1) uses a chrome gradient tuned for dark;
    remap to a warm harbor navy on light so text stays readable. */
@@ -236,8 +246,14 @@ html:not([data-theme="light"]) { color-scheme: dark; }
 }
 
 /* Hero outline CTA — theme-aware border + text color */
-.hero-outline { border-color: rgba(255, 255, 255, 0.25); color: #ffffff; }
-.hero-outline:hover { border-color: rgba(255, 255, 255, 0.6); background: rgba(255, 255, 255, 0.05); }
+.hero-outline {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+.hero-outline:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.05);
+}
 :root[data-theme="light"] .hero-outline {
   border-color: rgba(11, 23, 34, 0.25);
   color: var(--color-ink);
@@ -267,7 +283,9 @@ html:not([data-theme="light"]) { color-scheme: dark; }
 
 /* Aurora canvas — pause WebGL work in light mode. ReactiveAurora unmounts
    itself there too; this covers any other canvas wearing the class. */
-:root[data-theme="light"] .aurora-canvas { display: none; }
+:root[data-theme="light"] .aurora-canvas {
+  display: none;
+}
 
 /*
   The Daylight sky (components/DaylightSky.tsx).
@@ -311,7 +329,9 @@ html:not([data-theme="light"]) { color-scheme: dark; }
    the markup either way — and an opaque cream gradient over the dark hero for
    the length of a hydration is exactly the flash the pre-paint script exists
    to prevent. This hides it before the first paint; React then removes it. */
-:root:not([data-theme="light"]) .daylight-sky { display: none; }
+:root:not([data-theme="light"]) .daylight-sky {
+  display: none;
+}
 
 .daylight-sky {
   position: absolute;
@@ -358,24 +378,54 @@ html:not([data-theme="light"]) { color-scheme: dark; }
   height: 78%;
   opacity: calc(var(--sky-cloud, 0.45) * 0.5);
   background:
-    radial-gradient(ellipse 13% 42% at 8% 34%, rgba(126, 143, 162, 0.55), transparent 70%),
-    radial-gradient(ellipse 9% 30% at 21% 62%, rgba(126, 143, 162, 0.4), transparent 70%),
-    radial-gradient(ellipse 15% 48% at 37% 24%, rgba(126, 143, 162, 0.5), transparent 70%),
-    radial-gradient(ellipse 11% 34% at 52% 58%, rgba(126, 143, 162, 0.45), transparent 70%),
-    radial-gradient(ellipse 14% 44% at 69% 30%, rgba(126, 143, 162, 0.52), transparent 70%),
-    radial-gradient(ellipse 10% 32% at 86% 56%, rgba(126, 143, 162, 0.42), transparent 70%);
+    radial-gradient(
+      ellipse 13% 42% at 8% 34%,
+      rgba(126, 143, 162, 0.55),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 9% 30% at 21% 62%,
+      rgba(126, 143, 162, 0.4),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 15% 48% at 37% 24%,
+      rgba(126, 143, 162, 0.5),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 11% 34% at 52% 58%,
+      rgba(126, 143, 162, 0.45),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 14% 44% at 69% 30%,
+      rgba(126, 143, 162, 0.52),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 10% 32% at 86% 56%,
+      rgba(126, 143, 162, 0.42),
+      transparent 70%
+    );
   filter: blur(22px);
   animation: sky-drift var(--sky-drift, 180s) linear infinite;
   transition: opacity 500ms linear;
 }
 
 @keyframes sky-drift {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(33.333%, 0, 0); }
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(33.333%, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .daylight-sky-deck { animation: none; }
+  .daylight-sky-deck {
+    animation: none;
+  }
 }
 
 /*
@@ -622,7 +672,11 @@ body {
     linear-gradient(to right, var(--color-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
   background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    #000 30%,
+    transparent 80%
+  );
 }
 
 /* Scroll-reveal: elements start hidden + translated, reveal on intersection */
@@ -638,7 +692,6 @@ body {
   opacity: 1;
   transform: none;
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   /* Blanket safety: near-instant motion, never hide content behind animation */
@@ -715,28 +768,48 @@ body {
   color: transparent;
 }
 
-
 /* Intake form — selection "pop" (a quick scale bounce on check). Kept under
    300ms and disabled entirely for prefers-reduced-motion. */
 @keyframes checkPop {
-  0% { transform: scale(0.85); }
-  55% { transform: scale(1.06); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0.85);
+  }
+  55% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
-.check-pop { animation: checkPop 240ms var(--ease-out-expo); }
+.check-pop {
+  animation: checkPop 240ms var(--ease-out-expo);
+}
 @media (prefers-reduced-motion: reduce) {
-  .check-pop { animation: none; }
+  .check-pop {
+    animation: none;
+  }
 }
-
 
 /* Vertical scan line for the database / audit project visuals */
 @keyframes scanY {
-  0% { transform: translateY(-20%); opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateY(820%); opacity: 0; }
+  0% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(820%);
+    opacity: 0;
+  }
 }
-.scan-line { animation: scanY 3.6s ease-in-out infinite; }
+.scan-line {
+  animation: scanY 3.6s ease-in-out infinite;
+}
 
 /* Pulse traveling along a workflow connector — data moving down the
    pipeline. This is the clearest case of motion demonstrating a system
@@ -751,10 +824,20 @@ body {
    It pauses when the diagram is hovered or focused, and
    `.flow-track:not(.is-live)` parks it when the diagram is off-screen. */
 @keyframes flowPulse {
-  0% { transform: translateX(0); opacity: 0; }
-  12% { opacity: 1; }
-  88% { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 .flow-pulse {
   position: absolute;
@@ -778,9 +861,14 @@ body {
 }
 .flow-track:hover .flow-pulse,
 .flow-track:focus-within .flow-pulse,
-.flow-track:not(.is-live) .flow-pulse { animation-play-state: paused; }
+.flow-track:not(.is-live) .flow-pulse {
+  animation-play-state: paused;
+}
 @media (prefers-reduced-motion: reduce) {
-  .flow-pulse { animation: none; opacity: 0; }
+  .flow-pulse {
+    animation: none;
+    opacity: 0;
+  }
 }
 
 /* The original `left`-animating version. Its only consumer is
@@ -788,20 +876,30 @@ body {
    `example.visual`), so it costs nothing at runtime today. Convert it to
    `.flow-pulse` if that component ever renders again. */
 @keyframes travelX {
-  0% { left: 6%; opacity: 0; }
-  12% { opacity: 1; }
-  88% { opacity: 1; }
-  100% { left: 94%; opacity: 0; }
+  0% {
+    left: 6%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    left: 94%;
+    opacity: 0;
+  }
 }
-.travel-dot { animation: travelX 2.8s ease-in-out infinite; }
-
-
-
+.travel-dot {
+  animation: travelX 2.8s ease-in-out infinite;
+}
 
 @media (prefers-reduced-motion: reduce) {
   /* These three end on `opacity: 0` or an off-screen transform, so the
      blanket rule below would make them vanish rather than settle. */
-  .scan-line, .travel-dot {
+  .scan-line,
+  .travel-dot {
     animation: none !important;
   }
 }
@@ -812,7 +910,9 @@ body {
   as one system. Uses the two available pseudo-elements per element; brightens
   on hover to reward attention.
 */
-.corner-accents { position: relative; }
+.corner-accents {
+  position: relative;
+}
 .corner-accents::before,
 .corner-accents::after {
   content: "";
@@ -837,7 +937,9 @@ body {
   border-right: 1px solid;
 }
 .corner-accents:hover::before,
-.corner-accents:hover::after { opacity: 0.75; }
+.corner-accents:hover::after {
+  opacity: 0.75;
+}
 
 /* Approach section — signal-teal line draws across the connector when the
    section enters view. Desktop line scales horizontally; mobile between-card
@@ -848,17 +950,22 @@ body {
   transform-origin: left;
   transition: transform 600ms var(--ease-out-expo);
 }
-.workflow-flow.is-drawing .workflow-fill { transform: scaleX(1); }
+.workflow-flow.is-drawing .workflow-fill {
+  transform: scaleX(1);
+}
 
 .workflow-flow .workflow-fill-v {
   transform: scaleY(0);
   transform-origin: top;
   transition: transform 350ms var(--ease-out-expo);
 }
-.workflow-flow.is-drawing .workflow-fill-v { transform: scaleY(1); }
+.workflow-flow.is-drawing .workflow-fill-v {
+  transform: scaleY(1);
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .workflow-fill, .workflow-fill-v {
+  .workflow-fill,
+  .workflow-fill-v {
     transition: none !important;
     transform: none !important;
   }
@@ -866,19 +973,40 @@ body {
 
 /* Mobile nav — slide the panel down, then fade+lift each link in sequence */
 @keyframes menuIn {
-  from { transform: translateY(-8px); opacity: 0; }
-  to   { transform: none;              opacity: 1; }
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
-.animate-menu-in { animation: menuIn 220ms var(--ease-out-expo) both; }
+.animate-menu-in {
+  animation: menuIn 220ms var(--ease-out-expo) both;
+}
 
 @keyframes menuItemIn {
-  from { transform: translateY(6px); opacity: 0; }
-  to   { transform: none;             opacity: 1; }
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
 }
-.animate-menu-item { animation: menuItemIn 340ms var(--ease-out-expo) both; }
+.animate-menu-item {
+  animation: menuItemIn 340ms var(--ease-out-expo) both;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-menu-in, .animate-menu-item { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .animate-menu-in,
+  .animate-menu-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /*
@@ -906,7 +1034,6 @@ html[data-fog="1"] .elevate {
     0 1px 2px rgba(24, 24, 27, 0.02),
     0 8px 24px -12px rgba(24, 24, 27, 0.05);
 }
-
 
 /*
   ───────────────────────────────────────────────────────────────────────────
@@ -999,8 +1126,12 @@ html[data-fog="1"] .elevate {
   --wm-ink: rgba(255, 255, 255, 0.12);
   --wm-stroke: rgba(255, 255, 255, 0.18);
 }
-body:has(.cp) { background: #08070c; }
-.cp a:focus-visible, .cp button:focus-visible, .cp [tabindex]:focus-visible {
+body:has(.cp) {
+  background: #08070c;
+}
+.cp a:focus-visible,
+.cp button:focus-visible,
+.cp [tabindex]:focus-visible {
   outline: 2px solid var(--cp-teal);
   outline-offset: 3px;
 }
@@ -1014,14 +1145,30 @@ body:has(.cp) { background: #08070c; }
   backdrop-filter: blur(14px);
   transition: border-color 150ms var(--ease-out-expo);
 }
-.cp-tile:hover { border-color: rgba(185, 162, 255, 0.32); }
-.cp-tile-cta {
-  background: linear-gradient(160deg, rgba(139, 92, 246, 0.3), rgba(244, 114, 182, 0.12) 70%, rgba(18, 16, 26, 0.6));
+.cp-tile:hover {
+  border-color: rgba(185, 162, 255, 0.32);
 }
-.cp-row { transition: background-color 150ms var(--ease-out-expo), transform 150ms var(--ease-out-expo); }
-.cp-row:hover { background: rgba(139, 92, 246, 0.1); transform: translateX(3px); }
+.cp-tile-cta {
+  background: linear-gradient(
+    160deg,
+    rgba(139, 92, 246, 0.3),
+    rgba(244, 114, 182, 0.12) 70%,
+    rgba(18, 16, 26, 0.6)
+  );
+}
+.cp-row {
+  transition:
+    background-color 150ms var(--ease-out-expo),
+    transform 150ms var(--ease-out-expo);
+}
+.cp-row:hover {
+  background: rgba(139, 92, 246, 0.1);
+  transform: translateX(3px);
+}
 
-.cp-mark { background: linear-gradient(135deg, #8b5cf6, #2dd4bf 60%, #f472b6); }
+.cp-mark {
+  background: linear-gradient(135deg, #8b5cf6, #2dd4bf 60%, #f472b6);
+}
 .cp-grad {
   background: linear-gradient(90deg, #b9a2ff, #2dd4bf 55%, #f472b6);
   -webkit-background-clip: text;
@@ -1042,7 +1189,11 @@ body:has(.cp) { background: #08070c; }
   padding: 1px 6px;
 }
 .cp-stripes {
-  background-image: repeating-linear-gradient(-45deg, rgba(251, 191, 36, 0.12) 0 10px, transparent 10px 20px);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(251, 191, 36, 0.12) 0 10px,
+    transparent 10px 20px
+  );
 }
 
 /* The sky */
@@ -1052,12 +1203,45 @@ body:has(.cp) { background: #08070c; }
   filter: blur(90px);
   will-change: transform;
 }
-.cp-a1 { width: 620px; height: 620px; top: -220px; left: 18%; background: rgba(139, 92, 246, 0.42); animation: cp-a1 22s var(--ease-out-expo) infinite alternate; }
-.cp-a2 { width: 560px; height: 560px; top: 120px; right: -160px; background: rgba(45, 212, 191, 0.24); animation: cp-a2 26s var(--ease-out-expo) infinite alternate; }
-.cp-a3 { width: 520px; height: 520px; bottom: -260px; left: -120px; background: rgba(244, 114, 182, 0.2); animation: cp-a3 30s var(--ease-out-expo) infinite alternate; }
-@keyframes cp-a1 { to { transform: translate3d(220px, 120px, 0) scale(1.25); } }
-@keyframes cp-a2 { to { transform: translate3d(-260px, -80px, 0) scale(1.15); } }
-@keyframes cp-a3 { to { transform: translate3d(160px, -140px, 0) scale(1.3); } }
+.cp-a1 {
+  width: 620px;
+  height: 620px;
+  top: -220px;
+  left: 18%;
+  background: rgba(139, 92, 246, 0.42);
+  animation: cp-a1 22s var(--ease-out-expo) infinite alternate;
+}
+.cp-a2 {
+  width: 560px;
+  height: 560px;
+  top: 120px;
+  right: -160px;
+  background: rgba(45, 212, 191, 0.24);
+  animation: cp-a2 26s var(--ease-out-expo) infinite alternate;
+}
+.cp-a3 {
+  width: 520px;
+  height: 520px;
+  bottom: -260px;
+  left: -120px;
+  background: rgba(244, 114, 182, 0.2);
+  animation: cp-a3 30s var(--ease-out-expo) infinite alternate;
+}
+@keyframes cp-a1 {
+  to {
+    transform: translate3d(220px, 120px, 0) scale(1.25);
+  }
+}
+@keyframes cp-a2 {
+  to {
+    transform: translate3d(-260px, -80px, 0) scale(1.15);
+  }
+}
+@keyframes cp-a3 {
+  to {
+    transform: translate3d(160px, -140px, 0) scale(1.3);
+  }
+}
 .cp-glow {
   position: absolute;
   left: 50%;
@@ -1066,31 +1250,63 @@ body:has(.cp) { background: #08070c; }
   height: 560px;
   margin: -280px 0 0 -280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(185, 162, 255, 0.12), transparent 62%);
-  transform: translate3d(calc(var(--px, 0) * 1200px), calc(var(--py, 0) * 800px), 0);
+  background: radial-gradient(
+    circle,
+    rgba(185, 162, 255, 0.12),
+    transparent 62%
+  );
+  transform: translate3d(
+    calc(var(--px, 0) * 1200px),
+    calc(var(--py, 0) * 800px),
+    0
+  );
 }
 
 /* Product window: leans toward the pointer (PanelStage writes --px/--py). */
 .cp-tilt {
-  transform: perspective(1400px) rotateY(calc(var(--px, 0) * -5deg)) rotateX(calc(var(--py, 0) * 4deg));
-  transition: transform 300ms var(--ease-out-expo), border-color 150ms var(--ease-out-expo);
+  transform: perspective(1400px) rotateY(calc(var(--px, 0) * -5deg))
+    rotateX(calc(var(--py, 0) * 4deg));
+  transition:
+    transform 300ms var(--ease-out-expo),
+    border-color 150ms var(--ease-out-expo);
 }
 .cp-progress {
   background: linear-gradient(90deg, #8b5cf6, #2dd4bf, #f472b6);
   transform-origin: left;
   transform: scaleX(1);
 }
-.cp-progress.is-running { animation: cp-fill 5s linear both; }
-@keyframes cp-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cp-progress.is-running {
+  animation: cp-fill 5s linear both;
+}
+@keyframes cp-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
 
 /* Off-screen: stop the sky. */
-.cp-stage[data-off] .cp-aurora { animation-play-state: paused; }
+.cp-stage[data-off] .cp-aurora {
+  animation-play-state: paused;
+}
 
 @media (prefers-reduced-motion: reduce) {
-  .cp-aurora, .cp-progress.is-running { animation: none !important; }
-  .cp-progress { transform: scaleX(1) !important; }
-  .cp-tilt, .cp-glow { transform: none !important; }
-  .cp-row:hover { transform: none; }
+  .cp-aurora,
+  .cp-progress.is-running {
+    animation: none !important;
+  }
+  .cp-progress {
+    transform: scaleX(1) !important;
+  }
+  .cp-tilt,
+  .cp-glow {
+    transform: none !important;
+  }
+  .cp-row:hover {
+    transform: none;
+  }
 }
 
 /* ============================================================
@@ -1181,7 +1397,9 @@ body:has(.cp) { background: #08070c; }
   --wm-ink: rgba(11, 23, 34, 0.13);
   --wm-stroke: rgba(11, 23, 34, 0.2);
 }
-:root[data-theme="light"] body:has(.cp) { background: #f7f4ef; }
+:root[data-theme="light"] body:has(.cp) {
+  background: #f7f4ef;
+}
 
 /*
   Cards, not glass. The dark panel floats translucent tiles over the
@@ -1194,14 +1412,27 @@ body:has(.cp) { background: #08070c; }
   border-color: rgba(11, 23, 34, 0.09);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  box-shadow: 0 1px 2px rgba(11, 23, 34, 0.04), 0 10px 28px -18px rgba(11, 23, 34, 0.22);
+  box-shadow:
+    0 1px 2px rgba(11, 23, 34, 0.04),
+    0 10px 28px -18px rgba(11, 23, 34, 0.22);
 }
-:root[data-theme="light"] .cp-tile:hover { border-color: rgba(124, 58, 237, 0.34); }
+:root[data-theme="light"] .cp-tile:hover {
+  border-color: rgba(124, 58, 237, 0.34);
+}
 :root[data-theme="light"] .cp-tile-cta {
-  background: linear-gradient(160deg, rgba(124, 58, 237, 0.1), rgba(190, 24, 93, 0.05) 70%, #ffffff);
+  background: linear-gradient(
+    160deg,
+    rgba(124, 58, 237, 0.1),
+    rgba(190, 24, 93, 0.05) 70%,
+    #ffffff
+  );
 }
-:root[data-theme="light"] .cp-row:hover { background: rgba(124, 58, 237, 0.07); }
-:root[data-theme="light"] .cp-kbd { border-color: rgba(11, 23, 34, 0.18); }
+:root[data-theme="light"] .cp-row:hover {
+  background: rgba(124, 58, 237, 0.07);
+}
+:root[data-theme="light"] .cp-kbd {
+  border-color: rgba(11, 23, 34, 0.18);
+}
 
 /* The hero ramp, in inks cream can carry: 6.0:1, 5.6:1, 6.0:1 across the
    sweep. #b9a2ff opened the dark one at ~2:1 here. */
@@ -1216,18 +1447,32 @@ body:has(.cp) { background: #08070c; }
   is the whole brief. Roughly a third of the dark opacities, which on cream
   lands as a wash you notice only when you look for it.
 */
-:root[data-theme="light"] .cp-a1 { background: rgba(124, 58, 237, 0.14); }
-:root[data-theme="light"] .cp-a2 { background: rgba(13, 148, 136, 0.1); }
-:root[data-theme="light"] .cp-a3 { background: rgba(190, 24, 93, 0.08); }
+:root[data-theme="light"] .cp-a1 {
+  background: rgba(124, 58, 237, 0.14);
+}
+:root[data-theme="light"] .cp-a2 {
+  background: rgba(13, 148, 136, 0.1);
+}
+:root[data-theme="light"] .cp-a3 {
+  background: rgba(190, 24, 93, 0.08);
+}
 :root[data-theme="light"] .cp-glow {
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.07), transparent 62%);
+  background: radial-gradient(
+    circle,
+    rgba(124, 58, 237, 0.07),
+    transparent 62%
+  );
 }
 
 /* /catalog's sticky category bar: the page ground at high opacity, so cards
    scrolling underneath do not show through the tabs. One rule per theme,
    per the "colour that follows the theme is a token" rule in CLAUDE.md. */
-.cp .cp-sticky-bar { background: rgba(8, 7, 12, 0.9); }
-:root[data-theme="light"] .cp .cp-sticky-bar { background: rgba(247, 244, 239, 0.92); }
+.cp .cp-sticky-bar {
+  background: rgba(8, 7, 12, 0.9);
+}
+:root[data-theme="light"] .cp .cp-sticky-bar {
+  background: rgba(247, 244, 239, 0.92);
+}
 
 /* ─────────────────────────────────────────────────────────────────────────
    BlueprintRise — a plan on paper that stands up into a building.
@@ -1272,7 +1517,11 @@ body:has(.cp) { background: #08070c; }
   top: 34%;
   width: 70%;
   height: 46%;
-  background: radial-gradient(closest-side, var(--cp-violet-wash), transparent 72%);
+  background: radial-gradient(
+    closest-side,
+    var(--cp-violet-wash),
+    transparent 72%
+  );
   animation: bp-drift-a 41s ease-in-out infinite alternate;
 }
 .cp .bp-f2 {
@@ -1280,7 +1529,11 @@ body:has(.cp) { background: #08070c; }
   top: 18%;
   width: 62%;
   height: 52%;
-  background: radial-gradient(closest-side, var(--cp-fill-strong), transparent 74%);
+  background: radial-gradient(
+    closest-side,
+    var(--cp-fill-strong),
+    transparent 74%
+  );
   animation: bp-drift-b 53s ease-in-out infinite alternate;
 }
 .cp .bp-f3 {
@@ -1288,16 +1541,28 @@ body:has(.cp) { background: #08070c; }
   bottom: -14%;
   width: 66%;
   height: 40%;
-  background: radial-gradient(closest-side, var(--cp-violet-wash), transparent 70%);
+  background: radial-gradient(
+    closest-side,
+    var(--cp-violet-wash),
+    transparent 70%
+  );
   animation: bp-drift-a 67s ease-in-out infinite alternate-reverse;
 }
 @keyframes bp-drift-a {
-  from { transform: translate3d(-4%, 0, 0) scale(1); }
-  to   { transform: translate3d(7%, -3%, 0) scale(1.1); }
+  from {
+    transform: translate3d(-4%, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(7%, -3%, 0) scale(1.1);
+  }
 }
 @keyframes bp-drift-b {
-  from { transform: translate3d(5%, 2%, 0) scale(1.08); }
-  to   { transform: translate3d(-6%, -2%, 0) scale(1); }
+  from {
+    transform: translate3d(5%, 2%, 0) scale(1.08);
+  }
+  to {
+    transform: translate3d(-6%, -2%, 0) scale(1);
+  }
 }
 
 /* Dust. `color` is what the canvas reads for its fill, so the motes follow
@@ -1326,11 +1591,8 @@ body:has(.cp) { background: #08070c; }
   top: 52%;
   transform-style: preserve-3d;
   /* Flat sheet of paper, then tipped back into the room. */
-  transform:
-    translate(-50%, -50%)
-    scale(var(--bp-scale))
-    rotateX(calc(var(--tilt) * 58deg))
-    rotateZ(calc(var(--tilt) * -28deg))
+  transform: translate(-50%, -50%) scale(var(--bp-scale))
+    rotateX(calc(var(--tilt) * 58deg)) rotateZ(calc(var(--tilt) * -28deg))
     translateZ(calc(var(--rise) * -14px));
 }
 
@@ -1352,8 +1614,12 @@ body:has(.cp) { background: #08070c; }
    every line shares the keyframe and each finishes when its own length runs
    out; the per-line delay is set inline. */
 @keyframes bp-ink {
-  from { stroke-dashoffset: 620; }
-  to   { stroke-dashoffset: 0; }
+  from {
+    stroke-dashoffset: 620;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 .cp .bp-line {
   fill: none;
@@ -1372,8 +1638,12 @@ body:has(.cp) { background: #08070c; }
   stroke-width: 2;
 }
 @keyframes bp-dim-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 .cp .bp-dim {
   opacity: 0;
@@ -1435,7 +1705,10 @@ body:has(.cp) { background: #08070c; }
 }
 
 @media (min-width: 1024px) {
-  .cp .bp { --bp-x: 68%; --bp-scale: 1.05; }
+  .cp .bp {
+    --bp-x: 68%;
+    --bp-scale: 1.05;
+  }
 }
 
 /*
@@ -1462,11 +1735,17 @@ body:has(.cp) { background: #08070c; }
   }
 }
 @media (max-width: 900px) {
-  .cp .bp { --bp-scale: 0.82; }
+  .cp .bp {
+    --bp-scale: 0.82;
+  }
 }
 @media (max-width: 640px) {
-  .cp .bp { --bp-scale: 0.6; }
-  .cp .bp-fog { filter: blur(44px); }
+  .cp .bp {
+    --bp-scale: 0.6;
+  }
+  .cp .bp-fog {
+    filter: blur(44px);
+  }
 }
 
 /* The finished building, held still. The end state is the point: a visitor
@@ -1490,7 +1769,6 @@ body:has(.cp) { background: #08070c; }
     opacity: 1;
   }
 }
-
 
 /*
   The 3D stage can only be seen if the page stops painting over it.
@@ -1521,7 +1799,9 @@ body:has(.cp) { background: #08070c; }
   `body` keeps its own ground underneath, so there is no flash of white
   between first paint and the canvas's first frame.
 */
-:root[data-stage="on"] .cp { background: transparent; }
+:root[data-stage="on"] .cp {
+  background: transparent;
+}
 
 /* ─────────────────────────────────────────────────────────────────────────
    A dark island on a light page.
@@ -1704,4 +1984,133 @@ body:has(.cp) { background: #08070c; }
   -webkit-mask-image: none;
   mask-image: none;
   border-radius: 0.875rem;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   The dive has corners, and Like a King's art does not.
+
+   Measured side by side on Nov 24 2026, at 1440x900, both sites rendered
+   in a real browser rather than read as markup. The grounds already
+   match almost exactly: likeakinginc.com is `oklch(0.06 0.008 260)` and
+   this site is `#08070c`. What differs is what happens at the edge of
+   the picture. Their cherry tree and their globe have no edge at all —
+   the art falls off to the page colour on every side, so there is no
+   boundary to notice and the thing reads as painted into the page. The
+   dive is `object-cover` across the whole viewport, so it ends in four
+   hard corners and reads as a video playing behind a website.
+
+   That is the whole of Meg's "blend well", and it is not about the
+   footage being more realistic. Their art is less realistic than hers.
+   It blends because it is dark at the edges and lit in the middle.
+
+   So the dive gets a vignette to the ground colour. It is an overlay
+   rather than a mask because there is a poster underneath it that has to
+   be covered too, and because fading to `transparent` would reveal
+   whatever is behind rather than the page's own black.
+
+   The geometry, read the way `.ocean-bleed` records it: at `100% 92%`
+   the horizontal box edge sits at 0.50 of the radius and a corner at
+   about 0.74, so the corners land past the 62% stop and carry most of
+   the final 0.88 — which is 94% of the way to the ground colour. The
+   centre is untouched out to a third of the radius, because darkening
+   the middle is what the scrim above already does and doing it twice is
+   how the first `dive.mp4` went invisible.
+
+   Off-centre at 34% rather than 50%: the brightest water is the surface
+   at the top of the clip, and a vignette centred on the frame would
+   spend its transparency on the dark floor.
+   ───────────────────────────────────────────────────────────────────────── */
+.dive-vignette {
+  background: radial-gradient(
+    100% 92% at 50% 34%,
+    transparent 0%,
+    transparent 34%,
+    rgba(8, 7, 12, 0.45) 62%,
+    rgba(8, 7, 12, 0.88) 100%
+  );
+}
+
+/* A still with no frame: the Like a King move, applied to Meg's own renders.
+
+   Their section art is a subject lit against black — a tree, a globe —
+   sitting beside the heading with nothing around it. Her cast renders
+   are already the same kind of picture, which is why this works at all
+   and why it is a mask rather than a redraw: measured, `octopus.webp`
+   is luma 26 at its border against 60 in the middle, and
+   `reef-ember.webp` is 17 against 39. The subject is already lit and the
+   surround is already nearly the page colour. All that is in the way is
+   the rectangle.
+
+   It is a harder falloff than `.ocean-bleed`, and deliberately. That one
+   softens a picture somebody is meant to look AT — the reef map, the
+   product shots — so it keeps a solid centre out to 40% and still has
+   something left at the box edge. This is for a picture somebody is
+   meant to look PAST, so it is fully transparent by 52% of the radius,
+   which is the box edge itself: nothing of the frame survives, and what
+   is left is the lit subject.
+   ───────────────────────────────────────────────────────────────────────── */
+.creature-bleed {
+  -webkit-mask-image: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 22%,
+    rgba(0, 0, 0, 0.55) 38%,
+    transparent 52%
+  );
+  mask-image: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 22%,
+    rgba(0, 0, 0, 0.55) 38%,
+    transparent 52%
+  );
+}
+
+/* Daylight has nothing for a dark subject to dissolve into, so it gets no
+   creature at all rather than a grey smear of one. `.ocean-bleed` records
+   why a mask cannot survive the theme flip; a lit-on-black subject is the
+   same problem with less picture left to rescue, so this one hides
+   instead of growing a shore. The sections it sits in all read fine
+   without it: it is art beside a heading, never the heading. */
+:root[data-theme="light"] .creature {
+  display: none;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Meg, cut out of her own photograph, on the theme that can take it.
+
+   The Like a King treatment applied to the one picture on this site that
+   is actually a person: no circle, no ring, no frame, just her against the
+   page. `/about` argues that somebody who ran a service business built
+   this software, and FounderNote's own note already records that a face is
+   the only thing that can make that argument.
+
+   **It is Harbor-only, and that is a measurement rather than a
+   preference.** The cut is a neural matte of a photograph shot against
+   green bokeh, so what it leaves behind at the hairline is a thin dark
+   fringe. On `#08070c` that fringe is indistinguishable from rim light and
+   the picture reads clean. Composited on `#f7f4ef` it is a dirty outline
+   around her head, which is `.ocean-bleed`'s lesson exactly: an edge that
+   dissolves into near-black has nothing to dissolve into on cream.
+
+   Eroding the matte was tried and rejected on the numbers. Going from a
+   4px erode to 20px moved mean edge darkness against cream only from 132.6
+   to 119.0 while taking partial-alpha pixels from 16,902 to 34,634: a
+   wider smudge rather than a cleaner edge. The metric rewarded softness,
+   which is not the same thing.
+
+   So Daylight keeps the circular photograph it already had, which was
+   never broken there, and the swap is a `display` toggle rather than two
+   components. The hidden one is `display: none`, so it leaves the
+   accessibility tree too and a screen reader hears one portrait, not two.
+   ───────────────────────────────────────────────────────────────────────── */
+.founder-cut {
+  display: block;
+}
+.founder-round {
+  display: none;
+}
+:root[data-theme="light"] .founder-cut {
+  display: none;
+}
+:root[data-theme="light"] .founder-round {
+  display: block;
 }
