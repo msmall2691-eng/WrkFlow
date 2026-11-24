@@ -1,5 +1,6 @@
 import { integrations, provenIn } from "@/lib/integrations";
 import StackedHeading from "@/components/StackedHeading";
+import Creature from "@/components/ocean/Creature";
 
 /*
   WhatConnects — the integrations evidence, cut by tool rather than by
@@ -52,13 +53,30 @@ export default function WhatConnects() {
     <section
       id="connects"
       aria-labelledby="connects-heading"
-      className="border-t border-[color:var(--cp-line)] py-12 md:py-16"
+      className="relative isolate border-t border-[color:var(--cp-line)] py-12 md:py-16"
     >
       <div className="mx-auto max-w-6xl px-6">
-        <StackedHeading id="connects-heading" lead="The tools these" trail="already talk to." />
+        {/* A character beside the heading, which is the shape Like a
+            King uses on every section and this page had nowhere: their
+            globe sits next to "Multi-cloud by design." with no card and
+            no edge. Decoration only, so it is `aria-hidden`, it is gone
+            below `lg` where there is no room beside a heading, and it is
+            gone in Daylight, which has nothing for a lit-on-black
+            subject to dissolve into. `-z-10` against the section's
+            `isolate` puts it behind the words and still in front of the
+            section's own ground. */}
+        <Creature
+          src="/ocean/cast/ray.webp"
+          className="absolute right-0 top-0 -z-10 hidden h-[21rem] w-[33rem] lg:block"
+        />
+        <StackedHeading
+          id="connects-heading"
+          lead="The tools these"
+          trail="already talk to."
+        />
         <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-          Every one is running in a system named beside it. Nothing on this
-          list is a plan.
+          Every one is running in a system named beside it. Nothing on this list
+          is a plan.
         </p>
 
         <ul className="mt-8 grid grid-cols-2 gap-2.5 lg:grid-cols-4">

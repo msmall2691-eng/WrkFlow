@@ -236,6 +236,32 @@ export default function OceanBackdrop() {
         one and it is Meg's call, not a default.
       */}
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.29)_0%,rgba(5,7,11,0.39)_18%,rgba(5,7,11,0.57)_38%,rgba(5,7,11,0.67)_100%)]" />
+
+      {/*
+        And the vignette, which is the part that stops it looking like a
+        video.
+
+        The wash above is a depth cue: it darkens with the descent so
+        text further down has a quieter ground. It is even across the
+        width, so it does nothing at all about the four corners, and four
+        corners is exactly what reads as a rectangle playing behind a
+        website.
+
+        Measured against likeakinginc.com rendered in a real browser
+        rather than read as markup: their ground is
+        `oklch(0.06 0.008 260)` and this one is `#08070c`, near enough
+        the same black, and every piece of art on their page falls off to
+        it on all sides. That, and not the realism of the footage, is why
+        theirs reads as painted into the page. Their tree is less
+        photographic than this water and it blends better.
+
+        Separate from the wash rather than folded into it, because the
+        two answer different questions and want different shapes: the
+        wash is vertical and about reading, this is radial and about the
+        frame. One gradient trying to be both is how it gets retuned to
+        death the next time either changes.
+      */}
+      <div className="dive-vignette absolute inset-0" />
     </div>
   );
 }

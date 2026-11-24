@@ -125,8 +125,17 @@ export default function OceanHero() {
           */}
           <h1
             id="hero-heading"
-            className="m-0 mt-6 max-w-[16ch] font-display text-[clamp(2.5rem,5.4vw,4.6rem)] font-semibold leading-[0.95] tracking-tight text-[#EDEBE6]"
+            className="m-0 mt-6 max-w-[16ch] font-display text-[clamp(2.75rem,6.2vw,5.75rem)] font-normal leading-[0.92] tracking-tight text-[#EDEBE6]"
           >
+            {/* `font-normal`, which is the single biggest measured
+                difference between this hero and the one Meg keeps
+                pointing at. likeakinginc.com sets its h1 at 86.4px,
+                weight 400, -0.025em; this was 73.6px, weight 600,
+                -0.025em. The tracking already matched and the weight was
+                the tell: 600 at that size reads as a product headline,
+                400 reads as the thing she is asking for. StackedHeading
+                has been 400 the whole time, so the hero was the one
+                heading on the site arguing with the rest of them. */}
             <span className="block font-display">Software that</span>
             <span className="mt-1 block font-serif font-normal italic">
               runs real businesses<span className="text-[#2dd4bf]">.</span>

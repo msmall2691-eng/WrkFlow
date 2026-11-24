@@ -138,7 +138,7 @@ export default function StackedHeading({
   const Tag = as;
   const base = `m-0 ${
     face === "serif" ? "font-serif" : "font-display"
-  } font-normal leading-[0.95] tracking-[-0.035em] text-[color:var(--cp-ink,var(--color-ink))] text-[clamp(2.25rem,5.5vw,4.5rem)]`;
+  } font-normal leading-[0.92] tracking-[-0.035em] text-[color:var(--cp-ink,var(--color-ink))] text-[clamp(2.5rem,6.6vw,6rem)]`;
 
   if (!trail) {
     return (
