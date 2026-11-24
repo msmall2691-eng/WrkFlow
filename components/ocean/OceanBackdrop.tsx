@@ -184,28 +184,29 @@ export default function OceanBackdrop() {
       {/*
         The wash, and both it and the file under it are measurements.
 
-        **The page went black below the hero, and the scrim was not the
-        cause.** `dive.mp4` had been graded down hard when it was a hero
-        element: the note on the old hero said the clip "as shot is bright
-        daylight blue and would have fought a near-black site", which was
-        true of a video playing *behind* a page and is the opposite of what
-        is wanted from a video that *is* one. Measured against the Firefly
-        master the grade had cost more than half the light, mean luma 83 to
-        92 down to 42 to 53. A scrim composites to `(1-a)·L + a·7`, so on
-        top of that there was almost nothing left to reveal: at 0.78 over
-        luma 30 the result is 12, and `#08070c` is 7. The ocean was there
-        and arithmetically invisible.
+        **The scrim is paired to the file's measured luma, and the file
+        changed.** `dive.mp4` is now Meg's waterline clip, which opens on
+        sunlight on the surface and sinks into a kelp forest, graded to
+        the site's house look at mean luma 56. It replaced a Firefly
+        descent that measured 86.
 
-        The file is re-encoded from Meg's master with the grade reduced to
-        a touch of contrast and saturation, so it now means luma 86. Same
-        bytes as the crushed version (CRF 32 at 1080p, 2.7MB, checked 1:1
-        against the master for banding) and nearly twice the light, which
-        is a better trade than any scrim value could have been.
+        A scrim composites to `(1-a)·L + a·7`, so the same values over a
+        darker source give a darker page: the old 0.5 to 0.8 spread would
+        have taken the surface from 46 down to 31 and the floor from 23 to
+        17, which is most of the way back to the near-black the whole
+        backdrop exists to replace. The values below are solved for the
+        new luma rather than inherited, and land in the same place the old
+        pairing did: about 42 at the surface, about 23 at the floor.
 
-        **Darkening belongs here rather than in the file**, which is the
-        lesson worth keeping: a scrim is one number to change, it can
-        differ per theme, and it can be undone. A baked grade is none of
-        those, and it quietly set the ceiling for every later decision.
+        **This is the second time this pairing has had to be re-derived,
+        and it is why darkening belongs in the scrim rather than the
+        file.** The first `dive.mp4` had been graded down hard on
+        reasoning that was true of a video playing *behind* a page and
+        exactly wrong for one that *is* the page; it measured 42 to 53
+        against a master at 83 to 92, and under the scrim composited to
+        about 12, where `#08070c` is 7. The ocean was there and
+        arithmetically invisible. A scrim is one number, it can differ per
+        theme, and it can be undone. A baked grade is none of those.
 
         **The gradient is weighted rather than even, and that is the real
         trade in this effect.** Bright water and small text are in direct
@@ -227,7 +228,7 @@ export default function OceanBackdrop() {
         come off the gaps between them. That is a bigger change than this
         one and it is Meg's call, not a default.
       */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.5)_0%,rgba(5,7,11,0.62)_18%,rgba(5,7,11,0.74)_38%,rgba(5,7,11,0.8)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,7,11,0.29)_0%,rgba(5,7,11,0.39)_18%,rgba(5,7,11,0.57)_38%,rgba(5,7,11,0.67)_100%)]" />
     </div>
   );
 }
