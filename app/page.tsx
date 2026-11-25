@@ -41,23 +41,50 @@ import Reveal from "@/components/Reveal";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
+  **Nov 25 2026: the list below is the running order, and keeping it in
+  the wrong order is how the page drifted.** It used to be written in the
+  order the sections were built rather than the order they render, which
+  is a map of a different page. Reading it top to bottom is meant to be
+  the same experience as scrolling.
+
+  There are four movements, and a section that cannot be put in one of
+  them is a section to argue about rather than to add:
+
+    *What this is* — the dive, then the four doors, then the prices.
+
     OceanHero    one screen: the dive. Meg's own Firefly footage of a deep
                  reef, played once and held at the bottom, with a 45 kB
                  poster carrying the first paint
-    ReefMap      id="reef" — the same reef as a still, annotated. Four pins,
-                 one per service, read from `services[]`
+    ReefMap      id="reef" — the reef as a still, annotated. Four pins,
+                 one per service, named from `services[]`. The one place
+                 the page asks what somebody came for
+    Shelf        id="shelf" — the whole catalog, with prices, grouped by
+                 what it costs rather than by what it is
+
+    *Proof, as one run that escalates* — see it, read one, use one. This
+    was split in half until Nov 25, with the free tools and a video
+    chapter in the middle of it, so the page showed work, wandered off,
+    and showed more work. Meg called it going in circles. Anything added
+    here joins the run or breaks it.
+
     TakeReel     the work, as a browser window pinned on the right with
                  four takes swapping inside it. Cards, not globes, at
                  Meg's ask, and DOM rather than WebGL because nothing
                  here needs a GPU
-    Shelf        id="shelf" — the whole catalog, with prices, grouped by
-                 what it costs rather than by what it is
-    TryItNow     the three demos, which the shelf deliberately carries as
-                 one row and which have to stay individually reachable
-    OneJob       id="work" — one project told all the way through, which is
-                 now the evidence FOR the shelf rather than the main event
     MoreWork     the rest of the work, once each
-    WhatConnects the tools these already talk to
+    OneJob       id="work" — one project told all the way through
+    TryItNow     the demos somebody can go and use. Proof you operate
+                 rather than look at, which is why it ends the run
+
+    *A breath* — the only moving chapter on the page.
+
+    MovingChapter the magenta octopus, closing the proof and opening the
+                 practical half
+
+    *What happens next* — what it fits, how it starts, how to ask.
+
+    WhatConnects what it already connects to, each one running in a
+                 named project
     HowToStart   what pressing send sets in motion
     Contact      the form
     Footer
@@ -170,42 +197,51 @@ export default function Home() {
       <Reveal>
         <MoreWork />
       </Reveal>
+
+
+      <Reveal>
+        <OneJob />
+      </Reveal>
+
+      {/*
+        **Use one, after seeing them.** TryItNow was between MoreWork and
+        the case study, which split the proof in half: a visitor saw the
+        work, was handed three free tools and a video, and was then shown
+        another project. Meg's words for the page were "going in circles"
+        and "a maze", and this was the circle — proof, detour, proof.
+
+        It is proof itself, which is why it moved down rather than away.
+        The run now escalates instead of repeating: see the work, read one
+        of them all the way through, then go and use one.
+      */}
       <Reveal>
         <TryItNow />
       </Reveal>
 
       {/*
-        The deep, between the shop and the proof.
+        The breath, and it has moved with the thing it was a breath from.
 
-        It sits here because of what surrounds it: the visitor has just
-        been shown everything that is for sale with prices, and the next
-        section asks them to believe one project went well. A screen of
-        black with one lit animal in it is the breath between the two.
-        The clip that replaced the still is the magenta octopus: of the
-        nine Meg sent it is the one that reads from across a room, and a
-        chapter is the only place on this page where that is the whole
-        job.
-      */}
-      {/*
+        **Its old note said "between the shop and the proof", and that
+        stopped being true the moment the proof became one run.** A screen
+        of black in the middle of four proof sections is an interruption,
+        which is the opposite of the job. It now closes the proof and
+        opens the practical half: what this connects to, how a project
+        starts, and the form.
+
         **One chapter, not four.** This branch briefly carried four, and
         walked end to end that was 4,104px of decoration on an 18.8-screen
         page: two of them landed back to back with nothing in between,
-        which is the reel this file's own note says a chapter is not. The
-        page was rebuilt in the first place because it ran too long, and
-        adding three pictures to it made that worse rather than better.
-
-        So the ocean moves here and nowhere else on the page. One clip, in
-        the slot a chapter already earned, between the shop and the proof.
+        which is the reel this file's own note says a chapter is not. So
+        the ocean moves here and nowhere else on the page. The clip is the
+        magenta octopus: of the nine Meg sent it is the one that reads
+        from across a room, and a chapter is the only place on this page
+        where that is the whole job.
       */}
       <MovingChapter
         id="chapters-deep"
         clip="shot-one"
         poster="/ocean/video/shot-one-poster.webp"
       />
-
-      <Reveal>
-        <OneJob />
-      </Reveal>
 
       {/*
         The violet octopus, which was the hero until the reef loop took
