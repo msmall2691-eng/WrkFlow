@@ -1,4 +1,5 @@
 import BookCall from "../BookCall";
+import HeroLoop from "./HeroLoop";
 import PanelHeader from "../panel/PanelHeader";
 import ProofStrip from "../ProofStrip";
 
@@ -151,22 +152,18 @@ export default function OceanHero() {
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
 
-        <video
-          className="hero-motion absolute inset-0 h-full w-full object-cover object-center"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          poster="/ocean/video/reef-hud-poster.webp"
-          aria-hidden="true"
-        >
-          {/* WebM first: smaller, and the only one some test browsers
-              decode. Safari and iOS take the H.264 and will autoplay
-              nothing else. */}
-          <source src="/ocean/video/reef-hud.webm" type="video/webm" />
-          <source src="/ocean/video/reef-hud.mp4" type="video/mp4" />
-        </video>
+        {/*
+          **The clip is its own client component now, and only the clip.**
+          It was written inline here because an autoplaying video needs no
+          JavaScript, which kept this whole hero on the server. What that
+          missed is CLAUDE.md's rule that anything looping stops when it
+          cannot be seen: on a 15-screen page the hero is off screen for
+          almost the entire visit and nothing paused it, while `Drift` and
+          `MovingChapter` both obey the rule. `HeroLoop` has the reasoning
+          and keeps `autoPlay`, so a visitor with no JavaScript still gets
+          the loop; everything else in this hero is still server-rendered.
+        */}
+        <HeroLoop />
 
         {/* Much lighter than it was, because the art under it is already
             dark where the words go: measured, the left third of this image

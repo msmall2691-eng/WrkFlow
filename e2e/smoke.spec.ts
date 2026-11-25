@@ -2298,3 +2298,55 @@ test("a chapter paused by a tab switch plays again on the way back", async ({
     })
     .toBe(false);
 });
+
+/*
+  The hero stops once you have scrolled past it.
+
+  **The page's own rule, broken by the biggest thing on the page.**
+  CLAUDE.md: anything that loops stops when it cannot be seen. `Drift`
+  pauses on a hidden tab and `MovingChapter` gates on intersection, and
+  the hero — a full-bleed video, the most expensive motion here — was
+  plain markup with no controller at all. On a 15-screen page that is a
+  video decoding through roughly fourteen screens nobody is looking at,
+  left to whatever throttling the browser decides to apply.
+
+  A review bot found it. What makes it worth a test rather than only a
+  fix is that the rule is written down, three components now implement
+  it, and nothing anywhere asserted it: the two existing hero tests ask
+  whether it plays and whether reduced motion removes it, which are both
+  about the top of the page.
+*/
+test("the hero loop stops once it is scrolled past, and runs again on the way back", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const hero = page.locator("video.hero-motion");
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 10_000,
+      message: "the hero never started, so this cannot test it stopping",
+    })
+    .toBe(false);
+
+  /* Well past the hero: the shop is about two and a half screens down,
+     so nothing of the hero is on screen here. */
+  await page.locator("#shelf").scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message:
+        "the hero video is still playing with none of it on screen, which is " +
+        "the one thing CLAUDE.md says looping motion may not do",
+    })
+    .toBe(true);
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message: "the hero did not start again when it came back on screen",
+    })
+    .toBe(false);
+});
