@@ -134,11 +134,41 @@ export default function Home() {
       <Reveal>
         <ReefMap />
       </Reveal>
+      {/*
+        **The shop comes before the work, not after it.** Merging the two
+        work sections pushed the shelf from 5,139px to 6,218px and broke
+        the guard that exists for Meg's own first instruction about this
+        page: "hard to see what is for sale that's tangible". The test
+        failing was correct.
+
+        Putting the shelf back where it was would only restore the split.
+        Moving it above the work serves both: the price list arrives
+        about two screens in instead of five, and the reel and the rest
+        of the work stay as one run instead of being separated by it.
+      */}
+      <Reveal>
+        <Shelf />
+      </Reveal>
+
       <Reveal>
         <TakeReel />
       </Reveal>
+
+      {/*
+        **The rest of the work, directly under the work.** These two were
+        separated by the shop, the free tools, a chapter and the case
+        study — about 7,700px — so the page announced the work, wandered
+        off through four unrelated things, and announced it again. Meg's
+        word for the result was that it did not flow.
+
+        The join matters more than the distance did. `TakeReel`'s own
+        "Selected work" heading is `sr-only`, so nothing visible ever said
+        *work* before this section said "The rest of it." A visitor read
+        "the rest" with no first part on screen anywhere. Now it follows
+        the reel it is the rest of.
+      */}
       <Reveal>
-        <Shelf />
+        <MoreWork />
       </Reveal>
       <Reveal>
         <TryItNow />
@@ -190,9 +220,6 @@ export default function Home() {
         shown whole. A chapter asks nothing of it, so for the first time
         the full piece is on screen with nothing written across it.
       */}
-      <Reveal>
-        <MoreWork />
-      </Reveal>
 
 
       <Reveal>
