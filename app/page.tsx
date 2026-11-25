@@ -10,7 +10,7 @@ import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
-import OceanBackdrop from "@/components/ocean/OceanBackdrop";
+import Chapter from "@/components/ocean/Chapter";
 
 /*
   Homepage — a storefront (Meg, Nov 16 2026).
@@ -83,69 +83,62 @@ import OceanBackdrop from "@/components/ocean/OceanBackdrop";
 */
 export default function Home() {
   return (
-    <div className="cp cp-dive">
+    <div className="cp">
       {/*
-        **The ocean is the page's ground, not the hero's.** Meg: a 3D
-        immersive background that moves when you scroll. So the dive is
-        fixed behind everything and its playhead is the document's scroll
-        position, which means the descent is still going while somebody
-        reads the shop rather than being finished a screen and a half in.
-        `cp-dive` is what takes `.cp`'s flat ground away so it shows; see
-        globals.css, and OceanBackdrop for why Daylight opts out entirely.
+        **The ocean is chapters now, not a backdrop, and that is Meg's
+        call after seeing what the backdrop cost.**
+
+        What was here: `OceanBackdrop`, one clip fixed behind the whole
+        page with its playhead tied to scroll. It read well at the top
+        and then spent the rest of the page being hidden — faded to 22%
+        from a third of the way down, and covered by a 42% wash over
+        every section below the hero. The page paid 2.8MB for water it
+        then suppressed twice, and the suppression was not decoration: it
+        was the only way to keep 14px prices legible over moving water.
+        Three rounds of scrim tuning are in this file's history for one
+        violet link.
+
+        It also had a ceiling. A scrubbed backdrop can show exactly one
+        clip, and Meg has twenty-four. Phones and `prefers-reduced-motion`
+        never got the video at all, so the characters she most wanted to
+        show reached a phone visitor as a poster.
+
+        So the descent is told as a sequence instead: the hero is the
+        surface, a chapter is the deep, and the page ends at the floor.
+        Her words for the original ask were "the further we scroll it goes
+        into the bottom of ocean floor", and that still happens — in five
+        pictures rather than one playhead.
+
+        **Deleting the wash is the quiet win.** It existed only to protect
+        text from bright water. With no water under the content, every
+        card, price and link on this page gets its full contrast back for
+        free.
       */}
-      <OceanBackdrop />
+      <OceanHero />
+      <ReefMap />
+      <TakeReel />
+      <Shelf />
+      <TryItNow />
 
-      {/* Everything else rides above it. One wrapper rather than a z-index
-          on each section, so a section added later cannot forget. */}
-      <div className="relative z-10">
-        <OceanHero />
-        {/*
-          **A light wash over everything below the hero, and the hero
-          deliberately outside it.**
+      {/*
+        The deep, between the shop and the proof.
 
-          Bright water and 14px text are in direct tension, and the
-          measurement found where it breaks, three times now, always on
-          the same element: the violet shop link over a lit patch of
-          water. 4.16:1 at an even scrim, 4.35:1 once the scrim was
-          weighted, and 3.68:1 again the moment the backdrop's second half
-          became the photoreal clip, which is brighter in its sunlit
-          water than anything before it. Violet on teal is the worst
-          pairing this palette can make and it is exactly what the shop's
-          links are.
+        It sits here because of what surrounds it: the visitor has just
+        been shown everything that is for sale with prices, and the next
+        section asks them to believe one project went well. A screen of
+        black with one lit animal in it is the breath between the two.
+        `reef-ember` is the right picture for it on the numbers as well as
+        Meg's eye — luma 17.5 at the border against 39.3 in the middle,
+        which is why it needs no mask to sit on a `#08070c` page.
+      */}
+      <Chapter id="chapters-deep" art="/ocean/reef-ember.webp" />
 
-          So the hero sits on the backdrop directly at its lightest, and
-          everything from the reef down takes another 42%. Pushing the
-          backdrop's own scrim instead would have fixed one link by
-          dimming the hero too, which is the part worth looking at.
-
-          **It costs less than it sounds, and that was measured rather
-          than hoped.** Going from 22% to 42% moved the backdrop's median
-          luma below the hero by about one point, 17 to 16, because the
-          wash bites hardest on exactly the bright patches that break
-          text and barely touches the dark water that is most of the
-          frame. Worst text on the page went 3.68:1 to 4.96:1.
-
-          **It is Harbor's, and it was not, which a review bot caught.**
-          Applied unconditionally it also covered the cream page, where
-          there is no backdrop under it to darken: measured in Daylight,
-          the ground behind the reef heading came out rgb(145,145,144),
-          grey mud rather than cream, and the heading sat at 2.79:1. The
-          wash exists to protect text from bright water. In a theme with
-          no water it protects nothing and only damages what is there.
-        */}
-        <div className="dive-wash">
-        <ReefMap />
-        <TakeReel />
-        <Shelf />
-        <TryItNow />
-        <OneJob />
-        <MoreWork />
-        <WhatConnects />
-        <HowToStart />
-        <Contact />
-        <Footer />
-        </div>
-      </div>
+      <OneJob />
+      <MoreWork />
+      <WhatConnects />
+      <HowToStart />
+      <Contact />
+      <Footer />
       <CommandPalette />
     </div>
   );

@@ -6,7 +6,7 @@ import { join } from "node:path";
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, provingGround, services, smallProjects, work } from "../lib/content";
+import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
 import { catalog } from "../lib/catalog";
 import { CAST } from "../lib/ocean";
@@ -1702,91 +1702,87 @@ test("the ocean art claims nothing countable", () => {
 });
 
 /*
-  The dive is the whole page, and only in Harbor.
+  The art is chapters, and the emptiness around them is the point.
 
-  **Two promises, and the first is the one Meg asked for twice.** The hero
-  used to scrub a clip inside its own pinned track: the descent was over a
-  screen and a half in and the ocean went with it. What she wanted is the
-  ocean behind everything, still moving while you read. That is the
-  difference between a playhead that follows a section and one that follows
-  the document, and it is invisible to every other test here — the page
-  renders, the video element exists, and nothing says which clock it is on.
+  **This replaces `the dive runs the length of the page, and Harbor
+  only`, which guarded a promise the site no longer makes.** That test
+  asserted a video was fixed behind every section with its playhead tied
+  to scroll. Meg chose to drop that: it could show one clip out of the
+  twenty-four she has, phones and `prefers-reduced-motion` were excluded
+  from it by `OceanBackdrop`'s own mode logic, and the page paid 2.8MB
+  for water it then suppressed twice over.
 
-  **It is asserted on `data-dive-progress` rather than on the video,
-  because this suite's browser cannot play the video at all.** Measured:
-  the pinned Playwright ships a plain Chromium with no H.264, so
-  `dive.mp4` reports `networkState: 3` and `error.code: 4`
-  (MEDIA_ERR_SRC_NOT_SUPPORTED) for as long as you wait, while the same
-  page in a browser with the codec reaches `readyState: 4` in under two
-  seconds. Writing this against `currentTime` would have produced a test
-  that fails everywhere for a reason that has nothing to do with the code.
-  `OceanBackdrop` therefore publishes the depth it computes, and that
-  number is the contract: 0 at the top, about half at the middle of the
-  document, 1 at the foot.
+  Deleting the test with the feature would have been the easy half. The
+  seam rule in CLAUDE.md asks what depended on the removed thing, and
+  what depended on it here is a *promise*: that this page carries real
+  art rather than decoration. So the promise is re-stated against the
+  thing that carries it now.
 
-  The second promise is that Daylight opts out. CLAUDE.md records that this
-  site went light because near-black read as a developer tool to Meg's
-  buyers, and a dark ocean rolling behind cream content is that mistake
-  with a bigger surface.
+  **Two halves, and the second is the one that will rot.** That a chapter
+  renders is cheap to keep true. That it has a screen of black around it
+  is the entire mechanism — measured on likeakinginc.com, the gap between
+  two of their sections is several hundred pixels of nothing, which is
+  why a lit subject lands when one arrives. Padding is exactly the kind
+  of thing a later tidy-up tightens to "save space", and nothing else
+  would fail when it did.
+
+  It also asserts the backdrop is gone rather than merely unused. A
+  component that is deleted but whose class name creeps back in is how a
+  2.8MB download returns without anybody deciding to bring it back.
 */
-test("the dive runs the length of the page, and Harbor only", async ({ page }) => {
+test("the homepage shows its art in chapters, with real black around them", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const backdrop = page.locator(".ocean-backdrop");
-  await expect(backdrop, "Harbor should mount the dive behind the page").toHaveCount(1);
   await expect(
-    page.locator('.ocean-backdrop video[src="/ocean/dive.mp4"]'),
-    "a pointer device should get the video, not just the still",
-  ).toHaveCount(1);
+    page.locator(".ocean-backdrop"),
+    "the scroll-scrubbed backdrop was removed; its class should not come back",
+  ).toHaveCount(0);
 
-  /*
-    Scrolled twice on purpose. The page lazy-loads images, so arriving at
-    the foot makes it taller and the position that *was* the bottom is
-    suddenly 0.93 of a longer document. Settling first is the difference
-    between measuring the contract and measuring image loading.
-  */
-  const depthAt = async (fraction: number) => {
-    for (let i = 0; i < 2; i++) {
-      await page.evaluate((f) => {
-        const span = document.documentElement.scrollHeight - window.innerHeight;
-        window.scrollTo(0, Math.round(span * f));
-      }, fraction);
-      await page.waitForTimeout(500);
-    }
-    const raw = await backdrop.getAttribute("data-dive-progress");
-    return raw === null ? null : Number(raw);
-  };
+  const chapter = page.locator("#chapters-deep");
+  await expect(chapter, "the homepage should carry a chapter").toHaveCount(1);
 
-  const top = await depthAt(0);
+  /* The picture has to have actually loaded. A chapter whose art 404s is
+     a tall empty gap, which no other assertion here would notice.
+
+     Scrolled to first, deliberately: the art is `loading="lazy"` because
+     it sits most of a page down, so asserting `naturalWidth` from the top
+     of the document measures the laziness rather than the picture. That
+     is how this test failed on its first run. */
+  const art = chapter.locator("img");
+  await expect(art).toHaveCount(1);
+  await art.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => art.evaluate((el: HTMLImageElement) => el.naturalWidth), {
+      message: "the chapter's art should have loaded",
+      timeout: 10000,
+    })
+    .toBeGreaterThan(0);
+
+  /* Full width, not a card in a column. */
+  const width = await chapter.evaluate((el) => el.getBoundingClientRect().width);
   expect(
-    top,
-    "the backdrop should publish its depth; without it the dive is unguardable",
-  ).not.toBeNull();
-  expect(top, "the page should open at the surface").toBeLessThan(0.05);
+    Math.round(width),
+    "a chapter runs the full width rather than sitting inside the content column",
+  ).toBe(1440);
 
-  /* The real assertion. A hero-scoped scrub is finished long before the
-     middle of the document and would report 1 here. */
-  const middle = await depthAt(0.5);
-  expect(
-    middle,
-    `halfway down the page the dive should be about halfway down too, not ${middle} — ` +
-      "a playhead tied to a section instead of the document",
-  ).toBeGreaterThan(0.3);
-  expect(middle!).toBeLessThan(0.7);
-
-  const bottom = await depthAt(1);
-  expect(bottom, "the foot of the page should be the floor of the dive").toBeGreaterThan(0.95);
-
-  /* Daylight gets no dive at all. */
-  await page.evaluate(() => {
-    document.documentElement.dataset.theme = "light";
+  /* And the emptiness. 18vh top and bottom at this viewport is 162px
+     each; asserting 120 leaves room for the clamp to be retuned without
+     allowing it to be quietly deleted. */
+  const pad = await chapter.evaluate((el) => {
+    const s = getComputedStyle(el);
+    return { top: parseFloat(s.paddingTop), bottom: parseFloat(s.paddingBottom) };
   });
-  await expect(
-    backdrop,
-    "Daylight should not render the dive: a dark ocean behind cream content is " +
-      "the reason this site went light in the first place",
-  ).toBeHidden();
+  expect(pad.top, "a chapter needs black above it, not a tight section edge").toBeGreaterThan(120);
+  expect(pad.bottom, "a chapter needs black below it too").toBeGreaterThan(120);
+
+  /* It claims nothing: no heading, no caption, no link inside it. */
+  expect(
+    await chapter.locator("h1, h2, h3, a, button").count(),
+    "a chapter is a picture, not a section with copy",
+  ).toBe(0);
 });
 
 /*
