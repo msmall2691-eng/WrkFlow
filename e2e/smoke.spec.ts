@@ -2234,3 +2234,67 @@ test("the homepage names all four services, and a phone can pick between them", 
     ).not.toContain(member.creature.toLowerCase());
   }
 });
+
+/*
+  Coming back to the tab starts the chapter again.
+
+  **A review bot found this and it was real.** `visibilitychange` paused
+  the clip and nothing resumed it: the only `play()` was inside the
+  IntersectionObserver callback, and returning to a tab does not change
+  what a chapter intersects. So a visitor who switched away with the
+  chapter on screen came back to a looping video that had stopped looping,
+  on screen, for the rest of the visit. Turning reduced motion back off
+  had the same dead end.
+
+  Worth a test rather than just a fix, because every existing check here
+  asserts the *stopping*: that the clip costs nothing before it is
+  reached, that reduced motion removes it, that a hidden tab pauses it.
+  Not one of them asks whether it ever comes back, which is how a motion
+  controller ends up able to stop and not start. `Drift` had the same
+  three inputs and reconciled them properly in the same change, so this
+  also pins the two halves of the page's motion to one rule.
+*/
+test("a chapter paused by a tab switch plays again on the way back", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const clip = page.locator("[data-moving-chapter] video").first();
+  await clip.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 10_000,
+      message: "the chapter never started, so this cannot test it resuming",
+    })
+    .toBe(false);
+
+  /* Playwright cannot background a tab, so the page is told it is hidden
+     the way the browser would tell it. The component reads
+     `document.hidden` and listens for the event, which is exactly what
+     this drives. */
+  const setHidden = (hidden: boolean) =>
+    page.evaluate((h) => {
+      Object.defineProperty(document, "hidden", { value: h, configurable: true });
+      Object.defineProperty(document, "visibilityState", {
+        value: h ? "hidden" : "visible",
+        configurable: true,
+      });
+      document.dispatchEvent(new Event("visibilitychange"));
+    }, hidden);
+
+  await setHidden(true);
+  await expect
+    .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), { timeout: 5_000 })
+    .toBe(true);
+
+  await setHidden(false);
+  await expect
+    .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message:
+        "the chapter is still paused after the visitor came back to the tab, " +
+        "while sitting on screen claiming to be a looping video",
+    })
+    .toBe(false);
+});

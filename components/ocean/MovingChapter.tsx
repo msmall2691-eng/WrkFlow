@@ -51,51 +51,68 @@ export default function MovingChapter({
 
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+    /*
+      **Three things decide whether this plays, so one function owns the
+      answer and every input just re-asks it.**
+
+      The first version let the IntersectionObserver call `play()` and
+      gave visibility and the motion preference a `pause()` each, which a
+      review bot caught: neither of those inputs changes the
+      *intersection*, so nothing ever started the clip again. Switch tabs
+      with a chapter on screen and come back and it was frozen for the
+      rest of the visit, still on screen, still claiming to be a looping
+      video; turn reduced motion off again and it stayed stopped. Only
+      scrolling it out of view and back revived it.
+
+      It reads as two small omissions and it is really one shape error:
+      playback is a function of three conditions and it was being written
+      from three places that each knew one of them. `Drift` already does
+      it this way in this same change, which is the tell worth keeping —
+      the two halves of the page's motion disagreed about their own rule.
+    */
+    let onScreen = false;
+
+    function reconcile() {
+      if (!v) return;
+      if (onScreen && !mq.matches && !document.hidden) {
+        /* `preload` alone does not start a fetch on an element that was
+           created with "none": the browser has already decided not to
+           load. `load()` is what actually begins it. Without this the
+           clip sat at readyState 0 for ever and the poster was all
+           anyone ever saw. */
+        if (v.preload !== "auto") {
+          v.preload = "auto";
+          v.load();
+        }
+        void v.play().catch(() => {
+          /* Autoplay refused (a policy, a codec, a data saver). The
+             poster stays, which is the whole fallback. */
+        });
+      } else {
+        v.pause();
+      }
+    }
+
     /* Nothing is fetched until the observer says so, so this is also what
-       keeps the three clips off the wire for a visitor who never reaches
-       them. */
+       keeps the clip off the wire for a visitor who never reaches it. */
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting && !mq.matches) {
-            /* `preload` alone does not start a fetch on an element that
-               was created with "none": the browser has already decided
-               not to load. `load()` is what actually begins it. Without
-               this the clip sat at readyState 0 for ever and the poster
-               was all anyone ever saw. */
-            if (v.preload !== "auto") {
-              v.preload = "auto";
-              v.load();
-            }
-            void v.play().catch(() => {
-              /* Autoplay refused (a policy, a codec, a data saver). The
-                 poster stays, which is the whole fallback. */
-            });
-          } else {
-            v.pause();
-          }
-        }
+        for (const e of entries) onScreen = e.isIntersecting;
+        reconcile();
       },
       { rootMargin: "25% 0px 25% 0px", threshold: 0.01 },
     );
     io.observe(v);
 
-    /* The preference is a request, not a value read once: a visitor can
-       turn it on while the page is open. */
-    function onPreference() {
-      if (mq.matches) v!.pause();
-    }
-    mq.addEventListener("change", onPreference);
-
-    function onVisibility() {
-      if (document.hidden) v!.pause();
-    }
-    document.addEventListener("visibilitychange", onVisibility);
+    /* Both of these are requests a visitor can change while the page is
+       open, in either direction, which is the half that was missing. */
+    mq.addEventListener("change", reconcile);
+    document.addEventListener("visibilitychange", reconcile);
 
     return () => {
       io.disconnect();
-      mq.removeEventListener("change", onPreference);
-      document.removeEventListener("visibilitychange", onVisibility);
+      mq.removeEventListener("change", reconcile);
+      document.removeEventListener("visibilitychange", reconcile);
     };
   }, []);
 
