@@ -514,6 +514,21 @@ html[data-js] [data-reveal]:not([data-revealed]) {
   [data-drift] {
     display: none;
   }
+
+  /*
+    **Reveals must never survive into print.** The hidden state is keyed
+    on an attribute only an IntersectionObserver sets, and printing does
+    not scroll: a visitor who hits Cmd-P, or saves a PDF, before reaching
+    the bottom of the page would get the shop, the work and the contact
+    details as blank space. The rule above it is a screen effect that had
+    no business applying to paper at all.
+  */
+  [data-reveal],
+  html[data-js] [data-reveal]:not([data-revealed]) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /*

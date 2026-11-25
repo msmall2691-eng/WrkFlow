@@ -53,6 +53,11 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
+    /* Tell the watchdog in `app/layout.tsx` that the controller is alive,
+       so it does not fail the reveals open at four seconds. Set on the
+       first mount of any Reveal on the page. */
+    document.documentElement.setAttribute("data-reveal-ready", "");
+
     /* Visible first, animated second. If anything below throws or never
        fires, the content is already readable. */
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

@@ -1991,3 +1991,63 @@ test("the drift is actually on screen, not painting behind the page", async ({
       "the canvas is painting somewhere the visitor cannot see it",
   ).not.toBe(0);
 });
+
+/*
+  Two ways the reveals could have hidden the page for good, both found by
+  a review bot on #155 and both real.
+
+  The hidden state is keyed on an attribute only JavaScript sets, which
+  makes "what if that never happens" the whole question. `data-js`
+  covered a visitor with scripting off. It did not cover printing, where
+  nothing scrolls and no observer fires, and it did not cover the worse
+  case: the inline script runs, the attribute is set, and the React chunk
+  never arrives — so nothing can ever mark a section revealed and the
+  page is permanently blank below the fold with its HTML right there.
+*/
+test("printing before scrolling does not print blank sections", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  /* Deliberately no scroll: this is the visitor who lands and hits print. */
+  await page.emulateMedia({ media: "print" });
+  await page.waitForTimeout(300);
+
+  const faded = await page.locator("[data-reveal]").evaluateAll((els) =>
+    els
+      .filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99)
+      .map((e) => e.textContent?.trim().slice(0, 40)),
+  );
+  expect(
+    faded,
+    "every section must be solid on paper — printing does not scroll, so " +
+      "anything still waiting on an observer prints as empty space",
+  ).toEqual([]);
+});
+
+test("the page fails open if the app never hydrates", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+
+  /* The exact shape of the failure: the document and its inline script
+     load, and the client chunks do not. JavaScript is *enabled*, so the
+     no-script path does not apply. */
+  await page.route("**/_next/static/chunks/**", (r) => r.abort());
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  /* The watchdog fires at 4s. */
+  await page.waitForTimeout(6000);
+
+  const faded = await page.locator("[data-reveal]").evaluateAll((els) =>
+    els
+      .filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99)
+      .map((e) => e.textContent?.trim().slice(0, 40)),
+  );
+  expect(
+    faded,
+    "with the app's own scripts blocked, the hidden state must expire and " +
+      "leave the page readable rather than a column of blanks",
+  ).toEqual([]);
+
+  await ctx.close();
+});
