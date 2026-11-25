@@ -13,13 +13,22 @@ import { castFor, type CastMember } from "./ocean";
   genuinely owns, which is where on `public/ocean/reef.webp` an annotation
   points.
 
-  **Why a reef at all.** Meg's words, Nov 24 2026: the ocean floor as a
-  metaphor for systems that live together and complement each other. The
-  sharper version, and the one the copy uses: a reef has no manager. Nobody
-  assigns the cleaner shrimp to the eel. Each organism does one job and its
-  output is the next one's input, and the whole thing runs unsupervised.
-  That is not a mood, it is a literal description of integrated software,
-  which is the fourth service on this very list.
+  **Why a reef at all, and why the copy no longer says so.** Meg's words,
+  Nov 24 2026: the ocean floor as a metaphor for systems that live together
+  and complement each other. The copy took the sharper version of it, "a
+  reef has no manager, nobody assigns the cleaner shrimp to the eel", and
+  her verdict on Nov 25 was that it sounds ridiculous. On a page selling
+  websites to contractors and admin firms she is right: it asks a buyer to
+  enjoy an analogy before they have been told what is for sale, and the
+  pins made it worse by labelling the four doors "THE LIGHT ABOVE" and "THE
+  SHOALS" with the service name only in the panel behind a click.
+
+  **The picture stays and the argument moved into plain words.** The one
+  true thing inside the metaphor, that each part's output is the next one's
+  input and nothing needs a person in the middle, is a literal description
+  of the fourth service and is now simply stated as that. What this module
+  owns is unaffected: these are still positions on a photograph of a reef,
+  which is still the art the section is built on.
 
   **The anchors are percentages, not pixels**, so the annotation stays on
   its creature at every width. They are placed against a percentage grid
@@ -78,8 +87,15 @@ const PLACEMENTS: {
      by the frame, and at 80% it was. Reading left from 88% at this height
      the words cross one tentacle and clear the octopus's head. */
   { id: "software", x: 88, y: 58, side: "left" },
-  /* The shoal streaming left below the turtle, clear of the turtle itself. */
-  { id: "integrations", x: 22, y: 44, side: "left" },
+  /* The shoal streaming left below the turtle, clear of the turtle itself.
+     **It reads right, and that is the service name's doing.** At 22% across
+     there is only about 110px to the left of the pin on a 670px card and
+     less on a narrower one, which held "THE SHOALS" and cannot hold
+     "INTEGRATIONS" — the label was clipped by the frame the moment it
+     started naming the service. Reading right it runs into open water
+     below the turtle, away from the octopus, which is the one thing on
+     this picture that must not carry writing. */
+  { id: "integrations", x: 22, y: 44, side: "right" },
 ];
 
 /** Each pin joined to its cast member and the service it labels. Pins with

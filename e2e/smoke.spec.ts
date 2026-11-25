@@ -2160,3 +2160,73 @@ test("the moving chapters play when reached and cost nothing before that", async
   );
   expect(posterless, "every moving chapter needs its own first frame as a poster").toBe(0);
 });
+
+/*
+  The one place the homepage asks what you came for.
+
+  **It had no test, and it was broken in both the ways a navigation can
+  be.** On desktop its four pins read "01 THE LIGHT ABOVE", "02 ANEMONE
+  AND CLOWNFISH", "03 THE REEF ITSELF" and "04 THE SHOALS", with the
+  service name only in `sr-only` text and behind a click; on a phone the
+  labels are `lg:block`, so there were no words at all — a photograph with
+  four dots and a panel showing service 01, nothing saying there were four
+  of anything. Meg's word for the page was "scrambled". A section that
+  renders perfectly while naming none of the things it sells is exactly
+  the failure a wording test catches and a screenshot does not, which is
+  why this asserts on the *services* rather than on a list of strings:
+  add a fifth and this fails until the map carries it.
+
+  Asserted at 390px on purpose. The desktop labels and the phone row are
+  deliberately different elements at different breakpoints, and the one
+  that was missing is the phone's, so a test written at 1440 would pass
+  over the half that was actually broken.
+*/
+test("the homepage names all four services, and a phone can pick between them", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const reef = page.locator("#reef");
+  await reef.scrollIntoViewIfNeeded();
+
+  for (const service of services) {
+    /* The short label is what a visitor reads; the title is what the
+       panel then has to show. Both come from `services[]`. */
+    const pick = reef.getByRole("button", {
+      name: new RegExp(`${service.index}\\s+${service.short}`, "i"),
+    });
+    await expect(
+      pick,
+      `no way to choose "${service.title}" at phone width: the four pins have ` +
+        "no labels under lg, so this row is the only thing naming them",
+    ).toBeVisible();
+
+    await pick.click();
+    await expect(
+      reef.getByRole("heading", { name: service.title, exact: true }),
+      `choosing "${service.short}" did not open "${service.title}"`,
+    ).toBeVisible();
+    await expect(
+      reef.getByText(service.pain, { exact: true }),
+      `"${service.title}" opened without the sentence naming what the visitor ` +
+        "arrived with; the panel used to carry an anemone analogy here",
+    ).toBeVisible();
+  }
+
+  /*
+    And no creature names where a service name belongs. The metaphor was
+    removed from the copy on Nov 25 2026 and the cast it came from is
+    still in `lib/ocean.ts`, still captioning the art on /services — so
+    the cheapest possible regression is somebody wiring `creature` back
+    into this map, which would read perfectly and sell nothing.
+  */
+  const words = (await reef.innerText()).toLowerCase();
+  for (const member of CAST) {
+    expect(
+      words,
+      `the service map is showing "${member.creature}" again. The art may ` +
+        "carry a creature; the four doors on the homepage name the service",
+    ).not.toContain(member.creature.toLowerCase());
+  }
+});

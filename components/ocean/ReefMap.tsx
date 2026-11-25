@@ -6,19 +6,40 @@ import { reefPins } from "@/lib/reef";
 import StackedHeading from "@/components/StackedHeading";
 
 /*
-  The reef, annotated.
+  The four services, annotated on the picture.
 
   **This is Meg's own HUD idea turned into the navigation.** Her Firefly
   still carried little labelled callouts pinned to parts of the scene, and
-  that is the strongest thing in the set: it is the Like a King move of
-  annotating the art, except the thing being annotated is a metaphor for
-  what she sells. Each pin names one of the four services.
+  that is the strongest thing in the set: the Like a King move of
+  annotating the art. Each pin names one of the four services, and this is
+  the one place on the homepage that asks a visitor which of them they came
+  for.
+
+  **Nov 25 2026: the pins name the service, and that is the whole of what
+  was wrong here.** They read "01 THE LIGHT ABOVE", "02 ANEMONE AND
+  CLOWNFISH", "03 THE REEF ITSELF" and "04 THE SHOALS", with the service
+  title in the `sr-only` text and in the panel behind a click — so a
+  contractor looking at the largest decision on the page saw four
+  unexplained dots and had to click each one to find out what it sold.
+  Meg's word for the page was "scrambled", and a navigation written in
+  creature names is a fair part of why. The panel's analogy line went the
+  same way: between a service's title and, a screen later, its price, "a
+  clean exchange, both sides get something and neither negotiates" is
+  asking a buyer to decode something instead of reading their own problem.
+  It now carries `pain`, which is the sentence in `services[]` that names
+  what they arrived with.
+
+  The art is untouched. `lib/ocean.ts` keeps every creature and every
+  still, /services still captions each picture with its analogy under the
+  frame where it reads as a caption, and this section is still built on a
+  photograph of a reef. What changed is that the words on top of it say
+  what is for sale.
 
   **The labels come from `services[]`, never from here.** CLAUDE.md makes
   that list the single definition of what the studio sells, so `lib/reef.ts`
-  adds only a position and the reef's half of the sentence, and the title
-  and tagline are the service's own. Change a service and this changes with
-  it.
+  adds only a position, and the index, the short label, the title, the pain
+  and the tagline are the service's own. Change a service and this changes
+  with it.
 
   **No invented telemetry.** Her original HUD read pH 8.1 and "BIODIVERSITY
   INDEX HIGH", which is ordinary scene dressing on an ocean picture and
@@ -47,17 +68,42 @@ export default function ReefMap() {
       className="night-band cp-night relative border-t border-white/10 py-12 md:py-20"
     >
       <div className="mx-auto max-w-6xl px-6">
+        {/*
+          **The metaphor is gone and the section is not.** This read "A
+          reef has no manager", under "[ The ecosystem ]", and opened
+          "Nobody assigns the cleaner shrimp to the eel." Meg's verdict
+          was that it sounds ridiculous, and on a page selling websites
+          to contractors and admin firms she is right: it asks a buyer
+          to enjoy an analogy before they have been told what is for
+          sale.
+
+          What the section *does* is load-bearing and stays untouched —
+          it is the one place on this page that asks a visitor which of
+          the four services they came for, with the labels read from
+          `services[]`. Only the framing changed, and the one true idea
+          inside the metaphor is kept in plain words: the systems should
+          hand work to each other instead of needing her in the middle.
+        */}
         <p className="m-0 font-mono text-[11px] uppercase tracking-[0.18em] text-white/40">
-          [ The ecosystem ]
+          [ Start here ]
         </p>
         <div className="mt-5">
-          <StackedHeading id="reef-heading" lead="A reef has" trail="no manager." />
+          <StackedHeading id="reef-heading" lead="Pick the one" trail="you came for." />
         </div>
+        {/*
+          **This sentence says the controls are controls**, which is the
+          other half of what was wrong here: four dots on a photograph
+          announce nothing, and on a phone they have no labels at all.
+
+          It also no longer opens with "your booking form, your calendar,
+          your invoices and your inbox should pass work to each other",
+          which survived the metaphor's removal and should not have. That
+          is service 04's pitch, it has its own pin and its own `pain`
+          sentence two inches away, and leading the section with it put
+          one of four doors in front of the other three.
+        */}
         <p className="m-0 mt-6 max-w-[52ch] text-[1rem] leading-relaxed text-white/65">
-          Nobody assigns the cleaner shrimp to the eel. Every organism does one
-          job, its output is the next one&apos;s input, and the whole thing runs
-          unsupervised. Your booking form, your calendar, your invoices and your
-          inbox should work the same way.
+          Four things. Choose one to see what it covers and what it costs.
         </p>
 
         <div className="mt-10 grid gap-6 lg:gap-8 lg:grid-cols-[1.35fr_1fr] lg:items-start">
@@ -123,7 +169,13 @@ export default function ReefMap() {
                   onClick={() => setOpen(p.id)}
                   onFocus={() => setOpen(p.id)}
                   aria-pressed={on}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf]"
+                  /* `hidden lg:block` rather than merely hiding the label:
+                     below this width the row under the picture is the
+                     control, and a button that is `display:none` leaves
+                     the accessibility tree with it. Hiding only the words
+                     would have left eight controls for four services on a
+                     phone, four of them unlabelled dots. */
+                  className="absolute hidden -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#2dd4bf] lg:block"
                   style={{ left: `${p.x}%`, top: `${p.y}%` }}
                 >
                   {/* A generous invisible hit area around a small dot: the
@@ -138,20 +190,75 @@ export default function ReefMap() {
                       }`}
                     />
                   </span>
-                  <span className="sr-only">
-                    {p.creature}: {p.service.title}
-                  </span>
+                  {/* Four identical dots, so the accessible name has to be
+                      what pressing one *does*. It used to lead with the
+                      creature, which named the scenery and buried the
+                      service behind a colon. */}
+                  <span className="sr-only">{p.service.title}</span>
                   {/* The label beside the dot, hidden on small screens where
                       there is no room for it over the picture. */}
                   <span
                     aria-hidden="true"
-                    className={`pointer-events-none absolute top-1/2 hidden -translate-y-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 lg:block ${
+                    className={`pointer-events-none absolute top-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-200 ${
                       p.side === "right" ? "left-[2.4rem]" : "right-[2.4rem]"
                     } ${on ? "text-[#2dd4bf]" : "text-white/85"}`}
                     style={{ textShadow: "0 1px 6px rgba(0,0,0,0.95), 0 0 2px rgba(0,0,0,1)" }}
                   >
-                    {p.service.index} {p.creature}
+                    {p.service.index} {p.service.short}
                   </span>
+                </button>
+              );
+            })}
+
+            {/*
+              The same pins below `lg`, as markers rather than controls:
+              the picture keeps its annotation and the row underneath does
+              the work. They are `aria-hidden` because the buttons in that
+              row already say all four names.
+            */}
+            {reefPins.map((p) => (
+              <span
+                key={`marker-${p.id}`}
+                aria-hidden="true"
+                className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 lg:hidden"
+                style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              >
+                <span
+                  className={`block rounded-full transition-all duration-200 ${
+                    p.id === active?.id
+                      ? "h-3 w-3 bg-[#2dd4bf] shadow-[0_0_0_5px_rgba(45,212,191,0.22)]"
+                      : "h-2.5 w-2.5 bg-white/70 shadow-[0_0_0_4px_rgba(255,255,255,0.1)]"
+                  }`}
+                />
+              </span>
+            ))}
+          </div>
+
+          {/*
+            **The four, in words, on a phone.** This is the half of the
+            section that did not exist: the labels beside the pins are
+            `lg:block`, so under 1024px a visitor got a photograph with
+            four unexplained dots and a panel showing service 01, with
+            nothing on screen saying there were four of anything or that
+            the dots did something. Most of Meg's buyers reach this on a
+            phone, and it is the page's only "what do you need" question.
+          */}
+          <div className="mt-4 flex flex-wrap gap-2 lg:hidden">
+            {reefPins.map((p) => {
+              const on = p.id === active?.id;
+              return (
+                <button
+                  key={`pick-${p.id}`}
+                  type="button"
+                  onClick={() => setOpen(p.id)}
+                  aria-pressed={on}
+                  className={`inline-flex min-h-11 items-center rounded-full border px-4 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-200 ${
+                    on
+                      ? "border-[#2dd4bf]/60 bg-[#2dd4bf]/10 text-[#2dd4bf]"
+                      : "border-white/15 text-white/70"
+                  }`}
+                >
+                  {p.service.index} {p.service.short}
                 </button>
               );
             })}
@@ -171,13 +278,19 @@ export default function ReefMap() {
               />
               <div className="p-6">
               <p className="m-0 font-mono text-[11px] uppercase tracking-[0.16em] text-white/40">
-                {active.service.index} · {active.creature}
+                {active.service.index}
               </p>
               <h3 className="m-0 mt-3 text-[1.35rem] font-semibold leading-snug text-[#EDEBE6]">
                 {active.service.title}
               </h3>
-              <p className="m-0 mt-3 border-l-2 border-[#2dd4bf]/40 pl-4 text-[14px] italic leading-relaxed text-white/55">
-                {active.reef}
+              {/* The problem, then the answer. `pain` is quieter and set
+                  off by the rule so it reads as the thing the visitor
+                  arrived with; the tagline under it is what they get. The
+                  italic went with the analogy it was for: a quotation
+                  style on a sentence about the reader's own business reads
+                  as somebody else's words. */}
+              <p className="m-0 mt-3 border-l-2 border-[#2dd4bf]/40 pl-4 text-[13.5px] leading-relaxed text-white/60">
+                {active.service.pain}
               </p>
               <p className="m-0 mt-4 text-[14.5px] leading-relaxed text-white/70">
                 {active.service.tagline}
