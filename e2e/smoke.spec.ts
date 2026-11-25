@@ -2051,3 +2051,44 @@ test("the page fails open if the app never hydrates", async ({ browser }) => {
 
   await ctx.close();
 });
+
+/*
+  Turning reduced motion on **while the page is open** stops the drift.
+
+  The controller read `matchMedia(...).matches` once at mount, so a
+  visitor who switched the preference mid-visit kept the animation. Every
+  other motion controller here already subscribes to the change event;
+  this was the one that did not, and the preference is a request rather
+  than a setting read at a moment in time.
+*/
+test("turning reduced motion on mid-visit stops the drift", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForTimeout(1200);
+
+  const sample = () =>
+    page.evaluate(() => {
+      const c = document.querySelector("canvas[data-drift]") as HTMLCanvasElement;
+      const g = c.getContext("2d")!;
+      const d = g.getImageData(0, 0, c.width, Math.min(240, c.height)).data;
+      let s = 0;
+      for (let i = 3; i < d.length; i += 4 * 31) s += d[i];
+      return s;
+    });
+
+  /* Moving before the switch, so the test cannot pass on a dead canvas. */
+  const a = await sample();
+  await page.waitForTimeout(1200);
+  const b = await sample();
+  expect(a, "the drift should be animating before the preference changes").not.toBe(b);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.waitForTimeout(600);
+  const c1 = await sample();
+  await page.waitForTimeout(1500);
+  const c2 = await sample();
+  expect(
+    c1,
+    "once reduced motion is requested the drift must hold still, not keep running",
+  ).toBe(c2);
+});

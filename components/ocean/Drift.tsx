@@ -56,7 +56,12 @@ export default function Drift() {
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    /* Live, not captured once. A visitor can turn reduced motion on while
+       this page is open, and a `matches` read at mount would keep the
+       loop running after they asked it to stop. `TakeReel` and
+       `LivingFrame` already subscribe; this was the one controller that
+       did not. */
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     /* Read the palette off the document so this follows the theme. The
        fallbacks are Harbor's values, used only if the properties are
@@ -153,7 +158,7 @@ export default function Drift() {
     }
 
     function start() {
-      if (running || reduced) return;
+      if (running || mq.matches) return;
       running = true;
       raf = requestAnimationFrame(step);
     }
@@ -167,16 +172,26 @@ export default function Drift() {
       else start();
     }
 
+    /* Turning reduction on stops the loop and leaves the frame already
+       painted; turning it back off resumes, but only if the tab is
+       actually being looked at. */
+    function onPreference() {
+      if (mq.matches) stop();
+      else if (!document.hidden) start();
+    }
+
     size();
     paint();
-    if (!reduced) start();
+    if (!mq.matches) start();
 
     window.addEventListener("resize", size);
     document.addEventListener("visibilitychange", onVisibility);
+    mq.addEventListener("change", onPreference);
     return () => {
       stop();
       window.removeEventListener("resize", size);
       document.removeEventListener("visibilitychange", onVisibility);
+      mq.removeEventListener("change", onPreference);
     };
   }, []);
 
