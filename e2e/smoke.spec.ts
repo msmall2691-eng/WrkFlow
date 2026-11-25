@@ -1641,39 +1641,43 @@ test("every page title is the same size and weight, from one component", async (
   The ocean art never carries a claim.
 
   **CLAUDE.md's first rule is that nothing on this site invents proof, and
-  spreading the cast across /services is exactly where that gets tested.**
-  On the homepage the creatures sit in a reef map, where a sentence about
-  an anemone is plainly a metaphor. On /services each one now sits directly
-  above a service's name, its pain, its outcome and, a screen below, its
-  price. A caption in that position reads as part of the pitch, which is
-  fine while it says "a clean exchange, both sides get something" and is
-  the "2,400 cleans this month" failure the moment it says anything
-  countable.
+  the cast is read by every page with art on it.**
 
-  Meg's original Firefly still had a HUD on it reading pH 8.1 and
-  "BIODIVERSITY INDEX HIGH". That is ordinary scene dressing on an ocean
-  picture and it is precisely what must not survive onto a page selling
-  software, so `lib/ocean.ts` states the rule and this asserts it: no digit
-  anywhere in the cast's own words. A number is the thing a reader would
-  take as evidence, and it is also the cheapest thing for a future edit to
-  add without noticing.
+  This used to guard three fields and the riskiest was `reef`, the analogy
+  line, because on /services it sat directly above a service's name, its
+  pain, its outcome and, a screen below, its price — a caption in that
+  position reads as part of the pitch. That field is gone: Meg asked for
+  the metaphor off the site on Nov 25 2026 and nothing renders a caption
+  any more.
+
+  What is left still needs guarding, and arguably needs it more now that
+  the obvious offender has been removed. `creature` and `artAlt` are the
+  words shipped with Meg's pictures, and `artAlt` in particular is read
+  aloud to anybody using a screen reader on four different pages. Meg's
+  original Firefly still had a HUD on it reading pH 8.1 and "BIODIVERSITY
+  INDEX HIGH", which is ordinary scene dressing on an ocean picture and is
+  precisely what must not survive onto a page selling software.
+
+  So `lib/ocean.ts` states the rule and this asserts it: no digit anywhere
+  in the cast's own words. A number is the thing a reader would take as
+  evidence, and it is also the cheapest thing for a future edit to add
+  without noticing.
 
   Asserted on the data rather than the rendered page on purpose. Every
   surface reads `lib/ocean.ts`, so guarding the source covers /services,
-  the homepage reef map and anything added later, including a page that
+  the homepage service map and anything added later, including a page that
   does not exist yet.
 */
 test("the ocean art claims nothing countable", () => {
   for (const member of CAST) {
     for (const [field, text] of [
       ["creature", member.creature],
-      ["reef", member.reef],
       ["artAlt", member.artAlt],
     ] as const) {
       expect(
         text,
         `cast.${member.id}.${field} contains a digit: "${text}". The cast may ` +
-          "name a creature and describe a reef; a number beside a service reads as evidence",
+          "name what is in the photograph; a number beside a service reads as evidence",
       ).not.toMatch(/\d/);
     }
   }

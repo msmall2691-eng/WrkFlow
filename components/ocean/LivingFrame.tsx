@@ -6,10 +6,15 @@ import { FRAME_SHELL } from "./CastFrame";
 /*
   A CastFrame that moves.
 
-  **The reef, actually alive**, which is Meg's ask: the section arguing that
-  an ecosystem runs unsupervised was making that argument with a photograph.
-  This is her own `Shot_01`, the footage the four cast stills were cut from,
-  running as a slow loop.
+  **The reef, actually alive**, which is Meg's ask. This is her own
+  `Shot_01`, the footage the four cast stills were cut from, running as a
+  slow loop.
+
+  The reason written here was that the section arguing an ecosystem runs
+  unsupervised should not make that argument with a still photograph. That
+  argument came off the site on Nov 25 2026 along with the rest of the
+  metaphor, and this is unaffected: a page of process with one moving
+  thing on it is the point, and the footage is the footage.
 
   **It is not on the pinned map, and that is a finding rather than a
   preference.** The obvious place for this was behind the reef annotations

@@ -122,9 +122,9 @@ export default function MarketplacePage() {
             It works here because this page has no ocean art at all and no
             teal accent anywhere near the band, so the picture is its own
             moment rather than a clash with something beside it. It is
-            uncaptioned, which is CastFrame's rule: a caption marks a
-            creature as standing for one of the four services, and this
-            page is not one of them.
+            uncaptioned, as every frame on the site now is: the caption
+            printed the reef analogy, which came off the site on Nov 25
+            2026, so there is nothing left for one to say.
           */}
           {/* Not `aria-hidden`: the frame carries a real description, and
               hiding the section would throw it away. Decorative here means

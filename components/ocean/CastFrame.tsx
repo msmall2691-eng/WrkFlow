@@ -27,8 +27,19 @@ export const FRAME_SHELL =
   **This exists so that "ocean art everywhere" is one treatment rather than
   six**, which is the lesson from the page titles one change earlier: the
   way to end up with three typefaces and five sizes is to let each page
-  draw its own version of the same thing. The frame, the aspect, the
-  caption and the theme handling are decided here.
+  draw its own version of the same thing. The frame, the aspect and the
+  theme handling are decided here.
+
+  **Nov 25 2026: it no longer captions anything.** It took `creature` and
+  `reef` and, with both, printed the creature's name over the analogy
+  line underneath the picture. Meg asked for the metaphor off the site,
+  so `lib/ocean.ts` has no analogy line to pass and the caption had
+  nothing left to say. The props went with it rather than being left
+  optional-and-unsupplied: a caption nothing can fill is a caption the
+  next edit fills with something else. Every frame on every page is
+  uncaptioned now, which is what /marketplace and /tools already were,
+  and the pictures are described by their `alt` as they always have
+  been.
 
   **It is dark on purpose, in both themes.** Meg's stills are lit subjects
   on near-black, so the frame is a `.cp-night` island: on Harbor it melts
@@ -73,8 +84,6 @@ export const FRAME_SHELL =
 export default function CastFrame({
   art,
   artAlt,
-  creature,
-  reef,
   priority = false,
   aspect = "aspect-[16/9]",
   sizes = "(min-width: 1024px) 460px, 100vw",
@@ -84,10 +93,6 @@ export default function CastFrame({
   art: string;
   /** What it shows, for anyone who cannot see it. */
   artAlt: string;
-  /** With `reef`, captions the frame as a service's marker. */
-  creature?: string;
-  /** The analogy line. Never a number: see above. */
-  reef?: string;
   /** Only for a frame above the fold. */
   priority?: boolean;
   /** Tailwind aspect class, so a banner can be wider than a panel. */
@@ -120,16 +125,6 @@ export default function CastFrame({
           className="object-cover"
         />
       </div>
-      {creature && reef ? (
-        <figcaption className="mt-3 flex flex-col gap-1">
-          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--cp-faint,var(--color-faint))]">
-            {creature}
-          </span>
-          <span className="text-[13.5px] italic leading-relaxed text-[color:var(--cp-muted,var(--color-muted))]">
-            {reef}
-          </span>
-        </figcaption>
-      ) : null}
     </figure>
   );
 }
