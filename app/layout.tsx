@@ -158,7 +158,38 @@ export default async function RootLayout({
                  themeAuto records the route default so the appearance control
                  knows what "reset" means.
               */
-              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t==='light')document.documentElement.dataset.theme='light';`,
+              /*
+                 `js` is set here rather than in a component, and the
+                 watchdog beside it is what makes the scroll reveals
+                 safe. Setting the attribute alone covered a visitor
+                 with JavaScript off, and missed the worse case: the
+                 script runs, the attribute is set, and then the React
+                 chunk never arrives — blocked, dropped, or failing to
+                 hydrate. Nothing would then ever set `data-revealed`,
+                 and the shop, the work and the contact section would be
+                 permanently invisible with their HTML sitting right
+                 there in the document.
+
+                 So the hidden state expires. `Reveal` marks the root
+                 `data-reveal-ready` the moment one of them mounts; if
+                 that has not happened in four seconds, this removes
+                 `data-js` and every reveal becomes visible. It fails
+                 open, which is the only acceptable direction: a section
+                 that appears without animating is a small loss, and a
+                 section nobody can read is the page broken.
+
+                 A slow connection hitting the timeout gets the same
+                 fail-open, which is correct rather than unfortunate. They work by hiding a
+                 section until an IntersectionObserver reveals it, so the
+                 hidden state must never apply when no script will arrive
+                 to undo it: with JavaScript off, or blocked, or still
+                 downloading, every revealed section would be a permanent
+                 blank. Gating the hidden state on this attribute means the
+                 page without script is the page fully visible, and the
+                 attribute is set before first paint so there is no flash
+                 of content that then hides itself.
+              */
+              `document.documentElement.dataset.js='';setTimeout(function(){var r=document.documentElement;if(!r.hasAttribute('data-reveal-ready'))r.removeAttribute('data-js');},4000);var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t==='light')document.documentElement.dataset.theme='light';`,
           }}
         />
         <script

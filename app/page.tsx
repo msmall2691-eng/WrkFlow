@@ -10,7 +10,9 @@ import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
-import Chapter from "@/components/ocean/Chapter";
+import Drift from "@/components/ocean/Drift";
+import MovingChapter from "@/components/ocean/MovingChapter";
+import Reveal from "@/components/Reveal";
 
 /*
   Homepage — a storefront (Meg, Nov 16 2026).
@@ -39,23 +41,50 @@ import Chapter from "@/components/ocean/Chapter";
   which is backwards for a stranger: proof matters once somebody wants the
   thing, not before.
 
+  **Nov 25 2026: the list below is the running order, and keeping it in
+  the wrong order is how the page drifted.** It used to be written in the
+  order the sections were built rather than the order they render, which
+  is a map of a different page. Reading it top to bottom is meant to be
+  the same experience as scrolling.
+
+  There are four movements, and a section that cannot be put in one of
+  them is a section to argue about rather than to add:
+
+    *What this is* — the dive, then the four doors, then the prices.
+
     OceanHero    one screen: the dive. Meg's own Firefly footage of a deep
                  reef, played once and held at the bottom, with a 45 kB
                  poster carrying the first paint
-    ReefMap      id="reef" — the same reef as a still, annotated. Four pins,
-                 one per service, read from `services[]`
+    ReefMap      id="reef" — the reef as a still, annotated. Four pins,
+                 one per service, named from `services[]`. The one place
+                 the page asks what somebody came for
+    Shelf        id="shelf" — the whole catalog, with prices, grouped by
+                 what it costs rather than by what it is
+
+    *Proof, as one run that escalates* — see it, read one, use one. This
+    was split in half until Nov 25, with the free tools and a video
+    chapter in the middle of it, so the page showed work, wandered off,
+    and showed more work. Meg called it going in circles. Anything added
+    here joins the run or breaks it.
+
     TakeReel     the work, as a browser window pinned on the right with
                  four takes swapping inside it. Cards, not globes, at
                  Meg's ask, and DOM rather than WebGL because nothing
                  here needs a GPU
-    Shelf        id="shelf" — the whole catalog, with prices, grouped by
-                 what it costs rather than by what it is
-    TryItNow     the three demos, which the shelf deliberately carries as
-                 one row and which have to stay individually reachable
-    OneJob       id="work" — one project told all the way through, which is
-                 now the evidence FOR the shelf rather than the main event
     MoreWork     the rest of the work, once each
-    WhatConnects the tools these already talk to
+    OneJob       id="work" — one project told all the way through
+    TryItNow     the demos somebody can go and use. Proof you operate
+                 rather than look at, which is why it ends the run
+
+    *A breath* — the only moving chapter on the page.
+
+    MovingChapter the magenta octopus, closing the proof and opening the
+                 practical half
+
+    *What happens next* — what it fits, how it starts, how to ask.
+
+    WhatConnects what it already connects to, each one running in a
+                 named project
     HowToStart   what pressing send sets in motion
     Contact      the form
     Footer
@@ -83,7 +112,16 @@ import Chapter from "@/components/ocean/Chapter";
 */
 export default function Home() {
   return (
-    <div className="cp">
+    /* `isolate` is load-bearing and not decoration. `.cp` paints an
+       opaque #08070c background and does **not** create a stacking
+       context, so the drift canvas — fixed, z-index -10 — resolved
+       against the root instead and painted *behind* that background.
+       It rendered 25,615 pixels per frame and not one of them was ever
+       on screen: the canvas readout said it was working and a
+       screenshot of the same scroll position showed absolutely nothing.
+       Making this div a stacking context puts a negative z-index child
+       above its own background and still below every section. */
+    <div className="cp isolate">
       {/*
         **The ocean is chapters now, not a backdrop, and that is Meg's
         call after seeing what the backdrop cost.**
@@ -114,30 +152,121 @@ export default function Home() {
         card, price and link on this page gets its full contrast back for
         free.
       */}
+      {/* Behind everything, fixed, never interactive. The hero is the
+          one orchestrated moment; this is the water it sits in, and it is
+          what stops the rest of the page from being a still picture. */}
+      <Drift />
+
       <OceanHero />
-      <ReefMap />
-      <TakeReel />
-      <Shelf />
-      <TryItNow />
+      <Reveal>
+        <ReefMap />
+      </Reveal>
+      {/*
+        **The shop comes before the work, not after it.** Merging the two
+        work sections pushed the shelf from 5,139px to 6,218px and broke
+        the guard that exists for Meg's own first instruction about this
+        page: "hard to see what is for sale that's tangible". The test
+        failing was correct.
+
+        Putting the shelf back where it was would only restore the split.
+        Moving it above the work serves both: the price list arrives
+        about two screens in instead of five, and the reel and the rest
+        of the work stay as one run instead of being separated by it.
+      */}
+      <Reveal>
+        <Shelf />
+      </Reveal>
+
+      <Reveal>
+        <TakeReel />
+      </Reveal>
 
       {/*
-        The deep, between the shop and the proof.
+        **The rest of the work, directly under the work.** These two were
+        separated by the shop, the free tools, a chapter and the case
+        study — about 7,700px — so the page announced the work, wandered
+        off through four unrelated things, and announced it again. Meg's
+        word for the result was that it did not flow.
 
-        It sits here because of what surrounds it: the visitor has just
-        been shown everything that is for sale with prices, and the next
-        section asks them to believe one project went well. A screen of
-        black with one lit animal in it is the breath between the two.
-        `reef-ember` is the right picture for it on the numbers as well as
-        Meg's eye — luma 17.5 at the border against 39.3 in the middle,
-        which is why it needs no mask to sit on a `#08070c` page.
+        The join matters more than the distance did. `TakeReel`'s own
+        "Selected work" heading is `sr-only`, so nothing visible ever said
+        *work* before this section said "The rest of it." A visitor read
+        "the rest" with no first part on screen anywhere. Now it follows
+        the reel it is the rest of.
       */}
-      <Chapter id="chapters-deep" art="/ocean/reef-ember.webp" />
+      <Reveal>
+        <MoreWork />
+      </Reveal>
 
-      <OneJob />
-      <MoreWork />
-      <WhatConnects />
-      <HowToStart />
-      <Contact />
+
+      <Reveal>
+        <OneJob />
+      </Reveal>
+
+      {/*
+        **Use one, after seeing them.** TryItNow was between MoreWork and
+        the case study, which split the proof in half: a visitor saw the
+        work, was handed three free tools and a video, and was then shown
+        another project. Meg's words for the page were "going in circles"
+        and "a maze", and this was the circle — proof, detour, proof.
+
+        It is proof itself, which is why it moved down rather than away.
+        The run now escalates instead of repeating: see the work, read one
+        of them all the way through, then go and use one.
+      */}
+      <Reveal>
+        <TryItNow />
+      </Reveal>
+
+      {/*
+        The breath, and it has moved with the thing it was a breath from.
+
+        **Its old note said "between the shop and the proof", and that
+        stopped being true the moment the proof became one run.** A screen
+        of black in the middle of four proof sections is an interruption,
+        which is the opposite of the job. It now closes the proof and
+        opens the practical half: what this connects to, how a project
+        starts, and the form.
+
+        **One chapter, not four.** This branch briefly carried four, and
+        walked end to end that was 4,104px of decoration on an 18.8-screen
+        page: two of them landed back to back with nothing in between,
+        which is the reel this file's own note says a chapter is not. So
+        the ocean moves here and nowhere else on the page. The clip is the
+        magenta octopus: of the nine Meg sent it is the one that reads
+        from across a room, and a chapter is the only place on this page
+        where that is the whole job.
+      */}
+      <MovingChapter
+        id="chapters-deep"
+        clip="shot-one"
+        poster="/ocean/video/shot-one-poster.webp"
+      />
+
+      {/*
+        The violet octopus, which was the hero until the reef loop took
+        that screen. It is Meg's 26-megapixel piece and the measurements in
+        #154 still hold — border luma 8.0 against a page ground of 8, the
+        closest match of anything here, so it needs no mask or vignette to
+        stop at the page.
+
+        It is better here than it was at the top. As a hero it had to carry
+        a headline, two buttons and the nav, which meant a gradient over
+        its left third and a scrim over its top: the picture was never once
+        shown whole. A chapter asks nothing of it, so for the first time
+        the full piece is on screen with nothing written across it.
+      */}
+
+
+      <Reveal>
+        <WhatConnects />
+      </Reveal>
+      <Reveal>
+        <HowToStart />
+      </Reveal>
+      <Reveal>
+        <Contact />
+      </Reveal>
       <Footer />
       <CommandPalette />
     </div>

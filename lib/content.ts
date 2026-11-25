@@ -158,6 +158,20 @@ export type Service = {
   id: ServiceCategory;
   index: string;
   title: string;
+  /*
+    The label for the places a full title will not fit.
+
+    **It is a field here rather than a table beside the thing that needs
+    it**, because this array is the single definition of what the studio
+    sells, and a second list of names for the same four things is how one
+    of them gets renamed and the other does not. Added for the reef map's
+    pins, which sit on a picture about 600px wide with fixed-width mono
+    labels: measured there, "Getting your tools to talk" ran off the left
+    edge of the frame and "Websites that bring work in" came within a few
+    pixels of the right. The pins used to read "THE LIGHT ABOVE" and "THE
+    SHOALS", which fit and said nothing.
+  */
+  short: string;
   /** One-line essence shown under the title. */
   tagline: string;
   /** Concrete kinds we build in this discipline — shown as chips. */
@@ -195,6 +209,7 @@ export const services: Service[] = [
     "id": "websites",
     "index": "01",
     "title": "Websites that bring work in",
+    "short": "Websites",
     "tagline": "A site somebody can hire you from, not just read about you on.",
     "kinds": [
       "Business websites",
@@ -214,6 +229,7 @@ export const services: Service[] = [
     "id": "leads",
     "index": "02",
     "title": "Turning visitors into booked work",
+    "short": "Quotes & booking",
     "tagline": "The quote, the estimate and the booking step people actually finish.",
     "kinds": [
       "Instant quotes",
@@ -233,6 +249,7 @@ export const services: Service[] = [
     "id": "software",
     "index": "03",
     "title": "Custom software",
+    "short": "Custom software",
     "tagline": "The app a business runs on, when nothing off the shelf fits it.",
     "kinds": [
       "Custom CRMs",
@@ -251,6 +268,7 @@ export const services: Service[] = [
     "id": "integrations",
     "index": "04",
     "title": "Getting your tools to talk",
+    "short": "Integrations",
     "tagline": "Connect what you already use, so nothing gets typed in twice.",
     "kinds": [
       "API connections",

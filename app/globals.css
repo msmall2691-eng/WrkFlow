@@ -429,6 +429,109 @@ html:not([data-theme="light"]) {
 }
 
 /*
+  The hero's looping video, for a visitor who asked not to be moved.
+
+  A `<video autoplay loop>` is the one piece of motion on this site that
+  CSS cannot slow down or land on an end state: `animation: none` does
+  nothing to a decoding video. So the video is removed instead, which
+  uncovers the still sitting underneath it in `OceanHero` — and that still
+  is the video's own first frame, so what is left is this picture stopped
+  rather than a different picture.
+
+  `display: none` rather than `opacity: 0` on purpose. A transparent video
+  is still decoding frames behind the still, which is the cost the visitor
+  asked to avoid, and on a laptop it is the one that drains the battery.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .hero-motion {
+    display: none;
+  }
+}
+
+/*
+  Sections arriving as you reach them.
+
+  **The hidden state is gated on `html[data-js]`**, which the pre-paint
+  script in `app/layout.tsx` sets. Without it the rule does not exist, so
+  a visitor with JavaScript off, or blocked, or merely still downloading
+  it, gets the page fully visible rather than a column of blanks waiting
+  for an observer that is never going to run. This is the whole safety of
+  the effect and it is one selector.
+
+  Transform and opacity only — the two a compositor can animate without
+  laying the page out again — and one duration and curve for all of them,
+  so a page of reveals reads as one system. 10px, not 40: this is a
+  section settling, not a slide deck.
+*/
+[data-reveal] {
+  transition:
+    opacity 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[data-js] [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+}
+
+/*
+  Reduced motion gets the end state with no transition at all. `Reveal`
+  also marks itself revealed immediately in that case, so this is the
+  second of two independent guarantees rather than the only one: if the
+  component never mounts, the transition is still gone and only the
+  `[data-js]` rule would be hiding anything — and that rule is what the
+  component's own effect clears first thing.
+*/
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition: none;
+  }
+  html[data-js] [data-reveal]:not([data-revealed]) {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+  The drift canvas. Fixed behind everything, never interactive, and
+  removed entirely from print.
+
+  It is deliberately faint. The page's own art is the subject and this is
+  the water around it; at full strength it would compete with Meg's
+  pieces, which is the opposite of the point. Daylight takes it lower
+  still, because the same motes that read as plankton on near-black read
+  as dust on cream.
+*/
+[data-drift] {
+  opacity: 0.85;
+}
+
+:root[data-theme="light"] [data-drift] {
+  opacity: 0.28;
+}
+
+@media print {
+  [data-drift] {
+    display: none;
+  }
+
+  /*
+    **Reveals must never survive into print.** The hidden state is keyed
+    on an attribute only an IntersectionObserver sets, and printing does
+    not scroll: a visitor who hits Cmd-P, or saves a PDF, before reaching
+    the bottom of the page would get the shop, the work and the contact
+    details as blank space. The rule above it is a screen effect that had
+    no business applying to paper at all.
+  */
+  [data-reveal],
+  html[data-js] [data-reveal]:not([data-revealed]) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/*
   The default border colour, in `base` so that utilities can beat it.
 
   **This was unlayered, and unlayered CSS wins over layered CSS whatever

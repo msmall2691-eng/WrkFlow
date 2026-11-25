@@ -111,9 +111,15 @@ export default function Services() {
                 */}
                 {(() => {
                   const member = castFor(s.id);
+                  /* The two fields the frame uses, named rather than
+                     spread. Spreading the member is how it came to caption
+                     itself with an analogy in the first place, and it
+                     would quietly pick up the next field added to the
+                     cast too. */
                   return member ? (
                     <CastFrame
-                      {...member}
+                      art={member.art}
+                      artAlt={member.artAlt}
                       className="mb-6"
                       sizes="(min-width: 1024px) 420px, 100vw"
                     />

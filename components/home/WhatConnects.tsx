@@ -75,10 +75,24 @@ export default function WhatConnects() {
           src="/ocean/cast/octopus.webp"
           className="absolute right-0 top-0 -z-10 hidden h-[21rem] w-[33rem] lg:block"
         />
+        {/*
+          **"The tools these already talk to" had two faults and the
+          second is the one that mattered.** It used the word *tools*,
+          which is also the free-tools section's word three screens up, so
+          the page had two sections a visitor would call the tools
+          section. And "these" is a pronoun with no antecedent in its own
+          section: it meant whatever happened to be rendered above it, so
+          the heading's subject changed when the running order did — which
+          it just had. A heading defined by its position is the page being
+          a maze in one line of copy.
+
+          It names the reader's side instead, which is CLAUDE.md's voice
+          rule and also the only version that survives being moved.
+        */}
         <StackedHeading
           id="connects-heading"
-          lead="The tools these"
-          trail="already talk to."
+          lead="Works with what"
+          trail="you already use."
         />
         <p className="mt-3 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
           Every one is running in a system named beside it. Nothing on this list

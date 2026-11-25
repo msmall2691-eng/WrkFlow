@@ -29,6 +29,22 @@ import type { ServiceCategory } from "./content";
   is the single definition of what the studio sells, so this adds only the
   two things the picture contributes. Change a service and every surface
   reading this changes with it.
+
+  **Nov 25 2026: `reef` is gone, and the art is not.** Each member carried
+  an analogy line, "a clean exchange, both sides get something and neither
+  negotiates" and three more, which the homepage printed between a service
+  title and its price and /services printed under each picture. Meg's
+  verdict was that the metaphor sounds ridiculous, and asked a second time
+  she said to take it off /services too. Removing the field rather than
+  the two call sites is the point: a line nothing renders is a line the
+  next edit renders again, and this one had already outlived the section
+  it was written for.
+
+  The creature names stay. They say what is in the photograph, which is a
+  fact about the art rather than a claim about the software, and one test
+  reads them to make sure none of them has crept back onto the four doors
+  on the homepage. The frames on /services are uncaptioned now, which is
+  what /marketplace and /tools already do.
 */
 
 export type CastMember = {
@@ -41,8 +57,6 @@ export type CastMember = {
   id: ServiceCategory;
   /** What is actually in the frame. */
   creature: string;
-  /** The reef's half of the analogy, one line. */
-  reef: string;
   /** A still from Meg's own footage. */
   art: string;
   /** What the still shows, for anyone who cannot see it. */
@@ -53,7 +67,6 @@ export const CAST: readonly CastMember[] = [
   {
     id: "websites",
     creature: "The light above",
-    reef: "Everything down here eats because light reaches the water.",
     art: "/ocean/cast/light.webp",
     artAlt:
       "A manta and a jellyfish in a beam of light reaching down to a dark reef.",
@@ -61,7 +74,6 @@ export const CAST: readonly CastMember[] = [
   {
     id: "leads",
     creature: "Anemone and clownfish",
-    reef: "A clean exchange. Both sides get something and neither negotiates.",
     /* The creature this entry is named for, finally in the picture.
        `turtle.webp` was here and shows a turtle, so the panel said
        "Anemone and clownfish" over art with neither of them in it. It
@@ -80,7 +92,6 @@ export const CAST: readonly CastMember[] = [
   {
     id: "software",
     creature: "The reef itself",
-    reef: "The structure the rest of it lives on, and is built from.",
     /* The red octopus, which is Meg's favourite image and also, measured,
        the best one on the site: luma 17.5 at its border against 39.3 in
        the middle, the cleanest fall to black in the set. He was only on
@@ -100,7 +111,6 @@ export const CAST: readonly CastMember[] = [
   {
     id: "integrations",
     creature: "The shoals",
-    reef: "Thousands of separate things moving as one, with no one steering.",
     art: "/ocean/cast/octopus.webp",
     artAlt:
       "Two shoals of lit fish streaming past an octopus, with a turtle above it.",

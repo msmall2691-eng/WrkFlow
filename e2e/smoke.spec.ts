@@ -1641,39 +1641,43 @@ test("every page title is the same size and weight, from one component", async (
   The ocean art never carries a claim.
 
   **CLAUDE.md's first rule is that nothing on this site invents proof, and
-  spreading the cast across /services is exactly where that gets tested.**
-  On the homepage the creatures sit in a reef map, where a sentence about
-  an anemone is plainly a metaphor. On /services each one now sits directly
-  above a service's name, its pain, its outcome and, a screen below, its
-  price. A caption in that position reads as part of the pitch, which is
-  fine while it says "a clean exchange, both sides get something" and is
-  the "2,400 cleans this month" failure the moment it says anything
-  countable.
+  the cast is read by every page with art on it.**
 
-  Meg's original Firefly still had a HUD on it reading pH 8.1 and
-  "BIODIVERSITY INDEX HIGH". That is ordinary scene dressing on an ocean
-  picture and it is precisely what must not survive onto a page selling
-  software, so `lib/ocean.ts` states the rule and this asserts it: no digit
-  anywhere in the cast's own words. A number is the thing a reader would
-  take as evidence, and it is also the cheapest thing for a future edit to
-  add without noticing.
+  This used to guard three fields and the riskiest was `reef`, the analogy
+  line, because on /services it sat directly above a service's name, its
+  pain, its outcome and, a screen below, its price — a caption in that
+  position reads as part of the pitch. That field is gone: Meg asked for
+  the metaphor off the site on Nov 25 2026 and nothing renders a caption
+  any more.
+
+  What is left still needs guarding, and arguably needs it more now that
+  the obvious offender has been removed. `creature` and `artAlt` are the
+  words shipped with Meg's pictures, and `artAlt` in particular is read
+  aloud to anybody using a screen reader on four different pages. Meg's
+  original Firefly still had a HUD on it reading pH 8.1 and "BIODIVERSITY
+  INDEX HIGH", which is ordinary scene dressing on an ocean picture and is
+  precisely what must not survive onto a page selling software.
+
+  So `lib/ocean.ts` states the rule and this asserts it: no digit anywhere
+  in the cast's own words. A number is the thing a reader would take as
+  evidence, and it is also the cheapest thing for a future edit to add
+  without noticing.
 
   Asserted on the data rather than the rendered page on purpose. Every
   surface reads `lib/ocean.ts`, so guarding the source covers /services,
-  the homepage reef map and anything added later, including a page that
+  the homepage service map and anything added later, including a page that
   does not exist yet.
 */
 test("the ocean art claims nothing countable", () => {
   for (const member of CAST) {
     for (const [field, text] of [
       ["creature", member.creature],
-      ["reef", member.reef],
       ["artAlt", member.artAlt],
     ] as const) {
       expect(
         text,
         `cast.${member.id}.${field} contains a digit: "${text}". The cast may ` +
-          "name a creature and describe a reef; a number beside a service reads as evidence",
+          "name what is in the photograph; a number beside a service reads as evidence",
       ).not.toMatch(/\d/);
     }
   }
@@ -1751,15 +1755,19 @@ test("the homepage shows its art in chapters, with real black around them", asyn
      it sits most of a page down, so asserting `naturalWidth` from the top
      of the document measures the laziness rather than the picture. That
      is how this test failed on its first run. */
-  const art = chapter.locator("img");
+  /* The chapter is a clip now rather than a still, so "the art loaded"
+     is readyState rather than naturalWidth. Everything else this test
+     asserts — the width, the emptiness, the silence — is the chapter
+     contract and is unchanged by what is inside it. */
+  const art = chapter.locator("video");
   await expect(art).toHaveCount(1);
   await art.scrollIntoViewIfNeeded();
   await expect
-    .poll(() => art.evaluate((el: HTMLImageElement) => el.naturalWidth), {
-      message: "the chapter's art should have loaded",
-      timeout: 10000,
+    .poll(() => art.evaluate((el: HTMLVideoElement) => el.readyState), {
+      message: "the chapter's clip should have loaded once reached",
+      timeout: 25000,
     })
-    .toBeGreaterThan(0);
+    .toBeGreaterThanOrEqual(2);
 
   /* Full width, not a card in a column. */
   const width = await chapter.evaluate((el) => el.getBoundingClientRect().width);
@@ -1859,4 +1867,486 @@ test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ pa
       offenders.map((o) => `${o.what} on ${o.bg} (luma ${o.luma})`).join("; ") +
       " — give the section `night-band`, or its own dark ground",
   ).toEqual([]);
+});
+
+/*
+  The hero loop, which no other test on this page can see.
+
+  Meg asked for the site to move the way likeakinginc.com does, and the
+  answer measured on their page is one looping hero video rather than a
+  pile of clips. This asserts the thing she actually asked for: that it
+  **plays**. Every other assertion here would pass on a hero that quietly
+  froze on its poster — the markup, the copy, the buttons and the contrast
+  are all identical whether the video is decoding or dead, which is the
+  same blind spot that let a reduced-motion branch drop five screenshots
+  in #151.
+
+  Advancing `currentTime` is the only honest proof, and reading it twice
+  is not enough on its own: the clip is four seconds long and loops, so a
+  late sample can legitimately be *smaller* than an early one. Comparing
+  them naively reported "not advancing" on a video that was playing
+  perfectly. The check is therefore that the time **moved at all**.
+*/
+test("the hero actually plays, and stops for anyone who asks it to", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const video = page.locator("video.hero-motion");
+  await expect(video, "the hero should carry a looping video").toHaveCount(1);
+
+  /* autoplay needs all four of these, and iOS needs playsInline or it
+     refuses to start at all and shows a play button over the art. */
+  await expect(video).toHaveJSProperty("loop", true);
+  await expect(video).toHaveJSProperty("muted", true);
+  await expect(video).toHaveJSProperty("autoplay", true);
+  await expect(video).toHaveJSProperty("playsInline", true);
+
+  await expect
+    .poll(
+      () => video.evaluate((v: HTMLVideoElement) => v.readyState),
+      { message: "the hero video should load enough data to play", timeout: 20000 },
+    )
+    .toBeGreaterThanOrEqual(3);
+
+  const first = await video.evaluate((v: HTMLVideoElement) => v.currentTime);
+  await expect
+    .poll(
+      () => video.evaluate((v: HTMLVideoElement) => v.currentTime),
+      { message: "the hero video should be decoding, not frozen", timeout: 10000 },
+    )
+    .not.toBe(first);
+
+  await expect(video).toHaveJSProperty("paused", false);
+
+  /* The still underneath is the video's own first frame, so the hero reads
+     the same when the video cannot play at all. */
+  const still = page.locator('img[src*="reef-hud-poster"]');
+  await expect(still, "a still should sit under the video").toHaveCount(1);
+});
+
+test("a visitor who asked for no motion gets the frame, not the loop", async ({
+  browser,
+}) => {
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "reduce",
+  });
+  const page = await ctx.newPage();
+  await page.goto("/");
+
+  /* `display: none` rather than a paused video: a transparent or paused
+     video still costs the decode the visitor asked to avoid. */
+  await expect(
+    page.locator("video.hero-motion"),
+    "the hero loop should be removed under prefers-reduced-motion",
+  ).toBeHidden();
+
+  const still = page.locator('img[src*="reef-hud-poster"]');
+  await expect(still, "the still should carry the hero instead").toBeVisible();
+  expect(
+    await still.evaluate((i: HTMLImageElement) => i.naturalWidth),
+    "and it should actually have loaded",
+  ).toBeGreaterThan(0);
+
+  await ctx.close();
+});
+
+/*
+  The drift reaches the screen.
+
+  **This test exists because the first working version of the canvas was
+  invisible and every measurement said it was fine.** `.cp` paints an
+  opaque background and does not create a stacking context, so a fixed
+  canvas at z-index -10 resolved against the root and painted *behind*
+  it. The canvas reported 25,615 painted pixels per frame; a screenshot
+  of the same scroll position showed nothing at all.
+
+  So asking the canvas what it drew is exactly the assertion that would
+  have passed. The only honest question is whether the page looks
+  different with it than without it, which is what this does: shoot the
+  same region twice, once with the canvas hidden, and require the bytes
+  to differ. It is the pixel equivalent of "a text assertion cannot see
+  a missing picture".
+*/
+test("the drift is actually on screen, not painting behind the page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const canvas = page.locator("canvas[data-drift]");
+  await expect(canvas, "the page should carry the drift canvas").toHaveCount(1);
+
+  /* A region with no art and no cards in it, so the only difference
+     between the two frames can be the motes. x must be inside the
+     viewport: clipping at 1500 on a 1440-wide page is off-screen and
+     fails the shot rather than the assertion, which is how this test
+     failed on its first run. */
+  await page.evaluate(() => window.scrollTo(0, 5400));
+  await page.waitForTimeout(1500);
+
+  const withDrift = await page.screenshot({ clip: { x: 1080, y: 0, width: 340, height: 880 } });
+
+  await canvas.evaluate((el: HTMLElement) => (el.style.display = "none"));
+  await page.waitForTimeout(200);
+  const without = await page.screenshot({ clip: { x: 1080, y: 0, width: 340, height: 880 } });
+
+  expect(
+    Buffer.compare(withDrift, without),
+    "hiding the drift should change what is on screen — if it does not, " +
+      "the canvas is painting somewhere the visitor cannot see it",
+  ).not.toBe(0);
+});
+
+/*
+  Two ways the reveals could have hidden the page for good, both found by
+  a review bot on #155 and both real.
+
+  The hidden state is keyed on an attribute only JavaScript sets, which
+  makes "what if that never happens" the whole question. `data-js`
+  covered a visitor with scripting off. It did not cover printing, where
+  nothing scrolls and no observer fires, and it did not cover the worse
+  case: the inline script runs, the attribute is set, and the React chunk
+  never arrives — so nothing can ever mark a section revealed and the
+  page is permanently blank below the fold with its HTML right there.
+*/
+test("printing before scrolling does not print blank sections", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  /* Deliberately no scroll: this is the visitor who lands and hits print. */
+  await page.emulateMedia({ media: "print" });
+  await page.waitForTimeout(300);
+
+  const faded = await page.locator("[data-reveal]").evaluateAll((els) =>
+    els
+      .filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99)
+      .map((e) => e.textContent?.trim().slice(0, 40)),
+  );
+  expect(
+    faded,
+    "every section must be solid on paper — printing does not scroll, so " +
+      "anything still waiting on an observer prints as empty space",
+  ).toEqual([]);
+});
+
+test("the page fails open if the app never hydrates", async ({ browser }) => {
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await ctx.newPage();
+
+  /* The exact shape of the failure: the document and its inline script
+     load, and the client chunks do not. JavaScript is *enabled*, so the
+     no-script path does not apply. */
+  await page.route("**/_next/static/chunks/**", (r) => r.abort());
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  /* The watchdog fires at 4s. */
+  await page.waitForTimeout(6000);
+
+  const faded = await page.locator("[data-reveal]").evaluateAll((els) =>
+    els
+      .filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99)
+      .map((e) => e.textContent?.trim().slice(0, 40)),
+  );
+  expect(
+    faded,
+    "with the app's own scripts blocked, the hidden state must expire and " +
+      "leave the page readable rather than a column of blanks",
+  ).toEqual([]);
+
+  await ctx.close();
+});
+
+/*
+  Turning reduced motion on **while the page is open** stops the drift.
+
+  The controller read `matchMedia(...).matches` once at mount, so a
+  visitor who switched the preference mid-visit kept the animation. Every
+  other motion controller here already subscribes to the change event;
+  this was the one that did not, and the preference is a request rather
+  than a setting read at a moment in time.
+*/
+test("turning reduced motion on mid-visit stops the drift", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForTimeout(1200);
+
+  const sample = () =>
+    page.evaluate(() => {
+      const c = document.querySelector("canvas[data-drift]") as HTMLCanvasElement;
+      const g = c.getContext("2d")!;
+      const d = g.getImageData(0, 0, c.width, Math.min(240, c.height)).data;
+      let s = 0;
+      for (let i = 3; i < d.length; i += 4 * 31) s += d[i];
+      return s;
+    });
+
+  /* Moving before the switch, so the test cannot pass on a dead canvas. */
+  const a = await sample();
+  await page.waitForTimeout(1200);
+  const b = await sample();
+  expect(a, "the drift should be animating before the preference changes").not.toBe(b);
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.waitForTimeout(600);
+  const c1 = await sample();
+  await page.waitForTimeout(1500);
+  const c2 = await sample();
+  expect(
+    c1,
+    "once reduced motion is requested the drift must hold still, not keep running",
+  ).toBe(c2);
+});
+
+/*
+  The moving chapters: Meg's clips, playing when you reach them and
+  costing nothing when you do not.
+
+  Both halves need asserting and the second is the one a casual check
+  would miss. Three clips is 2.7MB, which is fine as something a visitor
+  descends into and indefensible as something every visitor downloads to
+  look at the shop. `preload="none"` plus an observer is what makes that
+  true, and nothing else on the page would notice if it stopped being
+  true.
+*/
+test("the moving chapters play when reached and cost nothing before that", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  const videoRequests: string[] = [];
+  page.on("request", (r) => {
+    if (/\/ocean\/video\/.*\.(mp4|webm)/.test(r.url())) videoRequests.push(r.url().split("/").pop()!);
+  });
+
+  await page.goto("/");
+  await page.waitForTimeout(2000);
+
+  const chapters = page.locator("[data-moving-chapter] video");
+  /* **One**, deliberately. This branch briefly carried four chapters,
+     4,104px of decoration on an 18.8-screen page with two of them back
+     to back, and Meg's word for it was "messy". Cut to one; a test that
+     demanded three would have locked in the thing that was wrong. */
+  const n = await chapters.count();
+  expect(n, "the homepage should carry its moving chapter").toBe(1);
+
+  /* Nothing but the hero may be on the wire from the top of the page. */
+  const earlyChapterClips = videoRequests.filter((u) => !u.startsWith("reef-hud"));
+  expect(
+    earlyChapterClips,
+    "a visitor who has not scrolled must not pay for the chapter clips",
+  ).toEqual([]);
+
+  /* Now reach one and it should load and play. */
+  const first = chapters.first();
+  await first.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => first.evaluate((v: HTMLVideoElement) => v.readyState), {
+      message: "a chapter clip should load once it is reached",
+      timeout: 25000,
+    })
+    .toBeGreaterThanOrEqual(2);
+
+  await expect
+    .poll(() => first.evaluate((v: HTMLVideoElement) => (v.paused ? 1 : 0)), {
+      message: "and it should be playing, not sitting on its poster",
+      timeout: 15000,
+    })
+    .toBe(0);
+
+  /* Every chapter carries a poster, which is the whole fallback when
+     autoplay is refused or the file never arrives. */
+  const posterless = await chapters.evaluateAll((els) =>
+    els.filter((v) => !(v as HTMLVideoElement).poster).length,
+  );
+  expect(posterless, "every moving chapter needs its own first frame as a poster").toBe(0);
+});
+
+/*
+  The one place the homepage asks what you came for.
+
+  **It had no test, and it was broken in both the ways a navigation can
+  be.** On desktop its four pins read "01 THE LIGHT ABOVE", "02 ANEMONE
+  AND CLOWNFISH", "03 THE REEF ITSELF" and "04 THE SHOALS", with the
+  service name only in `sr-only` text and behind a click; on a phone the
+  labels are `lg:block`, so there were no words at all — a photograph with
+  four dots and a panel showing service 01, nothing saying there were four
+  of anything. Meg's word for the page was "scrambled". A section that
+  renders perfectly while naming none of the things it sells is exactly
+  the failure a wording test catches and a screenshot does not, which is
+  why this asserts on the *services* rather than on a list of strings:
+  add a fifth and this fails until the map carries it.
+
+  Asserted at 390px on purpose. The desktop labels and the phone row are
+  deliberately different elements at different breakpoints, and the one
+  that was missing is the phone's, so a test written at 1440 would pass
+  over the half that was actually broken.
+*/
+test("the homepage names all four services, and a phone can pick between them", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const reef = page.locator("#reef");
+  await reef.scrollIntoViewIfNeeded();
+
+  for (const service of services) {
+    /* The short label is what a visitor reads; the title is what the
+       panel then has to show. Both come from `services[]`. */
+    const pick = reef.getByRole("button", {
+      name: new RegExp(`${service.index}\\s+${service.short}`, "i"),
+    });
+    await expect(
+      pick,
+      `no way to choose "${service.title}" at phone width: the four pins have ` +
+        "no labels under lg, so this row is the only thing naming them",
+    ).toBeVisible();
+
+    await pick.click();
+    await expect(
+      reef.getByRole("heading", { name: service.title, exact: true }),
+      `choosing "${service.short}" did not open "${service.title}"`,
+    ).toBeVisible();
+    await expect(
+      reef.getByText(service.pain, { exact: true }),
+      `"${service.title}" opened without the sentence naming what the visitor ` +
+        "arrived with; the panel used to carry an anemone analogy here",
+    ).toBeVisible();
+  }
+
+  /*
+    And no creature names where a service name belongs. The metaphor was
+    removed from the copy on Nov 25 2026 and the cast it came from is
+    still in `lib/ocean.ts`, still captioning the art on /services — so
+    the cheapest possible regression is somebody wiring `creature` back
+    into this map, which would read perfectly and sell nothing.
+  */
+  const words = (await reef.innerText()).toLowerCase();
+  for (const member of CAST) {
+    expect(
+      words,
+      `the service map is showing "${member.creature}" again. The art may ` +
+        "carry a creature; the four doors on the homepage name the service",
+    ).not.toContain(member.creature.toLowerCase());
+  }
+});
+
+/*
+  Coming back to the tab starts the chapter again.
+
+  **A review bot found this and it was real.** `visibilitychange` paused
+  the clip and nothing resumed it: the only `play()` was inside the
+  IntersectionObserver callback, and returning to a tab does not change
+  what a chapter intersects. So a visitor who switched away with the
+  chapter on screen came back to a looping video that had stopped looping,
+  on screen, for the rest of the visit. Turning reduced motion back off
+  had the same dead end.
+
+  Worth a test rather than just a fix, because every existing check here
+  asserts the *stopping*: that the clip costs nothing before it is
+  reached, that reduced motion removes it, that a hidden tab pauses it.
+  Not one of them asks whether it ever comes back, which is how a motion
+  controller ends up able to stop and not start. `Drift` had the same
+  three inputs and reconciled them properly in the same change, so this
+  also pins the two halves of the page's motion to one rule.
+*/
+test("a chapter paused by a tab switch plays again on the way back", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const clip = page.locator("[data-moving-chapter] video").first();
+  await clip.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 10_000,
+      message: "the chapter never started, so this cannot test it resuming",
+    })
+    .toBe(false);
+
+  /* Playwright cannot background a tab, so the page is told it is hidden
+     the way the browser would tell it. The component reads
+     `document.hidden` and listens for the event, which is exactly what
+     this drives. */
+  const setHidden = (hidden: boolean) =>
+    page.evaluate((h) => {
+      Object.defineProperty(document, "hidden", { value: h, configurable: true });
+      Object.defineProperty(document, "visibilityState", {
+        value: h ? "hidden" : "visible",
+        configurable: true,
+      });
+      document.dispatchEvent(new Event("visibilitychange"));
+    }, hidden);
+
+  await setHidden(true);
+  await expect
+    .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), { timeout: 5_000 })
+    .toBe(true);
+
+  await setHidden(false);
+  await expect
+    .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message:
+        "the chapter is still paused after the visitor came back to the tab, " +
+        "while sitting on screen claiming to be a looping video",
+    })
+    .toBe(false);
+});
+
+/*
+  The hero stops once you have scrolled past it.
+
+  **The page's own rule, broken by the biggest thing on the page.**
+  CLAUDE.md: anything that loops stops when it cannot be seen. `Drift`
+  pauses on a hidden tab and `MovingChapter` gates on intersection, and
+  the hero — a full-bleed video, the most expensive motion here — was
+  plain markup with no controller at all. On a 15-screen page that is a
+  video decoding through roughly fourteen screens nobody is looking at,
+  left to whatever throttling the browser decides to apply.
+
+  A review bot found it. What makes it worth a test rather than only a
+  fix is that the rule is written down, three components now implement
+  it, and nothing anywhere asserted it: the two existing hero tests ask
+  whether it plays and whether reduced motion removes it, which are both
+  about the top of the page.
+*/
+test("the hero loop stops once it is scrolled past, and runs again on the way back", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const hero = page.locator("video.hero-motion");
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 10_000,
+      message: "the hero never started, so this cannot test it stopping",
+    })
+    .toBe(false);
+
+  /* Well past the hero: the shop is about two and a half screens down,
+     so nothing of the hero is on screen here. */
+  await page.locator("#shelf").scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message:
+        "the hero video is still playing with none of it on screen, which is " +
+        "the one thing CLAUDE.md says looping motion may not do",
+    })
+    .toBe(true);
+
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message: "the hero did not start again when it came back on screen",
+    })
+    .toBe(false);
 });

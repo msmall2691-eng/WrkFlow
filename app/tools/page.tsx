@@ -53,11 +53,11 @@ export default function ToolsPage() {
               the strongest reason a stranger ever lands here. The heading sat
               alone against about 700px of empty right-hand column at 1440.
 
-              It gets the surface rather than a creature, and uncaptioned,
-              which is CastFrame's rule rather than a shortcut: a captioned
-              frame says a creature stands for a service, and /tools is not
-              one of the four. This is the water the hero dives into, used as
-              the world the site is set in, claiming nothing.
+              It gets the surface rather than a creature. No frame is
+              captioned any more, here or anywhere: the caption carried the
+              reef analogy and went with it on Nov 25 2026. This is the
+              water the hero dives into, used as the world the site is set
+              in, claiming nothing.
 
               `priority` is on because it is genuinely the first image on the
               page and nothing else competes with it here, which is exactly

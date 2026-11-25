@@ -138,6 +138,14 @@ export default function TakeReel() {
           motion; nothing about the work goes with it.
         */
         <div className="mx-auto w-full max-w-6xl px-6 py-20">
+          {/* The stacked branch has no sticky layer, so it carries its own
+              copy of the label rather than going unnamed. */}
+          <span
+            aria-hidden="true"
+            className="mb-10 block font-mono text-[11px] uppercase tracking-[0.2em] text-white/45"
+          >
+            [ Selected work ]
+          </span>
           <ul className="m-0 list-none space-y-24 p-0">
             {takes.map((t, i) => (
               <li
@@ -157,10 +165,33 @@ export default function TakeReel() {
             prompt puts them on the window; here they run the full width,
             which is what reads at 390 where the window is the width.
           */}
+          {/*
+            **The label, and why it is here rather than on the `<h2>`.**
+
+            This is the tallest section on the page — 2,880px, about a
+            fifth of it — and for its whole life its only heading was
+            `sr-only`. A visitor scrolled three screens through Meg's
+            five best builds with nothing on screen saying what they
+            were looking at, which is most of why she described the page
+            as a maze, and it is why "The rest of it" lands wrong 3,000px
+            later: the rest of something never named.
+
+            It cannot go on the `<h2>`, which sits at the top of a 320svh
+            block and would scroll away in the first flick. It lives in
+            the sticky layer instead, beside the progress ticks, so it
+            holds for the whole run. The `<h2>` keeps the accessible
+            name; this is its visible twin and so is `aria-hidden`.
+          */}
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 flex gap-1 px-6 pt-5"
+            className="absolute inset-x-0 top-0 flex items-center gap-4 px-6 pt-5"
           >
+              <span
+                aria-hidden="true"
+                className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/45"
+              >
+                [ Selected work ]
+              </span>
             {takes.map((t, i) => {
               const slice = progress * takes.length - i;
               const fill = Math.min(1, Math.max(0, slice));
