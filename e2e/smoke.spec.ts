@@ -2092,3 +2092,63 @@ test("turning reduced motion on mid-visit stops the drift", async ({ page }) => 
     "once reduced motion is requested the drift must hold still, not keep running",
   ).toBe(c2);
 });
+
+/*
+  The moving chapters: Meg's clips, playing when you reach them and
+  costing nothing when you do not.
+
+  Both halves need asserting and the second is the one a casual check
+  would miss. Three clips is 2.7MB, which is fine as something a visitor
+  descends into and indefensible as something every visitor downloads to
+  look at the shop. `preload="none"` plus an observer is what makes that
+  true, and nothing else on the page would notice if it stopped being
+  true.
+*/
+test("the moving chapters play when reached and cost nothing before that", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  const videoRequests: string[] = [];
+  page.on("request", (r) => {
+    if (/\/ocean\/video\/.*\.(mp4|webm)/.test(r.url())) videoRequests.push(r.url().split("/").pop()!);
+  });
+
+  await page.goto("/");
+  await page.waitForTimeout(2000);
+
+  const chapters = page.locator("[data-moving-chapter] video");
+  const n = await chapters.count();
+  expect(n, "the homepage should carry moving chapters").toBeGreaterThanOrEqual(3);
+
+  /* Nothing but the hero may be on the wire from the top of the page. */
+  const earlyChapterClips = videoRequests.filter((u) => !u.startsWith("reef-hud"));
+  expect(
+    earlyChapterClips,
+    "a visitor who has not scrolled must not pay for the chapter clips",
+  ).toEqual([]);
+
+  /* Now reach one and it should load and play. */
+  const first = chapters.first();
+  await first.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => first.evaluate((v: HTMLVideoElement) => v.readyState), {
+      message: "a chapter clip should load once it is reached",
+      timeout: 25000,
+    })
+    .toBeGreaterThanOrEqual(2);
+
+  await expect
+    .poll(() => first.evaluate((v: HTMLVideoElement) => (v.paused ? 1 : 0)), {
+      message: "and it should be playing, not sitting on its poster",
+      timeout: 15000,
+    })
+    .toBe(0);
+
+  /* Every chapter carries a poster, which is the whole fallback when
+     autoplay is refused or the file never arrives. */
+  const posterless = await chapters.evaluateAll((els) =>
+    els.filter((v) => !(v as HTMLVideoElement).poster).length,
+  );
+  expect(posterless, "every moving chapter needs its own first frame as a poster").toBe(0);
+});

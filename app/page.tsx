@@ -12,6 +12,7 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Chapter from "@/components/ocean/Chapter";
 import Drift from "@/components/ocean/Drift";
+import MovingChapter from "@/components/ocean/MovingChapter";
 import Reveal from "@/components/Reveal";
 
 /*
@@ -174,10 +175,26 @@ export default function Home() {
         shown whole. A chapter asks nothing of it, so for the first time
         the full piece is on screen with nothing written across it.
       */}
-      <Chapter id="chapters-violet" art="/ocean/hero-octopus.webp" />
+      <MovingChapter
+        id="chapters-violet"
+        clip="violet-rise"
+        poster="/ocean/video/violet-rise-poster.webp"
+      />
       <Reveal>
         <MoreWork />
       </Reveal>
+
+      <MovingChapter
+        id="chapters-dark"
+        clip="deep-dark"
+        poster="/ocean/video/deep-dark-poster.webp"
+      />
+      <MovingChapter
+        id="chapters-shot"
+        clip="shot-one"
+        poster="/ocean/video/shot-one-poster.webp"
+      />
+
       <Reveal>
         <WhatConnects />
       </Reveal>
