@@ -158,7 +158,19 @@ export default async function RootLayout({
                  themeAuto records the route default so the appearance control
                  knows what "reset" means.
               */
-              `var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t==='light')document.documentElement.dataset.theme='light';`,
+              /*
+                 `js` is set here rather than in a component, and it is
+                 what makes the scroll reveals safe. They work by hiding a
+                 section until an IntersectionObserver reveals it, so the
+                 hidden state must never apply when no script will arrive
+                 to undo it: with JavaScript off, or blocked, or still
+                 downloading, every revealed section would be a permanent
+                 blank. Gating the hidden state on this attribute means the
+                 page without script is the page fully visible, and the
+                 attribute is set before first paint so there is no flash
+                 of content that then hides itself.
+              */
+              `document.documentElement.dataset.js='';var d='${themeDefault}';document.documentElement.dataset.themeAuto=d;var t=null;try{t=localStorage.getItem('theme');}catch(e){}if(t==='light')document.documentElement.dataset.theme='light';`,
           }}
         />
         <script

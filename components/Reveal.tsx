@@ -1,68 +1,89 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-type RevealProps = {
-  children: React.ReactNode;
-  /** Stagger delay in ms. */
-  delay?: number;
-  className?: string;
-  as?: keyof React.JSX.IntrinsicElements;
-};
+/*
+  A section arriving, rather than simply being there.
 
-/**
- * Wraps content in a scroll-triggered reveal. Uses IntersectionObserver
- * and respects prefers-reduced-motion (handled in globals.css).
- */
+  **CLAUDE.md used to forbid this outright** — "one orchestrated moment
+  per page; no fade-up on every section" — and the rule was written when
+  Meg found the first V2 cut too busy. She has since asked for the
+  opposite, in those words: the site should move the way
+  likeakinginc.com does, where roughly a third of the elements carry an
+  animation or a transition. This is her call on her own rule, and the
+  guide is updated to match rather than left to contradict the page.
+
+  What the old rule was *right* about is kept, because it is engineering
+  rather than taste:
+
+  * **Transform and opacity only.** No height, no top, no filter. Those
+    are the two properties a compositor can animate without laying the
+    page out again.
+  * **One easing curve and one duration** for every reveal, so a page of
+    them reads as one system instead of a dozen separate ideas.
+  * **It fires once.** A section that re-animates every time it scrolls
+    back into view is the thing that makes a long page feel seasick, and
+    it is the most common way this effect is done badly.
+
+  **The observer is disconnected after the first intersection**, not left
+  watching. On a page with a dozen reveals that is a dozen observers
+  retired rather than retained for the life of the document.
+
+  **Reduced motion is handled by making the element visible immediately
+  and never observing at all** — no transition to cancel, no class to
+  wait for, no chance of a section that stays at `opacity: 0` because an
+  observer never fired. A visitor who refuses motion must never be the
+  one who cannot read the page, which is the failure mode that matters
+  far more than the effect itself.
+*/
 export default function Reveal({
   children,
-  delay = 0,
   className = "",
-  as: Tag = "div",
-}: RevealProps) {
-  const ref = useRef<HTMLElement>(null);
-  const [visible, setVisible] = useState(false);
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  /** Milliseconds, for staggering siblings. Keep it small: this is a
+      section arriving, not a sequence the visitor has to wait through. */
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
+    const el = ref.current;
+    if (!el) return;
 
-    // Robustness: if IO is unavailable, never leave content hidden.
-    if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
+    /* Visible first, animated second. If anything below throws or never
+       fires, the content is already readable. */
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.setAttribute("data-revealed", "");
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
+    /* Already on screen at load: reveal without waiting for a scroll that
+       may never come. */
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          e.target.setAttribute("data-revealed", "");
+          io.disconnect();
         }
       },
-      { threshold: 0, rootMargin: "0px 0px 12% 0px" },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.01 },
     );
-
-    observer.observe(node);
-    // Failsafe: a fast flick can outrun the observer, leaving a viewport of
-    // hidden content that reads as a broken page. Whatever happens, nothing
-    // stays invisible for more than a beat.
-    const failsafe = window.setTimeout(() => setVisible(true), 1200);
-    return () => {
-      observer.disconnect();
-      window.clearTimeout(failsafe);
-    };
+    io.observe(el);
+    return () => io.disconnect();
   }, []);
 
-  const Component = Tag as React.ElementType;
-
   return (
-    <Component
+    <div
       ref={ref}
-      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
+      data-reveal=""
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      className={className}
     >
       {children}
-    </Component>
+    </div>
   );
 }

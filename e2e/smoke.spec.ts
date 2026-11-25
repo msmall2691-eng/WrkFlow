@@ -1944,3 +1944,50 @@ test("a visitor who asked for no motion gets the frame, not the loop", async ({
 
   await ctx.close();
 });
+
+/*
+  The drift reaches the screen.
+
+  **This test exists because the first working version of the canvas was
+  invisible and every measurement said it was fine.** `.cp` paints an
+  opaque background and does not create a stacking context, so a fixed
+  canvas at z-index -10 resolved against the root and painted *behind*
+  it. The canvas reported 25,615 painted pixels per frame; a screenshot
+  of the same scroll position showed nothing at all.
+
+  So asking the canvas what it drew is exactly the assertion that would
+  have passed. The only honest question is whether the page looks
+  different with it than without it, which is what this does: shoot the
+  same region twice, once with the canvas hidden, and require the bytes
+  to differ. It is the pixel equivalent of "a text assertion cannot see
+  a missing picture".
+*/
+test("the drift is actually on screen, not painting behind the page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const canvas = page.locator("canvas[data-drift]");
+  await expect(canvas, "the page should carry the drift canvas").toHaveCount(1);
+
+  /* A region with no art and no cards in it, so the only difference
+     between the two frames can be the motes. x must be inside the
+     viewport: clipping at 1500 on a 1440-wide page is off-screen and
+     fails the shot rather than the assertion, which is how this test
+     failed on its first run. */
+  await page.evaluate(() => window.scrollTo(0, 5400));
+  await page.waitForTimeout(1500);
+
+  const withDrift = await page.screenshot({ clip: { x: 1080, y: 0, width: 340, height: 880 } });
+
+  await canvas.evaluate((el: HTMLElement) => (el.style.display = "none"));
+  await page.waitForTimeout(200);
+  const without = await page.screenshot({ clip: { x: 1080, y: 0, width: 340, height: 880 } });
+
+  expect(
+    Buffer.compare(withDrift, without),
+    "hiding the drift should change what is on screen — if it does not, " +
+      "the canvas is painting somewhere the visitor cannot see it",
+  ).not.toBe(0);
+});

@@ -11,6 +11,8 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Chapter from "@/components/ocean/Chapter";
+import Drift from "@/components/ocean/Drift";
+import Reveal from "@/components/Reveal";
 
 /*
   Homepage — a storefront (Meg, Nov 16 2026).
@@ -83,7 +85,16 @@ import Chapter from "@/components/ocean/Chapter";
 */
 export default function Home() {
   return (
-    <div className="cp">
+    /* `isolate` is load-bearing and not decoration. `.cp` paints an
+       opaque #08070c background and does **not** create a stacking
+       context, so the drift canvas — fixed, z-index -10 — resolved
+       against the root instead and painted *behind* that background.
+       It rendered 25,615 pixels per frame and not one of them was ever
+       on screen: the canvas readout said it was working and a
+       screenshot of the same scroll position showed absolutely nothing.
+       Making this div a stacking context puts a negative z-index child
+       above its own background and still below every section. */
+    <div className="cp isolate">
       {/*
         **The ocean is chapters now, not a backdrop, and that is Meg's
         call after seeing what the backdrop cost.**
@@ -114,11 +125,24 @@ export default function Home() {
         card, price and link on this page gets its full contrast back for
         free.
       */}
+      {/* Behind everything, fixed, never interactive. The hero is the
+          one orchestrated moment; this is the water it sits in, and it is
+          what stops the rest of the page from being a still picture. */}
+      <Drift />
+
       <OceanHero />
-      <ReefMap />
-      <TakeReel />
-      <Shelf />
-      <TryItNow />
+      <Reveal>
+        <ReefMap />
+      </Reveal>
+      <Reveal>
+        <TakeReel />
+      </Reveal>
+      <Reveal>
+        <Shelf />
+      </Reveal>
+      <Reveal>
+        <TryItNow />
+      </Reveal>
 
       {/*
         The deep, between the shop and the proof.
@@ -133,7 +157,9 @@ export default function Home() {
       */}
       <Chapter id="chapters-deep" art="/ocean/reef-ember.webp" />
 
-      <OneJob />
+      <Reveal>
+        <OneJob />
+      </Reveal>
 
       {/*
         The violet octopus, which was the hero until the reef loop took
@@ -149,10 +175,18 @@ export default function Home() {
         the full piece is on screen with nothing written across it.
       */}
       <Chapter id="chapters-violet" art="/ocean/hero-octopus.webp" />
-      <MoreWork />
-      <WhatConnects />
-      <HowToStart />
-      <Contact />
+      <Reveal>
+        <MoreWork />
+      </Reveal>
+      <Reveal>
+        <WhatConnects />
+      </Reveal>
+      <Reveal>
+        <HowToStart />
+      </Reveal>
+      <Reveal>
+        <Contact />
+      </Reveal>
       <Footer />
       <CommandPalette />
     </div>
