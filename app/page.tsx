@@ -10,7 +10,6 @@ import HowToStart from "@/components/home/HowToStart";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
-import Chapter from "@/components/ocean/Chapter";
 import Drift from "@/components/ocean/Drift";
 import MovingChapter from "@/components/ocean/MovingChapter";
 import Reveal from "@/components/Reveal";
@@ -152,11 +151,27 @@ export default function Home() {
         been shown everything that is for sale with prices, and the next
         section asks them to believe one project went well. A screen of
         black with one lit animal in it is the breath between the two.
-        `reef-ember` is the right picture for it on the numbers as well as
-        Meg's eye — luma 17.5 at the border against 39.3 in the middle,
-        which is why it needs no mask to sit on a `#08070c` page.
+        The clip that replaced the still is the magenta octopus: of the
+        nine Meg sent it is the one that reads from across a room, and a
+        chapter is the only place on this page where that is the whole
+        job.
       */}
-      <Chapter id="chapters-deep" art="/ocean/reef-ember.webp" />
+      {/*
+        **One chapter, not four.** This branch briefly carried four, and
+        walked end to end that was 4,104px of decoration on an 18.8-screen
+        page: two of them landed back to back with nothing in between,
+        which is the reel this file's own note says a chapter is not. The
+        page was rebuilt in the first place because it ran too long, and
+        adding three pictures to it made that worse rather than better.
+
+        So the ocean moves here and nowhere else on the page. One clip, in
+        the slot a chapter already earned, between the shop and the proof.
+      */}
+      <MovingChapter
+        id="chapters-deep"
+        clip="shot-one"
+        poster="/ocean/video/shot-one-poster.webp"
+      />
 
       <Reveal>
         <OneJob />
@@ -175,25 +190,10 @@ export default function Home() {
         shown whole. A chapter asks nothing of it, so for the first time
         the full piece is on screen with nothing written across it.
       */}
-      <MovingChapter
-        id="chapters-violet"
-        clip="violet-rise"
-        poster="/ocean/video/violet-rise-poster.webp"
-      />
       <Reveal>
         <MoreWork />
       </Reveal>
 
-      <MovingChapter
-        id="chapters-dark"
-        clip="deep-dark"
-        poster="/ocean/video/deep-dark-poster.webp"
-      />
-      <MovingChapter
-        id="chapters-shot"
-        clip="shot-one"
-        poster="/ocean/video/shot-one-poster.webp"
-      />
 
       <Reveal>
         <WhatConnects />

@@ -1751,15 +1751,19 @@ test("the homepage shows its art in chapters, with real black around them", asyn
      it sits most of a page down, so asserting `naturalWidth` from the top
      of the document measures the laziness rather than the picture. That
      is how this test failed on its first run. */
-  const art = chapter.locator("img");
+  /* The chapter is a clip now rather than a still, so "the art loaded"
+     is readyState rather than naturalWidth. Everything else this test
+     asserts — the width, the emptiness, the silence — is the chapter
+     contract and is unchanged by what is inside it. */
+  const art = chapter.locator("video");
   await expect(art).toHaveCount(1);
   await art.scrollIntoViewIfNeeded();
   await expect
-    .poll(() => art.evaluate((el: HTMLImageElement) => el.naturalWidth), {
-      message: "the chapter's art should have loaded",
-      timeout: 10000,
+    .poll(() => art.evaluate((el: HTMLVideoElement) => el.readyState), {
+      message: "the chapter's clip should have loaded once reached",
+      timeout: 25000,
     })
-    .toBeGreaterThan(0);
+    .toBeGreaterThanOrEqual(2);
 
   /* Full width, not a card in a column. */
   const width = await chapter.evaluate((el) => el.getBoundingClientRect().width);
@@ -2118,8 +2122,12 @@ test("the moving chapters play when reached and cost nothing before that", async
   await page.waitForTimeout(2000);
 
   const chapters = page.locator("[data-moving-chapter] video");
+  /* **One**, deliberately. This branch briefly carried four chapters,
+     4,104px of decoration on an 18.8-screen page with two of them back
+     to back, and Meg's word for it was "messy". Cut to one; a test that
+     demanded three would have locked in the thing that was wrong. */
   const n = await chapters.count();
-  expect(n, "the homepage should carry moving chapters").toBeGreaterThanOrEqual(3);
+  expect(n, "the homepage should carry its moving chapter").toBe(1);
 
   /* Nothing but the hero may be on the wire from the top of the page. */
   const earlyChapterClips = videoRequests.filter((u) => !u.startsWith("reef-hud"));
