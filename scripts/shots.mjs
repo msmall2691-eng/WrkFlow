@@ -43,20 +43,21 @@ import { join } from "node:path";
   that lib/content.ts points at, so adding a target here is the whole job of
   keeping a new shot current.
 
-  Not here, and not capturable this way: instant-estimate.png and the
+  Not here, and not capturable this way: instant-estimate.webp and the
   brightbase/* screens. Those are private systems with no public URL; retake
   them against a seeded local copy, per the rules at the top of
   lib/brightbase.ts. keystonestay.maineclean.co has no file because it is
   embedded live rather than screenshotted.
 */
 const TARGETS = {
-  "maineclean.png": "https://maineclean.co",
-  "remote-admin.png": "https://the-remote-admin.com",
-  /* JPEG, not PNG: a full-bleed photographic hero costs ~3MB as PNG. */
-  "nash.jpg": "https://nash-alpha.vercel.app/",
-  "linx.png": "https://linx-production-6edf.up.railway.app",
+  "maineclean.webp": "https://maineclean.co",
+  "remote-admin.webp": "https://the-remote-admin.com",
+  /* A full-bleed photographic hero, which is why this one was the JPEG
+     while the rest were PNG. WebP carries both cases, so the split is gone. */
+  "nash.webp": "https://nash-alpha.vercel.app/",
+  "linx.webp": "https://linx-production-6edf.up.railway.app",
   /* This site's own /tools page, which the marketplace sells as M Linx Tools. */
-  "tools.png": "https://mlinx.studio/tools",
+  "tools.webp": "https://mlinx.studio/tools",
   /*
     The public marketing half of Arrowhead Explorers. Deliberately NOT the
     parent portal at portal.lacexplorers.online: that one is noindex, sits
@@ -85,7 +86,7 @@ const TARGETS = {
     everything, where a height that no longer fits throws and leaves the
     previous file in place.
   */
-  "arrowhead.png": {
+  "arrowhead.webp": {
     url: "https://www.lacexplorers.online",
     cropHeight: 1030,
   },
@@ -100,7 +101,7 @@ let wrote = 0;
 
 for (const [file, target] of Object.entries(TARGETS)) {
   const { url, cropHeight } = typeof target === "string" ? { url: target } : target;
-  const slug = file.replace(/\.(png|jpg)$/, "");
+  const slug = file.replace(/\.webp$/, "");
   if (only.length && !only.includes(slug) && !only.includes(file)) continue;
 
   const ctx = await browser.newContext({
@@ -124,14 +125,23 @@ for (const [file, target] of Object.entries(TARGETS)) {
     const img = cropHeight
       ? resized.extract({ left: 0, top: 0, width: WIDTH, height: cropHeight })
       : resized;
-    await (file.endsWith(".jpg")
-      ? img.jpeg({ quality: 82, mozjpeg: true })
-      /* palette: true quantizes to <=256 colours, which is what keeps these
-         near the 200-600KB the repo had before. These are screenshots of
-         flat UI with a few photographs in them, and it does not visibly band
-         either; 24-bit PNG triples the file for nothing. */
-      : img.png({ palette: true, quality: 90, effort: 10 })
-    ).toFile(join("public/shots", file));
+    /* WebP, because that is what lib/content.ts points at. This used to
+       branch on the extension and write PNG or JPEG, and when the committed
+       captures moved to WebP the branch was left behind: `npm run shots`
+       would have written six files the site does not read and left the six
+       it does read untouched. A refresh path that silently refreshes nothing
+       is worse than one that errors, and nothing would have failed, which is
+       the same shape as the cropHeight note above.
+
+       One format for both cases now. Photographic heroes (nash) and flat UI
+       (the rest) both survive q82 here, where PNG needed `palette: true` to
+       stay small and JPEG was the exception for the photograph. The
+       committed files land between 47KB and 136KB, down from 144-625KB, so
+       a re-capture that comes out wildly outside that range is worth a
+       look before committing. */
+    await img
+      .webp({ quality: 82, effort: 6 })
+      .toFile(join("public/shots", file));
 
     process.stderr.write(`wrote public/shots/${file}  (${await page.title()})\n`);
     wrote++;
