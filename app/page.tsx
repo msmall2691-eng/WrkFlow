@@ -134,6 +134,21 @@ export default function Home() {
       <Chapter id="chapters-deep" art="/ocean/reef-ember.webp" />
 
       <OneJob />
+
+      {/*
+        The violet octopus, which was the hero until the reef loop took
+        that screen. It is Meg's 26-megapixel piece and the measurements in
+        #154 still hold — border luma 8.0 against a page ground of 8, the
+        closest match of anything here, so it needs no mask or vignette to
+        stop at the page.
+
+        It is better here than it was at the top. As a hero it had to carry
+        a headline, two buttons and the nav, which meant a gradient over
+        its left third and a scrim over its top: the picture was never once
+        shown whole. A chapter asks nothing of it, so for the first time
+        the full piece is on screen with nothing written across it.
+      */}
+      <Chapter id="chapters-violet" art="/ocean/hero-octopus.webp" />
       <MoreWork />
       <WhatConnects />
       <HowToStart />

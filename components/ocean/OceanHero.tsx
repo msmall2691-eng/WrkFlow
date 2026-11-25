@@ -107,14 +107,66 @@ export default function OceanHero() {
           the first screen, and scrolling reveals the backdrop underneath
           it still running.
         */}
+        {/*
+          **The hero moves again, and this time it is cheap enough to mean
+          it.** Meg asked for the site to feel alive the way
+          likeakinginc.com does, and that reference turns out to be one
+          looping hero video rather than a pile of clips: measured on their
+          page, a single `hero-bg.mp4`, autoplay, loop, muted, playsInline,
+          full-bleed.
+
+          The clip is her own HUD reef, chosen on numbers rather than by
+          eye. Of nine candidates it is the **darkest** (mean luma 33.2
+          against 40-88 for the rest), which is what lets near-white type
+          sit on it, and its first and last frames differ by **0.4** on a
+          0-255 scale, where the next best was 27 — so it cycles with no
+          visible seam at all. It is also the shortest, which is why the
+          whole thing costs 0.22MB: the `dive.mp4` deleted in #154 was
+          2.9MB for a clip the page then faded to 22%.
+
+          It is the right clip for a second reason that is not a
+          measurement. It is a reef with live readouts over it — storm
+          influx, coral health, current flow — so the first screen is a
+          dashboard rather than a picture near one, which is the thing
+          this studio actually sells.
+
+          **No JavaScript.** autoplay + loop + muted + playsInline is
+          plain HTML, so this stays a server component and the page needs
+          no hydration to move. `muted` is not decoration: no browser will
+          autoplay sound, and iOS will not autoplay at all without
+          `playsInline`.
+
+          The still underneath is the video's own first frame, so the
+          fallback is not a different picture: it is this picture, stopped.
+          It covers three cases at once — the video still loading, a
+          browser that can decode neither source, and a visitor who asked
+          for no motion, for whom CSS hides the video and leaves the frame.
+        */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/ocean/hero-octopus.webp"
+          src="/ocean/video/reef-hud-poster.webp"
           alt=""
           aria-hidden="true"
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
+
+        <video
+          className="hero-motion absolute inset-0 h-full w-full object-cover object-center"
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          poster="/ocean/video/reef-hud-poster.webp"
+          aria-hidden="true"
+        >
+          {/* WebM first: smaller, and the only one some test browsers
+              decode. Safari and iOS take the H.264 and will autoplay
+              nothing else. */}
+          <source src="/ocean/video/reef-hud.webm" type="video/webm" />
+          <source src="/ocean/video/reef-hud.mp4" type="video/mp4" />
+        </video>
 
         {/* Much lighter than it was, because the art under it is already
             dark where the words go: measured, the left third of this image

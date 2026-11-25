@@ -1860,3 +1860,87 @@ test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ pa
       " — give the section `night-band`, or its own dark ground",
   ).toEqual([]);
 });
+
+/*
+  The hero loop, which no other test on this page can see.
+
+  Meg asked for the site to move the way likeakinginc.com does, and the
+  answer measured on their page is one looping hero video rather than a
+  pile of clips. This asserts the thing she actually asked for: that it
+  **plays**. Every other assertion here would pass on a hero that quietly
+  froze on its poster — the markup, the copy, the buttons and the contrast
+  are all identical whether the video is decoding or dead, which is the
+  same blind spot that let a reduced-motion branch drop five screenshots
+  in #151.
+
+  Advancing `currentTime` is the only honest proof, and reading it twice
+  is not enough on its own: the clip is four seconds long and loops, so a
+  late sample can legitimately be *smaller* than an early one. Comparing
+  them naively reported "not advancing" on a video that was playing
+  perfectly. The check is therefore that the time **moved at all**.
+*/
+test("the hero actually plays, and stops for anyone who asks it to", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+
+  const video = page.locator("video.hero-motion");
+  await expect(video, "the hero should carry a looping video").toHaveCount(1);
+
+  /* autoplay needs all four of these, and iOS needs playsInline or it
+     refuses to start at all and shows a play button over the art. */
+  await expect(video).toHaveJSProperty("loop", true);
+  await expect(video).toHaveJSProperty("muted", true);
+  await expect(video).toHaveJSProperty("autoplay", true);
+  await expect(video).toHaveJSProperty("playsInline", true);
+
+  await expect
+    .poll(
+      () => video.evaluate((v: HTMLVideoElement) => v.readyState),
+      { message: "the hero video should load enough data to play", timeout: 20000 },
+    )
+    .toBeGreaterThanOrEqual(3);
+
+  const first = await video.evaluate((v: HTMLVideoElement) => v.currentTime);
+  await expect
+    .poll(
+      () => video.evaluate((v: HTMLVideoElement) => v.currentTime),
+      { message: "the hero video should be decoding, not frozen", timeout: 10000 },
+    )
+    .not.toBe(first);
+
+  await expect(video).toHaveJSProperty("paused", false);
+
+  /* The still underneath is the video's own first frame, so the hero reads
+     the same when the video cannot play at all. */
+  const still = page.locator('img[src*="reef-hud-poster"]');
+  await expect(still, "a still should sit under the video").toHaveCount(1);
+});
+
+test("a visitor who asked for no motion gets the frame, not the loop", async ({
+  browser,
+}) => {
+  const ctx = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "reduce",
+  });
+  const page = await ctx.newPage();
+  await page.goto("/");
+
+  /* `display: none` rather than a paused video: a transparent or paused
+     video still costs the decode the visitor asked to avoid. */
+  await expect(
+    page.locator("video.hero-motion"),
+    "the hero loop should be removed under prefers-reduced-motion",
+  ).toBeHidden();
+
+  const still = page.locator('img[src*="reef-hud-poster"]');
+  await expect(still, "the still should carry the hero instead").toBeVisible();
+  expect(
+    await still.evaluate((i: HTMLImageElement) => i.naturalWidth),
+    "and it should actually have loaded",
+  ).toBeGreaterThan(0);
+
+  await ctx.close();
+});

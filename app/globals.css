@@ -429,6 +429,26 @@ html:not([data-theme="light"]) {
 }
 
 /*
+  The hero's looping video, for a visitor who asked not to be moved.
+
+  A `<video autoplay loop>` is the one piece of motion on this site that
+  CSS cannot slow down or land on an end state: `animation: none` does
+  nothing to a decoding video. So the video is removed instead, which
+  uncovers the still sitting underneath it in `OceanHero` — and that still
+  is the video's own first frame, so what is left is this picture stopped
+  rather than a different picture.
+
+  `display: none` rather than `opacity: 0` on purpose. A transparent video
+  is still decoding frames behind the still, which is the cost the visitor
+  asked to avoid, and on a laptop it is the one that drains the battery.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .hero-motion {
+    display: none;
+  }
+}
+
+/*
   The default border colour, in `base` so that utilities can beat it.
 
   **This was unlayered, and unlayered CSS wins over layered CSS whatever
