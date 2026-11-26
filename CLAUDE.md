@@ -88,9 +88,37 @@ about evidence, which is the first rule on this page.
   was ported nearly verbatim into a `.stage` block rather than re-interpreted
   into utilities, which is deliberate: re-interpreting is how a design drifts
   away from the thing that was approved. Its tokens keep their own names
-  (`--ink`, `--acc`, `--ease`, `--gut`, `--maxw`). `.cp` still dresses every
-  other route, so the two systems coexist on purpose until the inner pages
-  follow.
+  (`--ink`, `--acc`, `--ease`, `--gut`, `--maxw`).
+
+  **`.cp-inner` is how the rest of the site follows, and six routes already
+  have.** The token block answers to `.stage, .cp-inner`, so the design's
+  values still have exactly one author, and `.cp-inner` re-points every
+  `--cp-*` and legacy `--color-*` token at them. `/services`, `/tools`,
+  `/marketplace`, `/about`, `/catalog` and `/work/[slug]` carry
+  `class="cp cp-inner"`. `.cp` itself was left untouched on purpose: that is
+  why the twelve routes still outside the pass are visually unchanged rather
+  than half-converted, and converting one is adding the class and swapping
+  the header, not a rewrite.
+
+  **Daylight is dropped on the converted pages and kept on the rest.**
+  Leaving an inner page cream while the homepage has no light branch would
+  only move "a different website one click later" from the typeface to the
+  theme. Turning Daylight off site-wide is a product decision about a control
+  Meg uses, so it was not taken here. Watch for the specific trap this
+  uncovered: five rules keyed on *the theme* when they meant *the ground
+  under this element is light*, and inverted themselves the moment a page
+  stopped following the theme.
+
+  **One header, `components/stage/StageTopBar.tsx`, on every converted
+  route**, with `PanelHeader` still serving the rest and both reading
+  `siteNav` from `lib/content.ts`. Two copies of a nav is how a link quietly
+  disappears from half a site. It names the current page beside the wordmark
+  and marks the active item; on the homepage, which has no title above the
+  hero, it names the band crossing the middle of the screen instead. **Its
+  phone menu is not decoration:** before it, at 390px the bar held a
+  wordmark, a search affordance and a button, and the whole site was
+  unreachable from the header on the devices most of Meg's buyers use. A test
+  opens that menu and follows a link rather than asserting it rendered.
 
   Two things a future change has to know. **Daylight does not reach the
   homepage**: there is no `[data-theme="light"] .stage` branch, because the
