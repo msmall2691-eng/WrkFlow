@@ -5,10 +5,10 @@ import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { pageMeta } from "@/lib/seo";
 import { caseStudyGraph } from "@/lib/schema";
-import { caseStudies, work } from "@/lib/content";
+import { caseStudies, siteNav, work } from "@/lib/content";
 import { castFor } from "@/lib/ocean";
 import { measured } from "@/lib/measured";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import BuildScroller from "@/components/BuildScroller";
@@ -104,11 +104,19 @@ export default async function CaseStudyPage({ params }: Props) {
         the V2 palette untouched. Typography is deliberately left alone; see
         the note on the h1 in app/services/page.tsx.
 
+        **Nov 26 2026: the same sentence one system along.** The homepage
+        the cards land from is `.stage` now, so this page carries
+        `.cp-inner`, which points the same token names at the approved
+        design's values — Inter Tight, one teal accent, a flat near-black
+        ground, no aurora. Still a wrapper, and the typography question the
+        paragraph above deferred is answered by the homepage rather than
+        here.
+
         `current` is not set: /work/[slug] is not one of PanelHeader's five
         links, so there is no nav item to mark, and passing the slug would
         match nothing.
       */}
-      <div className="cp">
+      <div className="cp cp-inner">
         {/*
         `relative`, and deliberately NOT `overflow-hidden`.
 
@@ -121,24 +129,22 @@ export default async function CaseStudyPage({ params }: Props) {
         from 1607px to 731px under a 1200px scroll rather than holding near
         96px, with this div named as the nearest clipping ancestor.
 
-        Nothing is lost by dropping it: the aurora lobes are clipped by their
-        own `absolute inset-0 overflow-hidden` layer just below, which is
-        what keeps them from widening the page.
+        The aurora this was weighed against is gone with the Nov 26 pass,
+        and the warning is the part worth keeping: the next thing that wants
+        to clip here will have the same effect and still look perfect in a
+        screenshot. `e2e/smoke.spec.ts` asserts no ancestor of the pinned
+        screen clips its overflow.
       */}
         <div className="relative">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden"
-          >
-            <span className="cp-aurora cp-a1" />
-            <span className="cp-aurora cp-a2" />
-          </div>
+          <StageTopBar
+            inFlow
+            cta="book"
+            nav={siteNav}
+            here="Case study"
+            bookHref="/?offer=call#contact"
+          />
 
-          <div className="relative z-10">
-            <PanelHeader bookHref="/?offer=call#contact" />
-          </div>
-
-          {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+          {/* No pt-16: that cleared the fixed <Nav>, and this bar is in flow. */}
           <main className="relative z-10">
             {/* Title + the live link */}
             <section className="relative isolate overflow-hidden border-b border-[var(--cp-line)] bg-[var(--section-alt-bg)] py-14 md:py-20">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import MarketCatalog from "@/components/MarketCatalog";
@@ -9,7 +9,7 @@ import WorkflowMap from "@/components/WorkflowMap";
 import LinxMark from "@/components/LinxMark";
 import StackedHeading from "@/components/StackedHeading";
 import CastFrame from "@/components/ocean/CastFrame";
-import { marketItems, welcomeBook } from "@/lib/content";
+import { marketItems, siteNav, welcomeBook } from "@/lib/content";
 
 /*
   M Linx — the premade tools, sites and automations, on their own page.
@@ -50,14 +50,22 @@ import { marketItems, welcomeBook } from "@/lib/content";
   that it had already been shoved into the right-hand gutter to stop it
   running through the copy. The M Linx mark and name still head the section.
 
-  One thing this page does NOT fix: PanelHeader has no M Linx link. The old
-  <Nav> did, so converting the rest of the site to V2 quietly cut the
-  marketplace's front door. PanelHeader's own comment records "Five links,
-  ⌘K, one call to action ... (Meg: keep it calm)", so a sixth link is her
-  call rather than something to slip in here. Today the page is reached from
-  the footer, from Services, from the ⌘K palette and from the nudges in
-  Playground on /tools. If the marketplace is meant to be the way in, that
-  is the next thing to settle.
+  One thing this page does NOT fix: the site's nav has no M Linx link. The
+  old <Nav> did, so converting the rest of the site to V2 quietly cut the
+  marketplace's front door. `siteNav`'s own note records "Five links,
+  ⌘K, one call to action ... (Meg: keep it calm)", so a seventh link is
+  her call rather than something to slip in here. Today the page is reached
+  from the footer, from Services, from the ⌘K palette and from the nudges
+  in Playground on /tools. If the marketplace is meant to be the way in,
+  that is the next thing to settle.
+
+  Nov 26 2026: converted to the approved homepage's clothes with
+  `.cp-inner` — its bar, its two faces, its one accent, and the V2 aurora
+  gone. A token re-point, so MarketCatalog, WorkflowMap and the welcome
+  book band are untouched. The one thing to know is the red octopus band
+  below: it was off-palette on purpose against violet and teal, and it is
+  off-palette on purpose against the homepage's single teal for exactly
+  the same reason, which is that nothing teal sits anywhere near it.
 */
 
 export const metadata: Metadata = pageMeta({
@@ -72,18 +80,17 @@ export default function MarketplacePage() {
   const book = marketItems.find((m) => m.id === "welcome-book");
 
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
+        <StageTopBar
+          inFlow
+          cta="book"
+          nav={siteNav}
+          here="Marketplace"
+          bookHref="/?offer=call#contact"
+        />
 
-        <div className="relative z-10">
-          <PanelHeader bookHref="/?offer=call#contact" />
-        </div>
-
-        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        {/* No pt-16: that cleared the fixed <Nav>, and this bar is in flow. */}
         <main className="relative z-10">
           {/* Header */}
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">

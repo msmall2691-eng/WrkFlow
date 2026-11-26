@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import Playground from "@/components/Playground";
 import StackedHeading from "@/components/StackedHeading";
 import LivingFrame from "@/components/ocean/LivingFrame";
+import { siteNav } from "@/lib/content";
 
 /*
   /tools — the free M Linx tools, on their own page.
@@ -19,6 +20,13 @@ import LivingFrame from "@/components/ocean/LivingFrame";
   Here they get room and the homepage gets quiet. Everything that pointed at
   /#tools points here instead, and the nav carries a Tools link, so the hook
   is one click away rather than three screens down.
+
+  Nov 26 2026: converted to the approved homepage's clothes with
+  `.cp-inner` — its bar, its two faces, its one accent, no aurora. A token
+  re-point, so Playground and its eight tools are untouched; what changes
+  for them is that the signal they are drawn in is the homepage's teal and
+  that a filled button is the homepage's paper pill rather than a coloured
+  one, both decided in `globals.css` rather than here.
 */
 
 export const metadata: Metadata = pageMeta({
@@ -30,21 +38,17 @@ export const metadata: Metadata = pageMeta({
 
 export default function ToolsPage() {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 overflow-hidden"
-        >
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
+        <StageTopBar
+          inFlow
+          cta="book"
+          nav={siteNav}
+          here="Free tools"
+          bookHref="/?offer=call#contact"
+        />
 
-        <div className="relative z-10">
-          <PanelHeader current="/tools" bookHref="/?offer=call#contact" />
-        </div>
-
-        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        {/* No pt-16: that cleared the fixed <Nav>, and this bar is in flow. */}
         <main className="relative z-10">
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
             {/*
@@ -130,6 +134,14 @@ export default function ToolsPage() {
           </section>
           {/*
             The tool grid sits on the flat ground, not over the aurora.
+
+            **The aurora came off this page on Nov 26 2026** and the whole
+            page is now that flat ground, so this wrapper paints what is
+            already there. It stays because what it says is still true and
+            still the thing to check: the densest text on the site wants
+            an opaque ground under it, and whatever arrives behind this
+            section next has to leave that true. The measurements below
+            are the aurora's and are kept as the record of why.
 
             Playground's category labels are 12px .text-faint, and
             --color-faint is tuned to clear 4.5:1 on #08070c specifically.

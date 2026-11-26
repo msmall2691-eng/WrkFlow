@@ -3,12 +3,13 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import CatalogBrowser from "@/components/CatalogBrowser";
 import StackedHeading from "@/components/StackedHeading";
 import { catalog, categories, liveDemoIds } from "@/lib/catalog";
+import { siteNav } from "@/lib/content";
 
 /*
   /catalog — everything in one place, browsed by what you need. Data and
@@ -17,6 +18,13 @@ import { catalog, categories, liveDemoIds } from "@/lib/catalog";
   Second pass on Meg's notes ("more professional and clean", "less
   colours", "feels scattered"): no aurora behind the page, a smaller
   heading, one row of live demos, then the category tabs and the grid.
+
+  Nov 26 2026: converted to the approved homepage's clothes with
+  `.cp-inner` — its bar, its two faces, its one accent. This page was
+  already the closest of the six: it had asked for no aurora and fewer
+  colours a pass earlier, which is the same note the homepage was chosen
+  on. A token re-point, so CatalogBrowser and the sticky category bar are
+  untouched.
 */
 
 export const metadata: Metadata = pageMeta({
@@ -37,8 +45,14 @@ export default function CatalogPage() {
   const count = catalog.filter((i) => i.status !== "workbench").length;
 
   return (
-    <div className="cp">
-      <PanelHeader current="/catalog" bookHref="/?offer=call#contact" />
+    <div className="cp cp-inner">
+      <StageTopBar
+        inFlow
+        cta="book"
+        nav={siteNav}
+        here="Catalog"
+        bookHref="/?offer=call#contact"
+      />
 
       <main>
         <section className="border-b border-[var(--cp-line)] pb-10 pt-8 md:pb-12 md:pt-12">

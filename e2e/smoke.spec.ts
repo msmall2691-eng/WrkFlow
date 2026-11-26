@@ -1701,17 +1701,41 @@ test("the homepage's art carries no claim", async ({ page }) => {
   only place this is visible. A unit test on the class list would pass
   for all five of the failures above.
 
-  **Asserted on /services rather than the homepage since #156.** The
-  approved homepage is one near-black world with no light branch at all
-  — `.stage` fixes its own ground in both themes — so a `cp-night` check
-  there would be a test that cannot fail. /services is where the class
-  actually does its work now: it renders `StackedHeading`, `PanelHeader`
-  and four `CastFrame`s, which are three of the five failures above, and
-  it is a page Daylight genuinely reaches.
+  **It moved from /services to the routes Daylight still reaches, and
+  the move is the point rather than a tidy-up.** It was asserted on
+  /services because that was where `cp-night` did its work: four
+  `CastFrame`s on a page the light theme genuinely painted cream. The
+  Nov 26 inner-page pass made /services one near-black world in both
+  themes, like the homepage, so the check there became a test that
+  cannot fail — which is exactly what the note above it said about the
+  homepage one commit earlier, and exactly the quiet half this file
+  keeps warning about.
+
+  So it sweeps every route this pass did **not** convert, which is
+  where `.cp`'s Daylight branch still applies and where the next
+  `cp-night` island would land. Nothing wears the class on those routes
+  today; the rule is asserted anyway, because the failure it guards is
+  somebody moving a frame onto one of them, and because the class is
+  still live on three components.
+
+  The other half of the decision — that the converted pages really are
+  near-black in Daylight rather than merely untested there — is the test
+  directly below this one.
 */
-test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ page }) => {
+const DAYLIGHT_ROUTES = [
+  "/brightbase",
+  "/demo",
+  "/turnover",
+  "/welcome-book",
+  "/privacy",
+  "/terms",
+  "/intake",
+];
+
+for (const route of DAYLIGHT_ROUTES) {
+test(`in Daylight, nothing wearing cp-night sits on a light ground (${route})`, async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/services");
+  await page.goto(route);
   await page.evaluate(() => {
     document.documentElement.dataset.theme = "light";
   });
@@ -1766,11 +1790,180 @@ test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ pa
 
   expect(
     offenders,
-    "these force dark-theme tokens, so their text is near-white, and in Daylight " +
-      "they have nothing dark behind them: " +
+    `${route}: these force dark-theme tokens, so their text is near-white, and in ` +
+      "Daylight they have nothing dark behind them: " +
       offenders.map((o) => `${o.what} on ${o.bg} (luma ${o.luma})`).join("; ") +
       " — give the section `night-band`, or its own dark ground",
   ).toEqual([]);
+});
+}
+
+/*
+  The converted pages are one near-black world, in both themes.
+
+  **This is the decision the inner-page pass actually made, asserted
+  rather than left to a screenshot.** The approved homepage has no light
+  branch at all, by Meg's sign-off. If /services were still cream in
+  Daylight, a visitor who picked Daylight in ⌘K would get a near-black
+  homepage and a cream services page, which is "a different website one
+  click later" again, moved from the typeface onto the theme. So the six
+  routes the homepage leads to carry `.cp-inner`, and
+  `:root[data-theme="light"] .cp:not(.cp-inner)` steps aside for them.
+
+  Asserted as *the two themes render the same ground and the same ink*,
+  which is the property, rather than against a hex this test would then
+  own a second copy of. It fails if the class comes off a wrapper, if a
+  light branch is written for it, or if the `:not()` is dropped — three
+  changes that each look completely fine in the file they are made in.
+
+  The near-black assertion on top of the equality is what stops the pair
+  passing by both being wrong.
+*/
+test("the converted pages are the same near-black world in both themes", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  const ground = async (path: string, theme: "dark" | "light") => {
+    await page.goto(path);
+    await page.evaluate((t) => {
+      if (t === "light") document.documentElement.dataset.theme = "light";
+      else delete document.documentElement.dataset.theme;
+    }, theme);
+    await page.waitForTimeout(400);
+    return page.evaluate(() => {
+      /*
+        **`.cp` rather than `.cp-inner`**, which is the difference
+        between a test and a test that cannot fail. Asked for
+        `.cp-inner` it found nothing when the class was taken off the
+        wrapper and fell through to the `.stage` the header is mounted
+        in, which is near-black in both themes by definition — so
+        removing the thing this guards made it pass. Document order
+        makes the page's own wrapper the first match either way.
+      */
+      const el = document.querySelector(".cp, .stage") as HTMLElement;
+      const cs = getComputedStyle(el);
+      const luma = (c: string) => {
+        const v = (c.match(/\d+/g) ?? ["0", "0", "0"]).slice(0, 3).map(Number);
+        return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+      };
+      return {
+        bg: cs.backgroundColor,
+        ink: cs.color,
+        bgLuma: Math.round(luma(cs.backgroundColor)),
+        inkLuma: Math.round(luma(cs.color)),
+      };
+    });
+  };
+
+  for (const path of [
+    "/",
+    "/services",
+    "/tools",
+    "/marketplace",
+    "/about",
+    "/catalog",
+    "/work/maine-cleaning-co",
+  ]) {
+    const harbor = await ground(path, "dark");
+    const daylight = await ground(path, "light");
+
+    expect(
+      daylight,
+      `${path} renders differently in Daylight (${daylight.bg} on ${daylight.ink}) than in ` +
+        `Harbor (${harbor.bg} on ${harbor.ink}) — it should be one near-black world in both, ` +
+        "like the homepage it is reached from",
+    ).toEqual(harbor);
+
+    expect(
+      harbor.bgLuma,
+      `${path} should be near-black and its ground measures luma ${harbor.bgLuma}`,
+    ).toBeLessThan(30);
+    expect(
+      harbor.inkLuma,
+      `${path} should carry light ink on that ground and measures luma ${harbor.inkLuma}`,
+    ).toBeGreaterThan(170);
+  }
+});
+
+/*
+  The header, which is the one thing on every page.
+
+  Two things are asserted and both are failures Meg named out loud.
+
+  **One: a phone can reach the site from it.** Below 860 the approved
+  design drops the links, so before the menu existed a visitor at 390
+  had a wordmark, a search affordance and one button — /services and
+  /tools were not reachable from the header at all, on the width most of
+  her buyers use. The links were in the stylesheet and unreachable on
+  screen, which is a failure no build, no type check and no Lighthouse
+  run says a word about, and which a test that merely counted anchors
+  would have passed. So it is asserted by opening the menu and
+  *following* a link, the same way the demos test is.
+
+  **Two: it says where you are.** Her words were "I really want a better
+  header saying title whatever". The bar carries the page's name beside
+  the wordmark on every inner page, and on the homepage — which has no
+  title above its hero — it names the band being read instead. Asserted
+  on the rendered bar rather than on the prop, because the prop being
+  passed and the name being visible are different claims.
+*/
+test("on a phone, the header reaches the rest of the site", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("navigation", { name: "Main" }),
+    "the bar's own links are off at this width, which is the design",
+  ).toBeHidden();
+
+  await page.locator("button.menubtn").click();
+  const menu = page.getByRole("navigation", { name: "Site" });
+  await expect(menu, "the menu button should open a menu").toBeVisible();
+
+  /* Every link in it has to go somewhere, and one of them is followed. */
+  for (const a of await menu.getByRole("link").all())
+    expect(await a.getAttribute("href"), "a menu link with no href").toBeTruthy();
+
+  await menu.getByRole("link", { name: "Services", exact: true }).click();
+  await expect(page).toHaveURL(/\/services$/);
+  await expect(
+    page.getByRole("navigation", { name: "Site" }),
+    "arriving somewhere should close the menu behind you",
+  ).toHaveCount(0);
+});
+
+test("the header says which page you are on", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+
+  for (const [path, name] of [
+    ["/services", "Services"],
+    ["/tools", "Free tools"],
+    ["/marketplace", "Marketplace"],
+    ["/about", "About"],
+    ["/catalog", "Catalog"],
+    ["/work/maine-cleaning-co", "Case study"],
+  ]) {
+    await page.goto(path);
+    await expect(
+      page.locator("header .here"),
+      `${path} should name itself in the header`,
+    ).toContainText(name);
+  }
+
+  /* The homepage has no title above the hero, so the slot is the band
+     being read. Empty at the top, and the slot is deliberately empty
+     rather than filled with a word like "Home" that says nothing. */
+  await page.goto("/");
+  await page.waitForTimeout(400);
+  await expect(page.locator("header .here")).toHaveCount(0);
+
+  await page.locator("#work").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(600);
+  await expect(
+    page.locator("header .here"),
+    "scrolled into the work band, the homepage header should name it",
+  ).toContainText("Work");
 });
 
 /*

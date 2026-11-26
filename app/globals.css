@@ -1436,8 +1436,23 @@ body:has(.cp) {
    that comment still holds and the colours become ones this ground can
    carry. That is the #115 / #118 failure caught before it shipped rather
    than after.
+
+   **Nov 26 2026: every rule in this branch now says `:not(.cp-inner)`,
+   and that is the one real decision in the inner-page pass.** The
+   approved homepage is one near-black world with no light branch at all,
+   by Meg's sign-off. A visitor who picks Daylight in ⌘K on that homepage
+   gets a near-black homepage either way — so if /services were still
+   cream, the click off the homepage would be "a different website one
+   click later" again, in the theme instead of the typeface. The six
+   routes this pass converted are therefore dark in both themes, exactly
+   as the page they are reached from.
+
+   Daylight is not deleted. It still dresses every route this pass did
+   not touch, which is why the branch stays here in full rather than
+   being collapsed: the conversion is `.cp-inner` being added to a
+   wrapper, and this branch stepping aside for it.
    ============================================================ */
-:root[data-theme="light"] .cp {
+:root[data-theme="light"] .cp:not(.cp-inner) {
   color-scheme: light;
   background: #f7f4ef;
   color: #0b1722;
@@ -1500,7 +1515,7 @@ body:has(.cp) {
   --wm-ink: rgba(11, 23, 34, 0.13);
   --wm-stroke: rgba(11, 23, 34, 0.2);
 }
-:root[data-theme="light"] body:has(.cp) {
+:root[data-theme="light"] body:has(.cp:not(.cp-inner)) {
   background: #f7f4ef;
 }
 
@@ -1510,7 +1525,7 @@ body:has(.cp) {
   a hairline and a shadow you have to look for. No backdrop blur: there is
   nothing behind them worth blurring once the ground is pale.
 */
-:root[data-theme="light"] .cp-tile {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-tile {
   background: #ffffff;
   border-color: rgba(11, 23, 34, 0.09);
   -webkit-backdrop-filter: none;
@@ -1519,10 +1534,10 @@ body:has(.cp) {
     0 1px 2px rgba(11, 23, 34, 0.04),
     0 10px 28px -18px rgba(11, 23, 34, 0.22);
 }
-:root[data-theme="light"] .cp-tile:hover {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-tile:hover {
   border-color: rgba(124, 58, 237, 0.34);
 }
-:root[data-theme="light"] .cp-tile-cta {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-tile-cta {
   background: linear-gradient(
     160deg,
     rgba(124, 58, 237, 0.1),
@@ -1530,16 +1545,16 @@ body:has(.cp) {
     #ffffff
   );
 }
-:root[data-theme="light"] .cp-row:hover {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-row:hover {
   background: rgba(124, 58, 237, 0.07);
 }
-:root[data-theme="light"] .cp-kbd {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-kbd {
   border-color: rgba(11, 23, 34, 0.18);
 }
 
 /* The hero ramp, in inks cream can carry: 6.0:1, 5.6:1, 6.0:1 across the
    sweep. #b9a2ff opened the dark one at ~2:1 here. */
-:root[data-theme="light"] .cp-grad {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-grad {
   background: linear-gradient(90deg, #7c3aed, #115e59 55%, #be185d);
   -webkit-background-clip: text;
   background-clip: text;
@@ -1550,16 +1565,16 @@ body:has(.cp) {
   is the whole brief. Roughly a third of the dark opacities, which on cream
   lands as a wash you notice only when you look for it.
 */
-:root[data-theme="light"] .cp-a1 {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-a1 {
   background: rgba(124, 58, 237, 0.14);
 }
-:root[data-theme="light"] .cp-a2 {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-a2 {
   background: rgba(13, 148, 136, 0.1);
 }
-:root[data-theme="light"] .cp-a3 {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-a3 {
   background: rgba(190, 24, 93, 0.08);
 }
-:root[data-theme="light"] .cp-glow {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-glow {
   background: radial-gradient(
     circle,
     rgba(124, 58, 237, 0.07),
@@ -1573,7 +1588,7 @@ body:has(.cp) {
 .cp .cp-sticky-bar {
   background: rgba(8, 7, 12, 0.9);
 }
-:root[data-theme="light"] .cp .cp-sticky-bar {
+:root[data-theme="light"] .cp:not(.cp-inner) .cp-sticky-bar {
   background: rgba(247, 244, 239, 0.92);
 }
 
@@ -2000,19 +2015,22 @@ body:has(.cp) {
    mask-image, and without it the fallback is a hard rectangle, which is
    exactly the thing being removed.
    ───────────────────────────────────────────────────────────────────────── */
+/* Hoisted to a property with one author, because the converted inner
+   pages have to put it back in the light theme — they are near-black in
+   both, so the Daylight branch below is wrong for them. See the
+   `.cp-inner` block at the foot of this file. */
+:root {
+  --bleed-mask: radial-gradient(
+    100% 100% at 50% 50%,
+    #000 40%,
+    rgba(0, 0, 0, 0.45) 52%,
+    transparent 66%
+  );
+}
+
 .ocean-bleed {
-  -webkit-mask-image: radial-gradient(
-    100% 100% at 50% 50%,
-    #000 40%,
-    rgba(0, 0, 0, 0.45) 52%,
-    transparent 66%
-  );
-  mask-image: radial-gradient(
-    100% 100% at 50% 50%,
-    #000 40%,
-    rgba(0, 0, 0, 0.45) 52%,
-    transparent 66%
-  );
+  -webkit-mask-image: var(--bleed-mask);
+  mask-image: var(--bleed-mask);
 }
 
 /* Daylight gets an edge back, and that is not a compromise.
@@ -2184,7 +2202,19 @@ body:has(.cp) {
       CLAUDE.md asks for a colour change to be looked at in both themes:
       this one cannot be, by design.
    ============================================================ */
-.stage {
+/*
+  **The tokens are declared once and worn by two scopes.**
+
+  `.cp-inner` is the inner-page conversion (see the block at the foot of
+  this file). It needs the design's values and none of the element styling
+  below, which is written for the homepage's own markup and would fight
+  the utility classes every other page is built from — `.stage p { margin: 0 }`
+  is unlayered, so it beats `mt-5`. So the rule is split rather than the
+  values copied: one source for `--acc`, one for `--ink`, and a second
+  scope that reads them.
+*/
+.stage,
+.cp-inner {
   /* The design's own tokens, verbatim. */
   --ink: #08070c;
   --ink-2: #0d0c13;
@@ -2199,7 +2229,9 @@ body:has(.cp) {
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --gut: 16px;
   --maxw: 1240px;
+}
 
+.stage {
   color-scheme: dark;
   background: var(--ink);
   color: var(--fg);
@@ -2213,12 +2245,14 @@ body:has(.cp) {
   overflow-x: hidden;
 }
 @media (min-width: 760px) {
-  .stage {
+  .stage,
+  .cp-inner {
     --gut: 40px;
   }
 }
 @media (min-width: 1200px) {
-  .stage {
+  .stage,
+  .cp-inner {
     --gut: 56px;
   }
 }
@@ -2356,6 +2390,55 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   color: var(--acc);
   font-weight: 500;
 }
+/*
+  The page's name, beside the wordmark.
+
+  Mono, because it is a label about the document rather than prose, which
+  is the same reason the eyebrows and the prices are mono. `--fg-3`'s
+  slash and `--fg-2`'s name put the emphasis on the name without letting
+  it compete with the wordmark it follows. It clips rather than wraps:
+  the bar is one line, and a long case-study name must not be able to
+  push the call to action off the end of it.
+*/
+.stage .here {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  /*
+    **It is the only thing on the bar allowed to shrink**, which is what
+    keeps the bar on one line without a single magic width in it. The
+    wordmark, the call to action and the menu button are `flex: none`;
+    this takes whatever is left and clips. Measured against the
+    alternative that was tried first — a `max-width` in vw — which has
+    to be guessed per breakpoint and was still wrong at 860, where the
+    bar wrapped and dropped the button onto a second row.
+  */
+  flex: 0 1 auto;
+  min-width: 0;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  white-space: nowrap;
+}
+.stage .here .slash {
+  color: var(--fg-3);
+}
+/* The ellipsis needs a block to happen in: a flex container's own text
+   is an anonymous item and `text-overflow` never reaches it. */
+.stage .here .name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stage .mark,
+.stage .topbar .btn,
+.stage .menubtn,
+.stage .topkey {
+  flex: none;
+}
+
 .stage .topnav {
   display: none;
   margin-left: auto;
@@ -2363,11 +2446,40 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   align-items: center;
 }
 .stage .topnav a {
+  position: relative;
+  padding-block: 4px;
   font-size: 0.92rem;
   color: var(--fg-2);
   transition: color 0.2s var(--ease);
 }
 .stage .topnav a:hover {
+  color: var(--fg);
+}
+/*
+  The underline is the services rows' own gesture, borrowed: a hairline
+  that grows from the left on the one curve. Transform and opacity only,
+  so it costs no layout, and it carries the *current page* at rest as
+  well as the hover — one mark, two meanings, which is what stops the
+  active state needing a second colour nobody has chosen.
+*/
+.stage .topnav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: var(--acc);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease);
+}
+.stage .topnav a:hover::after,
+.stage .topnav a:focus-visible::after,
+.stage .topnav a.on::after {
+  transform: scaleX(1);
+}
+.stage .topnav a.on {
   color: var(--fg);
 }
 .stage .btn {
@@ -2418,6 +2530,267 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   }
   .stage .topbar .btn {
     margin-left: 0;
+  }
+}
+
+/*
+  The same bar, in flow, for the pages that are not the hero.
+
+  **One bar, two mounts, no second set of rules.** The homepage floats it
+  over a full-bleed clip, so it is `fixed` and fades its ground in once the
+  hero is behind it. An inner page has no clip to float over and a great
+  deal of content to not sit on top of, so there it stands in the flow
+  wearing the ground it would have had after that first scroll: same
+  height, same wordmark, same hairline, same pill. A visitor crossing from
+  the homepage sees the bar it already had, stuck.
+
+  `inset: auto` because `position: relative` reads `inset: 0 0 auto 0` as
+  offsets rather than as sizing, and `left: 0` with `right: 0` is a
+  3px-per-browser argument nobody needs to have.
+*/
+.stage.bar-host {
+  overflow: visible;
+}
+.stage .topbar.inflow {
+  position: relative;
+  inset: auto;
+  min-height: 66px;
+}
+/*
+  **The bar does not wrap, and that is the fix rather than the risk.**
+  `flex-wrap: wrap` was here first and it is incompatible with the page
+  name shrinking: flexbox decides its lines from each item's *content*
+  width and only shrinks within a line, so a long label wrapped the bar
+  instead of clipping itself. Measured on /marketplace at 390 — the
+  longest of the six names — the menu button dropped to a second row at
+  the far left, under the wordmark, which reads as broken. Everything
+  but the name is `flex: none` and measures 274px of a 358px box at that
+  width, so there is nothing for a single line to overflow with.
+*/
+.stage .topbar.inflow .wrap {
+  padding-block: 12px;
+}
+
+/*
+  ⌘K, which the inner pages' header has always carried and the homepage's
+  does not. Hidden on the same breakpoint as the links, for the same
+  reason the design hides those: there is no room, and no keyboard to
+  press. The palette itself is mounted on every page and still answers the
+  shortcut.
+*/
+.stage .topkey {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--fill);
+  color: var(--fg-2);
+  font: inherit;
+  font-size: 0.82rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+.stage .topkey:hover {
+  color: var(--fg);
+  border-color: var(--acc);
+}
+@media (min-width: 860px) {
+  .stage .topkey {
+    display: inline-flex;
+  }
+}
+
+/* ── the phone's way in ─────────────────────────────────── */
+/*
+  Two bars that become a cross, on transform alone. 44px square is the
+  floor this site set for a coarse pointer, and it is an icon rather
+  than the word "Menu" because at 390 the wordmark, the page name and
+  the call to action have already spent the width.
+*/
+.stage .menubtn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: calc(var(--gut) * -0.5);
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--fg);
+  cursor: pointer;
+}
+.stage .menubtn:hover {
+  color: var(--acc);
+}
+.stage .bars {
+  display: grid;
+  gap: 5px;
+  width: 19px;
+}
+.stage .bars i {
+  display: block;
+  height: 1.5px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: transform 0.25s var(--ease);
+}
+.stage .bars.x i:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+.stage .bars.x i:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+@media (min-width: 860px) {
+  .stage .menubtn {
+    display: none;
+  }
+}
+
+/*
+  The menu itself: the site, not the bar. It is only in the DOM while it
+  is open, so nothing duplicates the nav's links for a screen reader or
+  for a test, and it lands on the bar's own ground so it reads as the
+  header growing rather than as a card dropped on the page.
+*/
+.stage .menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: rgba(8, 7, 12, 0.97);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  max-height: calc(100svh - 66px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.stage .menu nav {
+  display: grid;
+}
+.stage .menu nav a {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 10px var(--gut);
+  font-size: 1.02rem;
+  color: var(--fg-2);
+  border-bottom: 1px solid var(--line-soft);
+  transition: color 0.2s var(--ease);
+}
+.stage .menu nav a:hover {
+  color: var(--fg);
+}
+/* The page you are on, marked the way the bar marks it: full strength,
+   and the accent on the edge rather than a second colour. */
+.stage .menu nav a.on {
+  color: var(--fg);
+  box-shadow: inset 2px 0 0 var(--acc);
+}
+.stage .menu-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px var(--gut) 20px;
+}
+.stage .menu-key {
+  flex: 1 1 auto;
+  min-height: 44px;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--fg-2);
+  font: inherit;
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    color 0.2s var(--ease),
+    border-color 0.2s var(--ease);
+}
+.stage .menu-key:hover {
+  color: var(--fg);
+  border-color: var(--acc);
+}
+.stage .menu-foot .btn {
+  flex: 1 1 auto;
+  justify-content: center;
+  min-height: 44px;
+  margin-left: 0;
+}
+
+/*
+  390px, where most of Meg's buyers read this.
+
+  Four things want the width at once — the wordmark, the page's name, the
+  call to action and the menu — and measured at 390 they wanted about
+  395px of a 358px content box. Rather than drop one of them, each gives
+  up what it can spare: the wordmark's tracking is a display flourish at
+  this size, the page name is a label and reads fine a step smaller, and
+  the button's padding is the cheapest 14px on the bar. Nothing here
+  changes above 560, where there is room for all of it.
+*/
+@media (max-width: 560px) {
+  /* 10px, not 12: measured on /marketplace at 390, the longest of the
+     six page names wanted 75px and had 72, and three gaps is where the
+     three were. */
+  .stage .topbar .wrap {
+    gap: 10px;
+  }
+  .stage .mark {
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+  }
+  .stage .here {
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+  }
+  .stage .topbar .btn {
+    padding: 10px 14px;
+    font-size: 0.86rem;
+  }
+}
+
+/*
+  Below 360 the name has nothing left to say. At 320 — a Galaxy Fold
+  closed, an old SE — the four items want more than the box has, and
+  what the name shrinks to is a slash and two letters, which is worse
+  than no label at all. The wordmark, the one thing to do and the way
+  into the site are what survive, which is the order they matter in.
+*/
+@media (max-width: 359px) {
+  .stage .here {
+    display: none;
+  }
+}
+/*
+  Six links rather than the homepage's four, so the gap closes up in the
+  band where the bar is widest relative to the viewport. Measured: at 860
+  the six labels, the mark, ⌘K and the CTA want ~845px of a 780px content
+  box. The wrap above is the backstop; this is so it does not have to be
+  used.
+*/
+@media (min-width: 860px) and (max-width: 1140px) {
+  .stage .topbar.inflow .wrap {
+    gap: 16px;
+  }
+  .stage .topbar.inflow .topnav {
+    gap: 14px;
+  }
+  .stage .topbar.inflow .topnav a {
+    font-size: 0.86rem;
+  }
+  .stage .topbar.inflow .here {
+    font-size: 0.66rem;
   }
 }
 
@@ -3270,4 +3643,226 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   .stage .scrollcue {
     display: none !important;
   }
+}
+
+/* ============================================================
+   THE INNER PAGES, IN THE STAGE'S CLOTHES — `.cp-inner`
+   (Nov 26 2026)
+
+   **This is a re-point, not a restyle.** The six routes a visitor reaches
+   from the approved homepage — /services, /tools, /marketplace, /about,
+   /catalog and /work/[slug] — wore `.cp`: Space Grotesk and Fraunces, a
+   violet aurora, violet accents, a cream Daylight branch. One click off
+   the homepage was a different website, which is the complaint this
+   answers.
+
+   Their markup is built from utilities and components that already read
+   tokens, almost without exception, so the conversion is a token map
+   rather than six page rewrites: every `--cp-*` and every legacy
+   `--color-*` that `.cp` remaps is pointed at the design's own tokens
+   above. Nothing here invents a value. Where the design has no answer for
+   something `.cp` needs — a fill that has to carry a white label, an
+   amber that means "storm" rather than "brand" — that is said out loud
+   below rather than guessed at.
+
+   **It is a modifier on `.cp`, not a replacement for it.** The pages carry
+   `class="cp cp-inner"`. `.cp` keeps every value it had, so /brightbase,
+   /demo/*, /turnover, /welcome-book, /intake, /privacy and /terms are
+   untouched by this pass and finishing them is adding one word to each
+   wrapper. The block sits after `.cp` because the two have the same
+   specificity and source order is what settles it.
+   ============================================================ */
+.cp-inner {
+  /*
+    **Two faces, not three.** `.cp` set `--font-display` to Space Grotesk
+    and `--font-serif` to Fraunces; the approved homepage sets everything
+    in Inter Tight and keeps JetBrains Mono for data. Re-pointed here
+    rather than swept through the markup, so every `font-display`,
+    `display-serif` and `[font-family:var(--font-serif)]` already written
+    converges without being edited, and `.marker`, `.mono` and every
+    `font-mono` label keeps the mono it was asking for.
+
+    `StackedHeading` carries a `face` prop that exists so that unifying
+    the type *scale* did not quietly settle the typeface. The homepage
+    settled it: this is the brand Meg picked by looking at it. The prop
+    stays, and on these six routes both of its answers now resolve to the
+    same family.
+  */
+  --font-display: var(--font-inter-tight), system-ui, sans-serif;
+  --font-serif: var(--font-inter-tight), system-ui, sans-serif;
+  --font-sans: var(--font-inter-tight), system-ui, sans-serif;
+  /* One curve, the design's. */
+  --ease-out-expo: var(--ease);
+
+  background: var(--ink);
+  color: var(--fg);
+  font-family: var(--font-inter-tight), system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* ── the panel's own tokens ─────────────────────────────── */
+  --cp-ink: var(--fg);
+  --cp-soft: var(--fg-2);
+  --cp-muted: var(--fg-2);
+  --cp-faint: var(--fg-3);
+  /* `--cp-line` is the band divider these pages rule their sections with,
+     which is `--line-soft` on the homepage; `--color-line` below is the
+     card hairline, which is `--line`. Two weights, same two the design
+     uses, matched to what each is actually drawing. */
+  --cp-line: var(--line-soft);
+
+  /*
+    The violet/teal/pink trio collapses to the one accent. The homepage
+    has exactly one, and a second hue on an inner page is the thing that
+    read as a different brand. Line and wash are mixed from it rather
+    than written out, so there is still one place the colour lives.
+  */
+  --cp-violet: var(--acc);
+  --cp-violet-ink: var(--acc);
+  --cp-violet-line: color-mix(in srgb, var(--acc) 40%, transparent);
+  --cp-violet-wash: color-mix(in srgb, var(--acc) 12%, transparent);
+  --cp-teal: var(--acc);
+  --cp-pink: var(--acc);
+  /*
+    **Amber is not re-pointed and that is deliberate.** It means "storm
+    warning" on the Turnover Planner, not "brand", and collapsing a
+    warning colour into the accent would make an alert look like a link.
+    Neither of its two readers renders on these six routes, so it is
+    inherited from `.cp` untouched.
+  */
+
+  /* The design's solid button is paper under near-black ink. */
+  --cp-on-ink: #0a0910;
+  --cp-option-bg: var(--fill);
+  --cp-well: var(--ink-2);
+  --cp-hairline: var(--line-soft);
+  --cp-hairline-strong: var(--line);
+  --cp-fill: var(--fill);
+
+  /* ── the legacy names the shared components still read ──── */
+  --color-base: var(--ink);
+  --color-surface: var(--ink-2);
+  --color-elevated: var(--ink-2);
+  /*
+    `--line-soft`, not `--line`, and it is worth saying why because the
+    obvious reading is the other way round. `--color-line` is the
+    stylesheet's *default* border colour (`@layer base * {…}`) and its
+    commonest explicit use on these pages is a section divider, which on
+    the homepage is `--line-soft`. `.cp`'s old value sat between the two
+    at 0.09, so taking the stronger one made every hairline on six pages
+    louder than it had been — most visibly the grid behind the Services
+    band, which is drawn from this token and went from a suggestion to a
+    grid. Cards get the same soft edge, which is also the homepage's
+    taste: its cards have no border at all.
+  */
+  --color-line: var(--line-soft);
+  --color-ink: var(--fg);
+  --color-muted: var(--fg-2);
+  --color-faint: var(--fg-3);
+  /*
+    `--color-signal` is the accent everywhere it is a hairline, a dot, a
+    wash or a word — all of which the design's `--acc` is exactly right
+    for on near-black. It is also, in about a dozen places, a **fill
+    under a hardcoded `text-white`**, and `#5fe0c6` under white is 1.6:1.
+    That is #115 with the colours swapped, so those buttons are answered
+    below instead of being left to a colour that cannot carry them.
+  */
+  --color-signal: var(--acc);
+  --color-signal-dim: color-mix(in srgb, var(--acc) 82%, var(--ink));
+  --color-signal-glow: color-mix(in srgb, var(--acc) 18%, transparent);
+  /* The warm second accent goes too, for the trio's reason. */
+  --color-gold: var(--acc);
+  --color-gold-dim: color-mix(in srgb, var(--acc) 82%, var(--ink));
+
+  --hero-bg: var(--ink);
+  /* The homepage has exactly one banded section, and it is `--ink-2`. */
+  --section-alt-bg: var(--ink-2);
+  --section-alt2-bg: var(--ink);
+
+  --panel-bg: var(--fill);
+  --panel-line: var(--line);
+  --panel-ink: var(--fg);
+  --panel-muted: var(--fg-2);
+  --panel-faint: var(--fg-3);
+  /* The field fill from the design's own form. */
+  --panel-input-bg: rgba(255, 255, 255, 0.05);
+}
+
+/*
+  `.display-serif` was Fraunces at weight 500 and `.display` Space Grotesk
+  at 600. With both faces now Inter Tight, the only thing left between
+  them is a weight the design does not have: every heading on the
+  homepage is 600 with -0.03em. Two rules so the two classes stop being
+  two voices.
+*/
+.cp-inner .display-serif {
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+/*
+  **The primary button, as the homepage draws it.**
+
+  The design's `.btn-solid` is `--paper` under `#0a0910`. These pages ask
+  for `bg-signal` under a hardcoded `text-white`, in Pricing, Contact,
+  FounderNote, the case study's closing CTA and seven of the free tools.
+  Answered here by the pair of classes rather than edited at a dozen call
+  sites, which is the same move `globals.css` already makes for
+  `.cp .text-signal` twenty lines from the top of this file — and the
+  reason it is the right one is that the alternative is a dozen chances
+  to miss one and ship white-on-teal.
+
+  Only the opaque pair is matched: `bg-signal/10`, `bg-signal/60` and the
+  rest are different class names, so every wash, dot and pulse keeps the
+  accent.
+*/
+.cp-inner .bg-signal.text-white {
+  background-color: var(--paper);
+  color: #0a0910;
+}
+
+/* Cards, in the design's vocabulary: the banded ground, the soft
+   hairline, and the accent only on hover. No backdrop blur, because with
+   the aurora gone there is nothing behind them to blur. */
+.cp-inner .cp-tile {
+  background: var(--ink-2);
+  border-color: var(--line-soft);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.cp-inner .cp-tile:hover {
+  border-color: color-mix(in srgb, var(--acc) 38%, transparent);
+}
+
+/*
+  **Daylight does not reach these pages, and five rules elsewhere in this
+  file have to be told so.**
+
+  The decision itself is at `:root[data-theme="light"] .cp:not(.cp-inner)`
+  above. What is left over is the handful of rules that key on the
+  *theme* when what they actually mean is *the ground under this element
+  is light*: with the ground now fixed near-black here, each of them
+  would do the opposite of its own reasoning. `.ocean-bleed` would trade
+  its mask for the hard rectangle Meg asked the site to stop drawing,
+  `.creature` and `.case-art` would hide art that has a dark page to sit
+  on, and `/about` would swap the cut-out portrait for the circle that
+  exists for cream.
+
+  `--bleed-mask` is hoisted to `:root` so the gradient still has one
+  author; these rules point at it rather than restating it.
+*/
+:root[data-theme="light"] .cp-inner .ocean-bleed {
+  -webkit-mask-image: var(--bleed-mask);
+  mask-image: var(--bleed-mask);
+  border-radius: 0;
+}
+:root[data-theme="light"] .cp-inner .creature {
+  display: block;
+}
+:root[data-theme="light"] .cp-inner .case-art {
+  display: block;
+}
+:root[data-theme="light"] .cp-inner .founder-cut {
+  display: block;
+}
+:root[data-theme="light"] .cp-inner .founder-round {
+  display: none;
 }
