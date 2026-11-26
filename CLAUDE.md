@@ -67,6 +67,40 @@ about evidence, which is the first rule on this page.
 - **Nov 25, 2026: Meg reversed the calm rule, in her own words.** This said *one orchestrated moment per page; no fade-up on every section*, written when she found the first V2 cut too busy. She then asked, repeatedly and plainly, for the site to move the way likeakinginc.com does, and for her own clips and art to carry it. Measured on that reference rather than guessed at: one looping hero video, seven canvases, and an animation or transition on **352 of its 1192 elements**. A single moving hero over an otherwise static page is what this site had, and it is why it still read as a static page with a video on top.
 
   So the homepage now carries a hero loop, a page-wide drift canvas and a reveal on every section below the fold. What survives from the old rule is the engineering rather than the taste: transform and opacity only, one duration and one curve for all reveals, each reveal fires once, and anything that loops pauses when it cannot be seen.
+
+- **Nov 26, 2026: the homepage is a different page, and the paragraph above
+  describes the one it replaced.** It is kept because its engineering half is
+  still the law here; only its inventory has expired. The drift canvas is gone
+  with the page that carried it, and "a reveal on every section below the
+  fold" is now the `.stage` block's business rather than `.cp`'s.
+
+  **How it was decided is the part worth keeping.** Six rounds of editing the
+  old homepage one section at a time took Meg from "jumbled and chaotic and
+  redundant" to "going in circles or a maze" to "I don't like any of it." The
+  method was the fault: every round asked her to judge a design from a
+  description or a diff. What worked was three complete homepages, built from
+  `lib/content.ts` with her real prices and her own art, published as pages
+  she could open on her phone and scroll. She picked one by looking at it, in
+  one message, after a day of not being able to. **Build the thing before
+  asking which thing.**
+
+  **`.stage` is the live homepage system and `.cp` is not.** The chosen design
+  was ported nearly verbatim into a `.stage` block rather than re-interpreted
+  into utilities, which is deliberate: re-interpreting is how a design drifts
+  away from the thing that was approved. Its tokens keep their own names
+  (`--ink`, `--acc`, `--ease`, `--gut`, `--maxw`). `.cp` still dresses every
+  other route, so the two systems coexist on purpose until the inner pages
+  follow.
+
+  Two things a future change has to know. **Daylight does not reach the
+  homepage**: there is no `[data-theme="light"] .stage` branch, because the
+  design is one near-black world. That is a real exception to the
+  both-themes rule below, taken with Meg's sign-off, and it does not
+  generalise to anything else. And **nine components now have no caller** —
+  `OceanHero`, `ReefMap`, `Drift`, `MovingChapter`, `TakeReel`, `Shelf`,
+  `MoreWork`, `TryItNow`, `WhatConnects`. They were left in place rather
+  than deleted inside a port; deleting them is its own change, with
+  `seam-check-before-removal` applied to each.
 - Motion either demonstrates a system working or responds to the visitor.
 - Animate only `transform` and `opacity`; 150ms toggles, 250–350ms panels, 600ms max hero; one easing curve.
 - Every animation has a `prefers-reduced-motion: reduce` fallback that shows the end state, and anything that loops stops when it cannot be seen. The hero video is removed under `reduce` rather than paused, because a paused or transparent video still costs the decode the visitor asked to avoid; the drift canvas paints one frame and never starts its loop; reveals land on their end state with no transition.
