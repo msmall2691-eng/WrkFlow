@@ -6,7 +6,8 @@ import AuroraSwell from "./AuroraSwell";
 import WhenNear from "./WhenNear";
 import BookCall from "./BookCall";
 import { trackLead } from "@/lib/track";
-import { resumeUrl } from "@/lib/content";
+import { delay } from "./stage/reveal";
+import { founderCta, homeBands, homeHero, resumeUrl } from "@/lib/content";
 import {
   OFFER_EVENT,
   isOfferKey,
@@ -18,7 +19,29 @@ import {
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export default function Contact() {
+/*
+  **The form is one component with two shells, and the logic below is
+  untouched.** The approved homepage design (Nov 25 2026) puts the start
+  form over video in its own type and spacing; /services and /brightbase
+  still render the panel shell this had before. Every behaviour is shared
+  between them — the same state machine, the same five fields with the
+  same names and ids, the same honeypot, the same offer hidden input, the
+  same Turnstile widget, the same `fetch("/api/contact")`, the same
+  challenge nonce bumped on a failed attempt, the same success panel.
+
+  Two shells rather than one set of variant-driven class names because the
+  two layouts share no structure at all: one is a twelve-column grid
+  inside a washed section, the other is the design's two-column `.start`
+  band over a clip. What may never be duplicated is the part that can
+  silently break — the request and the states around it — and that is why
+  it is above the branch rather than inside either arm.
+*/
+export default function Contact({
+  variant = "panel",
+}: {
+  /** "stage" is the approved homepage; "panel" is every other page. */
+  variant?: "panel" | "stage";
+}) {
   const [status, setStatus] = useState<Status>("idle");
   /*
     Bumped on every failed submit so the Turnstile widget fetches a fresh
@@ -92,6 +115,249 @@ export default function Contact() {
       */
       setChallengeNonce((n) => n + 1);
     }
+  }
+
+  if (variant === "stage") {
+    return (
+      <section className="start" id="contact">
+        {/*
+          The design's second clip, and the only other motion on the page.
+          `preload="none"`: a visitor who never reaches the bottom of the
+          page pays nothing for it, and `StageMotion` is what starts it
+          when they do. The poster sits on the wrapper as well as on the
+          video, so the band reads correctly before it loads, if it never
+          loads, and for anybody who asked for no motion.
+        */}
+        <div
+          className="media"
+          data-vid=""
+          style={{ backgroundImage: "url('/ocean/moorings-band-poster.webp')" }}
+        >
+          {/*
+            **No `autoPlay` here, and that is the difference between
+            `preload="none"` meaning something and meaning nothing.**
+            Chrome starts fetching an autoplaying video whatever the
+            preload attribute says, so the mockup's markup put 1MB on the
+            wire for every visitor who never scrolled this far — measured,
+            and caught by the test that exists for it. `StageMotion`
+            starts it on intersection instead, which is exactly what
+            `MovingChapter` does and why that component has no `autoPlay`
+            either. The hero keeps its own, because there the clip is on
+            screen immediately and the attribute is what plays it for a
+            visitor whose JavaScript never arrives.
+          */}
+          <video
+            muted
+            loop
+            playsInline
+            preload="none"
+            poster="/ocean/moorings-band-poster.webp"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <source src="/ocean/moorings-band.mp4" type="video/mp4" />
+          </video>
+          <div className="scrim scrim-v" />
+        </div>
+
+        <div className="wrap">
+          <div className="start-grid">
+            <div>
+              <p className="eyebrow" data-reveal="">
+                {homeBands.start.eyebrow}
+              </p>
+              <h2 data-reveal="" style={delay(0.06)}>
+                {founderCta.headline}
+              </h2>
+              <p className="lede" data-reveal="" style={delay(0.12)}>
+                {founderCta.body}
+              </p>
+              <p className="hero-meta" data-reveal="" style={delay(0.16)}>
+                {homeHero.location}
+              </p>
+
+              {/*
+                The ways to reach her that were on this page before the
+                redesign and still work. The mockup had no stand-in for
+                them, and a phone number, an email, the questionnaire and
+                the call CTA are not decoration: `BookCall` is the one
+                tracked booking entry point on the homepage, and the
+                questionnaire is the alternative for somebody who would
+                rather be asked than face a blank box.
+              */}
+              <div className="reach" data-reveal="" style={delay(0.2)}>
+                <a href="mailto:contact@mlinx.studio">contact@mlinx.studio</a>
+                <a href="tel:+12074329492">(207) 432-9492</a>
+                <a href="/intake">
+                  Start the questionnaire{" "}
+                  <span className="arw" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+                <BookCall where="contact">
+                  Book a free 15-min call{" "}
+                  <span className="arw" aria-hidden="true">
+                    →
+                  </span>
+                </BookCall>
+                {/* Renders nothing until `resumeUrl` points at a real file,
+                    so the link can never 404. */}
+                {resumeUrl && (
+                  <a href={resumeUrl}>
+                    Download résumé (PDF){" "}
+                    <span className="arw" aria-hidden="true">
+                      ↓
+                    </span>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {/*
+              **The reveal gate is on this wrapper, never on the two things
+              it swaps between.** A review bot caught it and a browser
+              confirmed it: a successful submit replaced the form with a
+              freshly mounted `data-reveal` element, and `StageMotion`
+              observes only what exists when its effect runs, so nothing
+              ever set `data-revealed` on it. Measured, the confirmation
+              sat at `opacity: 0` translated 22px down, with "Got it." in
+              the DOM and invisible. A visitor sent the form and watched it
+              disappear, on the one interaction this page exists for.
+              Pressing "Send another" would have remounted the form into
+              the same hole.
+
+              **The existing test passed through all of it**, because
+              Playwright's visibility check ignores opacity. That is
+              CLAUDE.md's rule almost word for word: prefer a test that
+              asks whether the screen changed over one that asks whether
+              the code ran. There is one below that reads the computed
+              opacity now.
+
+              A scroll reveal on either branch was wrong anyway. They
+              appear in answer to a click, already on screen, and nothing
+              scrolls to them.
+            */}
+            <div className="swap" data-reveal="" style={delay(0.1)}>
+              {status === "success" ? (
+                <div className="sent">
+                  <div className="sent-tick" aria-hidden="true">
+                    ✓
+                  </div>
+                  <h3>Got it.</h3>
+                  <p>Every message is read personally, with a reply within a day.</p>
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className="tlink"
+                  >
+                    Send another{" "}
+                    <span className="arw" aria-hidden="true">
+                      →
+                    </span>
+                  </button>
+                </div>
+              ) : (
+                <form
+                  className="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                >
+                  {/* Honeypot — hidden from humans, catches bots. */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="botField">Do not fill this field</label>
+                    <input
+                      id="botField"
+                      name="botField"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  {/* Which CTA produced this enquiry — travels with the email
+                      so an offer can be told from an idle click. */}
+                  {offer && <input type="hidden" name="offer" value={offer} />}
+
+                  <div className="field">
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" type="text" required autoComplete="name" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="company">Company · optional</label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      autoComplete="organization"
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="phone">Phone · optional</label>
+                    <input id="phone" name="phone" type="tel" autoComplete="tel" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="message">
+                      What you use now, and where it gets stuck
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="What tools do you use? What are you entering by hand, tracking in spreadsheets, or wishing your website could do?"
+                    />
+                  </div>
+
+                  {status === "error" && (
+                    <p role="alert" className="form-alert">
+                      {error}
+                    </p>
+                  )}
+
+                  {/* Renders nothing until the Turnstile keys are set. It
+                      writes its token into this form as a hidden input, which
+                      the FormData payload above picks up unchanged. */}
+                  <TurnstileWidget resetSignal={challengeNonce} />
+
+                  <div className="form-foot">
+                    <button
+                      className="btn btn-solid"
+                      type="submit"
+                      disabled={status === "submitting"}
+                    >
+                      {status === "submitting" ? "Sending…" : founderCta.buttonLabel}
+                      {status !== "submitting" && (
+                        <span className="arw" aria-hidden="true">
+                          →
+                        </span>
+                      )}
+                    </button>
+                    <span className="form-note">{homeBands.start.note}</span>
+                  </div>
+
+                  <p className="form-fine">
+                    By sending this, you agree we can use your details to reply.
+                    We never sell your information. See our{" "}
+                    <a href="/privacy">Privacy Policy</a>.
+                  </p>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   return (

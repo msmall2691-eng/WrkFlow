@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import {
+  Space_Grotesk,
+  Inter,
+  Inter_Tight,
+  JetBrains_Mono,
+  Fraunces,
+} from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 import BackToTop from "@/components/BackToTop";
@@ -40,6 +46,24 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+/*
+  Inter Tight — the approved homepage design's display and body face, and
+  the only new family this adds. It is loaded here because fonts are a
+  document-level concern, and used only inside `.stage` (see the block at
+  the foot of globals.css), so the rest of the site keeps the faces it
+  already shipped with and the page-title test keeps its one answer.
+
+  Four weights because the design uses 400 for body, 500 for buttons and
+  prices, 600 for every heading, and 700 nowhere yet — which is the one
+  the file itself requested, so it is kept rather than trimmed.
+*/
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter-tight",
   display: "swap",
 });
 
@@ -129,7 +153,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-fog={fog ? "1" : undefined}
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${interTight.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
     >
       <body>
         {/*

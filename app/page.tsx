@@ -1,274 +1,98 @@
-import OceanHero from "@/components/ocean/OceanHero";
-import ReefMap from "@/components/ocean/ReefMap";
-import TakeReel from "@/components/reel/TakeReel";
-import Shelf from "@/components/home/Shelf";
-import TryItNow from "@/components/home/TryItNow";
-import OneJob from "@/components/home/OneJob";
-import MoreWork from "@/components/home/MoreWork";
-import WhatConnects from "@/components/home/WhatConnects";
-import HowToStart from "@/components/home/HowToStart";
+import StageTopBar from "@/components/stage/StageTopBar";
+import StageHero from "@/components/stage/StageHero";
+import StageServices from "@/components/stage/StageServices";
+import StageWork from "@/components/stage/StageWork";
+import StageApproach from "@/components/stage/StageApproach";
+import StagePricing from "@/components/stage/StagePricing";
+import StageFooter from "@/components/stage/StageFooter";
+import StageMotion from "@/components/stage/StageMotion";
 import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
-import Drift from "@/components/ocean/Drift";
-import MovingChapter from "@/components/ocean/MovingChapter";
-import Reveal from "@/components/Reveal";
 
 /*
-  Homepage — a storefront (Meg, Nov 16 2026).
+  Homepage — the approved design, "Cinematic" (Meg, Nov 25 2026).
 
-  **The brief, in her words:** "hard to see what is for sale that's
-  tangible", and then, asked to choose a shape, the full storefront rather
-  than a tidier portfolio.
+  She was shown three directions and picked this one, so the job here was
+  a port rather than a design: near-black, two of her own clips, one piece
+  of her art, four real screenshots, and one idea per screen. The CSS it
+  arrived with is the design, and it is in `app/globals.css` scoped to
+  `.stage` — the same way `.cp` scoped the V2 panel — rather than
+  re-expressed as utilities, because re-expressing it is how a design
+  becomes something that merely resembles itself.
 
-  **Measured on the live site at phone width before changing anything**, so
-  the decision rests on numbers rather than taste:
+  **Six sections, in this order, and the order is the argument:**
 
-    · the page ran 17.9 screens
-    · the first price for anything purchasable was on screen 12
-    · there were two prices on the whole page, and one of them, "$1M+", is
-      a statistic about her old cleaning company, not something on sale
-    · the one priced product was followed by the sentence "There are eight
-      more free tools on this site, and the rest of the products are priced
-      and ready", which is a page pointing at a shop instead of being one
+    StageHero      one screen. The reef clip, the headline, two things to
+                   do. `id="top"`
+    StageServices  id="services" — the four things for sale, as four
+                   rows, straight from `services[]`
+    StageWork      id="work" — one project opened up, three beside it,
+                   and the way into the rest. Every picture is a real
+                   capture of a running system
+    StageApproach  the breath: the statement, and one of her pieces
+                   floating beside it. No claim anywhere near the art
+    StagePricing   id="pricing" — four real prices, the note about what
+                   is quoted instead, and the four promises
+    Contact        id="contact" — the form, over the moorings clip. The
+                   same component /services and /brightbase render, in
+                   its stage shell
+    StageFooter    the wordmark, six links, the location line
 
-  The stock was never the problem. /services ran 20.6 screens with prices
-  at screens 3, 5 and 10; /marketplace, which holds most of the goods, ran
-  12.8 and is reached by nobody. Seventeen real offers existed, spread
-  across three long pages, none of them the page everybody sees.
+  **What this replaced, and what went with it.** The storefront page
+  (#156's predecessor) was eighteen screens of shelf, reel, case study,
+  free tools, a video chapter, an integration wall and a how-it-starts
+  ladder. Nine components came off this page: `OceanHero`, `ReefMap`,
+  `Shelf`, `TakeReel`, `MoreWork`, `OneJob`, `TryItNow`, `MovingChapter`
+  and `WhatConnects`, plus `Drift` and the `Reveal` wrapper. None of them
+  are deleted — `/services`, `/catalog`, `/marketplace` and the case
+  studies still render most of them — and the sections that are genuinely
+  gone took their tests with them, which `e2e/smoke.spec.ts` records one
+  by one.
 
-  **So the order is the change.** Proof used to come first and product last,
-  which is backwards for a stranger: proof matters once somebody wants the
-  thing, not before.
+  **Three things are deliberately still here.** `CommandPalette` is
+  mounted outside the stage, which is both where a fixed overlay belongs
+  and what keeps the stage's own element styles off a component that was
+  not designed for them — ⌘K works on this page exactly as before. The
+  contact form is the real one, with its challenge nonce, its offer
+  prefill and its request untouched. And every string, price and number
+  below resolves to `lib/content.ts`.
 
-  **Nov 25 2026: the list below is the running order, and keeping it in
-  the wrong order is how the page drifted.** It used to be written in the
-  order the sections were built rather than the order they render, which
-  is a map of a different page. Reading it top to bottom is meant to be
-  the same experience as scrolling.
-
-  There are four movements, and a section that cannot be put in one of
-  them is a section to argue about rather than to add:
-
-    *What this is* — the dive, then the four doors, then the prices.
-
-    OceanHero    one screen: the dive. Meg's own Firefly footage of a deep
-                 reef, played once and held at the bottom, with a 45 kB
-                 poster carrying the first paint
-    ReefMap      id="reef" — the reef as a still, annotated. Four pins,
-                 one per service, named from `services[]`. The one place
-                 the page asks what somebody came for
-    Shelf        id="shelf" — the whole catalog, with prices, grouped by
-                 what it costs rather than by what it is
-
-    *Proof, as one run that escalates* — see it, read one, use one. This
-    was split in half until Nov 25, with the free tools and a video
-    chapter in the middle of it, so the page showed work, wandered off,
-    and showed more work. Meg called it going in circles. Anything added
-    here joins the run or breaks it.
-
-    TakeReel     the work, as a browser window pinned on the right with
-                 four takes swapping inside it. Cards, not globes, at
-                 Meg's ask, and DOM rather than WebGL because nothing
-                 here needs a GPU
-    MoreWork     the rest of the work, once each
-    OneJob       id="work" — one project told all the way through
-    TryItNow     the demos somebody can go and use. Proof you operate
-                 rather than look at, which is why it ends the run
-
-    *A breath* — the only moving chapter on the page.
-
-    MovingChapter the magenta octopus, closing the proof and opening the
-                 practical half
-
-    *What happens next* — what it fits, how it starts, how to ask.
-
-    WhatConnects what it already connects to, each one running in a
-                 named project
-    HowToStart   what pressing send sets in motion
-    Contact      the form
-    Footer
-
-  **ServiceRouter is gone from this page, and that is the one real
-  deletion.** It asked "What are you trying to fix?" and answered with four
-  categories and a count of past projects. The question is good and the
-  answer was a table of contents in front of a shop: no price, no product,
-  1.4 screens, and a link to another page. Every item on the shelf now
-  carries its service as a tag, so the four categories are still readable
-  here, and /services still argues them in full with the pain, the outcome
-  and the same ladder. What the router uniquely had, the project counts, is
-  kept honest in the test that replaced its own: the shelf must cover all
-  four services, asserted against `services` itself.
-
-  **The rule the previous rebuild rested on still holds: nothing appears
-  twice.** TryItNow used to carry the demos, the turnover planner and the
-  welcome book; the shelf lists all of those with prices, so that section
-  shrank to the one thing the shelf cannot do, which is link each demo
-  individually. `e2e/smoke.spec.ts` asserts both halves.
-
-  `.cp` scopes the V2 palette to this page and remaps the site's shared
-  tokens, so Contact and Footer pick up the same colours without being
-  restyled one by one. Daylight by default, Harbor still in ⌘K.
+  `PanelHeader` is not on this page any more and is not deleted: it is
+  the site's header on ten other routes. `StageTopBar` is the homepage's
+  own bar, which is what the design asks for over moving video.
 */
 export default function Home() {
   return (
-    /* `isolate` is load-bearing and not decoration. `.cp` paints an
-       opaque #08070c background and does **not** create a stacking
-       context, so the drift canvas — fixed, z-index -10 — resolved
-       against the root instead and painted *behind* that background.
-       It rendered 25,615 pixels per frame and not one of them was ever
-       on screen: the canvas readout said it was working and a
-       screenshot of the same scroll position showed absolutely nothing.
-       Making this div a stacking context puts a negative z-index child
-       above its own background and still below every section. */
-    <div className="cp isolate">
-      {/*
-        **The ocean is chapters now, not a backdrop, and that is Meg's
-        call after seeing what the backdrop cost.**
+    <div className="stage">
+      <a className="skip" href="#main">
+        Skip to content
+      </a>
 
-        What was here: `OceanBackdrop`, one clip fixed behind the whole
-        page with its playhead tied to scroll. It read well at the top
-        and then spent the rest of the page being hidden — faded to 22%
-        from a third of the way down, and covered by a 42% wash over
-        every section below the hero. The page paid 2.8MB for water it
-        then suppressed twice, and the suppression was not decoration: it
-        was the only way to keep 14px prices legible over moving water.
-        Three rounds of scrim tuning are in this file's history for one
-        violet link.
+      <StageTopBar />
 
-        It also had a ceiling. A scrubbed backdrop can show exactly one
-        clip, and Meg has twenty-four. Phones and `prefers-reduced-motion`
-        never got the video at all, so the characters she most wanted to
-        show reached a phone visitor as a poster.
+      <main id="main">
+        <StageHero />
+        <StageServices />
+        <StageWork />
+        <StageApproach />
+        <StagePricing />
+        <Contact variant="stage" />
+      </main>
 
-        So the descent is told as a sequence instead: the hero is the
-        surface, a chapter is the deep, and the page ends at the floor.
-        Her words for the original ask were "the further we scroll it goes
-        into the bottom of ocean floor", and that still happens — in five
-        pictures rather than one playhead.
+      <StageFooter />
 
-        **Deleting the wash is the quiet win.** It existed only to protect
-        text from bright water. With no water under the content, every
-        card, price and link on this page gets its full contrast back for
-        free.
-      */}
-      {/* Behind everything, fixed, never interactive. The hero is the
-          one orchestrated moment; this is the water it sits in, and it is
-          what stops the rest of the page from being a still picture. */}
-      <Drift />
-
-      <OceanHero />
-      <Reveal>
-        <ReefMap />
-      </Reveal>
-      {/*
-        **The shop comes before the work, not after it.** Merging the two
-        work sections pushed the shelf from 5,139px to 6,218px and broke
-        the guard that exists for Meg's own first instruction about this
-        page: "hard to see what is for sale that's tangible". The test
-        failing was correct.
-
-        Putting the shelf back where it was would only restore the split.
-        Moving it above the work serves both: the price list arrives
-        about two screens in instead of five, and the reel and the rest
-        of the work stay as one run instead of being separated by it.
-      */}
-      <Reveal>
-        <Shelf />
-      </Reveal>
-
-      <Reveal>
-        <TakeReel />
-      </Reveal>
-
-      {/*
-        **The rest of the work, directly under the work.** These two were
-        separated by the shop, the free tools, a chapter and the case
-        study — about 7,700px — so the page announced the work, wandered
-        off through four unrelated things, and announced it again. Meg's
-        word for the result was that it did not flow.
-
-        The join matters more than the distance did. `TakeReel`'s own
-        "Selected work" heading is `sr-only`, so nothing visible ever said
-        *work* before this section said "The rest of it." A visitor read
-        "the rest" with no first part on screen anywhere. Now it follows
-        the reel it is the rest of.
-      */}
-      <Reveal>
-        <MoreWork />
-      </Reveal>
-
-
-      <Reveal>
-        <OneJob />
-      </Reveal>
-
-      {/*
-        **Use one, after seeing them.** TryItNow was between MoreWork and
-        the case study, which split the proof in half: a visitor saw the
-        work, was handed three free tools and a video, and was then shown
-        another project. Meg's words for the page were "going in circles"
-        and "a maze", and this was the circle — proof, detour, proof.
-
-        It is proof itself, which is why it moved down rather than away.
-        The run now escalates instead of repeating: see the work, read one
-        of them all the way through, then go and use one.
-      */}
-      <Reveal>
-        <TryItNow />
-      </Reveal>
-
-      {/*
-        The breath, and it has moved with the thing it was a breath from.
-
-        **Its old note said "between the shop and the proof", and that
-        stopped being true the moment the proof became one run.** A screen
-        of black in the middle of four proof sections is an interruption,
-        which is the opposite of the job. It now closes the proof and
-        opens the practical half: what this connects to, how a project
-        starts, and the form.
-
-        **One chapter, not four.** This branch briefly carried four, and
-        walked end to end that was 4,104px of decoration on an 18.8-screen
-        page: two of them landed back to back with nothing in between,
-        which is the reel this file's own note says a chapter is not. So
-        the ocean moves here and nowhere else on the page. The clip is the
-        magenta octopus: of the nine Meg sent it is the one that reads
-        from across a room, and a chapter is the only place on this page
-        where that is the whole job.
-      */}
-      <MovingChapter
-        id="chapters-deep"
-        clip="shot-one"
-        poster="/ocean/video/shot-one-poster.webp"
-      />
-
-      {/*
-        The violet octopus, which was the hero until the reef loop took
-        that screen. It is Meg's 26-megapixel piece and the measurements in
-        #154 still hold — border luma 8.0 against a page ground of 8, the
-        closest match of anything here, so it needs no mask or vignette to
-        stop at the page.
-
-        It is better here than it was at the top. As a hero it had to carry
-        a headline, two buttons and the nav, which meant a gradient over
-        its left third and a scrim over its top: the picture was never once
-        shown whole. A chapter asks nothing of it, so for the first time
-        the full piece is on screen with nothing written across it.
-      */}
-
-
-      <Reveal>
-        <WhatConnects />
-      </Reveal>
-      <Reveal>
-        <HowToStart />
-      </Reveal>
-      <Reveal>
-        <Contact />
-      </Reveal>
-      <Footer />
+      {/* ⌘K, outside the stage: a fixed overlay belongs at the end of the
+          page, and keeping it out of `.stage` keeps the design's element
+          styles off a component drawn in the site's own palette. */}
       <CommandPalette />
+
+      {/*
+        One controller for the whole page's motion: the reveals, the two
+        clips and the two CSS loops. It reconciles intersection, the
+        motion preference and tab visibility in one place, which is the
+        correction `MovingChapter` and `HeroLoop` were both brought to.
+      */}
+      <StageMotion />
     </div>
   );
 }
