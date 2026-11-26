@@ -106,7 +106,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: aborted
-          ? "That check took too long—the site may be slow or blocking the test."
+          ? "That check took too long. The site may be slow or blocking the test."
           : "The check failed. Try again in a moment.",
       },
       { status: aborted ? 504 : 502 },

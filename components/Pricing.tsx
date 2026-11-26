@@ -104,7 +104,7 @@ export default function Pricing() {
                 One-time · monthly · hybrid
               </p>
               <p className="mt-4 text-sm leading-relaxed text-muted">
-                A new custom website, CRM, dashboard, or business app, scoped around what you need.
+                A new custom website, CRM, dashboard, or business app, quoted once the work is clear.
               </p>
               <ul className="mt-5 flex-1 space-y-2.5">
                 {CUSTOM_BULLETS.map((b) => (

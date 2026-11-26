@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   ...pageMeta({
     title: "Project Questionnaire",
     description:
-      "A few questions about your business, how it runs, and your goals, so our first conversation starts from something real. Ten minutes or so, and nothing here is binding.",
+      "A few questions about your business, how it runs, and your goals, so the first conversation starts from something real. Ten minutes or so, and nothing here is binding.",
     path: "/intake",
   }),
   // Intake, not marketing — it shouldn't compete with the main site in

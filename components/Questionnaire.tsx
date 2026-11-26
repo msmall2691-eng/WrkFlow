@@ -895,7 +895,7 @@ function SuccessScreen({ name }: { name: string }) {
   return (
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <h2 className="display-serif text-[2rem] text-balance text-ink sm:text-4xl">
-        {first ? `Thanks, ${first}.` : "Thanks — that's everything."}
+        {first ? `Thanks, ${first}.` : "Thanks, that's everything."}
       </h2>
       <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
         A copy is on its way to your inbox. Here&apos;s exactly what happens next:
@@ -979,7 +979,7 @@ function FastFill({
       if (count === 0) {
         setState({
           phase: "error",
-          message: "We couldn't pull much from that — the questions are quick by hand.",
+          message: "Not much came back from that. The questions are quick by hand.",
         });
         return;
       }

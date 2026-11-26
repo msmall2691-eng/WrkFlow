@@ -136,7 +136,7 @@ export async function POST(req: Request) {
   const ip = clientIp(req);
   if (rateLimitedByIp(ip) || rateLimitedGlobally("global")) {
     return NextResponse.json(
-      { ok: false, error: "Preview limit reached for now — your scope will include directions instead." },
+      { ok: false, error: "Preview limit reached for now. Your scope will include directions instead." },
       { status: 429 },
     );
   }

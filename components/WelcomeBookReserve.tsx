@@ -44,7 +44,7 @@ export default function WelcomeBookReserve({ price }: { price: number }) {
         setState("done");
       }
     } catch {
-      setError("Couldn't send — check your connection and try again.");
+      setError("Couldn't send. Check your connection and try again.");
       setState("error");
     }
   }

@@ -70,7 +70,7 @@ export default function SiteCheck() {
         trackTool("sitecheck", "generated");
       }
     } catch {
-      setError("Couldn't run the check—check your connection and try again.");
+      setError("Couldn't run the check. Check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -207,7 +207,7 @@ export default function SiteCheck() {
 
           <p className="mt-4 text-xs leading-relaxed text-faint">
             {isSample ? (
-              "An example of what you get—run your own site above for a real Google Lighthouse audit."
+              "An example of what you get. Run your own site above for a real Google Lighthouse audit."
             ) : (
               <>
                 Scores from Google Lighthouse (0–100). Want these all green?

@@ -91,7 +91,7 @@ export const questionnaireSteps: QuestionStep[] = [
     id: "basics",
     kicker: "01 — The Basics",
     timeHint: "~1 min",
-    title: "Tell us about the business",
+    title: "About the business",
     fields: [
       {
         kind: "text",
@@ -294,7 +294,7 @@ export const questionnaireSteps: QuestionStep[] = [
       {
         kind: "textarea",
         id: "anythingElse",
-        label: "Anything else we should know?",
+        label: "Anything else worth knowing?",
       },
       {
         kind: "text",

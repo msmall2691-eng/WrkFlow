@@ -28,7 +28,7 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "Do I need a whole new website or app?",
-    a: "Not always. Your project might be one integration, a booking form, a client portal, or an improvement to an existing workflow. We start with what is working and what you need help with.",
+    a: "Not always. Your project might be one integration, a booking form, a client portal, or an improvement to an existing workflow. It starts with what is already working and what you need help with.",
   },
   {
     q: "How long does a website take?",
@@ -48,7 +48,9 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "How is this different from Squarespace or Wix?",
-    a: "Squarespace and Wix can be a good fit for a simple site. A custom build gives us more control over your design, features, and connections to other systems. We will talk through what your business needs before choosing the approach.",
+    /* "gives us more control" was both a voice violation and factually
+       backwards: the control a custom build buys belongs to the client. */
+    a: "Squarespace and Wix can be a good fit for a simple site. A custom build gives you more control over your design, features, and connections to other systems. What your business needs gets talked through before the approach is chosen.",
   },
   {
     q: "What if I outgrow the Care Plan?",
