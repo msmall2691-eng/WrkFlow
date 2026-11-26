@@ -113,7 +113,7 @@ export async function POST(req: Request) {
   const ip = clientIp(req);
   if (rateLimitedByIp(ip) || rateLimitedGlobally("global")) {
     return NextResponse.json(
-      { ok: false, error: "Fast fill is busy right now — the questions are quick by hand too." },
+      { ok: false, error: "Fast fill is busy right now. The questions are quick by hand too." },
       { status: 429 },
     );
   }
@@ -130,13 +130,13 @@ export async function POST(req: Request) {
   const description = (body.description ?? "").trim();
   if (description.length < 20) {
     return NextResponse.json(
-      { ok: false, error: "Give us a sentence or two more to work with." },
+      { ok: false, error: "Add a sentence or two more to work with." },
       { status: 422 },
     );
   }
   if (description.length > MAX_DESCRIPTION_LEN) {
     return NextResponse.json(
-      { ok: false, error: "That's a bit long — trim it to a few paragraphs." },
+      { ok: false, error: "That's a bit long. Trim it to a few paragraphs." },
       { status: 422 },
     );
   }
@@ -159,7 +159,7 @@ export async function POST(req: Request) {
     const parsed = response.parsed_output;
     if (!parsed) {
       return NextResponse.json(
-        { ok: false, error: "Couldn't read that this time — the questions are quick by hand." },
+        { ok: false, error: "Couldn't read that this time. The questions are quick by hand." },
         { status: 502 },
       );
     }
@@ -185,7 +185,7 @@ export async function POST(req: Request) {
       console.error("Prefill: failed", err);
     }
     return NextResponse.json(
-      { ok: false, error: "Couldn't read that this time — the questions are quick by hand." },
+      { ok: false, error: "Couldn't read that this time. The questions are quick by hand." },
       { status: 502 },
     );
   }

@@ -14,7 +14,10 @@ import type { VisualType } from "@/components/ProjectVisual";
 */
 export const founderNote = {
   headline: "A business background. A love of building.",
-  headlineFollow: "Websites and systems shaped around the people using them.",
+  /* "shaped around the people using them" was one of eleven
+     `<verb>ed around <your noun>` constructions on the site, and the main
+     verb was the maker's. See `.claude/brand-voice-guidelines.md` §2.2, §7. */
+  headlineFollow: "Websites and systems that fit how the work already happens.",
   paragraphs: [
     "M Studio brings hands-on business experience to websites and systems. Every project starts with understanding the work, the tools already in place, and what could run more smoothly.",
   ],
@@ -217,7 +220,7 @@ export const services: Service[] = [
       "Rebuilds & improvements"
     ],
     "pain": "Your website is dated or hard to use, and it tells people about the business without giving them a way to start.",
-    "outcome": "A site built around the one thing you want a visitor to do, and the pages that get them there.",
+    "outcome": "A visitor arrives, finds what they need, and asks for a quote without hunting for a phone number.",
     "example": {
       "client": "The Remote Admin",
       "built": "A complete website for an administrative services business in New Hampshire.",
@@ -236,7 +239,7 @@ export const services: Service[] = [
       "Online booking",
       "Lead capture & follow-up"
     ],
-    "pain": "Enquiries arrive as voicemails and half-filled forms, and quoting each one by hand eats an evening.",
+    "pain": "Inquiries arrive as voicemails and half-filled forms, and quoting each one by hand eats an evening.",
     "outcome": "A path from first click to a booked job, with the quoting mostly done before it reaches you.",
     "example": {
       "client": "Instant Estimate",
@@ -257,7 +260,7 @@ export const services: Service[] = [
       "Client & team portals"
     ],
     "pain": "The tools you have do not quite fit, and the important work still lives in spreadsheets and messages.",
-    "outcome": "A focused tool built around your process, with the features and the handover agreed before work starts.",
+    "outcome": "The work comes out of spreadsheets and group texts. What it does, and what you own at the end, is agreed before anything starts.",
     "example": {
       "client": "BrightBase",
       "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
@@ -277,7 +280,7 @@ export const services: Service[] = [
       "Data migration"
     ],
     "pain": "You are copying the same details between systems, or keeping a schedule up to date by hand every time something changes.",
-    "outcome": "One connection built around what your platforms actually support, checked against the workflow you need.",
+    "outcome": "You stop entering the same details twice, and the schedule keeps itself up to date.",
     "example": {
       "client": "Vacation rental booking sync",
       "built": "Rental bookings appear on the cleaning schedule automatically, for turnover planning.",
@@ -310,7 +313,7 @@ export const approachSteps: ApproachStep[] = [
   {
     index: "02",
     title: "Design",
-    body: "The system gets mapped around that: data, flow, screens. Nothing is built until you sign off.",
+    body: "Data, flow and screens get mapped out first. Nothing is built until you sign off.",
   },
   {
     index: "03",
@@ -419,7 +422,7 @@ export const work: WorkItem[] = [
   // Tier 1 — live websites (lead with our own flagship, the best work so far)
   {
     tier: "site",
-    tag: "Website + system · our own company",
+    tag: "Website + system · Meg's own company",
     category: "websites",
     title: "The Maine Cleaning Co.",
     caseStudy: "maine-cleaning-co",
@@ -431,10 +434,10 @@ export const work: WorkItem[] = [
   },
   {
     tier: "site",
-    tag: "Guest experience · our own rental",
+    tag: "Guest experience · Meg's own rental",
     category: "websites",
     title: "The Keystone House",
-    blurb: "A digital welcome book for our Maine short-term rental: check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
+    blurb: "A digital welcome book for a Maine short-term rental: check-in, WiFi, the house guide, and local picks, all on one link guests actually open.",
     stack: ["Next.js", "Vercel"],
     url: "https://keystonestay.maineclean.co",
     /* Captured from the live site on Nov 20 2026, at the 2208x1380 every
@@ -492,7 +495,7 @@ export const work: WorkItem[] = [
   */
   {
     tier: "site",
-    tag: "Website + parent portal · our own project",
+    tag: "Website + parent portal · Meg's own project",
     category: "software",
     title: "Arrowhead Explorers",
     blurb:
@@ -522,7 +525,11 @@ export const work: WorkItem[] = [
     tag: "Product · in daily use",
     category: "software",
     title: "BrightBase",
-    blurb: "The operations app I built for my cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
+    /* Was "The operations app I built for my cleaning company", which is
+       first person on the homepage and `/catalog` — the one rule CLAUDE.md
+       grants an exception to only on /about. The eight-year figure is
+       `provingGround`'s own, and the ladder entry already words it this way. */
+    blurb: "The operations app behind an eight-year-old cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "12 overlapping tools, now one system",
     status: "In daily production since 2026",
@@ -674,7 +681,7 @@ export const caseStudies: CaseStudy[] = [
   {
     slug: "maine-cleaning-co",
     title: "The Maine Cleaning Co.",
-    tag: "Website + system · our own company",
+    tag: "Website + system · Meg's own company",
     outcome: "Customers can get an estimate and book online.",
     url: "https://maineclean.co",
     hero: {
@@ -935,7 +942,7 @@ export const marketItems: MarketItem[] = [
       "Embeddable estimate calculator",
       "Configured to your pricing + branding",
       "Leads emailed straight to you on submit",
-      "One line of code to install. I set it up, you go live",
+      "One line of code to install, set up for you before it goes live",
     ],
     price: "$150 setup + $15/mo",
     shot: "/shots/instant-estimate.webp",
@@ -946,12 +953,14 @@ export const marketItems: MarketItem[] = [
     model: "embed",
     category: "Automation",
     illustration: "flow",
-    tagline: "Pre-built booking-to-follow-up flows, configured to your stack.",
+    /* "configured to your stack" said nothing to a roofer: "stack" is
+       developer vocabulary on a card aimed at somebody who is not one. */
+    tagline: "Pre-built booking-to-follow-up flows, set up with the tools you already pay for.",
     includes: [
       "Confirmation + reminder flows",
       "Review-request follow-ups",
       "Lead-to-CRM sync",
-      "Tuned to your tools",
+      "Works with the tools you already have",
     ],
     price: "from $150 setup + $19/mo",
   },
@@ -976,7 +985,7 @@ export const marketItems: MarketItem[] = [
     name: "M Linx Dashboard",
     model: "template",
     category: "Dashboard",
-    tagline: "The command-center dashboard, set up around your numbers.",
+    tagline: "The command-center dashboard, showing your jobs and revenue instead of a demo's.",
     includes: [
       "Live KPIs, jobs & revenue views",
       "Connected to your data sources",
@@ -1056,7 +1065,7 @@ export const demos: Demo[] = [
     name: "Blue Hour Bodywork",
     what: "A massage studio. Pick a treatment, a practitioner and a time, and hold it.",
     proves:
-      "Real availability: different treatment lengths, two practitioners with different skills and shifts, appointments already on the books, and a cleanup gap between them. Book one and watch the neighbouring times disappear.",
+      "Real availability: different treatment lengths, two practitioners with different skills and shifts, appointments already on the books, and a cleanup gap between them. Book one and watch the neighboring times disappear.",
     swatch: ["#f3f6f5", "#2f6b63"],
   },
   {
@@ -1154,9 +1163,9 @@ export const ladder: LadderItem[] = [
   {
     service: "websites",
     rung: "build",
-    title: "A website built around one goal",
+    title: "A website, start to launch",
     price: "Quoted to your scope",
-    body: "Designed, built and launched, with the pages that get somebody to the thing you want them to do. Yours to keep.",
+    body: "Every page, from the first draft to the day it goes live. Yours to keep, code and all.",
     offer: "custom",
   },
 
@@ -1231,7 +1240,7 @@ export const ladder: LadderItem[] = [
     rung: "build",
     title: "Several systems, talking",
     price: "Quoted to your scope",
-    body: "Jobber, HubSpot, a booking feed, a spreadsheet nobody wants to give up. Connected around the workflow you actually have.",
+    body: "Jobber, HubSpot, a booking feed, a spreadsheet nobody wants to give up. All of them reading from the same information.",
     offer: "integration",
   },
 ];
@@ -1368,7 +1377,19 @@ export const homeHero = {
      before this design made it the headline. "No 'I' either" (CLAUDE.md):
      it describes the work and the reader, and names no maker. */
   headline: "Websites, web apps and custom tools for small businesses.",
-  sub: "For contractors, admin firms and service businesses. Built around the one thing you want a visitor to do.",
+  /*
+    **Meg rejected the previous second sentence by name** ("I don't really
+    like built around the one thing you want your visitor to do", Nov 26).
+    The audit found why rather than guessing: its main verb was the maker's
+    (*built*), so it described how the work was made instead of what the
+    reader gets. See `.claude/brand-voice-guidelines.md` §2.2.
+
+    Both halves of the replacement are claims this site already keeps, which
+    is the other rule: the pricing band below shows the `smallProjects`
+    bands, and "100% you own the code" is a `studioStats` promise. Nothing
+    new is asserted here.
+  */
+  sub: "For contractors, admin firms and service businesses. Real prices on the page, and you own what gets built.",
   /* The house location line, verbatim. */
   location: "Southern Maine · clients anywhere.",
   primary: "Start a project",

@@ -102,7 +102,7 @@ export async function POST(req: Request) {
         {
           ok: false,
           error:
-            "I only fetch calendars from the booking platforms directly. Paste the file contents instead and it'll work with any calendar.",
+            "This only fetches calendars from the booking platforms directly. Paste the file contents instead and it'll work with any calendar.",
         },
         { status: 422 },
       );

@@ -41,7 +41,7 @@ const RULES: { needs: ToolId[]; text: string }[] = [
   { needs: ["website", "crm"], text: "New form submissions create a contact in your CRM automatically." },
   { needs: ["website", "stripe"], text: "Customers pay on your site and the payment lands instantly." },
   { needs: ["website", "calendar"], text: "Online bookings drop straight onto your calendar." },
-  { needs: ["stripe", "quickbooks"], text: "Every payment is reconciled in your books—no manual entry." },
+  { needs: ["stripe", "quickbooks"], text: "Every payment is reconciled in your books, with no manual entry." },
   { needs: ["calendar", "sms"], text: "Automatic text reminders go out before each appointment." },
   { needs: ["gmail", "crm"], text: "Emails are logged to the right customer record automatically." },
   { needs: ["airbnb", "calendar"], text: "Bookings from every platform sync to one master calendar." },

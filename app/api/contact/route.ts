@@ -229,7 +229,7 @@ export async function POST(req: Request) {
         ${phone ? `<tr><td style="padding:2px 12px 2px 0;color:#64748b;">Phone</td><td><a href="tel:${escapeAttr(phone)}">${escapeHtml(phone)}</a></td></tr>` : ""}
         ${offer ? `<tr><td style="padding:2px 12px 2px 0;color:#64748b;">Offer</td><td><strong>${escapeHtml(offer)}</strong></td></tr>` : ""}
       </table>
-      ${stored ? "" : `<p style="font-size:13px;color:#b91c1c;margin:0 0 16px;">Not saved to the database — this email is the only copy.</p>`}
+      ${stored ? "" : `<p style="font-size:13px;color:#b91c1c;margin:0 0 16px;">Not saved to the database. This email is the only copy.</p>`}
       <p style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin:0 0 6px;">What they're trying to solve</p>
       <div style="white-space:pre-wrap;font-size:15px;background:#f1f5f9;border-radius:10px;padding:14px 16px;">${escapeHtml(message)}</div>
     </div>`;
@@ -260,7 +260,9 @@ export async function POST(req: Request) {
           from: `"Meg · M Studio" <${GMAIL_USER}>`,
           to: email,
           replyTo: to,
-          subject: "Got it — thanks for reaching out",
+          /* Commas or periods, never em dashes, in anything a visitor reads
+             (CLAUDE.md), and a subject line is the first thing they read. */
+          subject: "Got it. Thanks for reaching out",
           text: autoReplyText(name),
           html: autoReplyHtml(name),
         });
@@ -279,7 +281,7 @@ export async function POST(req: Request) {
       {
         ok: false,
         error:
-          "Couldn't send right now. Please email contact@mlinx.studio directly and I'll pick it up.",
+          "Couldn't send right now. Email contact@mlinx.studio directly and it lands in the same inbox.",
       },
       { status: 502 },
     );

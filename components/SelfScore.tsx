@@ -66,7 +66,7 @@ export default function SelfScore() {
       {score != null && (
         <a
           href="/marketplace"
-          title="From a tool we built—run it on your own site"
+          title="From one of the free tools on this site. Run it on your own."
           className="mt-5 inline-flex items-center gap-2 rounded-full border border-line bg-base px-3 py-1.5 text-xs text-muted transition-colors hover:border-signal/50 hover:text-signal"
         >
           <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal motion-reduce:animate-none" />

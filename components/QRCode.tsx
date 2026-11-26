@@ -156,8 +156,8 @@ export default function QRMaker() {
 
         <p className="mt-5 text-xs leading-relaxed text-faint">
           {mode === "wifi"
-            ? "Print it for the rental, the shop, or the front desk—guests scan and they're on, no typing."
-            : "Put it on a flyer, a menu, a business card, or a booking link—it updates live as you type."}
+            ? "Print it for the rental, the shop, or the front desk. Guests scan and they're on, no typing."
+            : "Put it on a flyer, a menu, a business card, or a booking link. It updates live as you type."}
         </p>
       </div>
     </div>

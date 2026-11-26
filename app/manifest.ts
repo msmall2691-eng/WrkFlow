@@ -11,7 +11,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "M Studio",
     short_name: "M Studio",
     description:
-      "Custom websites, apps, and the systems behind them — designed around how you actually work, then handed over, yours to keep. Built on the Maine coast.",
+      "Custom websites, apps, and the systems behind them. Handed over when they are done, yours to keep. Built on the Maine coast.",
     start_url: "/",
     scope: "/",
     display: "standalone",

@@ -29,7 +29,7 @@ export type Role = {
 
 export const brightbase = {
   name: "BrightBase",
-  tagline: "The operations system I built to run my own cleaning company.",
+  tagline: "The operations system that runs an eight-year-old cleaning company.",
   summary:
     "Leads, quotes, scheduling, crew, invoicing and payouts in one app, with an office side, a crew phone app and a customer portal. In daily use at The Maine Cleaning Co.",
 

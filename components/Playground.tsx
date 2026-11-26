@@ -61,7 +61,7 @@ const TOOLS: {
   {
     id: "qr",
     label: "QR code",
-    blurb: "Any link—or your WiFi—into a real QR code to download & print.",
+    blurb: "Any link, or your WiFi, into a real QR code to download & print.",
     group: "Brand & share",
     nudge: { line: "Want that QR pointed at a page built to convert? That's the marketplace.", cta: "M Linx Site", href: "/marketplace" },
   },

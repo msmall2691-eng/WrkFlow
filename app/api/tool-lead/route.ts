@@ -147,7 +147,7 @@ export async function POST(req: Request) {
   // Framed as clearly automated, since the body itself is visitor-supplied —
   // this is a free-tool notification, not a personal message from M Studio.
   const visitorText = [
-    `Automated result from a free tool at mlinx.studio — you (or someone using this email) requested it from the site.`,
+    `Automated result from a free tool at mlinx.studio. You, or someone using this email, requested it from the site.`,
     ``,
     summary || `Here's your ${toolLabel} result.`,
   ].join("\n");

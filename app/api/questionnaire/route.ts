@@ -226,7 +226,7 @@ export async function POST(req: Request) {
         to,
         replyTo: contactEmail,
         subject: `Project questionnaire — ${bizName || contactName}`,
-        text: stored ? text : `(NOT saved to the database — this email is the only copy.)\n\n${text}`,
+        text: stored ? text : `(NOT saved to the database. This email is the only copy.)\n\n${text}`,
         html,
         attachments,
       });
@@ -246,11 +246,11 @@ export async function POST(req: Request) {
           replyTo: to,
           subject: `Your project scope request — M Studio`,
           text: [
-            `Thanks — your answers are in. Here's your copy.`,
+            `Thanks, your answers are in. Here's your copy.`,
             ``,
             `Within 24 hours you'll get a personal reply with a rough scope:`,
             `pages, features, a price range, and a timeline. A real person reads`,
-            `all of this first — no autoresponder, no sales sequence. If anything`,
+            `all of this first, with no autoresponder and no sales sequence. If anything`,
             `else comes to mind, just reply to this email.`,
             ``,
             `— M Studio · mlinx.studio`,
@@ -262,7 +262,7 @@ export async function POST(req: Request) {
           html: `
             <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.6;">
               <p style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#b9842b;margin:0 0 6px;">M Studio</p>
-              <h2 style="margin:0 0 14px;font-size:20px;">Thanks — your answers are in.</h2>
+              <h2 style="margin:0 0 14px;font-size:20px;">Thanks, your answers are in.</h2>
               <p style="font-size:15px;margin:0 0 10px;">Within 24 hours you'll get a personal reply with a rough scope: pages, features, a price range, and a timeline. A real person reads all of this first.</p>
               <p style="font-size:15px;margin:0 0 24px;">If anything else comes to mind, just reply to this email.</p>
               ${html}
