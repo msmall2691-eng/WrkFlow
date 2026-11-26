@@ -213,123 +213,147 @@ export default function Contact({
               </div>
             </div>
 
-            {status === "success" ? (
-              <div className="sent" data-reveal="" style={delay(0.1)}>
-                <div className="sent-tick" aria-hidden="true">
-                  ✓
-                </div>
-                <h3>Got it.</h3>
-                <p>Every message is read personally, with a reply within a day.</p>
-                <button
-                  type="button"
-                  onClick={() => setStatus("idle")}
-                  className="tlink"
-                >
-                  Send another{" "}
-                  <span className="arw" aria-hidden="true">
-                    →
-                  </span>
-                </button>
-              </div>
-            ) : (
-              <form
-                className="form"
-                data-reveal=""
-                style={delay(0.1)}
-                onSubmit={handleSubmit}
-                noValidate
-              >
-                {/* Honeypot — hidden from humans, catches bots. */}
-                <div className="hidden" aria-hidden="true">
-                  <label htmlFor="botField">Do not fill this field</label>
-                  <input
-                    id="botField"
-                    name="botField"
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                  />
-                </div>
+            {/*
+              **The reveal gate is on this wrapper, never on the two things
+              it swaps between.** A review bot caught it and a browser
+              confirmed it: a successful submit replaced the form with a
+              freshly mounted `data-reveal` element, and `StageMotion`
+              observes only what exists when its effect runs, so nothing
+              ever set `data-revealed` on it. Measured, the confirmation
+              sat at `opacity: 0` translated 22px down, with "Got it." in
+              the DOM and invisible. A visitor sent the form and watched it
+              disappear, on the one interaction this page exists for.
+              Pressing "Send another" would have remounted the form into
+              the same hole.
 
-                {/* Which CTA produced this enquiry — travels with the email
-                    so an offer can be told from an idle click. */}
-                {offer && <input type="hidden" name="offer" value={offer} />}
+              **The existing test passed through all of it**, because
+              Playwright's visibility check ignores opacity. That is
+              CLAUDE.md's rule almost word for word: prefer a test that
+              asks whether the screen changed over one that asks whether
+              the code ran. There is one below that reads the computed
+              opacity now.
 
-                <div className="field">
-                  <label htmlFor="name">Name</label>
-                  <input id="name" name="name" type="text" required autoComplete="name" />
-                </div>
-                <div className="field">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="company">Company · optional</label>
-                  <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    autoComplete="organization"
-                  />
-                </div>
-                <div className="field">
-                  <label htmlFor="phone">Phone · optional</label>
-                  <input id="phone" name="phone" type="tel" autoComplete="tel" />
-                </div>
-                <div className="field">
-                  <label htmlFor="message">
-                    What you use now, and where it gets stuck
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    required
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="What tools do you use? What are you entering by hand, tracking in spreadsheets, or wishing your website could do?"
-                  />
-                </div>
-
-                {status === "error" && (
-                  <p role="alert" className="form-alert">
-                    {error}
-                  </p>
-                )}
-
-                {/* Renders nothing until the Turnstile keys are set. It
-                    writes its token into this form as a hidden input, which
-                    the FormData payload above picks up unchanged. */}
-                <TurnstileWidget resetSignal={challengeNonce} />
-
-                <div className="form-foot">
+              A scroll reveal on either branch was wrong anyway. They
+              appear in answer to a click, already on screen, and nothing
+              scrolls to them.
+            */}
+            <div className="swap" data-reveal="" style={delay(0.1)}>
+              {status === "success" ? (
+                <div className="sent">
+                  <div className="sent-tick" aria-hidden="true">
+                    ✓
+                  </div>
+                  <h3>Got it.</h3>
+                  <p>Every message is read personally, with a reply within a day.</p>
                   <button
-                    className="btn btn-solid"
-                    type="submit"
-                    disabled={status === "submitting"}
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className="tlink"
                   >
-                    {status === "submitting" ? "Sending…" : founderCta.buttonLabel}
-                    {status !== "submitting" && (
-                      <span className="arw" aria-hidden="true">
-                        →
-                      </span>
-                    )}
+                    Send another{" "}
+                    <span className="arw" aria-hidden="true">
+                      →
+                    </span>
                   </button>
-                  <span className="form-note">{homeBands.start.note}</span>
                 </div>
+              ) : (
+                <form
+                  className="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                >
+                  {/* Honeypot — hidden from humans, catches bots. */}
+                  <div className="hidden" aria-hidden="true">
+                    <label htmlFor="botField">Do not fill this field</label>
+                    <input
+                      id="botField"
+                      name="botField"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
 
-                <p className="form-fine">
-                  By sending this, you agree we can use your details to reply.
-                  We never sell your information. See our{" "}
-                  <a href="/privacy">Privacy Policy</a>.
-                </p>
-              </form>
-            )}
+                  {/* Which CTA produced this enquiry — travels with the email
+                      so an offer can be told from an idle click. */}
+                  {offer && <input type="hidden" name="offer" value={offer} />}
+
+                  <div className="field">
+                    <label htmlFor="name">Name</label>
+                    <input id="name" name="name" type="text" required autoComplete="name" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="company">Company · optional</label>
+                    <input
+                      id="company"
+                      name="company"
+                      type="text"
+                      autoComplete="organization"
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="phone">Phone · optional</label>
+                    <input id="phone" name="phone" type="tel" autoComplete="tel" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="message">
+                      What you use now, and where it gets stuck
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      required
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="What tools do you use? What are you entering by hand, tracking in spreadsheets, or wishing your website could do?"
+                    />
+                  </div>
+
+                  {status === "error" && (
+                    <p role="alert" className="form-alert">
+                      {error}
+                    </p>
+                  )}
+
+                  {/* Renders nothing until the Turnstile keys are set. It
+                      writes its token into this form as a hidden input, which
+                      the FormData payload above picks up unchanged. */}
+                  <TurnstileWidget resetSignal={challengeNonce} />
+
+                  <div className="form-foot">
+                    <button
+                      className="btn btn-solid"
+                      type="submit"
+                      disabled={status === "submitting"}
+                    >
+                      {status === "submitting" ? "Sending…" : founderCta.buttonLabel}
+                      {status !== "submitting" && (
+                        <span className="arw" aria-hidden="true">
+                          →
+                        </span>
+                      )}
+                    </button>
+                    <span className="form-note">{homeBands.start.note}</span>
+                  </div>
+
+                  <p className="form-fine">
+                    By sending this, you agree we can use your details to reply.
+                    We never sell your information. See our{" "}
+                    <a href="/privacy">Privacy Policy</a>.
+                  </p>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </section>

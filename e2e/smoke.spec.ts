@@ -2220,3 +2220,66 @@ test("the hero loop stops once it is scrolled past, and runs again on the way ba
     })
     .toBe(false);
 });
+
+/*
+  The confirmation is on screen, not merely in the DOM.
+
+  **This shipped broken and every check passed.** The homepage's reveal
+  gate was on the two elements the contact section swaps between rather
+  than on a wrapper around them, and `StageMotion` observes only what
+  exists when its effect runs. So a successful submit mounted a fresh
+  `data-reveal` element nobody was watching, it never got
+  `data-revealed`, and it sat at `opacity: 0` with "Got it." inside it.
+  The visitor filled in the form, pressed send, and watched the form
+  vanish with nothing in its place, on the one interaction the page is
+  built around.
+
+  **The suite had a test for this and it passed**, because
+  `toBeVisible()` does not consider opacity: an element faded to zero is
+  "visible" to Playwright. That is CLAUDE.md's rule restated by a bug —
+  prefer a test that asks whether the screen changed over one that asks
+  whether the code ran — so this one reads the computed opacity and will
+  not be fooled by the same thing twice.
+
+  The API is stubbed rather than really posted: what is under test is
+  whether the success state can be seen, not the endpoint, which has its
+  own tests above.
+*/
+test("the contact confirmation is actually visible, not just mounted", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.route("**/api/contact", (r) =>
+    r.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({ ok: true }),
+    }),
+  );
+  await page.goto("/");
+
+  const section = page.locator("#contact");
+  await section.scrollIntoViewIfNeeded();
+  await section.locator('input[name="name"]').fill("Test Person");
+  await section.locator('input[name="email"]').fill("test@example.com");
+  await section.locator("textarea").first().fill("Checking the confirmation.");
+  await section.locator('button[type="submit"]').first().click();
+
+  const sent = section.locator(".sent");
+  await sent.waitFor({ state: "attached", timeout: 15_000 });
+
+  /* Past the 600ms transition and its 100ms delay with room to spare. */
+  await expect
+    .poll(
+      () => sent.evaluate((el) => Number(getComputedStyle(el).opacity)),
+      {
+        timeout: 5_000,
+        message:
+          "the submit confirmation is in the DOM at zero opacity: the visitor " +
+          "sent the form and saw it disappear with nothing in its place",
+      },
+    )
+    .toBeGreaterThan(0.95);
+
+  await expect(sent).toContainText("Got it.");
+});
