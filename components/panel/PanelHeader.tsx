@@ -1,34 +1,28 @@
 import Link from "next/link";
 import BookCall from "../BookCall";
 import PaletteButton from "./PaletteButton";
+import { siteNav } from "@/lib/content";
 
 /*
-  PanelHeader — the V2 header, shared by the homepage panel and the V2 inner
-  pages (/brightbase first). Six links, ⌘K, one call to action. Anything
-  else belongs in ⌘K or the footer, not here (Meg: keep it calm).
+  PanelHeader — the V2 header, on the routes this site has not converted
+  yet: /brightbase, /demo/*, /turnover, /welcome-book, /intake and the two
+  legal pages. Six links, ⌘K, one call to action. Anything else belongs in
+  ⌘K or the footer, not here (Meg: keep it calm).
 
-  It was five until /demo existed. Meg asked for the sixth once the three
-  demos shipped, because a showcase nothing links to is a showcase nobody
-  opens, and she is about to start posting. Recorded here so the count is
-  not quietly trimmed back to five by somebody reading the old note: the
-  calm instruction still stands, this one link was a decision.
+  **Nov 26 2026: it is no longer the site's header.** The approved
+  homepage has its own bar, and the six routes a visitor reaches from it
+  now render that one too — see `components/stage/StageTopBar.tsx` for
+  why, which is that two headers read as two websites. This one stays
+  because seven routes still wear `.cp`, and it keeps the same six links
+  so that converting another page changes how the bar looks and not where
+  it goes.
 
-  Demos sits next to Work because they are the same argument twice. Work is
-  what she built for real clients, Demos is what somebody can click right
-  now. Both come before the product and the price.
-
-  Nov 15 2026: "Tools" became "Catalog", on Meg's ask that everything for
-  sale be visible up front. The count stays at six. /catalog links all eight
-  free tools directly, and /tools is still in ⌘K and the footer.
+  The links themselves moved to `lib/content.ts` as `siteNav` when the
+  second component started rendering them: two copies of a nav is how a
+  link quietly disappears from half a site. The record of why there are
+  six went with them.
 */
-const NAV = [
-  { href: "/#work", label: "Work" },
-  { href: "/demo", label: "Demos" },
-  { href: "/brightbase", label: "BrightBase" },
-  { href: "/services", label: "Services" },
-  { href: "/catalog", label: "Catalog" },
-  { href: "/about", label: "About" },
-];
+const NAV = siteNav;
 
 export default function PanelHeader({
   current,

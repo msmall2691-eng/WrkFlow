@@ -1452,6 +1452,60 @@ export const homeNav = [
   { href: "/tools", label: "Free tools" },
 ] as const;
 
+/*
+  The inner pages' top bar. Six links, and the count is a decision rather
+  than an oversight — it lived in `components/panel/PanelHeader.tsx` and
+  moved here when `StageTopBar` became the second component rendering it,
+  because two copies of a nav is how a link quietly disappears from one
+  half of a site.
+
+  PanelHeader's own note, kept because it is the record of why there are
+  six: five links, ⌘K and one call to action was the brief ("Meg: keep it
+  calm"), and Demos was the sixth, added once the three demos shipped,
+  "because a showcase nothing links to is a showcase nobody opens". Demos
+  sits next to Work because they are the same argument twice: Work is what
+  she built for real clients, Demos is what somebody can click right now.
+  Nov 15 2026: "Tools" became "Catalog", on Meg's ask that everything for
+  sale be visible up front; /tools is still in ⌘K and the footer.
+
+  **It is deliberately not `homeNav`.** That one is the approved
+  homepage's four in-page anchors, which only resolve on the homepage.
+  These are routes. Whether the two lists should become one is a question
+  about what the site's nav is, not about what it looks like, so the pass
+  that made the two bars identical left the link sets alone.
+*/
+export const siteNav = [
+  { href: "/#work", label: "Work" },
+  { href: "/demo", label: "Demos" },
+  { href: "/brightbase", label: "BrightBase" },
+  { href: "/services", label: "Services" },
+  { href: "/catalog", label: "Catalog" },
+  { href: "/about", label: "About" },
+] as const;
+
+/*
+  The phone menu, which is a site map rather than a bar.
+
+  **It exists because the header hid the whole site behind nothing.** Below
+  860px the design's bar drops its links, so at 390 a visitor had a
+  wordmark, a search affordance and one button: no way to reach /services
+  or /tools from the header at all, on the width Meg's buyers actually
+  use. The links were not missing, they were unreachable, which no build,
+  test or Lighthouse run says a word about.
+
+  It is longer than `siteNav` on purpose and that is not the seventh bar
+  link Meg reserved for herself. A bar is a choice about what deserves the
+  width; a menu somebody opened is a choice about what the site contains,
+  so /tools and /marketplace — both one click from the footer and from ⌘K,
+  and neither reachable from the bar — are in it. The order is the bar's,
+  then the two the bar has no room for.
+*/
+export const siteMenu = [
+  ...siteNav,
+  { href: "/tools", label: "Free tools" },
+  { href: "/marketplace", label: "Marketplace" },
+] as const;
+
 export const homeFooterNav = [
   { href: "/services", label: "Services" },
   /* `/#work` rather than the mockup's `/work`, for the reason recorded on

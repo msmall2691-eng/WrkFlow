@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import { siteNav } from "@/lib/content";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import Services from "@/components/Services";
 import Pricing from "@/components/Pricing";
@@ -47,6 +48,29 @@ import StackedHeading from "@/components/StackedHeading";
       32 .text-signal nodes at 3.03:1 and 2 .text-gold at 2.73:1, because the
       Daylight branch hardcodes a colour tuned for cream and `.cp` is
       near-black whatever the theme. That is why the fix landed first.
+
+  ───────────────────────────────────────────────────────────────────────────
+  Nov 26 2026 — the same move again, one system along.
+
+  The approved homepage wears `.stage`, and this page wore `.cp`: Fraunces
+  against Inter Tight, violet against teal, an aurora the homepage does not
+  have. One click off the homepage was a different website, which is what
+  the V2 note above was written about and is now true of the system that
+  replaced it.
+
+  Still a wrapper rather than a rewrite, and for the same reason: `.cp-inner`
+  re-points every `--cp-*` and `--color-*` this page's components read at
+  the homepage's own tokens, so Services, ForRentals, Pricing and Contact
+  take the new palette and the new face untouched. Three things the wrapper
+  does itself:
+
+    · **the header is the homepage's**, in flow. See StageTopBar.
+    · **the aurora is gone.** It is the V2 look and the approved homepage
+      has nothing like it; near-black here is flat, as it is there.
+    · the h1's face is no longer decided on this page. The long argument
+      below ended the way it said it should — once, for the whole site,
+      by Meg, by looking at a homepage — and `.cp-inner` carries the
+      answer for every page at once.
 */
 export const metadata: Metadata = pageMeta({
   title: "Services & pricing",
@@ -57,16 +81,9 @@ export const metadata: Metadata = pageMeta({
 
 export default function ServicesPage() {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
-
-        <div className="relative z-10">
-          <PanelHeader current="/services" />
-        </div>
+        <StageTopBar inFlow cta="book" nav={siteNav} here="Services" />
 
         <main className="relative z-10">
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">

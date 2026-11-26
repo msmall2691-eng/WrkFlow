@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import FounderNote from "@/components/FounderNote";
 import Approach from "@/components/Approach";
 import Stack from "@/components/Stack";
 import CommandPalette from "@/components/CommandPalette";
+import { siteNav } from "@/lib/content";
 
 /*
   /about — the person, the process, the toolkit.
@@ -15,6 +16,12 @@ import CommandPalette from "@/components/CommandPalette";
   more things between a visitor and the price, and both are things you go
   looking for rather than things that should stop you. Read in order this page
   answers who, how, and with what.
+
+  Nov 26 2026: converted to the approved homepage's clothes with
+  `.cp-inner` — the homepage's bar, its two faces, its one accent, and the
+  V2 aurora gone. A token re-point, so FounderNote, Approach and Stack are
+  untouched. CLAUDE.md says this is the one page where a human voice may
+  still be worth keeping, and nothing here changes a word of it.
 */
 
 export const metadata: Metadata = pageMeta({
@@ -28,19 +35,18 @@ export const metadata: Metadata = pageMeta({
 
 export default function AboutPage() {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
-
-        <div className="relative z-10">
-          <PanelHeader current="/about" bookHref="/?offer=call#contact" />
-        </div>
+        <StageTopBar
+          inFlow
+          cta="book"
+          nav={siteNav}
+          here="About"
+          bookHref="/?offer=call#contact"
+        />
 
         {/* No hero band here: FounderNote opens the page, and it carries its
-            own heading. No pt-16 either, since PanelHeader is in flow. */}
+            own heading. No pt-16 either, since the bar is in flow. */}
         <main className="relative z-10">
           <FounderNote />
           <Approach />

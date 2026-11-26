@@ -57,9 +57,14 @@ import CommandPalette from "@/components/CommandPalette";
   prefill and its request untouched. And every string, price and number
   below resolves to `lib/content.ts`.
 
-  `PanelHeader` is not on this page any more and is not deleted: it is
-  the site's header on ten other routes. `StageTopBar` is the homepage's
-  own bar, which is what the design asks for over moving video.
+  **`StageTopBar` is the site's header now, not this page's.** It shipped
+  as the homepage's own, beside `PanelHeader` on every other route, which
+  meant the first thing that happened when a visitor left the front page
+  was that the header changed. The six routes this page leads to render
+  the same component; `PanelHeader` is still the header on the seven that
+  have not been converted. `spy` is what fills its page-name slot here:
+  this page has no title above the hero, so the bar names the band being
+  read instead and marks its link. See the component for the rest.
 */
 export default function Home() {
   return (
@@ -68,7 +73,7 @@ export default function Home() {
         Skip to content
       </a>
 
-      <StageTopBar />
+      <StageTopBar spy />
 
       <main id="main">
         <StageHero />
