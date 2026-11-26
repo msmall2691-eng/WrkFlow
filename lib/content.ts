@@ -1378,8 +1378,30 @@ export const homeHero = {
 /** The eyebrow and heading over each band, in the order they render. */
 export const homeBands = {
   services: {
-    eyebrow: "What is for sale",
-    heading: "Four things, named for what you came here wanting.",
+    /*
+      **Meg's own framing, Nov 26 2026, and the count is deliberately
+      gone.** This read "Four things, named for what you came here
+      wanting." She disliked it on her phone and, asked what she would
+      say instead, reached for "common issues", so the section is framed
+      as problems a visitor recognizes rather than as a menu.
+
+      Two things fell out of that. "Let's take a look at common issues"
+      was her first phrasing and "let's" is "let us", which the voice
+      rule in CLAUDE.md rules out for the same reason as "we": a solo
+      founder writing as a company. The question survives instead, which
+      is also the one good half of the service router this page used to
+      carry, whose own note records that the question was right and the
+      answer under it was a table of contents.
+
+      And the word "Four" went with it. It was typed here while nothing
+      reads `services.length`, so a fifth service would have made this
+      line quietly false. CLAUDE.md's rule about the router's project
+      count applies exactly: a count is a claim about evidence, and one
+      written by hand is one that drifts. The four rows below still say
+      how many there are, by being four.
+    */
+    eyebrow: "Common issues",
+    heading: "Which one sounds familiar?",
   },
   work: {
     eyebrow: "Real screens, real builds",
