@@ -1344,3 +1344,118 @@ export const welcomeBook = {
   ],
 } as const;
 
+/*
+  The approved homepage — "Cinematic" (Meg, Nov 25 2026), chosen from three
+  options and ported in #156.
+
+  **Why its copy is here and not in the components.** The design arrived as
+  a standalone HTML mockup with every string typed into it, which is the
+  right way to draw a page and the wrong way to ship one: the site already
+  has one place where the four services, the nine projects, the four fixed
+  prices and the four promises live, and a second copy of any of them is
+  the drift this file exists to prevent. So the sections below read
+  `services`, `work`, `caseStudies`, `smallProjects`, `studioStats` and
+  `welcomeBook` directly, and what is left here is only the page's own
+  furniture: the eyebrows, the headings and the link labels.
+
+  Nothing countable was added. Every number the page shows — the prices,
+  the two case-study results, the project count, the promises — resolves to
+  a value that was already in this file and was already true.
+*/
+export const homeHero = {
+  eyebrow: "M Studio",
+  /* Already the studio's own sentence: it was the hero's supporting line
+     before this design made it the headline. "No 'I' either" (CLAUDE.md):
+     it describes the work and the reader, and names no maker. */
+  headline: "Websites, web apps and custom tools for small businesses.",
+  sub: "For contractors, admin firms and service businesses. Built around the one thing you want a visitor to do.",
+  /* The house location line, verbatim. */
+  location: "Southern Maine · clients anywhere.",
+  primary: "Start a project",
+  secondary: "See the work",
+} as const;
+
+/** The eyebrow and heading over each band, in the order they render. */
+export const homeBands = {
+  services: {
+    eyebrow: "What is for sale",
+    heading: "Four things, named for what you came here wanting.",
+  },
+  work: {
+    eyebrow: "Real screens, real builds",
+    heading: "Every picture below is a running system.",
+    /*
+      **The design's closing link read "All nine projects" and pointed at
+      `/work`, which is not a page on this site** — `app/work` holds only
+      the `[slug]` case studies, and nothing in the repo has ever linked
+      to a `/work` index. A link to a 404 is worse than no link, and
+      inventing a route is a decision rather than a port, so this points
+      at `/catalog`, which is the site's own index of what has been built
+      and what it costs, and says that instead of claiming a count the
+      destination does not show. The nine projects are still argued on
+      this page and in the three case studies.
+
+      If Meg wants the index the design assumed, it is a page and this is
+      the one line that changes.
+    */
+    all: "Everything built, with prices",
+    allHref: "/catalog",
+    caseStudy: "Read the case study",
+  },
+  approach: {
+    /* `founderPhilosophy` carries the statement itself and `approachSteps`
+       the note under it, so only the link label is new. */
+    link: "How a project runs",
+  },
+  pricing: {
+    eyebrow: "What it costs",
+    heading: "Numbers, before you ask for them.",
+    /* The sentence that has sat in a comment above `smallProjects` since
+       those prices were written. It belongs on the page. */
+    lede: "Estimates for a single, agreed piece of work. Final quotes follow review.",
+    note: `Full websites, apps and custom tools are quoted to your scope. At the other end, the calculators on this site are free to use today, and the Digital Welcome Book for a short-term rental is $${welcomeBook.introPrice} intro, reg. $${welcomeBook.regularPrice}.`,
+  },
+  start: {
+    eyebrow: "Start a project",
+    /* `founderCta` carries the heading, the body and the button label. */
+    note: "Nothing binding. Scoping is free.",
+  },
+} as const;
+
+/** The top bar and the footer, which are navigation rather than copy. */
+export const homeNav = [
+  { href: "#services", label: "Services" },
+  { href: "#work", label: "Work" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "/tools", label: "Free tools" },
+] as const;
+
+export const homeFooterNav = [
+  { href: "/services", label: "Services" },
+  /* `/#work` rather than the mockup's `/work`, for the reason recorded on
+     `homeBands.work.allHref`: there is no `/work` index on this site, and
+     this is the href the site's own footer has always used. */
+  { href: "/#work", label: "Work" },
+  { href: "/tools", label: "Free tools" },
+  { href: "/marketplace", label: "Marketplace" },
+  { href: "/about", label: "About" },
+  { href: "#contact", label: "Contact" },
+] as const;
+
+/*
+  Which work the page shows, and that is an editorial choice rather than a
+  derivable one — the design features one project in full and three beside
+  it, out of nine.
+
+  Named here rather than in the component for `MoreWork`'s reason: a list
+  of titles buried in a layout file is the kind of thing that goes stale
+  the week somebody renames a project. These are matched against
+  `work[].title`, and a name that stops resolving would silently render one
+  card fewer, so `e2e/smoke.spec.ts` asserts every one of them resolves.
+*/
+export const homeFeature = "The Maine Cleaning Co.";
+export const homeCards = [
+  "The Remote Admin",
+  "Instant Estimate",
+  "Turnover scheduling",
+] as const;

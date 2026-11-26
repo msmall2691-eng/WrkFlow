@@ -6,11 +6,19 @@ import { join } from "node:path";
    reads, so a literal here cannot drift from the real work list. Static
    rather than a dynamic import(): Playwright transpiles these, and a
    runtime import of a .ts module is not. */
-import { ladder, marketItems, services, smallProjects, work } from "../lib/content";
+import {
+  caseStudies,
+  homeCards,
+  homeFeature,
+  ladder,
+  marketItems,
+  services,
+  smallProjects,
+  studioStats,
+  work,
+} from "../lib/content";
 import { integrations, resolveProof } from "../lib/integrations";
-import { catalog } from "../lib/catalog";
 import { CAST } from "../lib/ocean";
-import { destination, planets as takes } from "../lib/planets";
 
 /*
   Does every page still render, and does the one form that matters still
@@ -69,7 +77,10 @@ test("the contact form submits and confirms", async ({ page }) => {
   await page.locator("#name").fill("Smoke Test");
   await page.locator("#email").fill("smoke@example.com");
   await page.locator("#message").fill("Automated smoke test, please ignore.");
-  await page.getByRole("button", { name: /send it over/i }).click();
+  /* The homepage's own shell labels its submit from `founderCta`, which is
+     where that sentence has always lived; /services and /brightbase still
+     render the panel shell's "Send it over". Same component, same request. */
+  await page.getByRole("button", { name: /talk through your project/i }).click();
 
   await expect(page.getByRole("heading", { name: "Got it." })).toBeVisible();
   expect(posted).not.toBeNull();
@@ -95,7 +106,7 @@ test("a failed submit tells the visitor instead of silently dropping it", async 
   await page.locator("#name").fill("Smoke Test");
   await page.locator("#email").fill("smoke@example.com");
   await page.locator("#message").fill("Automated smoke test, please ignore.");
-  await page.getByRole("button", { name: /send it over/i }).click();
+  await page.getByRole("button", { name: /talk through your project/i }).click();
 
   /* Scoped to the contact section: Next renders its own route announcer
      with role="alert", so an unscoped lookup matches two elements. */
@@ -288,8 +299,11 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
     unswept. A list that has to be maintained is the thing this test exists
     to not depend on.
 
-    `.cp section` is every band the homepage composes, and `#top` is the
-    hero's own main. The shared header and footer stay out of scope on
+    `.stage section` is every band the homepage composes, and `#top` is
+    the hero's own section. **It was `.cp section` until the approved
+    design landed** (#156): the homepage's wrapper class changed and the
+    sweep would have found nothing, which the count assertion below is
+    exactly what catches. The shared header and footer stay out of scope on
     purpose: they are not this page's, and sweeping them here would make a
     homepage test fail for a footer reason. That exclusion survives the
     descendant selector because `Footer`, `PanelHeader` and
@@ -306,7 +320,7 @@ test("the homepage's controls are big enough to hit on a phone", async ({ page }
     to depth is a list that has to be maintained wearing a different hat,
     which is the thing this test's own comment says it must not depend on.
   */
-  const roots = page.locator(".cp section, #top");
+  const roots = page.locator(".stage section, #top");
   const found = await roots.count();
   expect(found, "the homepage should have sections to sweep").toBeGreaterThan(4);
 
@@ -468,39 +482,59 @@ test("the turnover planner ignores blocked dates", async ({ request }) => {
 });
 
 /*
-  The homepage's work anchor, and the one rule the rebuild is built on.
+  The homepage's work section, and the two rules that outlived the page
+  it was written for.
 
-  Two separate invariants, asserted together because they describe the same
-  section.
+  **This test used to be about `OneJob`**, the single project told all the
+  way through, and it asserted that section's own beats: a "what got
+  built" heading, a "what changed" heading, a blockquote of Meg's problem
+  statement, a figcaption naming her, and four captures in a 2x2 grid.
+  The approved design (#156) has no such section — one project is
+  featured with its real figures and the rest are cards — so those five
+  assertions are gone with the thing they guarded.
 
-  **One: #work is unique and lands on the worked example.** The hero's
-  secondary button, the nav and footer Work links, and every /#work from an
-  inner page target one id. It has moved twice: it sat on a small tile of
-  project names inside the control panel, then on a grid of three case-study
-  cards, and it is now on OneJob, the single project told all the way
-  through. Both failure modes here are invisible — a duplicate id renders
-  two perfect-looking sections while every link silently resolves to the
-  first, and a renamed id leaves five live-looking links that scroll
-  nowhere. Neither shows up in a build, a type check or a Lighthouse run.
+  **What is kept is what was never about the layout.**
 
-  **Two: no project appears twice on the page.** This is the complaint the
-  rebuild answers. The old homepage listed four projects in three separate
-  blocks — a rotating window, a "Built and running" tile, and three cards —
-  with sentences copied verbatim between two of them, so a visitor met the
-  same four names three times before reading anything about what any of them
-  did. The split between OneJob and MoreWork is the fix, and MoreWork's
-  `ALREADY_SHOWN` is an editorial list, which is exactly the kind of thing
-  that regrows when somebody adds a project and reaches for the obvious
-  place to put it. So the rule is asserted against `work` itself rather than
-  against a count written here.
+  *One: `#work` is unique and lands on the work.* The nav, the footer,
+  PanelHeader, every case study's back link and /services all target one
+  id. A duplicate renders two perfect-looking sections while every link
+  silently resolves to the first, and a renamed id leaves five live
+  links that scroll nowhere. Neither shows up in a build or a Lighthouse
+  run.
 
-  Counted on the rendered text rather than on links, because the repetition
-  was prose: two of the three blocks carried the project's name and blurb as
-  text, and a test that only counted anchors would have passed on all of it.
+  *Two: no project is argued twice.* The complaint the previous rebuild
+  answered was the same four names appearing in three blocks. The new
+  page shows four of the nine once each, so the rule is asserted as
+  "once, or not at all" against `work` itself rather than against a count
+  written here.
+
+  *Three, new with this design: the four it shows resolve.* Which work
+  appears is an editorial choice named in `lib/content.ts`
+  (`homeFeature`, `homeCards`) and matched on title. A renamed project
+  would render one card fewer and nothing else would fail — the quiet
+  half, which is always the dangerous one.
+
+  And the captures have to have actually loaded, which is the assertion
+  no wording test can make: this section's whole claim is "every picture
+  below is a running system", and a 404 renders as a dark rectangle in a
+  dark card.
 */
-test("the work anchor is unique and lands on one job told all the way through", async ({
+test("the homepage's work section is unique, resolves, and shows real captures", async ({
   page,
 }) => {
+  /* Data first, so a rename fails with its own name rather than with
+     "expected 3 cards, found 2" on a page that rendered perfectly. */
+  expect(
+    work.some((w) => w.title === homeFeature),
+    `homeFeature "${homeFeature}" does not match any work item`,
+  ).toBe(true);
+  for (const title of homeCards)
+    expect(
+      work.some((w) => w.title === title),
+      `homeCards names "${title}", which is not in work[] — its card would ` +
+        "simply not render",
+    ).toBe(true);
+
   await page.goto("/");
 
   const anchors = page.locator("#work");
@@ -512,134 +546,57 @@ test("the work anchor is unique and lands on one job told all the way through", 
   const section = anchors.first();
   await expect(
     section.getByRole("heading", { level: 2 }),
-    "the anchor should land on the worked example's own heading",
-  ).toContainText(/one job, start to finish/i);
+    "the anchor should land on the work",
+  ).toContainText(/running system/i);
 
-  /*
-    The four beats. Each is a promise the section makes that an edit could
-    quietly drop: the problem is the only real voice on the site, the
-    captures are the only screenshots left on the page, and the three
-    results are the only confirmed outcome numbers in the repo.
-  */
+  /* The featured project carries the only confirmed outcome figures in
+     the repo, read from its case study rather than typed into the page. */
+  const study = caseStudies.find((c) => c.slug === "maine-cleaning-co")!;
+  for (const r of study.results.slice(0, 2))
+    await expect(
+      section,
+      `the feature should show "${r.value}", from the case study`,
+    ).toContainText(r.value);
   await expect(
-    section.getByRole("heading", { name: /what got built/i }),
-    "the worked example should show what was built",
-  ).toBeVisible();
-  await expect(
-    section.getByRole("heading", { name: /what changed/i }),
-    "the worked example should show what changed",
-  ).toBeVisible();
-  await expect(
-    section.locator("blockquote"),
-    "the problem should be quoted, and attributed, rather than asserted",
+    section.getByRole("link", { name: /read the case study/i }),
+    "and the way into the long version",
   ).toHaveCount(1);
-  await expect(section.locator("figcaption")).toContainText(/megan small/i);
 
   /*
-    Scroll EACH capture into view before asking whether it loaded, and give
-    the poll a budget that a cold image-optimization response can fit in.
-
-    These <Image>s are loading="lazy", so nothing fetches them until they
-    approach the viewport, and `goto` resolves on `load`. The version this
-    was adapted from scrolled the *section* and then polled, which is fine
-    for three cards in one row and worth not assuming for a 2x2 grid in a
-    section nearly 2000px tall.
-
-    Measured rather than assumed, because the first draft of this comment
-    asserted that the section scroll left the captures below the fold and
-    that was simply untrue: at Playwright's 1280x720 default,
-    `scrollIntoViewIfNeeded` on the section puts its top at -583, and all
-    four captures are in the viewport and fully loaded before the first
-    poll. So the per-image scroll is belt and braces, not the fix.
-
-    What actually failed on CI was the fetch itself: build step 1
-    (maineclean.png, the largest source at 2208x1380) reported naturalWidth
-    0 after the default 5s poll, on the same run where three separate
-    navigations to /work/maine-cleaning-co — whose hero is that same file —
-    each timed out at 30s. One slow optimizer, four symptoms. 15s is the
-    budget a cold encode on a loaded two-core runner can actually fit in;
-    it buys patience without hiding a real failure, since an image that
-    never arrives still fails.
+    Every capture, scrolled to and then asked whether it loaded. Same
+    budget and the same reason as the case study's: a cold
+    image-optimization response on a loaded two-core runner is slow, and
+    an image that never arrives still fails.
   */
-  const shots = section.locator("ul img");
-  const built = await shots.count();
-  expect(built, "the build steps should lead with real captures").toBeGreaterThan(1);
-  for (let i = 0; i < built; i++) {
+  const shots = section.locator("img");
+  const found = await shots.count();
+  expect(found, "the work section should show four captures").toBe(4);
+  for (let i = 0; i < found; i++) {
     await shots.nth(i).scrollIntoViewIfNeeded();
     await expect
       .poll(
         () => shots.nth(i).evaluate((el: HTMLImageElement) => el.naturalWidth),
-        {
-          message: `build step ${i + 1} should lead with a screenshot that loaded`,
-          timeout: 15000,
-        },
+        { message: `capture ${i + 1} should have loaded`, timeout: 15000 },
       )
       .toBeGreaterThan(0);
   }
 
   /*
-    The hero's second button used to promise this section and now promises
-    the shelf, which is the storefront rebuild's one deliberate change to
-    what the top of the page offers: a stranger met their first purchasable
-    price on screen 12 of 18, and the only alternative to booking a call
-    sent them further into the proof. So the reachability assertion moved
-    with the button, to the shelf test. What stays here is that the anchor
-    itself still works, since the nav, the footer, PanelHeader, every case
-    study's back link and /services all target #work.
+    Nothing argued twice. `textContent` rather than `innerText`, because a
+    title inside a clipped or visually hidden element still counts as the
+    page saying it; case-insensitive, because the same project is
+    legitimately spelled two ways across the repo.
   */
-  /*
-    The "a button on this page reaches it" assertion lived here and has
-    moved to the shelf test, because the button did. The hero's second
-    action used to promise this section; in the storefront rebuild it
-    promises the shelf, and a test asserting a promise nothing makes any
-    more is a test that cannot fail.
-
-    What is deliberately NOT replaced with a stand-in: there is no longer a
-    same-page link to #work on the homepage at all, only the footer's
-    `/#work`, which is a full navigation. Clicking that proves nothing about
-    this page, and `goto("/#work")` was tried and is worse than nothing: a
-    fresh load scrolls before the lazy images above have reserved their
-    space, so it lands short and passes or fails on image timing rather
-    than on the anchor. The anchor's job is to be a destination for the
-    nav, the footer, PanelHeader, every case study's back link and
-    /services, and what makes that work is the uniqueness asserted at the
-    top of this test.
-  */
-
-  /*
-    Invariant two: every project is argued in exactly one of the two
-    sections that argue projects.
-
-    Scoped to those two rather than swept across the whole page, because the
-    page legitimately says some of these words elsewhere: the header nav
-    links BrightBase, and the footer carries "mlinx.studio", which contains
-    "linx". A page-wide sweep would fail on both and be deleted within the
-    week, which is worse than no test.
-
-    `textContent` rather than `innerText`, because a title inside a visually
-    hidden <dt> or a clipped element still counts as the page saying it
-    twice, and innerText reports nothing for exactly those.
-
-    Case-insensitive, because the same thing is legitimately spelled two
-    ways: `work` calls it "Instant Estimate" and the build step it belongs
-    to is labelled "Instant estimate". A case-sensitive count would read
-    that as zero and call a correctly-rendered page broken.
-  */
-  const read = async (selector: string) =>
-    ((await page.locator(selector).evaluate((el) => el.textContent)) ?? "").toLowerCase();
-
-  const argued = [
-    await read("#work"),
-    await read('section[aria-labelledby="more-work-heading"]'),
-  ];
-
+  const text = (
+    (await section.evaluate((el) => el.textContent)) ?? ""
+  ).toLowerCase();
   for (const item of work) {
-    const needle = item.title.toLowerCase();
-    const hits = argued.reduce((n, text) => n + text.split(needle).length - 1, 0);
+    const hits = text.split(item.title.toLowerCase()).length - 1;
     expect(
       hits,
-      `"${item.title}" should be argued in exactly one place on the homepage, not ${hits}`,
-    ).toBe(1);
+      `"${item.title}" appears ${hits} times in the work section; a project ` +
+        "is argued once or not at all",
+    ).toBeLessThan(2);
   }
 });
 
@@ -1053,7 +1010,17 @@ test("/demo reaches all three demos and says they are invented", async ({ page }
   most people will meet the demos at all.
 */
 test("the nav reaches the demos showcase", async ({ page }) => {
-  await page.goto("/");
+  /*
+    **Asserted on /services rather than on the homepage, because the
+    homepage no longer renders `PanelHeader`.** The approved design
+    (#156) gives the homepage its own four-link bar over the hero video;
+    the site header with its six links, including this one, is on every
+    other route and is untouched. The rule — a showcase nothing links to
+    is a showcase nobody opens — is unchanged, and /services is the route
+    the homepage's own services rows lead to, so it is the first header a
+    visitor meets after leaving the front page.
+  */
+  await page.goto("/services");
 
   const link = page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Demos" });
   await expect(link, "the main nav should offer Demos").toHaveCount(1);
@@ -1065,131 +1032,66 @@ test("the nav reaches the demos showcase", async ({ page }) => {
 });
 
 /*
-  The shop is on the homepage, near the top, and it tells the truth about
-  what it is leaving out.
+  The homepage says what things cost, and the prices are the ones their
+  own source carries.
 
-  **This replaced the four-door test.** ServiceRouter asked "What are you
-  trying to fix?" at screen 2 and answered with four categories and a count
-  of past projects: no price, no product, 1.4 screens, and a link to another
-  page. Meg's complaint was that it was "hard to see what is for sale that's
-  tangible", and measured at phone width she was being generous. The page
-  ran 20.4 screens, the first purchasable price was on screen 14.6, and
-  three product prices existed on the whole page.
+  **This replaced the shelf test, which replaced the four-door test.** The
+  shelf was the storefront page's whole-catalog price list, keyed on
+  `catalog`; the approved design (#156) has no shelf, so the assertions
+  about which catalog rows appeared and how the shop owned up to the rest
+  went with it. What did not go is the reason any of it existed, which is
+  Meg's own first instruction about this page: "hard to see what is for
+  sale that's tangible". Measured at the time, the first purchasable
+  price was on screen 14.6 of 20.4.
 
-  So the assertions are the things that were actually wrong, each of which
-  can regrow without anything failing to build:
+  Three things, each of which can regrow without anything failing to
+  build:
 
-  1. **Depth.** The shelf starts within the first few screens at 390px. A
-     page whose shop has drifted back to screen 14 renders perfectly, so
-     nothing else catches this.
-  2. **One source.** Every card must come from `catalog`, the same list
-     /catalog renders. The first version of this section built its own
-     shelf from `ladder` and would have been a second catalog with a second
-     set of prices, which is the failure this repo keeps recording.
-  3. **Honesty about the rest.** Only `try` and `buy` have a price somebody
-     can act on today. `built` is quoted, and the page has to say how many
-     there are rather than imply the shelf is everything. `workbench` items
-     are not built at all, so none of them may appear.
+  1. **Depth.** The prices arrive within the first few screens at 390px.
+     A page whose price list has drifted to screen 14 renders perfectly.
+  2. **One source.** Every number is `smallProjects`, which is also what
+     the /services ladder renders. A price retyped into a component is
+     the drift this repo keeps recording.
+  3. **Honesty about the rest.** Four fixed prices are not the whole
+     business, so the note under them has to say what is quoted instead
+     — and the four promises beside it are `studioStats`, which are M
+     Studio's own promises rather than outcomes claimed for anybody.
 */
-test("the shop is on the homepage, near the top, and says what it leaves out", async ({
+test("the homepage shows what things cost, from the one place those prices live", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  const shelf = page.locator("#shelf");
-  await expect(shelf, "the homepage should carry the shelf").toHaveCount(1);
+  const pricing = page.locator("#pricing");
+  await expect(pricing, "the homepage should carry the price list").toHaveCount(1);
 
-  /*
-    How far down it starts, and how far it is from being reachable.
-
-    **This number moved because Meg specified a scroll-driven hero, and
-    the move is recorded rather than quietly made.** The Vesper prompt
-    puts a 600vh camera flight (300vh under 768px) in front of
-    everything; measured at 390px the shelf went from 1.7 screens down to
-    3.9, and the old `< 3` failed. That is the spec working as written,
-    not a regression, and it is also the one thing in that spec that
-    fights her own first instruction about this page: "hard to see what
-    is for sale that's tangible".
-
-    So the guard is rebuilt around what actually matters rather than
-    relaxed. Depth alone was always a proxy; what a visitor needs is for
-    the shop to be ONE ACTION away from the first screen, which the
-    hero's own button gives them, and for the preamble not to grow
-    without anybody noticing. Both are asserted. `SPLINE_VH` is a single
-    constant in `lib/planets.ts` if the depth is judged too much.
-  */
-  const screens = await shelf.evaluate(
+  const screens = await pricing.evaluate(
     (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
   );
-
-  /* The hero promises the shop; pressing that promise has to arrive
-     there, from the first screen, without scrolling to find it. */
-  await page.locator('a[href="#shelf"]').first().click();
-  await expect(
-    shelf,
-    "the hero's own button should reach the shop from the first screen",
-  ).toBeInViewport();
-
   expect(
     screens,
-    `the preamble should stay about as long as the spec asks for; the shop starts ${screens.toFixed(1)} screens down`,
-  ).toBeLessThan(5);
+    `the prices start ${screens.toFixed(1)} screens down; this page exists ` +
+      "because they were hard to find",
+  ).toBeLessThan(8);
 
+  /* textContent, not innerText: a price inside a clipped element still
+     counts as the page carrying it, and innerText drops exactly those. */
+  const text = (await pricing.evaluate((el) => el.textContent)) ?? "";
 
-  const text = (await shelf.textContent()) ?? "";
+  for (const p of smallProjects) {
+    expect(text, `"${p.title}" should be on the homepage`).toContain(p.title);
+    expect(text, `"${p.title}" should show its price`).toContain(p.price);
+  }
 
-  /*
-    Everything with a decided price is on it, with that price.
+  /* The sentence that says four prices are not everything. */
+  expect(
+    text.toLowerCase(),
+    "the price list should say what is quoted rather than listed",
+  ).toContain("quoted to your scope");
 
-    Keyed on the price rather than on `status`, which is the distinction
-    this section got wrong first time round: `status` says how real a thing
-    is, not whether it has been priced. The two interactive demos are `try`
-    because you can genuinely use them today, and building one is quoted, so
-    a status-banded shelf put "Quoted to your scope" under a FREE heading.
-  */
-  const decided = (p: string) => /\d/.test(p) || /^free$/i.test(p.trim());
-  const actionable = catalog.filter(
-    (i) => (i.status === "try" || i.status === "buy") && decided(i.price),
-  );
-  expect(actionable.length, "there should be something to sell").toBeGreaterThan(4);
-
-  const missing = actionable.filter((i) => !text.includes(i.name)).map((i) => i.name);
-  expect(missing, "every item priced for today should be on the shelf").toEqual([]);
-
-  const noPrice = actionable.filter((i) => !text.includes(i.price)).map((i) => i.name);
-  expect(noPrice, "every one of those should show its price").toEqual([]);
-
-  /* Nothing unbuilt. `workbench` is the catalog's own word for "not built
-     yet", and a price list is the last place it may leak into. */
-  const unbuilt = catalog
-    .filter((i) => i.status === "workbench")
-    .filter((i) => text.includes(i.name))
-    .map((i) => i.name);
-  expect(unbuilt, "nothing on the workbench may appear on the shelf").toEqual([]);
-
-  /*
-    And it owns up to the larger, built half rather than implying the shelf
-    is the whole shop.
-
-    `status === "built"` rather than "everything not priced", which is the
-    bug Codex caught on this PR: the leftover set pulls in `storefront` and
-    `directory`, two `try` demos whose own pages open by saying the business
-    is invented, and calls them proof of real businesses. Asking the field
-    that already means "running for a real business" is the single author
-    for it.
-  */
-  const quoted = catalog.filter((i) => i.status === "built").length;
-  expect(text, "the shelf should say how many more are built and quoted").toContain(
-    String(quoted),
-  );
-  /* At least one, not exactly one: a card with no page of its own falls
-     back to the catalog entry, which is the right destination for it. What
-     has to exist is the way into the whole thing. */
-  await expect(
-    shelf.getByRole("link", { name: /browse all/i }),
-    "the shelf should lead into the full catalog",
-  ).toHaveCount(1);
+  for (const s of studioStats)
+    expect(text, `the promise "${s.label}" should render`).toContain(s.value);
 });
 
 /*
@@ -1289,21 +1191,27 @@ test("every price on the services ladder resolves to its one source", async ({
   Scoped to the homepage rather than "somewhere on the site" deliberately.
   A link buried on a page that is itself unreachable is not reachability,
   and the homepage is the one page every visitor sees.
+
+  **The list is shorter than it was, and that is a decision Meg made by
+  choosing this design.** The storefront page linked everything because
+  it was a shop; the approved homepage (#156) is six sections and a
+  footer, and it links /tools, /marketplace, /catalog, /services,
+  /about, the case studies and /privacy. It does not link /turnover,
+  /welcome-book or the three demo apps.
+
+  Those five are still in the sitemap, still in ⌘K, and still linked
+  from /catalog, /marketplace and /tools, so they are not orphans in the
+  sense this test was written for — but they are one hop further away
+  than they were, and that is worth saying out loud rather than
+  discovering later. What stays asserted is that the paths this design
+  *does* promise keep working, because a footer link quietly dropped in a
+  tidy-up looks like nothing at all.
 */
 test("every finished thing is reachable from the homepage", async ({ page }) => {
   await page.goto("/");
 
   /* Paths a visitor should be able to click to, without a search box. */
-  const MUST_REACH = [
-    "/turnover",
-    "/welcome-book",
-    "/demo/shop",
-    "/demo/studio",
-    "/demo/directory",
-    "/tools",
-    "/marketplace",
-    "/catalog",
-  ];
+  const MUST_REACH = ["/tools", "/marketplace", "/catalog", "/services", "/about"];
 
   const hrefs = await page
     .locator("a[href]")
@@ -1358,10 +1266,20 @@ test("the sitemap lists the public pages, and not the invented ones", async ({ r
   it did not, which is the failure the single-author convention in this
   repo exists to prevent.
 
-  Verified both ways: adding an integration with an invented source fails
-  naming it, and the rendered half fails if the section is unwired.
+  **The rendered half of this test is gone and the data half is not.**
+  `WhatConnects` was the homepage's integration wall (`#connects`), and
+  the approved design (#156) has no such section, so the assertions that
+  every tool name and every project name reached that page went with the
+  section. The rule they served — a grid of familiar logos is the
+  cheapest lie on a portfolio — lives in the data, which is where it was
+  always enforced: `lib/integrations.ts` is still read by the pages that
+  show it, and an entry citing a project that does not back it still
+  fails here, by name.
+
+  Verified by breaking it: an integration with an invented source fails
+  naming the integration and the source.
 */
-test("every integration shown is running in a named project", async ({ page }) => {
+test("every integration shown is running in a named project", async () => {
   /* Data first, so a bad entry fails with its own name rather than with
      "0 tiles found" on a page that rendered perfectly. */
   const unbacked: string[] = [];
@@ -1380,112 +1298,94 @@ test("every integration shown is running in a named project", async ({ page }) =
     "every integration should trace to a real record on a real project",
   ).toEqual([]);
 
-  /* And it reaches the page. textContent rather than innerText, matching
-     the ladder test: a name inside a clipped element still counts as the
-     page carrying it. */
-  await page.goto("/");
-  const section = page.locator("#connects");
-  await expect(section).toBeVisible();
-
-  const text = (await section.textContent()) ?? "";
-  const missing = integrations.filter((i) => !text.includes(i.name)).map((i) => i.name);
-  expect(missing, "every integration should render on the homepage").toEqual([]);
-
-  /* The attribution is the whole point: a tool name on its own is the wall
-     of logos this test exists to refuse. Assert the projects reach the page
-     too, not just the tool names. */
-  const projects = new Set(
-    integrations.flatMap((i) => i.proof.map((p) => resolveProof(p)?.title).filter(Boolean)),
-  );
-  for (const title of projects)
-    expect(text, `"${title}" should be named as where an integration runs`).toContain(title as string);
+  /* And every one of them names the project it runs in, which is the
+     whole point: a tool name on its own is the wall of logos this test
+     exists to refuse. */
+  for (const i of integrations)
+    for (const p of i.proof)
+      expect(
+        resolveProof(p)?.title,
+        `"${i.name}" should name the project it runs in`,
+      ).toBeTruthy();
 });
 
 /*
-  Every take on the reel is a real capture of something real.
+  Every picture on the homepage is a real capture of something real.
 
-  **Five heroes have now been built on this page and this is the promise
+  **Six heroes have now been built on this page and this is the promise
   that outlived all of them.** The CSS blueprint went, the storefront and
   engine went, the editorial masthead went, the drag wall went, the film
-  strip went, the globes went. What Meg has been pointing at the whole
-  way is work she actually shipped, shown as itself, so the test is on
-  the evidence rather than on the technique.
+  strip went, the globes went, and now the reel has gone with the
+  approved design (#156). What Meg has been pointing at the whole way is
+  work she actually shipped, shown as itself, so the test moved to the
+  evidence rather than to whichever component was drawing it.
 
-  **It also refuses the thing the LINX prompt would have done here.**
-  That spec ships four invented clients with invented results: Kettering
-  Audio at +212% preorders, Brightwater Optics at 38,400 sign-ups. This
-  asserts the opposite: every take names a real project from the work
-  list and shows a capture that is on disk.
+  **It also refuses the thing a mockup would do here.** The LINX spec
+  this site keeps being compared to ships four invented clients with
+  invented results — Kettering Audio at +212% preorders, Brightwater
+  Optics at 38,400 sign-ups. This asserts the opposite: every capture the
+  page shows belongs to a real project in `work[]`, and the file is on
+  disk.
 */
-test("every take on the reel is a real capture of something real", async ({ page }) => {
-  expect(takes.length, "the reel needs takes").toBeGreaterThanOrEqual(3);
+test("every picture on the homepage is a real capture of something real", async ({
+  page,
+}) => {
+  const shown = [homeFeature, ...homeCards]
+    .map((title) => work.find((w) => w.title === title))
+    .filter((w): w is (typeof work)[number] => Boolean(w));
+  expect(shown.length, "the page should show four projects").toBe(4);
 
-  for (const t of takes) {
-    expect(t.shot, `${t.title} should show a capture from public/shots`).toMatch(/^\/shots\//);
+  for (const item of shown) {
+    const study = item.caseStudy
+      ? caseStudies.find((c) => c.slug === item.caseStudy)
+      : undefined;
+    const shot = study?.hero.src ?? item.shot;
+    expect(shot, `${item.title} is on the homepage with no capture`).toMatch(
+      /^\/shots\//,
+    );
     expect(
-      existsSync(join(process.cwd(), "public", t.shot)),
-      `${t.shot} is on the reel and not on disk`,
+      existsSync(join(process.cwd(), "public", shot!)),
+      `${shot} is on the homepage and not on disk`,
     ).toBe(true);
   }
 
-  /*
-    `lib/planets.ts` drops a take that has nowhere to go OR no capture,
-    and the second half of that is quiet: the reel simply shows four
-    cards instead of five and nothing says why. So this asserts the
-    thing the filter would otherwise hide, which is also the thing that
-    actually happened: The Keystone House was live, linked, and had no
-    screenshot, so it rendered as a browser window with a URL in the
-    chrome and an empty well behind it.
-
-    Scoped to the front of the list, because that is the slice the reel
-    takes. A tenth work item with no capture is not this test's business.
-  */
-  const reach = work.filter((w) => destination(w) !== null).slice(0, takes.length + 1);
-  for (const w of reach) {
-    expect(
-      w.shot,
-      `${w.title} can be opened but has no capture, so it is silently off the reel`,
-    ).toBeTruthy();
-  }
-
+  /* And the page is drawing those same files, rather than a placeholder
+     that happens to look like a screenshot. */
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-
-  /* The reel is DOM, so every take's title is in the document whatever
-     the scroll position: it is the accessible copy, not a canvas. */
-  const body = (await page.locator("body").textContent()) ?? "";
-  for (const t of takes) {
-    expect(body, `the reel should name ${t.title}`).toContain(t.title);
+  const srcs = await page
+    .locator("#work img")
+    .evaluateAll((els) => els.map((e) => e.getAttribute("src") ?? ""));
+  for (const item of shown) {
+    const study = item.caseStudy
+      ? caseStudies.find((c) => c.slug === item.caseStudy)
+      : undefined;
+    const shot = study?.hero.src ?? item.shot;
+    expect(srcs, `${item.title}'s capture should be on the page`).toContain(shot);
   }
 });
 
 /*
   Reduced motion loses the animation, never the work.
 
-  **A review bot found this on the head that shipped, and the test beside
-  it is the reason it could.** `test("the work still shows without WebGL")`
-  already loads this page under `reduce` and already walks every take, and
-  it passed the whole time: it asserts the take *titles* are in the
-  document. They were. What was missing was every screenshot, because the
-  stacked fallback rendered `TakePanel` alone and `BrowserWindow` is the
-  only thing on the page that draws `take.shot`.
+  **A review bot found this on the head that shipped the reel, and the
+  lesson is why the test survived the reel.** The old version of this
+  asserted that five project *titles* were in the document under
+  `reduce`, and it passed the whole time the stacked fallback was
+  rendering no screenshots at all: a reduced-motion visitor read five
+  descriptions with no picture of any of them, on a site whose first
+  design rule is "show the work".
 
-  So a reduced-motion visitor read five project descriptions with no
-  picture of any of them, on a site whose first design rule is "show the
-  work". Nothing failed: the build was clean, the suite was green, the
-  copy was all there.
-
-  **The lesson is the one the reel's own honesty test already carries in
-  the other direction.** That one refuses invented proof; this one
-  refuses *absent* proof. A text assertion cannot see a missing picture,
-  so this counts loaded captures instead, which is the one thing a
-  stacked card cannot fake.
-
-  `reduce` is the condition rather than a viewport, because the fallback
-  is keyed on `prefers-reduced-motion` alone and the bug was invisible at
-  every width.
+  The shape of the failure is what carries over. Under `reduce` this page
+  removes its video, holds its drift and lands every reveal on its end
+  state — and the reveals are the new way the work could disappear, since
+  their hidden state is `opacity: 0` and the observer that clears it
+  never fires when nothing scrolls. A text assertion cannot see a missing
+  picture, so this counts captures that actually loaded.
 */
-test("reduced motion keeps every take's capture, not just its words", async ({ browser }) => {
+test("reduced motion keeps the work's captures, not just its words", async ({
+  browser,
+}) => {
   const ctx = await browser.newContext({
     reducedMotion: "reduce",
     viewport: { width: 1440, height: 900 },
@@ -1494,24 +1394,30 @@ test("reduced motion keeps every take's capture, not just its words", async ({ b
   await page.goto("/");
   await page.waitForTimeout(800);
 
-  const reel = page.locator("section[aria-labelledby='reel-heading']");
-  await expect(reel, "the reel should render under reduced motion").toBeVisible();
+  const section = page.locator("#work");
+  await expect(section, "the work should render under reduced motion").toBeVisible();
 
-  const shots = reel.locator("img");
-  const found = await shots.count();
-  expect(
-    found,
-    `the reel shows ${takes.length} takes under reduced motion and drew ${found} captures`,
-  ).toBeGreaterThanOrEqual(takes.length);
+  /* Nothing is faded: under `reduce` every reveal is on its end state
+     from the first paint, without an observer having fired. */
+  const faded = await page
+    .locator("#work [data-reveal]")
+    .evaluateAll((els) =>
+      els
+        .filter((e) => parseFloat(getComputedStyle(e).opacity) < 0.99)
+        .map((e) => e.textContent?.trim().slice(0, 40)),
+    );
+  expect(faded, "a reveal left hidden under reduced motion is content lost").toEqual(
+    [],
+  );
 
-  /* Present is not loaded: a broken src is still an <img>, and the
-     whole point here is that somebody can see the work. */
-  for (let i = 0; i < takes.length; i += 1) {
+  const shots = section.locator("img");
+  expect(await shots.count(), "all four captures should render").toBe(4);
+  for (let i = 0; i < 4; i += 1) {
     await shots.nth(i).scrollIntoViewIfNeeded();
     await expect
       .poll(
         () => shots.nth(i).evaluate((el: HTMLImageElement) => el.naturalWidth),
-        { message: `take ${i + 1}'s capture should have actually loaded`, timeout: 10000 },
+        { message: `capture ${i + 1} should have actually loaded`, timeout: 10000 },
       )
       .toBeGreaterThan(0);
   }
@@ -1522,11 +1428,11 @@ test("reduced motion keeps every take's capture, not just its words", async ({ b
 /*
   The work survives a browser with no WebGL.
 
-  The hero's particle wordmark is a canvas and falls back to a gradient;
-  the reel never was one. This is what that buys: on a machine that
-  cannot draw a single triangle, the headline and all five takes still
-  render, because the only thing WebGL was ever doing on this page was
-  decorating the top of it.
+  Nothing on this page is a canvas any more — the approved design is
+  video, images and CSS — which is exactly why this is worth keeping
+  rather than deleting: it is the assertion that would fail the day
+  somebody adds a shader behind the hero and the headline goes with it
+  when the shader cannot compile.
 */
 test("the work still shows without WebGL", async ({ browser }) => {
   const ctx = await browser.newContext({ reducedMotion: "reduce" });
@@ -1546,9 +1452,8 @@ test("the work still shows without WebGL", async ({ browser }) => {
   ).toBeVisible();
 
   const body = (await page.locator("body").textContent()) ?? "";
-  for (const t of takes) {
-    expect(body, `${t.title} should still be listed with no WebGL`).toContain(t.title);
-  }
+  for (const title of [homeFeature, ...homeCards])
+    expect(body, `${title} should still be listed with no WebGL`).toContain(title);
 
   await ctx.close();
 });
@@ -1706,37 +1611,28 @@ test("the ocean art claims nothing countable", () => {
 });
 
 /*
-  The art is chapters, and the emptiness around them is the point.
+  The art on the homepage carries no claim.
 
-  **This replaces `the dive runs the length of the page, and Harbor
-  only`, which guarded a promise the site no longer makes.** That test
-  asserted a video was fixed behind every section with its playhead tied
-  to scroll. Meg chose to drop that: it could show one clip out of the
-  twenty-four she has, phones and `prefers-reduced-motion` were excluded
-  from it by `OceanBackdrop`'s own mode logic, and the page paid 2.8MB
-  for water it then suppressed twice over.
+  **This replaced `the dive runs the length of the page`, and is now
+  replacing `the homepage shows its art in chapters`.** Each of those
+  guarded a particular way of showing Meg's pictures — a scroll-scrubbed
+  backdrop, then a full-width clip with a screen of black around it — and
+  each was dropped by a later decision about the page. The approved
+  design (#156) shows one still: the creature, floating beside the
+  approach statement.
 
-  Deleting the test with the feature would have been the easy half. The
-  seam rule in CLAUDE.md asks what depended on the removed thing, and
-  what depended on it here is a *promise*: that this page carries real
-  art rather than decoration. So the promise is re-stated against the
-  thing that carries it now.
-
-  **Two halves, and the second is the one that will rot.** That a chapter
-  renders is cheap to keep true. That it has a screen of black around it
-  is the entire mechanism — measured on likeakinginc.com, the gap between
-  two of their sections is several hundred pixels of nothing, which is
-  why a lit subject lands when one arrives. Padding is exactly the kind
-  of thing a later tidy-up tightens to "save space", and nothing else
-  would fail when it did.
+  Deleting the test with the component would have been the easy half
+  three times running. The seam rule in CLAUDE.md asks what depended on
+  the removed thing, and what depends on it here is a *promise*: that the
+  art on this page is art rather than evidence. A picture gains a claim
+  the moment it is given a caption, a number or a link, and this is the
+  one section where a well-meaning edit would reach for all three.
 
   It also asserts the backdrop is gone rather than merely unused. A
   component that is deleted but whose class name creeps back in is how a
   2.8MB download returns without anybody deciding to bring it back.
 */
-test("the homepage shows its art in chapters, with real black around them", async ({
-  page,
-}) => {
+test("the homepage's art carries no claim", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
@@ -1745,52 +1641,39 @@ test("the homepage shows its art in chapters, with real black around them", asyn
     "the scroll-scrubbed backdrop was removed; its class should not come back",
   ).toHaveCount(0);
 
-  const chapter = page.locator("#chapters-deep");
-  await expect(chapter, "the homepage should carry a chapter").toHaveCount(1);
+  const art = page.locator(".stage .art");
+  await expect(art, "the homepage should carry its one piece of art").toHaveCount(1);
 
-  /* The picture has to have actually loaded. A chapter whose art 404s is
-     a tall empty gap, which no other assertion here would notice.
-
-     Scrolled to first, deliberately: the art is `loading="lazy"` because
-     it sits most of a page down, so asserting `naturalWidth` from the top
-     of the document measures the laziness rather than the picture. That
-     is how this test failed on its first run. */
-  /* The chapter is a clip now rather than a still, so "the art loaded"
-     is readyState rather than naturalWidth. Everything else this test
-     asserts — the width, the emptiness, the silence — is the chapter
-     contract and is unchanged by what is inside it. */
-  const art = chapter.locator("video");
-  await expect(art).toHaveCount(1);
-  await art.scrollIntoViewIfNeeded();
+  /* The picture has to have actually loaded. Art that 404s is a tall
+     empty gap, which no other assertion here would notice. Scrolled to
+     first, deliberately: it is `loading="lazy"` because it sits most of a
+     page down, so asking from the top measures the laziness rather than
+     the picture. */
+  const img = art.locator("img");
+  await expect(img).toHaveCount(1);
+  await img.scrollIntoViewIfNeeded();
   await expect
-    .poll(() => art.evaluate((el: HTMLVideoElement) => el.readyState), {
-      message: "the chapter's clip should have loaded once reached",
-      timeout: 25000,
+    .poll(() => img.evaluate((el: HTMLImageElement) => el.naturalWidth), {
+      message: "the art should have loaded once reached",
+      timeout: 20000,
     })
-    .toBeGreaterThanOrEqual(2);
+    .toBeGreaterThan(0);
 
-  /* Full width, not a card in a column. */
-  const width = await chapter.evaluate((el) => el.getBoundingClientRect().width);
+  /* It claims nothing: no heading, no caption, no link, no number, and
+     nothing for a screen reader to read out as a statement about the
+     business. */
   expect(
-    Math.round(width),
-    "a chapter runs the full width rather than sitting inside the content column",
-  ).toBe(1440);
-
-  /* And the emptiness. 18vh top and bottom at this viewport is 162px
-     each; asserting 120 leaves room for the clamp to be retuned without
-     allowing it to be quietly deleted. */
-  const pad = await chapter.evaluate((el) => {
-    const s = getComputedStyle(el);
-    return { top: parseFloat(s.paddingTop), bottom: parseFloat(s.paddingBottom) };
-  });
-  expect(pad.top, "a chapter needs black above it, not a tight section edge").toBeGreaterThan(120);
-  expect(pad.bottom, "a chapter needs black below it too").toBeGreaterThan(120);
-
-  /* It claims nothing: no heading, no caption, no link inside it. */
-  expect(
-    await chapter.locator("h1, h2, h3, a, button").count(),
-    "a chapter is a picture, not a section with copy",
+    await art.locator("h1, h2, h3, figcaption, a, button").count(),
+    "the art is a picture, not a section with copy",
   ).toBe(0);
+  expect(
+    (await art.evaluate((el) => el.textContent)) ?? "",
+    "a number beside the work reads as evidence",
+  ).not.toMatch(/\d/);
+  expect(
+    await art.getAttribute("aria-hidden"),
+    "it is decoration, and says so to a screen reader",
+  ).toBe("true");
 });
 
 /*
@@ -1817,10 +1700,18 @@ test("the homepage shows its art in chapters, with real black around them", asyn
   Asserted on the rendered page in the light theme, because that is the
   only place this is visible. A unit test on the class list would pass
   for all five of the failures above.
+
+  **Asserted on /services rather than the homepage since #156.** The
+  approved homepage is one near-black world with no light branch at all
+  — `.stage` fixes its own ground in both themes — so a `cp-night` check
+  there would be a test that cannot fail. /services is where the class
+  actually does its work now: it renders `StackedHeading`, `PanelHeader`
+  and four `CastFrame`s, which are three of the five failures above, and
+  it is a page Daylight genuinely reaches.
 */
 test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/");
+  await page.goto("/services");
   await page.evaluate(() => {
     document.documentElement.dataset.theme = "light";
   });
@@ -1832,6 +1723,19 @@ test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ pa
     for (const el of Array.from(document.querySelectorAll(".cp-night"))) {
       const r = el.getBoundingClientRect();
       if (r.width < 40 || r.height < 24) continue;
+      /*
+        A frame whose whole box is a photograph carries its own ground —
+        the picture *is* the dark thing behind it — and has no text for
+        the dark tokens to strand. `CastFrame` on /services is four of
+        these: masked, no background colour, an `<img>` filling the box.
+        Reported as offenders they are a false positive, and the first
+        thing a reader would do about them is delete this test.
+      */
+      const media = el.querySelector("img, video");
+      if (media && !(el.textContent ?? "").trim()) {
+        const m = media.getBoundingClientRect();
+        if (m.width >= r.width * 0.9 && m.height >= r.height * 0.9) continue;
+      }
       /* Walk up for the first thing that actually paints. The element may
          carry its own ground, or sit inside a band that does. */
       let n: Element | null = el;
@@ -1876,16 +1780,18 @@ test("in Daylight, nothing wearing cp-night sits on a light ground", async ({ pa
   answer measured on their page is one looping hero video rather than a
   pile of clips. This asserts the thing she actually asked for: that it
   **plays**. Every other assertion here would pass on a hero that quietly
-  froze on its poster — the markup, the copy, the buttons and the contrast
-  are all identical whether the video is decoding or dead, which is the
-  same blind spot that let a reduced-motion branch drop five screenshots
-  in #151.
+  froze on its poster — the markup, the copy, the buttons and the
+  contrast are all identical whether the video is decoding or dead.
 
   Advancing `currentTime` is the only honest proof, and reading it twice
-  is not enough on its own: the clip is four seconds long and loops, so a
-  late sample can legitimately be *smaller* than an early one. Comparing
-  them naively reported "not advancing" on a video that was playing
-  perfectly. The check is therefore that the time **moved at all**.
+  is not enough on its own: the clip loops, so a late sample can
+  legitimately be *smaller* than an early one. Comparing them naively
+  reported "not advancing" on a video that was playing perfectly. The
+  check is therefore that the time **moved at all**.
+
+  The selector moved with the approved design (#156): the hero clip is
+  `shot-one` inside the band's own `[data-vid]` wrapper, and the still
+  underneath is that wrapper's background rather than an `<img>`.
 */
 test("the hero actually plays, and stops for anyone who asks it to", async ({
   page,
@@ -1893,7 +1799,7 @@ test("the hero actually plays, and stops for anyone who asks it to", async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const video = page.locator("video.hero-motion");
+  const video = page.locator(".stage .hero [data-vid] video");
   await expect(video, "the hero should carry a looping video").toHaveCount(1);
 
   /* autoplay needs all four of these, and iOS needs playsInline or it
@@ -1920,10 +1826,15 @@ test("the hero actually plays, and stops for anyone who asks it to", async ({
 
   await expect(video).toHaveJSProperty("paused", false);
 
-  /* The still underneath is the video's own first frame, so the hero reads
-     the same when the video cannot play at all. */
-  const still = page.locator('img[src*="reef-hud-poster"]');
-  await expect(still, "a still should sit under the video").toHaveCount(1);
+  /* The still is the clip's own first frame, carried on the wrapper as
+     well as on the element's poster, so the hero reads the same when the
+     video cannot play at all. */
+  const poster = await page
+    .locator(".stage .hero [data-vid]")
+    .evaluate((el) => getComputedStyle(el).backgroundImage);
+  expect(poster, "a still should sit under the video").toContain(
+    "shot-one-poster",
+  );
 });
 
 test("a visitor who asked for no motion gets the frame, not the loop", async ({
@@ -1935,69 +1846,31 @@ test("a visitor who asked for no motion gets the frame, not the loop", async ({
   });
   const page = await ctx.newPage();
   await page.goto("/");
+  await page.waitForTimeout(800);
 
-  /* `display: none` rather than a paused video: a transparent or paused
-     video still costs the decode the visitor asked to avoid. */
-  await expect(
-    page.locator("video.hero-motion"),
-    "the hero loop should be removed under prefers-reduced-motion",
-  ).toBeHidden();
+  /* Both clips, not just the hero: the start band carries one too, and
+     `display: none` plus a paused element is what stops the decode the
+     visitor asked to avoid. */
+  const clips = page.locator(".stage [data-vid] video");
+  expect(await clips.count(), "the page should carry two clips").toBe(2);
+  for (let i = 0; i < 2; i += 1) {
+    await expect(
+      clips.nth(i),
+      "a clip should be removed from view under prefers-reduced-motion",
+    ).toBeHidden();
+    await expect(clips.nth(i)).toHaveJSProperty("paused", true);
+  }
 
-  const still = page.locator('img[src*="reef-hud-poster"]');
-  await expect(still, "the still should carry the hero instead").toBeVisible();
-  expect(
-    await still.evaluate((i: HTMLImageElement) => i.naturalWidth),
-    "and it should actually have loaded",
-  ).toBeGreaterThan(0);
+  /* And the frame is still there, so the hero is a picture rather than a
+     hole. */
+  const poster = await page
+    .locator(".stage .hero [data-vid]")
+    .evaluate((el) => getComputedStyle(el).backgroundImage);
+  expect(poster, "the still should carry the hero instead").toContain(
+    "shot-one-poster",
+  );
 
   await ctx.close();
-});
-
-/*
-  The drift reaches the screen.
-
-  **This test exists because the first working version of the canvas was
-  invisible and every measurement said it was fine.** `.cp` paints an
-  opaque background and does not create a stacking context, so a fixed
-  canvas at z-index -10 resolved against the root and painted *behind*
-  it. The canvas reported 25,615 painted pixels per frame; a screenshot
-  of the same scroll position showed nothing at all.
-
-  So asking the canvas what it drew is exactly the assertion that would
-  have passed. The only honest question is whether the page looks
-  different with it than without it, which is what this does: shoot the
-  same region twice, once with the canvas hidden, and require the bytes
-  to differ. It is the pixel equivalent of "a text assertion cannot see
-  a missing picture".
-*/
-test("the drift is actually on screen, not painting behind the page", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
-
-  const canvas = page.locator("canvas[data-drift]");
-  await expect(canvas, "the page should carry the drift canvas").toHaveCount(1);
-
-  /* A region with no art and no cards in it, so the only difference
-     between the two frames can be the motes. x must be inside the
-     viewport: clipping at 1500 on a 1440-wide page is off-screen and
-     fails the shot rather than the assertion, which is how this test
-     failed on its first run. */
-  await page.evaluate(() => window.scrollTo(0, 5400));
-  await page.waitForTimeout(1500);
-
-  const withDrift = await page.screenshot({ clip: { x: 1080, y: 0, width: 340, height: 880 } });
-
-  await canvas.evaluate((el: HTMLElement) => (el.style.display = "none"));
-  await page.waitForTimeout(200);
-  const without = await page.screenshot({ clip: { x: 1080, y: 0, width: 340, height: 880 } });
-
-  expect(
-    Buffer.compare(withDrift, without),
-    "hiding the drift should change what is on screen — if it does not, " +
-      "the canvas is painting somewhere the visitor cannot see it",
-  ).not.toBe(0);
 });
 
 /*
@@ -2061,161 +1934,160 @@ test("the page fails open if the app never hydrates", async ({ browser }) => {
 });
 
 /*
-  Turning reduced motion on **while the page is open** stops the drift.
+  Turning reduced motion on **while the page is open** stops the motion.
 
-  The controller read `matchMedia(...).matches` once at mount, so a
-  visitor who switched the preference mid-visit kept the animation. Every
-  other motion controller here already subscribes to the change event;
-  this was the one that did not, and the preference is a request rather
-  than a setting read at a moment in time.
+  **This guarded `Drift`, which the approved design (#156) does not carry,
+  and the bug it was written for is a shape rather than a component.**
+  That controller read `matchMedia(...).matches` once at mount, so a
+  visitor who switched the preference mid-visit kept the animation
+  running; `MovingChapter` had the mirror-image fault, able to stop and
+  never start again. The preference is a request a person can change, not
+  a setting read at a moment in time, and `StageMotion` is now the one
+  controller that answers it for this whole page.
+
+  So it is re-pointed at the biggest thing on the page rather than
+  deleted: the hero loop, which is also the most expensive thing to leave
+  decoding for somebody who asked for no motion.
 */
-test("turning reduced motion on mid-visit stops the drift", async ({ page }) => {
+test("turning reduced motion on mid-visit stops the hero", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await page.waitForTimeout(1200);
 
-  const sample = () =>
-    page.evaluate(() => {
-      const c = document.querySelector("canvas[data-drift]") as HTMLCanvasElement;
-      const g = c.getContext("2d")!;
-      const d = g.getImageData(0, 0, c.width, Math.min(240, c.height)).data;
-      let s = 0;
-      for (let i = 3; i < d.length; i += 4 * 31) s += d[i];
-      return s;
-    });
-
-  /* Moving before the switch, so the test cannot pass on a dead canvas. */
-  const a = await sample();
-  await page.waitForTimeout(1200);
-  const b = await sample();
-  expect(a, "the drift should be animating before the preference changes").not.toBe(b);
+  const hero = page.locator(".stage .hero [data-vid] video");
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 10_000,
+      message: "the hero never started, so this cannot test it stopping",
+    })
+    .toBe(false);
 
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.waitForTimeout(600);
-  const c1 = await sample();
-  await page.waitForTimeout(1500);
-  const c2 = await sample();
-  expect(
-    c1,
-    "once reduced motion is requested the drift must hold still, not keep running",
-  ).toBe(c2);
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message:
+        "the hero is still decoding after the visitor asked for no motion, " +
+        "which is the cost they asked to avoid",
+    })
+    .toBe(true);
+
+  /* And back, because a preference changed in either direction is still a
+     request: a controller that can only stop is half a controller. */
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect
+    .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
+      timeout: 5_000,
+      message: "turning motion back on left the hero stopped for good",
+    })
+    .toBe(false);
 });
 
 /*
-  The moving chapters: Meg's clips, playing when you reach them and
-  costing nothing when you do not.
+  The second clip costs nothing until somebody reaches it.
 
-  Both halves need asserting and the second is the one a casual check
-  would miss. Three clips is 2.7MB, which is fine as something a visitor
-  descends into and indefensible as something every visitor downloads to
-  look at the shop. `preload="none"` plus an observer is what makes that
-  true, and nothing else on the page would notice if it stopped being
-  true.
+  **This guarded the moving chapters, which the approved design (#156)
+  does not carry; what it was really guarding is the start band's clip.**
+  Both halves still need asserting and the second is the one a casual
+  check would miss. The moorings clip is 1MB, which is fine as something
+  a visitor descends into and indefensible as something every visitor
+  downloads to look at the hero. `preload="none"` plus an observer is
+  what makes that true, and nothing else on the page would notice if it
+  stopped being true.
+
+  Playback itself is deliberately NOT asserted for this one. It ships as
+  H.264 only — there is no WebM of it in the repo — and the browser this
+  suite drives is a Chromium build without that decoder, which is why
+  every other clip here carries a WebM first. A test demanding it play
+  would fail on the test runner and pass nowhere a visitor can see, so
+  what is asserted is the thing that is true everywhere: it is not
+  fetched early, it is fetched when reached, and it has a real first
+  frame to stand in if the decode never happens.
 */
-test("the moving chapters play when reached and cost nothing before that", async ({
+test("the start band's clip costs nothing before it is reached", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
 
   const videoRequests: string[] = [];
   page.on("request", (r) => {
-    if (/\/ocean\/video\/.*\.(mp4|webm)/.test(r.url())) videoRequests.push(r.url().split("/").pop()!);
+    if (/\/ocean\/.*\.(mp4|webm)/.test(r.url()))
+      videoRequests.push(r.url().split("/").pop()!);
   });
 
   await page.goto("/");
   await page.waitForTimeout(2000);
 
-  const chapters = page.locator("[data-moving-chapter] video");
-  /* **One**, deliberately. This branch briefly carried four chapters,
-     4,104px of decoration on an 18.8-screen page with two of them back
-     to back, and Meg's word for it was "messy". Cut to one; a test that
-     demanded three would have locked in the thing that was wrong. */
-  const n = await chapters.count();
-  expect(n, "the homepage should carry its moving chapter").toBe(1);
+  const clip = page.locator("#contact [data-vid] video");
+  await expect(clip, "the start band should carry its clip").toHaveCount(1);
 
   /* Nothing but the hero may be on the wire from the top of the page. */
-  const earlyChapterClips = videoRequests.filter((u) => !u.startsWith("reef-hud"));
   expect(
-    earlyChapterClips,
-    "a visitor who has not scrolled must not pay for the chapter clips",
+    videoRequests.filter((u) => !u.startsWith("shot-one")),
+    "a visitor who has not scrolled must not pay for the start band's clip",
   ).toEqual([]);
 
-  /* Now reach one and it should load and play. */
-  const first = chapters.first();
-  await first.scrollIntoViewIfNeeded();
-  await expect
-    .poll(() => first.evaluate((v: HTMLVideoElement) => v.readyState), {
-      message: "a chapter clip should load once it is reached",
-      timeout: 25000,
-    })
-    .toBeGreaterThanOrEqual(2);
+  /* Every clip carries a poster, which is the whole fallback when
+     autoplay is refused, the codec is missing, or the file never
+     arrives. */
+  const posterless = await page
+    .locator(".stage [data-vid] video")
+    .evaluateAll((els) => els.filter((v) => !(v as HTMLVideoElement).poster).length);
+  expect(posterless, "every clip needs its own first frame as a poster").toBe(0);
 
+  /* Now reach it, and it should be fetched. */
+  await clip.scrollIntoViewIfNeeded();
   await expect
-    .poll(() => first.evaluate((v: HTMLVideoElement) => (v.paused ? 1 : 0)), {
-      message: "and it should be playing, not sitting on its poster",
+    .poll(() => videoRequests.filter((u) => u.startsWith("moorings")).length, {
+      message: "the clip should be fetched once it is reached",
       timeout: 15000,
     })
-    .toBe(0);
-
-  /* Every chapter carries a poster, which is the whole fallback when
-     autoplay is refused or the file never arrives. */
-  const posterless = await chapters.evaluateAll((els) =>
-    els.filter((v) => !(v as HTMLVideoElement).poster).length,
-  );
-  expect(posterless, "every moving chapter needs its own first frame as a poster").toBe(0);
+    .toBeGreaterThan(0);
 });
 
 /*
-  The one place the homepage asks what you came for.
+  The one place the homepage says what is for sale.
 
-  **It had no test, and it was broken in both the ways a navigation can
-  be.** On desktop its four pins read "01 THE LIGHT ABOVE", "02 ANEMONE
-  AND CLOWNFISH", "03 THE REEF ITSELF" and "04 THE SHOALS", with the
-  service name only in `sr-only` text and behind a click; on a phone the
-  labels are `lg:block`, so there were no words at all — a photograph with
-  four dots and a panel showing service 01, nothing saying there were four
-  of anything. Meg's word for the page was "scrambled". A section that
-  renders perfectly while naming none of the things it sells is exactly
-  the failure a wording test catches and a screenshot does not, which is
-  why this asserts on the *services* rather than on a list of strings:
-  add a fifth and this fails until the map carries it.
+  **It was the reef map, which had no test and was broken in both the
+  ways a navigation can be**: on desktop its four pins read "01 THE LIGHT
+  ABOVE" and "03 THE REEF ITSELF", with the service name only in
+  `sr-only` text behind a click, and on a phone the labels were
+  `lg:block`, so there were no words at all. Meg's word for the page was
+  "scrambled". The approved design (#156) answers it with four rows that
+  simply say the four things, and the rule survives the change of
+  component: a section that renders perfectly while naming none of the
+  things it sells is exactly the failure a wording test catches and a
+  screenshot does not.
 
-  Asserted at 390px on purpose. The desktop labels and the phone row are
-  deliberately different elements at different breakpoints, and the one
-  that was missing is the phone's, so a test written at 1440 would pass
-  over the half that was actually broken.
+  Asserted on `services[]` rather than on a list of strings, so a fifth
+  service fails this until the page carries it — and at 390px, because
+  phone width is where the previous version was actually broken, and
+  because a row that collapses badly there is the likeliest way this
+  breaks next.
 */
-test("the homepage names all four services, and a phone can pick between them", async ({
+test("the homepage names all four services, and a phone can reach each one", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  const reef = page.locator("#reef");
-  await reef.scrollIntoViewIfNeeded();
+  const band = page.locator("#services");
+  await band.scrollIntoViewIfNeeded();
 
   for (const service of services) {
-    /* The short label is what a visitor reads; the title is what the
-       panel then has to show. Both come from `services[]`. */
-    const pick = reef.getByRole("button", {
-      name: new RegExp(`${service.index}\\s+${service.short}`, "i"),
-    });
+    const row = band.locator(`a[href="/services#${service.id}"]`);
     await expect(
-      pick,
-      `no way to choose "${service.title}" at phone width: the four pins have ` +
-        "no labels under lg, so this row is the only thing naming them",
-    ).toBeVisible();
-
-    await pick.click();
+      row,
+      `no way to reach "${service.title}" from the homepage at phone width`,
+    ).toHaveCount(1);
     await expect(
-      reef.getByRole("heading", { name: service.title, exact: true }),
-      `choosing "${service.short}" did not open "${service.title}"`,
-    ).toBeVisible();
-    await expect(
-      reef.getByText(service.pain, { exact: true }),
-      `"${service.title}" opened without the sentence naming what the visitor ` +
-        "arrived with; the panel used to carry an anemone analogy here",
-    ).toBeVisible();
+      row,
+      `the row for "${service.id}" should name the service and say what it is`,
+    ).toContainText(service.title);
+    await expect(row).toContainText(service.tagline);
+    /* The chips are the detail that makes a category concrete — the three
+       services that were merged into "Getting your tools to talk" live in
+       them, so dropping them would quietly un-sell two of them. */
+    for (const kind of service.kinds) await expect(row).toContainText(kind);
   }
 
   /*
@@ -2223,49 +2095,48 @@ test("the homepage names all four services, and a phone can pick between them", 
     removed from the copy on Nov 25 2026 and the cast it came from is
     still in `lib/ocean.ts`, still captioning the art on /services — so
     the cheapest possible regression is somebody wiring `creature` back
-    into this map, which would read perfectly and sell nothing.
+    into this band, which would read perfectly and sell nothing.
   */
-  const words = (await reef.innerText()).toLowerCase();
+  const words = (await band.innerText()).toLowerCase();
   for (const member of CAST) {
     expect(
       words,
-      `the service map is showing "${member.creature}" again. The art may ` +
-        "carry a creature; the four doors on the homepage name the service",
+      `the services band is showing "${member.creature}". The art may carry ` +
+        "a creature; the four rows name the service",
     ).not.toContain(member.creature.toLowerCase());
   }
 });
 
 /*
-  Coming back to the tab starts the chapter again.
+  Coming back to the tab starts the loop again.
 
-  **A review bot found this and it was real.** `visibilitychange` paused
-  the clip and nothing resumed it: the only `play()` was inside the
-  IntersectionObserver callback, and returning to a tab does not change
-  what a chapter intersects. So a visitor who switched away with the
-  chapter on screen came back to a looping video that had stopped looping,
-  on screen, for the rest of the visit. Turning reduced motion back off
-  had the same dead end.
+  **A review bot found this on `MovingChapter` and it was real.**
+  `visibilitychange` paused the clip and nothing resumed it: the only
+  `play()` was inside the IntersectionObserver callback, and returning to
+  a tab does not change what a clip intersects. So a visitor who switched
+  away with it on screen came back to a looping video that had stopped
+  looping, on screen, for the rest of the visit.
 
-  Worth a test rather than just a fix, because every existing check here
-  asserts the *stopping*: that the clip costs nothing before it is
-  reached, that reduced motion removes it, that a hidden tab pauses it.
-  Not one of them asks whether it ever comes back, which is how a motion
-  controller ends up able to stop and not start. `Drift` had the same
-  three inputs and reconciled them properly in the same change, so this
-  also pins the two halves of the page's motion to one rule.
+  The chapter is gone with the approved design (#156) and the shape is
+  not: `StageMotion` reconciles the same three inputs for this page's
+  two clips, so this is re-pointed at the hero. Worth keeping rather than
+  deleting, because every other check here asserts the *stopping* — that
+  the clip costs nothing before it is reached, that reduced motion stops
+  it, that scrolling past it stops it. Not one of them asks whether it
+  ever comes back, which is how a motion controller ends up able to stop
+  and not start.
 */
-test("a chapter paused by a tab switch plays again on the way back", async ({
+test("a loop paused by a tab switch plays again on the way back", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const clip = page.locator("[data-moving-chapter] video").first();
-  await clip.scrollIntoViewIfNeeded();
+  const clip = page.locator(".stage .hero [data-vid] video");
   await expect
     .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), {
       timeout: 10_000,
-      message: "the chapter never started, so this cannot test it resuming",
+      message: "the hero never started, so this cannot test it resuming",
     })
     .toBe(false);
 
@@ -2293,7 +2164,7 @@ test("a chapter paused by a tab switch plays again on the way back", async ({
     .poll(() => clip.evaluate((v: HTMLVideoElement) => v.paused), {
       timeout: 5_000,
       message:
-        "the chapter is still paused after the visitor came back to the tab, " +
+        "the hero is still paused after the visitor came back to the tab, " +
         "while sitting on screen claiming to be a looping video",
     })
     .toBe(false);
@@ -2311,10 +2182,9 @@ test("a chapter paused by a tab switch plays again on the way back", async ({
   left to whatever throttling the browser decides to apply.
 
   A review bot found it. What makes it worth a test rather than only a
-  fix is that the rule is written down, three components now implement
-  it, and nothing anywhere asserted it: the two existing hero tests ask
-  whether it plays and whether reduced motion removes it, which are both
-  about the top of the page.
+  fix is that the rule is written down and nothing anywhere asserted it:
+  the two other hero tests ask whether it plays and whether reduced
+  motion stops it, which are both about the top of the page.
 */
 test("the hero loop stops once it is scrolled past, and runs again on the way back", async ({
   page,
@@ -2322,7 +2192,7 @@ test("the hero loop stops once it is scrolled past, and runs again on the way ba
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const hero = page.locator("video.hero-motion");
+  const hero = page.locator(".stage .hero [data-vid] video");
   await expect
     .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
       timeout: 10_000,
@@ -2330,9 +2200,9 @@ test("the hero loop stops once it is scrolled past, and runs again on the way ba
     })
     .toBe(false);
 
-  /* Well past the hero: the shop is about two and a half screens down,
+  /* Well past the hero: the price list is most of the way down the page,
      so nothing of the hero is on screen here. */
-  await page.locator("#shelf").scrollIntoViewIfNeeded();
+  await page.locator("#pricing").scrollIntoViewIfNeeded();
   await expect
     .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
       timeout: 5_000,

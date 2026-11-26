@@ -2142,3 +2142,1132 @@ body:has(.cp) {
 :root[data-theme="light"] .case-art {
   display: none;
 }
+
+/* ============================================================
+   THE STAGE — the approved homepage design, "Cinematic"
+   (Meg, Nov 25 2026; chosen from three options)
+
+   **This is a port, not an interpretation.** The design arrived as a
+   self-contained 790-line HTML file, and its CSS *is* the design: the type
+   scale, the one easing curve, the breakpoints, the scrim stops. Rewriting
+   it as Tailwind utilities is how a design drifts into something that
+   merely resembles it, so the rules below are the approved file's own
+   rules, scoped to `.stage`, with the values unchanged.
+
+   Scoped the way `.cp` is scoped, for the same reason: one page wears it,
+   the rest of the site does not, and nothing here may leak out.
+
+   Four deliberate differences from the file, each recorded because a
+   reader comparing the two will notice:
+
+   1. **`:root` became `.stage`.** The custom property *names* are the
+      design's own (`--ink`, `--acc`, `--ease`, `--gut`…) — checked first
+      that nothing else in this repo reads a bare `var(--ink)`-style name.
+      Element selectors (`body`, `h1`, `p`, `a`, `section`) are scoped to
+      `.stage` rather than left global.
+   2. **`.rv` became `[data-reveal]`**, this repo's own reveal attribute.
+      The design's values are kept (22px, 600ms, its curve, the `--d`
+      delay); what comes with the swap is the safety the repo was burned
+      into adding — the hidden state is gated on `html[data-js]`, so a
+      visitor whose JavaScript never arrives reads the page instead of a
+      column of blanks, printing is never blank, and the four-second
+      watchdog in `app/layout.tsx` fails it open. A `.rv` class with
+      `opacity:0` and no such gate is the one thing in the file that
+      would have been a regression.
+   3. **Keyframes are prefixed** (`stage-cue`, `stage-float`): keyframe
+      names are global whatever the selector is scoped to.
+   4. **It is dark in both themes.** The design is one near-black visual
+      world with no light branch, so there is no `[data-theme="light"]
+      .stage` — Daylight stays a real choice everywhere else on the site
+      and does not reach this page. That is the same posture `.cp` shipped
+      with before it grew a Daylight branch, and it is noted here because
+      CLAUDE.md asks for a colour change to be looked at in both themes:
+      this one cannot be, by design.
+   ============================================================ */
+.stage {
+  /* The design's own tokens, verbatim. */
+  --ink: #08070c;
+  --ink-2: #0d0c13;
+  --fg: #f6f7f9;
+  --fg-2: #aab1bc;
+  --fg-3: #7e8691;
+  --line: rgba(255, 255, 255, 0.14);
+  --line-soft: rgba(255, 255, 255, 0.07);
+  --fill: rgba(255, 255, 255, 0.04);
+  --acc: #5fe0c6;
+  --paper: #f2efe9;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --gut: 16px;
+  --maxw: 1240px;
+
+  color-scheme: dark;
+  background: var(--ink);
+  color: var(--fg);
+  font-family: var(--font-inter-tight), system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: clamp(1rem, 0.96rem + 0.18vw, 1.09rem);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  /* `overflow-x` guards the full-bleed media and the 6.6vw headline at
+     390px. It does not clip the fixed top bar: a fixed element's
+     containing block is the viewport, not this div. */
+  overflow-x: hidden;
+}
+@media (min-width: 760px) {
+  .stage {
+    --gut: 40px;
+  }
+}
+@media (min-width: 1200px) {
+  .stage {
+    --gut: 56px;
+  }
+}
+/* The page behind the page, so a short viewport or overscroll shows the
+   stage's ground rather than the site's. Same trick as `body:has(.cp)`. */
+body:has(.stage) {
+  background: #08070c;
+}
+
+.stage img,
+.stage video {
+  display: block;
+  max-width: 100%;
+}
+.stage a {
+  color: inherit;
+  text-decoration: none;
+}
+.stage h1,
+.stage h2,
+.stage h3 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+}
+.stage p {
+  margin: 0;
+}
+.stage ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stage .wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-inline: var(--gut);
+}
+.stage .mono {
+  font-family: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.stage .eyebrow {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.stage .eyebrow .tick {
+  color: var(--acc);
+}
+.stage .skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 99;
+  background: var(--paper);
+  color: #111;
+  padding: 10px 16px;
+  border-radius: 0 0 8px 0;
+}
+.stage .skip:focus {
+  left: 0;
+}
+.stage :focus-visible {
+  outline: 2px solid var(--acc);
+  outline-offset: 3px;
+}
+
+/* ── reveal ─────────────────────────────────────────────── */
+.stage [data-reveal] {
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+html[data-js] .stage [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+/* These two rules outrank the site-wide pair they shadow, so the
+   reduced-motion branch has to be restated here or it would lose to
+   them. The print branch at the top of this file carries `!important`
+   and still wins, which is what keeps paper safe. */
+@media (prefers-reduced-motion: reduce) {
+  .stage [data-reveal],
+  html[data-js] .stage [data-reveal]:not([data-revealed]) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── top bar ────────────────────────────────────────────── */
+.stage .topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  height: 66px;
+}
+.stage .topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 7, 12, 0.82);
+  border-bottom: 1px solid var(--line-soft);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+.stage .topbar.stuck::before {
+  opacity: 1;
+}
+.stage .topbar .wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+}
+.stage .mark {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fg);
+  white-space: nowrap;
+}
+.stage .mark b {
+  color: var(--acc);
+  font-weight: 500;
+}
+.stage .topnav {
+  display: none;
+  margin-left: auto;
+  gap: 26px;
+  align-items: center;
+}
+.stage .topnav a {
+  font-size: 0.92rem;
+  color: var(--fg-2);
+  transition: color 0.2s var(--ease);
+}
+.stage .topnav a:hover {
+  color: var(--fg);
+}
+.stage .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 13px 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition:
+    transform 0.25s var(--ease),
+    opacity 0.25s var(--ease);
+  will-change: transform;
+}
+.stage .btn-solid {
+  background: var(--paper);
+  color: #0a0910;
+}
+.stage .btn-ghost {
+  border-color: var(--line);
+  color: var(--fg);
+}
+.stage .btn:hover {
+  transform: translateY(-2px);
+}
+.stage .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+.stage .btn .arw {
+  display: inline-block;
+  transition: transform 0.25s var(--ease);
+}
+.stage .btn:hover .arw {
+  transform: translateX(4px);
+}
+.stage .topbar .btn {
+  margin-left: auto;
+  padding: 10px 17px;
+}
+@media (min-width: 860px) {
+  .stage .topnav {
+    display: flex;
+  }
+  .stage .topbar .btn {
+    margin-left: 0;
+  }
+}
+
+/* ── full bleed media ───────────────────────────────────── */
+.stage .media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.stage .media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+}
+@media (min-width: 860px) {
+  .stage .media video {
+    object-position: 50% 50%;
+  }
+}
+/* A paused or transparent video still costs the decode a visitor asked
+   to avoid, so the controller removes it outright. This is the second of
+   the two guarantees: if the script never runs, the frame still stands in
+   for the clip rather than a moving picture overriding the preference. */
+@media (prefers-reduced-motion: reduce) {
+  .stage .media video {
+    display: none;
+  }
+}
+.stage .scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── 01 hero ────────────────────────────────────────────── */
+.stage .hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding-block: 120px clamp(54px, 9vh, 104px);
+  isolation: isolate;
+}
+.stage .hero .media {
+  z-index: -2;
+}
+.stage .hero .scrim-v {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 7, 12, 0.8) 0%,
+    rgba(8, 7, 12, 0.35) 18%,
+    rgba(8, 7, 12, 0.45) 44%,
+    rgba(8, 7, 12, 0.9) 76%,
+    rgba(8, 7, 12, 0.985) 92%,
+    var(--ink) 100%
+  );
+}
+.stage .hero .scrim-h {
+  background: none;
+}
+@media (min-width: 860px) {
+  .stage .hero .scrim-v {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 7, 12, 0.72) 0%,
+      rgba(8, 7, 12, 0.1) 22%,
+      rgba(8, 7, 12, 0.1) 52%,
+      rgba(8, 7, 12, 0.72) 86%,
+      var(--ink) 100%
+    );
+  }
+  .stage .hero .scrim-h {
+    background: linear-gradient(
+      96deg,
+      rgba(8, 7, 12, 0.96) 0%,
+      rgba(8, 7, 12, 0.92) 30%,
+      rgba(8, 7, 12, 0.66) 52%,
+      rgba(8, 7, 12, 0.22) 74%,
+      rgba(8, 7, 12, 0.34) 100%
+    );
+  }
+}
+.stage .hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: min(680px, 100%);
+}
+.stage h1 {
+  font-size: clamp(2.45rem, 6.6vw, 4.9rem);
+  letter-spacing: -0.04em;
+  line-height: 0.99;
+  margin: 20px 0 0;
+  text-wrap: balance;
+}
+.stage .hero-sub {
+  margin-top: 22px;
+  max-width: 30em;
+  font-size: clamp(1.02rem, 0.95rem + 0.5vw, 1.22rem);
+  color: var(--fg-2);
+}
+.stage .hero-meta {
+  margin-top: 16px;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.stage .hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+.stage .scrollcue {
+  position: absolute;
+  right: var(--gut);
+  bottom: clamp(54px, 9vh, 104px);
+  display: none;
+  z-index: 2;
+  width: 1px;
+  height: 84px;
+  background: var(--line);
+  overflow: visible;
+}
+.stage .scrollcue::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--acc);
+  animation: stage-cue 2.6s var(--ease) infinite;
+  animation-play-state: paused;
+}
+.stage .scrollcue.vis::after {
+  animation-play-state: running;
+}
+@keyframes stage-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(79px);
+    opacity: 0;
+  }
+}
+@media (min-width: 1100px) {
+  .stage .scrollcue {
+    display: block;
+  }
+}
+
+/* ── section rhythm ─────────────────────────────────────── */
+.stage section {
+  position: relative;
+}
+.stage section[id] {
+  scroll-margin-top: 84px;
+}
+.stage .band {
+  padding-block: clamp(84px, 11vh, 148px);
+}
+.stage .band-head {
+  max-width: 760px;
+}
+.stage .band-head h2 {
+  font-size: clamp(1.95rem, 1.4rem + 2.6vw, 3.3rem);
+  margin-top: 18px;
+  text-wrap: balance;
+}
+.stage .band-head p {
+  margin-top: 18px;
+  color: var(--fg-2);
+  max-width: 46em;
+}
+
+/* ── 02 services ────────────────────────────────────────── */
+.stage .svc {
+  margin-top: clamp(44px, 6vh, 72px);
+  border-top: 1px solid var(--line-soft);
+}
+.stage .svc-row {
+  display: block;
+  position: relative;
+  padding: clamp(26px, 3.4vh, 40px) 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.stage .svc-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--acc);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+.stage .svc-row:hover::after,
+.stage .svc-row:focus-visible::after {
+  transform: scaleX(1);
+}
+.stage .svc-grid {
+  display: grid;
+  gap: 0 22px;
+  grid-template-columns: min-content minmax(0, 1fr);
+  grid-template-areas:
+    "idx title"
+    ".  tag"
+    ".  kinds";
+  align-items: start;
+  transition: transform 0.35s var(--ease);
+}
+.stage .svc-row:hover .svc-grid {
+  transform: translateX(8px);
+}
+.stage .svc-idx {
+  grid-area: idx;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  color: var(--acc);
+  padding-top: 0.7em;
+  letter-spacing: 0.1em;
+}
+.stage .svc-title {
+  grid-area: title;
+  min-width: 0;
+  font-size: clamp(1.45rem, 1.1rem + 1.7vw, 2.45rem);
+  letter-spacing: -0.032em;
+  line-height: 1.05;
+}
+.stage .nw {
+  white-space: nowrap;
+}
+.stage .svc-title .arw {
+  font-size: 0.5em;
+  color: var(--fg-3);
+  margin-left: 0.32em;
+  display: inline-block;
+  transition:
+    transform 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+.stage .svc-row:hover .svc-title .arw {
+  transform: translateX(6px);
+  color: var(--acc);
+}
+.stage .svc-tag {
+  grid-area: tag;
+  margin-top: 12px;
+  color: var(--fg-2);
+  max-width: 40em;
+}
+.stage .kinds {
+  grid-area: kinds;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.stage .kinds li {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-3);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  padding: 6px 11px;
+  background: var(--fill);
+}
+@media (min-width: 980px) {
+  .stage .svc-grid {
+    grid-template-columns: min-content minmax(0, 1fr) minmax(0, 23rem);
+    grid-template-areas:
+      "idx title tag"
+      ".  kinds tag";
+    gap: 0 40px;
+  }
+  .stage .svc-tag {
+    margin-top: 0;
+    align-self: center;
+  }
+  .stage .kinds {
+    margin-top: 16px;
+  }
+}
+
+/* ── 03 work ────────────────────────────────────────────── */
+.stage .frame {
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #111018;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 34px 70px -28px rgba(0, 0, 0, 0.95);
+}
+.stage .chrome {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 13px;
+  height: 34px;
+  background: #1a1922;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.stage .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  flex: none;
+}
+.stage .host {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  color: #8d939e;
+  margin-left: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.stage .frame img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.stage .feature {
+  margin-top: clamp(40px, 6vh, 68px);
+  display: grid;
+  gap: 28px;
+}
+.stage .feature-txt h3 {
+  font-size: clamp(1.45rem, 1.2rem + 1.1vw, 2.1rem);
+  margin-top: 12px;
+}
+.stage .feature-txt .lead {
+  margin-top: 14px;
+  color: var(--fg-2);
+}
+.stage .facts {
+  margin-top: 26px;
+  display: grid;
+  gap: 1px;
+  background: var(--line-soft);
+  border-block: 1px solid var(--line-soft);
+}
+.stage .facts li {
+  background: var(--ink);
+  padding: 14px 0;
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+}
+.stage .facts .v {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.05rem;
+  color: var(--fg);
+  flex: none;
+  min-width: 4.5em;
+}
+.stage .facts .l {
+  color: var(--fg-3);
+  font-size: 0.92rem;
+}
+.stage .stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 22px;
+}
+.stage .stack li {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  color: var(--fg-3);
+  letter-spacing: 0.05em;
+}
+.stage .stack li + li::before {
+  content: "·";
+  margin-right: 7px;
+  color: rgba(255, 255, 255, 0.22);
+}
+.stage .tlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 26px;
+  font-size: 0.95rem;
+  color: var(--fg);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 5px;
+  transition: border-color 0.25s var(--ease);
+}
+.stage .tlink:hover {
+  border-color: var(--acc);
+}
+/* "Send another" is a button rather than a link, so it has a user-agent
+   border and font to undo. Everything else about it is the same control. */
+.stage button.tlink {
+  font: inherit;
+  color: var(--fg);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0 0 5px;
+  cursor: pointer;
+}
+.stage .tlink .arw {
+  transition: transform 0.25s var(--ease);
+}
+.stage .tlink:hover .arw {
+  transform: translateX(4px);
+}
+@media (min-width: 980px) {
+  .stage .feature {
+    grid-template-columns: 1.18fr 0.82fr;
+    gap: 56px;
+    align-items: center;
+  }
+}
+
+.stage .cards {
+  margin-top: clamp(44px, 7vh, 86px);
+  display: grid;
+  gap: 34px;
+}
+@media (min-width: 900px) {
+  .stage .cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+}
+.stage .card-cap {
+  margin-top: 18px;
+}
+.stage .card-cat {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--acc);
+}
+.stage .card-cap h3 {
+  font-size: 1.14rem;
+  margin-top: 9px;
+  letter-spacing: -0.02em;
+}
+.stage .card-cap p {
+  margin-top: 9px;
+  color: var(--fg-3);
+  font-size: 0.93rem;
+}
+.stage .work-foot {
+  margin-top: clamp(40px, 6vh, 64px);
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* ── 04 approach ────────────────────────────────────────── */
+.stage .approach {
+  overflow: hidden;
+}
+.stage .approach .wrap {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+.stage .statement {
+  font-size: clamp(1.85rem, 1.1rem + 3.4vw, 3.5rem);
+  letter-spacing: -0.035em;
+  line-height: 1.06;
+  margin-top: 26px;
+  text-wrap: balance;
+}
+.stage .statement span {
+  color: var(--fg-3);
+  display: block;
+}
+.stage .approach-note {
+  margin-top: 26px;
+  color: var(--fg-2);
+  max-width: 34em;
+}
+.stage .art {
+  position: relative;
+  justify-self: center;
+  width: min(380px, 76vw);
+}
+.stage .art::before {
+  content: "";
+  position: absolute;
+  inset: -30% -24%;
+  background: radial-gradient(
+    closest-side,
+    rgba(95, 224, 198, 0.3),
+    rgba(70, 130, 220, 0.14) 52%,
+    transparent 76%
+  );
+}
+.stage .art img {
+  position: relative;
+  width: 100%;
+  height: auto;
+  filter: brightness(1.22) saturate(1.1);
+}
+.stage .float {
+  animation: stage-float 13s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.stage .float.vis {
+  animation-play-state: running;
+}
+@keyframes stage-float {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform: translateY(12px);
+  }
+}
+@media (min-width: 900px) {
+  .stage .approach .wrap {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 64px;
+  }
+  .stage .art {
+    width: min(440px, 100%);
+  }
+}
+
+/* ── 05 pricing ─────────────────────────────────────────── */
+.stage .pricing {
+  background: var(--ink-2);
+  border-block: 1px solid var(--line-soft);
+}
+.stage .plist {
+  margin-top: clamp(40px, 6vh, 68px);
+  border-top: 1px solid var(--line);
+}
+.stage .plist li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 24px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: baseline;
+}
+.stage .pname {
+  font-size: clamp(1.12rem, 1rem + 0.5vw, 1.4rem);
+  letter-spacing: -0.02em;
+  font-weight: 500;
+}
+.stage .pprice {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: clamp(1.1rem, 0.95rem + 0.75vw, 1.6rem);
+  color: var(--fg);
+  text-align: right;
+  white-space: nowrap;
+}
+.stage .pscope {
+  grid-column: 1 / -1;
+  color: var(--fg-3);
+  font-size: 0.93rem;
+  max-width: 52em;
+}
+@media (min-width: 860px) {
+  .stage .plist li {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) auto;
+  }
+  .stage .pscope {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .stage .pprice {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+.stage .pnote {
+  margin-top: 28px;
+  color: var(--fg-2);
+  max-width: 44em;
+}
+.stage .promises {
+  margin-top: clamp(44px, 6vh, 72px);
+  padding-top: 30px;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 26px;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 860px) {
+  .stage .promises {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+}
+.stage .promises .v {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 1.5rem;
+  color: var(--acc);
+  letter-spacing: -0.01em;
+}
+.stage .promises .l {
+  margin-top: 8px;
+  color: var(--fg-3);
+  font-size: 0.88rem;
+}
+
+/* ── 06 start ───────────────────────────────────────────── */
+.stage .start {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(96px, 13vh, 170px);
+}
+.stage .start .media {
+  z-index: -2;
+}
+/* **The design's first stop here was 0.46 and it was measured, not
+   taste.** The moorings clip is brightest in its top third, which is
+   exactly where this band puts its eyebrow and the first two field
+   labels — 10.5px uppercase mono, the smallest type on the page. Shot
+   and sampled at 1440, `--fg-3` over it came out 3.68:1 against the
+   average and far worse over the lit specks, where 4.5 is the floor.
+   That is the same failure PanelHeader shipped over the dive at 1.84:1,
+   and the lesson recorded with it was to spend the headroom where the
+   text actually sits rather than darkening everything: so this stop
+   moves, and the small labels in this band take `--fg-2` below. The clip
+   is still legible through the whole band. */
+.stage .start .scrim-v {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 7, 12, 0.62) 0%,
+    rgba(8, 7, 12, 0.74) 24%,
+    rgba(8, 7, 12, 0.9) 58%,
+    rgba(8, 7, 12, 0.98) 86%,
+    var(--ink) 100%
+  );
+}
+.stage .start-grid {
+  display: grid;
+  gap: 46px;
+}
+.stage .start h2 {
+  font-size: clamp(2rem, 1.3rem + 3.2vw, 3.5rem);
+  margin-top: 18px;
+  text-wrap: balance;
+}
+.stage .start .lede {
+  margin-top: 20px;
+  color: var(--fg-2);
+  max-width: 34em;
+}
+.stage .form {
+  display: grid;
+  gap: 16px;
+}
+/* `--fg-2`, not the `--fg-3` the design gives small mono labels
+   elsewhere: these sit over video. See the note on `.start .scrim-v`. */
+.stage .start .eyebrow {
+  color: var(--fg-2);
+}
+.stage .field label {
+  display: block;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-2);
+  margin-bottom: 9px;
+}
+.stage .field input,
+.stage .field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--fg);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 14px 15px;
+  transition: border-color 0.25s var(--ease);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.stage .field textarea {
+  min-height: 124px;
+  resize: vertical;
+}
+.stage .field input::placeholder,
+.stage .field textarea::placeholder {
+  color: var(--fg-3);
+}
+.stage .field input:focus,
+.stage .field textarea:focus {
+  border-color: var(--acc);
+  outline: none;
+}
+.stage .form-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-top: 6px;
+}
+.stage .form-note {
+  font-size: 0.82rem;
+  color: var(--fg-3);
+}
+@media (min-width: 900px) {
+  .stage .start-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: start;
+  }
+}
+
+/* The parts of the real form the mockup had no stand-in for: the error
+   the fetch can return, the panel that replaces the form on success, and
+   the live contact details, questionnaire and call links that were on
+   the page before this design and still work. Same tokens, same curve. */
+.stage .form-alert {
+  border: 1px solid rgba(248, 113, 113, 0.32);
+  background: rgba(248, 113, 113, 0.1);
+  border-radius: 9px;
+  padding: 12px 15px;
+  font-size: 0.9rem;
+  color: #fca5a5;
+}
+.stage .form-fine {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--fg-3);
+}
+.stage .form-fine a {
+  color: var(--fg-2);
+  border-bottom: 1px solid var(--line);
+}
+.stage .form-fine a:hover {
+  color: var(--fg);
+  border-color: var(--acc);
+}
+.stage .sent {
+  border: 1px solid rgba(95, 224, 198, 0.3);
+  background: rgba(95, 224, 198, 0.06);
+  border-radius: 12px;
+  padding: 28px;
+}
+.stage .sent h3 {
+  font-size: 1.45rem;
+  margin-top: 18px;
+}
+.stage .sent p {
+  margin-top: 12px;
+  color: var(--fg-2);
+}
+.stage .sent-tick {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(95, 224, 198, 0.4);
+  color: var(--acc);
+}
+.stage .reach {
+  margin-top: 34px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 2px;
+  font-size: 0.92rem;
+}
+.stage .reach a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-block: 6px;
+  color: var(--fg-2);
+  transition: color 0.2s var(--ease);
+}
+.stage .reach a:hover {
+  color: var(--fg);
+}
+.stage .reach .arw {
+  color: var(--acc);
+}
+
+/* ── footer ─────────────────────────────────────────────── */
+.stage footer {
+  border-top: 1px solid var(--line-soft);
+  padding-block: 46px 56px;
+}
+.stage .foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px 40px;
+  align-items: baseline;
+}
+.stage .foot nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.stage .foot nav a {
+  font-size: 0.92rem;
+  color: var(--fg-2);
+  transition: color 0.2s var(--ease);
+}
+.stage .foot nav a:hover {
+  color: var(--fg);
+}
+.stage .foot .loc {
+  font-size: 0.88rem;
+  color: var(--fg-3);
+  width: 100%;
+}
+@media (min-width: 860px) {
+  .stage .foot .loc {
+    margin-left: auto;
+    width: auto;
+    text-align: right;
+  }
+}
+
+/* ── reduced motion ─────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .stage *,
+  .stage *::before,
+  .stage *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .stage .scrollcue {
+    display: none !important;
+  }
+}
