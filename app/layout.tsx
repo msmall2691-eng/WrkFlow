@@ -1,11 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Space_Grotesk,
-  Inter,
-  Inter_Tight,
-  JetBrains_Mono,
-  Fraunces,
-} from "next/font/google";
+import localFont from "next/font/local";
 import { headers } from "next/headers";
 import "./globals.css";
 import BackToTop from "@/components/BackToTop";
@@ -15,10 +9,47 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { getFog } from "@/lib/fog";
 import { siteGraph, SITE_URL } from "@/lib/schema";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
+/*
+  The five typefaces, from files in this repo rather than from Google.
+
+  **These were `next/font/google`, and that put a network call in the
+  build.** `next/font` fetches each family from Google at build time and
+  self-hosts the result, so every CI run and every Vercel deploy needed
+  fonts.googleapis.com to answer. On Nov 27 2026 it did not, twice inside
+  half an hour: #166 and #167 both died at `An error occurred in
+  next/font` → `Build failed because of webpack errors`, on two unrelated
+  diffs, while a third PR built fine hours later. Nothing was wrong with
+  either change. A build that cannot run without a third party answering
+  is a deploy that cannot run without them either, and this site deploys
+  on merge.
+
+  **The files are Next's own output, not a fresh download**, which is why
+  the rendering is unchanged rather than merely similar: each one is the
+  exact latin subset `next/font/google` had already produced and served,
+  lifted out of `.next/static/media`. All five are variable fonts, so one
+  file covers every weight the site uses, and the weight ranges below are
+  the ones Google declared for them.
+
+  Inter Tight was four `@font-face` declarations (400/500/600/700)
+  pointing at a single file, because it is one variable font and the
+  weights were a request rather than four downloads. It is declared once
+  here, over its whole range.
+
+  Only the latin subset is kept. The Google version also shipped Cyrillic,
+  Greek and Vietnamese ranges that this site has no text in, and
+  `subsets: ["latin"]` was already saying so.
+
+  Replacing a file means replacing it with the same subset of the same
+  family, or the fallback metrics below stop matching and text reflows as
+  the face swaps in.
+*/
+const spaceGrotesk = localFont({
+  src: "./fonts/space-grotesk-latin.woff2",
+  weight: "300 700",
+  style: "normal",
   variable: "--font-space-grotesk",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 /*
@@ -30,41 +61,54 @@ const spaceGrotesk = Space_Grotesk({
   says about the site's typefaces, so it is back on exactly the headings it
   had before. Caveat stayed retired: it existed for one signature, which is
   now set as a plain sign-off.
+
+  Its `opsz` axis survives the move: the file is the variable one Google
+  served, so the optical size axis is still in it.
 */
-const fraunces = Fraunces({
-  subsets: ["latin"],
+const fraunces = localFont({
+  src: "./fonts/fraunces-latin.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-fraunces",
   display: "swap",
-  axes: ["opsz"],
-});
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
+const inter = localFont({
+  src: "./fonts/inter-latin.woff2",
+  weight: "100 900",
+  style: "normal",
+  variable: "--font-inter",
+  display: "swap",
+  adjustFontFallback: "Arial",
+});
+
+const jetbrainsMono = localFont({
+  src: "./fonts/jetbrains-mono-latin.woff2",
+  weight: "100 800",
+  style: "normal",
   variable: "--font-jetbrains-mono",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 /*
-  Inter Tight — the approved homepage design's display and body face, and
-  the only new family this adds. It is loaded here because fonts are a
-  document-level concern, and used only inside `.stage` (see the block at
-  the foot of globals.css), so the rest of the site keeps the faces it
-  already shipped with and the page-title test keeps its one answer.
+  Inter Tight — the approved homepage design's display and body face. It is
+  loaded here because fonts are a document-level concern, and used only
+  inside `.stage` (see the block at the foot of globals.css), so the rest
+  of the site keeps the faces it already shipped with and the page-title
+  test keeps its one answer.
 
-  Four weights because the design uses 400 for body, 500 for buttons and
-  prices, 600 for every heading, and 700 nowhere yet — which is the one
-  the file itself requested, so it is kept rather than trimmed.
+  The design uses 400 for body, 500 for buttons and prices and 600 for
+  every heading; one variable file carries all of them.
 */
-const interTight = Inter_Tight({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const interTight = localFont({
+  src: "./fonts/inter-tight-latin.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-inter-tight",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
 const DESCRIPTION =

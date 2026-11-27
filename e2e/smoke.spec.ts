@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /* The router test asserts its counts against the same source the component
@@ -1255,6 +1255,49 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
   itself be renamed later. Following it is the only version of this test
   that fails when a visitor would land on a 404.
 */
+/*
+  The build must not need Google to answer.
+
+  `next/font/google` downloads each family at build time and self-hosts
+  the result, which reads as free and is not: it puts fonts.googleapis.com
+  on the critical path of every CI run and every deploy. On Nov 27 2026
+  that host failed twice in half an hour and took two unrelated pull
+  requests red with `Build failed because of webpack errors` — nothing
+  wrong with either diff. The five families are files in `app/fonts` now.
+
+  Asserted on the source rather than on a render, because the failure is
+  a build that never starts: by the time a page could be measured, the
+  thing this guards has already happened or already broken. A greppable
+  import is exactly the shape of this regression — somebody adds a sixth
+  family the quick way.
+*/
+test("no font is fetched from Google at build time", () => {
+  /*
+    An IMPORT, not the string. The first cut matched any occurrence of
+    "next/font/google" and failed on `app/layout.tsx` — whose comment
+    explains at length that it used to use it and why it stopped. A guard
+    that forbids naming the thing it guards against makes the next person
+    delete the explanation to get green.
+  */
+  const IMPORTS_GOOGLE = /(?:from\s*|require\()\s*["']next\/font\/google["']/;
+  const roots = ["app", "components", "lib"];
+  const offenders: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (/\.tsx?$/.test(entry.name) && IMPORTS_GOOGLE.test(readFileSync(full, "utf8")))
+        offenders.push(full);
+    }
+  };
+  for (const r of roots) walk(r);
+  expect(
+    offenders,
+    `${offenders.join(", ")} imports next/font/google, which fetches from ` +
+      "Google during the build. Add the woff2 to app/fonts and use next/font/local.",
+  ).toEqual([]);
+});
+
 test("the retired /marketplace still lands somewhere", async ({ page }) => {
   const res = await page.goto("/marketplace");
   expect(res?.status(), "/marketplace should not answer 404").toBeLessThan(400);
