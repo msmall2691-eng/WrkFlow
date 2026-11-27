@@ -2952,6 +2952,83 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 .stage .scrollcue.vis::after {
   animation-play-state: running;
 }
+
+/* ───────────────────────────────────────────────────────────────────────
+   Hero options, for /lab/hero/[variant] only.
+
+   Meg asked to look at three answers to "does the first screen tell a
+   contractor they are in the right place". Neither rule below can reach
+   the live homepage: `app/page.tsx` renders the hero with no variant, so
+   it carries neither class. See components/stage/StageHero.tsx.
+   ─────────────────────────────────────────────────────────────────────── */
+
+/* b — the same clip, with the words off the floor on a phone.
+   Only below 860px: on a desktop the hero is already one screen with the
+   text in the lower third by design, and that is not what she questioned.
+   `flex-end` is what puts the block at the bottom; centring it on a 844px
+   phone moves the first word from roughly halfway down to roughly a
+   quarter, with the art still above and behind it. */
+@media (max-width: 859px) {
+  .stage .hero-raise {
+    align-items: center;
+    padding-block: 104px clamp(54px, 9vh, 104px);
+  }
+}
+
+/* c — the work is the hero. No clip, so no `.media` and no scrim: the
+   section simply sits on the stage's own ink. */
+.stage .hero-split {
+  align-items: center;
+  /* Taller than content but not pinned to the viewport: a screenshot and
+     six lines of type do not need 100svh, and forcing it would open the
+     same gap this option exists to close. */
+  min-height: auto;
+  padding-block: clamp(116px, 18vh, 168px) clamp(64px, 10vh, 112px);
+}
+
+.stage .hero-split .hero-grid {
+  display: grid;
+  gap: 38px;
+  align-items: center;
+}
+
+/* The text column is free to use the grid's width rather than the 680px
+   cap the full-bleed hero needs to keep type off the middle of the clip. */
+.stage .hero-split .hero-inner {
+  max-width: none;
+}
+
+@media (min-width: 980px) {
+  .stage .hero-split .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+    gap: 54px;
+  }
+}
+
+/* One soft pool of light behind the frame, so a flat ground does not read
+   as an unfinished page. Transform/opacity only and it never animates. */
+.stage .hero-split .hero-frame {
+  position: relative;
+}
+.stage .hero-split .hero-frame::before {
+  content: "";
+  position: absolute;
+  inset: -14% -8% -18%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(90, 220, 200, 0.14),
+    rgba(90, 220, 200, 0) 72%
+  );
+  pointer-events: none;
+}
+
+.stage .hero-split .hero-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 @keyframes stage-cue {
   0% {
     transform: translateY(0);

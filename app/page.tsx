@@ -1,13 +1,4 @@
-import StageTopBar from "@/components/stage/StageTopBar";
-import StageHero from "@/components/stage/StageHero";
-import StageServices from "@/components/stage/StageServices";
-import StageWork from "@/components/stage/StageWork";
-import StageApproach from "@/components/stage/StageApproach";
-import StagePricing from "@/components/stage/StagePricing";
-import StageFooter from "@/components/stage/StageFooter";
-import StageMotion from "@/components/stage/StageMotion";
-import Contact from "@/components/Contact";
-import CommandPalette from "@/components/CommandPalette";
+import StageHome from "@/components/stage/StageHome";
 
 /*
   Homepage — the approved design, "Cinematic" (Meg, Nov 25 2026).
@@ -67,37 +58,8 @@ import CommandPalette from "@/components/CommandPalette";
   read instead and marks its link. See the component for the rest.
 */
 export default function Home() {
-  return (
-    <div className="stage">
-      <a className="skip" href="#main">
-        Skip to content
-      </a>
-
-      <StageTopBar spy />
-
-      <main id="main">
-        <StageHero />
-        <StageServices />
-        <StageWork />
-        <StageApproach />
-        <StagePricing />
-        <Contact variant="stage" />
-      </main>
-
-      <StageFooter />
-
-      {/* ⌘K, outside the stage: a fixed overlay belongs at the end of the
-          page, and keeping it out of `.stage` keeps the design's element
-          styles off a component drawn in the site's own palette. */}
-      <CommandPalette />
-
-      {/*
-        One controller for the whole page's motion: the reveals, the two
-        clips and the two CSS loops. It reconciles intersection, the
-        motion preference and tab visibility in one place, which is the
-        correction `MovingChapter` and `HeroLoop` were both brought to.
-      */}
-      <StageMotion />
-    </div>
-  );
+  /* The tree lives in `StageHome` so that the hero comparison at
+     /lab/hero/[variant] renders this page rather than a copy of it.
+     With no `variant`, the hero is exactly the one that shipped. */
+  return <StageHome />;
 }
