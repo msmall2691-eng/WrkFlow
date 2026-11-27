@@ -88,6 +88,15 @@ const TOOLS: {
   },
 ];
 
+/*
+  How many free tools there are, read from the list rather than typed.
+
+  `StageTry` says the number on the homepage, and a hand-written count is
+  a claim about evidence that drifts the first time a tool is added — the
+  rule CLAUDE.md sets for the project count under each service door.
+*/
+export const TOOL_COUNT = TOOLS.length;
+
 const GROUPS: Group[] = ["Win & bill", "Brand & share", "Site & ops"];
 
 export default function Playground() {

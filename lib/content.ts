@@ -1450,6 +1450,37 @@ export const homeBands = {
     eyebrow: "Common issues",
     heading: "Most people arrive with one of these.",
   },
+  /*
+    Three bands added Nov 27 2026, at Meg's word: "id like them to see
+    them sooner", "its way scattered and unorganized". The homepage
+    carried nine outbound links and not one reached a free tool, a demo,
+    the turnover planner, the welcome book or BrightBase — 17 public
+    routes and the page body linked 5. Nothing was missing from the site;
+    it was unreachable from the front of it.
+
+    No new claim is made in any of them. Every count is computed, every
+    picture is an existing capture, and every line of copy is lifted from
+    a record that already shipped.
+  */
+  try: {
+    eyebrow: "Free to use, right now",
+    heading: "Try something before you talk to anybody.",
+    /* The count is read from the tools themselves, never typed. Same rule
+       as the project count under each service door. */
+    all: "All the free tools",
+    allHref: "/tools",
+  },
+  connects: {
+    eyebrow: "Works with what you already pay for",
+    heading: "Your tools, talking to each other.",
+    /* `lib/integrations.ts` refuses an entry without a proof record, and
+       a test resolves every one, so this band cannot be padded. */
+    note: "Each one is running in a system on this page.",
+  },
+  industries: {
+    eyebrow: "Built for these already",
+    heading: "The work, by the kind of business it runs.",
+  },
   work: {
     eyebrow: "Real screens, real businesses",
     heading: "Every picture below is a real business using it.",
