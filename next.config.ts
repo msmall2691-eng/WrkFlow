@@ -33,6 +33,16 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  /*
+    /marketplace was retired on Nov 27 2026 and everything it listed is on
+    /catalog. The redirect is permanent rather than the page being deleted
+    outright, because the URL is in the sitemap Google has already read, in
+    anything Meg has sent anybody, and in the browser history of whoever has
+    been there. A 404 would spend that; a 308 keeps it.
+  */
+  async redirects() {
+    return [{ source: "/marketplace", destination: "/catalog", permanent: true }];
+  },
   async headers() {
     return [
       {

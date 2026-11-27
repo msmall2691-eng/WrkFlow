@@ -12,7 +12,6 @@ const links = [
   { href: "/services", label: "Services" },
   { href: "/#pricing", label: "Pricing" },
   { href: "/tools", label: "Tools" },
-  { href: "/marketplace", label: "M Linx" },
   { href: "/about", label: "About" },
 ];
 

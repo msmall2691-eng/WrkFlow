@@ -30,7 +30,7 @@ const ELSEWHERE: Record<string, string> = {
   pricing: "/services",
   approach: "/services",
   meg: "/about",
-  marketplace: "/marketplace",
+  marketplace: "/catalog",
 };
 
 function scrollToId(id: string) {
@@ -104,21 +104,14 @@ export default function CommandPalette() {
         label: "Catalog: everything to use, buy or have built",
         hint: "↗",
         group: "Navigate",
-        keywords: "catalog everything products plugins apps integrations ai rental airbnb host childcare portal migration buy",
+        /* The retired /marketplace command's words are folded in rather
+           than dropped: somebody who types "shop", "store", "templates",
+           "premade" or "marketplace" was finding the shelf before and
+           still should. */
+        keywords: "catalog everything products plugins apps integrations ai rental airbnb host childcare portal migration buy linx templates premade store shop embed marketplace",
         run: () => {
           close();
           window.location.href = "/catalog";
-        },
-      },
-      {
-        id: "marketplace",
-        label: "M Linx marketplace",
-        hint: "↗",
-        group: "Navigate",
-        keywords: "linx buy templates tools premade store shop products embed marketplace",
-        run: () => {
-          close();
-          window.location.href = "/marketplace";
         },
       },
       /*

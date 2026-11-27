@@ -34,7 +34,6 @@ const PAGES = [
   { path: "/tools", name: "tools" },
   // Services and pricing moved off the homepage onto their own page.
   { path: "/services", name: "services" },
-  { path: "/marketplace", name: "marketplace" },
   { path: "/catalog", name: "catalog" },
   { path: "/intake", name: "intake" },
   // Added with the case studies: a dynamic route is the easiest thing here
@@ -689,7 +688,7 @@ test("the case study's build screenshot stays pinned while the steps scroll", as
   on a page that has one.
 */
 /* A route joins this list the moment its V2 pass gives it PanelHeader: that
-   is the shape this test exists to catch. /marketplace came in with its own
+   is the shape this test exists to catch. The retired /marketplace came in with its own
    conversion; /turnover, /welcome-book, /privacy and /terms came in with the
    batch that finished the site. The two legal pages share one shell
    (components/LegalDoc.tsx), so they are one fix and two routes.
@@ -703,7 +702,6 @@ for (const path of [
   "/services",
   "/tools",
   "/about",
-  "/marketplace",
   "/catalog",
   "/demo",
   "/turnover",
@@ -1203,12 +1201,12 @@ test("every price on the services ladder resolves to its one source", async ({
   **The list is shorter than it was, and that is a decision Meg made by
   choosing this design.** The storefront page linked everything because
   it was a shop; the approved homepage (#156) is six sections and a
-  footer, and it links /tools, /marketplace, /catalog, /services,
+  footer, and it links /tools, /catalog, /services,
   /about, the case studies and /privacy. It does not link /turnover,
   /welcome-book or the three demo apps.
 
   Those five are still in the sitemap, still in ⌘K, and still linked
-  from /catalog, /marketplace and /tools, so they are not orphans in the
+  from /catalog and /tools, so they are not orphans in the
   sense this test was written for — but they are one hop further away
   than they were, and that is worth saying out loud rather than
   discovering later. What stays asserted is that the paths this design
@@ -1219,7 +1217,7 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
   await page.goto("/");
 
   /* Paths a visitor should be able to click to, without a search box. */
-  const MUST_REACH = ["/tools", "/marketplace", "/catalog", "/services", "/about"];
+  const MUST_REACH = ["/tools", "/catalog", "/services", "/about"];
 
   const hrefs = await page
     .locator("a[href]")
@@ -1245,12 +1243,36 @@ test("every finished thing is reachable from the homepage", async ({ page }) => 
   should not rank for somebody trying to buy a print or book a massage;
   asserting their ABSENCE is what stops a well-meaning edit adding them.
 */
+/*
+  /marketplace was retired on Nov 27 2026 and everything it listed is on
+  /catalog. The URL is in a sitemap Google has already read, in whatever
+  Meg has sent people, and in the history of anybody who has been there,
+  so it redirects rather than 404s.
+
+  **Asserted on where the browser ends up, not on the config.** A
+  `redirects()` entry can be present and still not fire — wrong source,
+  wrong order, a `basePath` surprise — and the page it points at could
+  itself be renamed later. Following it is the only version of this test
+  that fails when a visitor would land on a 404.
+*/
+test("the retired /marketplace still lands somewhere", async ({ page }) => {
+  const res = await page.goto("/marketplace");
+  expect(res?.status(), "/marketplace should not answer 404").toBeLessThan(400);
+  await expect(page, "/marketplace should land on the catalog").toHaveURL(/\/catalog$/);
+  /* And the shelf has to actually be on it: a redirect to an empty page
+     is the same loss as a delete, in two hops. */
+  await expect(
+    page.getByRole("heading", { level: 1 }),
+    "the catalog should render its own page, not an empty one",
+  ).toBeVisible();
+});
+
 test("the sitemap lists the public pages, and not the invented ones", async ({ request }) => {
   const res = await request.get("/sitemap.xml");
   expect(res.status()).toBe(200);
   const xml = await res.text();
 
-  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/marketplace", "/demo", "/catalog"])
+  for (const path of ["/turnover", "/welcome-book", "/services", "/tools", "/demo", "/catalog"])
     expect(xml, `${path} should be in the sitemap`).toContain(`${path}</loc>`);
 
   for (const path of ["/demo/shop", "/demo/studio", "/demo/directory"])
@@ -1502,7 +1524,6 @@ test("every page title is the same size and weight, from one component", async (
     "/services",
     "/tools",
     "/catalog",
-    "/marketplace",
     "/about",
     "/brightbase",
     "/turnover",
@@ -1867,7 +1888,6 @@ test("the converted pages are the same near-black world in both themes", async (
     "/",
     "/services",
     "/tools",
-    "/marketplace",
     "/about",
     "/catalog",
     /* Converted Nov 27 2026 with the planner polish: it wore `.cp` and
@@ -1950,7 +1970,6 @@ test("the header says which page you are on", async ({ page }) => {
   for (const [path, name] of [
     ["/services", "Services"],
     ["/tools", "Free tools"],
-    ["/marketplace", "Marketplace"],
     ["/about", "About"],
     ["/catalog", "Catalog"],
     ["/work/maine-cleaning-co", "Case study"],

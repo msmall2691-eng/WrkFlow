@@ -38,7 +38,7 @@ export default function NotFound() {
             Back home →
           </Link>
           <Link
-            href="/marketplace"
+            href="/catalog"
             className="inline-flex items-center justify-center gap-2 rounded-full border border-line px-7 py-3.5 text-sm font-medium text-muted transition-colors hover:border-signal/60 hover:text-ink"
           >
             Browse the marketplace
