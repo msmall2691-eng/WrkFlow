@@ -1516,7 +1516,9 @@ export const homeBands = {
 export const homeNav = [
   { href: "#services", label: "Services" },
   { href: "#work", label: "Work" },
-  { href: "#pricing", label: "Pricing" },
+  /* A route, not an anchor: the price band came off the homepage with the
+     Linx Brand Plan's "no prices on the homepage". See app/pricing. */
+  { href: "/pricing", label: "Pricing" },
   { href: "/tools", label: "Free tools" },
 ] as const;
 
