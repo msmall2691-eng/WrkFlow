@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import { siteNav } from "@/lib/content";
+import { homeBands, siteNav, smallProjects } from "@/lib/content";
 import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import Pricing from "@/components/Pricing";
@@ -53,6 +53,50 @@ export default function PricingPage() {
               </p>
             </div>
           </section>
+          {/*
+            **The four fixed prices, which `<Pricing />` does not carry.**
+            It renders the custom build, the Care Plan, the promises and
+            the FAQ; the `smallProjects` list lived in the homepage band,
+            so moving the band here without them would have quietly
+            dropped the only four numbers on the site somebody can act on
+            today. A test caught it, which is the whole reason that test
+            asserts the titles and the prices rather than that a price
+            list exists.
+
+            Read from `smallProjects`, so the prices still have one
+            author. Plain markup rather than `StagePricing`, because that
+            component's styles are scoped to `.stage` and this page wears
+            `.cp-inner`.
+          */}
+          <section className="border-b border-line py-14 md:py-16">
+            <div className="mx-auto max-w-6xl px-6">
+              <h2 className="display text-2xl text-ink sm:text-3xl">
+                {homeBands.pricing.heading}
+              </h2>
+              <p className="mt-3 max-w-[58ch] text-sm leading-relaxed text-muted">
+                {homeBands.pricing.lede}
+              </p>
+
+              <ul className="mt-8 grid list-none gap-px border-y border-line bg-line p-0 sm:grid-cols-2">
+                {smallProjects.map((project) => (
+                  <li key={project.offer} className="bg-base p-5">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+                      <span className="text-[15px] font-semibold text-ink">
+                        {project.title}
+                      </span>
+                      <span className="font-mono text-sm text-signal">{project.price}</span>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed text-muted">{project.scope}</p>
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-6 max-w-[62ch] text-sm leading-relaxed text-muted">
+                {homeBands.pricing.note}
+              </p>
+            </div>
+          </section>
+
           <Pricing />
           <Contact />
         </main>

@@ -3351,6 +3351,117 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   }
 }
 
+/* ── The three bands added Nov 27 2026 ─────────────────────────────────
+   No new tokens and no new colours: these reuse `.band`, `.wrap`,
+   `.band-head`, `.cards`, `.frame` and `.chrome` exactly as the approved
+   design defines them, so the page cannot drift into a second style
+   while answering "id like them to see them sooner".
+   ──────────────────────────────────────────────────────────────────── */
+
+/* A whole card is the link in the try band, so the caption must not take
+   the browser's default anchor colour. */
+.stage .try-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.stage .try-link:hover .card-cap h3 {
+  color: var(--acc);
+}
+/* The demos sit in a second grid under the real things: closer to them
+   than a new band would be, still clearly a second group. */
+.stage .try-demos {
+  margin-top: clamp(26px, 4vh, 44px);
+}
+
+/* Integrations: eight plain tiles, no pictures, no links. */
+.stage .conx {
+  list-style: none;
+  margin: clamp(40px, 6vh, 72px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--line-soft);
+  border-block: 1px solid var(--line-soft);
+}
+@media (min-width: 760px) {
+  .stage .conx {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1100px) {
+  .stage .conx {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.stage .conx li {
+  background: var(--ink);
+  padding: 20px 18px 22px;
+}
+.stage .conx h3 {
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+.stage .conx p {
+  margin-top: 7px;
+  font-size: 0.9rem;
+  color: var(--fg-2);
+}
+.stage .conx .conx-in {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--fg-3);
+}
+
+/* Industries: one row per sector, the capture beside the words. */
+.stage .inds {
+  margin-top: clamp(40px, 6vh, 72px);
+  display: grid;
+  gap: 1px;
+  background: var(--line-soft);
+  border-block: 1px solid var(--line-soft);
+}
+.stage .ind-row {
+  display: grid;
+  gap: 16px;
+  align-items: center;
+  padding: 22px 0;
+  color: inherit;
+  text-decoration: none;
+  background: var(--ink);
+}
+@media (min-width: 760px) {
+  .stage .ind-row {
+    grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+.stage .ind-shot {
+  margin: 0;
+}
+.stage .ind-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.stage .ind-txt h3 {
+  font-size: 1.14rem;
+  letter-spacing: -0.02em;
+}
+.stage .ind-row:hover .ind-txt h3 {
+  color: var(--acc);
+}
+.stage .ind-build {
+  margin-top: 6px;
+  font-size: 0.88rem;
+  color: var(--acc);
+}
+.stage .ind-flow {
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--fg-2);
+}
+
 .stage .cards {
   margin-top: clamp(44px, 7vh, 86px);
   display: grid;

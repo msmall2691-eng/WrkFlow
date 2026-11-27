@@ -1063,30 +1063,46 @@ test("the nav reaches the demos showcase", async ({ page }) => {
      — and the four promises beside it are `studioStats`, which are M
      Studio's own promises rather than outcomes claimed for anybody.
 */
-test("the homepage shows what things cost, from the one place those prices live", async ({
+test("the prices are on their own page, from the one place they live", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  /*
+    **This asserted the homepage until Nov 27 2026**, when the Linx Brand
+    Plan moved the prices to a route of their own. What it guards did not
+    move with them: that the four fixed prices render, that they come
+    from `smallProjects` rather than being retyped, that the page says
+    what is quoted instead, and that the promises are `studioStats`. Only
+    the address changed, so only the address changed here.
 
-  const pricing = page.locator("#pricing");
-  await expect(pricing, "the homepage should carry the price list").toHaveCount(1);
+    The "how far down" check went with the homepage, because on a page
+    whose whole job is the price list it would assert nothing. What
+    replaces it is the reachability check below: a price list nobody can
+    get to is the failure the old assertion was really about.
+  */
+  await page.goto("/pricing");
 
-  const screens = await pricing.evaluate(
-    (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
-  );
-  expect(
-    screens,
-    `the prices start ${screens.toFixed(1)} screens down; this page exists ` +
-      "because they were hard to find",
-  ).toBeLessThan(8);
+  await expect(
+    page.locator("#pricing"),
+    "/pricing should still carry the #pricing anchor the rest of the site links",
+  ).toHaveCount(1);
+
+  /*
+    Scoped to the page, not to `#pricing`. That id belongs to `<Pricing />`,
+    which carries the custom build and the Care Plan; the four fixed prices
+    are a sibling section reading `smallProjects`. Asked only about
+    `#pricing`, this test reported the four as missing when they were on
+    the page a few hundred pixels above — and the page is the price list
+    now, which is the thing worth asserting.
+  */
+  const pricing = page.locator("main");
 
   /* textContent, not innerText: a price inside a clipped element still
      counts as the page carrying it, and innerText drops exactly those. */
   const text = (await pricing.evaluate((el) => el.textContent)) ?? "";
 
   for (const p of smallProjects) {
-    expect(text, `"${p.title}" should be on the homepage`).toContain(p.title);
+    expect(text, `"${p.title}" should be on /pricing`).toContain(p.title);
     expect(text, `"${p.title}" should show its price`).toContain(p.price);
   }
 
@@ -1098,6 +1114,15 @@ test("the homepage shows what things cost, from the one place those prices live"
 
   for (const s of studioStats)
     expect(text, `the promise "${s.label}" should render`).toContain(s.value);
+
+  /* And it is reachable: the homepage bar links it by route now that
+     there is no band to scroll to. */
+  await page.goto("/");
+  const link = page.locator('header a[href="/pricing"], nav a[href="/pricing"], a[href="/pricing"]');
+  expect(
+    await link.count(),
+    "the homepage should link /pricing, or the prices are a page nobody finds",
+  ).toBeGreaterThan(0);
 });
 
 /*
@@ -2466,9 +2491,11 @@ test("the hero loop stops once it is scrolled past, and runs again on the way ba
     })
     .toBe(false);
 
-  /* Well past the hero: the price list is most of the way down the page,
-     so nothing of the hero is on screen here. */
-  await page.locator("#pricing").scrollIntoViewIfNeeded();
+  /* Well past the hero: the contact band is the last thing on the page,
+     so nothing of the hero is on screen here. It was `#pricing` until
+     that band moved to its own route — an anchor chosen for being far
+     down, not for being prices. */
+  await page.locator("#contact").scrollIntoViewIfNeeded();
   await expect
     .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
       timeout: 5_000,
