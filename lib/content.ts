@@ -124,13 +124,40 @@ export const resumeUrl = "";
   corroborating profile to bind this site to a real person; with none, the
   Person node is just an assertion the site makes about itself.
 
-  TODO(Meg) — paste the full https URLs of any you want linked, e.g.
-  "https://www.linkedin.com/in/…", "https://github.com/…". While this is
-  empty no `sameAs` is emitted at all, rather than a guessed URL: a wrong
-  profile link is worse than none, because it points a reader at someone
-  who is not you.
+  Both of these were read off the live GitHub profile on Nov 27 2026 rather
+  than guessed, which is the rule this block was written to enforce: a wrong
+  profile link points a reader at somebody who is not her. The LinkedIn
+  address is the one her own GitHub sidebar publishes.
 */
-export const profiles: readonly string[] = [];
+export const profiles: readonly string[] = [
+  "https://github.com/msmall2691-eng",
+  "https://www.linkedin.com/in/megan-small-75b806410",
+];
+
+/*
+  The public GitHub profile, as evidence rather than as a link in a footer.
+
+  **Meg's ask, Nov 27 2026: "Show GitHub as proof on the site."** It belongs
+  on /about under `Stack`, which is the one place already talking to the
+  reader who wants to know what this is built with and whether they could
+  hire somebody else to maintain it. The stack list is a claim; this is the
+  account where the claim can be checked.
+
+  `shot` is captured by `npm run shots` like every other live capture, so it
+  cannot quietly go stale the way a hand-taken screenshot of a page that
+  changes weekly would. Nothing here is a number: the profile's own counts
+  are whatever they are on the day somebody clicks, and copying one into this
+  file would be a claim about evidence written by hand, which is the rule
+  `ServiceRouter`'s project count already answers to.
+*/
+export const githubProof = {
+  url: "https://github.com/msmall2691-eng",
+  heading: "The code is public, and so is the history.",
+  body: "The profile below is live. It lists the projects on this site, what each one involved, and the technologies behind them.",
+  linkLabel: "Open the GitHub profile",
+  shot: "/shots/github.webp",
+  alt: "The GitHub profile for msmall2691-eng: a README headed Megan, Mainer, Web designer, Systems guru, with a Selected work table naming The Maine Cleaning Company, BrightBase, M Studio and The Remote Admin.",
+} as const;
 
 /** Appended to every free-tool takeaway (copied text, .txt download, emailed result). */
 export const toolsStamp =

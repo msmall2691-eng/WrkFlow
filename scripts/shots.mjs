@@ -78,6 +78,25 @@ const TARGETS = {
   */
   "keystone.webp": "https://keystonestay.maineclean.co",
   /*
+    The public GitHub profile, shown on /about as proof (`githubProof`).
+
+    Captured logged out, which is deliberate rather than incidental: that is
+    the page a visitor who clicks the link actually gets, and a capture made
+    from a signed-in session would show a header and controls they will
+    never see. Playwright is signed out by default, so this needs nothing,
+    but it is the kind of thing that quietly stops being true the day
+    somebody adds a storage state to this script.
+
+    Taller than the rest at 1000px, because the thing worth showing is the
+    README's "Selected work" table rather than the avatar. It is still a
+    plain capture of the whole viewport, not a crop: nothing is being hidden
+    and the profile's own counts are whatever they are on the day.
+  */
+  "github.webp": {
+    url: "https://github.com/msmall2691-eng",
+    height: 1000,
+  },
+  /*
     The public marketing half of Arrowhead Explorers. Deliberately NOT the
     parent portal at portal.lacexplorers.online: that one is noindex, sits
     behind a family code, and its screens carry children's names, daily logs
@@ -119,12 +138,15 @@ const browser = await chromium.launch();
 let wrote = 0;
 
 for (const [file, target] of Object.entries(TARGETS)) {
-  const { url, cropHeight } = typeof target === "string" ? { url: target } : target;
+  const { url, cropHeight, height } = typeof target === "string" ? { url: target } : target;
   const slug = file.replace(/\.webp$/, "");
   if (only.length && !only.includes(slug) && !only.includes(file)) continue;
 
   const ctx = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
+    /* `height` is the viewport, which changes what is on screen to be
+       captured; `cropHeight` below trims the output afterward. They are
+       different jobs and a target may want either. */
+    viewport: { width: 1440, height: height ?? 900 },
     deviceScaleFactor: 2,
     reducedMotion: "reduce",
   });
