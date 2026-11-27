@@ -326,61 +326,166 @@ export default function TurnoverPlanner() {
   booked nights shaded, cleaning days marked, same-day turnarounds called
   out. The picture a host or a cleaner actually checks.
 */
+/** "December 2026", or "Nov – Dec 2026" when the four weeks straddle two. */
+function spanLabel(days: string[]): string {
+  const d = (s: string) => new Date(`${s}T12:00:00Z`);
+  const a = d(days[0]);
+  const b = d(days[days.length - 1]);
+  const long = (x: Date) =>
+    x.toLocaleDateString("en-US", { month: "long", timeZone: "UTC" });
+  const short = (x: Date) =>
+    x.toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+  if (a.getUTCMonth() === b.getUTCMonth() && a.getUTCFullYear() === b.getUTCFullYear())
+    return `${long(a)} ${a.getUTCFullYear()}`;
+  if (a.getUTCFullYear() === b.getUTCFullYear())
+    return `${short(a)} – ${short(b)} ${b.getUTCFullYear()}`;
+  return `${short(a)} ${a.getUTCFullYear()} – ${short(b)} ${b.getUTCFullYear()}`;
+}
+
+/*
+  The four weeks from the first cleaning.
+
+  **It says which four weeks, and it did not.** The grid opened on "29,
+  30, 1, 2" with no month anywhere on it, so two different months' days
+  were the same number in the same picture and a visitor had to work out
+  the year from nothing. The span is now the heading, which also makes
+  the next thing honest: this is a *window*, not the whole schedule, and
+  a feed with three months of bookings has cleanings past its edge. The
+  count of those is on the grid rather than left for somebody to discover
+  when the download has more dates in it than the picture showed.
+
+  **Guest nights stopped being the loudest thing on it.** They were a
+  solid `--cp-hairline-strong` fill, which on a 28-cell grid is a wall of
+  grey blocks with the actual answer, the cleaning days, scattered inside
+  it. A stay is context; the cleaning is the point. The nights are a
+  quiet tint with an edge now, and the cleanings keep the full ink fill.
+*/
 function MonthGrid({ turnovers, stays }: { turnovers: Turnover[]; stays: Booking[] }) {
   const first = turnovers[0]?.date;
   if (!first) return null;
   const f = new Date(`${first}T12:00:00Z`);
   const start = addDays(first, -f.getUTCDay());
   const days = Array.from({ length: 28 }, (_, i) => addDays(start, i));
+  const last = days[days.length - 1];
   const byDate = new Map(turnovers.map((t) => [t.date, t]));
   const booked = new Set<string>();
   for (const b of stays) for (let d = b.start; d < b.end; d = addDays(d, 1)) booked.add(d);
   const today = iso(new Date());
 
+  const shown = turnovers.filter((t) => t.date >= days[0] && t.date <= last).length;
+  const beyond = turnovers.length - shown;
+
   return (
-    <div className="mt-6">
-      <div className="grid grid-cols-7 gap-1 text-center text-[11px] uppercase tracking-wider text-faint">
+    <div className="sheet mt-6">
+      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3 className="m-0 text-[15px] font-semibold" style={{ color: "var(--sheet-ink)" }}>
+          {spanLabel(days)}
+        </h3>
+        <p className="m-0 text-xs" style={{ color: "var(--sheet-muted)" }}>
+          {shown} {shown === 1 ? "cleaning" : "cleanings"} in these four weeks
+          {beyond > 0 && `, ${beyond} more after them`}
+        </p>
+      </div>
+
+      <div
+        className="grid grid-cols-7 gap-1 text-center text-[11px] font-medium uppercase tracking-wider"
+        style={{ color: "var(--sheet-faint)" }}
+      >
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <span key={d}>{d}</span>
         ))}
       </div>
+
       <div className="mt-1.5 grid grid-cols-7 gap-1">
         {days.map((d) => {
           const t = byDate.get(d);
           const isBooked = booked.has(d);
+          const dayNum = Number(d.slice(8));
+          /* The 1st carries its month, so the week that crosses over reads
+             as two months rather than as numbers that restart. */
+          const monthMark = new Date(`${d}T12:00:00Z`)
+            .toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+
           return (
             <div
               key={d}
               style={
                 t
-                  ? { background: "var(--cp-ink)", color: "var(--cp-on-ink)", borderColor: "var(--cp-ink)" }
-                  : isBooked
-                    ? { background: "var(--cp-hairline-strong)", borderColor: "transparent" }
-                    : undefined
+                  ? {
+                      /* Two fills, because a same-day turnaround is a
+                         different job from an ordinary clean. */
+                      background: t.sameDay ? "var(--sheet-same)" : "var(--sheet-clean)",
+                      color: "var(--sheet-on-clean)",
+                      borderColor: t.sameDay ? "var(--sheet-same)" : "var(--sheet-clean)",
+                    }
+                  : {
+                      background: isBooked ? "var(--sheet-fill)" : "transparent",
+                      borderColor: d === today ? "var(--sheet-ink)" : "var(--sheet-line)",
+                    }
               }
-              className={`relative flex min-h-14 flex-col rounded-md border p-1.5 text-left text-xs ${
-                t || isBooked ? "" : "border-line"
-              }`}
+              className="relative flex min-h-[64px] flex-col gap-1 overflow-hidden rounded-lg border p-2 text-left"
             >
-              <span className={t ? "font-semibold" : d === today ? "font-bold text-ink" : "text-muted"}>
-                {Number(d.slice(8))}
+              {/* A stay reads as an edge rather than as a filled block. */}
+              {isBooked && !t && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-y-0 left-0 w-[3px]"
+                  style={{ background: "var(--sheet-line)" }}
+                />
+              )}
+              <span
+                className={`text-[12.5px] leading-none ${t || d === today ? "font-bold" : "font-medium"}`}
+                style={t ? undefined : { color: d === today ? "var(--sheet-ink)" : "var(--sheet-muted)" }}
+              >
+                {/* The month rides the 1st so the week that crosses over
+                    reads as two months. Hidden on a phone, where the cell
+                    is ~40px wide and the heading above says the span. */}
+                {dayNum === 1 && <span className="hidden sm:inline">{monthMark} </span>}
+                {dayNum}
               </span>
               {t && (
-                <span className="mt-auto text-[10.5px] font-semibold leading-tight">
-                  Clean
-                  {t.sameDay && <span className="block font-normal opacity-80">same-day</span>}
+                <span className="mt-auto leading-tight">
+                  <span className="hidden text-[11.5px] font-semibold sm:block">Clean</span>
+                  {/* The cell is already amber when it is a same-day, so
+                      the words ride on it in the cell's own ink. */}
+                  {t.sameDay && (
+                    <>
+                      <span className="mt-1 hidden items-center rounded-full border border-current px-1.5 py-[1px] text-[9.5px] font-semibold uppercase tracking-wide opacity-80 sm:inline-flex">
+                        Same day
+                      </span>
+                      {/* Phone: the pill does not fit, so the same fact is a dot. */}
+                      <span
+                        aria-hidden="true"
+                        className="mt-1 block h-1.5 w-1.5 rounded-full bg-current opacity-80 sm:hidden"
+                      />
+                      <span className="sr-only">Same day turnaround</span>
+                    </>
+                  )}
                 </span>
               )}
             </div>
           );
         })}
       </div>
-      <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted">
+
+      <div
+        className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-xs"
+        style={{ color: "var(--sheet-muted)" }}
+      >
         <span className="inline-flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded-sm" style={{ background: "var(--cp-hairline-strong)" }} /> Guest staying
+          <span
+            className="h-3 w-3 rounded-[3px] border"
+            style={{ background: "var(--sheet-fill)", borderColor: "var(--sheet-line)" }}
+          />
+          Guest staying
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded-sm" style={{ background: "var(--cp-ink)" }} /> Cleaning day
+          <span className="h-3 w-3 rounded-[3px]" style={{ background: "var(--sheet-clean)" }} />
+          Cleaning day
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-[3px]" style={{ background: "var(--sheet-same)" }} />
+          One guest out, the next in on the same day
         </span>
       </div>
     </div>
@@ -391,7 +496,7 @@ function Stat({ n, label, accent }: { n: number; label: string; accent?: boolean
   return (
     <p className={`m-0 rounded-lg border bg-base px-4 py-3 ${accent ? "border-[color:var(--cp-amber-line)]" : "border-line"}`}>
       <span className="display block text-2xl text-ink">{n}</span>
-      <span className="text-xs text-muted">{label}</span>
+      <span className="whitespace-nowrap text-xs text-muted">{label}</span>
     </p>
   );
 }

@@ -748,6 +748,54 @@ body {
   color: var(--color-signal);
 }
 
+/*
+  The schedule sheet — a light panel inside the near-black page.
+
+  Meg, looking at the turnover planner: "i dont like the cal so dark
+  eveyrthing doesnt have to be DARK". She is right, and the reason is
+  more than taste: this calendar is the thing the tool produces, it is a
+  document somebody hands to whoever cleans, and a dark grid of dark
+  cells reads as more backdrop. On paper it is paper.
+
+  **These values are deliberately pinned rather than theme tokens, and
+  that is the opposite of the rule everywhere else on this site.** The
+  usual rule exists because an element's ground follows the theme; here
+  the ground does not — the sheet is light in Harbor and in Daylight —
+  so a token that followed the theme would be the #115 failure, not the
+  cure for it. CLAUDE.md names this exact trap: rules keyed on *the
+  theme* when they meant *the ground under this element*. Pinning them
+  on `.sheet` keeps one author for the colours while tying them to the
+  surface they actually sit on.
+
+  Two fills carry the answer rather than one, because "clean this day"
+  and "clean this day between two guests" are different jobs: teal is a
+  cleaning, amber is a cleaning with a guest arriving the same day. That
+  is the urgency idea BrightBase already works on, not a new vocabulary.
+*/
+.cp .sheet {
+  --sheet-bg: #f7f5f1;
+  --sheet-ink: #11161d;
+  --sheet-muted: rgba(17, 22, 29, 0.64);
+  --sheet-faint: rgba(17, 22, 29, 0.46);
+  --sheet-line: rgba(17, 22, 29, 0.14);
+  --sheet-fill: rgba(17, 22, 29, 0.07);
+  --sheet-clean: #0f766e;
+  --sheet-same: #b45309;
+  --sheet-on-clean: #ffffff;
+
+  background: var(--sheet-bg);
+  color: var(--sheet-ink);
+  border: 1px solid var(--sheet-line);
+  border-radius: 14px;
+  padding: 18px 16px 16px;
+}
+
+@media (min-width: 640px) {
+  .cp .sheet {
+    padding: 22px 22px 18px;
+  }
+}
+
 /* Display headline utility */
 .display {
   font-family: var(--font-display);
