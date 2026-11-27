@@ -357,7 +357,7 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
             </div>
             <p className="mt-4 font-display text-lg text-ink">You&apos;re on the list.</p>
             <p className="mt-2 text-sm leading-relaxed text-muted">
-              I&apos;ll be in touch about <span className="text-ink">{item.name}</span> with
+              You&apos;ll hear back about <span className="text-ink">{item.name}</span> with
               a fixed quote and next steps.
             </p>
             <button
@@ -371,8 +371,8 @@ function ReserveModal({ item, onClose }: { item: MarketItem; onClose: () => void
         ) : (
           <form onSubmit={submit} className="p-6">
             <p className="mb-4 text-sm leading-relaxed text-muted">
-              Reserve your spot. Drop your details and I&apos;ll follow up with a
-              fixed quote. No payment now.
+              Reserve your spot. Drop your details and a fixed quote comes
+              back. No payment now.
             </p>
             {/* Honeypot */}
             <input

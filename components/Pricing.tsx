@@ -178,8 +178,8 @@ export default function Pricing() {
             </BookCall>
             {appFounding && (
               <p className="max-w-sm text-xs leading-relaxed text-faint">
-                Early clients get my best rate, in exchange for a testimonial
-                and permission to show the site in my portfolio.
+                Early clients get the best rate M Studio offers, in exchange for
+                a testimonial and permission to show the site in this portfolio.
               </p>
             )}
           </div>

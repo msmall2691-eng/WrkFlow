@@ -46,8 +46,7 @@ import { join } from "node:path";
   Not here, and not capturable this way: instant-estimate.webp and the
   brightbase/* screens. Those are private systems with no public URL; retake
   them against a seeded local copy, per the rules at the top of
-  lib/brightbase.ts. keystonestay.maineclean.co has no file because it is
-  embedded live rather than screenshotted.
+  lib/brightbase.ts.
 */
 const TARGETS = {
   "maineclean.webp": "https://maineclean.co",
@@ -58,6 +57,26 @@ const TARGETS = {
   "linx.webp": "https://linx-production-6edf.up.railway.app",
   /* This site's own /tools page, which the marketplace sells as M Linx Tools. */
   "tools.webp": "https://mlinx.studio/tools",
+  /*
+    **This file existed and this script did not refresh it**, which is the
+    "refreshes nothing" failure the WebP note below describes, arriving the
+    other way round: not a target writing a file nobody reads, but a file
+    being read with no target behind it. The comment here used to say the
+    welcome book "has no file because it is embedded live rather than
+    screenshotted" — true until Nov 20, when `work[]` gained
+    `shot: "/shots/keystone.webp"` because the reel renders a browser window
+    with a URL in its chrome and nothing inside it. The capture was taken by
+    hand that day and would have aged exactly as the six below did.
+
+    Safe to capture in full, and that is the live page's own doing rather
+    than a crop like arrowhead's: the welcome book withholds the street
+    address and the door code by design, saying they arrive in the guest's
+    Airbnb messages before check-in. The photographs on it are Meg's own
+    house and lake, published by her on a page she wrote. If that page ever
+    starts printing the address on the landing screen, this target needs the
+    arrowhead treatment or needs removing.
+  */
+  "keystone.webp": "https://keystonestay.maineclean.co",
   /*
     The public marketing half of Arrowhead Explorers. Deliberately NOT the
     parent portal at portal.lacexplorers.online: that one is noindex, sits

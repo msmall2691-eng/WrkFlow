@@ -424,14 +424,14 @@ function Intro({
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
         {aiEnabled ? (
           <>
-            A few questions so we understand your business and goals before we
-            talk — then we draft three visual concepts from your
-            answers, while you watch.
+            A few questions about your business and goals before the first
+            conversation. Then three visual concepts, drafted from your
+            answers while you watch.
           </>
         ) : (
           <>
-            A few questions so we understand your business and goals before we
-            talk.
+            A few questions about your business and goals before the first
+            conversation.
           </>
         )}
       </p>
@@ -1032,9 +1032,9 @@ function FastFill({
         Describe the business and what you want, in your own words
       </label>
       <p className="mt-1 text-[13px] leading-relaxed text-muted">
-        A few sentences is plenty — what you do, which tools you use, what needs
-        to work better, and anything that bugs you today. We&apos;ll draft the form&apos;s
-        answers from it; you review everything before it goes anywhere.
+        A few sentences is plenty. What you do, which tools you use, what needs
+        to work better, and anything that bugs you today. The form&apos;s answers get
+        drafted from it, and you review everything before it goes anywhere.
       </p>
       <textarea
         id="fastFill"
