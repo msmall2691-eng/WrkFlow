@@ -1,7 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { parseBookings, planTurnovers, type Booking, type Turnover } from "@/lib/ical";
+import ToolEmailCapture from "@/components/ToolEmailCapture";
+import { trackTool } from "@/lib/track";
+import {
+  formatTurnoverDate as fmt,
+  parseBookings,
+  planTurnovers,
+  turnoverEmailSummary,
+  type Booking,
+  type Turnover,
+} from "@/lib/ical";
 
 /*
   Turnover planner — paste a rental calendar, get the cleanings it implies.
@@ -30,14 +39,6 @@ type Result = {
   turnovers: Turnover[];
   sameDay: number;
 };
-
-const fmt = (iso: string) =>
-  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 
 /* Nights between two YYYY-MM-DD dates. */
 const nights = (a: string, b: string) =>
@@ -117,6 +118,14 @@ export default function TurnoverPlanner() {
       sameDay: turnovers.filter((t) => t.sameDay).length,
     });
     setState("done");
+    /*
+      The brand plan asks for a `planner_used` event. This fires the
+      site's own `tool_generated` with tool "turnover" instead, because
+      `lib/track.ts` already owns that vocabulary and a third spelling of
+      "somebody used a tool" is a number nobody can compare against the
+      other eight. Same for the download and the email below.
+    */
+    trackTool("turnover", "generated");
   }
 
   async function run(e: React.FormEvent) {
@@ -140,6 +149,7 @@ export default function TurnoverPlanner() {
         sameDay: data.sameDay,
       });
       setState("done");
+      trackTool("turnover", "generated");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
       setState("error");
@@ -151,8 +161,11 @@ export default function TurnoverPlanner() {
     the data is already in the browser and a round trip would add nothing.
     All-day VEVENTs, because a turnover is a day's work, not an appointment.
   */
-  function download() {
-    if (!result) return;
+  /* The calendar text, built once and used by both the download and the
+     email attachment. It was inline in `download`; a second caller is
+     exactly when that stops being fine. */
+  function icsText(): string {
+    if (!result) return "";
     const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
     const lines = [
       "BEGIN:VCALENDAR",
@@ -176,12 +189,44 @@ export default function TurnoverPlanner() {
       );
     }
     lines.push("END:VCALENDAR");
-    const blob = new Blob([lines.join("\r\n")], { type: "text/calendar" });
+    return lines.join("\r\n");
+  }
+
+  function icsBase64(): string {
+    /* btoa needs latin1; the calendar is ASCII by construction (dates and
+       two fixed summaries), so this is safe and avoids pulling in a
+       polyfill for text that cannot contain a non-ASCII character. */
+    return typeof window === "undefined" ? "" : window.btoa(icsText());
+  }
+
+  /*
+    What the visitor reads in the email, above the attachment.
+    `turnoverEmailSummary` owns the shape and the length, in lib/ical.ts
+    beside the dates it is describing: the endpoint refuses a summary over
+    its cap rather than trimming one, so a busy calendar's email has to be
+    built to fit or it is not sent at all. See there.
+
+    **Memoised because it is read during render**, as a prop rather than in
+    an event handler, so a plain function ran it again on every render of
+    this component for a body nobody had asked for yet. Keyed on `result`,
+    which is the only thing it reads and is replaced wholesale by a new
+    parse, so a typed character in the email field re-renders without
+    re-deriving the schedule.
+  */
+  const emailSummary = useMemo(
+    () => (result ? turnoverEmailSummary(result.turnovers, result.bookings) : ""),
+    [result],
+  );
+
+  function download() {
+    if (!result) return;
+    const blob = new Blob([icsText()], { type: "text/calendar" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "turnover-cleanings.ics";
     a.click();
     URL.revokeObjectURL(a.href);
+    trackTool("turnover", "downloaded");
   }
 
   return (
@@ -313,6 +358,31 @@ export default function TurnoverPlanner() {
               >
                 Download for Google or Apple Calendar
               </button>
+
+              {/*
+                **Email capture, and it gives before it asks.** The brand
+                plan's job 1 wants an email on this page. `ToolEmailCapture`
+                already does that everywhere else on the site and does it
+                the right way round: the field is optional and inline
+                rather than a wall, the visitor gets their own schedule in
+                their inbox, and Meg gets the lead notice. Reusing it means
+                one author for how this site asks for an email.
+
+                The schedule is the body and the .ics is attached, so the
+                email is the thing they came for rather than a receipt for
+                having handed over an address.
+              */}
+              <ToolEmailCapture
+                className="mt-5"
+                tool="turnover"
+                toolLabel="Turnover schedule"
+                summary={emailSummary}
+                attachment={{
+                  filename: "turnover-cleanings.ics",
+                  contentBase64: icsBase64(),
+                  contentType: "text/calendar",
+                }}
+              />
             </>
           )}
         </div>

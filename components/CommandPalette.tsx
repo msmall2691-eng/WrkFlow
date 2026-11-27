@@ -169,7 +169,18 @@ export default function CommandPalette() {
           window.location.href = "/about#approach";
         },
       },
-      { id: "pricing", label: "Pricing", group: "Navigate", keywords: "pricing cost price care plan custom build website web app founding offer monthly", run: go("pricing") },
+      {
+        id: "pricing",
+        label: "Pricing",
+        group: "Navigate",
+        keywords: "pricing cost price care plan custom build website web app founding offer monthly",
+        /* A page now, not a scroll. `go()` would silently do nothing on
+           every route, which is the quiet half of moving a section. */
+        run: () => {
+          close();
+          window.location.href = "/pricing";
+        },
+      },
       {
         id: "meg",
         label: "Meet Meg",

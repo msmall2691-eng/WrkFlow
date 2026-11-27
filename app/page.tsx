@@ -1,9 +1,11 @@
 import StageTopBar from "@/components/stage/StageTopBar";
 import StageHero from "@/components/stage/StageHero";
 import StageServices from "@/components/stage/StageServices";
+import StageTry from "@/components/stage/StageTry";
+import StageConnects from "@/components/stage/StageConnects";
+import StageIndustries from "@/components/stage/StageIndustries";
 import StageWork from "@/components/stage/StageWork";
 import StageApproach from "@/components/stage/StageApproach";
-import StagePricing from "@/components/stage/StagePricing";
 import StageFooter from "@/components/stage/StageFooter";
 import StageMotion from "@/components/stage/StageMotion";
 import Contact from "@/components/Contact";
@@ -20,10 +22,16 @@ import CommandPalette from "@/components/CommandPalette";
   re-expressed as utilities, because re-expressing it is how a design
   becomes something that merely resembles itself.
 
-  **Six sections, in this order, and the order is the argument:**
+  **Five sections now, and the order is still the argument.** It was six
+  until Nov 27 2026, when the Linx Brand Plan took the prices off this
+  page — "No prices, no founder photo, and no cleaning-company numbers
+  on the homepage" — and gave them a route of their own at /pricing. The
+  band wrapper `StagePricing` is orphaned by that and left in place
+  rather than deleted inside the move.
 
-    StageHero      one screen. The reef clip, the headline, two things to
-                   do. `id="top"`
+    StageHero      one screen. The reef clip, the headline, and three
+                   doors: rental host, service business, site or app.
+                   `id="top"`
     StageServices  id="services" — the four things for sale, as four
                    rows, straight from `services[]`
     StageWork      id="work" — one project opened up, three beside it,
@@ -31,8 +39,6 @@ import CommandPalette from "@/components/CommandPalette";
                    capture of a running system
     StageApproach  the breath: the statement, and one of her pieces
                    floating beside it. No claim anywhere near the art
-    StagePricing   id="pricing" — four real prices, the note about what
-                   is quoted instead, and the four promises
     Contact        id="contact" — the form, over the moorings clip. The
                    same component /services and /brightbase render, in
                    its stage shell
@@ -78,9 +84,16 @@ export default function Home() {
       <main id="main">
         <StageHero />
         <StageServices />
+        {/* Free, real and usable, above the work: the answer to "id like
+            them to see them sooner". The demos sit inside this band
+            rather than above the work — see StageTry. */}
+        <StageTry />
         <StageWork />
+        {/* Both below #work, because a tool list and a sector list read
+            as evidence only once the systems behind them are shown. */}
+        <StageConnects />
+        <StageIndustries />
         <StageApproach />
-        <StagePricing />
         <Contact variant="stage" />
       </main>
 
