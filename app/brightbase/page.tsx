@@ -143,7 +143,16 @@ export default function BrightBasePage() {
           {/* Proof + in progress */}
           <section aria-label="Proof and what is next" className="grid grid-cols-12 gap-4">
             {brightbase.proof.map((p) => (
-              <div key={p.label} className="cp-tile col-span-12 flex flex-col gap-1 p-6 md:col-span-4">
+              <div
+                key={p.label}
+                /* The span follows the count. These tiles were three at
+                   `md:col-span-4`, filling the twelve-column row exactly;
+                   dropping the "4,000+ automated checks" tile left 4 columns
+                   of hole before the col-span-7 tile below, which wraps. */
+                className={`cp-tile col-span-12 flex flex-col gap-1 p-6 ${
+                  brightbase.proof.length === 2 ? "md:col-span-6" : "md:col-span-4"
+                }`}
+              >
                 <span className="font-display text-[40px] font-semibold leading-none tracking-[-0.03em] text-[color:var(--cp-ink)]">{p.value}</span>
                 <span className="text-[14px] text-[color:var(--cp-muted)]">{p.label}</span>
               </div>

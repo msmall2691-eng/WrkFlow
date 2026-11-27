@@ -38,9 +38,22 @@ function chromeLabel(item: WorkItem) {
     }
   }
   /* A private system has no host to show, so it says what it is instead.
-     `status` is the field that already means that ("In daily production",
-     "Production, approval-gated"). */
+     `status` is the field that already means that ("In use every day",
+     "In use, nothing sends unapproved"). */
   return item.status ?? item.tag;
+}
+
+/** True when `hostOf` fell back to prose, so the chrome should not set it in
+    the address-bar monospace. */
+function hasRealHost(item: WorkItem) {
+  if (!item.displayDomain && !item.url) return false;
+  if (item.displayDomain) return true;
+  try {
+    new URL(item.url as string);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /** The service this is proof of, which is what `category` is for. */
@@ -63,7 +76,7 @@ function Frame({ item, eager = false }: { item: WorkItem; eager?: boolean }) {
         <span className="dot" />
         <span className="dot" />
         <span className="dot" />
-        <span className="host">{chromeLabel(item)}</span>
+        <span className={hasRealHost(item) ? "host" : "host host-note"}>{chromeLabel(item)}</span>
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

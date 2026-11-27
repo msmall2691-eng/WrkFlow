@@ -480,7 +480,7 @@ export const work: WorkItem[] = [
     category: "websites",
     title: "The Remote Admin",
     caseStudy: "the-remote-admin",
-    blurb: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+    blurb: "Full marketing site for a Southern-NH admin-services business, from first sketch to launch.",
     stack: ["Next.js", "Vercel"],
     url: "https://the-remote-admin.com",
     live: true,
@@ -559,7 +559,7 @@ export const work: WorkItem[] = [
     blurb: "The operations app behind an eight-year-old cleaning company: leads, quotes, scheduling, a crew app, invoicing and payouts.",
     stack: ["FastAPI", "Postgres", "React", "Railway"],
     replaced: "12 overlapping tools, now one system",
-    status: "In daily production since 2026",
+    status: "In use every day since 2026",
     // A real capture of the app on demo data (a fictional company), see lib/brightbase.ts.
     shot: "/shots/brightbase/home-dark.webp",
     page: "/brightbase",
@@ -572,7 +572,7 @@ export const work: WorkItem[] = [
     blurb: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
     stack: ["FastAPI", "Postgres", "iCal sync", "Google Calendar"],
     replaced: "A shared Google Calendar and text threads",
-    status: "In daily production",
+    status: "In use every day",
     shot: "/shots/brightbase-crew-schedule.webp",
   },
   {
@@ -583,7 +583,7 @@ export const work: WorkItem[] = [
     blurb: "Reads requests, drafts a quote, and queues a reply for approval.",
     stack: ["Next.js", "Anthropic API", "Postgres"],
     replaced: "~20 min of manual quoting per lead",
-    status: "Production, approval-gated",
+    status: "In use, nothing sends unapproved",
     shot: "/shots/instant-estimate.webp",
   },
 ];
@@ -764,7 +764,6 @@ export const caseStudies: CaseStudy[] = [
     // counted in the BrightBase repo. Business financials stay off the site.
     results: [
       { value: "12 → 1", label: "overlapping tools for jobs, CRM, phone and booking, now one system" },
-      { value: "4,000+", label: "automated checks run before any change goes live" },
       { value: "Daily", label: "in use by the office and field crews since 2026" },
     ],
     quote: { quote: "", name: "", business: "" }, // TODO(Meg)
@@ -775,8 +774,8 @@ export const caseStudies: CaseStudy[] = [
       { phase: "Requirements", body: "Mapped every step from request to paid, documented where each tool fell short, and wrote the requirements and acceptance criteria before building." },
       { phase: "Design", body: "Interface and flows for two audiences at once: customers requesting a quote, and crew working the schedule." },
       { phase: "Build", body: "Built the public site and the back office as one system, so a quote someone requests on the website becomes a scheduled, invoiced job without anybody retyping it." },
-      { phase: "Phased rollout", body: "Shipped in small, tested steps while the old tools kept running. The crew app went out in five phases, each in use before the next began." },
-      { phase: "Launch and iterate", body: "Shipped, then kept changing it against real use. In daily production since 2026." },
+      { phase: "Phased rollout", body: "Rolled out in small steps while the old tools kept running. The crew app went out in five stages, each one in use before the next began." },
+      { phase: "Launch and iterate", body: "Launched, then kept improving it against real use. In use every day since 2026." },
     ],
   },
   {
@@ -824,7 +823,7 @@ export const caseStudies: CaseStudy[] = [
     title: "The Remote Admin",
     tag: "Client work",
     outcome:
-      "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+      "Full marketing site for a Southern-NH admin-services business, from first sketch to launch.",
     url: "https://the-remote-admin.com",
     hero: {
       src: "/shots/remote-admin.webp",
@@ -833,8 +832,8 @@ export const caseStudies: CaseStudy[] = [
     problem: "", // TODO(Meg)
     built: [
       {
-        label: "Designed, built and shipped",
-        body: "Full marketing site for a Southern-NH admin-services business, designed, built, and shipped end to end.",
+        label: "Designed, built and launched",
+        body: "Full marketing site for a Southern-NH admin-services business, from first sketch to launch.",
         shot: {
           src: "/shots/remote-admin.webp",
           alt: "The Remote Admin home page.",
@@ -1399,7 +1398,7 @@ export const welcomeBook = {
   a value that was already in this file and was already true.
 */
 export const homeHero = {
-  eyebrow: "M Studio",
+  eyebrow: "For contractors, admin firms and service businesses",
   /* Already the studio's own sentence: it was the hero's supporting line
      before this design made it the headline. "No 'I' either" (CLAUDE.md):
      it describes the work and the reader, and names no maker. */
@@ -1416,7 +1415,7 @@ export const homeHero = {
     bands, and "100% you own the code" is a `studioStats` promise. Nothing
     new is asserted here.
   */
-  sub: "For contractors, admin firms and service businesses. Real prices on the page, and you own what gets built.",
+  sub: "Real prices on the page, and you own what gets built.",
   /* The house location line, verbatim. */
   location: "Southern Maine · clients anywhere.",
   primary: "Start a project",
@@ -1449,11 +1448,11 @@ export const homeBands = {
       how many there are, by being four.
     */
     eyebrow: "Common issues",
-    heading: "Which one sounds familiar?",
+    heading: "Most people arrive with one of these.",
   },
   work: {
-    eyebrow: "Real screens, real builds",
-    heading: "Every picture below is a running system.",
+    eyebrow: "Real screens, real businesses",
+    heading: "Every picture below is a real business using it.",
     /*
       **The design's closing link read "All nine projects" and pointed at
       `/work`, which is not a page on this site** — `app/work` holds only

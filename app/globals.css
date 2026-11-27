@@ -735,11 +735,15 @@ body {
   color: var(--color-base);
 }
 
-/* Section marker label — monospace, uppercase, signal-tinted */
+/* Section marker label — uppercase, signal-tinted.
+   Was monospace. It renders prose ("How a job moves", "What's inside",
+   "The data model"), and CLAUDE.md reserves JetBrains Mono for real code
+   or data. `.stage .eyebrow` is the same label one design system over and
+   was changed with it, so the two cannot drift. */
 .marker {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-signal);
 }
@@ -2298,9 +2302,15 @@ body:has(.stage) {
   font-family: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 .stage .eyebrow {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.24em;
+  /* Not mono. CLAUDE.md: "JetBrains Mono only for real code or
+     data" — a section label is prose, and set in a terminal face it
+     reads as a developer portfolio rather than a studio. Inter Tight
+     is inherited from `.stage`; the uppercase and the tracking still
+     make it a label. Tracking eases off because a proportional face
+     at 0.24em is looser than the mono it was tuned for. */
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--fg-3);
 }
@@ -2424,6 +2434,14 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 }
 .stage .here .slash {
   color: var(--fg-3);
+}
+/* `.here` sits inside `.mark` and so inherited its monospace. The wordmark
+   is a logotype and keeps it; the page name beside it is prose ("Free
+   tools", "Case study") and does not. */
+.stage .here {
+  font-family: var(--font-inter-tight), system-ui, sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
 }
 /* The ellipsis needs a block to happen in: a flex container's own text
    is an anonymous item and `text-overflow` never reaches it. */
@@ -3066,9 +3084,12 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   margin-top: 18px;
 }
 .stage .kinds li {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
+  /* These thirteen strings are the actual list of what is for sale
+     ("Booking & quote forms", "Instant quotes", "Online booking").
+     In mono they read as terminal output; they are the plainest
+     English on the page and now look like it. */
+  font-size: 0.8rem;
+  letter-spacing: 0;
   color: var(--fg-3);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
@@ -3118,6 +3139,9 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   background: rgba(255, 255, 255, 0.18);
   flex: none;
 }
+/* Monospace because it renders a domain, the way an address bar does.
+   A private system has none, so `chromeLabel` falls back to prose and
+   `.host-note` takes the face back off. */
 .stage .host {
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
   font-size: 0.66rem;
@@ -3126,6 +3150,9 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.stage .host-note {
+  font-family: var(--font-inter-tight), system-ui, sans-serif;
 }
 .stage .frame img {
   width: 100%;
@@ -3244,9 +3271,9 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   margin-top: 18px;
 }
 .stage .card-cat {
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--acc);
 }
@@ -3472,9 +3499,10 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 }
 .stage .field label {
   display: block;
-  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
+  /* A contact form with monospace labels reads as a developer tool. */
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg-2);
   margin-bottom: 9px;
