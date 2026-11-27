@@ -1,7 +1,23 @@
 # M Studio — copy proposal
 
-**Written:** Nov 27, 2026. **Nothing in this file has been applied.** No source
-file was edited, nothing was committed, git was not touched.
+**Written:** Nov 27, 2026, as a proposal only. No source file was edited by the
+agent that wrote it, nothing was committed, git was not touched.
+
+**Status, as of commit `129515e`.** Tier A was applied by hand after this file
+was written, and **13 of its 17 items are now live**, each matching the `NEW`
+line here exactly. The four still outstanding are **A8** (`Questionnaire.tsx`
+line 516, "we never sell your information" plus a prose em dash), **A10**
+(`app/demo/page.tsx`, "most of what I build"), **A12** (`app/catalog/page.tsx`,
+"built around how you work") and **A17** (`app/welcome-book/page.tsx`, "tell me
+about your rental and I'll take it from there"). All of **Tier B** is
+outstanding.
+
+One correction this file owes that commit: **A16 had a twin.**
+`app/api/contact/route.ts` carried "we'll find a time" **twice**, once in the
+HTML auto-reply and once in the plain-text version beside it. The audit quoted
+only the HTML one. Both are fixed now, and the lesson generalizes: the
+transactional email bodies in `app/api/*/route.ts` exist in HTML and plain-text
+pairs, so any copy change in one of them wants a grep for the other.
 
 **Read against:** `.claude/brand-voice-guidelines.md` (governing),
 `CLAUDE.md` "Never invent proof" and "Voice and copy" (law), and every
@@ -570,10 +586,10 @@ FAQs' questions. Exception 1. Rewriting these into third person would be a bug.
 `testimonial`/`quote`/`metric`/`problem`.** These are evidence and gates, not
 copy. The blankness is part of the voice (§2.4) and nothing here touches it.
 
-**`Contact.tsx`'s message placeholder** — "What tools do you use? What are you
-entering by hand, tracking in spreadiness..." (actual: "tracking in
-spreadsheets, or wishing your website could do?"). Three recognizable things in
-one question. Already right.
+**`Contact.tsx`'s message placeholder**, "What tools do you use? What are you
+entering by hand, tracking in spreadsheets, or wishing your website could do?"
+Three recognizable things in one question. Already right, and the best
+placeholder on the site.
 
 **`app/privacy` and `app/terms`.** Out of scope as instructed, and the
 guidelines' own note is right that rewriting legal-entity "we" risks changing a
@@ -684,12 +700,12 @@ will come back every time this copy is revisited.
 Counting what already ships on the homepage and `/services`: the websites
 tagline ("not just read about you on"), the software demo ladder entry ("not
 pictures of them"), the website-check entry ("Yours or a competitor's"), and
-two of the three `demos[].proves`. B4 ("asks for a quote instead") and B13 of
-`lib/catalog.ts` ("not just describe it") each add a mild one. That is close to
-the ceiling. If both are taken, the websites row carries a contrast in its
-tagline and another in its outcome, two lines apart. **If one has to go, drop
-the contrast in B4 and use "A visitor asks for a quote at ten at night,
-instead of calling at noon tomorrow." or simply "A visitor asks for a quote
+two of the three `demos[].proves`. B4 ("asks for a quote instead") and A13
+("not just describe it") each add a mild one. That is close to the ceiling, and
+A13's is the more defensible of the two because it sits on a category label on
+`/catalog`, away from the others. If both are taken, the websites row carries a
+contrast in its tagline and another in its outcome, two lines apart. **If one
+has to go, drop the contrast in B4 and use simply "A visitor asks for a quote
 at ten at night."** Flagging it rather than deciding it, because the four
 `outcome` lines not sharing a shape is the rule that matters more, and this
 proposal gives each of the four a different one: a visitor's action
@@ -700,11 +716,14 @@ that stops happening (integrations, untouched).
 
 ## 7. If this gets applied
 
-Tier A is 17 mechanical edits across 11 files, none of them in
-`lib/content.ts` except nothing, so none of them collides with work in
-progress. Tier B touches `lib/content.ts` (13), `components/FAQ.tsx` (4),
-`components/Contact.tsx` (1), `app/services/page.tsx` (1) and
-`app/welcome-book/page.tsx` (1, paired with B9).
+Tier A is 17 mechanical edits across 11 files, and not one of them is in
+`lib/content.ts` or `lib/brightbase.ts`, so Tier A can be applied immediately
+without touching anything being edited right now.
+
+Tier B is 20 edits: `lib/content.ts` (14), `components/FAQ.tsx` (4),
+`components/Contact.tsx` (1) and `app/services/page.tsx` (1). One extra edit
+rides along with B9: `app/welcome-book/page.tsx:22` carries the same "reborn
+as" sentence in its route metadata and should change with the tagline.
 
 Two checks that matter afterward, from `CLAUDE.md` and §8:
 
