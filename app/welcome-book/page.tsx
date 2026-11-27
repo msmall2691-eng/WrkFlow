@@ -19,7 +19,7 @@ export const metadata: Metadata = pageMeta({
   path: "/welcome-book",
   ogTitle: "Digital Welcome Book for Short-Term Rentals",
   ogDescription:
-    "The printed check-in binder, reborn as one link guests actually open. Check-in, WiFi, house manual, and local picks, built for you, yours to keep.",
+    "The check-in binder your guests actually open. Check-in, WiFi, house manual and local picks, on one link, yours to keep.",
 });
 
 export default function WelcomeBookPage() {

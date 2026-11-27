@@ -19,7 +19,7 @@ export const founderNote = {
      verb was the maker's. See `.claude/brand-voice-guidelines.md` §2.2, §7. */
   headlineFollow: "Websites and systems that fit how the work already happens.",
   paragraphs: [
-    "M Studio brings hands-on business experience to websites and systems. Every project starts with understanding the work, the tools already in place, and what could run more smoothly.",
+    "M Studio came out of running a cleaning company. Every project starts with the tools you already pay for and the part of the week that keeps going wrong.",
   ],
 } as const;
 
@@ -46,7 +46,7 @@ export const founderPhilosophy = {
 
 export const founderCta = {
   headline: "What do you wish worked better?",
-  body: "Share what you use now and where you are getting stuck. That is a good place to start.",
+  body: "Share what you use now and where you are getting stuck. A written scope comes back within a day.",
   buttonLabel: "Talk through your project",
 } as const;
 
@@ -246,8 +246,8 @@ export const services: Service[] = [
       "Booking & quote forms",
       "Rebuilds & improvements"
     ],
-    "pain": "Your website is dated or hard to use, and it tells people about the business without giving them a way to start.",
-    "outcome": "A visitor arrives, finds what they need, and asks for a quote without hunting for a phone number.",
+    "pain": "Your site is a few years old, slow on a phone, and the only thing it asks a visitor to do is read.",
+    "outcome": "A visitor who would have called asks for a quote instead, at ten at night.",
     "example": {
       "client": "The Remote Admin",
       "built": "A complete website for an administrative services business in New Hampshire.",
@@ -286,8 +286,8 @@ export const services: Service[] = [
       "Dashboards & reporting",
       "Client & team portals"
     ],
-    "pain": "The tools you have do not quite fit, and the important work still lives in spreadsheets and messages.",
-    "outcome": "The work comes out of spreadsheets and group texts. What it does, and what you own at the end, is agreed before anything starts.",
+    "pain": "The real work lives in a spreadsheet one person maintains and a group text nobody can search.",
+    "outcome": "One place to look, instead of a spreadsheet, a group text and somebody's memory.",
     "example": {
       "client": "BrightBase",
       "built": "A custom dashboard for jobs, customer records, revenue, occupancy, and crew information.",
@@ -306,7 +306,7 @@ export const services: Service[] = [
       "CRM setup & cleanup",
       "Data migration"
     ],
-    "pain": "You are copying the same details between systems, or keeping a schedule up to date by hand every time something changes.",
+    "pain": "The same customer gets typed in twice, and the schedule is only right because somebody keeps fixing it.",
     "outcome": "You stop entering the same details twice, and the schedule keeps itself up to date.",
     "example": {
       "client": "Vacation rental booking sync",
@@ -320,7 +320,7 @@ export const services: Service[] = [
 // Estimates for a single, agreed piece of work; final quotes follow review.
 export const smallProjects = [
   { title: "Website updates & forms", price: "$250–$500", scope: "One page improvement, quote form, or booking feature on an existing site.", offer: "website" },
-  { title: "CRM & platform setup", price: "$300–$750", scope: "A focused setup or cleanup: fields, views, settings, and one workflow.", offer: "platform" },
+  { title: "CRM & platform setup", price: "$300–$750", scope: "Fields, views, settings and one workflow, on the platform you already pay for.", offer: "platform" },
   { title: "Data migration", price: "$400–$900", scope: "One export and import, with agreed record types, field mapping, and checks.", offer: "migration" },
   { title: "One integration", price: "$300–$750", scope: "One supported connection, such as a booking feed or form-to-CRM workflow.", offer: "integration" },
 ] as const;
@@ -350,7 +350,7 @@ export const approachSteps: ApproachStep[] = [
   {
     index: "04",
     title: "Iterate",
-    body: "Then it's tuned against real use, handed over, and supported as it grows. No lock-in.",
+    body: "Then it is tuned against real use and handed over. Files, database, domain and keys go with it.",
   },
 ];
 
@@ -928,7 +928,7 @@ export const marketItems: MarketItem[] = [
     name: "Digital Welcome Book",
     model: "template",
     category: "Guest experience",
-    tagline: "The printed check-in binder, reborn as one link guests actually open: house guide, WiFi and local picks for your short-term rental.",
+    tagline: "The check-in binder your guests actually open: house guide, WiFi and local picks, on one link.",
     includes: [
       "Check-in steps, WiFi & the full house manual",
       "Local food, beaches & things-to-do picks",
@@ -953,7 +953,7 @@ export const marketItems: MarketItem[] = [
       "Quote, rate & signature tools",
       "Free to use, right now",
       "Source available on request, calculators only",
-      "A friendly way to say hello",
+      "No sign-up, nothing to install",
     ],
     price: "Free",
     // A real capture of this site's own /tools page, calculator and all.
@@ -1012,7 +1012,7 @@ export const marketItems: MarketItem[] = [
     name: "M Linx Dashboard",
     model: "template",
     category: "Dashboard",
-    tagline: "The command-center dashboard, showing your jobs and revenue instead of a demo's.",
+    tagline: "The dashboard behind BrightBase, showing your jobs and revenue instead of a demo's.",
     includes: [
       "Live KPIs, jobs & revenue views",
       "Connected to your data sources",
@@ -1032,7 +1032,7 @@ export const marketItems: MarketItem[] = [
     name: "M Linx Booking",
     model: "template",
     category: "Web app",
-    tagline: "A client-facing booking flow with an owner calendar and confirmations.",
+    tagline: "Customers book a time that is actually open. You get the calendar and the confirmations.",
     includes: [
       "Online booking + availability",
       "Automated email/text confirmations",
@@ -1349,7 +1349,7 @@ export const welcomeBook = {
     {
       n: "03",
       title: "Share the link",
-      body: "Drop it into your Airbnb or VRBO message and print the QR for the door. Fewer “how do I…” texts, smoother stays, better reviews.",
+      body: "Drop it into your Airbnb or VRBO message and print the QR for the door. Fewer “how do I…” texts at nine at night.",
     },
   ],
   faqs: [
