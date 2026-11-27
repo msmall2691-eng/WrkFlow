@@ -10,10 +10,27 @@
       as in progress. Move a line up into a role list when it ships.
     · Screens are real captures of the app running on demo data: a
       fictional company (Harbor Light Cleaning) with made-up customers, and
-      the page says so under each one. Retake them by seeding a local copy
-      and capturing at 1440x900 (office) and 390x844 (crew, customer).
-      Never put a capture with a real customer's name, address, code or
-      phone number in /public/shots.
+      the page says so under each one. Never put a capture with a real
+      customer's name, address, code or phone number in /public/shots.
+
+      **Retake them with `backend/scripts/seed_demo.py`** in the
+      Bright-Space repo, then capture at 1440x900 (office) and 390x844
+      (crew, customer). That script did not exist until Nov 27 2026, and
+      its absence is why this set rotted the way it did: "seed a local
+      copy" described a database that lived on one laptop, so every
+      refresh was done by hand, and the screens that came from real data
+      were painted over with grey rectangles afterwards. Those rectangles
+      are what a visitor saw, and they read as censored rather than real.
+
+      Two things the seeder fixed that are easy to undo. The office data
+      used to be named like placeholder data ("52 Demo Lane", "22
+      Placeholder Way", "58 Sample Street"), which announces itself as a
+      demo; the invented addresses are now plausible Southern Maine ones
+      on invented streets, because a real street name with a plausible
+      number is somebody's actual house. And nothing is redacted any
+      more, because nothing in the frame belongs to a real person: that
+      is what makes the pay, the addresses and the lockbox notes safe to
+      show, not a decision to be braver about it.
 */
 
 export type Shot = { src: string; alt: string; demo?: boolean; phone?: boolean };
