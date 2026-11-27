@@ -57,8 +57,8 @@ export default function WelcomeBookReserve({ price }: { price: number }) {
         </div>
         <p className="mt-4 font-display text-lg text-ink">You&apos;re on the list.</p>
         <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted">
-          I&apos;ll be in touch to grab the details and get your welcome book
-          started. No payment yet — we&apos;ll sort that once you&apos;ve seen it.
+          You&apos;ll hear back to go over the details and get your welcome book
+          started. No payment yet, that comes once you have seen it.
         </p>
       </div>
     );
@@ -119,7 +119,7 @@ export default function WelcomeBookReserve({ price }: { price: number }) {
         {state === "sending" ? "Sending…" : `Get my welcome book — $${price} →`}
       </button>
       <p className="mt-3 text-center text-xs text-faint">
-        No payment now. I&apos;ll follow up to get the details and start your book.
+        No payment now. You&apos;ll hear back to go over the details and start your book.
       </p>
     </form>
   );

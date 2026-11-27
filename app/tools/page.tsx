@@ -76,9 +76,12 @@ export default function ToolsPage() {
                 */}
                 <StackedHeading as="h1" lead="Free tools." trail="No signup." />
                 <p className="mt-4 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                  {/* "we build" was the one "we" left on this page. Meg is a solo
-                      founder and the house rule is first person. */}
-                  The same tools I build into client systems. Use them here,
+                  {/* This read "we build", then "I build". Both are out: the
+                      Nov 14 rule dropped "I" as well, so the sentence is about
+                      the tools and the reader rather than the maker. A
+                      screenshot caught it, not a grep, because the prose wraps
+                      across two JSX lines. */}
+                  The same tools that go into client systems. Use them here,
                   free, for as long as you like.
                 </p>
               </div>

@@ -110,8 +110,8 @@ export default function MarketplacePage() {
               <StackedHeading as="h1" lead="Ready to use." trail="Nothing to learn." />
               <p className="mt-5 max-w-xl text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
                 Start with something free, buy one thing outright, or add a
-                hosted tool to the site you already have. I set it up either
-                way, so there is nothing for you to wire together.
+                hosted tool to the site you already have. Every one of them
+                arrives set up, so there is nothing for you to wire together.
               </p>
             </div>
           </section>
@@ -298,9 +298,9 @@ export default function MarketplacePage() {
                 None of it quite fits?
               </h2>
               <p className="mt-4 max-w-[62ch] text-[1rem] leading-relaxed text-[color:var(--cp-muted)]">
-                Most of these started as a custom build for somebody. Tell me
-                what you are trying to solve and I&apos;ll point you at the
-                closest one, or quote the thing that actually fits. You
+                Most of these started as a custom build for somebody. Say what
+                you are trying to solve, and the answer is either the closest
+                one of these or a quote for the thing that actually fits. You
                 don&apos;t need a technical plan to get started.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">

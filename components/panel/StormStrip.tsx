@@ -44,7 +44,7 @@ export default function StormStrip() {
         {alert.ends ? ` UNTIL ${alert.ends.toUpperCase()}` : ""}
       </span>
       <span className="text-[#fde7b0]">
-        Systems I build can watch alerts like this, move outdoor jobs and text customers on their own.
+        A system can watch alerts like this, move outdoor jobs and text customers on its own.
       </span>
       <span className="ml-auto font-semibold text-[color:var(--cp-amber)]">Ask me how →</span>
     </a>

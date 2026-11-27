@@ -67,8 +67,9 @@ export default function DemoIndexPage() {
                 trail="you can actually use."
               />
               <p className="mt-5 max-w-[62ch] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-                My case studies are real client work. These are something else: three different
-                kinds of build, made so you can click them rather than take my word for it. Each
+                The case studies on this site are real client work. These are something else:
+                three kinds of build, made so you can click them rather than take anybody&apos;s
+                word for it. Each
                 one is a working app, not a picture of one.
               </p>
               <p className="mt-4 max-w-[62ch] text-[0.9375rem] leading-relaxed text-[color:var(--cp-soft)]">
