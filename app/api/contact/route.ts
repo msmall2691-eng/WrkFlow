@@ -300,7 +300,7 @@ function autoReplyText(name: string): string {
     ``,
     BOOKING_URL
       ? `If it's easier to talk it through, you can grab a free 15-minute slot here:\n${BOOKING_URL}`
-      : `If it's easier to talk it through, just reply to this email and we'll find a time.`,
+      : `If it's easier to talk it through, just reply to this email and I'll find a time.`,
     ``,
     `Meg`,
     `M Studio · mlinx.studio`,
@@ -310,7 +310,7 @@ function autoReplyText(name: string): string {
 function autoReplyHtml(name: string): string {
   const cta = BOOKING_URL
     ? `<p style="font-size:15px;margin:0 0 20px;">If it's easier to talk it through, you can <a href="${escapeAttr(BOOKING_URL)}" style="color:#0d9488;">grab a free 15-minute slot</a>.</p>`
-    : `<p style="font-size:15px;margin:0 0 20px;">If it's easier to talk it through, just reply to this email and we'll find a time.</p>`;
+    : `<p style="font-size:15px;margin:0 0 20px;">If it's easier to talk it through, just reply to this email and I'll find a time.</p>`;
 
   return `
     <div style="font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0b1722;line-height:1.6;">

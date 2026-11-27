@@ -418,7 +418,7 @@ function Intro({
     <section className="animate-[fadeUp_.35s_var(--ease-out-expo)_both]">
       <div ref={headingRef} tabIndex={-1} className="outline-none">
         <h2 className="display-serif text-[2rem] leading-[1.12] text-balance text-ink sm:text-4xl">
-          Let&apos;s scope your project.
+          What you need, written down.
         </h2>
       </div>
       <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
@@ -1003,7 +1003,7 @@ function FastFill({
       >
         <span className="text-[14px] text-ink">
           <span className="font-medium" style={{ color: TEAL }}>Skip the typing</span>
-          {" "}— describe it your way and we&apos;ll draft the answers for you.
+          {" "}. Describe it your way and the form fills itself in.
         </span>
         <span aria-hidden="true" className="text-faint">→</span>
       </button>

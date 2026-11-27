@@ -398,7 +398,7 @@ export default function Contact({
         <div className="grid gap-10 md:grid-cols-12 md:gap-14">
           <div className="md:col-span-5">
                           <h2 className="display hero-heading text-2xl text-ink sm:text-3xl md:text-4xl">
-                Let&apos;s start with what you&apos;re trying to solve.
+                Start with what you&apos;re trying to solve.
               </h2>
                           <p className="mt-6 text-[1rem] leading-relaxed text-muted">
                 Share what you use now, what you&apos;re tired of doing manually,

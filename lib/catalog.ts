@@ -72,10 +72,10 @@ export type CatalogItem = {
 };
 
 export const categories: { id: CatalogCategory; label: string; blurb: string }[] = [
-  { id: "websites", label: "Websites", blurb: "Sites that bring in work, built around one goal and yours to keep." },
+  { id: "websites", label: "Websites", blurb: "Sites that bring in work, not just describe it." },
   { id: "booking", label: "Quotes & booking", blurb: "From first click to a booked job, without the back-and-forth." },
   { id: "apps", label: "Apps & portals", blurb: "The software a business runs on, for the office, the crew and the customer." },
-  { id: "rentals", label: "Rental hosts", blurb: "Built by a team that cleans and hosts short-term rentals." },
+  { id: "rentals", label: "Rental hosts", blurb: "From a working cleaning company and a working rental." },
   { id: "connect", label: "Integrations & data", blurb: "Your tools talking to each other, and your data where it belongs." },
   { id: "ai", label: "AI", blurb: "AI that drafts and waits for your OK. Nothing goes out on its own." },
   { id: "tools", label: "Free tools", blurb: "Use them right now. No signup." },

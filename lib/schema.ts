@@ -93,7 +93,7 @@ function studio() {
     email: "contact@mlinx.studio",
     telephone: "+1-207-432-9492",
     description:
-      "Websites, custom business tools, CRM setup, data migrations, and integrations built around the way your business works.",
+      "Websites, custom business tools, CRM setup, data migrations and integrations for small businesses.",
     slogan: "Everything, linked.",
     knowsAbout: [
       "Custom software development",
@@ -110,7 +110,7 @@ function studio() {
       name: "Services",
       itemListElement: [
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Websites & web apps", description: "Custom marketing sites, booking, and client portals." } },
-        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom tools & dashboards", description: "Booking apps, CRMs, dashboards, and quoting tools, built around how you run." } },
+        { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom tools & dashboards", description: "Booking apps, CRMs, dashboards and quoting tools." } },
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "CRM & platform setup", description: "CRM fields, views, configuration, and workflow improvements." } },
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Data migration & cleanup", description: "Exports, imports, field mapping, and record checks when switching platforms." } },
         { "@type": "Offer", itemOffered: { "@type": "Service", name: "Systems integration & automation", description: "Connecting the tools you already use, with workflow automation and practical AI." } },
