@@ -58,13 +58,27 @@ export default function StageHero() {
           <h1>{homeHero.headline}</h1>
           <p className="hero-sub">{homeHero.sub}</p>
           <p className="hero-meta">{homeHero.location}</p>
+          {/*
+            Three doors rather than two actions. The brand plan's job-1
+            brief asks for them by name, and the reason is the one Meg
+            gave looking at the live site: a visitor is deciding whether
+            they are in the right place, which "Start a project" does not
+            answer. Each goes to the page for that buyer.
+
+            Still plain anchors and still a server component: the hero
+            carries no tracking, so nothing here needs the client.
+          */}
           <div className="hero-cta">
-            <a href="#contact" className="btn btn-solid">
-              {homeHero.primary} <span className="arw">→</span>
-            </a>
-            <a href="#work" className="btn btn-ghost">
-              {homeHero.secondary}
-            </a>
+            {homeHero.doors.map((d, i) => (
+              <a
+                key={d.href}
+                href={d.href}
+                className={i === 0 ? "btn btn-solid" : "btn btn-ghost"}
+              >
+                {d.label}
+                {i === 0 && <span className="arw"> →</span>}
+              </a>
+            ))}
           </div>
         </div>
       </div>
