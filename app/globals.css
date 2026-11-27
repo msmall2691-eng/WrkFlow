@@ -787,11 +787,54 @@ body {
   --sheet-same: #5856d6; /* systemIndigo — a same-day turnaround */
   --sheet-on-clean: #ffffff;
 
-  background: var(--sheet-bg);
+  /*
+    Frosted rather than solid, at Meg's word: "allow like glass or see
+    through io vibes on the calander so its super clean and neat".
+
+    It stays LIGHT glass, not the dark material iOS uses over a dark
+    ground, because she rejected a dark calendar in the same breath. At
+    0.9 white over this page's near-black the sheet resolves to about
+    #ececee, so the 1c1c1e label on it keeps roughly 12:1 — the glass
+    buys depth without costing any of the contrast that made it readable.
+  */
+  background: rgba(255, 255, 255, 0.9);
   color: var(--sheet-ink);
-  border: none;
-  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
   padding: 20px 16px 16px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 24px 60px -24px rgba(0, 0, 0, 0.75);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .cp .sheet {
+    /*
+      **0.76 was wrong and looking at it is the only way that showed.**
+      iOS glass reads bright because it sits over bright, busy content and
+      picks the light up; this page is near-black, so there is nothing
+      underneath to pick up and the same alpha resolved to a flat mid-grey
+      panel — duller than the solid white it replaced, and the opposite of
+      "super clean and neat". High alpha keeps it bright; the blur, the
+      saturation and the lit top edge are what carry the glass.
+    */
+    background: rgba(255, 255, 255, 0.93);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+  }
+}
+
+/*
+  A visitor who has asked their system to cut transparency gets the solid
+  sheet. Blur is the one effect `prefers-reduced-motion` does not cover,
+  and translucency is exactly what this query exists for.
+*/
+@media (prefers-reduced-transparency: reduce) {
+  .cp .sheet {
+    background: var(--sheet-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @media (min-width: 640px) {
