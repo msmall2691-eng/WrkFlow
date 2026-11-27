@@ -210,9 +210,8 @@ export default function SiteCheck() {
               "An example of what you get. Run your own site above for a real Google Lighthouse audit."
             ) : (
               <>
-                Scores from Google Lighthouse (0–100). Want these all green?
-                That&apos;s exactly the kind of thing we handle.{" "}
-                <Link href="/#contact" className="text-signal hover:opacity-80">Let&apos;s talk</Link>.
+                Scores from Google Lighthouse (0–100). Want these all green?{" "}
+                <Link href="/#contact" className="text-signal hover:opacity-80">Ask what it would take</Link>.
               </>
             )}
           </p>

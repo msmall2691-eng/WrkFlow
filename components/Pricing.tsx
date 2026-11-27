@@ -95,7 +95,7 @@ export default function Pricing() {
                 numbers on purpose; see the note on MarketItem.price.
               */}
               <p className="mt-4 font-display text-3xl text-ink">
-                Let&apos;s scope it
+                Quoted to your scope
               </p>
               <p className="mt-1.5 text-sm text-muted">
                 Agreed in writing before you commit to anything
@@ -130,10 +130,10 @@ export default function Pricing() {
                 <span className="text-[1rem] text-faint">/mo</span>
               </p>
               <p className="mt-1.5 text-xs leading-relaxed text-faint">
-                Cancel anytime — your site keeps running, you just take over hosting.
+                Cancel anytime. The site keeps running, you take over the hosting.
               </p>
               <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                Hosting, domain, security, and small edits — handled. The stuff
+                Hosting, domain, security and small edits, handled. The work
                 that keeps a site running, off your plate.
               </p>
               <OfferLink

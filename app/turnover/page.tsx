@@ -65,9 +65,22 @@ export default function TurnoverPage() {
               case study is the argument, not a footnote.
             */}
             <p className="mt-8 max-w-2xl text-sm leading-relaxed text-muted">
-              This is one piece of a system built for a cleaning company
-              with 1,000+ customers: bookings arrive, turnovers land on the
-              crew schedule, nobody retypes anything.{" "}
+              {/*
+                **This said "with 1,000+ customers", and that number lives
+                nowhere.** `provingGround` is where the real figures are, it
+                is verified against Jobber exports, and it holds 8 yrs, $1M+,
+                4,900+ visits and 63% rebooked. Not this. An outcome number
+                with no source is the first rule on this site broken on a
+                page most people reach from a search result.
+
+                Swapped for a figure that is in that list rather than deleted,
+                because the sentence needs a sense of scale to make its point.
+                If 1,000+ customers is true it belongs in `provingGround`
+                first, and then this line can quote it.
+              */}
+              This is one piece of a system built for a cleaning company with
+              4,900+ service visits behind it: bookings arrive, turnovers land
+              on the crew schedule, nobody retypes anything.{" "}
               <Link
                 href="/work/maine-cleaning-co"
                 className="text-ink underline decoration-line underline-offset-4 transition-colors hover:decoration-signal"
