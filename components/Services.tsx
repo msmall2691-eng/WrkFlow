@@ -196,10 +196,10 @@ export default function Services() {
         <p className="mt-16 text-sm text-muted">
           Or start from{" "}
           <a
-            href="/marketplace"
+            href="/catalog"
             className="text-signal transition-opacity hover:opacity-80"
           >
-            M Linx, the premade line →
+            what is already built →
           </a>
         </p>
       </div>

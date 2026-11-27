@@ -54,7 +54,7 @@ export function resolveRungItem(item: LadderItem): Resolved | null {
     /* An explicit `href` wins, so a product with its own page sends people
        there rather than to the marketplace index. Most market items have no
        page of their own, and /marketplace is the honest fallback. */
-    return { title: m.name, price: m.price, body: m.tagline, href: item.href ?? "/marketplace" };
+    return { title: m.name, price: m.price, body: m.tagline, href: item.href ?? "/catalog" };
   }
 
   if (item.project) {

@@ -62,7 +62,7 @@ export default function ForRentals() {
               </p>
               <span className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1">
                 <Link
-                  href={PAGES[p.id] ?? "/marketplace"}
+                  href={PAGES[p.id] ?? "/catalog"}
                   className="inline-flex items-center py-1.5 text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
                 >
                   See what is in it <span aria-hidden="true">&nbsp;→</span>

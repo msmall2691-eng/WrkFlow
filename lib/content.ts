@@ -1543,14 +1543,23 @@ export const siteNav = [
   It is longer than `siteNav` on purpose and that is not the seventh bar
   link Meg reserved for herself. A bar is a choice about what deserves the
   width; a menu somebody opened is a choice about what the site contains,
-  so /tools and /marketplace — both one click from the footer and from ⌘K,
-  and neither reachable from the bar — are in it. The order is the bar's,
-  then the two the bar has no room for.
+  so /tools — one click from the footer and from ⌘K, and not reachable
+  from the bar — is in it. The order is the bar's, then the one the bar
+  has no room for.
+
+  **The Marketplace row came off this list on Nov 27 2026**, with the
+  page it pointed at. Meg:
+  "get rid of mlinxmaretet place i like the catalog better i think its
+  just crazyyyy mix of hsit lol its so confusting". It was a second index
+  of things /catalog already lists: every one of the seven `marketItems`
+  is in `catalog[]`, six of them resolving their price from the same
+  `marketItems` record through `marketPrice`, and the seventh,
+  `calc-kit`, as "8 free business tools". Two indexes of one shelf, one
+  of them wearing a product name over plainer ones.
 */
 export const siteMenu = [
   ...siteNav,
   { href: "/tools", label: "Free tools" },
-  { href: "/marketplace", label: "Marketplace" },
 ] as const;
 
 export const homeFooterNav = [
@@ -1560,7 +1569,7 @@ export const homeFooterNav = [
      this is the href the site's own footer has always used. */
   { href: "/#work", label: "Work" },
   { href: "/tools", label: "Free tools" },
-  { href: "/marketplace", label: "Marketplace" },
+  { href: "/catalog", label: "Catalog" },
   { href: "/about", label: "About" },
   { href: "#contact", label: "Contact" },
 ] as const;
