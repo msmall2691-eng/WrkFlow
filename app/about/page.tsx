@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import FounderNote from "@/components/FounderNote";
 import Approach from "@/components/Approach";
 import Stack from "@/components/Stack";
+import GitHubProof from "@/components/GitHubProof";
 import CommandPalette from "@/components/CommandPalette";
 import { siteNav } from "@/lib/content";
 
@@ -51,6 +52,10 @@ export default function AboutPage() {
           <FounderNote />
           <Approach />
           <Stack />
+          {/* Under Stack deliberately: that strip claims the tools are
+              ones she could hand over, and this is where a reader checks
+              the claim. See the note in GitHubProof. */}
+          <GitHubProof />
         </main>
       </div>
       <Footer />

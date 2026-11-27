@@ -2476,3 +2476,47 @@ test("the contact confirmation is actually visible, not just mounted", async ({
 
   await expect(sent).toContainText("Got it.");
 });
+
+/*
+  The GitHub proof on /about.
+
+  **The thing worth asserting is that the image loaded**, not that an `<img>`
+  is in the DOM. `public/shots/github.webp` is written by `npm run shots`
+  against a live page, so the way this breaks is a capture that 404s or comes
+  back empty after a rename, and Playwright will happily report a broken
+  image as visible. So this reads `naturalWidth`, which is zero for an image
+  the browser could not decode. That is the same lesson as the contact
+  confirmation above, one property along: ask whether the screen changed, not
+  whether the markup exists.
+
+  It also checks the link actually goes to the profile, because a proof
+  element that navigates somewhere else is worse than no proof element.
+*/
+test("the GitHub proof on /about shows a real capture and links to the profile", async ({
+  page,
+}) => {
+  await page.goto("/about");
+
+  const section = page.locator("#github");
+  await section.scrollIntoViewIfNeeded();
+  await expect(section).toBeVisible();
+
+  const shot = section.locator("img").first();
+  await expect(shot).toBeVisible();
+
+  await expect
+    .poll(() => shot.evaluate((el: HTMLImageElement) => el.naturalWidth), {
+      timeout: 10_000,
+      message:
+        "the GitHub capture is in the DOM but decoded to nothing: the proof " +
+        "section is showing a broken image where the evidence should be",
+    })
+    .toBeGreaterThan(0);
+
+  const link = section.locator('a[href*="github.com"]').first();
+  await expect(link).toHaveAttribute(
+    "href",
+    "https://github.com/msmall2691-eng",
+  );
+  await expect(link).toHaveAttribute("rel", /noreferrer/);
+});
