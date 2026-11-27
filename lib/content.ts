@@ -1418,7 +1418,28 @@ export const homeHero = {
   sub: "Real prices on the page, and you own what gets built.",
   /* The house location line, verbatim. */
   location: "Southern Maine · clients anywhere.",
+  /*
+    **Three doors, from the Linx Brand Plan (Nov 27 2026).** Its job-1
+    brief says: "Homepage hero: replace the current call-to-action with
+    three buttons: I'm a rental host -> /turnover, I run a service
+    business -> /brightbase, I need a site or app -> /catalog."
+
+    It is the same idea the plan opens with — "pick the front door by
+    buyer" — and it answers the question Meg asked of the live site in
+    her own words: "idk if im even in the right place". Two buttons that
+    said what to *do* become three that say who you *are*.
+  */
+  doors: [
+    { label: "I'm a rental host", href: "/turnover" },
+    { label: "I run a service business", href: "/brightbase" },
+    { label: "I need a site or app", href: "/catalog" },
+  ],
+  /* Still the top bar's button label — see StageTopBar. The hero no
+     longer renders it. */
   primary: "Start a project",
+  /* Unused since the doors replaced the hero's pair. Left rather than
+     deleted: removing a content key is its own decision, and this one
+     is the obvious label if a "see the work" door is ever wanted back. */
   secondary: "See the work",
 } as const;
 
