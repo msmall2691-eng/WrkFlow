@@ -3,7 +3,14 @@
 import { useMemo, useState } from "react";
 import ToolEmailCapture from "@/components/ToolEmailCapture";
 import { trackTool } from "@/lib/track";
-import { parseBookings, planTurnovers, type Booking, type Turnover } from "@/lib/ical";
+import {
+  formatTurnoverDate as fmt,
+  parseBookings,
+  planTurnovers,
+  turnoverEmailSummary,
+  type Booking,
+  type Turnover,
+} from "@/lib/ical";
 
 /*
   Turnover planner — paste a rental calendar, get the cleanings it implies.
@@ -32,14 +39,6 @@ type Result = {
   turnovers: Turnover[];
   sameDay: number;
 };
-
-const fmt = (iso: string) =>
-  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    timeZone: "UTC",
-  });
 
 /* Nights between two YYYY-MM-DD dates. */
 const nights = (a: string, b: string) =>
@@ -201,18 +200,15 @@ export default function TurnoverPlanner() {
   }
 
   /* What the visitor reads in the email, above the attachment. */
+  /*
+    The emailed body. `turnoverEmailSummary` owns the shape and the length,
+    in lib/ical.ts beside the dates it is describing: the endpoint refuses
+    a summary over its cap rather than trimming one, so a busy calendar's
+    email has to be built to fit or it is not sent at all. See there.
+  */
   function emailSummary(): string {
     if (!result) return "";
-    const lines = result.turnovers.map(
-      (t) => `${fmt(t.date)}${t.sameDay ? "  (same-day turnaround)" : ""}`,
-    );
-    return [
-      `${result.turnovers.length} cleaning${result.turnovers.length === 1 ? "" : "s"} from ${result.bookings} booking${result.bookings === 1 ? "" : "s"}.`,
-      "",
-      ...lines,
-      "",
-      "The attached .ics opens in Google or Apple Calendar.",
-    ].join("\n");
+    return turnoverEmailSummary(result.turnovers, result.bookings);
   }
 
   function download() {

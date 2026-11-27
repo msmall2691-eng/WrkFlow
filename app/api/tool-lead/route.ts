@@ -16,6 +16,7 @@ import { NextResponse } from "next/server";
 import { createMailTransporter, getMailEnv } from "@/lib/mailer";
 import { createRateLimiter, clientIp } from "@/lib/rateLimit";
 import { storeLead } from "@/lib/leads";
+import { MAX_SUMMARY_LEN, MAX_ATTACHMENT_BASE64_LEN } from "@/lib/toolLead";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -55,8 +56,18 @@ const TOOL_LABELS: Record<string, string> = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MAX_SUMMARY_LEN = 4000; // every real tool summary + stamp is well under 1,000 chars
-const MAX_ATTACHMENT_BASE64_LEN = 2_000_000; // ~1.5MB decoded — generous for a QR PNG
+
+/*
+  **The two size caps moved to lib/toolLead.ts and are imported above.**
+  They were literals here, with a comment claiming "every real tool summary
+  is well under 1,000 chars" — true of every tool whose result is a fixed
+  shape, and false the moment the Turnover Planner started summarising the
+  visitor's own calendar: 120 cleanings is 4,251 characters, so a rental
+  host with a normal year of three-day stays got a 422 and no email. The
+  caps themselves are unchanged and deliberately not relaxed, because this
+  is the one route that mails a caller-supplied address. What changed is
+  that a caller can now read them.
+*/
 
 // Per-IP: a visitor might reasonably email themselves results from a few
 // tools in one sitting. Global: hard-caps total outbound volume regardless

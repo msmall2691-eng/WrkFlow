@@ -18,6 +18,8 @@ import {
   studioStats,
   work,
 } from "../lib/content";
+import { turnoverEmailSummary, type Turnover } from "../lib/ical";
+import { MAX_SUMMARY_LEN } from "../lib/toolLead";
 import { integrations, resolveProof } from "../lib/integrations";
 import { CAST } from "../lib/ocean";
 
@@ -1321,6 +1323,63 @@ test("no font is fetched from Google at build time", () => {
     `${offenders.join(", ")} imports next/font/google, which fetches from ` +
       "Google during the build. Add the woff2 to app/fonts and use next/font/local.",
   ).toEqual([]);
+});
+
+test("a busy calendar's emailed schedule still fits what the endpoint accepts", () => {
+  /*
+    **The endpoint refuses a long summary rather than trimming it**, so an
+    over-budget body is not a long email, it is no email: 422 before the
+    lead is stored or anything is sent. The first cut of the planner's
+    email listed every cleaning, which is 4,251 characters at 120 of them
+    against a 4,000 cap — and 120 is a year of three-day stays on one
+    property, comfortably inside what /api/turnover parses. It failed for
+    exactly the visitors with the most reason to use it.
+
+    Asserted at three sizes rather than one, because this has two ways to
+    be wrong and a single large fixture only catches the first: a schedule
+    that does not fit, and a short schedule needlessly cut down. The third
+    is the boundary either side of the cap.
+
+    The overflow has to be *named*, not dropped — a schedule that silently
+    stops at cleaning 97 is worse than one that says 23 more are in the
+    attachment, because the visitor cannot tell the difference between a
+    short list and a truncated one.
+  */
+  const made = (n: number, sameDay: boolean): Turnover[] =>
+    Array.from({ length: n }, (_, i) => {
+      const d = new Date(Date.UTC(2026, 0, 1));
+      d.setUTCDate(d.getUTCDate() + i);
+      const date = d.toISOString().slice(0, 10);
+      const stay = { start: date, end: date, summary: "Reserved", kind: "stay" as const };
+      return { date, out: stay, in: sameDay ? stay : undefined, sameDay };
+    });
+
+  for (const n of [1, 40, 120, 400]) {
+    const body = turnoverEmailSummary(made(n, true), n);
+    expect(
+      body.length,
+      `${n} same-day cleanings produced a ${body.length}-char summary; ` +
+        `/api/tool-lead rejects anything over ${MAX_SUMMARY_LEN} with a 422 and sends no email`,
+    ).toBeLessThanOrEqual(MAX_SUMMARY_LEN);
+    expect(body, `the ${n}-cleaning summary should still name the .ics`).toContain(".ics");
+  }
+
+  /* A schedule that fits is listed in full, with nothing held back. */
+  const small = turnoverEmailSummary(made(12, false), 12);
+  expect(small, "a 12-cleaning schedule has no overflow to report").not.toContain("more, all in");
+  expect(
+    small.split("\n").filter((l) => /^[A-Z][a-z]{2}, /.test(l)),
+    "every one of the 12 should be listed",
+  ).toHaveLength(12);
+
+  /* A schedule that does not fit says how many it is holding back, and the
+     count is right rather than merely present. */
+  const big = turnoverEmailSummary(made(300, true), 300);
+  const overflow = big.match(/and (\d+) more, all in the attached \.ics\./);
+  expect(overflow, "a 300-cleaning schedule must name what it left out").toBeTruthy();
+  const listed = big.split("\n").filter((l) => /^[A-Z][a-z]{2}, /.test(l)).length;
+  expect(listed + Number(overflow![1]), "listed + held back should equal the whole schedule").toBe(300);
+  expect(listed, "it should list as many as fit, not give up").toBeGreaterThan(50);
 });
 
 test("every tool that offers to email a result is one the endpoint accepts", () => {

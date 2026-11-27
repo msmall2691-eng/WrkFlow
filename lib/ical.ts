@@ -11,6 +11,8 @@
   and the rest never appears in these feeds.
 */
 
+import { MAX_SUMMARY_LEN } from "@/lib/toolLead";
+
 export type Booking = {
   /** Check-in, as YYYY-MM-DD. */
   start: string;
@@ -175,4 +177,84 @@ export function planTurnovers(bookings: Booking[]): Turnover[] {
       return { date: b.end, out: b, in: next, sameDay: Boolean(next) };
     })
     .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+/**
+ * One cleaning date, as a person reads it. "Thu, Jan 1".
+ *
+ * Here rather than in the component because the on-screen list and the
+ * emailed one are the same dates, and two spellings of a date is the kind
+ * of difference a visitor notices and cannot explain.
+ *
+ * Formatted in UTC from a midday instant: these are calendar days out of
+ * an .ics, not moments, so a visitor west of UTC must not read Jan 1 as
+ * Dec 31.
+ */
+export const formatTurnoverDate = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+
+/**
+ * The cleaning schedule as the body of an email, fitted to what
+ * /api/tool-lead accepts.
+ *
+ * **It has to fit, because the endpoint refuses rather than truncates.**
+ * A summary over `MAX_SUMMARY_LEN` is a 422 before the lead is stored or
+ * anything is sent, so an over-long body is not a long email, it is no
+ * email. The first cut listed every cleaning: at 120 of them that is 4,251
+ * characters against a 4,000 cap, and 120 is a year of three-day stays on
+ * one property, well inside what /api/turnover will happily parse. The
+ * busiest calendars, which is to say the visitors with the most reason to
+ * want this, were the only ones it failed for.
+ *
+ * So the list is taken while it fits and the rest is named rather than
+ * dropped, which is the same thing the panel on screen already does with
+ * its own first eight ("and 14 more in the download"). Nothing is lost:
+ * the attached .ics carries every cleaning either way, and the last line
+ * says so.
+ *
+ * The budget defaults to the endpoint's own constant so there is one
+ * author of the number. It is a parameter at all only so a test can prove
+ * the fitting works without a 4,000-character fixture.
+ */
+export function turnoverEmailSummary(
+  turnovers: readonly Turnover[],
+  bookings: number,
+  budget: number = MAX_SUMMARY_LEN,
+): string {
+  const head = `${turnovers.length} cleaning${turnovers.length === 1 ? "" : "s"} from ${bookings} booking${bookings === 1 ? "" : "s"}.`;
+  const tail = "The attached .ics opens in Google or Apple Calendar.";
+  const line = (t: Turnover) =>
+    `${formatTurnoverDate(t.date)}${t.sameDay ? "  (same-day turnaround)" : ""}`;
+
+  const assemble = (shown: readonly Turnover[], hidden: number) =>
+    [
+      head,
+      "",
+      ...shown.map(line),
+      ...(hidden > 0 ? [`and ${hidden} more, all in the attached .ics.`] : []),
+      "",
+      tail,
+    ].join("\n");
+
+  const whole = assemble(turnovers, 0);
+  if (whole.length <= budget) return whole;
+
+  /*
+     Drop from the end until it fits, measuring the assembled text rather
+     than guessing a per-line cost: the "and N more" line changes length as
+     N grows, and a date is 10 to 12 characters before the same-day suffix,
+     so an arithmetic estimate is wrong in both directions. At most one
+     pass per cleaning, over a list bounded by the .ics size the API
+     accepts.
+  */
+  let shown = turnovers.length;
+  while (shown > 0 && assemble(turnovers.slice(0, shown), turnovers.length - shown).length > budget) {
+    shown -= 1;
+  }
+  return assemble(turnovers.slice(0, shown), turnovers.length - shown);
 }
