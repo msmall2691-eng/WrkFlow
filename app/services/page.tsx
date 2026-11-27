@@ -121,8 +121,18 @@ export default function ServicesPage() {
                 trail="and what it costs."
               />
               <p className="mt-5 max-w-[62ch] text-[1.0625rem] leading-relaxed text-[color:var(--cp-muted)]">
-                Start with one useful improvement or a full custom build. Scope and
-                price are agreed with you before any work begins.
+                {/*
+                  **This was near word-for-word the paragraph `<Pricing />`
+                  renders a few hundred pixels below it on this same page**,
+                  differing by the single word "full". Of the eight places the
+                  site promised "scope and price agreed before work begins",
+                  those two were the pair a visitor could see at once, which
+                  is what turns a commitment into wallpaper. Pricing.tsx keeps
+                  it, because there it sits directly above the price. This one
+                  says something the page does not already say twice.
+                */}
+                The fixed prices are on this page. Anything bigger is quoted in
+                writing first.
               </p>
             </div>
           </section>

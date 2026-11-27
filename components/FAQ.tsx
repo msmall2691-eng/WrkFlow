@@ -16,7 +16,7 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "Do you only work with cleaning companies?",
-    a: "No. M Studio grew out of hands-on experience running a cleaning business, but projects span different industries. What matters is the website, system, or workflow you need help with.",
+    a: "No. It grew out of running one, which is why the examples here are cleaning and rentals. A quote form and a CRM behave the same whichever trade is using them.",
   },
   {
     q: "Can I hire you for a small project?",
@@ -24,11 +24,11 @@ const QUESTIONS: { q: string; a: string }[] = [
   },
   {
     q: "Can you connect the systems I already use?",
-    a: "Yes. Share which tools you use and what you want to happen between them. Their APIs, calendar feeds, and other connection options are checked before the project is scoped.",
+    a: "Yes. Name the tools and what should happen between them. Whether they can actually do it gets checked before you are quoted, because some platforms will not open up at all.",
   },
   {
     q: "Do I need a whole new website or app?",
-    a: "Not always. Your project might be one integration, a booking form, a client portal, or an improvement to an existing workflow. It starts with what is already working and what you need help with.",
+    a: "Often not. It might be one form, one integration, or one page. The cheapest version that solves it is the one to start with.",
   },
   {
     q: "How long does a website take?",
@@ -50,7 +50,7 @@ const QUESTIONS: { q: string; a: string }[] = [
     q: "How is this different from Squarespace or Wix?",
     /* "gives us more control" was both a voice violation and factually
        backwards: the control a custom build buys belongs to the client. */
-    a: "Squarespace and Wix can be a good fit for a simple site. A custom build gives you more control over your design, features, and connections to other systems. What your business needs gets talked through before the approach is chosen.",
+    a: "Squarespace and Wix are a good fit for a simple site. They stop being one when you need a quote form wired into your CRM, or a booking step that knows what is actually open.",
   },
   {
     q: "What if I outgrow the Care Plan?",
