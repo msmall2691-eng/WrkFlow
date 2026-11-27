@@ -199,17 +199,24 @@ export default function TurnoverPlanner() {
     return typeof window === "undefined" ? "" : window.btoa(icsText());
   }
 
-  /* What the visitor reads in the email, above the attachment. */
   /*
-    The emailed body. `turnoverEmailSummary` owns the shape and the length,
-    in lib/ical.ts beside the dates it is describing: the endpoint refuses
-    a summary over its cap rather than trimming one, so a busy calendar's
-    email has to be built to fit or it is not sent at all. See there.
+    What the visitor reads in the email, above the attachment.
+    `turnoverEmailSummary` owns the shape and the length, in lib/ical.ts
+    beside the dates it is describing: the endpoint refuses a summary over
+    its cap rather than trimming one, so a busy calendar's email has to be
+    built to fit or it is not sent at all. See there.
+
+    **Memoised because it is read during render**, as a prop rather than in
+    an event handler, so a plain function ran it again on every render of
+    this component for a body nobody had asked for yet. Keyed on `result`,
+    which is the only thing it reads and is replaced wholesale by a new
+    parse, so a typed character in the email field re-renders without
+    re-deriving the schedule.
   */
-  function emailSummary(): string {
-    if (!result) return "";
-    return turnoverEmailSummary(result.turnovers, result.bookings);
-  }
+  const emailSummary = useMemo(
+    () => (result ? turnoverEmailSummary(result.turnovers, result.bookings) : ""),
+    [result],
+  );
 
   function download() {
     if (!result) return;
@@ -369,7 +376,7 @@ export default function TurnoverPlanner() {
                 className="mt-5"
                 tool="turnover"
                 toolLabel="Turnover schedule"
-                summary={emailSummary()}
+                summary={emailSummary}
                 attachment={{
                   filename: "turnover-cleanings.ics",
                   contentBase64: icsBase64(),

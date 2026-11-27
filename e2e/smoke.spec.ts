@@ -1380,6 +1380,39 @@ test("a busy calendar's emailed schedule still fits what the endpoint accepts", 
   const listed = big.split("\n").filter((l) => /^[A-Z][a-z]{2}, /.test(l)).length;
   expect(listed + Number(overflow![1]), "listed + held back should equal the whole schedule").toBe(300);
   expect(listed, "it should list as many as fit, not give up").toBeGreaterThan(50);
+
+  /*
+    **And it has to be fast, because the caller reads it during render.**
+    The first cut re-joined the whole remaining summary on every step of
+    the fitting search, reformatting every surviving date: 93ms at 120
+    cleanings, 4.2s at 400, 19s at 800 — a frozen page, at sizes
+    /api/turnover parses without complaint. A correctness test cannot see
+    that; all three of those produced the right answer eventually.
+
+    Asserted as a wall-clock ceiling rather than a complexity claim, since
+    a test cannot read an exponent. One second for 800 is ~20x slack
+    against this machine's linear timing and still ~19x under the version
+    it replaced, so it does not flake on a slow runner.
+
+    **What it catches is re-formatting, and that is narrower than it
+    sounds**, which is worth knowing before trusting it. Checked by
+    breaking it both ways: putting `toLocaleDateString` back inside the
+    search fails this at 17.3s, while re-joining the text each step but
+    keeping the dates formatted once still passes in well under a second.
+    So the expensive thing is the date formatting, not the assembling —
+    the `fits` arithmetic beside it is an improvement this test would not
+    notice losing. That is the honest scope: it guards the one cost that
+    actually froze the page.
+  */
+  const started = Date.now();
+  turnoverEmailSummary(made(800, true), 800);
+  const took = Date.now() - started;
+  expect(
+    took,
+    `fitting 800 cleanings took ${took}ms. This runs during render, and the ` +
+      "quadratic version it replaced took ~19s here. Format each date once and " +
+      "fit on accumulated lengths.",
+  ).toBeLessThan(1000);
 });
 
 test("every tool that offers to email a result is one the endpoint accepts", () => {
