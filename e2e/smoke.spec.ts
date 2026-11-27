@@ -1323,6 +1323,61 @@ test("no font is fetched from Google at build time", () => {
   ).toEqual([]);
 });
 
+test("every tool that offers to email a result is one the endpoint accepts", () => {
+  /*
+    **Two authors of one fact, and they had already disagreed.** A component
+    posts `tool: "<id>"` to /api/tool-lead; that route keeps its own
+    allowlist and answers 422 "Unknown tool." for anything else, which is
+    right — the label becomes the subject line, so it may never come from
+    the client. What was missing is anything tying the two together. The
+    Turnover Planner shipped an email field sending `turnover` while the
+    allowlist carried seven other ids, so the button was dead for every
+    visitor: no lead stored, no email sent, no failure anywhere a build or
+    this suite could see it, because the refusal happens at runtime over
+    the network. A review bot found it; nothing here would have.
+
+    Read from source on both sides rather than asserting a list, so adding
+    a tool to either one is the only way to keep this green. Scoped to
+    files that actually render the two email components, so an unrelated
+    `tool="..."` prop elsewhere is not swept in, and literals only —
+    `SaveResult` forwards `tool={tool}` to `ToolEmailCapture`, which is the
+    same string one frame up rather than a second claim.
+  */
+  const route = readFileSync(join("app", "api", "tool-lead", "route.ts"), "utf8");
+  const block = route.match(/const TOOL_LABELS[^{]*\{([\s\S]*?)\n\};/);
+  expect(block, "could not find TOOL_LABELS in app/api/tool-lead/route.ts").toBeTruthy();
+  const accepted = new Set(
+    [...block![1].matchAll(/^\s*"?([a-z][a-z0-9-]*)"?\s*:/gm)].map((m) => m[1]),
+  );
+  expect(accepted.size, "TOOL_LABELS parsed as empty — the regex has drifted").toBeGreaterThan(3);
+
+  const offenders: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (!/\.tsx$/.test(entry.name)) continue;
+      const src = readFileSync(full, "utf8");
+      if (!/<(?:SaveResult|ToolEmailCapture)\b/.test(src)) continue;
+      for (const m of src.matchAll(/\btool="([^"]+)"/g)) {
+        if (!accepted.has(m[1])) offenders.push(`${full} sends tool="${m[1]}"`);
+      }
+    }
+  };
+  walk("components");
+  walk("app");
+
+  expect(
+    offenders,
+    `${offenders.join("; ")} — /api/tool-lead answers 422 "Unknown tool." for it, so ` +
+      "that email button is dead. Add the id and its label to TOOL_LABELS in " +
+      "app/api/tool-lead/route.ts.",
+  ).toEqual([]);
+});
+
 test("the retired /marketplace still lands somewhere", async ({ page }) => {
   const res = await page.goto("/marketplace");
   expect(res?.status(), "/marketplace should not answer 404").toBeLessThan(400);

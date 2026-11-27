@@ -32,6 +32,17 @@ type ToolLeadPayload = {
 // The only tools wired up to "Email me this →" — everything else is rejected.
 // Labels are derived here, never taken from the client, so the subject line
 // and "from" framing can't be forged.
+//
+// **This map and the `tool` a component sends are two authors of one fact**,
+// and they disagreed the moment the Turnover Planner grew an email field:
+// the component posted `turnover`, this allowlist did not carry it, and the
+// route answered 422 "Unknown tool." before storing a lead or sending
+// anything. The feature was dead on arrival for every visitor, and nothing
+// failed — `tsc`, the build and the suite all pass on a client sending a
+// string this server refuses, because the refusal happens at runtime over
+// the network. `e2e/smoke.spec.ts` now reads both sides and asserts every
+// `tool` any component sends has a label here, so the next tool to get an
+// email field cannot ship broken the same way.
 const TOOL_LABELS: Record<string, string> = {
   quote: "Instant quote",
   invoice: "Invoice maker",
@@ -40,6 +51,7 @@ const TOOL_LABELS: Record<string, string> = {
   sitecheck: "Website check",
   cost: "Cost of manual work",
   "workflow-map": "Workflow map",
+  turnover: "Turnover schedule",
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
