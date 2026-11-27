@@ -741,7 +741,7 @@ export const caseStudies: CaseStudy[] = [
         body: "A phone workspace for the crew, separate from the office: today's work, cleaning tips, availability, time off, paperwork and what each person is owed.",
         shot: {
           src: "/shots/brightbase-crew-tools.webp",
-          alt: "The crew's Today screen with a cleaning tip, and the Me screen with availability, time off, paperwork and payouts. Names are blurred.",
+          alt: "The crew's Today screen with the day's turnover, pay and access notes, and the Me screen with availability, time off, paperwork and payouts.",
         },
       },
       {
@@ -749,7 +749,7 @@ export const caseStudies: CaseStudy[] = [
         body: "Vacation rental bookings automatically appear on the cleaning schedule, keeping turnover dates and assignments in one place.",
         shot: {
           src: "/shots/brightbase-crew-schedule.webp",
-          alt: "The crew's phone view: an open turnover to request, and the month schedule. Addresses and pay are blurred.",
+          alt: "The crew's phone view: two open turnovers to request with their addresses and pay, and the month schedule.",
         },
       },
     ],
