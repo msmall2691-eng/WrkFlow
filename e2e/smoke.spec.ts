@@ -8,6 +8,7 @@ import { join } from "node:path";
    runtime import of a .ts module is not. */
 import {
   caseStudies,
+  homeBands,
   homeCards,
   homeFeature,
   ladder,
@@ -515,9 +516,9 @@ test("the turnover planner ignores blocked dates", async ({ request }) => {
   half, which is always the dangerous one.
 
   And the captures have to have actually loaded, which is the assertion
-  no wording test can make: this section's whole claim is "every picture
-  below is a running system", and a 404 renders as a dark rectangle in a
-  dark card.
+  no wording test can make: this section's whole claim is that every
+  picture below is a real business using it, and a 404 renders as a dark
+  rectangle in a dark card.
 */
 test("the homepage's work section is unique, resolves, and shows real captures", async ({
   page,
@@ -544,10 +545,17 @@ test("the homepage's work section is unique, resolves, and shows real captures",
   ).toBe(1);
 
   const section = anchors.first();
+  /* Read from `lib/content.ts` rather than matched against a phrase typed
+     here. This assertion was `/running system/i`, and it broke the moment
+     that heading was rewritten to drop developer wording — a test failing
+     because the copy it duplicated was edited, which says nothing about
+     whether the anchor resolves. Asserting the heading the page is built
+     from keeps the real check (the anchor lands on the work section) and
+     cannot drift from the copy again. */
   await expect(
     section.getByRole("heading", { level: 2 }),
     "the anchor should land on the work",
-  ).toContainText(/running system/i);
+  ).toContainText(homeBands.work.heading);
 
   /* The featured project carries the only confirmed outcome figures in
      the repo, read from its case study rather than typed into the page. */
