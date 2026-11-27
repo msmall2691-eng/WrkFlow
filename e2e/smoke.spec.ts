@@ -1733,7 +1733,6 @@ test("the homepage's art carries no claim", async ({ page }) => {
 const DAYLIGHT_ROUTES = [
   "/brightbase",
   "/demo",
-  "/turnover",
   "/welcome-book",
   "/privacy",
   "/terms",
@@ -1871,6 +1870,10 @@ test("the converted pages are the same near-black world in both themes", async (
     "/marketplace",
     "/about",
     "/catalog",
+    /* Converted Nov 27 2026 with the planner polish: it wore `.cp` and
+       PanelHeader, so the one free tool Meg most wants to send people to
+       was the clearest instance of "a different website one click later". */
+    "/turnover",
     "/work/maine-cleaning-co",
   ]) {
     const harbor = await ground(path, "dark");

@@ -748,6 +748,101 @@ body {
   color: var(--color-signal);
 }
 
+/*
+  The schedule sheet — a light panel inside the near-black page.
+
+  Meg, looking at the turnover planner: "i dont like the cal so dark
+  eveyrthing doesnt have to be DARK". She is right, and the reason is
+  more than taste: this calendar is the thing the tool produces, it is a
+  document somebody hands to whoever cleans, and a dark grid of dark
+  cells reads as more backdrop. On paper it is paper.
+
+  **These values are deliberately pinned rather than theme tokens, and
+  that is the opposite of the rule everywhere else on this site.** The
+  usual rule exists because an element's ground follows the theme; here
+  the ground does not — the sheet is light in Harbor and in Daylight —
+  so a token that followed the theme would be the #115 failure, not the
+  cure for it. CLAUDE.md names this exact trap: rules keyed on *the
+  theme* when they meant *the ground under this element*. Pinning them
+  on `.sheet` keeps one author for the colours while tying them to the
+  surface they actually sit on.
+
+  Two fills carry the answer rather than one, because "clean this day"
+  and "clean this day between two guests" are different jobs: teal is a
+  cleaning, amber is a cleaning with a guest arriving the same day. That
+  is the urgency idea BrightBase already works on, not a new vocabulary.
+*/
+.cp .sheet {
+  /* iOS system colours, at Meg's word: "i want like modern IOS vibes cal".
+     The first cut used teal and amber and she rejected both by name. These
+     are Apple's own label, separator, fill and tint values, which is why
+     the grid reads as a calendar rather than as a chart. */
+  --sheet-bg: #ffffff;
+  --sheet-ink: #1c1c1e; /* label */
+  --sheet-muted: rgba(60, 60, 67, 0.6); /* secondaryLabel */
+  --sheet-faint: rgba(60, 60, 67, 0.34); /* tertiaryLabel */
+  --sheet-line: rgba(60, 60, 67, 0.18); /* separator */
+  --sheet-fill: #e5e5ea; /* systemGray5 — a night someone is staying */
+  --sheet-clean: #007aff; /* systemBlue — a cleaning */
+  --sheet-same: #5856d6; /* systemIndigo — a same-day turnaround */
+  --sheet-on-clean: #ffffff;
+
+  /*
+    Frosted rather than solid, at Meg's word: "allow like glass or see
+    through io vibes on the calander so its super clean and neat".
+
+    It stays LIGHT glass, not the dark material iOS uses over a dark
+    ground, because she rejected a dark calendar in the same breath. At
+    0.9 white over this page's near-black the sheet resolves to about
+    #ececee, so the 1c1c1e label on it keeps roughly 12:1 — the glass
+    buys depth without costing any of the contrast that made it readable.
+  */
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--sheet-ink);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  padding: 20px 16px 16px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 24px 60px -24px rgba(0, 0, 0, 0.75);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .cp .sheet {
+    /*
+      **0.76 was wrong and looking at it is the only way that showed.**
+      iOS glass reads bright because it sits over bright, busy content and
+      picks the light up; this page is near-black, so there is nothing
+      underneath to pick up and the same alpha resolved to a flat mid-grey
+      panel — duller than the solid white it replaced, and the opposite of
+      "super clean and neat". High alpha keeps it bright; the blur, the
+      saturation and the lit top edge are what carry the glass.
+    */
+    background: rgba(255, 255, 255, 0.93);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    backdrop-filter: blur(30px) saturate(180%);
+  }
+}
+
+/*
+  A visitor who has asked their system to cut transparency gets the solid
+  sheet. Blur is the one effect `prefers-reduced-motion` does not cover,
+  and translucency is exactly what this query exists for.
+*/
+@media (prefers-reduced-transparency: reduce) {
+  .cp .sheet {
+    background: var(--sheet-bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (min-width: 640px) {
+  .cp .sheet {
+    padding: 22px 22px 18px;
+  }
+}
+
 /* Display headline utility */
 .display {
   font-family: var(--font-display);

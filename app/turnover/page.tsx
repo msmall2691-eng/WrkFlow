@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
+import { siteNav } from "@/lib/content";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import TurnoverPlanner from "@/components/TurnoverPlanner";
@@ -28,18 +29,20 @@ export const metadata: Metadata = pageMeta({
 
 export default function TurnoverPage() {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
+        {/* `bookHref` because this page renders no Contact: without it the
+            bar's call CTA points at an in-page #contact that does not exist
+            here, which `/turnover has no dead-end booking CTA` catches. It
+            is the same reason PanelHeader carried it before the conversion. */}
+        <StageTopBar
+          inFlow
+          cta="book"
+          bookHref="/?offer=call#contact"
+          nav={siteNav}
+          here="Turnover planner"
+        />
 
-        <div className="relative z-10">
-          <PanelHeader bookHref="/?offer=call#contact" />
-        </div>
-
-        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
         <main className="relative z-10">
         <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
           <div className="mx-auto max-w-6xl px-6">
