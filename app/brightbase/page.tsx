@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
 import { brightbase } from "@/lib/brightbase";
-import PanelHeader from "@/components/panel/PanelHeader";
+import { siteNav } from "@/lib/content";
+import StageTopBar from "@/components/stage/StageTopBar";
 import OfferLink from "@/components/OfferLink";
 import BookCall from "@/components/BookCall";
 import Contact from "@/components/Contact";
@@ -13,10 +14,31 @@ import StackedHeading from "@/components/StackedHeading";
 
 /*
   /brightbase — the showcase for the operations app Meg built and runs her
-  cleaning company on. First inner page in the V2 style (`.cp`).
+  cleaning company on.
 
   Content lives in lib/brightbase.ts, with the rules for what may be listed.
   The short version: built and in use, or it goes under "In progress".
+
+  **Nov 27 2026: converted to `.cp-inner`, and it was the one that mattered
+  most.** The homepage hero asks a visitor which of three things they are,
+  and this page is behind the middle door: "I run a service business". Two
+  of those doors landed on the new design and this one landed on the old
+  panel with the old header, so the single most deliberate click on the
+  front page was also the one that changed the website. That is the exact
+  failure `.cp-inner` and one shared `StageTopBar` exist to prevent, shipped
+  inside the change that introduced the doors.
+
+  Per CLAUDE.md the conversion is adding the class and swapping the header,
+  not a rewrite: every section, every `cp-tile`, `Pipeline`, `Roles`,
+  `DataModel` and both screenshots are untouched, and they re-point because
+  `.cp-inner` re-points the `--cp-*` tokens underneath them.
+
+  The two `cp-aurora` spans came off, which is the one removal here. They
+  are decorative, `aria-hidden`, and `.cp-inner` does not restyle them, so
+  keeping them would have left this the only converted page wearing a
+  violet blur the other six dropped. They stay in use on the three routes
+  still outside the pass (`/demo`, `/welcome-book`, `LegalDoc`), so nothing
+  is deleted, only no longer rendered here.
 */
 export const metadata: Metadata = pageMeta({
   title: "BrightBase, the operations app for cleaning companies",
@@ -44,15 +66,9 @@ const H2 = ({ id, children }: { id?: string; children: React.ReactNode }) => (
 export default function BrightBasePage() {
 
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
-        <div className="relative z-10">
-          <PanelHeader current="/brightbase" />
-        </div>
+        <StageTopBar inFlow cta="book" nav={siteNav} here="BrightBase" />
 
         <main className="relative z-10 mx-auto flex max-w-[1240px] flex-col gap-24 px-6 pb-24 pt-8 lg:px-10">
           {/* Hero */}

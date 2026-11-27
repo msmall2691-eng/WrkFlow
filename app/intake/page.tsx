@@ -17,8 +17,17 @@ import MaineReadout from "@/components/MaineReadout";
   header. CLAUDE.md asks inner pages to be built in the `.cp` palette and
   tokens; it does not ask them to grow a nav, and the paragraph above is a
   deliberate decision about this page that predates V2 and still holds. So
-  the `.cp` wrapper goes on, PanelHeader does not, and the wordmark stays
-  the only way back to the main site.
+  the wrapper goes on, a site header does not, and the wordmark stays the
+  only way back to the main site.
+
+  **Nov 27 2026: `.cp-inner` added, and deliberately still no header.** Every
+  other inner page took `StageTopBar` in the same pass; this one takes only
+  the token half, because the reason it has no nav is the sentence at the
+  top of this comment rather than an oversight the pass should tidy up. What
+  it would have become otherwise is the one form on the site with six ways
+  out of it. It needs the tokens all the same: leaving it on the old `.cp`
+  values would have made the questionnaire the one screen in a different
+  near-black, which is the same drift by a quieter route.
 
   Wrapping is enough on its own: `.cp` redefines --color-base, --color-ink,
   --color-muted, --color-line and --color-faint in its own scope, so the
@@ -46,7 +55,7 @@ export default function StartPage() {
   // learns whether a key exists, only whether the step should render.
   const previewEnabled = Boolean(process.env.ANTHROPIC_API_KEY);
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <main className="min-h-screen bg-[var(--color-base)]">
       {/* Same wordmark as the main site's nav, so this reads as a page OF
           mlinx.studio rather than a funnel pointed at it. */}

@@ -1298,6 +1298,98 @@ test("no font is fetched from Google at build time", () => {
   ).toEqual([]);
 });
 
+test("the site does not change shape when you click", async ({ page }) => {
+  /*
+    **Every studio route wears one ground and one header, and until now
+    nothing said so.** The design system landed on seven routes and left
+    the rest on the old panel, which is survivable right up to the moment
+    the homepage starts sending people to one: the hero asks a visitor
+    which of three things they are, and the middle door, /brightbase, was
+    the old design. The most deliberate click on the front page was also
+    the one that changed the website.
+
+    Measured against the homepage rather than a literal, because the whole
+    point of `.cp-inner` is that the inner pages resolve to the values the
+    homepage's `.stage` block declares. A hard-coded `rgb(8, 7, 12)` here
+    would pass on the day somebody changes the design's ground and leaves
+    the inner pages behind, which is the exact drift this guards.
+
+    **The list is read off `app/`, not typed here.** A literal would cover
+    whatever was true the day it was written and say nothing about the next
+    page somebody adds, which is precisely how a design pass ends up
+    covering most of a site. Every route with a `page.tsx` is checked
+    unless it is named below, so adding a page opts it in and leaving one
+    out has to be a deliberate line in this file.
+
+    The exceptions, each for a reason rather than for convenience:
+    /demo/shop, /demo/directory and /demo/studio are demonstrations of a
+    *client's* site and must not wear the studio's chrome; /lab is a
+    scratch page; / is the `.stage` original every other route is measured
+    against. /intake is checked for its ground but allowed its own header,
+    because it is a questionnaire and a form with six ways out of it is a
+    form people leave. See the comment at the top of that page.
+  */
+  await page.goto("/");
+  const ground = await page.evaluate(
+    () => getComputedStyle(document.querySelector(".stage")!).backgroundColor,
+  );
+  expect(ground, "the homepage should have an opaque ground to compare against").not.toBe(
+    "rgba(0, 0, 0, 0)",
+  );
+
+  const EXEMPT = new Set(["/", "/lab", "/demo/shop", "/demo/directory", "/demo/studio"]);
+  /** A page of its own, but one the visitor reaches without the site's nav. */
+  const NO_SHARED_NAV = new Set(["/intake"]);
+
+  const routes: string[] = [];
+  const walkRoutes = (dir: string, prefix: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      /* Dynamic segments need a real id to render, so they are covered by
+         their own tests rather than guessed at here. */
+      if (entry.name.startsWith("[") || entry.name.startsWith("(")) continue;
+      const route = `${prefix}/${entry.name}`;
+      if (existsSync(join(dir, entry.name, "page.tsx"))) routes.push(route);
+      walkRoutes(join(dir, entry.name), route);
+    }
+  };
+  walkRoutes("app", "");
+  expect(routes.length, "found no routes under app/ — the walk is broken").toBeGreaterThan(8);
+
+  const chromed = routes.filter((r) => !EXEMPT.has(r) && !NO_SHARED_NAV.has(r));
+  for (const route of [...chromed, ...[...NO_SHARED_NAV].filter((r) => routes.includes(r))]) {
+    await page.goto(route);
+    const got = await page.evaluate(() => {
+      const shell = document.querySelector(".cp-inner");
+      return {
+        shell: Boolean(shell),
+        bg: shell ? getComputedStyle(shell).backgroundColor : null,
+        /* The design's own bar, by the wordmark only it renders beside a
+           page name — counted rather than asserted present, because two
+           headers is the failure that put a visitor on a page with two
+           navigations disagreeing about where they were. */
+        bars: document.querySelectorAll("header").length,
+      };
+    });
+    expect(got.shell, `${route} should carry .cp-inner so its tokens are the homepage's`).toBe(true);
+    expect(got.bg, `${route} renders a different ground from the homepage`).toBe(ground);
+    expect(got.bars, `${route} should have exactly one header, not ${got.bars}`).toBe(1);
+  }
+
+  /* And the shared bar really is on the chromed ones: the count above
+     cannot tell one header from another, and /intake proves a page can
+     have exactly one that is not this. Every chromed route, not a
+     sample — the whole point is that no page is quietly carrying its own
+     navigation. */
+  for (const route of chromed) {
+    await page.goto(route);
+    await expect(
+      page.locator("header").getByRole("link", { name: "Services" }),
+      `${route} should carry the site's own nav, not a page-local header`,
+    ).toHaveCount(1);
+  }
+});
+
 test("the retired /marketplace still lands somewhere", async ({ page }) => {
   const res = await page.goto("/marketplace");
   expect(res?.status(), "/marketplace should not answer 404").toBeLessThan(400);
