@@ -1418,7 +1418,28 @@ export const homeHero = {
   sub: "Real prices on the page, and you own what gets built.",
   /* The house location line, verbatim. */
   location: "Southern Maine · clients anywhere.",
+  /*
+    **Three doors, from the Linx Brand Plan (Nov 27 2026).** Its job-1
+    brief says: "Homepage hero: replace the current call-to-action with
+    three buttons: I'm a rental host -> /turnover, I run a service
+    business -> /brightbase, I need a site or app -> /catalog."
+
+    It is the same idea the plan opens with — "pick the front door by
+    buyer" — and it answers the question Meg asked of the live site in
+    her own words: "idk if im even in the right place". Two buttons that
+    said what to *do* become three that say who you *are*.
+  */
+  doors: [
+    { label: "I'm a rental host", href: "/turnover" },
+    { label: "I run a service business", href: "/brightbase" },
+    { label: "I need a site or app", href: "/catalog" },
+  ],
+  /* Still the top bar's button label — see StageTopBar. The hero no
+     longer renders it. */
   primary: "Start a project",
+  /* Unused since the doors replaced the hero's pair. Left rather than
+     deleted: removing a content key is its own decision, and this one
+     is the obvious label if a "see the work" door is ever wanted back. */
   secondary: "See the work",
 } as const;
 
@@ -1449,6 +1470,37 @@ export const homeBands = {
     */
     eyebrow: "Common issues",
     heading: "Most people arrive with one of these.",
+  },
+  /*
+    Three bands added Nov 27 2026, at Meg's word: "id like them to see
+    them sooner", "its way scattered and unorganized". The homepage
+    carried nine outbound links and not one reached a free tool, a demo,
+    the turnover planner, the welcome book or BrightBase — 17 public
+    routes and the page body linked 5. Nothing was missing from the site;
+    it was unreachable from the front of it.
+
+    No new claim is made in any of them. Every count is computed, every
+    picture is an existing capture, and every line of copy is lifted from
+    a record that already shipped.
+  */
+  try: {
+    eyebrow: "Free to use, right now",
+    heading: "Try something before you talk to anybody.",
+    /* The count is read from the tools themselves, never typed. Same rule
+       as the project count under each service door. */
+    all: "All the free tools",
+    allHref: "/tools",
+  },
+  connects: {
+    eyebrow: "Works with what you already pay for",
+    heading: "Your tools, talking to each other.",
+    /* `lib/integrations.ts` refuses an entry without a proof record, and
+       a test resolves every one, so this band cannot be padded. */
+    note: "Each one is running in a system on this page.",
+  },
+  industries: {
+    eyebrow: "Built for these already",
+    heading: "The work, by the kind of business it runs.",
   },
   work: {
     eyebrow: "Real screens, real businesses",
@@ -1495,7 +1547,9 @@ export const homeBands = {
 export const homeNav = [
   { href: "#services", label: "Services" },
   { href: "#work", label: "Work" },
-  { href: "#pricing", label: "Pricing" },
+  /* A route, not an anchor: the price band came off the homepage with the
+     Linx Brand Plan's "no prices on the homepage". See app/pricing. */
+  { href: "/pricing", label: "Pricing" },
   { href: "/tools", label: "Free tools" },
 ] as const;
 

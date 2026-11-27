@@ -27,6 +27,29 @@ export const metadata: Metadata = pageMeta({
   path: "/turnover",
 });
 
+/*
+  Answered from the code, not from the roadmap. Each one was checked
+  against what `TurnoverPlanner` and `/api/turnover` actually do today.
+*/
+const FAQ: { q: string; a: string }[] = [
+  {
+    q: "Is it really free?",
+    a: "Yes. No card, no account, and no limit on how many times you use it. There is nothing to upgrade to yet.",
+  },
+  {
+    q: "Which calendars work?",
+    a: "Any booking calendar that publishes an .ics link, which is Airbnb, Vrbo and Booking.com among others. Paste the link, or paste the file's contents if your platform only lets you download it.",
+  },
+  {
+    q: "Do my cleaners need an account?",
+    a: "No. Nobody needs an account, including you. Download the calendar file and send it to whoever does the work, or email yourself the schedule and forward it.",
+  },
+  {
+    q: "Who made this?",
+    a: "A Maine cleaning company owner who got tired of planning turnovers by text. It is one piece of the system that company runs on.",
+  },
+];
+
 export default function TurnoverPage() {
   return (
     <div className="cp cp-inner">
@@ -55,7 +78,8 @@ export default function TurnoverPage() {
               Paste the calendar your booking platform already publishes. You
               get one cleaning per checkout, the same-day turnarounds marked,
               and a calendar file you can hand to whoever does the work.
-              Nothing is saved and nothing is emailed.
+              It runs in the page, there is no account, and nothing is
+              emailed unless you ask for it.
             </p>
 
             <div className="mt-10 max-w-3xl">
@@ -92,6 +116,32 @@ export default function TurnoverPage() {
               </Link>
               .
             </p>
+
+            {/*
+              The four questions the brand plan asks for, answered from
+              how the planner actually behaves rather than from how it is
+              meant to one day.
+
+              **The plan's fifth section is deliberately missing.** It
+              offers calendar sync and cleaner alerts at $8 per property
+              per month, and its own checklist says "Sync and cleaner
+              alerts actually work, or Section 5 stays hidden". They do
+              not: the planner reads a calendar once and hands back a
+              file. There is no stored sync, no re-read and no alert, so
+              there is nothing to sell yet and the answer below says the
+              true thing instead.
+            */}
+            <div className="mt-14 max-w-2xl">
+              <h2 className="display text-xl text-ink">Questions</h2>
+              <dl className="mt-5 divide-y divide-line border-y border-line">
+                {FAQ.map((f) => (
+                  <div key={f.q} className="py-4">
+                    <dt className="text-[15px] font-semibold text-ink">{f.q}</dt>
+                    <dd className="mt-1.5 text-sm leading-relaxed text-muted">{f.a}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
           </div>
         </section>
         </main>

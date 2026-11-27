@@ -52,6 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${SITE_URL}/pricing`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     /* The showcase only. Each demo it links to is `noindex`, because the
        businesses in them are invented and should not rank for anybody
        actually looking to buy a print or book a massage. */

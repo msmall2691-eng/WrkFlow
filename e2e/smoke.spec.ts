@@ -18,6 +18,8 @@ import {
   studioStats,
   work,
 } from "../lib/content";
+import { turnoverEmailSummary, type Turnover } from "../lib/ical";
+import { MAX_SUMMARY_LEN } from "../lib/toolLead";
 import { integrations, resolveProof } from "../lib/integrations";
 import { CAST } from "../lib/ocean";
 
@@ -1063,30 +1065,46 @@ test("the nav reaches the demos showcase", async ({ page }) => {
      — and the four promises beside it are `studioStats`, which are M
      Studio's own promises rather than outcomes claimed for anybody.
 */
-test("the homepage shows what things cost, from the one place those prices live", async ({
+test("the prices are on their own page, from the one place they live", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  /*
+    **This asserted the homepage until Nov 27 2026**, when the Linx Brand
+    Plan moved the prices to a route of their own. What it guards did not
+    move with them: that the four fixed prices render, that they come
+    from `smallProjects` rather than being retyped, that the page says
+    what is quoted instead, and that the promises are `studioStats`. Only
+    the address changed, so only the address changed here.
 
-  const pricing = page.locator("#pricing");
-  await expect(pricing, "the homepage should carry the price list").toHaveCount(1);
+    The "how far down" check went with the homepage, because on a page
+    whose whole job is the price list it would assert nothing. What
+    replaces it is the reachability check below: a price list nobody can
+    get to is the failure the old assertion was really about.
+  */
+  await page.goto("/pricing");
 
-  const screens = await pricing.evaluate(
-    (el) => (el.getBoundingClientRect().top + window.scrollY) / window.innerHeight,
-  );
-  expect(
-    screens,
-    `the prices start ${screens.toFixed(1)} screens down; this page exists ` +
-      "because they were hard to find",
-  ).toBeLessThan(8);
+  await expect(
+    page.locator("#pricing"),
+    "/pricing should still carry the #pricing anchor the rest of the site links",
+  ).toHaveCount(1);
+
+  /*
+    Scoped to the page, not to `#pricing`. That id belongs to `<Pricing />`,
+    which carries the custom build and the Care Plan; the four fixed prices
+    are a sibling section reading `smallProjects`. Asked only about
+    `#pricing`, this test reported the four as missing when they were on
+    the page a few hundred pixels above — and the page is the price list
+    now, which is the thing worth asserting.
+  */
+  const pricing = page.locator("main");
 
   /* textContent, not innerText: a price inside a clipped element still
      counts as the page carrying it, and innerText drops exactly those. */
   const text = (await pricing.evaluate((el) => el.textContent)) ?? "";
 
   for (const p of smallProjects) {
-    expect(text, `"${p.title}" should be on the homepage`).toContain(p.title);
+    expect(text, `"${p.title}" should be on /pricing`).toContain(p.title);
     expect(text, `"${p.title}" should show its price`).toContain(p.price);
   }
 
@@ -1098,6 +1116,15 @@ test("the homepage shows what things cost, from the one place those prices live"
 
   for (const s of studioStats)
     expect(text, `the promise "${s.label}" should render`).toContain(s.value);
+
+  /* And it is reachable: the homepage bar links it by route now that
+     there is no band to scroll to. */
+  await page.goto("/");
+  const link = page.locator('header a[href="/pricing"], nav a[href="/pricing"], a[href="/pricing"]');
+  expect(
+    await link.count(),
+    "the homepage should link /pricing, or the prices are a page nobody finds",
+  ).toBeGreaterThan(0);
 });
 
 /*
@@ -1388,6 +1415,151 @@ test("the site does not change shape when you click", async ({ page }) => {
       `${route} should carry the site's own nav, not a page-local header`,
     ).toHaveCount(1);
   }
+});
+
+test("a busy calendar's emailed schedule still fits what the endpoint accepts", () => {
+  /*
+    **The endpoint refuses a long summary rather than trimming it**, so an
+    over-budget body is not a long email, it is no email: 422 before the
+    lead is stored or anything is sent. The first cut of the planner's
+    email listed every cleaning, which is 4,251 characters at 120 of them
+    against a 4,000 cap — and 120 is a year of three-day stays on one
+    property, comfortably inside what /api/turnover parses. It failed for
+    exactly the visitors with the most reason to use it.
+
+    Asserted at three sizes rather than one, because this has two ways to
+    be wrong and a single large fixture only catches the first: a schedule
+    that does not fit, and a short schedule needlessly cut down. The third
+    is the boundary either side of the cap.
+
+    The overflow has to be *named*, not dropped — a schedule that silently
+    stops at cleaning 97 is worse than one that says 23 more are in the
+    attachment, because the visitor cannot tell the difference between a
+    short list and a truncated one.
+  */
+  const made = (n: number, sameDay: boolean): Turnover[] =>
+    Array.from({ length: n }, (_, i) => {
+      const d = new Date(Date.UTC(2026, 0, 1));
+      d.setUTCDate(d.getUTCDate() + i);
+      const date = d.toISOString().slice(0, 10);
+      const stay = { start: date, end: date, summary: "Reserved", kind: "stay" as const };
+      return { date, out: stay, in: sameDay ? stay : undefined, sameDay };
+    });
+
+  for (const n of [1, 40, 120, 400]) {
+    const body = turnoverEmailSummary(made(n, true), n);
+    expect(
+      body.length,
+      `${n} same-day cleanings produced a ${body.length}-char summary; ` +
+        `/api/tool-lead rejects anything over ${MAX_SUMMARY_LEN} with a 422 and sends no email`,
+    ).toBeLessThanOrEqual(MAX_SUMMARY_LEN);
+    expect(body, `the ${n}-cleaning summary should still name the .ics`).toContain(".ics");
+  }
+
+  /* A schedule that fits is listed in full, with nothing held back. */
+  const small = turnoverEmailSummary(made(12, false), 12);
+  expect(small, "a 12-cleaning schedule has no overflow to report").not.toContain("more, all in");
+  expect(
+    small.split("\n").filter((l) => /^[A-Z][a-z]{2}, /.test(l)),
+    "every one of the 12 should be listed",
+  ).toHaveLength(12);
+
+  /* A schedule that does not fit says how many it is holding back, and the
+     count is right rather than merely present. */
+  const big = turnoverEmailSummary(made(300, true), 300);
+  const overflow = big.match(/and (\d+) more, all in the attached \.ics\./);
+  expect(overflow, "a 300-cleaning schedule must name what it left out").toBeTruthy();
+  const listed = big.split("\n").filter((l) => /^[A-Z][a-z]{2}, /.test(l)).length;
+  expect(listed + Number(overflow![1]), "listed + held back should equal the whole schedule").toBe(300);
+  expect(listed, "it should list as many as fit, not give up").toBeGreaterThan(50);
+
+  /*
+    **And it has to be fast, because the caller reads it during render.**
+    The first cut re-joined the whole remaining summary on every step of
+    the fitting search, reformatting every surviving date: 93ms at 120
+    cleanings, 4.2s at 400, 19s at 800 — a frozen page, at sizes
+    /api/turnover parses without complaint. A correctness test cannot see
+    that; all three of those produced the right answer eventually.
+
+    Asserted as a wall-clock ceiling rather than a complexity claim, since
+    a test cannot read an exponent. One second for 800 is ~20x slack
+    against this machine's linear timing and still ~19x under the version
+    it replaced, so it does not flake on a slow runner.
+
+    **What it catches is re-formatting, and that is narrower than it
+    sounds**, which is worth knowing before trusting it. Checked by
+    breaking it both ways: putting `toLocaleDateString` back inside the
+    search fails this at 17.3s, while re-joining the text each step but
+    keeping the dates formatted once still passes in well under a second.
+    So the expensive thing is the date formatting, not the assembling —
+    the `fits` arithmetic beside it is an improvement this test would not
+    notice losing. That is the honest scope: it guards the one cost that
+    actually froze the page.
+  */
+  const started = Date.now();
+  turnoverEmailSummary(made(800, true), 800);
+  const took = Date.now() - started;
+  expect(
+    took,
+    `fitting 800 cleanings took ${took}ms. This runs during render, and the ` +
+      "quadratic version it replaced took ~19s here. Format each date once and " +
+      "fit on accumulated lengths.",
+  ).toBeLessThan(1000);
+});
+
+test("every tool that offers to email a result is one the endpoint accepts", () => {
+  /*
+    **Two authors of one fact, and they had already disagreed.** A component
+    posts `tool: "<id>"` to /api/tool-lead; that route keeps its own
+    allowlist and answers 422 "Unknown tool." for anything else, which is
+    right — the label becomes the subject line, so it may never come from
+    the client. What was missing is anything tying the two together. The
+    Turnover Planner shipped an email field sending `turnover` while the
+    allowlist carried seven other ids, so the button was dead for every
+    visitor: no lead stored, no email sent, no failure anywhere a build or
+    this suite could see it, because the refusal happens at runtime over
+    the network. A review bot found it; nothing here would have.
+
+    Read from source on both sides rather than asserting a list, so adding
+    a tool to either one is the only way to keep this green. Scoped to
+    files that actually render the two email components, so an unrelated
+    `tool="..."` prop elsewhere is not swept in, and literals only —
+    `SaveResult` forwards `tool={tool}` to `ToolEmailCapture`, which is the
+    same string one frame up rather than a second claim.
+  */
+  const route = readFileSync(join("app", "api", "tool-lead", "route.ts"), "utf8");
+  const block = route.match(/const TOOL_LABELS[^{]*\{([\s\S]*?)\n\};/);
+  expect(block, "could not find TOOL_LABELS in app/api/tool-lead/route.ts").toBeTruthy();
+  const accepted = new Set(
+    [...block![1].matchAll(/^\s*"?([a-z][a-z0-9-]*)"?\s*:/gm)].map((m) => m[1]),
+  );
+  expect(accepted.size, "TOOL_LABELS parsed as empty — the regex has drifted").toBeGreaterThan(3);
+
+  const offenders: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+        continue;
+      }
+      if (!/\.tsx$/.test(entry.name)) continue;
+      const src = readFileSync(full, "utf8");
+      if (!/<(?:SaveResult|ToolEmailCapture)\b/.test(src)) continue;
+      for (const m of src.matchAll(/\btool="([^"]+)"/g)) {
+        if (!accepted.has(m[1])) offenders.push(`${full} sends tool="${m[1]}"`);
+      }
+    }
+  };
+  walk("components");
+  walk("app");
+
+  expect(
+    offenders,
+    `${offenders.join("; ")} — /api/tool-lead answers 422 "Unknown tool." for it, so ` +
+      "that email button is dead. Add the id and its label to TOOL_LABELS in " +
+      "app/api/tool-lead/route.ts.",
+  ).toEqual([]);
 });
 
 test("the retired /marketplace still lands somewhere", async ({ page }) => {
@@ -2558,9 +2730,11 @@ test("the hero loop stops once it is scrolled past, and runs again on the way ba
     })
     .toBe(false);
 
-  /* Well past the hero: the price list is most of the way down the page,
-     so nothing of the hero is on screen here. */
-  await page.locator("#pricing").scrollIntoViewIfNeeded();
+  /* Well past the hero: the contact band is the last thing on the page,
+     so nothing of the hero is on screen here. It was `#pricing` until
+     that band moved to its own route — an anchor chosen for being far
+     down, not for being prices. */
+  await page.locator("#contact").scrollIntoViewIfNeeded();
   await expect
     .poll(() => hero.evaluate((v: HTMLVideoElement) => v.paused), {
       timeout: 5_000,
