@@ -773,21 +773,25 @@ body {
   is the urgency idea BrightBase already works on, not a new vocabulary.
 */
 .cp .sheet {
-  --sheet-bg: #f7f5f1;
-  --sheet-ink: #11161d;
-  --sheet-muted: rgba(17, 22, 29, 0.64);
-  --sheet-faint: rgba(17, 22, 29, 0.46);
-  --sheet-line: rgba(17, 22, 29, 0.14);
-  --sheet-fill: rgba(17, 22, 29, 0.07);
-  --sheet-clean: #0f766e;
-  --sheet-same: #b45309;
+  /* iOS system colours, at Meg's word: "i want like modern IOS vibes cal".
+     The first cut used teal and amber and she rejected both by name. These
+     are Apple's own label, separator, fill and tint values, which is why
+     the grid reads as a calendar rather than as a chart. */
+  --sheet-bg: #ffffff;
+  --sheet-ink: #1c1c1e; /* label */
+  --sheet-muted: rgba(60, 60, 67, 0.6); /* secondaryLabel */
+  --sheet-faint: rgba(60, 60, 67, 0.34); /* tertiaryLabel */
+  --sheet-line: rgba(60, 60, 67, 0.18); /* separator */
+  --sheet-fill: #e5e5ea; /* systemGray5 — a night someone is staying */
+  --sheet-clean: #007aff; /* systemBlue — a cleaning */
+  --sheet-same: #5856d6; /* systemIndigo — a same-day turnaround */
   --sheet-on-clean: #ffffff;
 
   background: var(--sheet-bg);
   color: var(--sheet-ink);
-  border: 1px solid var(--sheet-line);
-  border-radius: 14px;
-  padding: 18px 16px 16px;
+  border: none;
+  border-radius: 18px;
+  padding: 20px 16px 16px;
 }
 
 @media (min-width: 640px) {

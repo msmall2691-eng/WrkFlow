@@ -374,118 +374,109 @@ function MonthGrid({ turnovers, stays }: { turnovers: Turnover[]; stays: Booking
 
   const shown = turnovers.filter((t) => t.date >= days[0] && t.date <= last).length;
   const beyond = turnovers.length - shown;
+  /* The four weeks can straddle two months, and a bare "29, 30, 1, 2" is
+     the same numbers twice in one picture. A month view dims the days
+     either side of itself rather than labelling them, so this does too,
+     with the month of the first cleaning as the one being shown. */
+  const primaryMonth = new Date(`${first}T12:00:00Z`).getUTCMonth();
 
   return (
     <div className="sheet mt-6">
-      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h3 className="m-0 text-[15px] font-semibold" style={{ color: "var(--sheet-ink)" }}>
+      <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3
+          className="m-0 text-[17px] font-semibold tracking-[-0.01em]"
+          style={{ color: "var(--sheet-ink)" }}
+        >
           {spanLabel(days)}
         </h3>
-        <p className="m-0 text-xs" style={{ color: "var(--sheet-muted)" }}>
+        <p className="m-0 text-[13px]" style={{ color: "var(--sheet-muted)" }}>
           {shown} {shown === 1 ? "cleaning" : "cleanings"} in these four weeks
           {beyond > 0 && `, ${beyond} more after them`}
         </p>
       </div>
 
       <div
-        className="grid grid-cols-7 gap-1 text-center text-[11px] font-medium uppercase tracking-wider"
+        className="grid grid-cols-7 text-center text-[11px] font-semibold uppercase tracking-[0.04em]"
         style={{ color: "var(--sheet-faint)" }}
       >
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
-          <span key={d}>{d}</span>
+          <span key={d} className="py-1.5">
+            {d}
+          </span>
         ))}
       </div>
 
-      <div className="mt-1.5 grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7">
         {days.map((d) => {
           const t = byDate.get(d);
           const isBooked = booked.has(d);
           const dayNum = Number(d.slice(8));
-          /* The 1st carries its month, so the week that crosses over reads
-             as two months rather than as numbers that restart. */
-          const monthMark = new Date(`${d}T12:00:00Z`)
-            .toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+          const otherMonth = new Date(`${d}T12:00:00Z`).getUTCMonth() !== primaryMonth;
+
+          /* The disc behind the number is the whole signal, the way a
+             calendar on a phone marks a day. Nothing is filled, bordered
+             or tinted at cell level. */
+          const disc = t
+            ? t.sameDay
+              ? "var(--sheet-same)"
+              : "var(--sheet-clean)"
+            : isBooked
+              ? "var(--sheet-fill)"
+              : "transparent";
 
           return (
-            <div
-              key={d}
-              style={
-                t
-                  ? {
-                      /* Two fills, because a same-day turnaround is a
-                         different job from an ordinary clean. */
-                      background: t.sameDay ? "var(--sheet-same)" : "var(--sheet-clean)",
-                      color: "var(--sheet-on-clean)",
-                      borderColor: t.sameDay ? "var(--sheet-same)" : "var(--sheet-clean)",
-                    }
-                  : {
-                      background: isBooked ? "var(--sheet-fill)" : "transparent",
-                      borderColor: d === today ? "var(--sheet-ink)" : "var(--sheet-line)",
-                    }
-              }
-              className="relative flex min-h-[64px] flex-col gap-1 overflow-hidden rounded-lg border p-2 text-left"
-            >
-              {/* A stay reads as an edge rather than as a filled block. */}
-              {isBooked && !t && (
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-y-0 left-0 w-[3px]"
-                  style={{ background: "var(--sheet-line)" }}
-                />
-              )}
+            <div key={d} className="flex flex-col items-center gap-1 py-1.5">
               <span
-                className={`text-[12.5px] leading-none ${t || d === today ? "font-bold" : "font-medium"}`}
-                style={t ? undefined : { color: d === today ? "var(--sheet-ink)" : "var(--sheet-muted)" }}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-[15px] tabular-nums"
+                style={{
+                  background: disc,
+                  color: t
+                    ? "var(--sheet-on-clean)"
+                    : otherMonth
+                      ? "var(--sheet-faint)"
+                      : "var(--sheet-ink)",
+                  fontWeight: t || d === today ? 600 : 400,
+                  boxShadow: d === today && !t ? "inset 0 0 0 2px var(--sheet-ink)" : undefined,
+                }}
               >
-                {/* The month rides the 1st so the week that crosses over
-                    reads as two months. Hidden on a phone, where the cell
-                    is ~40px wide and the heading above says the span. */}
-                {dayNum === 1 && <span className="hidden sm:inline">{monthMark} </span>}
                 {dayNum}
               </span>
-              {t && (
-                <span className="mt-auto leading-tight">
-                  <span className="hidden text-[11.5px] font-semibold sm:block">Clean</span>
-                  {/* The cell is already amber when it is a same-day, so
-                      the words ride on it in the cell's own ink. */}
-                  {t.sameDay && (
-                    <>
-                      <span className="mt-1 hidden items-center rounded-full border border-current px-1.5 py-[1px] text-[9.5px] font-semibold uppercase tracking-wide opacity-80 sm:inline-flex">
-                        Same day
-                      </span>
-                      {/* Phone: the pill does not fit, so the same fact is a dot. */}
-                      <span
-                        aria-hidden="true"
-                        className="mt-1 block h-1.5 w-1.5 rounded-full bg-current opacity-80 sm:hidden"
-                      />
-                      <span className="sr-only">Same day turnaround</span>
-                    </>
-                  )}
-                </span>
-              )}
+              {/* A second mark so a same-day is not carried by hue alone. */}
+              <span className="flex h-1.5 items-center gap-[3px]">
+                {t && (
+                  <span
+                    className="block h-1.5 w-1.5 rounded-full"
+                    style={{ background: t.sameDay ? "var(--sheet-same)" : "var(--sheet-clean)" }}
+                  />
+                )}
+                {t?.sameDay && (
+                  <span
+                    className="block h-1.5 w-1.5 rounded-full"
+                    style={{ background: "var(--sheet-same)" }}
+                  />
+                )}
+              </span>
+              {t && <span className="sr-only">{t.sameDay ? "Same day turnaround" : "Cleaning"}</span>}
             </div>
           );
         })}
       </div>
 
       <div
-        className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-xs"
-        style={{ color: "var(--sheet-muted)" }}
+        className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t pt-3 text-[13px]"
+        style={{ borderColor: "var(--sheet-line)", color: "var(--sheet-muted)" }}
       >
-        <span className="inline-flex items-center gap-1.5">
-          <span
-            className="h-3 w-3 rounded-[3px] border"
-            style={{ background: "var(--sheet-fill)", borderColor: "var(--sheet-line)" }}
-          />
-          Guest staying
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded-[3px]" style={{ background: "var(--sheet-clean)" }} />
+        <span className="inline-flex items-center gap-2">
+          <span className="h-3.5 w-3.5 rounded-full" style={{ background: "var(--sheet-clean)" }} />
           Cleaning day
         </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded-[3px]" style={{ background: "var(--sheet-same)" }} />
-          One guest out, the next in on the same day
+        <span className="inline-flex items-center gap-2">
+          <span className="h-3.5 w-3.5 rounded-full" style={{ background: "var(--sheet-same)" }} />
+          One guest out, the next in the same day
+        </span>
+        <span className="inline-flex items-center gap-2">
+          <span className="h-3.5 w-3.5 rounded-full" style={{ background: "var(--sheet-fill)" }} />
+          Guest staying
         </span>
       </div>
     </div>
