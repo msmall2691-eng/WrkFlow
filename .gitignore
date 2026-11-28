@@ -38,3 +38,10 @@ next-env.d.ts
 
 # claude code personal settings (force-push allowance for the work branch)
 .claude/settings.local.json
+
+# Scratch worktrees the Agent tool creates for parallel work. Each one is a
+# full checkout of this repo, so committing them would nest the repository
+# inside itself five times over; they are also deleted when the agents that
+# own them finish. Ignored rather than committed, which is what a stop hook
+# asking to commit untracked files should get here.
+.claude/worktrees/
