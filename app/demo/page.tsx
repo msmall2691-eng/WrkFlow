@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { pageMeta } from "@/lib/seo";
-import { demos as DEMOS } from "@/lib/content";
-import PanelHeader from "@/components/panel/PanelHeader";
+import { demos as DEMOS, siteNav } from "@/lib/content";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import StackedHeading from "@/components/StackedHeading";
@@ -44,16 +44,9 @@ export const metadata: Metadata = pageMeta({
 
 export default function DemoIndexPage() {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
-
-        <div className="relative z-10">
-          <PanelHeader current="/demo" bookHref="/?offer=call#contact" />
-        </div>
+        <StageTopBar inFlow cta="book" nav={siteNav} here="Demos" bookHref="/?offer=call#contact" />
 
         <main className="relative z-10">
           <section className="border-b border-[var(--cp-line)] py-14 md:py-20">

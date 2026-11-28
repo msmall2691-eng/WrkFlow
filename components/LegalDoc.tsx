@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import PanelHeader from "./panel/PanelHeader";
+import { siteNav } from "@/lib/content";
+import StageTopBar from "./stage/StageTopBar";
 import Footer from "./Footer";
 import CommandPalette from "./CommandPalette";
 import StackedHeading from "./StackedHeading";
@@ -40,18 +41,13 @@ export function LegalShell({
   children: ReactNode;
 }) {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
+        {/* `here={title}` rather than a literal: this shell dresses two
+            documents, so the bar names whichever one is being read. */}
+        <StageTopBar inFlow cta="book" nav={siteNav} here={title} bookHref="/?offer=call#contact" />
 
-        <div className="relative z-10">
-          <PanelHeader bookHref="/?offer=call#contact" />
-        </div>
-
-        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        {/* No pt-16: that cleared the fixed <Nav>, and the bar is in flow. */}
         <main className="relative z-10">
         <section className="border-b border-[var(--cp-line)] py-14 md:py-20">
           <div className="mx-auto max-w-3xl px-6">

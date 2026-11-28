@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { pageMeta } from "@/lib/seo";
-import PanelHeader from "@/components/panel/PanelHeader";
+import StageTopBar from "@/components/stage/StageTopBar";
 import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import LinxMark from "@/components/LinxMark";
 import WelcomeBookReserve from "@/components/WelcomeBookReserve";
-import { welcomeBook } from "@/lib/content";
+import { siteNav, welcomeBook } from "@/lib/content";
 import StackedHeading from "@/components/StackedHeading";
 
 const wb = welcomeBook;
@@ -24,18 +24,11 @@ export const metadata: Metadata = pageMeta({
 
 export default function WelcomeBookPage() {
   return (
-    <div className="cp">
+    <div className="cp cp-inner">
       <div className="relative overflow-hidden">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-          <span className="cp-aurora cp-a1" />
-          <span className="cp-aurora cp-a2" />
-        </div>
+        <StageTopBar inFlow cta="book" nav={siteNav} here="Welcome book" bookHref="/?offer=call#contact" />
 
-        <div className="relative z-10">
-          <PanelHeader bookHref="/?offer=call#contact" />
-        </div>
-
-        {/* No pt-16: that cleared the fixed <Nav>, and PanelHeader is in flow. */}
+        {/* No pt-16: that cleared the fixed <Nav>, and the bar is in flow. */}
         <main className="relative z-10">
         {/*
           Hero.
