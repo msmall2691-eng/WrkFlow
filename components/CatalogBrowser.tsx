@@ -174,12 +174,21 @@ export default function CatalogBrowser() {
           blur and the alpha both reported working.
         */
         <div className="sticky top-0 z-20 -mx-6 mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-[color:var(--cp-line)] bg-[color:var(--ink)] px-6 py-3">
-          <p className="m-0 min-w-0 flex-1 text-[14px] font-semibold text-[color:var(--cp-ink)]">
+          {/*
+            This *is* the open shelf's heading, not a label repeating one.
+            Written as two, the bar and the section title both said "Apps &
+            portals" within 60px of each other at the top of the view, which
+            is the same two-controls-one-job noise the eight tabs were.
+          */}
+          <h2
+            id={`sec-${open.id}`}
+            className="m-0 min-w-0 flex-1 text-[15px] font-semibold tracking-tight text-[color:var(--cp-ink)]"
+          >
             {open.label}{" "}
             <span className="font-mono text-[12px] font-normal tracking-wider text-[color:var(--cp-faint)]">
               {countIn(open.id)} {catalogPage.browse.unit(countIn(open.id))}
             </span>
-          </p>
+          </h2>
           <button
             type="button"
             onClick={() => go("all")}
@@ -193,7 +202,6 @@ export default function CatalogBrowser() {
       {open ? (
         <CardSection
           id={open.id}
-          label={open.label}
           blurb={open.blurb}
           items={ready.filter((i) => i.categories.includes(open.id))}
         />
@@ -322,21 +330,17 @@ function ListSection({
   );
 }
 
-/* The looking view: the same items, drawn at the size of the work. */
-function CardSection({
-  id,
-  label,
-  blurb,
-  items,
-}: {
-  id: string;
-  label: string;
-  blurb: string;
-  items: CatalogItem[];
-}) {
+/*
+  The looking view: the same items, drawn at the size of the work.
+
+  Its heading lives in the sticky bar above it, which is why this takes no
+  label: one heading that travels with you beats a static one plus a bar
+  repeating it.
+*/
+function CardSection({ id, blurb, items }: { id: string; blurb: string; items: CatalogItem[] }) {
   return (
-    <section aria-labelledby={`sec-${id}`} className="mt-10">
-      <SectionHead id={id} label={label} blurb={blurb} />
+    <section aria-labelledby={`sec-${id}`} className="mt-5">
+      <p className="m-0 text-[14px] text-[color:var(--cp-muted)]">{blurb}</p>
       <ul className="m-0 mt-5 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {items.map((item) => (
           <Card key={item.id} item={item} />
