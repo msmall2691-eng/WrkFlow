@@ -1507,6 +1507,61 @@ test("a busy calendar's emailed schedule still fits what the endpoint accepts", 
   ).toBeLessThan(1000);
 });
 
+test("tapping the tool that is already open still brings it into view", async ({ page }) => {
+  /*
+    **The card most likely to be tapped first was the one that did
+    nothing.** /tools opens on a tool, and tapping that tool's card calls
+    `setTool` with the id already in state. React bails out, nothing
+    re-renders, and the scroll effect keyed on `[tool]` never runs. On a
+    phone the workbench sits below the rest of the directory, so the
+    visitor taps and the page does not move, which reads as broken.
+
+    **The first version of this test could not fail, which is worse than
+    not having it.** It scrolled to the top, clicked, and checked the
+    page had moved — but Playwright scrolls an element into view before
+    clicking it, so the page moved every time whether the handler ran or
+    not. It passed happily with the fix deleted.
+
+    So the card is put on screen FIRST, with the workbench still below
+    the fold. Playwright then has no scrolling of its own to do, and any
+    movement is the handler's. Verified by deleting the fix and watching
+    this fail.
+  */
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/tools");
+
+  const bench = page.locator("#open");
+  const openTool = page.locator('#tools button[aria-pressed="true"]').first();
+  await expect(openTool, "one tool should be open when the page loads").toHaveCount(1);
+
+  /* The card visible, the workbench not. Playwright will not scroll to
+     click something already in view, so the click cannot move the page
+     by itself. */
+  await openTool.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+
+  const cardTop = await openTool.evaluate((el) => el.getBoundingClientRect().top);
+  expect(cardTop, "the card should be on screen before the click").toBeGreaterThanOrEqual(0);
+  expect(cardTop, "the card should be on screen before the click").toBeLessThan(844);
+
+  const before = await bench.evaluate((el) => el.getBoundingClientRect().top);
+  expect(
+    before,
+    "the workbench should still be below the fold, or this test proves nothing",
+  ).toBeGreaterThan(844);
+
+  await openTool.click();
+  await page.waitForTimeout(900); // smooth scroll
+
+  const after = await bench.evaluate((el) => el.getBoundingClientRect().top);
+  expect(
+    after,
+    `tapping the already-open tool left the workbench at ${Math.round(after)}px, ` +
+      `from ${Math.round(before)}px. Re-selecting the open tool is a no-op in React, ` +
+      "so the scroll has to be driven from the click rather than from an effect on [tool].",
+  ).toBeLessThan(before - 200);
+});
+
 test("every tool that offers to email a result is one the endpoint accepts", () => {
   /*
     **Two authors of one fact, and they had already disagreed.** A component

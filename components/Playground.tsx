@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import AutomationCost from "./AutomationCost";
 import SiteCheck from "./SiteCheck";
@@ -115,11 +115,12 @@ export default function Playground() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* After the new tool has rendered, not during the click, so the jump
-     lands on the height the tool actually takes. */
-  useEffect(() => {
-    if (!clicked.current) return;
-    clicked.current = false;
+  /*
+    Bring the workbench into view, if the visitor is not already looking
+    at it. One author, because it is now reached two ways: after a render
+    when the tool changed, and synchronously when it did not.
+  */
+  const showBench = useCallback(() => {
     const el = bench.current;
     if (!el) return;
 
@@ -133,9 +134,35 @@ export default function Playground() {
         : "smooth",
       block: "start",
     });
-  }, [tool]);
+  }, []);
+
+  /* After the new tool has rendered, not during the click, so the jump
+     lands on the height the tool actually takes. */
+  useEffect(() => {
+    if (!clicked.current) return;
+    clicked.current = false;
+    showBench();
+  }, [tool, showBench]);
 
   function selectTool(id: Tool) {
+    /*
+      **Tapping the tool that is already open has to move the page too.**
+      `setTool(id)` with the id already in state is a no-op: React bails
+      out, nothing re-renders, and an effect keyed on `[tool]` never runs.
+      So the one card guaranteed to be tapped first, the one the page
+      opens on, was the one that did nothing. On a phone that is the whole
+      interaction, because the workbench sits below the rest of the
+      directory and the visitor never sees it move.
+
+      No render is pending in that case, which is exactly why it is safe
+      to scroll now: the bench is already at the height this tool takes,
+      which is the thing the effect above exists to wait for.
+    */
+    if (id === tool) {
+      trackTool(id, "opened");
+      showBench();
+      return;
+    }
     clicked.current = true;
     setTool(id);
     trackTool(id, "opened");
