@@ -8,23 +8,49 @@ import Footer from "@/components/Footer";
 import CommandPalette from "@/components/CommandPalette";
 import CatalogBrowser from "@/components/CatalogBrowser";
 import StackedHeading from "@/components/StackedHeading";
-import { catalog, categories, liveDemoIds } from "@/lib/catalog";
+import { catalog, catalogPage, categories, liveDemoIds, readyCount } from "@/lib/catalog";
 import { siteNav } from "@/lib/content";
 
 /*
   /catalog — everything in one place, browsed by what you need. Data and
   the honesty rules live in lib/catalog.ts.
 
-  Second pass on Meg's notes ("more professional and clean", "less
-  colours", "feels scattered"): no aurora behind the page, a smaller
-  heading, one row of live demos, then the category tabs and the grid.
-
   Nov 26 2026: converted to the approved homepage's clothes with
-  `.cp-inner` — its bar, its two faces, its one accent. This page was
-  already the closest of the six: it had asked for no aurora and fewer
-  colours a pass earlier, which is the same note the homepage was chosen
-  on. A token re-point, so CatalogBrowser and the sticky category bar are
-  untouched.
+  `.cp-inner` — its bar, its two faces, its one accent.
+
+  ───────────────────────────────────────────────────────────────────────
+  **Nov 28 2026: three bands, where there were eleven sections.**
+
+  Meg retired /marketplace because she preferred this page, so everything
+  a visitor can buy or use now arrives here, and that made scannability
+  the whole job. Measured first, because this repo's rule is to measure
+  and then look: 7.6 screens at 1440×900, eleven sections, ten h2s, 34
+  full-size screenshots, 70 links, one section 5,507px tall — and **19.1
+  screens at 390px**, which is the width she judges on. Her own words
+  about this area were "its so confusting".
+
+  Nothing was cut. The page is re-ordered around the question somebody
+  arrives with:
+
+    1. **Where am I and what can I open.** The title, one line, and the
+       six things that work this second. The strip was six large tiles
+       and is now a compact row, because its job is "you can touch
+       something here", not "look at this screenshot".
+    2. **What do you need.** Seven doors with their own blurbs and their
+       counted sizes. This is the map, and it is also the only filter:
+       the eight tabs that used to sit lower down said the same seven
+       words a second time, 700px away, which is most of what read as a
+       maze. See `components/CatalogBrowser.tsx` for the two densities
+       behind the doors.
+    3. **Don't see it.** Unchanged, and still the one strong action.
+
+  **Every string here resolves to `lib/catalog.ts`.** The headings and
+  the closing pitch used to be typed into this file while everything
+  around them was read from data, which is the split that lets a page and
+  its source drift. The counts are computed from `catalog`, never
+  written: a count is a claim about evidence, which is the first rule in
+  CLAUDE.md.
+  ───────────────────────────────────────────────────────────────────────
 */
 
 export const metadata: Metadata = pageMeta({
@@ -42,8 +68,6 @@ const liveHref = (i: (typeof liveDemos)[number]) =>
   i.primary ?? i.proof ?? { label: "Open", href: "/catalog" };
 
 export default function CatalogPage() {
-  const count = catalog.filter((i) => i.status !== "workbench").length;
-
   return (
     <div className="cp cp-inner">
       <StageTopBar
@@ -55,26 +79,37 @@ export default function CatalogPage() {
       />
 
       <main>
-        <section className="border-b border-[var(--cp-line)] pb-10 pt-8 md:pb-12 md:pt-12">
+        {/* 1 — where you are, and the six you can open now. */}
+        <section className="border-b border-[var(--cp-line)] pb-9 pt-8 md:pb-11 md:pt-12">
           <div className="mx-auto max-w-6xl px-6">
             <p className="m-0 text-[13px] font-medium text-[color:var(--cp-faint)]">
-              Catalog · {count} things to use, buy or have built
+              Catalog · {readyCount} things to use, buy or have built
             </p>
             <StackedHeading
               as="h1"
               className="mt-2"
-              lead="Websites, apps and tools"
-              trail="for small businesses."
+              lead={catalogPage.title.lead}
+              trail={catalogPage.title.trail}
             />
             <p className="mt-3 max-w-2xl text-[15.5px] leading-relaxed text-[color:var(--cp-muted)]">
-              Try a live demo, buy something ready-made, or have it built around
-              how you work. Every picture here is a real screen.
+              {catalogPage.intro}
             </p>
 
-            <h2 className="m-0 mt-9 text-[13px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
-              Try it live
-            </h2>
-            <ul className="m-0 mt-3 grid list-none grid-cols-2 gap-3 p-0 md:grid-cols-3 lg:grid-cols-6">
+            <div className="mt-8 flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+              <h2 className="m-0 text-[13px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
+                {catalogPage.live.heading}
+              </h2>
+              <p className="m-0 text-[13px] text-[color:var(--cp-muted)]">
+                {catalogPage.live.note}
+              </p>
+            </div>
+            {/*
+              Six across at every width above a phone, three across on one.
+              The tile is deliberately small: at this size the capture reads
+              as "a working screen" rather than as something to study, which
+              is the whole of what this strip claims.
+            */}
+            <ul className="m-0 mt-3 grid list-none grid-cols-3 gap-2.5 p-0 sm:grid-cols-6">
               {liveDemos.map((d) => {
                 const link = liveHref(d);
                 const inner = (
@@ -85,16 +120,16 @@ export default function CatalogPage() {
                           src={d.image}
                           alt={`${d.name}, a real screen`}
                           fill
-                          sizes="(min-width: 1024px) 180px, (min-width: 768px) 33vw, 50vw"
+                          sizes="(min-width: 640px) 180px, 33vw"
                           className="object-cover object-top"
                         />
                       )}
                     </span>
-                    <span className="block px-3 py-2.5">
-                      <span className="block text-[13px] font-semibold leading-snug text-[color:var(--cp-ink)]">
+                    <span className="block px-2.5 py-2">
+                      <span className="block text-[12.5px] font-semibold leading-snug text-[color:var(--cp-ink)]">
                         {d.name}
                       </span>
-                      <span className="mt-0.5 block text-[12px] font-medium text-[color:var(--cp-violet-ink)]">
+                      <span className="mt-0.5 block text-[11.5px] font-medium text-[color:var(--cp-violet-ink)]">
                         Open it {link.external ? "↗" : "→"}
                       </span>
                     </span>
@@ -104,7 +139,12 @@ export default function CatalogPage() {
                 return (
                   <li key={d.id}>
                     {link.external ? (
-                      <a href={link.href} target="_blank" rel="noopener noreferrer" className={cls}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={cls}
+                      >
                         {inner}
                       </a>
                     ) : (
@@ -119,7 +159,8 @@ export default function CatalogPage() {
           </div>
         </section>
 
-        <section className="pb-16">
+        {/* 2 — the map, and what is behind the door. */}
+        <section className="pb-16 pt-9">
           <div className="mx-auto max-w-6xl px-6">
             <Suspense fallback={<StaticList />}>
               <CatalogBrowser />
@@ -127,20 +168,22 @@ export default function CatalogPage() {
           </div>
         </section>
 
+        {/* 3 — the one strong action. */}
         <section className="border-t border-[var(--cp-line)] py-12">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-6">
             <div>
-              <h2 className="m-0 text-xl font-semibold text-[color:var(--cp-ink)]">Don&apos;t see it?</h2>
+              <h2 className="m-0 text-xl font-semibold text-[color:var(--cp-ink)]">
+                {catalogPage.ask.heading}
+              </h2>
               <p className="m-0 mt-1.5 max-w-xl text-[14.5px] leading-relaxed text-[color:var(--cp-muted)]">
-                Most of this started as one business asking for one thing. Describe
-                yours and get a written scope within a day. Scoping is free.
+                {catalogPage.ask.body}
               </p>
             </div>
             <Link
-              href="/?offer=custom#contact"
+              href={catalogPage.ask.href}
               className="inline-flex min-h-11 items-center rounded-lg bg-[color:var(--cp-ink)] px-5 text-[14px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90"
             >
-              Describe what you need
+              {catalogPage.ask.cta}
             </Link>
           </div>
         </section>
@@ -151,11 +194,11 @@ export default function CatalogPage() {
   );
 }
 
-/* Before the tabs hydrate: every item by category, as plain text, so the
+/* Before the map hydrates: every item by category, as plain text, so the
    page is complete without JavaScript. */
 function StaticList() {
   return (
-    <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {categories.map((c) => (
         <div key={c.id}>
           <h2 className="m-0 text-lg font-semibold text-[color:var(--cp-ink)]">{c.label}</h2>

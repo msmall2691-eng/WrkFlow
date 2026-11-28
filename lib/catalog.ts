@@ -474,6 +474,63 @@ export const catalog: CatalogItem[] = [
   },
 ];
 
+/*
+  **Every visitor-facing string on /catalog, in one place.**
+
+  The page used to hand-write its own headings and its closing pitch while
+  reading everything else from here, which is the split that lets a page
+  and its data drift apart. Counts are deliberately absent: a number is a
+  claim about evidence and is computed from `catalog` at the call site,
+  never typed into a sentence.
+*/
+export const catalogPage = {
+  title: { lead: "Websites, apps and tools", trail: "for small businesses." },
+  intro:
+    "Pick the row that sounds like your business. Every picture here is a real screen of something running.",
+  live: {
+    heading: "Open one right now",
+    note: "Working, free, no signup. Nothing to install.",
+  },
+  /* The map of doors. It is a nav, so it carries a label rather than a
+     heading, and the label is the question it answers. */
+  browse: {
+    label: "What do you need?",
+    everything: "Show everything",
+    /* On a tile, after the counted number. Singular is unreachable today
+       and is still written, because a category emptying to one is a data
+       change rather than a code change. */
+    unit: (n: number) => (n === 1 ? "thing" : "things"),
+  },
+  /* In the grouped view a section shows each thing once, under its first
+     category; this is the way to the rest of that category, at full size. */
+  seeAll: (n: number, label: string) => `See all ${n} in ${label}`,
+  coming: {
+    heading: "Coming next",
+    body: "Ideas being considered, not finished products. Say you want one and it moves up the list.",
+    cta: "I want this",
+  },
+  ask: {
+    heading: "Don't see it?",
+    body: "Most of this started as one business asking for one thing. Describe yours and get a written scope within a day. Scoping is free.",
+    cta: "Describe what you need",
+    href: "/?offer=custom#contact",
+  },
+} as const;
+
+/**
+ * How many listed things sit behind one door, counted from `catalog`.
+ *
+ * `workbench` rows are excluded because they are not things anybody can
+ * have yet, and a door promising seven that opens on four unbuilt ideas is
+ * the kind of count CLAUDE.md's first rule is about.
+ */
+export function countIn(id: CatalogCategory): number {
+  return catalog.filter((i) => i.status !== "workbench" && i.categories.includes(id)).length;
+}
+
+/** Everything a visitor can actually use, buy or have built today. */
+export const readyCount = catalog.filter((i) => i.status !== "workbench").length;
+
 /* Legacy ?for= shelf links (homepage, earlier posts) map onto categories. */
 export const legacyShelf: Record<string, CatalogCategory> = {
   rentals: "rentals",
@@ -482,7 +539,15 @@ export const legacyShelf: Record<string, CatalogCategory> = {
   any: "connect",
 };
 
-/* The "Try it live" row: things that open and work right now. */
+/*
+  The "Open one right now" strip: things that open and work this second.
+
+  These six are listed twice on the page, in the strip and again in their
+  own category, and that is on purpose rather than an oversight. The strip
+  answers "can I see anything without talking to anybody"; the category
+  row answers "what is this and what does it cost". Collapsing them would
+  lose one of the two questions.
+*/
 export const liveDemoIds = [
   "storefront",
   "booking",
