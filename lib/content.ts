@@ -51,6 +51,72 @@ export const founderCta = {
 } as const;
 
 /*
+  /about — the page where somebody decides whether to hand a project to
+  one person.
+
+  **Nothing new is claimed here.** The headline is `founderNote`'s own
+  sentence split into the two halves `StackedHeading` needs, the numbers
+  are `provingGround` (The Maine Cleaning Co's, attributed wherever they
+  render), the promises are `studioStats`, the story is `founderBio`, and
+  the process copy below was hardcoded inside `components/Approach.tsx`
+  until this page was rebuilt. Only the labels are new, and a label is not
+  a claim.
+
+  **The counts are deliberately absent.** The proof section lists whatever
+  `work[]` holds and says how many there are by being that many, which is
+  the same decision recorded on `homeBands.services`: a count typed by
+  hand is a claim about evidence that drifts the day somebody adds a
+  project.
+*/
+export const aboutPage = {
+  hero: {
+    eyebrow: "About M Studio",
+    /*
+      `founderNote.headline` is this page's own sentence and has opened it
+      since the founder story moved here. It is two fields rather than one
+      because `StackedHeading` cannot know where to break a sentence it has
+      never seen, and every static page passes both halves.
+    */
+    headlineLead: "A business background.",
+    headlineTrail: "A love of building.",
+    /* The house location line, verbatim. */
+    location: "Southern Maine · clients anywhere.",
+    primary: "Start a project",
+    /* Lands on the proof band below rather than leaving the page: the
+       question this page is answering is "has this person done this", and
+       the answer is nine rows further down. */
+    secondary: "See what is running",
+  },
+  story: {
+    /* `founderBio` and `founderPhilosophy` carry everything read here.
+       The only new strings are the two labels the layout needs. */
+    links: "Also here",
+    quoteLabel: "Working together",
+  },
+  proof: {
+    eyebrow: "Proof you can open",
+    heading: "Built, shipped, and still in use.",
+    note: "Anything with a public address opens in a new tab. The rest are private systems, described here and never linked.",
+    /* One destination per row, and which one is decided the way the work
+       cards already decide it: the case study first where there is one,
+       because it is the better first click and the live link lives on it. */
+    live: "Open the live site",
+    caseStudy: "Read the case study",
+    inside: "See inside",
+    locked: "Private system",
+  },
+  process: {
+    eyebrow: "How a project runs",
+    /* Both of these were literals inside `components/Approach.tsx`, which
+       made this page the one place on the site where visitor-facing copy
+       did not live in this file. */
+    heading: "No black boxes. You steer the whole build.",
+    lede: "You see it as it takes shape. You own it. No lock-in.",
+    promises: "And in writing, before anything starts",
+  },
+} as const;
+
+/*
   Founding offer for custom builds (websites, web apps, tools) — the studio's
   entry price since the $749 Starter site tier was retired (Oct 2026).
   `spotsRemaining` is maintained BY HAND (decrement it as each founding spot
@@ -128,11 +194,37 @@ export const resumeUrl = "";
   than guessed, which is the rule this block was written to enforce: a wrong
   profile link points a reader at somebody who is not her. The LinkedIn
   address is the one her own GitHub sidebar publishes.
+
+  **The two addresses are consts because three places publish them**: this
+  array, `githubProof.url`, and the social row on /about. A profile URL
+  written out three times is a profile URL that is wrong in one of them
+  the day one of them changes, and a wrong one points a reader at somebody
+  who is not her, which is the exact failure the paragraph above is about.
 */
-export const profiles: readonly string[] = [
-  "https://github.com/msmall2691-eng",
-  "https://www.linkedin.com/in/megan-small-75b806410",
-];
+const GITHUB_PROFILE = "https://github.com/msmall2691-eng";
+const LINKEDIN_PROFILE = "https://www.linkedin.com/in/megan-small-75b806410";
+
+export const profiles: readonly string[] = [GITHUB_PROFILE, LINKEDIN_PROFILE];
+
+/*
+  Where else a reader can check that this is a real person, as plain
+  labelled links rather than a row of unexplained glyphs.
+
+  It was an array of three inline SVGs inside `components/FounderNote.tsx`,
+  sitting above the page's own headline. Icons at the top of /about are
+  decoration competing with the title; the same three links beside the
+  story are the corroboration somebody goes looking for after reading it.
+
+  Email is the address the footer and the contact panel already publish.
+  There is deliberately no GitHub row: `githubProof` gives that account a
+  section of its own further down, and a second link to it here would be
+  the same evidence twice.
+*/
+export const siteSocials = [
+  { label: "LinkedIn", href: LINKEDIN_PROFILE },
+  { label: "Facebook", href: "https://www.facebook.com/share/1Ed66YjPjc/?mibextid=wwXIfr" },
+  { label: "contact@mlinx.studio", href: "mailto:contact@mlinx.studio" },
+] as const;
 
 /*
   The public GitHub profile, as evidence rather than as a link in a footer.
@@ -151,7 +243,7 @@ export const profiles: readonly string[] = [
   `ServiceRouter`'s project count already answers to.
 */
 export const githubProof = {
-  url: "https://github.com/msmall2691-eng",
+  url: GITHUB_PROFILE,
   heading: "The code is public, and so is the history.",
   body: "The profile below is live. It lists the projects on this site, what each one involved, and the technologies behind them.",
   linkLabel: "Open the GitHub profile",
