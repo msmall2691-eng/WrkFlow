@@ -1335,20 +1335,26 @@ export const toolsPage = {
   index: {
     eyebrow: "Free · no signup",
     heading: "Everything on offer, in one list.",
-    /* Says how the page works, which is the single thing a visitor needed
-       and could not get, and says what the three groups mean so the
-       columns are read as an argument rather than as storage. */
-    lede: "Pick one and it opens below the list. They are grouped by what they are for: winning the job, looking the part, and keeping the place running.",
+    /* Two facts, and nothing else. How the page works, which is the one
+       thing a visitor needed and could not get, and that every tool hands
+       something back, which is Meg's "easily obtain" said once at the top
+       rather than nine times down the list. The sentence naming what the
+       three groups mean went: the group headings say that themselves, and
+       "clean, concise, simple" was the brief. */
+    lede: "Pick one and it opens below. Each one hands back something to keep.",
   },
   close: {
     eyebrow: "Past the calculators",
     heading: "The tuned version is the build.",
     /* The honest difference between a free calculator and the paid work,
        which is also the reason these are free: they are the generic cut
-       of something that is worth having tuned. No outcome claimed. */
-    body: "These run on generic numbers and generic templates. Tuned to your prices, your brand and the places an answer has to land, the same tools stop being calculators and become the system a business runs on.",
+       of something worth having tuned. No outcome claimed, and no price
+       named — pricing is off the site until Meg settles it. */
+    body: "These run on generic numbers and generic templates. Tuned to one business, the same tools stop being calculators and start being the system it runs on.",
     cta: { label: "Start a conversation", href: "/?offer=call#contact" },
-    secondary: { label: "What gets built, and what it costs", href: "/services" },
+    /* Was "What gets built, and what it costs". The second half is gone
+       with the pricing. */
+    secondary: { label: "What gets built", href: "/services" },
   },
 } as const;
 

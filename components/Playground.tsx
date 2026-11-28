@@ -190,6 +190,12 @@ export default function Playground() {
                             <span className="mt-1 block text-[0.8125rem] leading-snug text-muted">
                               {t.blurb}
                             </span>
+                            {/* What they walk away with, on the card
+                                rather than inside the tool. See the
+                                `takeaway` note in lib/tools.ts. */}
+                            <span className="mt-1.5 block text-[0.6875rem] uppercase tracking-[0.1em] text-faint">
+                              {t.takeaway}
+                            </span>
                           </button>
                         </li>
                       );
@@ -204,16 +210,25 @@ export default function Playground() {
                           <span className="flex items-baseline justify-between gap-3">
                             <span className="text-[0.9375rem] font-semibold text-ink">
                               {t.label}
+                              {/* The arrow above is decorative, so the
+                                  fact it leaves has to reach a screen
+                                  reader some other way. */}
+                              <span className="sr-only"> (opens its own page)</span>
                             </span>
+                            {/* "↗", not "→": this is the one row in the
+                                list that leaves the page, and the glyph
+                                is a quieter way to say so than a second
+                                line of text under a card that already
+                                carries two. */}
                             <span aria-hidden="true" className="shrink-0 text-xs text-faint">
-                              →
+                              ↗
                             </span>
                           </span>
                           <span className="mt-1 block text-[0.8125rem] leading-snug text-muted">
                             {t.blurb}
                           </span>
-                          <span className="mt-1.5 block text-[0.6875rem] uppercase tracking-[0.12em] text-faint">
-                            {t.note}
+                          <span className="mt-1.5 block text-[0.6875rem] uppercase tracking-[0.1em] text-faint">
+                            {t.takeaway}
                           </span>
                         </Link>
                       </li>
@@ -251,9 +266,10 @@ export default function Playground() {
           <h2 className="display-serif mt-3 text-2xl text-ink sm:text-3xl md:text-4xl">
             {activeTool.label}
           </h2>
-          <p className="mt-3 max-w-2xl text-[1.0625rem] leading-relaxed text-muted">
-            {activeTool.blurb}
-          </p>
+          {/* The blurb is deliberately not repeated here. It is on the
+              card the visitor just clicked, still on screen above, and
+              saying it twice is the clutter the redesign was asked to
+              remove. The name and the group are the "you are here". */}
 
           <div className="mt-8">
             {tool === "sitecheck" && <SiteCheck />}

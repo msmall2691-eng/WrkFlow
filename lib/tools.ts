@@ -29,66 +29,97 @@ export type Group = "Win & bill" | "Brand & share" | "Site & ops";
 */
 export const GROUPS: Group[] = ["Win & bill", "Brand & share", "Site & ops"];
 
+/*
+  `takeaway` — how a visitor walks away with the result.
+
+  **Meg asked that people "easily obtain" what the site gives them, and
+  this page was answering that only after a click.** Every one of these
+  nine produces something portable: a PDF, a .vcf, a PNG, a line on the
+  clipboard, a .txt, an email to yourself. That is the whole argument for
+  the free tools, and it was buried in the buttons *inside* each tool, so
+  it was discoverable rather than visible.
+
+  Each string is read off what the tool actually renders, never guessed:
+  `SaveResult` (quote, invoice, sitecheck, cost) is copy, .txt download
+  and email; `SignatureMaker` copies to the clipboard; `VCard` writes a
+  .vcf; `QRCode` writes a .png; `UTMBuilder` copies the link;
+  `InvoiceMaker` also prints to PDF. A takeaway that promised a download
+  a tool does not do would be invented proof with a file extension on it.
+
+  It is here rather than in the page because it is a fact about the tool,
+  and `blurb` is shorter now for the same reason: the sentence used to
+  carry the output as well, and saying it twice on one card is the
+  opposite of what was asked for.
+*/
 export const TOOLS: {
   id: Tool;
   label: string;
   blurb: string;
+  takeaway: string;
   group: Group;
   nudge: { line: string; cta: string; href: string };
 }[] = [
   {
     id: "quote",
     label: "Instant quote",
-    blurb: "Service + size → a live price range you can send a customer.",
+    blurb: "Service and size into a live price range for a customer.",
+    takeaway: "Copy, download or email it",
     group: "Win & bill",
-    nudge: { line: "Tuned to your pricing? That's the marketplace.", cta: "M Linx Quote", href: "/catalog" },
+    nudge: { line: "Tuned to your own pricing? That's the marketplace.", cta: "M Linx Quote", href: "/catalog" },
   },
   {
     id: "invoice",
     label: "Invoice maker",
-    blurb: "Build an invoice or proposal → print to a clean PDF in one click.",
+    blurb: "Line items and totals, as an invoice or a proposal.",
+    takeaway: "Print to PDF, or email it",
     group: "Win & bill",
-    nudge: { line: "Want invoices that send and track themselves? That's a custom build.", cta: "Say what you need", href: "/#contact" },
+    nudge: { line: "Want invoices that send and chase themselves? That's a custom build.", cta: "Say what you need", href: "/#contact" },
   },
   {
     id: "sig",
     label: "Email signature",
-    blurb: "Fill in your details → a styled signature, ready to paste into Gmail or Outlook.",
+    blurb: "Your details, styled for Gmail or Outlook.",
+    takeaway: "Copy it, paste it, done",
     group: "Brand & share",
-    nudge: { line: "Want your whole brand looking this sharp? That's a custom build.", cta: "Start a conversation", href: "/#contact" },
+    nudge: { line: "Want the whole brand looking this sharp? That's a custom build.", cta: "Start a conversation", href: "/#contact" },
   },
   {
     id: "vcard",
     label: "Digital card",
-    blurb: "Your details → a .vcf and a scan-to-save QR for cards, emails & signatures.",
+    blurb: "A contact card, with a scan-to-save code.",
+    takeaway: "Download the .vcf",
     group: "Brand & share",
     nudge: { line: "Want a real site behind that card? That's the marketplace.", cta: "M Linx Site", href: "/catalog" },
   },
   {
     id: "qr",
     label: "QR code",
-    blurb: "Any link, or your WiFi, into a real QR code to download & print.",
+    blurb: "Any link, or the WiFi, as a real QR code.",
+    takeaway: "Download the PNG",
     group: "Brand & share",
-    nudge: { line: "Want that QR pointed at a page built to convert? That's the marketplace.", cta: "M Linx Site", href: "/catalog" },
+    nudge: { line: "Want that code pointed at a page built to convert? That's the marketplace.", cta: "M Linx Site", href: "/catalog" },
   },
   {
     id: "utm",
     label: "Tracked link",
-    blurb: "Add campaign tags to any link → a tracked URL for emails, ads & bios.",
+    blurb: "Campaign tags on a link, for emails, ads and bios.",
+    takeaway: "Copy the link",
     group: "Brand & share",
     nudge: { line: "Want links tracked and reported automatically? That's the marketplace.", cta: "M Linx Flows", href: "/catalog" },
   },
   {
     id: "sitecheck",
     label: "Website check",
-    blurb: "Paste any URL → a real Lighthouse speed, SEO & accessibility report.",
+    blurb: "A real Lighthouse read on speed, SEO and accessibility.",
+    takeaway: "Copy, download or email the report",
     group: "Site & ops",
     nudge: { line: "Want the fixes done, not just found?", cta: "Start a conversation", href: "/#contact" },
   },
   {
     id: "cost",
     label: "Cost of manual work",
-    blurb: "Hours + people → the yearly cost, and how fast automation pays for itself.",
+    blurb: "Hours and people into what a year of it costs.",
+    takeaway: "Copy, download or email it",
     group: "Site & ops",
     nudge: { line: "Want that time back? This is exactly what M Studio automates.", cta: "Start a conversation", href: "/#contact" },
   },
@@ -120,8 +151,8 @@ export const OFFSITE_TOOLS: {
   blurb: string;
   group: Group;
   href: string;
-  /** Said on the card, because this one leaves the page it is listed on. */
-  note: string;
+  /** As on `TOOLS` — what `TurnoverPlanner` actually renders. */
+  takeaway: string;
 }[] = [
   {
     key: "turnover",
@@ -129,7 +160,7 @@ export const OFFSITE_TOOLS: {
     blurb: forRentals.extra.body,
     group: "Site & ops",
     href: forRentals.extra.href,
-    note: "Opens on its own page",
+    takeaway: "Download or email the schedule",
   },
 ];
 
