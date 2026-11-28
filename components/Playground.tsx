@@ -67,7 +67,23 @@ import { toolsPage } from "@/lib/content";
 */
 
 export default function Playground() {
-  const [tool, setTool] = useState<Tool>("quote");
+  /*
+    **The page opens on the QR code, and it used to open on the quote.**
+
+    Not a taste call. Meg asked for prices off the site until the setup
+    is settled, and `QuoteCalc` renders a rate card the moment it mounts:
+    an estimated range, a line-item base, and four priced add-ons, all
+    before a visitor has typed anything. As the default tool that put
+    eight dollar amounts on /tools at first paint, which is the site
+    quoting rather than a visitor calculating. The quote tool is not
+    removed and is not changed — the numbers a visitor asks for are the
+    tool working — it simply is not what the page says on arrival.
+
+    The QR code replaces it because it needs no input, shows no money and
+    hands back a file, which is the argument this page is making.
+    `/tools?tool=quote` still opens it directly, as every deep link does.
+  */
+  const [tool, setTool] = useState<Tool>("qr");
   const activeTool = TOOLS.find((t) => t.id === tool)!;
 
   const bench = useRef<HTMLElement>(null);
@@ -128,13 +144,11 @@ export default function Playground() {
   return (
     <>
       {/* ── the directory ──────────────────────────────────────────── */}
-      <section id="tools" className="border-b border-[var(--cp-line)] py-14 md:py-16">
+      <section id="tools" className="border-b border-[var(--cp-line)] py-10 md:py-12">
         <div className="mx-auto max-w-6xl px-6">
           <Reveal className="max-w-2xl">
-            <p className="text-xs font-medium uppercase tracking-[0.15em] text-faint">
-              {toolsPage.index.eyebrow}
-            </p>
-            <h2 className="display-serif mt-3 text-2xl text-ink sm:text-3xl md:text-4xl">
+            {/* No eyebrow here: see the note in lib/content.ts. */}
+            <h2 className="display-serif text-2xl text-ink sm:text-3xl md:text-4xl">
               {toolsPage.index.heading}
             </h2>
             <p className="mt-4 text-[1.0625rem] leading-relaxed text-muted">
@@ -210,9 +224,10 @@ export default function Playground() {
                           <span className="flex items-baseline justify-between gap-3">
                             <span className="text-[0.9375rem] font-semibold text-ink">
                               {t.label}
-                              {/* The arrow above is decorative, so the
-                                  fact it leaves has to reach a screen
-                                  reader some other way. */}
+                              {/* The arrow beside this is decorative,
+                                  so the fact that this row leaves the
+                                  page has to reach a screen reader some
+                                  other way. */}
                               <span className="sr-only"> (opens its own page)</span>
                             </span>
                             {/* "↗", not "→": this is the one row in the

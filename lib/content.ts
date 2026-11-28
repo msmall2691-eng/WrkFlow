@@ -1333,7 +1333,9 @@ export const forRentals = {
 */
 export const toolsPage = {
   index: {
-    eyebrow: "Free · no signup",
+    /* No eyebrow. It read "Free · no signup", four words directly under
+       an H1 that already reads "Free tools. No signup." — the same claim
+       twice, 200px apart, on a page being cut back rather than filled. */
     heading: "Everything on offer, in one list.",
     /* Two facts, and nothing else. How the page works, which is the one
        thing a visitor needed and could not get, and that every tool hands

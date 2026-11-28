@@ -86,7 +86,12 @@ export default function ToolsPage() {
 
         {/* No pt-16: that cleared the fixed <Nav>, and this bar is in flow. */}
         <main className="relative z-10">
-          <section className="border-b border-[var(--cp-line)] py-12 md:py-16">
+          {/* Tighter than the other converted pages' py-12/16 on purpose.
+              Meg's ask was that the tools be seen sooner; at 1440 the first
+              card sat at y≈650 with this band taking the top third of the
+              screen for a title and one sentence. Nothing is removed, the
+              air is. */}
+          <section className="border-b border-[var(--cp-line)] py-10 md:py-12">
             <div className="mx-auto max-w-6xl px-6">
               <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
                 <div className="min-w-0 max-w-3xl">
