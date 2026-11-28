@@ -60,8 +60,17 @@ export default function StageTry() {
       ? [
           {
             key: "welcome-book",
-            /* Straight from `marketItems`, so the price has one author. */
-            cat: book.price,
+            /*
+              **Nov 28 2026: the category, not the price.** This read
+              `book.price` ("$99 intro · reg. $149") until Meg took
+              prices off the site: "leave pricing off for now till we
+              figure out the set up of the site please remove Real
+              prices on the page." The data stays in `marketItems`; what
+              changed is that the card no longer quotes it. The slot
+              wants a kind of thing anyway, which is what the two cards
+              either side of it put there.
+            */
+            cat: book.category,
             title: book.name,
             body: book.tagline,
             href: "/welcome-book",

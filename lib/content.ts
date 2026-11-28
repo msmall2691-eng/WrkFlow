@@ -1415,7 +1415,16 @@ export const homeHero = {
     bands, and "100% you own the code" is a `studioStats` promise. Nothing
     new is asserted here.
   */
-  sub: "Real prices on the page, and you own what gets built.",
+  /*
+    **This said "Real prices on the page, and you own what gets built."**
+    Meg quoted that sentence back when she took prices off the site, and
+    it had to go either way: a hero promising real prices on the page,
+    above a page that no longer shows one, is the site's own first line
+    contradicting it. The half that is still true and still worth saying
+    is the ownership half, which is the thing a small business is
+    actually nervous about when buying software.
+  */
+  sub: "You own what gets built, and the code it runs on.",
   /* The house location line, verbatim. */
   location: "Southern Maine · clients anywhere.",
   /*
@@ -1547,9 +1556,14 @@ export const homeBands = {
 export const homeNav = [
   { href: "#services", label: "Services" },
   { href: "#work", label: "Work" },
-  /* A route, not an anchor: the price band came off the homepage with the
-     Linx Brand Plan's "no prices on the homepage". See app/pricing. */
-  { href: "/pricing", label: "Pricing" },
+  /*
+    **No Pricing link, Nov 28 2026.** It was a route here rather than an
+    anchor because the price band had moved to /pricing; Meg has now
+    taken prices off the site entirely while the product line-up is
+    being settled, so a nav item pointing at numbers that are not being
+    shown would be the one link on the bar that goes nowhere useful.
+    `/pricing` itself still resolves, it is simply not advertised.
+  */
   { href: "/tools", label: "Free tools" },
 ] as const;
 

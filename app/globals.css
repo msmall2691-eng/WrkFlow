@@ -2328,6 +2328,16 @@ body:has(.cp) {
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --gut: 16px;
   --maxw: 1240px;
+  /*
+    The top bar's height, in one place because three rules read it and
+    two of them are easy to miss: the fixed bar on the homepage, the
+    in-flow bar on every converted inner page, and the phone menu, which
+    is sized to the viewport minus the bar it hangs below. Shrinking the
+    bar by hand left the inner pages at the old height and the menu
+    overhanging by the difference, which is this repo's recurring
+    failure in miniature. Change it here.
+  */
+  --bar-h: 54px;
 }
 
 .stage {
@@ -2455,13 +2465,29 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 }
 
 /* ── top bar ────────────────────────────────────────────── */
+/*
+  **Nov 28 2026: the bar is shorter and tighter**, at Meg's word — "maybe
+  sharper and smaller so it looks cleaner". 66px to 54px, with the
+  wordmark, the nav and the CTA all stepped down to match. A header is
+  the one element on every page, so its weight sets how heavy the whole
+  site reads before a visitor has looked at anything else.
+
+  The CTA is stepped down HERE rather than on `.stage .btn`, which the
+  hero also uses: shrinking that would have quietly shrunk the hero's
+  own buttons, which are meant to be the largest thing a visitor can
+  press.
+*/
 .stage .topbar {
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 40;
   display: flex;
   align-items: center;
-  height: 66px;
+  height: var(--bar-h);
+}
+.stage .topbar .btn {
+  font-size: 0.84rem;
+  padding: 9px 17px;
 }
 .stage .topbar::before {
   content: "";
@@ -2480,13 +2506,13 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 .stage .topbar .wrap {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   position: relative;
 }
 .stage .mark {
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.3em;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--fg);
   white-space: nowrap;
@@ -2521,7 +2547,7 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   flex: 0 1 auto;
   min-width: 0;
   font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
-  font-size: 0.72rem;
+  font-size: 0.67rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg-2);
@@ -2555,13 +2581,13 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 .stage .topnav {
   display: none;
   margin-left: auto;
-  gap: 26px;
+  gap: 21px;
   align-items: center;
 }
 .stage .topnav a {
   position: relative;
   padding-block: 4px;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   color: var(--fg-2);
   transition: color 0.2s var(--ease);
 }
@@ -2667,7 +2693,7 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 .stage .topbar.inflow {
   position: relative;
   inset: auto;
-  min-height: 66px;
+  min-height: var(--bar-h);
 }
 /*
   **The bar does not wrap, and that is the fix rather than the risk.**
@@ -2781,7 +2807,7 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   backdrop-filter: blur(14px);
   border-top: 1px solid var(--line-soft);
   border-bottom: 1px solid var(--line-soft);
-  max-height: calc(100svh - 66px);
+  max-height: calc(100svh - var(--bar-h));
   overflow-y: auto;
   overscroll-behavior: contain;
 }

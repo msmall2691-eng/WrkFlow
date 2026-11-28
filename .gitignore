@@ -38,3 +38,9 @@ next-env.d.ts
 
 # claude code personal settings (force-push allowance for the work branch)
 .claude/settings.local.json
+
+# Scratch worktrees the Agent tool creates for parallel work: full
+# checkouts of this repo, deleted when their agents finish. Committing
+# them nests the repository inside itself, which git warns about and
+# which a plain `git add -A` does silently.
+.claude/worktrees/

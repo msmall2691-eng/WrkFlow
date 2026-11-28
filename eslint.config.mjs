@@ -26,6 +26,16 @@ const config = [
       // Playwright's own output, written on every run.
       "playwright-report/**",
       "test-results/**",
+      /*
+        Scratch worktrees the Agent tool creates for parallel work. Each
+        is a full checkout of this repo, so without this `eslint .` lints
+        the whole project N+1 times over, and worse: those checkouts are
+        being built while the lint runs, so it crawls into a `.next`
+        directory whose files are appearing and vanishing underneath it
+        and dies with ENOENT on a build manifest. Not a lint failure, a
+        crash, exit code 2, with no rule named.
+      */
+      ".claude/worktrees/**",
     ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),

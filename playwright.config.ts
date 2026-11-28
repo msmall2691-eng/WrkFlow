@@ -10,7 +10,24 @@ import { defineConfig, devices } from "@playwright/test";
   broken app and wastes an afternoon. Building every run costs ~20s and
   removes that whole class of false signal.
 */
-const PORT = 3100;
+/*
+  **The port is overridable because a fixed one plus `reuseExistingServer`
+  silently tests somebody else's build.** Locally that flag is on, so when
+  anything is already listening on 3100, Playwright does not start this
+  checkout's server: it runs the whole suite against whatever is there.
+  That is not a failure, it is worse — a clean-looking pass about code you
+  did not write.
+
+  It stopped being theoretical the moment work happened in more than one
+  worktree at once: two separate runs here tested a different checkout's
+  app, one producing 27 bogus failures and one a green suite that proved
+  nothing. Same shape as the stale `next start` this file's own header
+  warns about, one layer out.
+
+  So: `PW_PORT=3141 npx playwright test` when another checkout may be
+  running. CI is unaffected (it sets CI, which turns the reuse off).
+*/
+const PORT = Number(process.env.PW_PORT) || 3100;
 
 export default defineConfig({
   testDir: "./e2e",
