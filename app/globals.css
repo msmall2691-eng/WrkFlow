@@ -3121,11 +3121,11 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
      screen, top-aligned under the bar, not a block sitting on the floor
      of a picture. */
   align-items: center;
-  padding-block: calc(var(--bar-h) + 40px) 48px;
+  padding-block: calc(var(--bar-h) + 32px) 44px;
 }
 @media (min-width: 760px) {
   .stage .doors-screen {
-    padding-block: calc(var(--bar-h) + 52px) 56px;
+    padding-block: calc(var(--bar-h) + 34px) 48px;
   }
 }
 /* The clip is a texture here, not the subject. The horizontal wash the
@@ -3134,9 +3134,9 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 .stage .doors-screen .scrim-doors {
   background: radial-gradient(
     120% 90% at 50% 38%,
-    rgba(8, 7, 12, 0.72) 0%,
-    rgba(8, 7, 12, 0.88) 45%,
-    rgba(8, 7, 12, 0.96) 100%
+    rgba(8, 7, 12, 0.8) 0%,
+    rgba(8, 7, 12, 0.92) 45%,
+    rgba(8, 7, 12, 0.985) 100%
   );
 }
 .stage .doors-screen .scrim-v {
@@ -3151,29 +3151,37 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 .stage .doors-head {
   position: relative;
   z-index: 2;
-  max-width: 24ch;
 }
+/*
+  The headline is held to two lines at desktop and three at phone
+  width, which is what leaves room for all four doors on one screen at
+  900px tall. Measured, not guessed: at 1440 it ran to three lines and
+  pushed the fourth door off the bottom.
+*/
 .stage .doors-screen h1 {
-  font-size: clamp(2.1rem, 1.3rem + 2.6vw, 3.4rem);
-  line-height: 1;
+  max-width: 17ch;
+  font-size: clamp(2rem, 1.3rem + 2.3vw, 2.95rem);
+  line-height: 1.02;
   letter-spacing: -0.04em;
-  margin: 16px 0 0;
-  text-wrap: balance;
-}
-.stage .doors-meta {
-  margin-top: 16px;
-  max-width: 54ch;
-  font-size: 0.86rem;
-  color: var(--fg-3);
-}
-.stage .doors-meta .sep {
-  color: var(--line);
-  padding-inline: 2px;
+  margin: 14px 0 0;
 }
 @media (min-width: 980px) {
-  .stage .doors-head {
-    max-width: 46ch;
+  .stage .doors-screen h1 {
+    max-width: 29ch;
   }
+}
+.stage .doors-sub {
+  margin-top: 14px;
+  max-width: 44ch;
+  color: var(--fg-2);
+  font-size: clamp(0.98rem, 0.94rem + 0.2vw, 1.1rem);
+}
+.stage .doors-meta {
+  margin-top: 10px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-3);
 }
 
 .stage .doors {
@@ -3182,7 +3190,7 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   display: grid;
   gap: 1px;
   grid-template-columns: 1fr;
-  margin-top: clamp(28px, 4.4vh, 48px);
+  margin-top: clamp(24px, 3.4vh, 40px);
   /* The grid's own rules are its background showing through 1px gaps,
      which is how four cells share a line rather than each drawing one
      and doubling it where they meet. */
@@ -3201,8 +3209,8 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: clamp(18px, 2.4vh, 28px) clamp(18px, 2.2vw, 30px)
-    clamp(16px, 2vh, 22px);
+  padding: clamp(17px, 2vh, 24px) clamp(18px, 2.2vw, 30px)
+    clamp(15px, 1.7vh, 20px);
   /* Nearly the ground, so the cell reads as a panel of the same world
      rather than a card stuck on top of it. */
   background: rgba(13, 12, 19, 0.82);
@@ -3244,8 +3252,8 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   letter-spacing: 0.08em;
 }
 .stage .door-title {
-  margin-top: clamp(12px, 1.6vh, 20px);
-  font-size: clamp(1.32rem, 1rem + 1vw, 1.85rem);
+  margin-top: clamp(11px, 1.4vh, 17px);
+  font-size: clamp(1.3rem, 1rem + 0.85vw, 1.7rem);
   letter-spacing: -0.03em;
   line-height: 1.04;
   text-wrap: balance;
@@ -3271,8 +3279,8 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   align-items: center;
   gap: 8px;
   margin-top: auto;
-  padding-top: clamp(14px, 2vh, 20px);
-  font-size: 0.78rem;
+  padding-top: clamp(13px, 1.7vh, 18px);
+  font-size: 0.74rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-3);

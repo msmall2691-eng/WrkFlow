@@ -92,9 +92,8 @@ export default function StageDoors() {
             <span className="tick">●</span> {homeHero.eyebrow}
           </p>
           <h1>{homeHero.headline}</h1>
-          <p className="doors-meta">
-            {homeHero.sub} <span className="sep">·</span> {homeHero.location}
-          </p>
+          <p className="doors-sub">{homeHero.sub}</p>
+          <p className="doors-meta">{homeHero.location}</p>
         </div>
 
         <div className="doors" id="doors">
