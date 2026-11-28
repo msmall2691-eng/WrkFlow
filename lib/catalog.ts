@@ -474,6 +474,117 @@ export const catalog: CatalogItem[] = [
   },
 ];
 
+/*
+  **Every visitor-facing string on /catalog, in one place.**
+
+  The page used to hand-write its own headings and its closing pitch while
+  reading everything else from here, which is the split that lets a page
+  and its data drift apart. Counts are deliberately absent: a number is a
+  claim about evidence and is computed from `catalog` at the call site,
+  never typed into a sentence.
+*/
+export const catalogPage = {
+  title: { lead: "Websites, apps and tools", trail: "for small businesses." },
+  intro: "Pick the shelf that sounds like your business. Every picture is a real screen.",
+  live: {
+    heading: "Open one right now",
+    note: "Free, no signup.",
+  },
+  /* The map of doors. It is a nav, so it carries a label rather than a
+     heading, and the label is the question it answers. */
+  browse: {
+    label: "What do you need?",
+    everything: "Show everything",
+    /* On a tile, after the counted number. Singular is unreachable today
+       and is still written, because a category emptying to one is a data
+       change rather than a code change. */
+    unit: (n: number) => (n === 1 ? "thing" : "things"),
+  },
+  /* In the grouped view a section shows each thing once, under its first
+     category; this is the way to the rest of that category. */
+  seeAll: (n: number, label: string) => `All ${n} in ${label}`,
+  coming: {
+    heading: "Coming next",
+    body: "Ideas, not finished products. Say you want one and it moves up the list.",
+    cta: "I want this",
+  },
+  ask: {
+    heading: "Don't see it?",
+    body: "Most of this started as one business asking for one thing. Describe yours and get a written scope within a day.",
+    cta: "Describe what you need",
+    href: "/?offer=custom#contact",
+  },
+} as const;
+
+/*
+  **One action per thing, and its word is how you get it.**
+
+  Nov 28 2026: Meg took prices off this page ("leave pricing off for now
+  till we figure out the set up of the site"), which changed what a card
+  is for. With a number on it, a card was a thing to decide about; without
+  one, it is a thing to recognise and then act on, so what it owes the
+  reader is what it is, who it is for, and the single next step.
+
+  Each row used to carry up to three links — a demo, a proof link and an
+  "Ask" — which is how twenty-eight things became seventy links and read as
+  a maze. `getAction` is the one that matters, chosen by `status`: a free
+  thing opens, and everything else starts a conversation, because that is
+  genuinely how it is obtained. Its verb says which. A `proof` link still
+  sits beside it where one exists, in its own words, because showing the
+  work is the first thing this site does and a page that only asks is a
+  page with nothing behind the asking.
+
+  The honest labels in `statusLabels` still sit above it, so nothing
+  claims a thing is buyable today that is not.
+
+  Prices stay in the data on purpose. They have one author in
+  `marketItems` / `smallProjects` and are rendered elsewhere; this page
+  simply stops being one of their readers, which is a display decision
+  rather than a deletion.
+*/
+/*
+  **The quiet word beside a name, once the price is gone.**
+
+  `statusLabels.try.label` is "Free", which was true and readable while the
+  price sat next to it: "Online store · Quoted to your scope · Free" could
+  only mean the demo was free. With the price removed it became "Online
+  store — Free", which is a claim that the product costs nothing. Caught by
+  looking at the rendered page, not by any check: every test passed and the
+  build was clean.
+
+  So /catalog reads availability rather than `statusLabels`. These words say
+  what you can do with the thing today and name no money at all, which is
+  also what Meg asked this page to stop doing. `statusLabels` keeps its own
+  wording for the pages that still show a price beside it.
+*/
+export const availability: Record<CatalogStatus, string> = {
+  try: "Try it now",
+  buy: "Ready to buy",
+  built: "Built & running",
+  workbench: "Coming",
+};
+
+export const getAction: Record<CatalogStatus, string> = {
+  try: "Open it",
+  buy: "Get it",
+  built: "Have this built",
+  workbench: "I want this",
+};
+
+/**
+ * How many listed things sit behind one door, counted from `catalog`.
+ *
+ * `workbench` rows are excluded because they are not things anybody can
+ * have yet, and a door promising seven that opens on four unbuilt ideas is
+ * the kind of count CLAUDE.md's first rule is about.
+ */
+export function countIn(id: CatalogCategory): number {
+  return catalog.filter((i) => i.status !== "workbench" && i.categories.includes(id)).length;
+}
+
+/** Everything a visitor can actually use, buy or have built today. */
+export const readyCount = catalog.filter((i) => i.status !== "workbench").length;
+
 /* Legacy ?for= shelf links (homepage, earlier posts) map onto categories. */
 export const legacyShelf: Record<string, CatalogCategory> = {
   rentals: "rentals",
@@ -482,7 +593,15 @@ export const legacyShelf: Record<string, CatalogCategory> = {
   any: "connect",
 };
 
-/* The "Try it live" row: things that open and work right now. */
+/*
+  The "Open one right now" strip: things that open and work this second.
+
+  These six are listed twice on the page, in the strip and again in their
+  own category, and that is on purpose rather than an oversight. The strip
+  answers "can I see anything without talking to anybody"; the category
+  row answers "what is this and what does it cost". Collapsing them would
+  lose one of the two questions.
+*/
 export const liveDemoIds = [
   "storefront",
   "booking",
