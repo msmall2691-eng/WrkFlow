@@ -3095,6 +3095,217 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   }
 }
 
+/* ── 01b doors — the first screen IS the four categories ── */
+/*
+  Nov 28 2026. The hero used to say what the studio does and the four
+  services sat one scroll below it; the doors are the first screen now,
+  so this block overrides the hero's own vertical rules rather than
+  replacing them — the clip, the media wrapper and the scrims are shared
+  with `.hero`, and only the composition on top changes.
+
+  Everything here is `.stage` tokens and the design's own type scale. No
+  new colour, no new family, and the only motion is the shared
+  `[data-reveal]` (opacity + transform, one duration, one curve) plus a
+  hover that moves the row. The accent appears as one hairline and one
+  arrow per door, which is what keeps four boxes from reading as a tile
+  menu: the weight is in the type and the space around it.
+
+  **Measured at 1440x900, where all four have to be on screen without
+  scrolling** — a 2x2 grid with the headline above it, which is why the
+  h1 here is stepped down from the hero's 4.9rem ceiling. One column
+  below 760px, which does scroll, and is a list rather than a grid at
+  that width anyway.
+*/
+.stage .doors-screen {
+  /* Not `align-items: flex-end` like the hero: the grid wants the whole
+     screen, top-aligned under the bar, not a block sitting on the floor
+     of a picture. */
+  align-items: center;
+  padding-block: calc(var(--bar-h) + 40px) 48px;
+}
+@media (min-width: 760px) {
+  .stage .doors-screen {
+    padding-block: calc(var(--bar-h) + 52px) 56px;
+  }
+}
+/* The clip is a texture here, not the subject. The horizontal wash the
+   hero used is replaced by a flat one, because the type sits across the
+   full width rather than in the left third. */
+.stage .doors-screen .scrim-doors {
+  background: radial-gradient(
+    120% 90% at 50% 38%,
+    rgba(8, 7, 12, 0.72) 0%,
+    rgba(8, 7, 12, 0.88) 45%,
+    rgba(8, 7, 12, 0.96) 100%
+  );
+}
+.stage .doors-screen .scrim-v {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 7, 12, 0.86) 0%,
+    rgba(8, 7, 12, 0.5) 30%,
+    rgba(8, 7, 12, 0.7) 70%,
+    var(--ink) 100%
+  );
+}
+.stage .doors-head {
+  position: relative;
+  z-index: 2;
+  max-width: 24ch;
+}
+.stage .doors-screen h1 {
+  font-size: clamp(2.1rem, 1.3rem + 2.6vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 16px 0 0;
+  text-wrap: balance;
+}
+.stage .doors-meta {
+  margin-top: 16px;
+  max-width: 54ch;
+  font-size: 0.86rem;
+  color: var(--fg-3);
+}
+.stage .doors-meta .sep {
+  color: var(--line);
+  padding-inline: 2px;
+}
+@media (min-width: 980px) {
+  .stage .doors-head {
+    max-width: 46ch;
+  }
+}
+
+.stage .doors {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: 1fr;
+  margin-top: clamp(28px, 4.4vh, 48px);
+  /* The grid's own rules are its background showing through 1px gaps,
+     which is how four cells share a line rather than each drawing one
+     and doubling it where they meet. */
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  overflow: hidden;
+}
+@media (min-width: 760px) {
+  .stage .doors {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.stage .door {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(18px, 2.4vh, 28px) clamp(18px, 2.2vw, 30px)
+    clamp(16px, 2vh, 22px);
+  /* Nearly the ground, so the cell reads as a panel of the same world
+     rather than a card stuck on top of it. */
+  background: rgba(13, 12, 19, 0.82);
+  transition: background 0.35s var(--ease);
+}
+/* The accent hairline across the top, drawn on hover. Transform only. */
+.stage .door::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: var(--acc);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+.stage .door:hover::before,
+.stage .door:focus-visible::before {
+  transform: scaleX(1);
+}
+.stage .door:hover,
+.stage .door:focus-visible {
+  background: rgba(20, 19, 28, 0.92);
+}
+.stage .door-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+.stage .door-idx {
+  color: var(--acc);
+}
+.stage .door-count {
+  color: var(--fg-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.stage .door-title {
+  margin-top: clamp(12px, 1.6vh, 20px);
+  font-size: clamp(1.32rem, 1rem + 1vw, 1.85rem);
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  text-wrap: balance;
+  transition: transform 0.35s var(--ease);
+}
+.stage .door:hover .door-title,
+.stage .door:focus-visible .door-title {
+  transform: translateX(5px);
+}
+.stage .door-tag {
+  margin-top: 10px;
+  color: var(--fg-2);
+  font-size: 0.95rem;
+  max-width: 34ch;
+}
+.stage .door .kinds {
+  margin-top: 14px;
+}
+/* The go line is pinned to the bottom so all four read along one
+   baseline whatever their title wraps to — the rhythm is the point. */
+.stage .door-go {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: clamp(14px, 2vh, 20px);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  transition: color 0.3s var(--ease);
+}
+.stage .door-go .arw {
+  display: inline-block;
+  transition: transform 0.3s var(--ease);
+}
+.stage .door:hover .door-go,
+.stage .door:focus-visible .door-go {
+  color: var(--acc);
+}
+.stage .door:hover .door-go .arw,
+.stage .door:focus-visible .door-go .arw {
+  transform: translateX(5px);
+}
+/*
+  Under `reduce`, every one of these lands on its end state with no
+  transition. The end state of a *hover* is the hovered state, so the
+  hairline and the shifts still happen on hover and simply arrive at
+  once; nothing here moves on its own, so there is no loop to stop.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .stage .door::before,
+  .stage .door,
+  .stage .door-title,
+  .stage .door-go,
+  .stage .door-go .arw {
+    transition: none;
+  }
+}
+
 /* ── section rhythm ─────────────────────────────────────── */
 .stage section {
   position: relative;

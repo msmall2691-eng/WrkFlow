@@ -2600,7 +2600,14 @@ test("the homepage names all four services, and a phone can reach each one", asy
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
 
-  const band = page.locator("#services");
+  /*
+    **`#doors`, not `#services`, since Nov 28 2026.** The four
+    categories are the first screen rather than a band one scroll down,
+    so the id moved with them. What is asserted has not changed at all:
+    four rows, each naming its service, its tagline and every one of its
+    chips, each reachable at 390px.
+  */
+  const band = page.locator("#doors");
   await band.scrollIntoViewIfNeeded();
 
   for (const service of services) {

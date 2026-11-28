@@ -1,6 +1,5 @@
 import StageTopBar from "@/components/stage/StageTopBar";
-import StageHero from "@/components/stage/StageHero";
-import StageServices from "@/components/stage/StageServices";
+import StageDoors from "@/components/stage/StageDoors";
 import StageTry from "@/components/stage/StageTry";
 import StageConnects from "@/components/stage/StageConnects";
 import StageIndustries from "@/components/stage/StageIndustries";
@@ -82,8 +81,19 @@ export default function Home() {
       <StageTopBar spy />
 
       <main id="main">
-        <StageHero />
-        <StageServices />
+        {/*
+          **Nov 28 2026: the first screen is the four categories.** Meg,
+          of the live page: "this landing page should show the different
+          catagories for peoplel and so they immediately see what theyve
+          come here for". `StageHero` said what the studio does and
+          `StageServices` answered "what did you come for" one scroll
+          below it; `StageDoors` is both, in one screen, from the same
+          `services[]`. Both are left in place with no caller rather
+          than deleted inside a layout change — see StageDoors for why
+          keeping the services band as well would have been the page
+          asking the same question twice.
+        */}
+        <StageDoors />
         {/* Free, real and usable, above the work: the answer to "id like
             them to see them sooner". The demos sit inside this band
             rather than above the work — see StageTry. */}

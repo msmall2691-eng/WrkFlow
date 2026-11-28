@@ -1554,7 +1554,22 @@ export const homeBands = {
 
 /** The top bar and the footer, which are navigation rather than copy. */
 export const homeNav = [
-  { href: "#services", label: "Services" },
+  /*
+    **A route, not an anchor, since Nov 28 2026.** The four services were
+    a band one scroll down and `#services` scrolled you to it; they are
+    the first screen now, so that anchor would have pointed at what the
+    visitor is already looking at. The bar's Services link goes to the
+    page the four doors go to.
+
+    Two things follow and both are deliberate. The spy in `StageTopBar`
+    only observes anchors, so the only band it can name on this page is
+    `#work` — which keeps the header's slot empty at the top, where the
+    doors say what they are far better than a word in the bar would. And
+    `/services` is now an exact href on the homepage rather than only in
+    the footer, so the "every finished thing is reachable" check has two
+    ways to pass instead of one.
+  */
+  { href: "/services", label: "Services" },
   { href: "#work", label: "Work" },
   /*
     **No Pricing link, Nov 28 2026.** It was a route here rather than an
