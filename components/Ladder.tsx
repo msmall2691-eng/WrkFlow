@@ -40,8 +40,9 @@ import {
   fourteen items across four categories it was the single largest thing on a
   page that measured 10.7 screens.
 
-  Nothing was dropped to shrink it. Every item still shows its price, its
-  name and what it is, and still goes where it went. What changed is that
+  Nothing was dropped to shrink it. Every item still shows its name and
+  what it is, and still goes where it went; the price came off separately
+  and for its own reason, which is the note on `Body`. What changed is that
   the whole item is now the link — so the separate call to action is gone,
   the tap target is bigger rather than smaller, and the border a card needed
   to say "this is one thing" is done by the gap between items.
@@ -99,14 +100,20 @@ export function resolveRungItem(item: LadderItem): Resolved | null {
   };
 }
 
-/* The three lines every item renders, whichever kind of link wraps it. */
+/*
+  The two lines every item renders, whichever kind of link wraps it.
+
+  **`r.price` is resolved and deliberately not rendered.** Nov 28 2026:
+  Meg asked for real prices off the site while the shape of it is being
+  settled, and this strip was where fourteen of them rendered. Dropping
+  the line rather than the field is the reversible half — the resolver
+  still proves every id points at a real product, which is what the
+  suite reads, and /pricing is still where an amount is answered.
+*/
 function Body({ r }: { r: Resolved }) {
   return (
     <>
-      <span className="font-mono text-[11.5px] uppercase tracking-wider text-[color:var(--cp-violet-ink)]">
-        {r.price}
-      </span>
-      <span className="mt-1 block text-[14px] font-semibold text-[color:var(--cp-ink)]">
+      <span className="block text-[14px] font-semibold text-[color:var(--cp-ink)]">
         {r.title}
         <span aria-hidden="true" className="text-[color:var(--cp-faint)]">
           &nbsp;→

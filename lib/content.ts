@@ -1289,13 +1289,19 @@ export const ladderRungs: { id: LadderRung; label: string; note: string }[] = [
   before. Somebody who arrives knowing roughly what they want built
   scrolls past a wall like that rather than reading it.
 
-  The rebuild keeps every word of the four categories and every price on
-  the ladder and drops the duplication: the art, the second price list,
-  and the vertical cost of showing one rung as a card when a line will
-  do. What is left is a page you can read standing up.
+  The rebuild keeps every word of the four categories and drops the
+  duplication: the art, the second price list, and the vertical cost of
+  showing one way in as a card when a line will do. What is left is a
+  page you can read standing up.
+
+  **No amount renders on it any more.** Meg asked for real prices off
+  the site while the shape of it is being settled, so the ladder's items
+  keep their names, their sentences and their destinations here and
+  their prices are read on the routes that still carry them. `start`
+  below is what went in their place.
 
   **Only the furniture is here**, for the reason written above
-  `homeBands`: the four categories are `services`, the prices are
+  `homeBands`: the four categories are `services`, the ways in are
   `ladder` resolving to `marketItems` and `smallProjects`, and the three
   rungs are `ladderRungs`. Nothing below is a count, a price or a claim
   about anybody's results — `servicesPage` cannot be the place one gets
@@ -1303,21 +1309,41 @@ export const ladderRungs: { id: LadderRung; label: string; note: string }[] = [
 */
 export const servicesPage = {
   eyebrow: "Services",
-  /* Unchanged from the page this replaces. Still true: the four fixed
-     prices are on it, on the ladder, beside the problem each one solves. */
-  heading: { lead: "What gets built,", trail: "and what it costs." },
+  /*
+    **"and what it costs" came off on Nov 28, with the prices.** Meg asked
+    for every real price off this page while the shape of the site is
+    still being settled, so a title promising a number the page no longer
+    shows would be the page's own first broken promise. What a buyer needs
+    in its place is `start` below: the first step, what comes back, and
+    how long that takes.
+  */
+  heading: { lead: "What gets built,", trail: "and how it starts." },
   audience:
     "For small businesses, independent professionals, and teams. A new website, a platform switch, or one process that needs to work better.",
-  lede: "The fixed prices are on this page. Anything bigger is quoted in writing first.",
   /** Over the four jump links. A label rather than a sentence: it is a nav. */
   railLabel: "Pick the one that sounds like your week",
   /** Over the three rungs inside each category. */
   waysIn: "Ways in",
   example: "See an example",
-  /* Two routes a visitor on this page is likeliest to want next, as the
-     one line each deserves rather than as a second copy of either. */
-  prices: { label: "The Care Plan and the full price list", href: "/pricing" },
-  catalog: { label: "Everything already built, with prices", href: "/catalog" },
+  /*
+    How somebody actually begins, which is what replaced the prices
+    rather than silence. A category somebody wants with no obvious way to
+    start is worse than one with a number on it.
+
+    **Both halves of the first sentence are promises `studioStats`
+    already makes** — "24 hrs → written scope" and "3 free concepts, from
+    your answers" — said in words rather than as a second copy of the
+    figures, so there is one author of each and nothing here to drift.
+    The second sentence is that list's "$0 to scope · nothing binding",
+    for the same reason and without the amount.
+  */
+  start: {
+    body:
+      "Say what is in the way, and a written scope comes back inside a day, with concepts drawn from your answers. Scoping costs nothing and commits you to nothing.",
+    cta: { label: "Start a project", href: "#contact" },
+  },
+  /* The one route a visitor on this page is likeliest to want next. */
+  catalog: { label: "Everything already built", href: "/catalog" },
 } as const;
 
 /*

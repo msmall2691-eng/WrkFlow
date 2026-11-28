@@ -14,8 +14,15 @@ import { forRentals, marketItems } from "@/lib/content";
   It is an audience band and not a fifth service, for the reason written
   above `forRentals` in lib/content.ts: both items already sit on the ladder
   above, so this is the same stock sorted a second way, on purpose, labelled
-  as such. The welcome book's price is resolved from `marketItems` rather
-  than retyped, like everything else on this page.
+  as such.
+
+  **Nov 28 2026: neither tile leads with its price any more.** Meg asked
+  for real prices off the site while the shape of it is being settled,
+  and the price was the headline of both of these, in 20px display type.
+  The product's own name takes that line instead, which is the thing a
+  host is choosing between anyway; `forRentals.body` still says one of
+  the two is free, because that is a fact about how to get it rather
+  than an amount, and /welcome-book still answers what the book costs.
 */
 
 /** Where each product's own page is, when it has one worth sending people to. */
@@ -51,10 +58,7 @@ export default function ForRentals() {
         <ul className="m-0 mt-10 grid list-none gap-5 p-0 md:grid-cols-2">
           {products.map((p) => (
             <li key={p.id} className="cp-tile flex min-w-0 flex-col p-5">
-              <span className="font-display text-xl font-semibold text-[color:var(--cp-ink)]">
-                {p.price}
-              </span>
-              <h3 className="m-0 mt-2 text-[15px] font-semibold text-[color:var(--cp-ink)]">
+              <h3 className="m-0 font-display text-xl font-semibold text-[color:var(--cp-ink)]">
                 {p.name}
               </h3>
               <p className="m-0 mt-2 flex-1 text-[13.5px] leading-relaxed text-[color:var(--cp-muted)]">
@@ -85,10 +89,7 @@ export default function ForRentals() {
 
           {forRentals.extra ? (
             <li className="cp-tile flex min-w-0 flex-col p-5">
-              <span className="font-display text-xl font-semibold text-[color:var(--cp-ink)]">
-                {forRentals.extra.price}
-              </span>
-              <h3 className="m-0 mt-2 text-[15px] font-semibold text-[color:var(--cp-ink)]">
+              <h3 className="m-0 font-display text-xl font-semibold text-[color:var(--cp-ink)]">
                 {forRentals.extra.title}
               </h3>
               <p className="m-0 mt-2 flex-1 text-[13.5px] leading-relaxed text-[color:var(--cp-muted)]">

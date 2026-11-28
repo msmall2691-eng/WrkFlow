@@ -44,20 +44,40 @@ import StackedHeading from "@/components/StackedHeading";
     scrolling past all of them. It is built from `services[]` and the
     rung labels under each door are counted off `ladder`, so neither can
     claim a category or a way in that does not exist.
-  · **The three rungs explained once**, here, instead of three sentences
-    repeated under all four categories. `ladderRungs[].note` is what a
-    rung *is*, which is a fact about the page rather than about any one
-    service.
-  · `<Pricing />` is **a link now, not a section.** Checked before
-    removing it: nothing in the repo targets `/services#pricing`, the
-    component still has /pricing as a caller so it is not orphaned, and
-    every e2e assertion about the custom build, the Care Plan, the
-    promises and `smallProjects` on a price *list* is scoped to
-    /pricing. The ladder keeps all four fixed prices on this page, which
-    is what the ladder test reads.
+  · `<Pricing />` is **gone, not moved.** Checked before removing it:
+    nothing in the repo targets `/services#pricing`, the component still
+    has /pricing as a caller so it is not orphaned, and every e2e
+    assertion about the custom build, the Care Plan, the promises and
+    `smallProjects` on a price *list* is scoped to /pricing.
 
-  Measured after: **4.6 screens at 1440 and 8.2 at 390**, with the four
-  categories, all fourteen ways in and the form intact.
+  ───────────────────────────────────────────────────────────────────────────
+  Nov 28 2026, later the same day — **no amount renders here at all.**
+
+  Meg asked for real prices off the site while the shape of it is being
+  settled. That is a bigger change to this page than it sounds, because
+  the fourteen ways in were being *sold* by their prices: a strip of
+  "Free · $250–$500 · Quoted to your scope" was most of what a visitor
+  read in each band.
+
+  What replaced them is not silence, which would have been the easy
+  half. A category somebody wants with no way to begin is worse than one
+  with a number on it, so `servicesPage.start` says what the first step
+  is, what comes back and how long it takes, and the ways in keep their
+  names, their sentences and their destinations. `Ladder.tsx` resolves
+  each price and declines to render it, so the suite still proves every
+  id points at something real.
+
+  Two things went with the prices rather than being reworded:
+
+  · **"and what it costs" in the h1.** A title promising a number the
+    page does not show is the page's own first broken promise.
+  · **The three rungs explained in the head.** `ladderRungs[].note` is
+    still what a rung *is*, and two of the three sentences describe a
+    price ("a real price for one agreed piece of work"). Kept, they
+    would have sent somebody looking for an amount that is not here. The
+    labels still head the ways in and still name the doors in the rail,
+    counted off `ladder`, so nothing about how a thing is obtained was
+    lost with the sentences.
 
   ───────────────────────────────────────────────────────────────────────────
   What the previous passes settled, and which still holds.
@@ -161,30 +181,17 @@ export default function ServicesPage() {
               </nav>
 
               {/*
-                The three rungs, explained once. They used to be restated
-                under every category, which is three sentences of
-                furniture per service for one fact about the page.
+                How it starts, which is what replaced the prices. One
+                sentence and one link: the first step, what comes back,
+                and how long that takes.
               */}
-              <ul className="m-0 mt-8 grid list-none gap-x-8 gap-y-4 p-0 sm:grid-cols-3">
-                {ladderRungs.map((r) => (
-                  <li key={r.id} className="min-w-0">
-                    <span className="block text-[12.5px] font-semibold text-[color:var(--cp-soft)]">
-                      {r.label}
-                    </span>
-                    <span className="mt-0.5 block text-[12.5px] leading-snug text-[color:var(--cp-faint)]">
-                      {r.note}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
               <p className="mt-8 max-w-[62ch] text-sm leading-relaxed text-[color:var(--cp-muted)]">
-                {servicesPage.lede}{" "}
+                {servicesPage.start.body}{" "}
                 <Link
-                  href={servicesPage.prices.href}
+                  href={servicesPage.start.cta.href}
                   className="font-semibold text-[color:var(--cp-violet-ink)] no-underline transition-opacity hover:opacity-80"
                 >
-                  {servicesPage.prices.label}
+                  {servicesPage.start.cta.label}
                   <span aria-hidden="true">&nbsp;→</span>
                 </Link>
               </p>
