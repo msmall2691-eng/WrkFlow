@@ -12,8 +12,21 @@ import type { VisualType } from "@/components/ProjectVisual";
   conviction, not a personal letter. Keep this short — it's a belief
   statement, not an essay. Edit here, not in the component.
 */
+/*
+  The headline, in halves, with one author.
+
+  `StackedHeading` composes a title as two lines with the second stepped
+  back, and it cannot know where to break a sentence it has never seen, so
+  every static page passes both halves. /about needs the halves and the old
+  caller needs the whole sentence, and writing the sentence out twice is how
+  the two spellings drift. One array, both shapes derived from it.
+*/
+const FOUNDER_HEADLINE = ["A business background.", "A love of building."] as const;
+
 export const founderNote = {
-  headline: "A business background. A love of building.",
+  headline: FOUNDER_HEADLINE.join(" "),
+  headlineLead: FOUNDER_HEADLINE[0],
+  headlineTrail: FOUNDER_HEADLINE[1],
   /* "shaped around the people using them" was one of eleven
      `<verb>ed around <your noun>` constructions on the site, and the main
      verb was the maker's. See `.claude/brand-voice-guidelines.md` §2.2, §7. */
@@ -71,14 +84,8 @@ export const founderCta = {
 export const aboutPage = {
   hero: {
     eyebrow: "About M Studio",
-    /*
-      `founderNote.headline` is this page's own sentence and has opened it
-      since the founder story moved here. It is two fields rather than one
-      because `StackedHeading` cannot know where to break a sentence it has
-      never seen, and every static page passes both halves.
-    */
-    headlineLead: "A business background.",
-    headlineTrail: "A love of building.",
+    /* The headline is `founderNote`'s own two halves, read from there
+       rather than copied: see `FOUNDER_HEADLINE`. */
     /* The house location line, verbatim. */
     location: "Southern Maine · clients anywhere.",
     primary: "Start a project",
@@ -96,7 +103,10 @@ export const aboutPage = {
   proof: {
     eyebrow: "Proof you can open",
     heading: "Built, shipped, and still in use.",
-    note: "Anything with a public address opens in a new tab. The rest are private systems, described here and never linked.",
+    /* No count in this sentence, deliberately, for the reason in the
+       block comment above: a number typed here is a claim about evidence
+       that goes wrong the day a row is added. */
+    note: "Each row below opens either the live site or the write-up behind it. The private systems run inside businesses and are described here rather than linked.",
     /* One destination per row, and which one is decided the way the work
        cards already decide it: the case study first where there is one,
        because it is the better first click and the live link lives on it. */
@@ -112,7 +122,19 @@ export const aboutPage = {
        did not live in this file. */
     heading: "No black boxes. You steer the whole build.",
     lede: "You see it as it takes shape. You own it. No lock-in.",
-    promises: "And in writing, before anything starts",
+  },
+  /*
+    The page used to end on the toolkit strip and a screenshot, so a reader
+    who had just been persuaded had nothing to press. `founderCta` carries
+    the words, which this page has always used; the eyebrow is the only new
+    string, and a label is not a claim.
+
+    There is deliberately one button and no second door: Meg's instruction
+    of Nov 28 2026 is that a reader who finishes this page has one obvious
+    next action, and that it is not a price list.
+  */
+  cta: {
+    eyebrow: "Next step",
   },
 } as const;
 

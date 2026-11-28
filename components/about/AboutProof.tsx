@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Reveal from "../Reveal";
-import { aboutPage, homeBands, work, type WorkItem } from "@/lib/content";
+import { aboutPage, work, type WorkItem } from "@/lib/content";
 
 /*
   The proof, as a list of doors rather than a wall of pictures.
@@ -69,38 +69,30 @@ export default function AboutProof() {
             const door = doorFor(item);
 
             const body = (
-              <div className="grid gap-x-8 gap-y-2 py-6 md:grid-cols-12 md:items-baseline">
-                <div className="md:col-span-4">
-                  <p className="text-xs uppercase tracking-[0.12em] text-faint">
-                    {item.tag}
-                  </p>
-                  <h3 className="display mt-2 text-lg text-ink transition-colors group-hover:text-signal sm:text-xl">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 py-5">
+                <div>
+                  <h3 className="display text-lg text-ink transition-colors group-hover:text-signal sm:text-xl">
                     {item.title}
                   </h3>
+                  <p className="mt-1 text-xs uppercase tracking-[0.12em] text-faint">
+                    {item.tag}
+                  </p>
                 </div>
-                <p className="text-sm leading-relaxed text-muted md:col-span-5">
-                  {item.blurb}
-                </p>
-                <div className="md:col-span-3 md:text-right">
-                  {door ? (
-                    <span className="inline-flex items-center gap-2 text-sm font-medium text-signal">
-                      {door.label}
-                      <span
-                        aria-hidden="true"
-                        className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
-                      >
-                        {door.external ? "↗" : "→"}
-                      </span>
+                {door ? (
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-signal">
+                    {door.label}
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                    >
+                      {door.external ? "↗" : "→"}
                     </span>
-                  ) : (
-                    <span className="inline-flex flex-col gap-1 text-sm text-faint md:items-end">
-                      <span>{aboutPage.proof.locked}</span>
-                      {item.status && (
-                        <span className="text-xs">{item.status}</span>
-                      )}
-                    </span>
-                  )}
-                </div>
+                  </span>
+                ) : (
+                  <span className="text-sm text-faint">
+                    {aboutPage.proof.locked}
+                  </span>
+                )}
               </div>
             );
 
@@ -131,20 +123,14 @@ export default function AboutProof() {
           })}
         </ul>
 
-        <Reveal className="mt-8">
-          <Link
-            href={homeBands.work.allHref}
-            className="group inline-flex items-center gap-2 py-1.5 text-sm font-semibold text-signal transition-opacity hover:opacity-75"
-          >
-            {homeBands.work.all}
-            <span
-              aria-hidden="true"
-              className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
-            >
-              →
-            </span>
-          </Link>
-        </Reveal>
+        {/*
+          **A link to `/catalog` closed this list and came out on Nov 28
+          2026.** Its label is `homeBands.work.all`, which reads
+          "Everything built, with prices", and Meg asked for prices off
+          this page until the shape of the site is settled. Relabelling it
+          here would have made this a second author for a string the
+          homepage owns; the homepage still carries the link.
+        */}
       </div>
     </section>
   );

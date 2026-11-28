@@ -1,6 +1,6 @@
 import Reveal from "../Reveal";
 import LivingFrame from "../ocean/LivingFrame";
-import { aboutPage, approachSteps, studioStats } from "@/lib/content";
+import { aboutPage, approachSteps } from "@/lib/content";
 
 /*
   How a project runs, which is the link the homepage sends here for
@@ -21,12 +21,10 @@ import { aboutPage, approachSteps, studioStats } from "@/lib/content";
   short vertical ticks nobody reads as a flow. The steps are numbered;
   the numbers are the sequence.
 
-  *`studioStats` closes the section.* The four promises are M Studio's
-  own commitments, already rendered beside the price on /pricing, and
-  they are the other half of what somebody deciding about a solo founder
-  wants: what happens if this does not work out. Step 04 already says the
-  files, database, domain and keys go with it; the row says it in the
-  form a buyer checks.
+  *Nothing closes the section.* A `studioStats` row did, and the note at
+  the foot of this file records why it came out: it carried a dollar
+  figure on a page Meg has asked to keep money off, and it repeated
+  step 04.
 
   The reef band is Meg's own clip and the page's only moving thing.
   `LivingFrame` pauses it off-screen and never mounts it at all under
@@ -82,26 +80,20 @@ export default function AboutProcess() {
           ))}
         </ol>
 
-        <Reveal className="mt-12 border-t border-line pt-8" delay={60}>
-          <p className="text-xs font-medium uppercase tracking-[0.15em] text-faint">
-            {aboutPage.process.promises}
-          </p>
-          <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4">
-            {studioStats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="sr-only">{stat.label}</dt>
-                <dd className="m-0">
-                  <span className="block font-mono text-xl leading-none text-ink sm:text-2xl">
-                    {stat.value}
-                  </span>
-                  <span className="mt-2 block text-xs leading-snug text-faint">
-                    {stat.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
+        {/*
+          **A `studioStats` row closed this section and came out on Nov 28
+          2026.** Two reasons, and the first is not negotiable: one of the
+          four promises is "$0 to scope · nothing binding", and Meg asked
+          for money off this page until the shape of the site is settled.
+          Rendering three of the four would have been a second author for
+          a list `/services` already renders whole.
+
+          The second is the same instruction's other half. The four steps
+          above already say the thing a buyer is checking, step 04 in so
+          many words: the files, the database, the domain and the keys go
+          with it. Saying it again underneath was the page being thorough
+          where it should have been short.
+        */}
       </div>
     </section>
   );

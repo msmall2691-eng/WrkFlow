@@ -40,16 +40,16 @@ export default function AboutHero() {
             <StackedHeading
               as="h1"
               className="mt-5"
-              lead={aboutPage.hero.headlineLead}
-              trail={aboutPage.hero.headlineTrail}
+              lead={founderNote.headlineLead}
+              trail={founderNote.headlineTrail}
             />
             <p className="mt-6 max-w-[46ch] text-lg font-medium text-ink sm:text-xl">
               {founderNote.headlineFollow}
             </p>
-            <p className="mt-4 max-w-[58ch] text-[1.0625rem] leading-[1.7] text-muted">
-              {founderNote.paragraphs[0]}
-            </p>
-
+            {/* `founderNote.paragraphs[0]` sat here and came out on Meg's
+                "clean, concise, simple" (Nov 28): it says what the story
+                section below says with names and dates attached, so the
+                first screen is the title, one sentence and the way on. */}
             <div className="mt-8 flex flex-wrap items-center gap-3">
               {/*
                 `bg-signal text-white` is the pair `.cp-inner` answers with
@@ -58,8 +58,16 @@ export default function AboutHero() {
                 recorded beside that rule: a hardcoded label is how a
                 button goes white-on-teal the next time the accent moves.
               */}
-              <a
-                href="#contact"
+              {/*
+                `/?offer=call#contact` rather than a bare `#contact`: this
+                page renders no contact form, and the hash alone would
+                change the URL and do nothing. That is the dead end
+                `lib/booking.ts` promises there are none of, and the one
+                the per-route test in `e2e/smoke.spec.ts` was written for.
+              */}
+              <Link
+                href="/?offer=call#contact"
+                data-offer="call"
                 className="group inline-flex items-center justify-center gap-2 rounded-full bg-signal px-7 py-3.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
               >
                 {aboutPage.hero.primary}
@@ -69,7 +77,7 @@ export default function AboutHero() {
                 >
                   →
                 </span>
-              </a>
+              </Link>
               <Link
                 href="#proof"
                 className="group inline-flex items-center justify-center gap-2 rounded-full border border-[color:var(--cp-hairline-strong)] px-7 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-signal/50 hover:text-signal"
@@ -123,24 +131,36 @@ export default function AboutHero() {
 
       {/* The operating history, attributed, on its own rule under the
           whole hero rather than tucked under the photograph: it is the
-          first question a visitor asks and it deserves the full width. */}
+          first question a visitor asks and it deserves the full width.
+
+          **Nov 28 2026: no money on this page.** Meg asked for prices off
+          the site until the shape of it is settled, and this row is the
+          one place /about carried a dollar figure, "$1M+ collected since
+          2023". It is filtered out by the rule rather than by a second
+          hand-typed array, so `provingGround` keeps its one author and the
+          figure comes back here the day the rule is lifted, with its
+          wording and its attribution intact. Deleting the stat from
+          `lib/content.ts` would have taken it off the homepage too, which
+          is not what was asked. */}
       <Reveal className="border-t border-line" delay={120}>
         <div className="mx-auto max-w-6xl px-6 py-7">
           <p className="text-sm text-muted">{provingGround.label}</p>
-          <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4">
-            {provingGround.stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="sr-only">{stat.label}</dt>
-                <dd className="m-0">
-                  <span className="block font-mono text-2xl leading-none text-ink sm:text-3xl">
-                    {stat.value}
-                  </span>
-                  <span className="mt-2 block text-xs leading-snug text-faint">
-                    {stat.label}
-                  </span>
-                </dd>
-              </div>
-            ))}
+          <dl className="mt-5 grid grid-cols-3 gap-x-6 gap-y-6">
+            {provingGround.stats
+              .filter((stat) => !stat.value.includes("$"))
+              .map((stat) => (
+                <div key={stat.label}>
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd className="m-0">
+                    <span className="block font-mono text-2xl leading-none text-ink sm:text-3xl">
+                      {stat.value}
+                    </span>
+                    <span className="mt-2 block text-xs leading-snug text-faint">
+                      {stat.label}
+                    </span>
+                  </dd>
+                </div>
+              ))}
           </dl>
         </div>
       </Reveal>
