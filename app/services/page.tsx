@@ -79,6 +79,11 @@ import StackedHeading from "@/components/StackedHeading";
     counted off `ladder`, so nothing about how a thing is obtained was
     lost with the sentences.
 
+  Measured on the built page, both passes together: **6.4 screens at
+  1440 and 11.2 at 390, tallest section 840px**, against 10.7 screens
+  and a single 5,501px section before. The four categories, all fourteen
+  ways in and the form are all still on it.
+
   ───────────────────────────────────────────────────────────────────────────
   What the previous passes settled, and which still holds.
 
