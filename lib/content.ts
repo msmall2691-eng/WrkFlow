@@ -1279,6 +1279,48 @@ export const ladderRungs: { id: LadderRung; label: string; note: string }[] = [
 ];
 
 /*
+  /services — the page's own furniture, and nothing else.
+
+  **It was 10.7 screens and one of its five sections was 5,585px of
+  that.** Measured at 1440x900 on Nov 28 2026: four service rows, each
+  carrying a 16:10 screenshot, a second 16:10 frame of Meg's art, five
+  paragraphs and a nine-card price grid — then, under them, a second copy
+  of the whole price list, which had moved to its own route the day
+  before. Somebody who arrives knowing roughly what they want built
+  scrolls past a wall like that rather than reading it.
+
+  The rebuild keeps every word of the four categories and every price on
+  the ladder and drops the duplication: the art, the second price list,
+  and the vertical cost of showing one rung as a card when a line will
+  do. What is left is a page you can read standing up.
+
+  **Only the furniture is here**, for the reason written above
+  `homeBands`: the four categories are `services`, the prices are
+  `ladder` resolving to `marketItems` and `smallProjects`, and the three
+  rungs are `ladderRungs`. Nothing below is a count, a price or a claim
+  about anybody's results — `servicesPage` cannot be the place one gets
+  typed in, because there is nowhere in it for one to go.
+*/
+export const servicesPage = {
+  eyebrow: "Services",
+  /* Unchanged from the page this replaces. Still true: the four fixed
+     prices are on it, on the ladder, beside the problem each one solves. */
+  heading: { lead: "What gets built,", trail: "and what it costs." },
+  audience:
+    "For small businesses, independent professionals, and teams. A new website, a platform switch, or one process that needs to work better.",
+  lede: "The fixed prices are on this page. Anything bigger is quoted in writing first.",
+  /** Over the four jump links. A label rather than a sentence: it is a nav. */
+  railLabel: "Pick the one that sounds like your week",
+  /** Over the three rungs inside each category. */
+  waysIn: "Ways in",
+  example: "See an example",
+  /* Two routes a visitor on this page is likeliest to want next, as the
+     one line each deserves rather than as a second copy of either. */
+  prices: { label: "The Care Plan and the full price list", href: "/pricing" },
+  catalog: { label: "Everything already built, with prices", href: "/catalog" },
+} as const;
+
+/*
   Short-term rentals — an audience, deliberately not a fifth service.
 
   Meg names this one first when asked what she wants to sell, and it is the
