@@ -150,6 +150,14 @@ export const brightbase = {
     `proof`, `integrations` or a record in lib/content.ts.
   */
   bands: {
+    hero: {
+      eyebrow: "BrightBase · in daily use",
+      /* Split lopsidedly on purpose: see the note in app/brightbase/page.tsx. */
+      lead: "The system an eight-year-old cleaning company",
+      trail: "runs on.",
+      cta: "Book a 15-min demo",
+      see: "See what's inside",
+    },
     /*
       **What a visitor recognizes before they are shown anything.**
 
@@ -196,54 +204,54 @@ export const brightbase = {
     },
     progress: "In progress",
     /*
-      **The closing band says what this is before it offers anything.**
-      BrightBase has one company on it and is not sold as a product with
-      customers, so a page that ends on a signup-shaped button would be
-      making a claim the product cannot keep. The heading carries that,
-      and the four doors under it are the parts of this argument a
-      visitor can open right now without talking to anybody.
+      **The closing band is the step, not an invitation to one.**
+
+      The page's measured failure was the ending: four links in the whole
+      body, and a convinced visitor left with a form. Meg named the fix
+      in her own words, "plan how they will easily obtain products or
+      sites or tools", so the band says what actually happens, in order,
+      and the first line of it is the one thing a visitor does today.
+
+      Two rules it is written against. BrightBase has one company on it
+      and is not sold as a product with customers, so nothing here is
+      signup-shaped. **And there is no money on this page at all** (Meg,
+      Nov 28: "leave pricing off for now"), which is why the old fourth
+      door, to what a build costs, is gone rather than reworded.
+
+      Steps 2 to 4 are `approachSteps` in lib/content.ts, read by the
+      page rather than retyped here: it is the same four-step process
+      every build on this site follows, and a second copy of it would be
+      a second author of what a client is promised.
     */
     next: {
-      eyebrow: "Where to go from here",
-      heading: "One company runs on it. Seeing it means a conversation.",
-      body: "There is no trial and no signup, because there is nothing to sign up to yet. What is public is already on this site: the build this came out of, three working demos, a free calculator, and what a build like it costs.",
+      eyebrow: "What happens next",
+      heading: "One company runs on it. Getting it starts with a call.",
+      body: "There is no trial and no signup, because there is nothing to sign up to yet. It starts with fifteen minutes on a call, against your own jobs rather than the demo data above, and goes on from there the way every build here does.",
+      /* The one step that is not in `approachSteps`, because it is the
+         one that happens on this page. */
+      first: {
+        index: "00",
+        title: "A 15-minute demo",
+        body: "A call where this runs against how you actually work: your jobs, your crew, your customers. Nothing to install.",
+      },
     },
     close: {
-      heading: "Run a cleaning company? See it with your own jobs.",
+      heading: "Run a service business? See it with your own jobs.",
       book: "Book a 15-min demo",
       ask: "Ask a question",
+      /*
+        Two quiet ways to look first, for somebody not ready to talk.
+        Both are routes this site serves, both are things a visitor can
+        use without asking anybody, and **neither opens a page of
+        prices** — which is why /catalog and /services are not here.
+      */
+      look: "Or look first:",
+      links: [
+        { href: "/demo", label: "three working demos" },
+        { href: "/tools", label: "the free tools, running in public" },
+      ],
     },
   },
-
-  /*
-    Where a convinced visitor goes. Every href is a route this repo
-    serves, and every description is the one the destination already
-    carries: `/demo` and `/tools?tool=quote` are worded as `ladder` words
-    them, `/work/maine-cleaning-co` as its own case study does, and
-    `/services` as the page it opens does. Nothing here is a new claim.
-  */
-  next: [
-    {
-      href: "/work/maine-cleaning-co",
-      label: "The case study",
-      body: "The company BrightBase runs: the problem it was built against, what got built, and what it replaced.",
-    },
-    {
-      href: "/demo",
-      label: "Three working demos",
-      body: "A storefront, a booking app and a searchable directory. Real interfaces you can click, not pictures of them.",
-    },
-    {
-      href: "/tools?tool=quote",
-      label: "Price a job, free",
-      body: "Service and size in, a live price range you can send a customer. No account, nothing stored.",
-    },
-    {
-      href: "/services",
-      label: "What a build costs",
-      body: "Custom software, scoped and priced in writing before anything starts, with the smaller fixed-price pieces listed.",
-    },
-  ],
 
   proof: [
     { value: "Daily", label: "in use by the office and crew at The Maine Cleaning Co." },

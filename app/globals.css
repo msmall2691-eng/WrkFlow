@@ -3209,23 +3209,7 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
 }
 
 /* ── 03 work ────────────────────────────────────────────── */
-/*
-  **The frame is declared once and worn by two scopes**, the same split
-  the token block at the top of this section makes and for the same
-  reason. /brightbase shows fifteen captures of a running app and drew
-  them as `cp-tile`s: a flat card edge and no shadow, while the homepage
-  three hundred pixels earlier gives a screenshot a window, a ring and a
-  real drop shadow. Two treatments for one thing on two pages of one site
-  is the drift `.cp-inner` exists to end, and copying these five values
-  into a second rule is how they would disagree later.
-
-  Only the three shape rules are shared. `.stage .frame img` below stays
-  where it is: the homepage frames a plain `<img>` and sizes it here,
-  where /brightbase frames a `next/image` laid into an aspect box, so the
-  two need different sizing and the same chrome.
-*/
-.stage .frame,
-.cp-inner .frame {
+.stage .frame {
   margin: 0;
   border-radius: 12px;
   overflow: hidden;
@@ -3234,8 +3218,7 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
     0 0 0 1px rgba(255, 255, 255, 0.15),
     0 34px 70px -28px rgba(0, 0, 0, 0.95);
 }
-.stage .chrome,
-.cp-inner .chrome {
+.stage .chrome {
   display: flex;
   align-items: center;
   gap: 7px;
@@ -3244,22 +3227,12 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   background: #1a1922;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
-.stage .dot,
-.cp-inner .dot {
+.stage .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.18);
   flex: none;
-}
-/*
-  The same frame around a phone capture, which has a bezel instead of
-  window chrome. Only the two values the different shape needs are
-  restated; the ground, the ring and the shadow are the rule above.
-*/
-.cp-inner .frame.phone {
-  border-radius: 34px;
-  padding: 10px;
 }
 /* Monospace because it renders a domain, the way an address bar does.
    A private system has none, so `chromeLabel` falls back to prose and
