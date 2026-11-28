@@ -1309,6 +1309,58 @@ export const forRentals = {
 } as const;
 
 /*
+  /tools — the page's own frame.
+
+  **It had almost no copy, and that was the problem rather than a style
+  of it.** Measured at 1440 before this: two sections, zero `<h2>`, and
+  the eight tools drawn as a row of unlabeled pills above whichever one
+  happened to be selected. The only way to find out what the site gives
+  away was to click each pill in turn and read the one line that appeared
+  under it. Meg asked for the opposite, in her own words: "i want this
+  site to be useful and give a plethora of things that can use love the
+  free tools etc.. but id like them to see them sooner."
+
+  Each tool's name and sentence are not here. They live in `lib/tools.ts`
+  beside the tool, which is where the switcher, the catalog's deep links
+  and the homepage card all read them, and a second copy on this page
+  would be a second author for the same sentence. What is here is the
+  frame the list sits in.
+
+  **No count is written in any of these strings.** `lib/tools.ts` counts
+  its own lists and the page reads them, for the reason the project count
+  under each service door is computed: a count is a claim about evidence,
+  and the first hand-typed one goes stale the day a tool is added.
+*/
+export const toolsPage = {
+  index: {
+    /* No eyebrow. It read "Free · no signup", four words directly under
+       an H1 that already reads "Free tools. No signup." — the same claim
+       twice, 200px apart, on a page being cut back rather than filled. */
+    heading: "Everything on offer, in one list.",
+    /* Two facts, and nothing else. How the page works, which is the one
+       thing a visitor needed and could not get, and that every tool hands
+       something back, which is Meg's "easily obtain" said once at the top
+       rather than nine times down the list. The sentence naming what the
+       three groups mean went: the group headings say that themselves, and
+       "clean, concise, simple" was the brief. */
+    lede: "Pick one and it opens below. Each one hands back something to keep.",
+  },
+  close: {
+    eyebrow: "Past the calculators",
+    heading: "The tuned version is the build.",
+    /* The honest difference between a free calculator and the paid work,
+       which is also the reason these are free: they are the generic cut
+       of something worth having tuned. No outcome claimed, and no price
+       named — pricing is off the site until Meg settles it. */
+    body: "These run on generic numbers and generic templates. Tuned to one business, the same tools stop being calculators and start being the system it runs on.",
+    cta: { label: "Start a conversation", href: "/?offer=call#contact" },
+    /* Was "What gets built, and what it costs". The second half is gone
+       with the pricing. */
+    secondary: { label: "What gets built", href: "/services" },
+  },
+} as const;
+
+/*
   Digital Welcome Book — content for the dedicated /welcome-book landing page.
   Kept here so the campaign copy is a one-file edit. `introPrice` is the
   founding price for the first few; bump the page over to `regularPrice` by
