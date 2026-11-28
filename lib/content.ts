@@ -1309,6 +1309,50 @@ export const forRentals = {
 } as const;
 
 /*
+  /tools — the page's own frame.
+
+  **It had almost no copy, and that was the problem rather than a style
+  of it.** Measured at 1440 before this: two sections, zero `<h2>`, and
+  the eight tools drawn as a row of unlabeled pills above whichever one
+  happened to be selected. The only way to find out what the site gives
+  away was to click each pill in turn and read the one line that appeared
+  under it. Meg asked for the opposite, in her own words: "i want this
+  site to be useful and give a plethora of things that can use love the
+  free tools etc.. but id like them to see them sooner."
+
+  Each tool's name and sentence are not here. They live in `lib/tools.ts`
+  beside the tool, which is where the switcher, the catalog's deep links
+  and the homepage card all read them, and a second copy on this page
+  would be a second author for the same sentence. What is here is the
+  frame the list sits in.
+
+  **No count is written in any of these strings.** `lib/tools.ts` counts
+  its own lists and the page reads them, for the reason the project count
+  under each service door is computed: a count is a claim about evidence,
+  and the first hand-typed one goes stale the day a tool is added.
+*/
+export const toolsPage = {
+  index: {
+    eyebrow: "Free · no signup",
+    heading: "Everything on offer, in one list.",
+    /* Says how the page works, which is the single thing a visitor needed
+       and could not get, and says what the three groups mean so the
+       columns are read as an argument rather than as storage. */
+    lede: "Pick one and it opens below the list. They are grouped by what they are for: winning the job, looking the part, and keeping the place running.",
+  },
+  close: {
+    eyebrow: "Past the calculators",
+    heading: "The tuned version is the build.",
+    /* The honest difference between a free calculator and the paid work,
+       which is also the reason these are free: they are the generic cut
+       of something that is worth having tuned. No outcome claimed. */
+    body: "These run on generic numbers and generic templates. Tuned to your prices, your brand and the places an answer has to land, the same tools stop being calculators and become the system a business runs on.",
+    cta: { label: "Start a conversation", href: "/?offer=call#contact" },
+    secondary: { label: "What gets built, and what it costs", href: "/services" },
+  },
+} as const;
+
+/*
   Digital Welcome Book — content for the dedicated /welcome-book landing page.
   Kept here so the campaign copy is a one-file edit. `introPrice` is the
   founding price for the first few; bump the page over to `regularPrice` by
