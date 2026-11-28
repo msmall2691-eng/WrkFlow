@@ -44,6 +44,27 @@ export type Role = {
   features: { title: string; body: string; shot?: Shot }[];
 };
 
+/*
+  Two captures appear twice, so they are named once.
+
+  The hero shows all three apps at the same time rather than telling a
+  visitor there are three, and the two phone screens it uses are the same
+  ones their roles use further down. Written out in both places they would
+  be one rename away from describing different screens.
+*/
+const crewMyDay: Shot = {
+  src: "/shots/brightbase/crew-my-day.webp",
+  alt: "The crew app: My Day with today's jobs, pay and access details.",
+  demo: true,
+  phone: true,
+};
+const customerPortal: Shot = {
+  src: "/shots/brightbase/customer-portal.webp",
+  alt: "The customer portal: upcoming visits, quotes and invoices.",
+  demo: true,
+  phone: true,
+};
+
 export const brightbase = {
   name: "BrightBase",
   tagline: "The operations system that runs an eight-year-old cleaning company.",
@@ -51,6 +72,15 @@ export const brightbase = {
     "Leads, quotes, scheduling, crew, invoicing and payouts in one app, with an office side, a crew phone app and a customer portal. In daily use at The Maine Cleaning Co.",
 
   hero: { src: "/shots/brightbase/home-dark.webp", alt: "BrightBase home screen in dark mode: today's jobs, new leads, the crew and unread messages.", demo: true },
+  /*
+    The office screen, the crew's phone and the customer's, in the first
+    screen. "Three apps in one" is the page's central claim and it was
+    made in a heading two screens below the fold while the hero showed a
+    single dashboard. It is also the one thing a phone can show legibly:
+    a 1440-wide dashboard at 342 CSS px is a texture, and a 390-wide
+    phone capture at 165 is a screen somebody can read.
+  */
+  heroPhones: [crewMyDay, customerPortal] as Shot[],
 
   pipeline: [
     { step: "Request", body: "Website forms and Facebook or Instagram lead ads land as requests, deduplicated, with an estimate already attached.", shot: { src: "/shots/brightbase/requests.webp", alt: "The Requests board: new leads from the website and a Facebook ad, each with an estimate.", demo: true } },
@@ -81,7 +111,7 @@ export const brightbase = {
       label: "Crew app",
       who: "Cleaners and subcontractors, on their phone",
       features: [
-        { title: "My Day", body: "Today's jobs and the week ahead. Accept or decline, claim open jobs, mark done with notes and photos.", shot: { src: "/shots/brightbase/crew-my-day.webp", alt: "The crew app: My Day with today's jobs, pay and access details.", demo: true, phone: true } },
+        { title: "My Day", body: "Today's jobs and the week ahead. Accept or decline, claim open jobs, mark done with notes and photos.", shot: crewMyDay },
         { title: "Everything for the job", body: "Door code, wifi, parking, checklist and reference photos, shown only once the job is theirs.", shot: { src: "/shots/brightbase/crew-job.webp", alt: "A job in the crew app: arrival notes, wifi, and the checklist.", demo: true, phone: true } },
         { title: "Works without signal", body: "Finished jobs and replies are saved on the phone and sent when it reconnects. Photos wait for WiFi." },
         { title: "Their pay and paperwork", body: "Earnings, W-9 and insurance on file, availability and time off, and chat with the office.", shot: { src: "/shots/brightbase/crew-earnings.webp", alt: "The crew app: what this cleaner is owed and has been paid, per job.", demo: true, phone: true } },
@@ -95,7 +125,7 @@ export const brightbase = {
       features: [
         { title: "Quotes they can act on", body: "Accept, decline or ask for changes online, pick a date and time, and download a PDF.", shot: { src: "/shots/brightbase/customer-quote.webp", alt: "The quote a customer sees, with a PDF download.", demo: true, phone: true } },
         { title: "Pay online", body: "Every invoice has a secure Stripe payment page, with a receipt by email." },
-        { title: "Their own portal", body: "Passwordless sign-in to see upcoming visits, quotes and invoices.", shot: { src: "/shots/brightbase/customer-portal.webp", alt: "The customer portal: upcoming visits, quotes and invoices.", demo: true, phone: true } },
+        { title: "Their own portal", body: "Passwordless sign-in to see upcoming visits, quotes and invoices.", shot: customerPortal },
         { title: "Instant estimate", body: "A price range on your website form, before they ever call." },
       ],
     },
@@ -110,6 +140,109 @@ export const brightbase = {
     { name: "Airbnb · VRBO · Booking.com", what: "Turnovers from calendars" },
     { name: "Facebook & Instagram", what: "Lead ads" },
     { name: "Claude", what: "AI drafts" },
+  ],
+
+  /*
+    The page's own furniture: the eyebrow and heading over each band, and
+    the link labels. Same rule as `homeBands` in lib/content.ts, and the
+    same reason: a page that types its own copy is a second author of it.
+    Nothing countable is here. Every number on /brightbase resolves to
+    `proof`, `integrations` or a record in lib/content.ts.
+  */
+  bands: {
+    /*
+      **What a visitor recognizes before they are shown anything.**
+
+      This band is the page's answer to "somebody running a service
+      business should land here and recognize their own problem", and
+      every line in it is the case study's own recorded problem with the
+      first person taken out of it (`caseStudies[maine-cleaning-co]
+      .problem`, approved by Meg, Oct 2026: "one for quotes and
+      invoices, another for the crew schedule and time clock, others for
+      the phone, booking and automation. Every handoff between them was
+      done by hand.").
+
+      It makes no claim about the reader and carries no number. The one
+      number this argument has is in `proof` and in that case study, and
+      the link is how somebody gets to it.
+    */
+    arrived: {
+      eyebrow: "Sound familiar",
+      heading: "The same job, retyped into every app it touches.",
+      lines: [
+        "Quotes and invoices in one app.",
+        "The crew schedule and the time clock in another.",
+        "The phone, the booking calendar and the automations somewhere else again.",
+        "Every handoff between them done by hand.",
+      ],
+      link: "How one company replaced all of it",
+      href: "/work/maine-cleaning-co",
+    },
+    flow: { eyebrow: "How a job moves", heading: "From first message to paid, in one place." },
+    inside: { eyebrow: "What's inside", heading: "Three apps in one: the office, the crew, and your customers." },
+    integrations: {
+      eyebrow: "Connects to",
+      heading: "Works with the tools you already pay for.",
+      /* The free planner is the booking-calendar row of the list above,
+         running in public, so the link is earned where it sits rather
+         than collected into the closing band with the rest. */
+      link: "Paste a booking calendar and see the turnovers it implies",
+      href: "/turnover",
+    },
+    data: {
+      eyebrow: "The data model",
+      heading: "Built around the client, not around screens.",
+      body: "Most small-business tools keep leads in one place, jobs in another and messages in a third. In BrightBase every record points back to one client, and a client is found by any email or phone number they have ever used. Pick a record to see how it connects.",
+    },
+    progress: "In progress",
+    /*
+      **The closing band says what this is before it offers anything.**
+      BrightBase has one company on it and is not sold as a product with
+      customers, so a page that ends on a signup-shaped button would be
+      making a claim the product cannot keep. The heading carries that,
+      and the four doors under it are the parts of this argument a
+      visitor can open right now without talking to anybody.
+    */
+    next: {
+      eyebrow: "Where to go from here",
+      heading: "One company runs on it. Seeing it means a conversation.",
+      body: "There is no trial and no signup, because there is nothing to sign up to yet. What is public is already on this site: the build this came out of, three working demos, a free calculator, and what a build like it costs.",
+    },
+    close: {
+      heading: "Run a cleaning company? See it with your own jobs.",
+      book: "Book a 15-min demo",
+      ask: "Ask a question",
+    },
+  },
+
+  /*
+    Where a convinced visitor goes. Every href is a route this repo
+    serves, and every description is the one the destination already
+    carries: `/demo` and `/tools?tool=quote` are worded as `ladder` words
+    them, `/work/maine-cleaning-co` as its own case study does, and
+    `/services` as the page it opens does. Nothing here is a new claim.
+  */
+  next: [
+    {
+      href: "/work/maine-cleaning-co",
+      label: "The case study",
+      body: "The company BrightBase runs: the problem it was built against, what got built, and what it replaced.",
+    },
+    {
+      href: "/demo",
+      label: "Three working demos",
+      body: "A storefront, a booking app and a searchable directory. Real interfaces you can click, not pictures of them.",
+    },
+    {
+      href: "/tools?tool=quote",
+      label: "Price a job, free",
+      body: "Service and size in, a live price range you can send a customer. No account, nothing stored.",
+    },
+    {
+      href: "/services",
+      label: "What a build costs",
+      body: "Custom software, scoped and priced in writing before anything starts, with the smaller fixed-price pieces listed.",
+    },
   ],
 
   proof: [
