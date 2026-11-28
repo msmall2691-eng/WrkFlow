@@ -130,7 +130,14 @@ export default function BrightBasePage() {
               <div className="flex flex-wrap gap-3">
                 <BookCall
                   where="brightbase-hero"
-                  className="cp-cta inline-flex items-center gap-2.5 rounded-xl px-5 py-3.5 text-[15px] font-semibold text-white no-underline transition-transform duration-150 hover:-translate-y-0.5"
+                  /* **Not `cp-cta`.** That class is a violet gradient
+                     `.cp-inner` does not re-point, so the one biggest
+                     button on the page was the only violet thing left
+                     on a page whose every other accent is the design's
+                     teal. This is the design's own solid button, paper
+                     under near-black ink, the same pair the closing
+                     band uses. */
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-[color:var(--cp-ink)] px-5 py-3.5 text-[15px] font-semibold text-[color:var(--cp-on-ink)] no-underline transition-transform duration-150 hover:-translate-y-0.5"
                 >
                   {bands.hero.cta} <span aria-hidden="true">→</span>
                 </BookCall>
