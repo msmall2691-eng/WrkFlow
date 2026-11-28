@@ -71,10 +71,20 @@ export default function StageProofHero() {
           {feature && (
             <div className="proof-shot">
               <WorkFrame item={feature} eager />
-              <p className="proof-cap">
+              {/*
+                The caption is a link down to this project's own shelf,
+                which is the one place it is opened up with its two
+                confirmed figures and its case study. The hero shows it
+                and the shelf explains it, so the second look is the
+                point rather than a repetition.
+              */}
+              <a className="proof-cap" href={`#proof-${feature.category}`}>
                 <span className="card-cat">{proofOf(feature)}</span>
                 <span className="proof-name">{feature.title}</span>
-              </p>
+                <span className="arw" aria-hidden="true">
+                  ↓
+                </span>
+              </a>
             </div>
           )}
         </div>

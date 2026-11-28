@@ -3947,10 +3947,54 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   align-items: baseline;
   gap: 6px 14px;
   margin-top: 16px;
+  min-height: 26px;
 }
 .stage .proof-name {
   font-size: 0.95rem;
   color: var(--fg-2);
+  transition: color 0.25s var(--ease);
+}
+.stage .proof-cap .arw {
+  color: var(--fg-3);
+  transition: transform 0.25s var(--ease);
+}
+.stage .proof-cap:hover .proof-name {
+  color: var(--fg);
+}
+.stage .proof-cap:hover .arw {
+  transform: translateY(3px);
+  color: var(--acc);
+}
+/*
+  **The hero's type moved up into the brightest part of the clip.** The
+  full-screen hero sat its headline on the floor of the frame, where
+  `.scrim-v` is nearly opaque; this one starts near the top, and at
+  phone width — where `.scrim-h` is deliberately off — the eyebrow and
+  the location line, the two smallest things here, were over the lit
+  water. So the vertical scrim carries more at the top, and the
+  horizontal one still does the work from 860 up.
+*/
+.stage .hero-proof .scrim-v {
+  background: linear-gradient(
+    180deg,
+    rgba(8, 7, 12, 0.93) 0%,
+    rgba(8, 7, 12, 0.8) 34%,
+    rgba(8, 7, 12, 0.82) 62%,
+    rgba(8, 7, 12, 0.95) 88%,
+    var(--ink) 100%
+  );
+}
+@media (min-width: 860px) {
+  .stage .hero-proof .scrim-v {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 7, 12, 0.8) 0%,
+      rgba(8, 7, 12, 0.5) 30%,
+      rgba(8, 7, 12, 0.55) 62%,
+      rgba(8, 7, 12, 0.88) 92%,
+      var(--ink) 100%
+    );
+  }
 }
 @media (min-width: 980px) {
   .stage .proof {
@@ -4124,14 +4168,12 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   letter-spacing: -0.02em;
   line-height: 1.12;
 }
-/* A shelf with one project on it has no cards to lay out; a shelf with
-   two should not stretch them across three columns. */
-.stage .cards-wide {
-  grid-template-columns: repeat(2, 1fr);
-}
+/* A shelf with two cards beside its lead should not leave the third
+   column of a three-column grid empty. */
 @media (min-width: 900px) {
-  .stage .cards-wide {
+  .stage .cards-two {
     grid-template-columns: repeat(2, 1fr);
+    gap: 34px;
   }
 }
 /* The category's own two sentences, in the space a third card would

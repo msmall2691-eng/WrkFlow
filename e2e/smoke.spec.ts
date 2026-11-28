@@ -577,9 +577,20 @@ test("the homepage's work section is unique, resolves, and shows real captures",
     image-optimization response on a loaded two-core runner is slow, and
     an image that never arrives still fails.
   */
+  /*
+    **Nov 28 2026: every project, not four of them.** The work is filed
+    under the four service categories now, and each shelf shows what is
+    on it, so the editorial pick of four is gone — `homeCards` no longer
+    decides what renders. The count is therefore read from `work` rather
+    than typed: it is the same claim ("the section shows the work, with
+    a real capture each") made against the one list that defines what
+    the work is, and it fails the day a project renders without one.
+  */
   const shots = section.locator("img");
   const found = await shots.count();
-  expect(found, "the work section should show four captures").toBe(4);
+  expect(found, "every project should show a capture in the work section").toBe(
+    work.filter((w) => w.shot || w.caseStudy).length,
+  );
   for (let i = 0; i < found; i++) {
     await shots.nth(i).scrollIntoViewIfNeeded();
     await expect
@@ -1747,9 +1758,13 @@ test("reduced motion keeps the work's captures, not just its words", async ({
     [],
   );
 
+  /* Every project, for the reason recorded on the work-section test
+     above: the shelves show all of them, so four is no longer the
+     number, and the number is read rather than typed. */
+  const expected = work.filter((w) => w.shot || w.caseStudy).length;
   const shots = section.locator("img");
-  expect(await shots.count(), "all four captures should render").toBe(4);
-  for (let i = 0; i < 4; i += 1) {
+  expect(await shots.count(), "every capture should render").toBe(expected);
+  for (let i = 0; i < expected; i += 1) {
     await shots.nth(i).scrollIntoViewIfNeeded();
     await expect
       .poll(

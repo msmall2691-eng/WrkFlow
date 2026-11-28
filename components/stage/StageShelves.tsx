@@ -39,12 +39,24 @@ import WorkFrame, { proofOf } from "./WorkFrame";
   is nothing left to choose. Both stay in `lib/content.ts`.
 */
 
+/*
+  Inside a shelf the category is the heading above it, so repeating it
+  over every card is the page saying "Websites" five times in one
+  screen. What is still worth a label is the one thing the heading does
+  not say: whether the work was done for somebody else. `proofOf` is
+  still the author of that word — this only decides when to show it.
+*/
+function Badge({ item }: { item: WorkItem }) {
+  if (!item.client) return null;
+  return <p className="card-cat">{proofOf(item).split(" · ").pop()}</p>;
+}
+
 function Card({ item, i }: { item: WorkItem; i: number }) {
   return (
     <article data-reveal="" style={delay(i * 0.06)}>
       <WorkFrame item={item} />
       <div className="card-cap">
-        <p className="card-cat">{proofOf(item)}</p>
+        <Badge item={item} />
         <h4>{item.title}</h4>
         <p>{item.blurb}</p>
       </div>
@@ -67,7 +79,7 @@ function Lead({ item, service }: { item: WorkItem; service: Service }) {
         <WorkFrame item={item} eager={eager} />
       </div>
       <div className="lead-txt" data-reveal="" style={delay(0.08)}>
-        <p className="card-cat">{proofOf(item)}</p>
+        <Badge item={item} />
         <h4>{item.title}</h4>
         <p className="lead">{item.blurb}</p>
 
@@ -153,7 +165,9 @@ export default function StageShelves() {
               <Lead item={first} service={service} />
 
               {rest.length > 0 && (
-                <div className={roomy ? "cards cards-wide" : "cards"}>
+                /* Two cards in a three-column grid is a hole, not space.
+                   The grid takes the number it is given. */
+                <div className={rest.length === 2 ? "cards cards-two" : "cards"}>
                   {rest.map((item, i) => (
                     <Card key={item.title} item={item} i={i} />
                   ))}
