@@ -8,10 +8,10 @@ import {
   catalog,
   catalogPage,
   categories,
+  availability,
   countIn,
   getAction,
   legacyShelf,
-  statusLabels,
   type CatalogCategory,
   type CatalogItem,
   type CatalogLink,
@@ -166,7 +166,14 @@ export default function CatalogBrowser() {
         back out.
       */}
       {open && (
-        <div className="cp-sticky-bar sticky top-0 z-20 -mx-6 mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-[color:var(--cp-line)] px-6 py-3 backdrop-blur">
+        /*
+          Opaque, from the scope's own ground token rather than the
+          translucent `.cp-sticky-bar`: card captures are light, and at 90%
+          over a 16:10 screenshot the bar's own words were competing with
+          the picture sliding under them. Looked at, not measured — the
+          blur and the alpha both reported working.
+        */
+        <div className="sticky top-0 z-20 -mx-6 mt-10 flex flex-wrap items-center gap-x-4 gap-y-1 border-b border-[color:var(--cp-line)] bg-[color:var(--ink)] px-6 py-3">
           <p className="m-0 min-w-0 flex-1 text-[14px] font-semibold text-[color:var(--cp-ink)]">
             {open.label}{" "}
             <span className="font-mono text-[12px] font-normal tracking-wider text-[color:var(--cp-faint)]">
@@ -287,14 +294,23 @@ function ListSection({
         id={id}
         label={label}
         blurb={blurb}
+        /*
+          Only where there is more behind the door. A shelf whose every
+          item is already on screen was offering "All 6 in Websites" above
+          six rows of exactly those six, which is a link that promises
+          something and then does nothing — and seven of them was a good
+          part of why this page read as a maze.
+        */
         action={
-          <button
-            type="button"
-            onClick={onSeeAll}
-            className="min-h-9 cursor-pointer border-0 bg-transparent p-0 text-[13.5px] font-semibold text-[color:var(--cp-violet-ink)] hover:opacity-80"
-          >
-            {catalogPage.seeAll(total, label)} <span aria-hidden="true">→</span>
-          </button>
+          total > items.length ? (
+            <button
+              type="button"
+              onClick={onSeeAll}
+              className="min-h-9 cursor-pointer border-0 bg-transparent p-0 text-[13.5px] font-semibold text-[color:var(--cp-violet-ink)] hover:opacity-80"
+            >
+              {catalogPage.seeAll(total, label)} <span aria-hidden="true">→</span>
+            </button>
+          ) : undefined
         }
       />
       <ul className="m-0 mt-4 grid list-none gap-x-8 p-0 lg:grid-cols-2">
@@ -417,7 +433,6 @@ function Actions({ item, strong }: { item: CatalogItem; strong?: boolean }) {
   taps away on the card.
 */
 function Row({ item }: { item: CatalogItem }) {
-  const status = statusLabels[item.status];
   return (
     <li className="flex items-start gap-3.5 border-b border-[color:var(--cp-hairline)] py-3.5">
       {item.image && (
@@ -436,8 +451,8 @@ function Row({ item }: { item: CatalogItem }) {
           <span className="text-[14.5px] font-semibold leading-snug text-[color:var(--cp-ink)]">
             {item.name}
           </span>
-          <span className="text-[12px] text-[color:var(--cp-faint)]" title={status.note}>
-            {status.label}
+          <span className="text-[12px] text-[color:var(--cp-faint)]">
+            {availability[item.status]}
           </span>
         </p>
         <p className="m-0 mt-1 line-clamp-2 text-[13px] leading-snug text-[color:var(--cp-muted)]">
@@ -452,7 +467,6 @@ function Row({ item }: { item: CatalogItem }) {
 }
 
 function Card({ item }: { item: CatalogItem }) {
-  const status = statusLabels[item.status];
   return (
     <li className="cp-tile flex min-w-0 flex-col overflow-hidden !rounded-xl">
       {item.image && (
@@ -467,11 +481,8 @@ function Card({ item }: { item: CatalogItem }) {
         </div>
       )}
       <div className="flex flex-1 flex-col p-4">
-        <p
-          className="m-0 text-[11.5px] font-medium text-[color:var(--cp-faint)]"
-          title={status.note}
-        >
-          {status.label}
+        <p className="m-0 text-[11.5px] font-medium text-[color:var(--cp-faint)]">
+          {availability[item.status]}
         </p>
         <h3 className="m-0 mt-1 text-[15px] font-semibold leading-snug text-[color:var(--cp-ink)]">
           {item.name}

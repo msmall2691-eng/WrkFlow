@@ -542,6 +542,28 @@ export const catalogPage = {
   simply stops being one of their readers, which is a display decision
   rather than a deletion.
 */
+/*
+  **The quiet word beside a name, once the price is gone.**
+
+  `statusLabels.try.label` is "Free", which was true and readable while the
+  price sat next to it: "Online store · Quoted to your scope · Free" could
+  only mean the demo was free. With the price removed it became "Online
+  store — Free", which is a claim that the product costs nothing. Caught by
+  looking at the rendered page, not by any check: every test passed and the
+  build was clean.
+
+  So /catalog reads availability rather than `statusLabels`. These words say
+  what you can do with the thing today and name no money at all, which is
+  also what Meg asked this page to stop doing. `statusLabels` keeps its own
+  wording for the pages that still show a price beside it.
+*/
+export const availability: Record<CatalogStatus, string> = {
+  try: "Try it now",
+  buy: "Ready to buy",
+  built: "Built & running",
+  workbench: "Coming",
+};
+
 export const getAction: Record<CatalogStatus, string> = {
   try: "Open it",
   buy: "Get it",
