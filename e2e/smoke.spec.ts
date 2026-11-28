@@ -1148,10 +1148,23 @@ test("the prices are on their own page, from the one place they live", async ({
   rather than merely move, and the page would still look perfectly fine.
 
   **Three: the rendered page agrees.** Resolving in Node proves the data is
-  sound and says nothing about whether any of it reached the DOM. The prices
-  are read off the live page for that reason.
+  sound and says nothing about whether any of it reached the DOM, so the
+  ladder is read off the live page too.
+
+  **That third part used to read the prices, and on Nov 28 2026 it stopped
+  being able to.** Meg asked for real prices off the site while the shape
+  of it is being settled, so /services renders each item's name, sentence
+  and destination and not its amount. The claim genuinely moved rather
+  than weakening: the titles are what reaches the DOM now, and they are
+  the stronger assertion anyway, because two items can share a price and
+  no two share a name. What the old version really guarded — that a
+  `smallProjects` job dropped from `ladder` vanishes from the site
+  silently — is guarded by the title. The free rung is asserted by name
+  for the same reason: "Free" was a word from the `price` field and is
+  not rendered anywhere any more, so a test looking for it would have
+  been testing the price list it no longer shows.
 */
-test("every price on the services ladder resolves to its one source", async ({
+test("every way in on the services ladder resolves to its one source", async ({
   page,
 }) => {
   /* Data first: fail with the offending id rather than with "0 prices found". */
@@ -1193,11 +1206,25 @@ test("every price on the services ladder resolves to its one source", async ({
     .evaluateAll((els) => els.map((e) => e.textContent ?? "").join(" "));
 
   for (const p of smallProjects)
-    expect(text, `${p.title} should appear on the rendered ladder`).toContain(p.price);
+    expect(text, `${p.title} should appear on the rendered ladder`).toContain(p.title);
 
-  /* A free rung is the cheapest way in and the easiest thing to lose in a
-     tidy-up, so assert it survived to the page rather than only to the data. */
-  expect(text, "the ladder should offer something free").toContain("Free");
+  /* A free tool is the cheapest way in and the easiest thing to lose in a
+     tidy-up, so assert one survived to the page rather than only to the
+     data. Named, because the word "Free" came off with the prices. */
+  const free = ladder.find((i) => i.rung === "try" && i.title);
+  expect(
+    text,
+    `"${free?.title}" is a free way in and should be on the rendered page`,
+  ).toContain(free!.title!);
+
+  /* And no amount is on the page at all, which is the rule the prices
+     came off under. Asserted on the rendered text rather than on this
+     component, because the failure worth catching is a price arriving
+     from anywhere on the route. */
+  expect(
+    await page.locator("main").evaluate((el) => el.textContent ?? ""),
+    "no dollar amount should render on /services",
+  ).not.toMatch(/\$\s?\d/);
 });
 
 /*
@@ -1930,10 +1957,12 @@ test("the ocean art claims nothing countable", () => {
     because `CastMember.id` is the `ServiceCategory` union rather than a
     string. The gap the type cannot close is the other direction: a *fifth*
     service added to `lib/content.ts` compiles perfectly, and then
-    `castFor` returns undefined for it, `Services` renders no frame, and
-    /services shows four rows with a picture and one without. Nothing
-    errors and the page looks almost right, which is the failure mode this
-    whole file exists for. CLAUDE.md records that this list went from five
+    `castFor` returns undefined for it and whatever reads it shows one
+    thing bare among four with a picture. Nothing errors and the page
+    looks almost right, which is the failure mode this whole file exists
+    for. (/services was the reader this was written about; the Nov 28
+    rebuild dropped the art from it, and `lib/reef.ts` and the case-study
+    pages still read the cast.) CLAUDE.md records that this list went from five
     categories to four once already, so it does move.
   */
   const withArt = new Set(CAST.map((c) => c.id));
@@ -2623,7 +2652,7 @@ test("the homepage names all four services, and a phone can reach each one", asy
   /*
     And no creature names where a service name belongs. The metaphor was
     removed from the copy on Nov 25 2026 and the cast it came from is
-    still in `lib/ocean.ts`, still captioning the art on /services — so
+    still in `lib/ocean.ts`, and still read wherever the art renders — so
     the cheapest possible regression is somebody wiring `creature` back
     into this band, which would read perfectly and sell nothing.
   */

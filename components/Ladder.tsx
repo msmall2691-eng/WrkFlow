@@ -4,6 +4,7 @@ import {
   ladder,
   ladderRungs,
   marketItems,
+  servicesPage,
   smallProjects,
   type LadderItem,
   type ServiceCategory,
@@ -28,6 +29,32 @@ import {
   A category with nothing on a rung leaves that rung out. `software` has no
   fixed price, and inventing one to square the grid would be inventing a
   price.
+
+  ───────────────────────────────────────────────────────────────────────────
+  Nov 28 2026 — same items, a quarter of the height.
+
+  **A card was the wrong container for one line of information.** Each rung
+  item rendered as a bordered tile with its own padding, a price, a title, a
+  body and, below the body, a separate "Ask about this →" link: five stacked
+  elements and 32px of chrome for a price and a sentence. Multiplied by
+  fourteen items across four categories it was the single largest thing on a
+  page that measured 10.7 screens.
+
+  Nothing was dropped to shrink it. Every item still shows its name and
+  what it is, and still goes where it went; the price came off separately
+  and for its own reason, which is the note on `Body`. What changed is that
+  the whole item is now the link — so the separate call to action is gone,
+  the tap target is bigger rather than smaller, and the border a card needed
+  to say "this is one thing" is done by the gap between items.
+
+  `line-clamp-2` on the body is the one real trade and it is bounded: the
+  longest body in `ladder` is 128 characters and clamps at the column widths
+  this renders at, so nothing is cut today. It is there so that a future
+  entry three sentences long costs this strip one line rather than ten.
+
+  The per-rung `note` moved to the head of the page. It explains what a rung
+  *is*, which is one fact about the page rather than four, and repeating it
+  under every category was three sentences of furniture per service.
 */
 
 type Resolved = {
@@ -73,38 +100,63 @@ export function resolveRungItem(item: LadderItem): Resolved | null {
   };
 }
 
-function Card({ item }: { item: LadderItem }) {
+/*
+  The two lines every item renders, whichever kind of link wraps it.
+
+  **`r.price` is resolved and deliberately not rendered.** Nov 28 2026:
+  Meg asked for real prices off the site while the shape of it is being
+  settled, and this strip was where fourteen of them rendered. Dropping
+  the line rather than the field is the reversible half — the resolver
+  still proves every id points at a real product, which is what the
+  suite reads, and /pricing is still where an amount is answered.
+*/
+function Body({ r }: { r: Resolved }) {
+  return (
+    <>
+      <span className="block text-[14px] font-semibold text-[color:var(--cp-ink)]">
+        {r.title}
+        <span aria-hidden="true" className="text-[color:var(--cp-faint)]">
+          &nbsp;→
+        </span>
+      </span>
+      <span className="mt-1 line-clamp-2 block text-[12.5px] leading-snug text-[color:var(--cp-muted)]">
+        {r.body}
+      </span>
+    </>
+  );
+}
+
+/* `py-1` keeps the whole three-line block comfortably over the 24px tap
+   minimum without adding a visible box back. */
+const ITEM =
+  "group block py-1 no-underline transition-opacity hover:opacity-80 focus-visible:opacity-80";
+
+function Item({ item }: { item: LadderItem }) {
   const r = resolveRungItem(item);
   if (!r) return null;
 
-  return (
-    <li className="cp-tile flex min-w-0 flex-col p-4">
-      <span className="font-display text-[1.0625rem] font-semibold text-[color:var(--cp-ink)]">
-        {r.price}
-      </span>
-      <h5 className="m-0 mt-1.5 text-[13.5px] font-semibold text-[color:var(--cp-ink)]">
-        {r.title}
-      </h5>
-      <p className="m-0 mt-1.5 flex-1 text-[12.5px] leading-relaxed text-[color:var(--cp-muted)]">
-        {r.body}
-      </p>
-      {/* py-1.5 keeps the tap target over the 24px minimum; a 13px link on
-          its own measures 16. */}
-      {r.href ? (
-        <Link
-          href={r.href}
-          className="mt-3 inline-flex w-fit items-center py-1.5 text-[12.5px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80"
-        >
-          Open it <span aria-hidden="true">&nbsp;→</span>
+  if (r.href)
+    return (
+      <li>
+        <Link href={r.href} className={ITEM}>
+          <Body r={r} />
         </Link>
-      ) : r.offer ? (
-        <OfferLink
-          offer={r.offer as never}
-          className="mt-3 inline-flex w-fit items-center py-1.5 text-[12.5px] font-semibold text-[color:var(--cp-violet-ink)]"
-        >
-          Ask about this <span aria-hidden="true">&nbsp;→</span>
+      </li>
+    );
+
+  if (r.offer)
+    return (
+      <li>
+        <OfferLink offer={r.offer as never} className={ITEM}>
+          <Body r={r} />
         </OfferLink>
-      ) : null}
+      </li>
+    );
+
+  /* Neither a page nor an offer: still worth showing, just not clickable. */
+  return (
+    <li className="py-1">
+      <Body r={r} />
     </li>
   );
 }
@@ -115,22 +167,22 @@ export default function ServiceRungs({ service }: { service: ServiceCategory }) 
 
   return (
     <div className="mt-8 border-t border-[color:var(--cp-line)] pt-6">
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <h3 className="m-0 text-[11px] font-semibold uppercase tracking-[0.15em] text-[color:var(--cp-faint)]">
+        {servicesPage.waysIn}
+      </h3>
+      <div className="mt-4 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
         {ladderRungs.map((rung) => {
           const items = mine.filter((i) => i.rung === rung.id);
           if (items.length === 0) return null;
 
           return (
             <div key={rung.id} className="min-w-0">
-              <h4 className="m-0 mb-1 text-[12px] font-semibold uppercase tracking-wider text-[color:var(--cp-faint)]">
+              <h4 className="m-0 text-[12px] font-semibold text-[color:var(--cp-soft)]">
                 {rung.label}
               </h4>
-              <p className="m-0 mb-3 text-[12px] leading-snug text-[color:var(--cp-faint)]">
-                {rung.note}
-              </p>
-              <ul className="m-0 grid list-none gap-3 p-0">
+              <ul className="m-0 mt-2 grid list-none gap-3 p-0">
                 {items.map((i, n) => (
-                  <Card key={`${i.market ?? i.project ?? i.title}-${n}`} item={i} />
+                  <Item key={`${i.market ?? i.project ?? i.title}-${n}`} item={i} />
                 ))}
               </ul>
             </div>
