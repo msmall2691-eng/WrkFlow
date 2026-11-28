@@ -11,30 +11,92 @@ import { brightbase, type Role, type Shot } from "@/lib/brightbase";
   150ms color transition, which `transition-colors` already respects.
 */
 
-export function Frame({ shot }: { shot?: Shot }) {
+/* The caption every capture carries. One string, because it is a claim
+   about what is in the picture and a second copy of it is how one frame
+   quietly stops making it. */
+const DEMO_NOTE = "Demo data. A fictional company, not real customers.";
+
+const Caption = () => (
+  <figcaption className="text-center text-[12px] text-[color:var(--cp-faint)]">{DEMO_NOTE}</figcaption>
+);
+
+/* The window chrome, which only a desktop capture wears. */
+const Chrome = () => (
+  <div className="flex items-center gap-2 border-b border-[color:var(--cp-line)] px-4 py-2.5" aria-hidden="true">
+    <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+    <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+    <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
+  </div>
+);
+
+export function Frame({ shot, priority = false }: { shot?: Shot; priority?: boolean }) {
   if (!shot) return null;
   const phone = Boolean(shot.phone);
   return (
     <figure className={`m-0 flex flex-col gap-2 ${phone ? "mx-auto w-full max-w-[300px]" : "w-full"}`}>
-      <div
-        className={`cp-tile relative overflow-hidden ${phone ? "rounded-[34px] p-2.5" : ""}`}
-      >
-        {!phone ? (
-          <div className="flex items-center gap-2 border-b border-[color:var(--cp-line)] px-4 py-2.5" aria-hidden="true">
-            <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
-            <span className="h-2.5 w-2.5 rounded-full bg-[color:var(--cp-fill-strong)]" />
-          </div>
-        ) : null}
-        <div className={`relative w-full ${phone ? "aspect-[9/19.5] overflow-hidden rounded-[26px]" : "aspect-[16/10]"} bg-[color:var(--cp-well)]`}>
-          <Image src={shot.src} alt={shot.alt} fill sizes={phone ? "300px" : "(min-width: 1024px) 60vw, 100vw"} className="object-cover object-top" />
+      <div className={`cp-tile relative overflow-hidden ${phone ? "rounded-[34px] p-2.5" : ""}`}>
+        {!phone ? <Chrome /> : null}
+        <div
+          className={`relative w-full ${
+            phone ? "aspect-[9/19.5] overflow-hidden rounded-[26px]" : "aspect-[16/10]"
+          } bg-[color:var(--cp-well)]`}
+        >
+          <Image
+            src={shot.src}
+            alt={shot.alt}
+            fill
+            priority={priority}
+            sizes={phone ? "300px" : "(min-width: 1024px) 60vw, 100vw"}
+            className="object-cover object-top"
+          />
         </div>
       </div>
-      {shot.demo ? (
-        <figcaption className="text-center text-[12px] text-[color:var(--cp-faint)]">
-          Demo data. A fictional company, not real customers.
-        </figcaption>
-      ) : null}
+      {shot.demo ? <Caption /> : null}
+    </figure>
+  );
+}
+
+/*
+  **The hero shows all three apps rather than saying there are three.**
+
+  "Three apps in one" is this page's central claim and it used to be made
+  in a heading two screens below the fold, while the hero showed a single
+  office dashboard. The office screen, the crew's phone and the
+  customer's are here instead, from `heroPhones`, which are the same two
+  captures their roles use further down.
+
+  The phones are cropped to the top of the screen rather than shrunk
+  whole: a 390-wide capture at 160 CSS px is readable, and the same
+  capture at its full 9/19.5 would be a 350px-tall sliver that doubles
+  the height of the hero to say one thing. One caption for the three,
+  because it is one sentence about all of them.
+*/
+export function HeroShots() {
+  return (
+    <figure className="m-0 flex flex-col gap-3">
+      <div className="cp-tile relative overflow-hidden">
+        <Chrome />
+        <div className="relative aspect-[16/10] w-full bg-[color:var(--cp-well)]">
+          <Image
+            src={brightbase.hero.src}
+            alt={brightbase.hero.alt}
+            fill
+            priority
+            sizes="(min-width: 1024px) 60vw, 100vw"
+            className="object-cover object-top"
+          />
+        </div>
+      </div>
+      <div className="flex justify-center gap-4">
+        {brightbase.heroPhones.map((s) => (
+          <div key={s.src} className="cp-tile w-full max-w-[158px] overflow-hidden rounded-[28px] p-2">
+            <div className="relative aspect-[9/12] w-full overflow-hidden rounded-[22px] bg-[color:var(--cp-well)]">
+              <Image src={s.src} alt={s.alt} fill sizes="158px" className="object-cover object-top" />
+            </div>
+          </div>
+        ))}
+      </div>
+      <Caption />
     </figure>
   );
 }
