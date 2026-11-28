@@ -9,6 +9,7 @@ import {
   catalogPage,
   categories,
   countIn,
+  getAction,
   legacyShelf,
   statusLabels,
   type CatalogCategory,
@@ -67,6 +68,14 @@ import { requestOffer } from "@/lib/offer";
   counted number, which is the same mono-and-accent the homepage gives its
   service index. Every card and every row carries a real screen (see
   lib/catalog.ts); workbench ideas are a text list with no picture.
+
+  **Nov 28 2026, same day, second pass: no prices, and one action.** Meg
+  asked for pricing off the site until the shape of it is settled, and for
+  this page to be "clean, concise, simple". Nothing on this page reads
+  `item.price` any more — see `getAction` in lib/catalog.ts for why that is
+  a display decision rather than a deletion, and for why each thing now
+  carries one obtain action plus its own proof link instead of three links
+  that all looked equally important.
 
   Nothing here animates. The hover and press states are the ones `.cp-tile`
   and the existing links already carry, so there is no new motion to give a
@@ -217,7 +226,7 @@ export default function CatalogBrowser() {
                   </p>
                   <p className="m-0 mt-0.5 text-[13px] text-[color:var(--cp-muted)]">{i.outcome}</p>
                 </div>
-                <AskLink item={i} label={catalogPage.coming.cta} />
+                <AskLink item={i} label={catalogPage.coming.cta} cls={QUIET} />
               </li>
             ))}
           </ul>
@@ -321,22 +330,36 @@ function CardSection({
   );
 }
 
-function TextLink({ link, strong }: { link: CatalogLink; strong?: boolean }) {
-  const cls = strong
-    ? "inline-flex min-h-9 items-center rounded-lg bg-[color:var(--cp-ink)] px-3.5 text-[13px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90"
-    : "inline-flex min-h-9 items-center text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80";
+/* Styles, once: the one action, and the quieter link beside it. */
+const ACTION =
+  "inline-flex min-h-9 items-center text-[13px] font-semibold text-[color:var(--cp-violet-ink)] no-underline hover:opacity-80";
+const ACTION_STRONG =
+  "inline-flex min-h-9 items-center rounded-lg bg-[color:var(--cp-ink)] px-3.5 text-[13px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90";
+const QUIET =
+  "inline-flex min-h-9 items-center text-[13px] font-medium text-[color:var(--cp-soft)] no-underline hover:text-[color:var(--cp-ink)]";
+
+function TextLink({
+  link,
+  label,
+  cls,
+}: {
+  link: CatalogLink;
+  label?: string;
+  cls: string;
+}) {
+  const text = label ?? link.label;
   return link.external ? (
     <a href={link.href} target="_blank" rel="noopener noreferrer" className={cls}>
-      {link.label} <span aria-hidden="true">&nbsp;↗</span>
+      {text} <span aria-hidden="true">&nbsp;↗</span>
     </a>
   ) : (
     <Link href={link.href} className={cls}>
-      {link.label}
+      {text}
     </Link>
   );
 }
 
-function AskLink({ item, label, strong }: { item: CatalogItem; label: string; strong?: boolean }) {
+function AskLink({ item, label, cls }: { item: CatalogItem; label: string; cls: string }) {
   return (
     <Link
       href={`/?offer=${item.offer}#contact`}
@@ -348,14 +371,38 @@ function AskLink({ item, label, strong }: { item: CatalogItem; label: string; st
           /* analytics is best-effort */
         }
       }}
-      className={
-        strong
-          ? "inline-flex min-h-9 items-center rounded-lg bg-[color:var(--cp-ink)] px-3.5 text-[13px] font-semibold text-[color:var(--cp-on-ink)] no-underline hover:opacity-90"
-          : "inline-flex min-h-9 items-center text-[13px] font-medium text-[color:var(--cp-soft)] no-underline hover:text-[color:var(--cp-ink)]"
-      }
+      className={cls}
     >
       {label}
     </Link>
+  );
+}
+
+/*
+  At most two links per thing, and which is which is decided here rather
+  than per renderer, so a row and a card cannot offer different next steps
+  for the same item.
+
+  A free thing's own action is opening it. Everything else is obtained by
+  asking, so that is the action, and whatever can be looked at — the demo
+  on this site, or the one running for somebody else — becomes the quiet
+  link beside it.
+*/
+function Actions({ item, strong }: { item: CatalogItem; strong?: boolean }) {
+  const verb = getAction[item.status];
+  const free = item.status === "try";
+  const action = free ? (item.primary ?? item.proof) : undefined;
+  const beside = free ? item.proof : (item.primary ?? item.proof);
+
+  return (
+    <>
+      {action ? (
+        <TextLink link={action} label={verb} cls={strong ? ACTION_STRONG : ACTION} />
+      ) : (
+        <AskLink item={item} label={verb} cls={strong ? ACTION_STRONG : ACTION} />
+      )}
+      {beside && beside !== action && <TextLink link={beside} cls={QUIET} />}
+    </>
   );
 }
 
@@ -371,7 +418,6 @@ function AskLink({ item, label, strong }: { item: CatalogItem; label: string; st
 */
 function Row({ item }: { item: CatalogItem }) {
   const status = statusLabels[item.status];
-  const lead = item.primary ?? item.proof;
   return (
     <li className="flex items-start gap-3.5 border-b border-[color:var(--cp-hairline)] py-3.5">
       {item.image && (
@@ -390,18 +436,15 @@ function Row({ item }: { item: CatalogItem }) {
           <span className="text-[14.5px] font-semibold leading-snug text-[color:var(--cp-ink)]">
             {item.name}
           </span>
-          <span className="text-[12.5px] text-[color:var(--cp-soft)]">{item.price}</span>
+          <span className="text-[12px] text-[color:var(--cp-faint)]" title={status.note}>
+            {status.label}
+          </span>
         </p>
-        <p
-          className="m-0 mt-1 line-clamp-2 text-[13px] leading-snug text-[color:var(--cp-muted)]"
-          title={status.note}
-        >
-          <span className="text-[color:var(--cp-faint)]">{status.label} · </span>
+        <p className="m-0 mt-1 line-clamp-2 text-[13px] leading-snug text-[color:var(--cp-muted)]">
           {item.outcome}
         </p>
         <p className="m-0 mt-1 flex flex-wrap items-center gap-x-4">
-          {lead && <TextLink link={lead} />}
-          <AskLink item={item} label={lead ? "Ask" : "Ask about this"} />
+          <Actions item={item} />
         </p>
       </div>
     </li>
@@ -433,8 +476,7 @@ function Card({ item }: { item: CatalogItem }) {
         <h3 className="m-0 mt-1 text-[15px] font-semibold leading-snug text-[color:var(--cp-ink)]">
           {item.name}
         </h3>
-        <p className="m-0 mt-0.5 text-[13px] text-[color:var(--cp-soft)]">{item.price}</p>
-        <p className="m-0 mt-2 flex-1 text-[13px] leading-relaxed text-[color:var(--cp-muted)]">
+        <p className="m-0 mt-1.5 flex-1 text-[13px] leading-relaxed text-[color:var(--cp-muted)]">
           {item.outcome}
         </p>
 
@@ -460,13 +502,7 @@ function Card({ item }: { item: CatalogItem }) {
         )}
 
         <div className="mt-3 flex flex-wrap items-center gap-x-3.5 gap-y-1 border-t border-[color:var(--cp-hairline)] pt-3">
-          {item.primary && <TextLink link={item.primary} strong />}
-          {item.proof && <TextLink link={item.proof} />}
-          <AskLink
-            item={item}
-            label={item.primary ? "Ask" : "Ask about this"}
-            strong={!item.primary && !item.proof}
-          />
+          <Actions item={item} strong />
         </div>
       </div>
     </li>

@@ -44,6 +44,29 @@ import { siteNav } from "@/lib/content";
        behind the doors.
     3. **Don't see it.** Unchanged, and still the one strong action.
 
+  **Nov 28 2026, later the same day: no prices, and the grouping is the
+  point.** Meg's words: "leave pricing off for now till we figure out the
+  set up of the site", and then "organise the products" and "plan how they
+  will easily obtain products or sites or tools". Nothing on this page
+  reads `item.price` any more — the data stays, with its one author in
+  `marketItems` / `smallProjects`, and this page simply stops being one of
+  its readers.
+
+  That changed what a card owes the reader. With a number on it a card was
+  a thing to decide about; without one it is a thing to recognise and then
+  act on, so what is left is **what it is, who it is for, and one obvious
+  way to get it**. `getAction` in lib/catalog.ts holds that last part.
+
+  **The grouping is by what somebody arrived wanting, not by how finished
+  it is.** Seven shelves, each with its own blurb and its counted size, in
+  one grid above the fold: that is the sweep, and it is the same axis the
+  homepage's service router uses, so this page reads as the same site
+  rather than a second taxonomy. Sorting by `status` was considered again
+  and rejected again for the reason written in lib/catalog.ts: how real a
+  thing is is the maker's view of it. Status is still on every row, as a
+  quiet label, because honesty about that is non-negotiable; it is just not
+  the shape of the shop.
+
   **Every string here resolves to `lib/catalog.ts`.** The headings and
   the closing pitch used to be typed into this file while everything
   around them was read from data, which is the split that lets a page and
@@ -207,7 +230,7 @@ function StaticList() {
               .filter((i) => i.status !== "workbench" && i.categories[0] === c.id)
               .map((i) => (
                 <li key={i.id} className="py-0.5">
-                  {i.name} · {i.price}
+                  {i.name}
                 </li>
               ))}
           </ul>

@@ -485,11 +485,10 @@ export const catalog: CatalogItem[] = [
 */
 export const catalogPage = {
   title: { lead: "Websites, apps and tools", trail: "for small businesses." },
-  intro:
-    "Pick the row that sounds like your business. Every picture here is a real screen of something running.",
+  intro: "Pick the shelf that sounds like your business. Every picture is a real screen.",
   live: {
     heading: "Open one right now",
-    note: "Working, free, no signup. Nothing to install.",
+    note: "Free, no signup.",
   },
   /* The map of doors. It is a nav, so it carries a label rather than a
      heading, and the label is the question it answers. */
@@ -502,20 +501,53 @@ export const catalogPage = {
     unit: (n: number) => (n === 1 ? "thing" : "things"),
   },
   /* In the grouped view a section shows each thing once, under its first
-     category; this is the way to the rest of that category, at full size. */
-  seeAll: (n: number, label: string) => `See all ${n} in ${label}`,
+     category; this is the way to the rest of that category. */
+  seeAll: (n: number, label: string) => `All ${n} in ${label}`,
   coming: {
     heading: "Coming next",
-    body: "Ideas being considered, not finished products. Say you want one and it moves up the list.",
+    body: "Ideas, not finished products. Say you want one and it moves up the list.",
     cta: "I want this",
   },
   ask: {
     heading: "Don't see it?",
-    body: "Most of this started as one business asking for one thing. Describe yours and get a written scope within a day. Scoping is free.",
+    body: "Most of this started as one business asking for one thing. Describe yours and get a written scope within a day.",
     cta: "Describe what you need",
     href: "/?offer=custom#contact",
   },
 } as const;
+
+/*
+  **One action per thing, and its word is how you get it.**
+
+  Nov 28 2026: Meg took prices off this page ("leave pricing off for now
+  till we figure out the set up of the site"), which changed what a card
+  is for. With a number on it, a card was a thing to decide about; without
+  one, it is a thing to recognise and then act on, so what it owes the
+  reader is what it is, who it is for, and the single next step.
+
+  Each row used to carry up to three links — a demo, a proof link and an
+  "Ask" — which is how twenty-eight things became seventy links and read as
+  a maze. `getAction` is the one that matters, chosen by `status`: a free
+  thing opens, and everything else starts a conversation, because that is
+  genuinely how it is obtained. Its verb says which. A `proof` link still
+  sits beside it where one exists, in its own words, because showing the
+  work is the first thing this site does and a page that only asks is a
+  page with nothing behind the asking.
+
+  The honest labels in `statusLabels` still sit above it, so nothing
+  claims a thing is buyable today that is not.
+
+  Prices stay in the data on purpose. They have one author in
+  `marketItems` / `smallProjects` and are rendered elsewhere; this page
+  simply stops being one of their readers, which is a display decision
+  rather than a deletion.
+*/
+export const getAction: Record<CatalogStatus, string> = {
+  try: "Open it",
+  buy: "Get it",
+  built: "Have this built",
+  workbench: "I want this",
+};
 
 /**
  * How many listed things sit behind one door, counted from `catalog`.
