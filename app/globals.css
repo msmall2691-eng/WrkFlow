@@ -3892,6 +3892,276 @@ html[data-js] .stage [data-reveal]:not([data-revealed]) {
   }
 }
 
+/* ── proof first, on four shelves (Nov 28 2026) ──────────────────────
+   The homepage leads with the work and files it under the four
+   categories, so the first screen is a finished thing plus the four
+   shelves it could have come off. Three pieces:
+
+     .hero-proof   the hero, shortened so the rack shares its screen,
+                   with the headline in one column and a real capture in
+                   the other
+     .rack         the four categories, as four doors with a computed
+                   count under each
+     .shelf        one category's work: one project opened up, the rest
+                   beside it, a rule and a band of space between shelves
+
+   Everything below reads the design's own tokens — no new colour, no
+   new family, no new curve — and every value that moves is a size or a
+   space. The near-black world and the one 0.6s/`--ease` reveal are
+   unchanged, which is why nothing here has a motion rule of its own.
+   ------------------------------------------------------------------- */
+
+/* The hero stops being a full screen. `.hero`'s own `min-height: 100svh`
+   put the categories exactly one scroll below the only thing most
+   people read; the clip, the scrims and the poster are untouched. */
+.stage .hero-proof {
+  min-height: 0;
+  align-items: center;
+  padding-block: calc(var(--bar-h) + clamp(30px, 6vh, 64px)) clamp(34px, 5vh, 56px);
+}
+.stage .proof {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: clamp(30px, 5vh, 48px);
+}
+.stage .proof-txt {
+  max-width: min(640px, 100%);
+}
+.stage .hero-proof h1 {
+  /* A notch under the full-screen hero's 4.9rem: this one shares its
+     screen with a capture and four doors, and the headline that fits
+     one idea per screen is too loud for a screen with three things on
+     it. Still the design's clamp shape and letter-spacing. */
+  font-size: clamp(2.25rem, 1.5rem + 2.9vw, 3.5rem);
+}
+.stage .hero-proof .hero-sub {
+  margin-top: 18px;
+}
+.stage .hero-proof .hero-meta {
+  margin-top: 14px;
+}
+.stage .proof-cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin-top: 16px;
+}
+.stage .proof-name {
+  font-size: 0.95rem;
+  color: var(--fg-2);
+}
+@media (min-width: 980px) {
+  .stage .proof {
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: clamp(40px, 4vw, 64px);
+    align-items: center;
+  }
+}
+
+/* ── the rack: four doors, on the hero's screen ─────────── */
+.stage .rack-band {
+  position: relative;
+  padding-bottom: clamp(44px, 7vh, 76px);
+}
+.stage .rack {
+  display: grid;
+  gap: 1px;
+  background: var(--line-soft);
+  border-block: 1px solid var(--line-soft);
+}
+.stage .rack > li {
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0 16px;
+}
+.stage .rack-row {
+  display: grid;
+  gap: 8px;
+  flex: 1;
+}
+.stage .rack-idx {
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  color: var(--acc);
+}
+.stage .rack-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.14;
+  text-wrap: balance;
+}
+.stage .rack-row .arw {
+  display: inline-block;
+  color: var(--fg-3);
+  transition: transform 0.25s var(--ease);
+}
+.stage .rack-row:hover .arw {
+  transform: translateX(4px);
+  color: var(--acc);
+}
+.stage .rack-tag {
+  font-size: 0.9rem;
+  color: var(--fg-2);
+}
+.stage .rack-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 7px;
+  margin-top: 2px;
+}
+.stage .rack-kinds span {
+  font-size: 0.72rem;
+  color: var(--fg-3);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.stage .rack-count {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 26px;
+  margin-top: 12px;
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s var(--ease);
+}
+.stage .rack-count:hover {
+  color: var(--acc);
+}
+@media (min-width: 760px) {
+  .stage .rack {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1px;
+  }
+  .stage .rack > li {
+    padding: 22px clamp(16px, 2vw, 26px);
+  }
+  .stage .rack > li:first-child,
+  .stage .rack > li:nth-child(3) {
+    padding-left: 0;
+  }
+}
+@media (min-width: 1100px) {
+  .stage .rack {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .stage .rack > li:nth-child(3) {
+    padding-left: clamp(16px, 2vw, 26px);
+  }
+  .stage .rack > li:last-child {
+    padding-right: 0;
+  }
+}
+
+/* ── the shelves ────────────────────────────────────────── */
+.stage .shelf {
+  margin-top: clamp(56px, 9vh, 104px);
+  padding-top: clamp(24px, 3.4vh, 38px);
+  border-top: 1px solid var(--line-soft);
+  scroll-margin-top: calc(var(--bar-h) + 30px);
+}
+.stage .shelf-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.stage .shelf-idx {
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--acc);
+}
+.stage .shelf-head h3 {
+  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.7rem);
+}
+.stage .shelf-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--line-soft);
+  min-width: 12px;
+}
+.stage .shelf-n {
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  white-space: nowrap;
+}
+.stage .lead-work {
+  margin-top: clamp(26px, 4vh, 44px);
+  display: grid;
+  gap: 26px;
+}
+.stage .lead-txt h4 {
+  margin: 10px 0 0;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  font-size: clamp(1.35rem, 1.15rem + 0.9vw, 1.85rem);
+}
+.stage .lead-txt .lead {
+  margin-top: 13px;
+  color: var(--fg-2);
+}
+@media (min-width: 980px) {
+  .stage .lead-work {
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: clamp(36px, 4vw, 56px);
+    align-items: center;
+  }
+}
+.stage .card-cap h4 {
+  margin: 9px 0 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+/* A shelf with one project on it has no cards to lay out; a shelf with
+   two should not stretch them across three columns. */
+.stage .cards-wide {
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (min-width: 900px) {
+  .stage .cards-wide {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* The category's own two sentences, in the space a third card would
+   have taken. Both are `services[]`'s words, not new copy. */
+.stage .shelf-say {
+  margin-top: clamp(28px, 4vh, 44px);
+  display: grid;
+  gap: 18px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+}
+.stage .shelf-pain {
+  color: var(--fg-2);
+  font-size: clamp(1.02rem, 0.96rem + 0.4vw, 1.18rem);
+  max-width: 34em;
+}
+.stage .shelf-out {
+  color: var(--fg);
+  font-size: clamp(1.02rem, 0.96rem + 0.4vw, 1.18rem);
+  max-width: 34em;
+  padding-left: 16px;
+  border-left: 2px solid var(--acc);
+}
+@media (min-width: 900px) {
+  .stage .shelf-say {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
 /* ── reduced motion ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .stage *,

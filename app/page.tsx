@@ -1,10 +1,8 @@
 import StageTopBar from "@/components/stage/StageTopBar";
-import StageHero from "@/components/stage/StageHero";
-import StageServices from "@/components/stage/StageServices";
+import StageProofHero from "@/components/stage/StageProofHero";
+import StageRack from "@/components/stage/StageRack";
 import StageTry from "@/components/stage/StageTry";
-import StageConnects from "@/components/stage/StageConnects";
-import StageIndustries from "@/components/stage/StageIndustries";
-import StageWork from "@/components/stage/StageWork";
+import StageShelves from "@/components/stage/StageShelves";
 import StageApproach from "@/components/stage/StageApproach";
 import StageFooter from "@/components/stage/StageFooter";
 import StageMotion from "@/components/stage/StageMotion";
@@ -82,17 +80,16 @@ export default function Home() {
       <StageTopBar spy />
 
       <main id="main">
-        <StageHero />
-        <StageServices />
-        {/* Free, real and usable, above the work: the answer to "id like
-            them to see them sooner". The demos sit inside this band
-            rather than above the work — see StageTry. */}
+        {/* The first screen: one finished thing, large, and the four
+            shelves it could have come off. */}
+        <StageProofHero />
+        <StageRack />
+        <StageShelves />
+        {/* Free, real and usable, after the proof: the answer to "plan
+            how they will easily obtain products or sites or tools" —
+            the demos, the tools and the two products a visitor can open
+            without talking to anybody. */}
         <StageTry />
-        <StageWork />
-        {/* Both below #work, because a tool list and a sector list read
-            as evidence only once the systems behind them are shown. */}
-        <StageConnects />
-        <StageIndustries />
         <StageApproach />
         <Contact variant="stage" />
       </main>
