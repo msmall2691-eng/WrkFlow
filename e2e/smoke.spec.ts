@@ -1117,14 +1117,25 @@ test("the prices are on their own page, from the one place they live", async ({
   for (const s of studioStats)
     expect(text, `the promise "${s.label}" should render`).toContain(s.value);
 
-  /* And it is reachable: the homepage bar links it by route now that
-     there is no band to scroll to. */
-  await page.goto("/");
-  const link = page.locator('header a[href="/pricing"], nav a[href="/pricing"], a[href="/pricing"]');
+  /*
+    **This asserted that the homepage links /pricing, and it has been red
+    since Nov 28 2026**, when Meg took the prices off the front of the
+    site — "leave pricing off for now till we figure out the set up of
+    the site". That commit removed the Pricing nav item and left this
+    half of the test behind, so it has been asserting a rule the product
+    deliberately stopped keeping. It is updated rather than deleted
+    because the thing underneath it is still true and still worth
+    guarding: `/pricing` is in a sitemap Google has read and in whatever
+    Meg has sent people, so it must keep resolving even while nothing
+    advertises it. The reachability half comes back with the nav item,
+    when the line-up is settled.
+  */
+  const res = await page.goto("/pricing");
   expect(
-    await link.count(),
-    "the homepage should link /pricing, or the prices are a page nobody finds",
-  ).toBeGreaterThan(0);
+    res?.status(),
+    "/pricing is unadvertised on purpose, but it must still resolve for " +
+      "everyone already holding the link",
+  ).toBe(200);
 });
 
 /*
