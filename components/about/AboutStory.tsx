@@ -31,7 +31,7 @@ export default function AboutStory() {
   return (
     <section
       id="story"
-      className="relative border-b border-line bg-[var(--section-alt-bg)] py-16 md:py-20"
+      className="relative border-b border-line bg-[var(--section-alt-bg)] py-14 md:py-16"
     >
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid gap-12 md:grid-cols-12 md:gap-14">

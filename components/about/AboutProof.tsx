@@ -50,7 +50,7 @@ function doorFor(item: WorkItem): Door {
 
 export default function AboutProof() {
   return (
-    <section id="proof" className="relative border-b border-line py-16 md:py-20">
+    <section id="proof" className="relative border-b border-line py-14 md:py-16">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal className="max-w-2xl">
           <p className="text-xs font-medium uppercase tracking-[0.15em] text-faint">
@@ -64,12 +64,12 @@ export default function AboutProof() {
           </p>
         </Reveal>
 
-        <ul className="mt-10 border-t border-line">
+        <ul className="mt-8 border-t border-line">
           {work.map((item, i) => {
             const door = doorFor(item);
 
             const body = (
-              <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 py-5">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 py-4">
                 <div>
                   <h3 className="display text-lg text-ink transition-colors group-hover:text-signal sm:text-xl">
                     {item.title}

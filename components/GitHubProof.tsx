@@ -55,15 +55,21 @@ export default function GitHubProof() {
           href={githubProof.url}
           target="_blank"
           rel="noreferrer"
-          className="group mt-7 block no-underline"
+          className="group mt-7 block max-w-3xl no-underline"
         >
+          {/* **Capped at `max-w-3xl` on Nov 28 2026.** Full width this was
+              934px of /about on a 1440 screen, the tallest thing on a page
+              Meg asked to make shorter, and nothing in it needs to be read
+              at that size: it is a photograph of an account, and the link
+              under it is how anybody who wants the detail gets the real
+              one. */}
           <span className="block overflow-hidden rounded-xl border border-line bg-[color:var(--cp-well)] transition-transform duration-150 group-hover:-translate-y-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0">
             <Image
               src={githubProof.shot}
               alt={githubProof.alt}
               width={2208}
               height={1533}
-              sizes="(min-width: 1152px) 1104px, 100vw"
+              sizes="(min-width: 768px) 768px, 100vw"
               className="block h-auto w-full"
             />
           </span>

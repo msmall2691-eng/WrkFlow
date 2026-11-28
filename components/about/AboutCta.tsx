@@ -19,7 +19,7 @@ import { aboutPage, founderCta } from "@/lib/content";
 */
 export default function AboutCta() {
   return (
-    <section id="start" className="relative py-16 md:py-20">
+    <section id="start" className="relative py-14 md:py-16">
       <Reveal className="mx-auto max-w-6xl px-6">
         <p className="text-xs font-medium uppercase tracking-[0.15em] text-faint">
           {aboutPage.cta.eyebrow}

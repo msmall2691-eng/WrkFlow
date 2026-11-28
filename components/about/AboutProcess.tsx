@@ -1,5 +1,4 @@
 import Reveal from "../Reveal";
-import LivingFrame from "../ocean/LivingFrame";
 import { aboutPage, approachSteps } from "@/lib/content";
 
 /*
@@ -26,15 +25,14 @@ import { aboutPage, approachSteps } from "@/lib/content";
   figure on a page Meg has asked to keep money off, and it repeated
   step 04.
 
-  The reef band is Meg's own clip and the page's only moving thing.
-  `LivingFrame` pauses it off-screen and never mounts it at all under
-  `prefers-reduced-motion`, where the poster is a real `<img>` underneath.
+  The reef band that opened this section is gone; the note beside the
+  step list says why, and how to put it back.
 */
 export default function AboutProcess() {
   return (
     <section
       id="approach"
-      className="relative border-b border-line bg-[var(--section-alt-bg)] py-16 md:py-20"
+      className="relative border-b border-line bg-[var(--section-alt-bg)] py-14 md:py-16"
     >
       <div className="mx-auto max-w-6xl px-6">
         <Reveal className="max-w-3xl">
@@ -49,16 +47,20 @@ export default function AboutProcess() {
           </p>
         </Reveal>
 
-        {/* Under the heading rather than above it, which is the shape
-            /tools already uses: a title, then the art full width. Opening
-            the band on half a screen of water pushed the words this
-            section exists for below the fold. */}
-        <LivingFrame
-          video="/ocean/reef-band.mp4"
-          poster="/ocean/reef-band-poster.webp"
-          alt="A slow drift across a deep reef at night, past an anemone, a turtle and shoals of lit fish."
-          className="mt-10"
-        />
+        {/*
+          **The reef band came off this page on Nov 28 2026**, and it is
+          the one cut here worth a second opinion. Meg's instruction that
+          day was clean, concise, simple, and that where two layouts are
+          possible the quieter one wins. Measured, the band was 490px of a
+          1028px section and the single largest thing on /about that said
+          nothing: it is beautiful and it is not evidence, on the page
+          where a visitor is deciding whether to trust one person.
+
+          It is a cut rather than a deletion. The clip, its poster and
+          `LivingFrame`'s own reasoning are all still in the repo, and
+          `/tools` still carries a frame, so putting it back is this
+          comment turning back into four lines of JSX.
+        */}
 
         <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {approachSteps.map((step, i) => (
